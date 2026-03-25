@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Lotto.Virtual Launch Pro</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#07070A',
+            charcoal: '#12121A',
+            neonBlue: '#00D4FF',
+            neonYellow: '#FFE534',
+            neonMagenta: '#FF2D8A',
+            neonCyan: '#00F0D0',
+            glass: 'rgba(255,255,255,0.04)',
+            glassBorder: 'rgba(255,255,255,0.08)',
+          },
+          fontFamily: {
+            heading: ['Sora', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { height: 100%; }
+    body { height: 100%; margin: 0; }
+
+    .glow-blue { text-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.5), 0 0 100px rgba(0,212,255,0.2); }
+    .glow-yellow { text-shadow: 0 0 30px rgba(255,229,52,0.9), 0 0 60px rgba(255,229,52,0.6), 0 0 100px rgba(255,229,52,0.2); }
+    .glow-magenta { text-shadow: 0 0 30px rgba(255,45,138,0.8), 0 0 60px rgba(255,45,138,0.5), 0 0 100px rgba(255,45,138,0.2); }
+
+    .btn-glow-blue { box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,212,255,0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .btn-glow-yellow { box-shadow: 0 0 30px rgba(255,229,52,0.6), 0 0 60px rgba(255,229,52,0.3); }
+    .btn-glow-magenta { box-shadow: 0 0 30px rgba(255,45,138,0.5), 0 0 60px rgba(255,45,138,0.2); }
+
+    .card-glow { box-shadow: 0 0 40px rgba(0,212,255,0.15), inset 0 1px 0 rgba(255,255,255,0.1); }
+    .card-glow:hover { box-shadow: 0 0 60px rgba(0,212,255,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+
+    .neon-border { border: 2px solid rgba(0,212,255,0.4); animation: neonPulse 2s ease-in-out infinite; }
+    .neon-border-yellow { border: 2px solid rgba(255,229,52,0.5); animation: neonPulseYellow 2s ease-in-out infinite; }
+
+    @keyframes neonPulse {
+      0%, 100% { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 10px rgba(0,212,255,0.3); }
+      50% { border-color: rgba(0,212,255,0.8); box-shadow: 0 0 30px rgba(0,212,255,0.6); }
+    }
+    @keyframes neonPulseYellow {
+      0%, 100% { border-color: rgba(255,229,52,0.4); box-shadow: 0 0 10px rgba(255,229,52,0.3); }
+      50% { border-color: rgba(255,229,52,1); box-shadow: 0 0 30px rgba(255,229,52,0.8); }
+    }
+
+    /* Bokeh dots */
+    .bokeh-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+    .bokeh {
+      position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.15;
+      animation: float 12s ease-in-out infinite, pulse 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.2); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.25; }
+    }
+
+    /* Marquee dots along top */
+    .marquee-strip {
+      background: repeating-linear-gradient(90deg,
+        rgba(255,229,52,1) 0px, rgba(255,229,52,1) 4px,
+        rgba(255,45,138,1) 4px, rgba(255,45,138,1) 8px,
+        rgba(0,212,255,1) 8px, rgba(0,212,255,1) 12px,
+        transparent 12px, transparent 24px
+      );
+      height: 3px; opacity: 0.8;
+      animation: marqueeShift 1s linear infinite;
+      box-shadow: 0 0 20px rgba(255,229,52,0.6), 0 -5px 15px rgba(255,45,138,0.4);
+    }
+    @keyframes marqueeShift {
+      0% { background-position: 0 0; }
+      100% { background-position: 24px 0; }
+    }
+
+    /* Neon line */
+    .neon-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.8), rgba(255,45,138,0.6), rgba(0,212,255,0.8), transparent);
+      box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(255,45,138,0.4);
+      animation: lineShimmer 3s ease-in-out infinite;
+    }
+    @keyframes lineShimmer {
+      0%, 100% { box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(255,45,138,0.4); }
+      50% { box-shadow: 0 0 50px rgba(0,212,255,0.9), 0 0 80px rgba(255,45,138,0.7); }
+    }
+
+    /* Light beam behind hero */
+    .light-beam {
+      position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+      width: 80%; height: 80%;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.15) 0%, rgba(255,45,138,0.08) 40%, transparent 70%);
+      pointer-events: none; z-index: 0;
+      animation: beamPulse 4s ease-in-out infinite;
+    }
+    @keyframes beamPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Card animations */
+    .card-float-up {
+      animation: floatUp 3s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .card-float-down {
+      animation: floatDown 3.5s ease-in-out infinite;
+    }
+    @keyframes floatDown {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(15px); }
+    }
+
+    .card-sway-left {
+      animation: swayLeft 4s ease-in-out infinite;
+    }
+    @keyframes swayLeft {
+      0%, 100% { transform: translateX(0px) rotate(0deg); }
+      50% { transform: translateX(-12px) rotate(-2deg); }
+    }
+
+    .card-sway-right {
+      animation: swayRight 4.2s ease-in-out infinite;
+    }
+    @keyframes swayRight {
+      0%, 100% { transform: translateX(0px) rotate(0deg); }
+      50% { transform: translateX(12px) rotate(2deg); }
+    }
+
+    .card-flip {
+      animation: flip 6s ease-in-out infinite;
+    }
+    @keyframes flip {
+      0%, 100% { transform: rotateY(0deg); }
+      25% { transform: rotateY(5deg); }
+      50% { transform: rotateY(0deg); }
+      75% { transform: rotateY(-5deg); }
+    }
+
+    .card-spin {
+      animation: gentleSpin 5s linear infinite;
+    }
+    @keyframes gentleSpin {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    .card-dance {
+      animation: dance 2s ease-in-out infinite;
+    }
+    @keyframes dance {
+      0% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(-1deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(-8px) rotate(1deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    .card-pulse-scale {
+      animation: pulseScale 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseScale {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .card-wobble {
+      animation: wobble 1.5s ease-in-out infinite;
+    }
+    @keyframes wobble {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-4px) rotate(-1deg); }
+      50% { transform: translateX(0) rotate(0deg); }
+      75% { transform: translateX(4px) rotate(1deg); }
+    }
+
+    .badge-pulse {
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.08) rotate(2deg); }
+    }
+
+    .button-hover-glow {
+      transition: all 0.3s ease;
+    }
+    .button-hover-glow:hover {
+      animation: buttonGlow 0.6s ease-in-out;
+    }
+    @keyframes buttonGlow {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .text-shimmer {
+      animation: shimmerText 3s ease-in-out infinite;
+    }
+    @keyframes shimmerText {
+      0%, 100% { text-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.5); }
+      50% { text-shadow: 0 0 50px rgba(0,212,255,1), 0 0 80px rgba(0,212,255,0.8); }
+    }
+
+    .icon-bounce {
+      animation: iconBounce 2s ease-in-out infinite;
+    }
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .feature-item {
+      animation: featureSlide 0.6s ease-out forwards;
+    }
+    @keyframes featureSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeInUp 0.7s ease-out forwards; opacity: 0; }
+
+    .nav-scrolled { background: rgba(7,7,10,0.95) !important; backdrop-filter: blur(16px); }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* FAQ */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; opacity: 0; }
+    .faq-answer.open { max-height: 500px; opacity: 1; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-void font-body text-white overflow-auto">
+  <div id="app-wrapper" class="w-full" style="min-height:100%; background: linear-gradient(180deg, #07070A 0%, #0D0D15 40%, #12121A 100%);"><!-- Marquee strip top -->
+   <div class="marquee-strip w-full fixed top-0 left-0 z-50"></div><!-- STICKY NAV -->
+   <nav id="main-nav" class="fixed top-[2px] left-0 w-full z-40 transition-all duration-300" style="background: rgba(7,7,10,0.7); backdrop-filter: blur(8px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#hero" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg bg-neonBlue/20 neon-border flex items-center justify-center"><i data-lucide="diamond" class="w-4 h-4 text-neonBlue"></i>
+      </div><span id="nav-logo-text" class="font-heading font-bold text-white text-lg">Website Lotto</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm text-gray-400"><a href="#how" class="hover:text-neonBlue transition">How it works</a> <a href="#sites" class="hover:text-neonBlue transition">Sites available</a> <a href="#features" class="hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="hover:text-neonBlue transition">FAQ</a>
+     </div><a href="#sites" id="nav-cta" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neonBlue text-void font-heading font-bold text-sm btn-glow-blue hover:bg-neonBlue/90 transition"> Claim a site </a> <!-- Mobile menu button --> <button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white p-2"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm text-gray-400" style="background: rgba(7,7,10,0.95);"><a href="#how" class="block py-2 hover:text-neonBlue transition">How it works</a> <a href="#sites" class="block py-2 hover:text-neonBlue transition">Sites available</a> <a href="#features" class="block py-2 hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="block py-2 hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="block py-2 hover:text-neonBlue transition">FAQ</a> <a href="#sites" class="inline-block mt-2 px-4 py-2 rounded-full bg-neonBlue text-void font-heading font-bold text-sm">Claim a site</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="hero" class="relative pt-28 pb-20 sm:pt-36 sm:pb-28 px-4">
+    <div class="light-beam"></div><!-- Bokeh -->
+    <div class="bokeh-container">
+     <div class="bokeh" style="width:400px;height:400px;background:#00D4FF;top:10%;left:20%;animation-delay:0s;"></div>
+     <div class="bokeh" style="width:300px;height:300px;background:#FF2D8A;top:20%;right:15%;animation-delay:2s;"></div>
+     <div class="bokeh" style="width:350px;height:350px;background:#FFE534;bottom:20%;left:50%;animation-delay:4s;"></div>
+     <div class="bokeh" style="width:280px;height:280px;background:#00D4FF;bottom:10%;right:20%;animation-delay:1s;"></div>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+     <h1 id="hero-brand" class="font-heading font-extrabold text-5xl sm:text-7xl md:text-8xl tracking-tight glow-blue animate-in">Website Lotto</h1>
+     <p id="hero-tagline" class="mt-4 font-heading font-bold text-xl sm:text-2xl md:text-3xl text-neonYellow glow-yellow animate-in stagger-1">Don't gamble on your website design.</p>
+     <p id="hero-desc" class="mt-6 text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed animate-in stagger-2">Claim a ready-made, high-converting website today. Hosted on a reliable domain with Cloudflare-backed security. Plug in your Stripe or payment link and start selling online in minutes.</p><!-- Neon badges -->
+     <div class="mt-8 flex flex-wrap justify-center gap-3 animate-in stagger-3"><span id="badge-price" class="px-4 py-2 rounded-full neon-border font-heading font-bold text-sm text-neonBlue glow-blue">$99/mo</span> <span class="px-4 py-2 rounded-full neon-border-yellow font-heading font-bold text-sm text-neonYellow glow-yellow">Easy to transfer</span> <span class="px-4 py-2 rounded-full font-heading font-bold text-sm text-neonCyan" style="border:1px solid rgba(0,240,208,0.2); text-shadow:0 0 15px rgba(0,240,208,0.4);">Cloudflare-backed security</span>
+     </div><!-- Buttons -->
+     <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-in stagger-3"><a href="#sites" id="hero-cta-primary" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-neonYellow text-void font-heading font-bold text-base btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="eye" class="w-5 h-5"></i> See sites available </a> <a href="#how" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-transparent neon-border text-neonBlue font-heading font-bold text-base hover:bg-neonBlue/10 transition"> <i data-lucide="play-circle" class="w-5 h-5"></i> How it works </a>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- HOW IT WORKS -->
+   <section id="how" class="py-20 sm:py-28 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+     <h2 id="how-title" class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue">How It Works</h2>
+     <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">Three steps. That's it.</p>
+     <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Step 1 -->
+      <div class="relative rounded-2xl p-8 neon-border card-glow transition-all duration-300 card-float-up" style="background: rgba(255,255,255,0.03);">
+       <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-neonBlue/20 flex items-center justify-center neon-border icon-bounce"><span class="font-heading font-bold text-neonBlue text-sm">1</span>
+       </div>
+       <div class="mt-4 w-14 h-14 mx-auto rounded-xl bg-neonBlue/10 flex items-center justify-center icon-bounce"><i data-lucide="mouse-pointer-click" class="w-7 h-7 text-neonBlue"></i>
+       </div>
+       <h3 class="mt-5 font-heading font-bold text-lg text-white">Pick a site</h3>
+       <p class="mt-2 text-gray-400 text-sm leading-relaxed">Browse available sites and choose one that fits your business.</p>
+      </div><!-- Step 2 -->
+      <div class="relative rounded-2xl p-8 neon-border card-glow transition-all duration-300 card-dance" style="background: rgba(255,255,255,0.03);">
+       <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-neonYellow/20 flex items-center justify-center neon-border-yellow badge-pulse"><span class="font-heading font-bold text-neonYellow text-sm">2</span>
+       </div>
+       <div class="mt-4 w-14 h-14 mx-auto rounded-xl bg-neonYellow/10 flex items-center justify-center icon-bounce"><i data-lucide="credit-card" class="w-7 h-7 text-neonYellow"></i>
+       </div>
+       <h3 class="mt-5 font-heading font-bold text-lg text-white">Connect payments</h3>
+       <p class="mt-2 text-gray-400 text-sm leading-relaxed">Plug in your Stripe account or payment link. Done.</p>
+      </div><!-- Step 3 -->
+      <div class="relative rounded-2xl p-8 neon-border card-glow transition-all duration-300 card-float-down" style="background: rgba(255,255,255,0.03);">
+       <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-neonMagenta/20 flex items-center justify-center" style="border:1px solid rgba(255,45,138,0.2); animation: badgePulse 2s ease-in-out infinite;"><span class="font-heading font-bold text-neonMagenta text-sm">3</span>
+       </div>
+       <div class="mt-4 w-14 h-14 mx-auto rounded-xl bg-neonMagenta/10 flex items-center justify-center icon-bounce"><i data-lucide="rocket" class="w-7 h-7 text-neonMagenta"></i>
+       </div>
+       <h3 class="mt-5 font-heading font-bold text-lg text-white">Launch &amp; sell</h3>
+       <p class="mt-2 text-gray-400 text-sm leading-relaxed">Your site is live. Start making money right away.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- SITES AVAILABLE -->
+   <section id="sites" class="py-20 sm:py-28 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+     <h2 id="sites-title" class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue">Sites Available</h2>
+     <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">First come, first served</p>
+     <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Site 1 -->
+      <div class="rounded-2xl overflow-hidden neon-border card-glow transition-all duration-300 group card-sway-left" style="background: rgba(255,255,255,0.03);">
+       <div class="h-44 bg-gradient-to-br from-neonBlue/10 to-neonCyan/5 flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,212,255,0.05) 10px, rgba(0,212,255,0.05) 20px);"></div>
+        <div class="relative text-center"><span class="text-4xl icon-bounce">🐾</span>
+         <p class="mt-2 font-heading font-bold text-neonBlue text-sm">Happy Paw-ter</p>
+        </div>
+       </div>
+       <div class="p-6 text-left">
+        <h3 class="font-heading font-bold text-white text-lg">Happy Paw-ter Dog Walking</h3>
+        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Friendly, trustworthy pet care with instant booking.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonBlue text-void font-heading font-bold text-sm btn-glow-blue hover:bg-neonBlue/90 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
+       </div>
+      </div><!-- Site 2 -->
+      <div class="rounded-2xl overflow-hidden neon-border card-glow transition-all duration-300 group card-pulse-scale" style="background: rgba(255,255,255,0.03);">
+       <div class="h-44 bg-gradient-to-br from-neonYellow/10 to-neonMagenta/5 flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,229,52,0.05) 10px, rgba(255,229,52,0.05) 20px);"></div>
+        <div class="relative text-center"><span class="text-4xl icon-bounce">🏎️</span>
+         <p class="mt-2 font-heading font-bold text-neonYellow text-sm">Car Custom Nation</p>
+        </div>
+       </div>
+       <div class="p-6 text-left">
+        <h3 class="font-heading font-bold text-white text-lg">Car Custom Nation</h3>
+        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Bold automotive style for custom builds and product sales.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonYellow text-void font-heading font-bold text-sm btn-glow-yellow hover:brightness-110 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
+       </div>
+      </div><!-- Site 3 -->
+      <div class="rounded-2xl overflow-hidden card-glow transition-all duration-300 group card-sway-right" style="background: rgba(255,255,255,0.03); border:1px solid rgba(255,45,138,0.15);">
+       <div class="h-44 bg-gradient-to-br from-neonMagenta/10 to-neonBlue/5 flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,45,138,0.05) 10px, rgba(255,45,138,0.05) 20px);"></div>
+        <div class="relative text-center"><span class="text-4xl icon-bounce">🧹</span>
+         <p class="mt-2 font-heading font-bold text-neonMagenta text-sm">Clean Sweep</p>
+        </div>
+       </div>
+       <div class="p-6 text-left">
+        <h3 class="font-heading font-bold text-white text-lg">Clean Sweep House Cleaning</h3>
+        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Crisp, clean design for recurring clients and easy scheduling.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonMagenta text-void font-heading font-bold text-sm btn-glow-magenta hover:brightness-110 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
+       </div>
+      </div>
+     </div>
+     <p class="mt-8 text-gray-500 text-sm italic">First come, first served. When a site is claimed, it's removed from availability.</p>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- WHAT'S INCLUDED -->
+   <section id="features" class="py-20 sm:py-28 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+     <h2 id="features-title" class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue">What's Included</h2>
+     <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">Everything you need. Nothing you don't.</p>
+     <div class="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02);">
+       <div class="w-10 h-10 rounded-lg bg-neonBlue/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="trending-up" class="w-5 h-5 text-neonBlue"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">High-converting layout</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">Built for leads and sales from day one.</p>
+      </div>
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02); animation-delay: 0.1s;">
+       <div class="w-10 h-10 rounded-lg bg-neonYellow/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="globe" class="w-5 h-5 text-neonYellow"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">Reliable domain hosting</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">Your site lives on a premium, stable domain.</p>
+      </div>
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02); animation-delay: 0.2s;">
+       <div class="w-10 h-10 rounded-lg bg-neonCyan/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="shield" class="w-5 h-5 text-neonCyan"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">Cloudflare-backed security</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">SSL, DDoS protection, and edge caching built in.</p>
+      </div>
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02); animation-delay: 0.3s;">
+       <div class="w-10 h-10 rounded-lg bg-neonMagenta/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="smartphone" class="w-5 h-5 text-neonMagenta"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">Mobile optimized &amp; fast</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">Loads lightning-fast on every device.</p>
+      </div>
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02); animation-delay: 0.4s;">
+       <div class="w-10 h-10 rounded-lg bg-neonBlue/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="arrow-right-left" class="w-5 h-5 text-neonBlue"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">Easy to transfer</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">Move your site whenever you want. No lock-in.</p>
+      </div>
+      <div class="rounded-xl p-6 text-left neon-border transition-all duration-300 hover:bg-white/[0.03] feature-item" style="background: rgba(255,255,255,0.02); animation-delay: 0.5s;">
+       <div class="w-10 h-10 rounded-lg bg-neonYellow/10 flex items-center justify-center mb-4 icon-bounce">
+        <i data-lucide="zap" class="w-5 h-5 text-neonYellow"></i>
+       </div>
+       <h3 class="font-heading font-bold text-white">Plug &amp; play payments</h3>
+       <p class="mt-1.5 text-gray-400 text-sm">Connect Stripe or any payment link in minutes.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- PRICING -->
+   <section id="pricing" class="py-20 sm:py-28 px-4 relative">
+    <div class="bokeh-container">
+     <div class="bokeh" style="width:400px;height:400px;background:#FFE534;top:10%;left:35%;animation-delay:2s;"></div>
+     <div class="bokeh" style="width:350px;height:350px;background:#FF2D8A;top:50%;right:25%;animation-delay:3s;"></div>
+    </div>
+    <div class="relative z-10 max-w-lg mx-auto text-center">
+     <h2 class="font-heading font-extrabold text-3xl sm:text-5xl glow-yellow text-neonYellow">Simple Pricing</h2>
+     <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">No surprises. No hidden fees.</p>
+     <div class="mt-12 rounded-2xl p-8 sm:p-10 neon-border-yellow card-glow text-center card-wobble" style="background: rgba(255,229,52,0.03);">
+      <p class="text-gray-400 text-sm font-heading uppercase tracking-wider">Everything included</p>
+      <p id="pricing-amount" class="mt-4 font-heading font-extrabold text-6xl text-neonYellow glow-yellow text-shimmer">$99</p>
+      <p class="text-gray-400 font-heading">/month</p>
+      <ul class="mt-6 space-y-2.5 text-left max-w-xs mx-auto">
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> High-converting website</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0.1s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> Premium domain hosting</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0.2s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> Cloudflare security</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0.3s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> Payment integration</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0.4s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> Mobile optimized</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300 feature-item" style="animation-delay: 0.5s;"><i data-lucide="check" class="w-4 h-4 text-neonYellow flex-shrink-0 icon-bounce"></i> Easy transfer anytime</li>
+      </ul><a href="#sites" class="mt-8 inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-neonYellow text-void font-heading font-bold text-base btn-glow-yellow hover:brightness-110 transition button-hover-glow"> <i data-lucide="sparkles" class="w-5 h-5 icon-bounce"></i> Claim a site now </a>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- FAQ -->
+   <section id="faq" class="py-20 sm:py-28 px-4">
+    <div class="max-w-2xl mx-auto">
+     <h2 class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue text-center">FAQ</h2>
+     <div class="mt-12 space-y-3" id="faq-list">
+      <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">What kind of sites are available?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-5 pb-5">
+        <p class="text-gray-400 text-sm leading-relaxed">Each site is a unique, professionally designed, high-converting website built for a specific niche. Once claimed, it's yours — no one else gets it.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">Can I use my own domain?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-5 pb-5">
+        <p class="text-gray-400 text-sm leading-relaxed">Each site comes hosted on a reliable domain. If you'd like to transfer it to your own domain later, it's easy to do — no lock-in.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">How do payments work?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-5 pb-5">
+        <p class="text-gray-400 text-sm leading-relaxed">Simply connect your Stripe account or paste in any payment link. All revenue goes directly to you — we don't take a cut of your sales.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">What happens after I claim a site?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-5 pb-5">
+        <p class="text-gray-400 text-sm leading-relaxed">The site is removed from availability and becomes exclusively yours. Connect your payments and you're live.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">Can I cancel anytime?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-5 pb-5">
+        <p class="text-gray-400 text-sm leading-relaxed">Yes. Cancel anytime — no contracts, no cancellation fees. You can also transfer your site to your own hosting before leaving.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- FINAL CTA -->
+   <section class="py-20 sm:py-28 px-4 relative text-center">
+    <div class="bokeh-container">
+     <div class="bokeh" style="width:400px;height:400px;background:#00D4FF;top:0;left:40%;animation-delay:4s;"></div>
+    </div>
+    <div class="relative z-10 max-w-2xl mx-auto">
+     <h2 class="font-heading font-extrabold text-3xl sm:text-5xl text-white glow-blue">Ready to go live?</h2>
+     <p class="mt-4 text-gray-400 text-lg">Stop overthinking your website. Claim one and start selling today.</p><a href="#sites" class="mt-8 inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full bg-neonYellow text-void font-heading font-bold text-lg btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="sparkles" class="w-5 h-5"></i> See sites available </a>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="border-t border-white/5 py-10 px-4">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-neonBlue/20 flex items-center justify-center">
+       <i data-lucide="diamond" class="w-3 h-3 text-neonBlue"></i>
+      </div><span class="font-heading font-bold text-gray-400">Website Lotto</span>
+     </div>
+     <p>© 2025 Website Lotto. All rights reserved.</p>
+    </div>
+   </footer><!-- Marquee strip bottom -->
+   <div class="marquee-strip w-full"></div>
+  </div>
+  <script>
+    // Default config
+    const defaultConfig = {
+      brand_name: 'Website Lotto',
+      tagline: "Don't gamble on your website design.",
+      hero_description: 'Claim a ready-made, high-converting website today. Hosted on a reliable domain with Cloudflare-backed security. Plug in your Stripe or payment link and start selling online in minutes.',
+      price_text: '$99/mo',
+      how_it_works_title: 'How It Works',
+      sites_title: 'Sites Available',
+      features_title: "What's Included",
+      cta_text: 'See sites available',
+      background_color: '#07070A',
+      surface_color: '#0f0f17',
+      text_color: '#ffffff',
+      primary_action_color: '#00D4FF',
+      secondary_action_color: '#FFE534',
+      font_family: 'Sora',
+      font_size: 16,
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+
+      // Text updates
+      const el = (id) => document.getElementById(id);
+      if (el('hero-brand')) el('hero-brand').textContent = c.brand_name;
+      if (el('nav-logo-text')) el('nav-logo-text').textContent = c.brand_name;
+      if (el('hero-tagline')) el('hero-tagline').textContent = c.tagline;
+      if (el('hero-desc')) el('hero-desc').textContent = c.hero_description;
+      if (el('badge-price')) el('badge-price').textContent = c.price_text;
+      if (el('how-title')) el('how-title').textContent = c.how_it_works_title;
+      if (el('sites-title')) el('sites-title').textContent = c.sites_title;
+      if (el('features-title')) el('features-title').textContent = c.features_title;
+      if (el('hero-cta-primary')) {
+        const icon = el('hero-cta-primary').querySelector('i');
+        el('hero-cta-primary').textContent = '';
+        if (icon) el('hero-cta-primary').appendChild(icon);
+        el('hero-cta-primary').appendChild(document.createTextNode(' ' + c.cta_text));
+      }
+
+      // Pricing
+      const priceNum = c.price_text.replace('/mo', '').trim();
+      if (el('pricing-amount')) el('pricing-amount').textContent = priceNum.includes('$') ? priceNum.replace('/mo','') : c.price_text.replace('/mo','');
+
+      // Colors
+      document.body.parentElement.style.background = c.background_color;
+      document.getElementById('app-wrapper').style.background = `linear-gradient(180deg, ${c.background_color} 0%, ${c.surface_color} 50%, ${c.background_color} 100%)`;
+
+      // Font
+      const fontStack = `${c.font_family}, sans-serif`;
+      document.querySelectorAll('.font-heading, [class*="font-heading"]').forEach(el => {
+        el.style.fontFamily = fontStack;
+      });
+
+      // Font size scaling
+      const base = c.font_size;
+      document.querySelectorAll('p:not(.font-heading)').forEach(p => { p.style.fontSize = `${base}px`; });
+    }
+
+    // Element SDK init
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => { applyConfig(config); },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+          { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        },
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['brand_name', config.brand_name || defaultConfig.brand_name],
+        ['tagline', config.tagline || defaultConfig.tagline],
+        ['hero_description', config.hero_description || defaultConfig.hero_description],
+        ['price_text', config.price_text || defaultConfig.price_text],
+        ['how_it_works_title', config.how_it_works_title || defaultConfig.how_it_works_title],
+        ['sites_title', config.sites_title || defaultConfig.sites_title],
+        ['features_title', config.features_title || defaultConfig.features_title],
+        ['cta_text', config.cta_text || defaultConfig.cta_text],
+      ]),
+    });
+
+    // FAQ toggle
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      const isOpen = answer.classList.contains('open');
+      
+      // Close all others
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const itemAnswer = item.querySelector('.faq-answer');
+        const itemIcon = item.querySelector('.faq-toggle i');
+        if (itemAnswer !== answer) {
+          itemAnswer.classList.remove('open');
+          if (itemIcon) itemIcon.style.transform = '';
+        }
+      });
+      
+      // Toggle current
+      if (isOpen) {
+        answer.classList.remove('open');
+        icon.style.transform = '';
+      } else {
+        answer.classList.add('open');
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 50) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    });
+
+    // Mobile menu
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+    // Close mobile menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+    });
+
+    // Init icons
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e20b592a5506a30',t:'MTc3NDQ3MTAwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
