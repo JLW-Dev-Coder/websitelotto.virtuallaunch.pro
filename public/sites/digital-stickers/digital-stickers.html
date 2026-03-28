@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Sunshine Stickers</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html, body { height: 100%; }
+    body { font-family: 'Quicksand', 'Segoe UI', sans-serif; }
+    
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .nav-link {
+      transition: color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .nav-link:hover {
+      transform: translateY(-2px);
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, #fff4e6 0%, #ffe8cc 100%);
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .sticker-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 12px;
+    }
+    
+    .sticker-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+    
+    .bundle-card {
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .bundle-card.featured {
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .bundle-card:hover:not(.featured) {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .review-item {
+      background: #f8f9fa;
+      border-left: 4px solid;
+      border-radius: 8px;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .review-item:hover {
+      transform: translateX(4px);
+    }
+    
+    .faq-item {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+    }
+    
+    .faq-item.active .faq-question {
+      font-weight: 700;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+    }
+    
+    .cta-button {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255, 107, 107, 0.4);
+    }
+    
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .section-subtitle {
+      font-size: 16px;
+      opacity: 0.7;
+    }
+    
+    .instant-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto">
+  <div class="w-full h-full bg-gradient-to-b from-white via-blue-50 to-white">
+   <!-- Sticky Navigation -->
+   <nav class="sticky-nav bg-white">
+    <div class="w-full px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+     <div class="flex items-center gap-2">
+      <div class="text-2xl">
+       ☀️
+      </div>
+      <h1 id="nav-title" class="text-xl font-bold text-gray-800">Teacher Sunshine Stickers</h1>
+     </div>
+     <div class="flex gap-1 md:gap-4 text-sm font-medium flex-wrap justify-end">
+      <a href="#home" class="nav-link text-gray-700 hover:text-yellow-600 px-3 py-2">Home</a> <a href="#stickers" class="nav-link text-gray-700 hover:text-yellow-600 px-3 py-2">Stickers</a> <a href="#compatibility" class="nav-link text-gray-700 hover:text-yellow-600 px-3 py-2">Compatible</a> <a href="#reviews" class="nav-link text-gray-700 hover:text-yellow-600 px-3 py-2">Reviews</a> <a href="#faq" class="nav-link text-gray-700 hover:text-yellow-600 px-3 py-2">FAQ</a> <a href="#buy" class="nav-link text-white bg-yellow-500 hover:bg-yellow-600 rounded-full px-4 py-2">Buy</a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" class="hero-section">
+    <div class="text-center px-6 max-w-2xl">
+     <div class="text-6xl mb-6 float-animation">
+      ☀️✏️📚
+     </div>
+     <h2 id="hero-title" class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Brighten Your Digital Planner</h2>
+     <p id="hero-subtitle" class="text-lg text-gray-700 mb-8 leading-relaxed">Beautiful, school-themed stickers for GoodNotes, Notability, and iPad planners. Perfect for teachers and students.</p><button id="hero-cta" class="cta-button">Browse Sticker Packs</button>
+    </div>
+   </section><!-- Bundle Options (Buy Section) -->
+   <section id="buy" class="w-full px-6 py-20 bg-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-gray-800">Choose Your Pack</h2>
+      <p class="section-subtitle">All bundles include instant download &amp; personal use license</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <!-- Mini Pack -->
+      <div class="bundle-card bg-gradient-to-br from-pink-50 to-pink-100 p-8 border-2 border-pink-300">
+       <div class="text-4xl mb-4">
+        🎀
+       </div>
+       <h3 id="mini-name" class="text-2xl font-bold text-gray-800 mb-2">Mini Pack</h3>
+       <p class="text-gray-600 mb-4 text-sm">Perfect for getting started</p>
+       <div class="mb-6">
+        <span class="text-3xl font-bold text-pink-600" id="mini-price">$9.99</span>
+        <p class="text-xs text-gray-600 mt-2">50+ stickers</p>
+       </div>
+       <div class="instant-download mb-6">
+        <i data-lucide="zap" style="width: 14px; height: 14px;"></i> Instant Download
+       </div><button class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg transition">Get Now</button>
+      </div><!-- Mega Pack (Featured) -->
+      <div class="bundle-card featured bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 border-2 border-yellow-400 shadow-lg">
+       <div class="text-4xl mb-4">
+        ⭐
+       </div>
+       <div class="inline-block bg-yellow-400 text-gray-800 px-3 py-1 rounded-full text-xs font-bold mb-4">
+        MOST POPULAR
+       </div>
+       <h3 id="mega-name" class="text-2xl font-bold text-gray-800 mb-2">Mega Pack</h3>
+       <p class="text-gray-600 mb-4 text-sm">All-in-one collection</p>
+       <div class="mb-6">
+        <span class="text-3xl font-bold text-yellow-600" id="mega-price">$24.99</span>
+        <p class="text-xs text-gray-600 mt-2">200+ stickers</p>
+       </div>
+       <div class="instant-download mb-6">
+        <i data-lucide="zap" style="width: 14px; height: 14px;"></i> Instant Download
+       </div><button class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold py-3 rounded-lg transition">Get Now</button>
+      </div><!-- Classroom Ultimate -->
+      <div class="bundle-card bg-gradient-to-br from-blue-50 to-blue-100 p-8 border-2 border-blue-300">
+       <div class="text-4xl mb-4">
+        🎓
+       </div>
+       <h3 id="classroom-name" class="text-2xl font-bold text-gray-800 mb-2">Classroom Ultimate</h3>
+       <p class="text-gray-600 mb-4 text-sm">For entire classrooms</p>
+       <div class="mb-6">
+        <span class="text-3xl font-bold text-blue-600" id="classroom-price">$49.99</span>
+        <p class="text-xs text-gray-600 mt-2">500+ stickers</p>
+       </div>
+       <div class="instant-download mb-6">
+        <i data-lucide="zap" style="width: 14px; height: 14px;"></i> Instant Download
+       </div><button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">Get Now</button>
+      </div>
+     </div>
+     <p class="text-center text-sm text-gray-600 bg-blue-50 p-4 rounded-lg">💡 <strong>Pro Tip:</strong> All packs work with GoodNotes, Notability, and any app that supports PNG stickers!</p>
+    </div>
+   </section><!-- Sticker Preview Grid -->
+   <section id="stickers" class="w-full px-6 py-20 bg-gradient-to-b from-purple-50 to-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-gray-800">Sticker Preview</h2>
+      <p class="section-subtitle">A taste of what's inside your pack</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        📝
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🎨
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🌟
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        📚
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        ✅
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🎯
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        💡
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🏆
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        📖
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        ✨
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🎁
+       </div>
+      </div>
+      <div class="sticker-card bg-white p-6 flex items-center justify-center border-2 border-gray-200">
+       <div class="text-4xl">
+        🌈
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Compatibility -->
+   <section id="compatibility" class="w-full px-6 py-20 bg-white">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-gray-800">Works Everywhere</h2>
+      <p class="section-subtitle">Compatible with all your favorite apps</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <div class="text-center p-8 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl">
+       <div class="text-5xl mb-4">
+        📱
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">GoodNotes 5</h3>
+       <p class="text-gray-600 text-sm">Fully compatible PNG stickers</p>
+      </div>
+      <div class="text-center p-8 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
+       <div class="text-5xl mb-4">
+        📲
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">Notability</h3>
+       <p class="text-gray-600 text-sm">Drop &amp; use in any planner</p>
+      </div>
+      <div class="text-center p-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+       <div class="text-5xl mb-4">
+        🖼️
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">PNG Format</h3>
+       <p class="text-gray-600 text-sm">Works with any app</p>
+      </div>
+     </div>
+     <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-8 text-center">
+      <p class="text-gray-700"><strong>📋 Personal Use License:</strong> All sticker packs are for your personal planning and teaching use. See FAQ for commercial licensing options.</p>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="w-full px-6 py-20 bg-gradient-to-b from-green-50 to-white">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-gray-800">What Teachers Say</h2>
+      <p class="section-subtitle">Join hundreds of happy planners</p>
+     </div>
+     <div class="space-y-6">
+      <div class="review-item border-green-400">
+       <div class="flex items-center gap-2 mb-3">
+        <div class="text-lg">
+         ⭐⭐⭐⭐⭐
+        </div><span class="font-bold text-gray-800">Sarah M.</span>
+       </div>
+       <p class="text-gray-700">"These stickers are absolutely adorable! My students love seeing them on my lesson plans. Great quality and instant delivery!"</p>
+      </div>
+      <div class="review-item border-green-400">
+       <div class="flex items-center gap-2 mb-3">
+        <div class="text-lg">
+         ⭐⭐⭐⭐⭐
+        </div><span class="font-bold text-gray-800">James K.</span>
+       </div>
+       <p class="text-gray-700">"Perfect for GoodNotes. Easy to import and they look crisp on my iPad. The variety in the Mega Pack is unbeatable!"</p>
+      </div>
+      <div class="review-item border-green-400">
+       <div class="flex items-center gap-2 mb-3">
+        <div class="text-lg">
+         ⭐⭐⭐⭐⭐
+        </div><span class="font-bold text-gray-800">Emma T.</span>
+       </div>
+       <p class="text-gray-700">"I got the Classroom Ultimate pack for our whole team and we're obsessed. Everyone's planners look so much brighter now!"</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full px-6 py-20 bg-white">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="section-title text-gray-800">Frequently Asked</h2>
+      <p class="section-subtitle">Everything you need to know</p>
+     </div>
+     <div class="space-y-4">
+      <div class="faq-item bg-gray-50 p-6">
+       <div class="faq-question flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+        <h3 class="font-bold text-gray-800">How do I use these stickers in GoodNotes?</h3><i data-lucide="chevron-down" style="width: 20px; height: 20px;"></i>
+       </div>
+       <div class="faq-answer px-0 pt-4">
+        <p class="text-gray-700">Simply download the PNG files, then import them into GoodNotes using the sticker feature. Drag &amp; drop them onto your pages!</p>
+       </div>
+      </div>
+      <div class="faq-item bg-gray-50 p-6">
+       <div class="faq-question flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+        <h3 class="font-bold text-gray-800">Can I use these for commercial purposes?</h3><i data-lucide="chevron-down" style="width: 20px; height: 20px;"></i>
+       </div>
+       <div class="faq-answer px-0 pt-4">
+        <p class="text-gray-700">Current packs are for personal use only. Commercial/classroom licenses are available separately. Contact us for details!</p>
+       </div>
+      </div>
+      <div class="faq-item bg-gray-50 p-6">
+       <div class="faq-question flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+        <h3 class="font-bold text-gray-800">How long until I get my download?</h3><i data-lucide="chevron-down" style="width: 20px; height: 20px;"></i>
+       </div>
+       <div class="faq-answer px-0 pt-4">
+        <p class="text-gray-700">Instant! Your download link appears immediately after purchase. Check your email within minutes just to be sure.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-gray-50 p-6">
+       <div class="faq-question flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+        <h3 class="font-bold text-gray-800">What's the difference between the packs?</h3><i data-lucide="chevron-down" style="width: 20px; height: 20px;"></i>
+       </div>
+       <div class="faq-answer px-0 pt-4">
+        <p class="text-gray-700">Mini (50 stickers) for basics, Mega (200) for variety, and Classroom Ultimate (500) for teams sharing. All PNG format.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-gray-50 p-6">
+       <div class="faq-question flex items-center justify-between cursor-pointer" onclick="toggleFaq(this)">
+        <h3 class="font-bold text-gray-800">Do these work on Android?</h3><i data-lucide="chevron-down" style="width: 20px; height: 20px;"></i>
+       </div>
+       <div class="faq-answer px-0 pt-4">
+        <p class="text-gray-700">Our stickers are optimized for iPad/GoodNotes, but PNGs work on any device. Android support depends on your app.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Final CTA -->
+   <section class="w-full px-6 py-20 bg-gradient-to-r from-yellow-300 to-orange-300">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ready to Brighten Your Planner?</h2>
+     <p class="text-lg text-gray-700 mb-8">Join teachers and students making their digital planners beautiful</p><button class="cta-button" onclick="document.getElementById('buy').scrollIntoView({behavior:'smooth'})"> Shop Now </button>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full px-6 py-8 bg-gray-800 text-white">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
+     <div class="flex items-center gap-2 mb-4 md:mb-0">
+      <div class="text-2xl">
+       ☀️
+      </div>
+      <p class="font-bold">Teacher Sunshine Stickers</p>
+     </div>
+     <p class="text-sm text-gray-400 text-center md:text-right">This site is part of the Website Lotto collection. Licensing available for commercial use.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    function toggleFaq(element) {
+      const faqItem = element.closest('.faq-item');
+      faqItem.classList.toggle('active');
+      lucide.createIcons();
+    }
+
+    // Initialize icons
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+
+    // Element SDK initialization
+    const defaultConfig = {
+      site_title: "Teacher Sunshine Stickers",
+      tagline: "Brighten Your Digital Planner",
+      hero_cta: "Browse Sticker Packs",
+      mini_name: "Mini Pack",
+      mini_price: "$9.99",
+      mega_name: "Mega Pack",
+      mega_price: "$24.99",
+      classroom_name: "Classroom Ultimate",
+      classroom_price: "$49.99"
+    };
+
+    let config = { ...defaultConfig };
+
+    const element = {
+      defaultConfig,
+      onConfigChange: async (newConfig) => {
+        config = newConfig;
+        
+        // Update text elements
+        document.getElementById('nav-title').textContent = config.site_title;
+        document.getElementById('hero-title').textContent = config.tagline;
+        document.getElementById('hero-cta').textContent = config.hero_cta;
+        document.getElementById('mini-name').textContent = config.mini_name;
+        document.getElementById('mini-price').textContent = config.mini_price;
+        document.getElementById('mega-name').textContent = config.mega_name;
+        document.getElementById('mega-price').textContent = config.mega_price;
+        document.getElementById('classroom-name').textContent = config.classroom_name;
+        document.getElementById('classroom-price').textContent = config.classroom_price;
+      },
+      mapToCapabilities: (cfg) => ({
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (cfg) => new Map([
+        ['site_title', cfg.site_title],
+        ['tagline', cfg.tagline],
+        ['hero_cta', cfg.hero_cta],
+        ['mini_name', cfg.mini_name],
+        ['mini_price', cfg.mini_price],
+        ['mega_name', cfg.mega_name],
+        ['mega_price', cfg.mega_price],
+        ['classroom_name', cfg.classroom_name],
+        ['classroom_price', cfg.classroom_price]
+      ])
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init(element);
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e34075a87bf27cf',t:'MTc3NDY3MzU4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

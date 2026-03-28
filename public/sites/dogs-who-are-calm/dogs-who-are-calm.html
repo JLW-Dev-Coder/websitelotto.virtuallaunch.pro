@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CalmPaws Quickstart</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sky: { brand: '#4AC4E0' },
+        coral: { brand: '#FF6B6B' },
+        sun: { brand: '#FFD93D' },
+        cream: { brand: '#FFF8F0' },
+        dark: { brand: '#2D3436' }
+      },
+      fontFamily: {
+        display: ['Fredoka', 'sans-serif'],
+        body: ['DM Sans', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes pawBounce {
+  0%, 100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-8px) rotate(10deg); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255,107,107,0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(255,107,107,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+}
+
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-paw { animation: pawBounce 2s ease-in-out infinite; }
+.anim-wiggle { animation: wiggle 2s ease-in-out infinite; }
+.anim-pulse-ring { animation: pulse-ring 2s infinite; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-scale { opacity: 0; transform: scale(0.7); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+  height: 3px; background: #FF6B6B; border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.day-card {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.day-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.cta-btn {
+  background: linear-gradient(135deg, #FF6B6B, #ff8e8e);
+  transition: all 0.3s ease;
+}
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255,107,107,0.4);
+}
+
+.paw-scroll-indicator {
+  position: fixed; right: 20px; bottom: 24px; z-index: 40;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.3s ease;
+}
+.paw-scroll-indicator:hover { transform: scale(1.1); }
+
+.timeline-line {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 4px; background: linear-gradient(to bottom, #4AC4E0, #FFD93D, #FF6B6B);
+  transform: translateX(-50%); border-radius: 2px;
+}
+
+.badge-anim { animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+.star-fill { color: #FFD93D; }
+
+.preview-card {
+  transition: transform 0.4s ease;
+}
+.preview-card:hover { transform: rotate(-1deg) scale(1.03); }
+
+.gradient-text {
+  background: linear-gradient(135deg, #FF6B6B, #4AC4E0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-cream-brand font-body text-dark-brand overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2 font-display font-bold text-xl text-dark-brand"> <span class="text-2xl anim-paw">🐾</span> <span>CalmPaws</span> </a>
+    <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link font-medium text-sm text-dark-brand/80 hover:text-dark-brand">Home</a> <a href="#learn" class="nav-link font-medium text-sm text-dark-brand/80 hover:text-dark-brand">What You Learn</a> <a href="#plan" class="nav-link font-medium text-sm text-dark-brand/80 hover:text-dark-brand">Daily Plan</a> <a href="#preview" class="nav-link font-medium text-sm text-dark-brand/80 hover:text-dark-brand">Preview</a> <a href="#reviews" class="nav-link font-medium text-sm text-dark-brand/80 hover:text-dark-brand">Reviews</a> <a href="#cta" class="cta-btn text-white font-semibold text-sm px-5 py-2 rounded-full">Get It</a>
+    </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2"><a href="#home" class="block py-2 px-3 rounded-lg hover:bg-sky-brand/10 font-medium text-sm">Home</a> <a href="#learn" class="block py-2 px-3 rounded-lg hover:bg-sky-brand/10 font-medium text-sm">What You Learn</a> <a href="#plan" class="block py-2 px-3 rounded-lg hover:bg-sky-brand/10 font-medium text-sm">Daily Plan</a> <a href="#preview" class="block py-2 px-3 rounded-lg hover:bg-sky-brand/10 font-medium text-sm">Preview</a> <a href="#reviews" class="block py-2 px-3 rounded-lg hover:bg-sky-brand/10 font-medium text-sm">Reviews</a> <a href="#cta" class="block py-2 px-3 rounded-lg bg-coral-brand text-white text-center font-semibold text-sm">Get It</a>
+   </div>
+  </nav><!-- Hero Section -->
+  <section id="home" class="relative pt-28 pb-20 px-4 overflow-hidden" style="background: linear-gradient(170deg, #FFF8F0 0%, #E8F8FC 50%, #FFF0EC 100%);"><!-- Floating decorations -->
+   <div class="absolute top-20 left-8 text-5xl anim-float opacity-30" style="animation-delay: 0s;">
+    🐕
+   </div>
+   <div class="absolute top-40 right-12 text-4xl anim-float opacity-20" style="animation-delay: 1s;">
+    🦴
+   </div>
+   <div class="absolute bottom-20 left-16 text-3xl anim-float opacity-25" style="animation-delay: 0.5s;">
+    🐾
+   </div>
+   <div class="absolute bottom-10 right-20 text-4xl anim-float opacity-20" style="animation-delay: 1.5s;">
+    💛
+   </div>
+   <div class="max-w-4xl mx-auto text-center relative z-10">
+    <div class="reveal inline-flex items-center gap-2 bg-white/80 backdrop-blur rounded-full px-5 py-2 mb-6 shadow-sm"><span class="text-lg anim-wiggle">🎉</span> <span class="text-sm font-semibold text-coral-brand">Positive reinforcement only — no punishment, ever</span>
+    </div>
+    <h1 id="hero-title" class="font-display font-bold text-5xl md:text-7xl leading-tight mb-6 reveal" style="animation-delay: 0.1s;">Stop the chaos.<br><span class="gradient-text">Start the calm.</span></h1>
+    <p id="hero-subtitle" class="text-lg md:text-xl text-dark-brand/70 max-w-2xl mx-auto mb-8 reveal" style="animation-delay: 0.2s;">A calmer dog in 7 days, without yelling.</p>
+    <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4 mb-8" style="animation-delay: 0.3s;"><a href="#cta" id="hero-cta-btn" class="cta-btn anim-pulse-ring text-white font-bold text-lg px-10 py-4 rounded-full shadow-lg inline-flex items-center gap-2"> <span id="hero-cta-text">Get the Quickstart</span> <i data-lucide="arrow-right" class="w-5 h-5"></i> </a> <span id="hero-price" class="text-sm text-dark-brand/50 font-medium">Just <strong class="text-coral-brand text-lg">$27</strong> — instant access</span>
+    </div>
+    <div class="reveal flex flex-wrap items-center justify-center gap-6 text-sm text-dark-brand/60" style="animation-delay: 0.4s;"><span class="flex items-center gap-1.5"><i data-lucide="file-text" class="w-4 h-4 text-sky-brand"></i> Training PDF</span> <span class="flex items-center gap-1.5"><i data-lucide="check-square" class="w-4 h-4 text-sun-brand"></i> Daily Checklist</span> <span class="flex items-center gap-1.5"><i data-lucide="play-circle" class="w-4 h-4 text-coral-brand"></i> Video Link Hub</span>
+    </div><!-- Hero illustration -->
+    <div class="mt-12 reveal" style="animation-delay: 0.5s;">
+     <div class="mx-auto w-64 h-64 relative">
+      <div class="absolute inset-0 bg-sky-brand/20 rounded-full"></div>
+      <div class="absolute inset-4 bg-sun-brand/20 rounded-full anim-float"></div>
+      <div class="absolute inset-0 flex items-center justify-center"><span class="text-8xl anim-float" style="animation-delay: 0.3s;">🐶</span>
+      </div>
+      <div class="absolute -top-2 -right-2 bg-white rounded-full p-2 shadow-md anim-wiggle"><span class="text-2xl">⭐</span>
+      </div>
+      <div class="absolute -bottom-1 -left-3 bg-white rounded-full p-2 shadow-md anim-wiggle" style="animation-delay: 0.5s;"><span class="text-2xl">❤️</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- What You Learn -->
+  <section id="learn" class="py-20 px-4 bg-white">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14"><span class="reveal-scale inline-block text-4xl mb-3">📚</span>
+     <h2 class="reveal font-display font-bold text-3xl md:text-5xl mb-4">What You'll Master</h2>
+     <p class="reveal text-dark-brand/60 text-lg max-w-xl mx-auto">Five real-world wins that transform daily life with your pup</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+     <div class="reveal-scale text-center p-6 rounded-2xl bg-sky-brand/10 hover:bg-sky-brand/20 transition-colors" style="transition-delay: 0.05s;">
+      <div class="w-16 h-16 bg-sky-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-4 anim-float"><span class="text-3xl">🦮</span>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-2">Loose Leash</h3>
+      <p class="text-sm text-dark-brand/60">Walks without pulling or lunging</p>
+     </div>
+     <div class="reveal-scale text-center p-6 rounded-2xl bg-coral-brand/10 hover:bg-coral-brand/20 transition-colors" style="transition-delay: 0.1s;">
+      <div class="w-16 h-16 bg-coral-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-4 anim-float" style="animation-delay: 0.3s;"><span class="text-3xl">🔇</span>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-2">Quiet Barking</h3>
+      <p class="text-sm text-dark-brand/60">Reduce reactive &amp; alert barking</p>
+     </div>
+     <div class="reveal-scale text-center p-6 rounded-2xl bg-sun-brand/10 hover:bg-sun-brand/20 transition-colors" style="transition-delay: 0.15s;">
+      <div class="w-16 h-16 bg-sun-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-4 anim-float" style="animation-delay: 0.6s;"><span class="text-3xl">⬇️</span>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-2">No Jumping</h3>
+      <p class="text-sm text-dark-brand/60">Greet guests with four on the floor</p>
+     </div>
+     <div class="reveal-scale text-center p-6 rounded-2xl bg-sky-brand/10 hover:bg-sky-brand/20 transition-colors" style="transition-delay: 0.2s;">
+      <div class="w-16 h-16 bg-sky-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-4 anim-float" style="animation-delay: 0.9s;"><span class="text-3xl">🏠</span>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-2">Alone Time</h3>
+      <p class="text-sm text-dark-brand/60">Calm when you leave the house</p>
+     </div>
+     <div class="reveal-scale text-center p-6 rounded-2xl bg-coral-brand/10 hover:bg-coral-brand/20 transition-colors" style="transition-delay: 0.25s;">
+      <div class="w-16 h-16 bg-coral-brand/20 rounded-2xl flex items-center justify-center mx-auto mb-4 anim-float" style="animation-delay: 1.2s;"><span class="text-3xl">🎯</span>
+      </div>
+      <h3 class="font-display font-bold text-lg mb-2">Laser Focus</h3>
+      <p class="text-sm text-dark-brand/60">Reliable attention on command</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- 7-Day Plan Timeline -->
+  <section id="plan" class="py-20 px-4" style="background: linear-gradient(180deg, #FFF8F0, #E8F8FC);">
+   <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14"><span class="reveal-scale inline-block text-4xl mb-3">📅</span>
+     <h2 class="reveal font-display font-bold text-3xl md:text-5xl mb-4">Your 7-Day Plan</h2>
+     <p class="reveal text-dark-brand/60 text-lg">One simple focus each day. 15 minutes max.</p>
+    </div>
+    <div class="relative">
+     <div class="timeline-line hidden md:block"></div>
+     <div class="space-y-8" id="timeline-cards"></div>
+    </div>
+   </div>
+  </section><!-- Preview -->
+  <section id="preview" class="py-20 px-4 bg-white">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14"><span class="reveal-scale inline-block text-4xl mb-3">👀</span>
+     <h2 class="reveal font-display font-bold text-3xl md:text-5xl mb-4">Peek Inside</h2>
+     <p class="reveal text-dark-brand/60 text-lg">What you get — instantly in your inbox</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- PDF Preview -->
+     <div class="reveal preview-card bg-gradient-to-br from-sky-brand/10 to-sky-brand/5 rounded-3xl p-8 border-2 border-sky-brand/20">
+      <div class="bg-white rounded-2xl p-6 shadow-sm mb-5">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-coral-brand/20 rounded-xl flex items-center justify-center">
+         <span class="text-xl">🐾</span>
+        </div>
+        <div>
+         <div class="h-3 w-28 bg-dark-brand/10 rounded"></div>
+         <div class="h-2 w-20 bg-dark-brand/5 rounded mt-1.5"></div>
+        </div>
+       </div>
+       <div class="space-y-2">
+        <div class="h-2 w-full bg-dark-brand/5 rounded"></div>
+        <div class="h-2 w-4/5 bg-dark-brand/5 rounded"></div>
+        <div class="h-2 w-3/5 bg-dark-brand/5 rounded"></div>
+       </div>
+       <div class="mt-4 p-3 bg-sun-brand/10 rounded-xl">
+        <div class="h-2 w-3/4 bg-sun-brand/30 rounded"></div>
+        <div class="h-2 w-1/2 bg-sun-brand/20 rounded mt-1.5"></div>
+       </div>
+      </div>
+      <h3 class="font-display font-bold text-lg text-center">Training PDF</h3>
+      <p class="text-sm text-dark-brand/60 text-center mt-1">Step-by-step guides for each skill</p>
+     </div><!-- Checklist Preview -->
+     <div class="reveal preview-card bg-gradient-to-br from-sun-brand/10 to-sun-brand/5 rounded-3xl p-8 border-2 border-sun-brand/20" style="transition-delay: 0.1s;">
+      <div class="bg-white rounded-2xl p-6 shadow-sm mb-5">
+       <div class="font-display font-bold text-sm mb-3 text-dark-brand/80">
+        Day 3 Checklist ✅
+       </div>
+       <div class="space-y-3"><label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" checked class="w-4 h-4 rounded accent-coral-brand"><span class="text-sm text-dark-brand/70 group-hover:text-dark-brand line-through">5-min focus game</span></label> <label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" checked class="w-4 h-4 rounded accent-coral-brand"><span class="text-sm text-dark-brand/70 group-hover:text-dark-brand line-through">Practice "look at me"</span></label> <label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" class="w-4 h-4 rounded accent-coral-brand"><span class="text-sm text-dark-brand/70 group-hover:text-dark-brand">Reward calm behaviour</span></label> <label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" class="w-4 h-4 rounded accent-coral-brand"><span class="text-sm text-dark-brand/70 group-hover:text-dark-brand">Watch Day 3 video</span></label>
+       </div>
+      </div>
+      <h3 class="font-display font-bold text-lg text-center">Daily Checklist</h3>
+      <p class="text-sm text-dark-brand/60 text-center mt-1">Track your progress each day</p>
+     </div><!-- Video Hub Preview -->
+     <div class="reveal preview-card bg-gradient-to-br from-coral-brand/10 to-coral-brand/5 rounded-3xl p-8 border-2 border-coral-brand/20" style="transition-delay: 0.2s;">
+      <div class="bg-white rounded-2xl p-6 shadow-sm mb-5">
+       <div class="relative bg-dark-brand/5 rounded-xl aspect-video flex items-center justify-center mb-3 overflow-hidden group cursor-pointer">
+        <div class="absolute inset-0 bg-gradient-to-br from-coral-brand/20 to-sky-brand/20"></div>
+        <div class="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform z-10"><i data-lucide="play" class="w-6 h-6 text-coral-brand ml-1"></i>
+        </div>
+       </div>
+       <div class="space-y-2">
+        <div class="flex items-center gap-2">
+         <div class="w-2 h-2 bg-coral-brand rounded-full"></div>
+         <div class="h-2 w-24 bg-dark-brand/10 rounded"></div>
+        </div>
+        <div class="flex items-center gap-2">
+         <div class="w-2 h-2 bg-sky-brand rounded-full"></div>
+         <div class="h-2 w-20 bg-dark-brand/10 rounded"></div>
+        </div>
+        <div class="flex items-center gap-2">
+         <div class="w-2 h-2 bg-sun-brand rounded-full"></div>
+         <div class="h-2 w-28 bg-dark-brand/10 rounded"></div>
+        </div>
+       </div>
+      </div>
+      <h3 class="font-display font-bold text-lg text-center">Video Link Hub</h3>
+      <p class="text-sm text-dark-brand/60 text-center mt-1">Watch demos for each technique</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Reviews -->
+  <section id="reviews" class="py-20 px-4" style="background: linear-gradient(180deg, #FFF8F0, #FFFFFF);">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14"><span class="reveal-scale inline-block text-4xl mb-3">💬</span>
+     <h2 class="reveal font-display font-bold text-3xl md:text-5xl mb-4">Pet Parents Love It</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid">
+    </div>
+   </div>
+  </section><!-- Bottom CTA -->
+  <section id="cta" class="py-20 px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #4AC4E0 0%, #FF6B6B 50%, #FFD93D 100%);">
+   <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-10 text-6xl anim-float">
+     🐾
+    </div>
+    <div class="absolute top-20 right-20 text-5xl anim-float" style="animation-delay: 0.8s;">
+     🐾
+    </div>
+    <div class="absolute bottom-10 left-1/3 text-4xl anim-float" style="animation-delay: 1.2s;">
+     🐾
+    </div>
+   </div>
+   <div class="max-w-3xl mx-auto text-center relative z-10">
+    <div class="reveal"><span class="inline-block text-6xl mb-6 anim-wiggle">🐕</span>
+     <h2 id="bottom-cta-title" class="font-display font-bold text-3xl md:text-5xl text-white mb-4">Start day 1 today.</h2>
+     <p class="text-white/80 text-lg mb-8 max-w-lg mx-auto">Your dog deserves gentle training. You deserve a calmer home. Get the full 7-day plan now.</p><a href="#" class="inline-flex items-center gap-2 bg-white text-coral-brand font-bold text-lg px-10 py-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all" onclick="event.preventDefault();"> <span>Get the Quickstart</span> <span id="bottom-price" class="text-dark-brand/50 font-normal text-base">— $27</span> </a>
+     <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-white/70 text-sm"><span class="flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i> Instant Download</span> <span class="flex items-center gap-1"><i data-lucide="shield" class="w-4 h-4"></i> 30-Day Guarantee</span> <span class="flex items-center gap-1"><i data-lucide="heart" class="w-4 h-4"></i> Positive Methods Only</span>
+     </div>
+    </div><!-- Voting Module -->
+    <div class="reveal mt-16 bg-white/15 backdrop-blur-md rounded-3xl p-8 text-left" id="voting-module">
+     <h3 class="font-display font-bold text-xl text-white mb-2">Quick Poll 🗳️</h3>
+     <p class="text-white/70 text-sm mb-5">What's your biggest training challenge?</p>
+     <div class="space-y-3" id="poll-options"></div>
+     <div id="poll-results" class="hidden mt-4">
+      <p class="text-white/60 text-xs mt-3">Thanks for voting! Results shown above.</p>
+     </div>
+    </div><!-- Comment Module -->
+    <div class="reveal mt-8 bg-white/15 backdrop-blur-md rounded-3xl p-8 text-left" id="comment-module">
+     <h3 class="font-display font-bold text-xl text-white mb-2">Leave a Note 💌</h3>
+     <p class="text-white/70 text-sm mb-4">Tell us about your pup!</p>
+     <form id="comment-form" class="space-y-3"><input type="text" id="comment-name" placeholder="Your name" class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:border-white/50 text-sm"> <textarea id="comment-text" rows="3" placeholder="Share your experience..." class="w-full px-4 py-3 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:border-white/50 text-sm resize-none"></textarea> <button type="submit" class="bg-white text-coral-brand font-bold text-sm px-6 py-3 rounded-xl hover:bg-white/90 transition-colors">Post Comment</button>
+     </form>
+     <div id="comments-list" class="mt-5 space-y-3"></div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="bg-dark-brand text-white/60 py-8 px-4 text-center text-sm">
+   <div class="flex items-center justify-center gap-2 mb-2"><span class="text-lg anim-paw">🐾</span> <span class="font-display font-bold text-white">CalmPaws Quickstart</span>
+   </div>
+   <p>Made with love for dogs and their humans ❤️</p>
+  </footer><!-- Paw Scroll Indicator -->
+  <div class="paw-scroll-indicator bg-coral-brand shadow-lg" id="scroll-top-btn" style="display:none;"><span class="text-white text-xl">🐾</span>
+  </div>
+  <script>
+// Data
+const dayPlan = [
+  { day: 1, title: 'Foundation', desc: 'Build trust with reward timing basics', icon: '🌱', color: 'sky-brand' },
+  { day: 2, title: 'Focus First', desc: 'Teach "look at me" for attention on demand', icon: '👁️', color: 'coral-brand' },
+  { day: 3, title: 'Leash Intro', desc: 'Start loose-leash walking in your hallway', icon: '🦮', color: 'sun-brand' },
+  { day: 4, title: 'Quiet Cues', desc: 'Interrupt barking with a calm redirect', icon: '🤫', color: 'sky-brand' },
+  { day: 5, title: 'Four on Floor', desc: 'Replace jumping with an auto-sit greeting', icon: '🐾', color: 'coral-brand' },
+  { day: 6, title: 'Solo Calm', desc: 'Short alone-time practice with comfort cues', icon: '🏠', color: 'sun-brand' },
+  { day: 7, title: 'All Together', desc: 'Combine all skills into a real-world scenario', icon: '🎉', color: 'sky-brand' }
+];
+
+const reviews = [
+  { name: 'Sarah M.', dog: '🐕 Luna, Lab mix', text: 'Luna went from dragging me down the street to walking beside me by Day 4. I actually enjoy walks now!', stars: 5 },
+  { name: 'James T.', dog: '🐶 Cooper, Beagle', text: 'The daily checklist kept me on track. Cooper barely barks at the mailman anymore. Game changer.', stars: 5 },
+  { name: 'Priya K.', dog: '🐩 Mochi, Poodle', text: 'I was skeptical about 7 days but the focus exercises alone were worth it. Mochi is so much calmer now.', stars: 5 }
+];
+
+const pollOptions = [
+  { id: 'pull', label: 'Leash pulling', votes: 42 },
+  { id: 'bark', label: 'Excessive barking', votes: 38 },
+  { id: 'jump', label: 'Jumping on guests', votes: 29 },
+  { id: 'alone', label: 'Separation anxiety', votes: 35 },
+  { id: 'focus', label: 'Won\'t listen / no focus', votes: 24 }
+];
+
+let hasVoted = false;
+let comments = [];
+
+// Build timeline
+const timelineContainer = document.getElementById('timeline-cards');
+dayPlan.forEach((day, i) => {
+  const isLeft = i % 2 === 0;
+  const card = document.createElement('div');
+  card.className = `reveal day-card relative flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6`;
+  card.style.transitionDelay = `${i * 0.08}s`;
+  card.innerHTML = `
+    <div class="flex-1 ${isLeft ? 'md:text-right' : 'md:text-left'}">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-${day.color}/30 transition-colors">
+        <div class="flex items-center gap-3 ${isLeft ? 'md:justify-end' : ''} mb-2">
+          <span class="text-2xl">${day.icon}</span>
+          <span class="font-display font-bold text-coral-brand text-sm">DAY ${day.day}</span>
+        </div>
+        <h3 class="font-display font-bold text-lg">${day.title}</h3>
+        <p class="text-sm text-dark-brand/60 mt-1">${day.desc}</p>
+      </div>
+    </div>
+    <div class="hidden md:flex w-12 h-12 bg-${day.color}/20 rounded-full items-center justify-center flex-shrink-0 z-10 border-4 border-cream-brand">
+      <span class="font-display font-bold text-sm">${day.day}</span>
+    </div>
+    <div class="flex-1 hidden md:block"></div>
+  `;
+  timelineContainer.appendChild(card);
+});
+
+// Build reviews
+const reviewsGrid = document.getElementById('reviews-grid');
+reviews.forEach((r, i) => {
+  const card = document.createElement('div');
+  card.className = 'reveal bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow';
+  card.style.transitionDelay = `${i * 0.1}s`;
+  card.innerHTML = `
+    <div class="flex gap-1 mb-3">${'<span class="star-fill text-lg">★</span>'.repeat(r.stars)}</div>
+    <p class="text-dark-brand/80 text-sm leading-relaxed mb-4">"${r.text}"</p>
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-sky-brand/20 rounded-full flex items-center justify-center font-display font-bold text-sky-brand">${r.name[0]}</div>
+      <div>
+        <div class="font-semibold text-sm">${r.name}</div>
+        <div class="text-xs text-dark-brand/50">${r.dog}</div>
+      </div>
+    </div>
+  `;
+  reviewsGrid.appendChild(card);
+});
+
+// Build poll
+const pollContainer = document.getElementById('poll-options');
+function renderPoll() {
+  const totalVotes = pollOptions.reduce((a, b) => a + b.votes, 0);
+  pollContainer.innerHTML = '';
+  pollOptions.forEach(opt => {
+    const pct = Math.round((opt.votes / totalVotes) * 100);
+    const btn = document.createElement('button');
+    btn.className = 'w-full text-left rounded-xl p-3 border border-white/20 transition-all relative overflow-hidden group ' + (hasVoted ? 'cursor-default' : 'hover:border-white/50 cursor-pointer');
+    btn.innerHTML = `
+      ${hasVoted ? `<div class="absolute inset-0 bg-white/10 rounded-xl" style="width:${pct}%"></div>` : ''}
+      <div class="relative flex items-center justify-between">
+        <span class="text-white text-sm font-medium">${opt.label}</span>
+        ${hasVoted ? `<span class="text-white/70 text-xs font-bold">${pct}%</span>` : ''}
+      </div>
+    `;
+    if (!hasVoted) {
+      btn.onclick = () => {
+        opt.votes++;
+        hasVoted = true;
+        document.getElementById('poll-results').classList.remove('hidden');
+        renderPoll();
+      };
+    }
+    pollContainer.appendChild(btn);
+  });
+}
+renderPoll();
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('comment-name').value.trim() || 'Anonymous';
+  const text = document.getElementById('comment-text').value.trim();
+  if (!text) return;
+  comments.unshift({ name, text, time: 'Just now' });
+  document.getElementById('comment-name').value = '';
+  document.getElementById('comment-text').value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = '';
+  comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'bg-white/10 rounded-xl p-4 border border-white/10';
+    div.innerHTML = `
+      <div class="flex items-center gap-2 mb-1">
+        <span class="font-semibold text-white text-sm">${c.name}</span>
+        <span class="text-white/40 text-xs">${c.time}</span>
+      </div>
+      <p class="text-white/80 text-sm">${c.text}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+// Scroll top button
+const scrollBtn = document.getElementById('scroll-top-btn');
+const appBody = document.getElementById('app-body');
+appBody.addEventListener('scroll', () => {
+  scrollBtn.style.display = appBody.scrollTop > 400 ? 'flex' : 'none';
+  // Active nav
+  const sections = ['home','learn','plan','preview','reviews','cta'];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    const link = document.querySelector(`a[href="#${id}"]`);
+    if (el && link) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 100 && rect.bottom > 100) link.classList.add('active');
+      else link.classList.remove('active');
+    }
+  });
+});
+scrollBtn.onclick = () => appBody.scrollTo({ top: 0, behavior: 'smooth' });
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').onclick = () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+};
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.onclick = () => document.getElementById('mobile-menu').classList.add('hidden');
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Stop the chaos. Start the calm.',
+  hero_subtitle: 'A calmer dog in 7 days, without yelling.',
+  hero_cta: 'Get the Quickstart',
+  price_text: '$27',
+  bottom_cta_title: 'Start day 1 today.',
+  background_color: '#FFF8F0',
+  surface_color: '#FFFFFF',
+  text_color: '#2D3436',
+  primary_action_color: '#FF6B6B',
+  secondary_action_color: '#4AC4E0',
+  font_family: 'Fredoka',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Text
+  const heroTitleEl = document.getElementById('hero-title');
+  const parts = (c.hero_title || defaultConfig.hero_title).split('.');
+  heroTitleEl.innerHTML = parts.length > 1
+    ? `${parts[0].trim()}.<br><span class="gradient-text">${parts.slice(1).join('.').trim()}</span>`
+    : c.hero_title;
+
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('hero-cta-text').textContent = c.hero_cta || defaultConfig.hero_cta;
+  document.getElementById('bottom-cta-title').textContent = c.bottom_cta_title || defaultConfig.bottom_cta_title;
+
+  const price = c.price_text || defaultConfig.price_text;
+  document.getElementById('hero-price').innerHTML = `Just <strong class="text-lg" style="color:${c.primary_action_color}">${price}</strong> — instant access`;
+  document.getElementById('bottom-price').textContent = `— ${price}`;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  document.querySelectorAll('.cta-btn').forEach(btn => {
+    btn.style.background = `linear-gradient(135deg, ${c.primary_action_color}, ${c.primary_action_color}cc)`;
+  });
+
+  // Font
+  const ff = `${c.font_family}, Fredoka, sans-serif`;
+  document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => el.style.fontFamily = ff);
+
+  // Font size
+  const base = c.font_size || 16;
+  document.querySelectorAll('p, span, .text-sm').forEach(el => {
+    if (!el.closest('nav') && !el.closest('footer')) {
+      el.style.fontSize = `${base * 0.875}px`;
+    }
+  });
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${base * 2.5}px`);
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['hero_cta', config.hero_cta || defaultConfig.hero_cta],
+    ['price_text', config.price_text || defaultConfig.price_text],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e34085e345c27cf',t:'MTc3NDY3MzYyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

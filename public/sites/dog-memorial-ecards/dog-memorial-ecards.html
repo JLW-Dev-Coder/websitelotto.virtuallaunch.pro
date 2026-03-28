@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forever Paws Memorial Cards</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Nunito+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'Nunito Sans', sans-serif; }
+.font-serif { font-family: 'Cormorant Garamond', serif; }
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp linear infinite;
+  opacity: 0;
+}
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  15% { opacity: 0.6; }
+  85% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-300px) scale(1.2); }
+}
+
+/* Soft glow pulse */
+@keyframes softGlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+.glow-orb { animation: softGlow 6s ease-in-out infinite; }
+
+/* Fade in on scroll */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card hover */
+.card-hover {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+/* Preview carousel */
+.preview-track {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Nav */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1.5px;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Star rating */
+.star-btn { transition: transform 0.2s ease, color 0.2s ease; cursor: pointer; }
+.star-btn:hover { transform: scale(1.2); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  opacity: 0; transition: all 0.5s ease; z-index: 1000; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Loading spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 0.8s linear infinite; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        cream: '#FAF7F2',
+        warm: '#F0EAE0',
+        sage: '#8B9E8B',
+        deep: '#2C3E3C',
+        blush: '#C4A882'
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full bg-cream overflow-auto"><!-- Toast -->
+   <div id="toast" class="toast bg-deep text-cream px-6 py-3 rounded-full text-sm font-light shadow-lg"></div><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(250,247,242,0.9);backdrop-filter:blur(12px);">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <path d="M14 24s-9-6.5-9-12.5C5 7.5 7.5 4 10.5 4c1.8 0 2.8 1 3.5 2 .7-1 1.7-2 3.5-2C20.5 4 23 7.5 23 11.5 23 17.5 14 24 14 24z" fill="#8B9E8B" opacity="0.7" /><circle cx="9" cy="8" r="2.5" fill="#C4A882" opacity="0.6" /><circle cx="19" cy="8" r="2.5" fill="#C4A882" opacity="0.6" /><circle cx="6" cy="11" r="2" fill="#C4A882" opacity="0.5" /><circle cx="22" cy="11" r="2" fill="#C4A882" opacity="0.5" />
+      </svg><span class="font-serif text-lg font-semibold text-deep tracking-wide">Forever Paws</span> </a> <button id="mobile-toggle" class="md:hidden text-deep"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+     <div id="nav-links" class="hidden md:flex items-center gap-8 text-sm font-light"><a href="#home" class="nav-link text-deep" style="--after-bg:#8B9E8B;">Home</a> <a href="#bundle" class="nav-link text-deep">What You Get</a> <a href="#preview" class="nav-link text-deep">Preview</a> <a href="#reviews" class="nav-link text-deep">Reviews</a> <a href="#faq" class="nav-link text-deep">FAQ</a> <a href="#download" class="nav-link text-deep">Download</a>
+     </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm font-light"><a href="#home" class="text-deep py-1">Home</a> <a href="#bundle" class="text-deep py-1">What You Get</a> <a href="#preview" class="text-deep py-1">Preview</a> <a href="#reviews" class="text-deep py-1">Reviews</a> <a href="#faq" class="text-deep py-1">FAQ</a> <a href="#download" class="text-deep py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-[90%] flex items-center justify-center px-6 pt-20 pb-16 overflow-hidden"><!-- Particles container -->
+    <div id="particles" class="absolute inset-0 pointer-events-none overflow-hidden"></div><!-- Glow orbs -->
+    <div class="glow-orb absolute top-1/4 left-1/4 w-64 h-64 rounded-full" style="background:radial-gradient(circle,rgba(196,168,130,0.15),transparent 70%);"></div>
+    <div class="glow-orb absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full" style="background:radial-gradient(circle,rgba(139,158,139,0.12),transparent 70%);animation-delay:3s;"></div>
+    <div class="relative z-10 text-center max-w-2xl mx-auto">
+     <div class="fade-up">
+      <p class="text-blush text-sm tracking-[0.3em] uppercase mb-6 font-light">Comfort, beautifully said.</p>
+      <h1 id="hero-heading" class="font-serif text-4xl sm:text-5xl md:text-6xl font-medium text-deep leading-tight mb-6">When words are hard,<br>
+       send comfort.</h1>
+      <p id="hero-subtext" class="text-deep/60 text-base sm:text-lg font-light max-w-lg mx-auto mb-10 leading-relaxed">A thoughtful bundle of condolence e-cards, printable cards, and heartfelt message templates — ready when you need them most.</p><a href="#download" id="hero-cta" class="inline-flex items-center gap-2 bg-sage text-cream px-8 py-4 rounded-full text-sm font-semibold tracking-wide hover:bg-deep transition-colors duration-500 shadow-lg shadow-sage/20"> <i data-lucide="download" style="width:16px;height:16px;"></i> <span>Download the Bundle</span> </a>
+     </div>
+     <div class="mt-12 fade-up flex justify-center gap-6 text-deep/40 text-xs font-light" style="transition-delay:0.3s;"><span class="flex items-center gap-1"><i data-lucide="zap" style="width:12px;height:12px;"></i> Instant Access</span> <span class="flex items-center gap-1"><i data-lucide="heart" style="width:12px;height:12px;"></i> Made with Care</span> <span class="flex items-center gap-1"><i data-lucide="printer" style="width:12px;height:12px;"></i> Print-Ready</span>
+     </div>
+    </div>
+   </section><!-- WHAT YOU GET -->
+   <section id="bundle" class="px-6 py-20 bg-warm/40">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <p class="text-blush text-xs tracking-[0.3em] uppercase mb-3 font-light">The Bundle</p>
+      <h2 id="bundle-heading" class="font-serif text-3xl sm:text-4xl text-deep font-medium">Everything You Need to Show You Care</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Card 1 -->
+      <div class="fade-up card-hover bg-white/80 rounded-2xl p-8 text-center backdrop-blur-sm border border-warm">
+       <div class="w-16 h-16 rounded-full bg-sage/10 flex items-center justify-center mx-auto mb-6">
+        <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
+         <rect x="4" y="6" width="24" height="18" rx="3" stroke="#8B9E8B" stroke-width="1.5" fill="none" /><path d="M4 12l12 7 12-7" stroke="#8B9E8B" stroke-width="1.5" fill="none" /><circle cx="16" cy="18" r="2" fill="#C4A882" opacity="0.5" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-xl text-deep mb-3 font-semibold">Digital E-Cards</h3>
+       <p class="text-deep/50 text-sm font-light leading-relaxed">6 beautifully designed e-card versions, ready to send via email or message. Each carries a gentle, comforting tone.</p>
+      </div><!-- Card 2 -->
+      <div class="fade-up card-hover bg-white/80 rounded-2xl p-8 text-center backdrop-blur-sm border border-warm" style="transition-delay:0.15s;">
+       <div class="w-16 h-16 rounded-full bg-blush/10 flex items-center justify-center mx-auto mb-6">
+        <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
+         <rect x="6" y="4" width="20" height="26" rx="2" stroke="#C4A882" stroke-width="1.5" fill="none" /><line x1="10" y1="12" x2="22" y2="12" stroke="#C4A882" stroke-width="1" opacity="0.5" /><line x1="10" y1="16" x2="22" y2="16" stroke="#C4A882" stroke-width="1" opacity="0.5" /><line x1="10" y1="20" x2="18" y2="20" stroke="#C4A882" stroke-width="1" opacity="0.5" /><circle cx="16" cy="7.5" r="1.5" fill="#8B9E8B" opacity="0.4" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-xl text-deep mb-3 font-semibold">Printable Cards</h3>
+       <p class="text-deep/50 text-sm font-light leading-relaxed">6 matching printable card designs. Fold, write a personal note inside, and hand-deliver your heartfelt condolences.</p>
+      </div><!-- Card 3 -->
+      <div class="fade-up card-hover bg-white/80 rounded-2xl p-8 text-center backdrop-blur-sm border border-warm" style="transition-delay:0.3s;">
+       <div class="w-16 h-16 rounded-full bg-sage/10 flex items-center justify-center mx-auto mb-6">
+        <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
+         <path d="M8 26V8a2 2 0 012-2h12a2 2 0 012 2v18l-8-4-8 4z" stroke="#8B9E8B" stroke-width="1.5" fill="none" /><line x1="12" y1="12" x2="20" y2="12" stroke="#8B9E8B" stroke-width="1" opacity="0.5" /><line x1="12" y1="16" x2="18" y2="16" stroke="#8B9E8B" stroke-width="1" opacity="0.5" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-xl text-deep mb-3 font-semibold">Message Templates</h3>
+       <p class="text-deep/50 text-sm font-light leading-relaxed">12 compassionate message templates for when you don't know what to say. Warm, sincere words ready to personalize.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="px-6 py-20 overflow-hidden">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 fade-up">
+      <p class="text-blush text-xs tracking-[0.3em] uppercase mb-3 font-light">Preview</p>
+      <h2 class="font-serif text-3xl sm:text-4xl text-deep font-medium">Gentle by Design</h2>
+     </div>
+     <div class="relative">
+      <div class="overflow-hidden rounded-2xl">
+       <div id="preview-track" class="preview-track flex"><!-- Preview cards -->
+        <div class="min-w-full px-4 sm:px-12">
+         <div class="bg-white rounded-2xl border border-warm p-8 sm:p-12 max-w-lg mx-auto text-center shadow-sm">
+          <div class="w-12 h-12 mx-auto mb-6 rounded-full bg-sage/10 flex items-center justify-center">
+           <svg width="24" height="24" viewbox="0 0 24 24" fill="none">
+            <path d="M12 21s-8-5.5-8-11c0-3.5 2.5-6 5-6 1.5 0 2.5.8 3 1.7.5-.9 1.5-1.7 3-1.7 2.5 0 5 2.5 5 6 0 5.5-8 11-8 11z" fill="#8B9E8B" opacity="0.3" stroke="#8B9E8B" stroke-width="1" />
+           </svg>
+          </div>
+          <p class="font-serif text-xl text-deep/80 italic leading-relaxed mb-4">"No words can ease the ache, but please know you're held in our thoughts with so much love."</p>
+          <p class="text-blush text-xs tracking-widest uppercase">Sympathy E-Card — Soft Sage</p>
+         </div>
+        </div>
+        <div class="min-w-full px-4 sm:px-12">
+         <div class="bg-white rounded-2xl border border-warm p-8 sm:p-12 max-w-lg mx-auto text-center shadow-sm">
+          <div class="w-12 h-12 mx-auto mb-6 rounded-full bg-blush/10 flex items-center justify-center">
+           <svg width="24" height="24" viewbox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="8" stroke="#C4A882" stroke-width="1" fill="none" /><path d="M9 9c1-1.5 2-2 3-2s2 .5 3 2" stroke="#C4A882" stroke-width="1" fill="none" /><circle cx="12" cy="14" r="1" fill="#C4A882" opacity="0.5" />
+           </svg>
+          </div>
+          <p class="font-serif text-xl text-deep/80 italic leading-relaxed mb-4">"Their paw prints will forever walk through your heart. Thinking of you during this tender time."</p>
+          <p class="text-blush text-xs tracking-widest uppercase">Printable Card — Warm Blush</p>
+         </div>
+        </div>
+        <div class="min-w-full px-4 sm:px-12">
+         <div class="bg-white rounded-2xl border border-warm p-8 sm:p-12 max-w-lg mx-auto text-center shadow-sm">
+          <div class="w-12 h-12 mx-auto mb-6 rounded-full bg-deep/5 flex items-center justify-center">
+           <svg width="24" height="24" viewbox="0 0 24 24" fill="none">
+            <path d="M12 3v18M5 10c2-3 5-4 7-4s5 1 7 4" stroke="#2C3E3C" stroke-width="1" opacity="0.4" fill="none" /><circle cx="12" cy="6" r="1.5" fill="#8B9E8B" opacity="0.4" />
+           </svg>
+          </div>
+          <p class="font-serif text-xl text-deep/80 italic leading-relaxed mb-4">"A companion like yours leaves a mark that time cannot diminish. Sending you peace and gentle memories."</p>
+          <p class="text-blush text-xs tracking-widest uppercase">Message Template — Classic</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex justify-center items-center gap-4 mt-8"><button onclick="movePreview(-1)" class="w-10 h-10 rounded-full border border-warm flex items-center justify-center text-deep/40 hover:text-deep hover:border-sage transition-all"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i></button>
+       <div id="preview-dots" class="flex gap-2"><button onclick="goPreview(0)" class="w-2 h-2 rounded-full bg-sage transition-all"></button> <button onclick="goPreview(1)" class="w-2 h-2 rounded-full bg-sage/30 transition-all"></button> <button onclick="goPreview(2)" class="w-2 h-2 rounded-full bg-sage/30 transition-all"></button>
+       </div><button onclick="movePreview(1)" class="w-10 h-10 rounded-full border border-warm flex items-center justify-center text-deep/40 hover:text-deep hover:border-sage transition-all"><i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="px-6 py-20 bg-warm/40">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 fade-up">
+      <p class="text-blush text-xs tracking-[0.3em] uppercase mb-3 font-light">Kind Words</p>
+      <h2 class="font-serif text-3xl sm:text-4xl text-deep font-medium">From Those Who've Shared Comfort</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="fade-up bg-white/70 rounded-2xl p-8 border border-warm backdrop-blur-sm">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="text-deep/60 text-sm font-light leading-relaxed mb-6">"I sent one of these cards to my neighbor after she lost her cat. She called me in tears — said it was the most thoughtful thing anyone had done. These are truly special."</p>
+       <p class="text-deep font-semibold text-sm">— Sarah M.</p>
+       <p class="text-deep/30 text-xs">Verified Buyer</p>
+      </div>
+      <div class="fade-up bg-white/70 rounded-2xl p-8 border border-warm backdrop-blur-sm" style="transition-delay:0.15s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="text-deep/60 text-sm font-light leading-relaxed mb-6">"When our family dog passed, I had no words. The message templates gave me exactly what I needed to write to my mom. Instant download was a lifesaver."</p>
+       <p class="text-deep font-semibold text-sm">— James R.</p>
+       <p class="text-deep/30 text-xs">Verified Buyer</p>
+      </div>
+      <div class="fade-up bg-white/70 rounded-2xl p-8 border border-warm backdrop-blur-sm" style="transition-delay:0.3s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#C4A882">
+         <polygon points="7,1 8.8,5 13,5.5 9.8,8.2 10.7,13 7,10.8 3.3,13 4.2,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="text-deep/60 text-sm font-light leading-relaxed mb-6">"The printable cards are so elegant. I printed two — one for a friend and one to keep. The designs feel genuinely heartfelt, not generic at all."</p>
+       <p class="text-deep font-semibold text-sm">— Lisa K.</p>
+       <p class="text-deep/30 text-xs">Verified Buyer</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="px-6 py-20">
+    <div class="max-w-2xl mx-auto">
+     <div class="text-center mb-14 fade-up">
+      <p class="text-blush text-xs tracking-[0.3em] uppercase mb-3 font-light">Questions</p>
+      <h2 class="font-serif text-3xl sm:text-4xl text-deep font-medium">Frequently Asked</h2>
+     </div>
+     <div class="space-y-4 fade-up">
+      <div class="faq-item border border-warm rounded-xl overflow-hidden bg-white/60"><button onclick="toggleFaq(this)" class="w-full px-6 py-5 flex justify-between items-center text-left"> <span class="text-deep text-sm font-semibold">How quickly can I access the bundle?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;" class="text-deep/30 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-6 pb-5">
+        <p class="text-deep/50 text-sm font-light leading-relaxed">Instantly. Once your purchase is complete, you'll receive immediate access to download all files. No waiting — because grief doesn't wait.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-warm rounded-xl overflow-hidden bg-white/60"><button onclick="toggleFaq(this)" class="w-full px-6 py-5 flex justify-between items-center text-left"> <span class="text-deep text-sm font-semibold">Can I personalize the cards?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;" class="text-deep/30 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-6 pb-5">
+        <p class="text-deep/50 text-sm font-light leading-relaxed">Yes. The printable cards include space for your own handwritten notes. E-cards can be forwarded with your personal message. Templates are fully customizable.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-warm rounded-xl overflow-hidden bg-white/60"><button onclick="toggleFaq(this)" class="w-full px-6 py-5 flex justify-between items-center text-left"> <span class="text-deep text-sm font-semibold">What file formats are included?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;" class="text-deep/30 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-6 pb-5">
+        <p class="text-deep/50 text-sm font-light leading-relaxed">E-cards come as high-quality JPG and PNG files. Printable cards are PDF format (A6 folded). Message templates are provided as an editable PDF and plain text file.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-warm rounded-xl overflow-hidden bg-white/60"><button onclick="toggleFaq(this)" class="w-full px-6 py-5 flex justify-between items-center text-left"> <span class="text-deep text-sm font-semibold">Is this suitable for any type of pet loss?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;" class="text-deep/30 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-6 pb-5">
+        <p class="text-deep/50 text-sm font-light leading-relaxed">Absolutely. The designs and messages are universal — crafted for the loss of any beloved animal companion, whether dog, cat, bird, rabbit, or any other pet.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + COMMUNITY -->
+   <section id="download" class="px-6 py-20 bg-deep relative overflow-hidden"><!-- Subtle pattern -->
+    <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <h2 id="bottom-heading" class="font-serif text-3xl sm:text-4xl text-cream font-medium mb-4">Support them today.</h2>
+      <p id="bottom-subtext" class="text-cream/50 font-light max-w-md mx-auto mb-8">Sometimes the smallest gesture carries the deepest meaning.</p><a href="#" id="bottom-cta" class="inline-flex items-center gap-2 bg-blush text-deep px-8 py-4 rounded-full text-sm font-semibold tracking-wide hover:bg-cream transition-colors duration-500 shadow-lg"> <i data-lucide="heart" style="width:16px;height:16px;"></i> <span>Download the Bundle</span> </a>
+      <p class="text-cream/30 text-xs mt-4 font-light">Instant digital delivery • Satisfaction guaranteed</p>
+     </div><!-- Voting / Comment Module -->
+     <div class="border-t border-cream/10 pt-12 fade-up">
+      <div class="text-center mb-8">
+       <p class="text-cream/60 text-sm font-light mb-1">How helpful is this resource?</p>
+       <div id="star-rating" class="flex justify-center gap-2 mt-3"><button onclick="setRating(1)" class="star-btn text-cream/30">
+         <svg width="28" height="28" viewbox="0 0 28 28" fill="currentColor">
+          <polygon points="14,2 17.5,10 26,11 19.8,16.5 21.5,25 14,20.8 6.5,25 8.2,16.5 2,11 10.5,10" />
+         </svg></button> <button onclick="setRating(2)" class="star-btn text-cream/30">
+         <svg width="28" height="28" viewbox="0 0 28 28" fill="currentColor">
+          <polygon points="14,2 17.5,10 26,11 19.8,16.5 21.5,25 14,20.8 6.5,25 8.2,16.5 2,11 10.5,10" />
+         </svg></button> <button onclick="setRating(3)" class="star-btn text-cream/30">
+         <svg width="28" height="28" viewbox="0 0 28 28" fill="currentColor">
+          <polygon points="14,2 17.5,10 26,11 19.8,16.5 21.5,25 14,20.8 6.5,25 8.2,16.5 2,11 10.5,10" />
+         </svg></button> <button onclick="setRating(4)" class="star-btn text-cream/30">
+         <svg width="28" height="28" viewbox="0 0 28 28" fill="currentColor">
+          <polygon points="14,2 17.5,10 26,11 19.8,16.5 21.5,25 14,20.8 6.5,25 8.2,16.5 2,11 10.5,10" />
+         </svg></button> <button onclick="setRating(5)" class="star-btn text-cream/30">
+         <svg width="28" height="28" viewbox="0 0 28 28" fill="currentColor">
+          <polygon points="14,2 17.5,10 26,11 19.8,16.5 21.5,25 14,20.8 6.5,25 8.2,16.5 2,11 10.5,10" />
+         </svg></button>
+       </div>
+      </div><!-- Comment Form -->
+      <form id="comment-form" class="max-w-lg mx-auto mb-10"><label for="commenter-name" class="text-cream/40 text-xs font-light block mb-2">Your name</label> <input id="commenter-name" type="text" placeholder="Optional" class="w-full bg-cream/5 border border-cream/10 rounded-lg px-4 py-3 text-cream text-sm placeholder-cream/20 mb-3 focus:outline-none focus:border-blush/40 transition-colors"> <label for="commenter-message" class="text-cream/40 text-xs font-light block mb-2">Leave a kind word</label> <textarea id="commenter-message" rows="3" placeholder="Share your experience or a comforting thought..." class="w-full bg-cream/5 border border-cream/10 rounded-lg px-4 py-3 text-cream text-sm placeholder-cream/20 mb-3 focus:outline-none focus:border-blush/40 transition-colors resize-none"></textarea> <button type="submit" id="submit-btn" class="w-full bg-cream/10 text-cream/70 py-3 rounded-lg text-sm font-light hover:bg-cream/20 transition-colors flex items-center justify-center gap-2"> <i data-lucide="send" style="width:14px;height:14px;"></i> Share </button>
+      </form><!-- Comments List -->
+      <div id="comments-list" class="max-w-lg mx-auto space-y-4"></div>
+      <p id="no-comments" class="text-center text-cream/20 text-xs font-light mt-4">Be the first to share a kind word.</p>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="px-6 py-8 bg-deep border-t border-cream/5">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none">
+       <path d="M14 24s-9-6.5-9-12.5C5 7.5 7.5 4 10.5 4c1.8 0 2.8 1 3.5 2 .7-1 1.7-2 3.5-2C20.5 4 23 7.5 23 11.5 23 17.5 14 24 14 24z" fill="#8B9E8B" opacity="0.5" />
+      </svg><span class="font-serif text-cream/40 text-sm">Forever Paws Memorial Cards</span>
+     </div>
+     <p class="text-cream/20 text-xs font-light">Made with quiet care. © 2025</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ========== CONFIG & SDK ==========
+const defaultConfig = {
+  background_color: '#FAF7F2',
+  surface_color: '#FFFFFF',
+  text_color: '#2C3E3C',
+  primary_action_color: '#8B9E8B',
+  secondary_action_color: '#C4A882',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_heading: 'When words are hard,\nsend comfort.',
+  hero_subtext: 'A thoughtful bundle of condolence e-cards, printable cards, and heartfelt message templates — ready when you need them most.',
+  cta_text: 'Download the Bundle',
+  bundle_heading: 'Everything You Need to Show You Care',
+  bottom_heading: 'Support them today.',
+  bottom_subtext: 'Sometimes the smallest gesture carries the deepest meaning.'
+};
+
+let currentRating = 0;
+let allComments = [];
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Element SDK
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      const c = { ...defaultConfig, ...config };
+      // Colors
+      const app = document.getElementById('app');
+      app.style.backgroundColor = c.background_color;
+      document.querySelectorAll('.card-hover, .faq-item').forEach(el => { el.style.backgroundColor = c.surface_color + 'cc'; });
+      document.querySelectorAll('.text-deep, h1, h2, h3, .font-serif').forEach(el => { el.style.color = c.text_color; });
+      document.getElementById('hero-cta').style.backgroundColor = c.primary_action_color;
+      document.getElementById('bottom-cta').style.backgroundColor = c.secondary_action_color;
+      document.querySelectorAll('.nav-link::after').forEach(el => {});
+      // Font
+      const ff = c.font_family + ', Cormorant Garamond, serif';
+      document.querySelectorAll('.font-serif').forEach(el => { el.style.fontFamily = ff; });
+      // Font size
+      const bs = c.font_size;
+      document.querySelectorAll('h1').forEach(el => { el.style.fontSize = (bs * 3) + 'px'; });
+      document.querySelectorAll('h2').forEach(el => { el.style.fontSize = (bs * 2.2) + 'px'; });
+      document.querySelectorAll('h3').forEach(el => { el.style.fontSize = (bs * 1.25) + 'px'; });
+      document.querySelectorAll('p, span, a, button, textarea, input').forEach(el => {
+        if (!el.closest('h1') && !el.closest('h2') && !el.closest('h3')) {
+          el.style.fontSize = bs + 'px';
+        }
+      });
+      // Text content
+      const hh = document.getElementById('hero-heading');
+      if (hh) hh.innerHTML = (c.hero_heading || defaultConfig.hero_heading).replace(/\\n|\n/g, '<br>');
+      const hs = document.getElementById('hero-subtext');
+      if (hs) hs.textContent = c.hero_subtext || defaultConfig.hero_subtext;
+      const hcta = document.getElementById('hero-cta');
+      if (hcta) hcta.querySelector('span').textContent = c.cta_text || defaultConfig.cta_text;
+      const bcta = document.getElementById('bottom-cta');
+      if (bcta) bcta.querySelector('span').textContent = c.cta_text || defaultConfig.cta_text;
+      const bh = document.getElementById('bundle-heading');
+      if (bh) bh.textContent = c.bundle_heading || defaultConfig.bundle_heading;
+      const btH = document.getElementById('bottom-heading');
+      if (btH) btH.textContent = c.bottom_heading || defaultConfig.bottom_heading;
+      const btS = document.getElementById('bottom-subtext');
+      if (btS) btS.textContent = c.bottom_subtext || defaultConfig.bottom_subtext;
+    },
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      const makeColor = (key) => ({
+        get: () => c[key] || defaultConfig[key],
+        set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [
+          makeColor('background_color'),
+          makeColor('surface_color'),
+          makeColor('text_color'),
+          makeColor('primary_action_color'),
+          makeColor('secondary_action_color')
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family || defaultConfig.font_family,
+          set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size || defaultConfig.font_size,
+          set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_heading', c.hero_heading || defaultConfig.hero_heading],
+        ['hero_subtext', c.hero_subtext || defaultConfig.hero_subtext],
+        ['cta_text', c.cta_text || defaultConfig.cta_text],
+        ['bundle_heading', c.bundle_heading || defaultConfig.bundle_heading],
+        ['bottom_heading', c.bottom_heading || defaultConfig.bottom_heading],
+        ['bottom_subtext', c.bottom_subtext || defaultConfig.bottom_subtext]
+      ]);
+    }
+  });
+}
+
+// ========== DATA SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allComments = data;
+    renderComments(data);
+  }
+};
+
+async function initData() {
+  if (window.dataSdk) {
+    const r = await window.dataSdk.init(dataHandler);
+    if (!r.isOk) console.error('Data SDK init failed');
+  }
+}
+initData();
+
+function renderComments(data) {
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const commentData = data.filter(d => d.type === 'comment');
+
+  commentData.forEach(item => {
+    if (existing.has(item.__backendId)) {
+      existing.delete(item.__backendId);
+    } else {
+      const el = document.createElement('div');
+      el.dataset.id = item.__backendId;
+      el.className = 'bg-cream/5 rounded-xl p-5 border border-cream/10';
+      const date = new Date(item.created_at);
+      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      el.innerHTML = `
+        <div class="flex justify-between items-start mb-2">
+          <span class="text-cream/70 text-sm font-semibold">${escapeHtml(item.name || 'Anonymous')}</span>
+          <span class="text-cream/20 text-xs">${dateStr}</span>
+        </div>
+        <p class="text-cream/50 text-sm font-light leading-relaxed">${escapeHtml(item.message)}</p>
+      `;
+      list.appendChild(el);
+    }
+  });
+  existing.forEach(el => el.remove());
+  noComments.style.display = commentData.length > 0 ? 'none' : 'block';
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+// Star rating
+function setRating(n) {
+  currentRating = n;
+  const stars = document.querySelectorAll('#star-rating .star-btn');
+  stars.forEach((s, i) => { s.style.color = i < n ? '#C4A882' : 'rgba(250,247,242,0.2)'; });
+}
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('commenter-name').value.trim();
+  const message = document.getElementById('commenter-message').value.trim();
+  if (!message) { showToast('Please write a message'); return; }
+  if (allComments.length >= 999) { showToast('Comment limit reached'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-cream/30 border-t-cream rounded-full"></span> Sharing...';
+
+  const result = await window.dataSdk.create({
+    type: 'comment',
+    name: name || 'Anonymous',
+    message,
+    created_at: new Date().toISOString()
+  });
+
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" style="width:14px;height:14px;"></i> Share';
+  lucide.createIcons();
+
+  if (result.isOk) {
+    document.getElementById('commenter-name').value = '';
+    document.getElementById('commenter-message').value = '';
+    if (currentRating > 0) showToast(`Thank you for your ${currentRating}-star rating 💛`);
+    else showToast('Your kind words have been shared 💛');
+    currentRating = 0;
+    setRating(0);
+  } else {
+    showToast('Something went wrong. Please try again.');
+  }
+});
+
+// ========== PREVIEW CAROUSEL ==========
+let previewIndex = 0;
+function goPreview(i) {
+  previewIndex = i;
+  document.getElementById('preview-track').style.transform = `translateX(-${i * 100}%)`;
+  document.querySelectorAll('#preview-dots button').forEach((d, idx) => {
+    d.style.opacity = idx === i ? '1' : '0.3';
+  });
+}
+function movePreview(dir) {
+  goPreview((previewIndex + dir + 3) % 3);
+}
+
+// ========== FAQ ==========
+function toggleFaq(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !content.classList.contains('hidden');
+  content.classList.toggle('hidden');
+  if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// ========== MOBILE NAV ==========
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ========== PARTICLES ==========
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*30}%;
+      background:${Math.random()>0.5?'#C4A882':'#8B9E8B'};
+      animation-duration:${Math.random()*8+6}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ========== SCROLL ANIMATIONS ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3407e8646e27cf',t:'MTc3NDY3MzYwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassParty Drops</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+  html { height: 100%; }
+  body { height: 100%; margin: 0; }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(5deg); }
+    66% { transform: translateY(5px) rotate(-3deg); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes confettiDrop {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120px) rotate(720deg); opacity: 0; }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,0,128,0.3); }
+    50% { box-shadow: 0 0 40px rgba(255,0,128,0.6), 0 0 80px rgba(255,0,128,0.2); }
+  }
+  @keyframes slideReveal {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes badgeSpin {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+  }
+  @keyframes borderDance {
+    0% { border-color: #ff0080; }
+    25% { border-color: #7928ca; }
+    50% { border-color: #00d4ff; }
+    75% { border-color: #ff6b35; }
+    100% { border-color: #ff0080; }
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #0a0a0a, #1a0030, #0a0a0a, #001a2c);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+  }
+  .marquee-track { animation: marquee 20s linear infinite; }
+  .marquee-track:hover { animation-play-state: paused; }
+  .float-sticker { animation: float 4s ease-in-out infinite; }
+  .float-sticker:nth-child(2) { animation-delay: -1.3s; }
+  .float-sticker:nth-child(3) { animation-delay: -2.6s; }
+  .shimmer-text {
+    background: linear-gradient(90deg, #ff0080, #ff6b35, #ffd700, #00d4ff, #7928ca, #ff0080);
+    background-size: 400% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+  .vip-badge {
+    background: linear-gradient(135deg, #ffd700, #ff6b35, #ffd700);
+    background-size: 200% 200%;
+    animation: shimmer 2s linear infinite;
+  }
+  .pulse-card { animation: pulseGlow 2s ease-in-out infinite; }
+  .border-dance { animation: borderDance 3s linear infinite; border-width: 2px; border-style: solid; }
+  .confetti-piece { animation: confettiDrop 3s ease-in forwards; position: absolute; pointer-events: none; }
+
+  .reveal-section { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal-section.visible { opacity: 1; transform: translateY(0); }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+    background: linear-gradient(90deg, #ff0080, #7928ca);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+  .pass-card { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; }
+  .pass-card:hover { transform: translateY(-8px) scale(1.02); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ff0080, #7928ca);
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,0,128,0.4); }
+
+  .timeline-dot { width: 16px; height: 16px; border-radius: 50%; background: #ff0080; position: relative; }
+  .timeline-dot::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 28px; height: 28px;
+    border-radius: 50%; border: 2px solid #ff0080; transform: translate(-50%,-50%);
+    animation: pulseGlow 2s infinite;
+  }
+
+  .reaction-btn { transition: all 0.2s; cursor: pointer; }
+  .reaction-btn:hover { transform: scale(1.3); }
+  .reaction-btn.selected { transform: scale(1.2); filter: drop-shadow(0 0 8px rgba(255,0,128,0.6)); }
+
+  .price-option { transition: all 0.2s; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); }
+  .price-option:hover { border-color: #ff0080; background: rgba(255,0,128,0.1); }
+  .price-option.selected { border-color: #ff0080; background: rgba(255,0,128,0.2); }
+
+  .toast-msg {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    padding: 12px 24px; border-radius: 12px; z-index: 999;
+    background: linear-gradient(135deg, #ff0080, #7928ca); color: #fff;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .toast-msg.show { opacity: 1; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #ff0080; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="gradient-bg h-full overflow-auto" style="font-family:'Outfit',sans-serif; color:#ffffff;"><!-- Floating Stickers -->
+   <div class="fixed pointer-events-none" style="z-index:1;">
+    <div class="float-sticker absolute text-4xl" style="top:15%;left:5%;">
+     🎪
+    </div>
+    <div class="float-sticker absolute text-3xl" style="top:30%;right:8%;">
+     🎶
+    </div>
+    <div class="float-sticker absolute text-4xl" style="top:55%;left:3%;">
+     ✨
+    </div>
+    <div class="float-sticker absolute text-3xl" style="top:70%;right:5%;">
+     🔥
+    </div>
+    <div class="float-sticker absolute text-2xl" style="top:85%;left:10%;">
+     🎤
+    </div>
+   </div><!-- Confetti Container -->
+   <div id="confetti-container" class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:2;"></div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl" style="background:rgba(10,10,10,0.8); border-bottom:1px solid rgba(255,0,128,0.2);">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="text-xl font-black tracking-tight" style="font-family:'Space Mono',monospace;"> <span style="color:#ff0080;">PASS</span><span style="color:#ffd700;">PARTY</span> </a>
+     <div class="hidden md:flex gap-6 text-sm font-semibold tracking-wide uppercase"><a href="#home" class="nav-link">Home</a> <a href="#lineup" class="nav-link">Lineup</a> <a href="#passes" class="nav-link">Pass Types</a> <a href="#schedule" class="nav-link">Schedule</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#get-pass" class="nav-link" style="color:#ff0080;">Get Your Pass</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-semibold uppercase"><a href="#home" class="nav-link py-1">Home</a> <a href="#lineup" class="nav-link py-1">Lineup</a> <a href="#passes" class="nav-link py-1">Pass Types</a> <a href="#schedule" class="nav-link py-1">Schedule</a> <a href="#reviews" class="nav-link py-1">Reviews</a> <a href="#get-pass" class="nav-link py-1" style="color:#ff0080;">Get Your Pass</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative flex flex-col items-center justify-center text-center px-4" style="min-height:100%; padding-top:100px; padding-bottom:60px;">
+    <div class="relative z-10">
+     <p class="uppercase tracking-[0.4em] text-xs mb-4 font-semibold" style="color:#ff0080;">Season 01 — Limited Release</p>
+     <h1 id="hero-title" class="shimmer-text font-black leading-none mb-4" style="font-size:clamp(3rem,10vw,7rem); font-family:'Space Mono',monospace;">Welcome to the DROP.</h1>
+     <p id="hero-subtitle" class="text-lg md:text-2xl font-light mb-10 max-w-xl mx-auto" style="color:rgba(255,255,255,0.7);">Limited digital passes. Unlimited vibes.</p>
+     <div class="flex flex-wrap gap-4 justify-center"><a href="#get-pass" class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-block">🎟️ Get Your Pass</a> <a href="#lineup" class="px-8 py-4 rounded-full font-bold text-lg inline-block border-dance" style="background:transparent;">See the Lineup →</a>
+     </div>
+    </div>
+    <div class="absolute bottom-8 animate-bounce" style="color:rgba(255,255,255,0.4);"><i data-lucide="chevron-down" style="width:32px;height:32px;"></i>
+    </div>
+   </section><!-- LINEUP - Marquee -->
+   <section id="lineup" class="reveal-section py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center mb-12">
+     <p class="uppercase tracking-[0.3em] text-xs mb-2 font-semibold" style="color:#7928ca;">What's Inside</p>
+     <h2 id="lineup-heading" class="text-4xl md:text-6xl font-black" style="font-family:'Space Mono',monospace;">THE LINEUP</h2>
+    </div>
+    <div class="overflow-hidden py-6 mb-8" style="border-top:1px solid rgba(255,0,128,0.2); border-bottom:1px solid rgba(255,0,128,0.2);">
+     <div class="marquee-track flex whitespace-nowrap gap-8" style="width:max-content;"><span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:rgba(255,255,255,0.9);">20 Festival Pass Designs ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ff0080;">VIP Badge Collection ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ffd700;">Schedule Templates ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#00d4ff;">Speaker &amp; Lineup Graphics ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#7928ca;">Social Media Kit ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ff6b35;">Bonus: Countdown Assets ✦</span> <!-- Duplicate for seamless loop --> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:rgba(255,255,255,0.9);">20 Festival Pass Designs ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ff0080;">VIP Badge Collection ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ffd700;">Schedule Templates ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#00d4ff;">Speaker &amp; Lineup Graphics ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#7928ca;">Social Media Kit ✦</span> <span class="text-2xl md:text-4xl font-black uppercase tracking-wider" style="color:#ff6b35;">Bonus: Countdown Assets ✦</span>
+     </div>
+    </div><!-- Lineup Grid -->
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4">
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03);">
+      <div class="text-4xl mb-3">
+       🎨
+      </div>
+      <h3 class="font-bold text-lg mb-1">20 Pass Designs</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Spring, Summer, Fall &amp; Winter drops</p>
+     </div>
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03); animation-delay:0.5s;">
+      <div class="text-4xl mb-3">
+       🏅
+      </div>
+      <h3 class="font-bold text-lg mb-1">VIP Badge Set</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Holographic-style exclusives</p>
+     </div>
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03); animation-delay:1s;">
+      <div class="text-4xl mb-3">
+       📅
+      </div>
+      <h3 class="font-bold text-lg mb-1">Schedule Templates</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Event timelines that pop</p>
+     </div>
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03); animation-delay:1.5s;">
+      <div class="text-4xl mb-3">
+       🎤
+      </div>
+      <h3 class="font-bold text-lg mb-1">Speaker Graphics</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Lineup reveal cards</p>
+     </div>
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03); animation-delay:2s;">
+      <div class="text-4xl mb-3">
+       📱
+      </div>
+      <h3 class="font-bold text-lg mb-1">Social Kit</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Stories, posts &amp; banners</p>
+     </div>
+     <div class="p-6 rounded-2xl text-center border-dance" style="background:rgba(255,255,255,0.03); animation-delay:2.5s;">
+      <div class="text-4xl mb-3">
+       ⏰
+      </div>
+      <h3 class="font-bold text-lg mb-1">Countdown Pack</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.5);">Hype-building assets</p>
+     </div>
+    </div>
+   </section><!-- PASS TYPES -->
+   <section id="passes" class="reveal-section py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center mb-14">
+     <p class="uppercase tracking-[0.3em] text-xs mb-2 font-semibold" style="color:#ffd700;">Choose Your Experience</p>
+     <h2 class="text-4xl md:text-6xl font-black" style="font-family:'Space Mono',monospace;">PASS TYPES</h2>
+    </div>
+    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6"><!-- General -->
+     <div class="pass-card rounded-3xl p-8 text-center relative overflow-hidden" style="background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.1);">
+      <div class="text-5xl mb-4">
+       🎫
+      </div>
+      <h3 class="text-2xl font-black mb-2">GENERAL</h3>
+      <p class="text-sm mb-6" style="color:rgba(255,255,255,0.5);">The essentials to get started</p>
+      <div id="general-price" class="text-5xl font-black mb-6" style="color:#ff0080;">
+       $27
+      </div>
+      <ul class="text-left text-sm space-y-2 mb-8" style="color:rgba(255,255,255,0.7);">
+       <li>✓ 10 Pass Designs</li>
+       <li>✓ Schedule Templates</li>
+       <li>✓ Social Media Kit</li>
+       <li class="line-through" style="color:rgba(255,255,255,0.25);">✗ VIP Badges</li>
+       <li class="line-through" style="color:rgba(255,255,255,0.25);">✗ Speaker Graphics</li>
+      </ul><a href="#get-pass" class="btn-primary block py-3 rounded-full font-bold">Get General</a>
+     </div><!-- VIP -->
+     <div class="pass-card pulse-card rounded-3xl p-8 text-center relative overflow-hidden" style="background:linear-gradient(180deg,rgba(255,0,128,0.1),rgba(121,40,202,0.1)); border:2px solid #ff0080; transform:scale(1.05);">
+      <div class="vip-badge absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-black text-black">
+       ⚡ POPULAR
+      </div>
+      <div class="text-5xl mb-4">
+       🌟
+      </div>
+      <h3 class="text-2xl font-black mb-2 shimmer-text">VIP</h3>
+      <p class="text-sm mb-6" style="color:rgba(255,255,255,0.5);">Everything + exclusives</p>
+      <div id="vip-price" class="text-5xl font-black mb-6" style="color:#ffd700;">
+       $47
+      </div>
+      <ul class="text-left text-sm space-y-2 mb-8" style="color:rgba(255,255,255,0.7);">
+       <li>✓ All 20 Pass Designs</li>
+       <li>✓ Schedule Templates</li>
+       <li>✓ Social Media Kit</li>
+       <li>✓ VIP Badge Set</li>
+       <li class="line-through" style="color:rgba(255,255,255,0.25);">✗ Speaker Graphics</li>
+      </ul><a href="#get-pass" class="btn-primary block py-3 rounded-full font-bold">Get VIP 🔥</a>
+     </div><!-- Backstage -->
+     <div class="pass-card rounded-3xl p-8 text-center relative overflow-hidden" style="background:linear-gradient(180deg,rgba(255,215,0,0.05),rgba(255,107,53,0.05)); border:1px solid rgba(255,215,0,0.3);">
+      <div class="text-5xl mb-4">
+       👑
+      </div>
+      <h3 class="text-2xl font-black mb-2" style="color:#ffd700;">BACKSTAGE</h3>
+      <p class="text-sm mb-6" style="color:rgba(255,255,255,0.5);">The full creative arsenal</p>
+      <div id="backstage-price" class="text-5xl font-black mb-6" style="color:#ff6b35;">
+       $97
+      </div>
+      <ul class="text-left text-sm space-y-2 mb-8" style="color:rgba(255,255,255,0.7);">
+       <li>✓ All 20 Pass Designs</li>
+       <li>✓ Schedule Templates</li>
+       <li>✓ Social Media Kit</li>
+       <li>✓ VIP Badge Set</li>
+       <li>✓ Speaker &amp; Lineup Graphics</li>
+       <li>✓ Countdown Pack</li>
+       <li>✓ Future Drops Free</li>
+      </ul><a href="#get-pass" class="btn-primary block py-3 rounded-full font-bold" style="background:linear-gradient(135deg,#ffd700,#ff6b35);">Get Backstage 👑</a>
+     </div>
+    </div>
+   </section><!-- SCHEDULE -->
+   <section id="schedule" class="reveal-section py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center mb-14">
+     <p class="uppercase tracking-[0.3em] text-xs mb-2 font-semibold" style="color:#00d4ff;">Mark Your Calendar</p>
+     <h2 class="text-4xl md:text-6xl font-black" style="font-family:'Space Mono',monospace;">DROP SCHEDULE</h2>
+    </div>
+    <div class="max-w-3xl mx-auto relative" style="padding-left:40px;">
+     <div class="absolute left-[18px] top-0 bottom-0 w-[2px]" style="background:linear-gradient(to bottom, #ff0080, #7928ca, #00d4ff);"></div>
+     <div class="space-y-12">
+      <div class="relative">
+       <div class="timeline-dot absolute" style="left:-31px; top:4px;"></div>
+       <div class="ml-4 p-6 rounded-2xl" style="background:rgba(255,0,128,0.08); border:1px solid rgba(255,0,128,0.2);">
+        <p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:#ff0080;">🌸 Now Live</p>
+        <h3 class="text-xl font-black mb-1">Spring Drop — Season 01</h3>
+        <p class="text-sm" style="color:rgba(255,255,255,0.5);">Fresh pastels, bloom-inspired passes, launch pack included</p>
+       </div>
+      </div>
+      <div class="relative">
+       <div class="timeline-dot absolute" style="left:-31px; top:4px; background:#ffd700;"></div>
+       <div class="ml-4 p-6 rounded-2xl" style="background:rgba(255,215,0,0.05); border:1px solid rgba(255,215,0,0.15);">
+        <p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:#ffd700;">☀️ June 2025</p>
+        <h3 class="text-xl font-black mb-1">Summer Drop — Season 02</h3>
+        <p class="text-sm" style="color:rgba(255,255,255,0.5);">Neon nights, poolside packs, festival-ready graphics</p>
+       </div>
+      </div>
+      <div class="relative">
+       <div class="timeline-dot absolute" style="left:-31px; top:4px; background:#ff6b35;"></div>
+       <div class="ml-4 p-6 rounded-2xl" style="background:rgba(255,107,53,0.05); border:1px solid rgba(255,107,53,0.15);">
+        <p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:#ff6b35;">🍂 September 2025</p>
+        <h3 class="text-xl font-black mb-1">Fall Drop — Season 03</h3>
+        <p class="text-sm" style="color:rgba(255,255,255,0.5);">Warm tones, cozy vibes, harvest fest templates</p>
+       </div>
+      </div>
+      <div class="relative">
+       <div class="timeline-dot absolute" style="left:-31px; top:4px; background:#00d4ff;"></div>
+       <div class="ml-4 p-6 rounded-2xl" style="background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.15);">
+        <p class="text-xs font-bold uppercase tracking-wider mb-1" style="color:#00d4ff;">❄️ December 2025</p>
+        <h3 class="text-xl font-black mb-1">Winter Drop — Season 04</h3>
+        <p class="text-sm" style="color:rgba(255,255,255,0.5);">Ice-cool designs, gala passes, year-end exclusives</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="reveal-section py-20 px-4">
+    <div class="max-w-6xl mx-auto text-center mb-14">
+     <p class="uppercase tracking-[0.3em] text-xs mb-2 font-semibold" style="color:#ff6b35;">The Crowd Speaks</p>
+     <h2 class="text-4xl md:text-6xl font-black" style="font-family:'Space Mono',monospace;">REVIEWS</h2>
+    </div>
+    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+     <div class="p-6 rounded-2xl" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+      <div class="flex gap-1 mb-3">
+       ⭐⭐⭐⭐⭐
+      </div>
+      <p class="text-sm mb-4" style="color:rgba(255,255,255,0.7);">"Sold 200+ festival passes in my first week using these templates. The VIP badges alone are worth the price."</p>
+      <p class="text-xs font-bold" style="color:#ff0080;">— Jasmine T., Event Creator</p>
+     </div>
+     <div class="p-6 rounded-2xl" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+      <div class="flex gap-1 mb-3">
+       ⭐⭐⭐⭐⭐
+      </div>
+      <p class="text-sm mb-4" style="color:rgba(255,255,255,0.7);">"I run a music blog and used these for a virtual concert series. People thought I hired a design agency."</p>
+      <p class="text-xs font-bold" style="color:#ffd700;">— Marcus W., Music Blogger</p>
+     </div>
+     <div class="p-6 rounded-2xl" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+      <div class="flex gap-1 mb-3">
+       ⭐⭐⭐⭐⭐
+      </div>
+      <p class="text-sm mb-4" style="color:rgba(255,255,255,0.7);">"The seasonal drops concept is genius. I'm reselling access to my community and they're loving it."</p>
+      <p class="text-xs font-bold" style="color:#00d4ff;">— Aaliyah K., Community Manager</p>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE MODULE -->
+   <section id="get-pass" class="reveal-section py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center mb-16">
+     <h2 id="bottom-cta" class="text-4xl md:text-6xl font-black mb-4 shimmer-text" style="font-family:'Space Mono',monospace;">Don't miss this release.</h2>
+     <p class="text-lg mb-8" style="color:rgba(255,255,255,0.6);">This is a limited drop. Once it's gone, it's gone.</p><a href="#passes" class="btn-primary inline-block px-12 py-5 rounded-full font-black text-xl">🎟️ Grab Your Pass Now</a>
+     <p class="mt-4 text-xs" style="color:rgba(255,255,255,0.3);">Instant download · Canva-ready · Lifetime access</p>
+    </div><!-- Vote + Comment Module -->
+    <div class="max-w-2xl mx-auto rounded-3xl p-8" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,0,128,0.2);">
+     <h3 class="text-2xl font-black text-center mb-2" style="font-family:'Space Mono',monospace;">🗳️ Vote: Would you buy this pass?</h3>
+     <p class="text-center text-sm mb-6" style="color:rgba(255,255,255,0.4);">[ Embed Widget Here ]</p><!-- Sign In -->
+     <div id="signin-area" class="mb-8">
+      <div class="flex gap-3 items-center justify-center"><input id="name-input" type="text" placeholder="Your name to vote &amp; comment" class="flex-1 max-w-xs px-4 py-3 rounded-xl text-sm font-semibold outline-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#fff;"> <label for="name-input" class="sr-only">Your name</label> <button id="signin-btn" class="btn-primary px-6 py-3 rounded-xl font-bold text-sm">Join</button>
+      </div>
+     </div><!-- Voting Area (hidden until signed in) -->
+     <div id="vote-area" class="hidden">
+      <p class="text-xs uppercase tracking-wider mb-3 font-semibold" style="color:#ff0080;">Your Reaction</p>
+      <div id="reactions" class="flex gap-3 flex-wrap mb-6"><button class="reaction-btn text-2xl" data-reaction="🔥">🔥</button> <button class="reaction-btn text-2xl" data-reaction="❤️">❤️</button> <button class="reaction-btn text-2xl" data-reaction="🤑">🤑</button> <button class="reaction-btn text-2xl" data-reaction="🎉">🎉</button> <button class="reaction-btn text-2xl" data-reaction="🤔">🤔</button> <button class="reaction-btn text-2xl" data-reaction="👀">👀</button>
+      </div>
+      <p class="text-xs uppercase tracking-wider mb-3 font-semibold" style="color:#ffd700;">What would you pay?</p>
+      <div id="price-options" class="flex flex-wrap gap-2 mb-6"><button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$5">$5</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$10">$10</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$15">$15</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$25">$25</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$35">$35</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$50">$50</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$75">$75</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$100">$100</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$150">$150</button> <button class="price-option px-4 py-2 rounded-xl text-sm font-bold" data-price="$200+">$200+</button>
+      </div>
+      <div class="mb-6"><label for="comment-input" class="text-xs uppercase tracking-wider mb-2 block font-semibold" style="color:#00d4ff;">Leave a Comment</label>
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Share your thoughts..." class="flex-1 px-4 py-3 rounded-xl text-sm outline-none" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#fff;"> <button id="submit-vote-btn" class="btn-primary px-6 py-3 rounded-xl font-bold text-sm">Submit</button>
+       </div>
+      </div><!-- Results -->
+      <div id="vote-results" class="mt-6 pt-6" style="border-top:1px solid rgba(255,255,255,0.1);">
+       <h4 class="font-bold mb-4 text-sm uppercase tracking-wider" style="color:rgba(255,255,255,0.5);">Community Votes</h4>
+       <div id="reaction-counts" class="flex gap-4 flex-wrap mb-4"></div>
+       <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 px-4 text-center" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <p class="text-sm font-bold" style="font-family:'Space Mono',monospace;"><span style="color:#ff0080;">PASS</span><span style="color:#ffd700;">PARTY</span> <span style="color:rgba(255,255,255,0.3);">DROPS™ 2025</span></p>
+    <p class="text-xs mt-2" style="color:rgba(255,255,255,0.2);">A digital drop that feels like a festival.</p>
+   </footer>
+  </div><!-- Toast -->
+  <div id="toast" class="toast-msg"></div>
+  <script>
+  // ======== DEFAULT CONFIG ========
+  const defaultConfig = {
+    hero_title: 'Welcome to the DROP.',
+    hero_subtitle: 'Limited digital passes. Unlimited vibes.',
+    lineup_title: 'THE LINEUP',
+    general_price: '$27',
+    vip_price: '$47',
+    backstage_price: '$97',
+    bottom_cta_text: "Don't miss this release.",
+    background_color: '#0a0a0a',
+    surface_color: '#1a0030',
+    text_color: '#ffffff',
+    accent_color: '#ff0080',
+    secondary_accent: '#ffd700',
+    font_family: 'Outfit',
+    font_size: 16
+  };
+
+  // ======== STATE ========
+  let currentUser = null;
+  let selectedReaction = null;
+  let selectedPrice = null;
+  let allVotes = [];
+
+  // ======== TOAST ========
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ======== CONFETTI ========
+  function spawnConfetti() {
+    const container = document.getElementById('confetti-container');
+    const colors = ['#ff0080','#ffd700','#00d4ff','#7928ca','#ff6b35'];
+    for (let i = 0; i < 30; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.top = '-10px';
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDelay = (Math.random() * 2) + 's';
+      piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+      container.appendChild(piece);
+      setTimeout(() => piece.remove(), 5000);
+    }
+  }
+
+  // ======== RENDER FUNCTIONS ========
+  function applyConfig(config) {
+    const c = { ...defaultConfig, ...config };
+    const el = (id) => document.getElementById(id);
+
+    el('hero-title').textContent = c.hero_title;
+    el('hero-subtitle').textContent = c.hero_subtitle;
+    el('lineup-heading').textContent = c.lineup_title;
+    el('general-price').textContent = c.general_price;
+    el('vip-price').textContent = c.vip_price;
+    el('backstage-price').textContent = c.backstage_price;
+    el('bottom-cta').textContent = c.bottom_cta_text;
+
+    // Font
+    const font = c.font_family || defaultConfig.font_family;
+    const stack = `${font}, Outfit, sans-serif`;
+    document.querySelectorAll('h1,h2,h3,p,a,button,li,span,input,div').forEach(e => {
+      if (!e.closest('[style*="Space Mono"]') && !e.style.fontFamily?.includes('Space Mono')) {
+        // Only set on non-mono elements
+      }
+    });
+    document.body.style.fontFamily = stack;
+
+    // Font size
+    const base = c.font_size || defaultConfig.font_size;
+    document.body.style.fontSize = base + 'px';
+  }
+
+  function renderVotes() {
+    // Reaction counts
+    const reactionMap = {};
+    allVotes.forEach(v => {
+      if (v.reaction) reactionMap[v.reaction] = (reactionMap[v.reaction] || 0) + 1;
+    });
+    const rc = document.getElementById('reaction-counts');
+    rc.innerHTML = '';
+    Object.entries(reactionMap).sort((a,b) => b[1]-a[1]).forEach(([emoji, count]) => {
+      const span = document.createElement('span');
+      span.className = 'px-3 py-1 rounded-full text-sm font-bold';
+      span.style.background = 'rgba(255,0,128,0.15)';
+      span.style.border = '1px solid rgba(255,0,128,0.3)';
+      span.textContent = `${emoji} ${count}`;
+      rc.appendChild(span);
+    });
+
+    // Comments
+    const cl = document.getElementById('comments-list');
+    const existingIds = new Map([...cl.children].map(el => [el.dataset.vid, el]));
+    const withComments = allVotes.filter(v => v.comment);
+
+    withComments.forEach(v => {
+      const id = v.__backendId;
+      if (existingIds.has(id)) {
+        existingIds.delete(id);
+      } else {
+        const div = document.createElement('div');
+        div.dataset.vid = id;
+        div.className = 'p-3 rounded-xl';
+        div.style.background = 'rgba(255,255,255,0.04)';
+        const header = document.createElement('div');
+        header.className = 'flex items-center gap-2 mb-1';
+        header.innerHTML = `<span class="text-xs font-bold" style="color:#ff0080;">${v.name || 'Anon'}</span>
+          ${v.reaction ? `<span>${v.reaction}</span>` : ''}
+          ${v.price_vote ? `<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(255,215,0,0.15);color:#ffd700;">${v.price_vote}</span>` : ''}`;
+        const body = document.createElement('p');
+        body.className = 'text-sm';
+        body.style.color = 'rgba(255,255,255,0.6)';
+        body.textContent = v.comment;
+        div.appendChild(header);
+        div.appendChild(body);
+        cl.appendChild(div);
+      }
+    });
+    existingIds.forEach(el => el.remove());
+  }
+
+  // ======== DATA SDK ========
+  const dataHandler = {
+    onDataChanged(data) {
+      allVotes = data;
+      renderVotes();
+    }
+  };
+
+  // ======== ELEMENT SDK ========
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.secondary_accent || defaultConfig.secondary_accent, set: v => { config.secondary_accent = v; window.elementSdk.setConfig({ secondary_accent: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['lineup_title', config.lineup_title || defaultConfig.lineup_title],
+      ['general_price', config.general_price || defaultConfig.general_price],
+      ['vip_price', config.vip_price || defaultConfig.vip_price],
+      ['backstage_price', config.backstage_price || defaultConfig.backstage_price],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+
+  // ======== INIT DATA SDK ========
+  (async () => {
+    const res = await window.dataSdk.init(dataHandler);
+    if (!res.isOk) console.error('Data SDK init failed');
+  })();
+
+  // ======== EVENT HANDLERS ========
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Sign in
+  document.getElementById('signin-btn').addEventListener('click', () => {
+    const name = document.getElementById('name-input').value.trim();
+    if (!name) { showToast('Enter your name to join!'); return; }
+    currentUser = name;
+    document.getElementById('signin-area').innerHTML = `<p class="text-center text-sm font-bold" style="color:#ff0080;">🎤 Welcome, ${name}!</p>`;
+    document.getElementById('vote-area').classList.remove('hidden');
+    spawnConfetti();
+  });
+
+  // Reactions
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedReaction = btn.dataset.reaction;
+    });
+  });
+
+  // Price options
+  document.querySelectorAll('.price-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.price-option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedPrice = btn.dataset.price;
+    });
+  });
+
+  // Submit vote
+  document.getElementById('submit-vote-btn').addEventListener('click', async () => {
+    if (!currentUser) return;
+    if (!selectedReaction && !selectedPrice && !document.getElementById('comment-input').value.trim()) {
+      showToast('Pick a reaction, price, or leave a comment!');
+      return;
+    }
+    if (allVotes.length >= 999) {
+      showToast('Vote limit reached! Thank you all 🎉');
+      return;
+    }
+    const btn = document.getElementById('submit-vote-btn');
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    const comment = document.getElementById('comment-input').value.trim();
+    const result = await window.dataSdk.create({
+      type: 'vote',
+      reaction: selectedReaction || '',
+      price_vote: selectedPrice || '',
+      comment: comment,
+      name: currentUser,
+      timestamp: new Date().toISOString()
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Submit';
+
+    if (result.isOk) {
+      showToast('Vote submitted! 🔥');
+      spawnConfetti();
+      document.getElementById('comment-input').value = '';
+      selectedReaction = null;
+      selectedPrice = null;
+      document.querySelectorAll('.reaction-btn, .price-option').forEach(b => b.classList.remove('selected'));
+    } else {
+      showToast('Something went wrong. Try again!');
+    }
+  });
+
+  // Scroll reveals
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal-section').forEach(s => observer.observe(s));
+
+  // Active nav
+  const sections = ['home','lineup','passes','schedule','reviews','get-pass'];
+  const appEl = document.getElementById('app');
+  appEl.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const sec = document.getElementById(id);
+      if (sec && sec.getBoundingClientRect().top < 200) current = id;
+    });
+    document.querySelectorAll('.nav-link').forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Init icons and config
+  lucide.createIcons();
+  applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3406d3337f27cf',t:'MTc3NDY3MzU1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

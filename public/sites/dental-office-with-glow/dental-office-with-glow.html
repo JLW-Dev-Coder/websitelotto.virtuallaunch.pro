@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmileSpark Leads</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html,body{height:100%;margin:0;scroll-behavior:smooth}
+*{box-sizing:border-box}
+:root{--bg:#0a0e17;--surface:rgba(255,255,255,0.06);--text:#e8ecf4;--primary:#00e5c7;--secondary:#0891b2}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(0,229,199,.2)}50%{box-shadow:0 0 40px rgba(0,229,199,.4)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes counter{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.animate-fade-up{animation:fadeUp .7s ease both}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}.delay-5{animation-delay:.5s}.delay-6{animation-delay:.6s}
+.glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08)}
+.glass-bright{background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12)}
+.gradient-text{background:linear-gradient(135deg,#00e5c7,#06b6d4,#00e5c7);background-size:200% 200%;animation:gradientShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.btn-primary{background:linear-gradient(135deg,#00e5c7,#0891b2);position:relative;overflow:hidden;transition:all .3s}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .5s}
+.btn-primary:hover::after{transform:translateX(100%)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,199,.3)}
+.btn-secondary{border:1px solid rgba(0,229,199,.3);background:rgba(0,229,199,.05);transition:all .3s}
+.btn-secondary:hover{background:rgba(0,229,199,.15);border-color:rgba(0,229,199,.6);transform:translateY(-2px)}
+.floating-shape{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 8s ease-in-out infinite}
+.card-hover{transition:all .4s cubic-bezier(.4,0,.2,1)}
+.card-hover:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,229,199,.12)}
+.trust-chip{animation:fadeUp .5s ease both;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;background:rgba(0,229,199,.08);border:1px solid rgba(0,229,199,.2);color:#00e5c7}
+.reaction-btn{transition:all .25s;cursor:pointer;user-select:none}
+.reaction-btn:hover{transform:scale(1.1)}
+.reaction-btn.active{transform:scale(1.05);box-shadow:0 0 20px rgba(0,229,199,.3)}
+.price-btn{transition:all .2s;cursor:pointer}
+.price-btn:hover{transform:scale(1.08);background:rgba(0,229,199,.15);border-color:rgba(0,229,199,.5)}
+.price-btn.selected{background:rgba(0,229,199,.2);border-color:#00e5c7;color:#00e5c7}
+.nav-link{position:relative;transition:color .3s}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#00e5c7;transition:width .3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.carousel-track{display:flex;gap:20px;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.star{color:#fbbf24}
+.guarantee-badge{animation:pulse-glow 3s ease-in-out infinite}
+.shimmer-bg{background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);background-size:200% 100%;animation:shimmer 3s linear infinite}
+.scroll-reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.4,0,.2,1)}
+.scroll-reveal.visible{opacity:1;transform:translateY(0)}
+.poll-bar{transition:width .8s cubic-bezier(.4,0,.2,1);height:100%;border-radius:4px;background:linear-gradient(90deg,#00e5c7,#0891b2)}
+</style>
+  <script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Outfit','sans-serif'],mono:['Space Mono','monospace']}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif">
+  <div id="app-root" class="h-full w-full overflow-auto relative"><!-- Floating BG shapes -->
+   <div class="floating-shape" style="width:500px;height:500px;background:#00e5c7;top:-10%;left:-10%;animation-delay:0s"></div>
+   <div class="floating-shape" style="width:400px;height:400px;background:#0891b2;top:30%;right:-8%;animation-delay:2s"></div>
+   <div class="floating-shape" style="width:350px;height:350px;background:#06b6d4;bottom:10%;left:20%;animation-delay:4s"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 glass" style="border-bottom:1px solid rgba(255,255,255,.06)">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 text-lg font-bold"><span class="gradient-text">SmileSpark</span><span style="color:var(--text);opacity:.6">Leads</span></a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium" style="color:rgba(232,236,244,.6)"><a href="#home" class="nav-link">Home</a> <a href="#offer" class="nav-link">Offer</a> <a href="#whatyouget" class="nav-link">What You Get</a> <a href="#proof" class="nav-link">Social Proof</a> <a href="#faq" class="nav-link">FAQ</a> <a href="#cta" class="nav-link">Get Template</a>
+     </div><a href="#cta" class="btn-primary text-xs font-semibold px-4 py-2 rounded-full text-gray-900 md:block hidden">Get Template</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-full flex items-center pt-20 pb-16">
+    <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+     <div class="flex justify-center gap-3 flex-wrap mb-8 animate-fade-up"><span class="trust-chip delay-1"><i data-lucide="zap" style="width:14px;height:14px"></i> Instant Launch</span> <span class="trust-chip delay-2"><i data-lucide="smartphone" style="width:14px;height:14px"></i> Mobile-First</span> <span class="trust-chip delay-3"><i data-lucide="shield-check" style="width:14px;height:14px"></i> Commercial License Included</span>
+     </div>
+     <h1 id="hero-headline" class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 animate-fade-up delay-2" style="letter-spacing:-.03em">Fill your chair schedule with <span class="gradient-text">one irresistible offer.</span></h1>
+     <p id="hero-subhead" class="text-lg md:text-xl font-light mb-10 animate-fade-up delay-3" style="color:rgba(232,236,244,.55);max-width:520px;margin-left:auto;margin-right:auto">One page. One offer. More bookings.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up delay-4"><a href="#cta" class="btn-primary text-sm font-bold px-8 py-4 rounded-full text-gray-900 inline-flex items-center gap-2"><i data-lucide="download" style="width:18px;height:18px"></i> Get the Template + License</a> <a href="#offer" class="btn-secondary text-sm font-medium px-8 py-4 rounded-full inline-flex items-center gap-2" style="color:#00e5c7"><i data-lucide="eye" style="width:18px;height:18px"></i> Preview Layout</a>
+     </div>
+     <div class="mt-12 animate-fade-up delay-5 flex justify-center gap-8 text-center" style="color:rgba(232,236,244,.4)">
+      <div>
+       <span class="text-2xl font-black gradient-text">20</span><span class="text-xs block mt-1">min to launch</span>
+      </div>
+      <div>
+       <span class="text-2xl font-black gradient-text">3x</span><span class="text-xs block mt-1">more bookings</span>
+      </div>
+      <div>
+       <span class="text-2xl font-black gradient-text">$0</span><span class="text-xs block mt-1">tech skills needed</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- OFFER -->
+   <section id="offer" class="relative py-20">
+    <div class="max-w-5xl mx-auto px-4">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color:#00e5c7">Limited Time</p>
+      <h2 id="offer-title" class="text-3xl md:text-5xl font-black mb-4" style="letter-spacing:-.02em">New Patient Special</h2>
+      <p style="color:rgba(232,236,244,.45)" class="text-sm">Cheaper than one missed appointment. Launch in 20 minutes.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass-bright rounded-2xl p-6 card-hover scroll-reveal delay-1 relative overflow-hidden">
+       <div class="shimmer-bg absolute inset-0 rounded-2xl"></div>
+       <div class="relative z-10">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,229,199,.1)">
+         <i data-lucide="sparkles" style="width:24px;height:24px;color:#00e5c7"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Deep Cleaning</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.45)">Professional cleaning for new patients at an unbeatable introductory price.</p>
+        <div class="flex items-end gap-2 mb-3">
+         <span class="text-3xl font-black gradient-text">$79</span><span class="text-sm line-through" style="color:rgba(232,236,244,.3)">$249</span>
+        </div>
+        <p class="text-xs font-medium" style="color:#fbbf24"><i data-lucide="clock" style="width:12px;height:12px;display:inline;vertical-align:middle"></i> Limited spots this month</p>
+       </div>
+      </div>
+      <div class="glass-bright rounded-2xl p-6 card-hover scroll-reveal delay-2 relative overflow-hidden" style="border-color:rgba(0,229,199,.25)">
+       <div class="absolute top-3 right-3 text-xs font-bold px-3 py-1 rounded-full" style="background:#00e5c7;color:#0a0e17">
+        POPULAR
+       </div>
+       <div class="shimmer-bg absolute inset-0 rounded-2xl"></div>
+       <div class="relative z-10">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,229,199,.1)">
+         <i data-lucide="sun" style="width:24px;height:24px;color:#00e5c7"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Teeth Whitening</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.45)">Professional whitening that gets results. Walk out with a brighter smile today.</p>
+        <div class="flex items-end gap-2 mb-3">
+         <span class="text-3xl font-black gradient-text">$149</span><span class="text-sm line-through" style="color:rgba(232,236,244,.3)">$399</span>
+        </div>
+        <p class="text-xs font-medium" style="color:#fbbf24"><i data-lucide="clock" style="width:12px;height:12px;display:inline;vertical-align:middle"></i> Limited spots this month</p>
+       </div>
+      </div>
+      <div class="glass-bright rounded-2xl p-6 card-hover scroll-reveal delay-3 relative overflow-hidden">
+       <div class="shimmer-bg absolute inset-0 rounded-2xl"></div>
+       <div class="relative z-10">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,229,199,.1)">
+         <i data-lucide="scan" style="width:24px;height:24px;color:#00e5c7"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Full Exam + X-Rays</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.45)">Comprehensive exam with digital X-rays. Know exactly where you stand.</p>
+        <div class="flex items-end gap-2 mb-3">
+         <span class="text-3xl font-black gradient-text">$49</span><span class="text-sm line-through" style="color:rgba(232,236,244,.3)">$175</span>
+        </div>
+        <p class="text-xs font-medium" style="color:#fbbf24"><i data-lucide="clock" style="width:12px;height:12px;display:inline;vertical-align:middle"></i> Limited spots this month</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT YOU GET -->
+   <section id="whatyouget" class="relative py-20">
+    <div class="max-w-5xl mx-auto px-4">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color:#00e5c7">Everything Included</p>
+      <h2 class="text-3xl md:text-5xl font-black mb-4" style="letter-spacing:-.02em">Website Template + Commercial License +<br><span class="gradient-text">Dental Promo Pack</span></h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-1">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="layout" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">One-Page Website Template</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Fully editable in Canva. No code needed.</p>
+       </div>
+      </div>
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-2">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="file-text" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">Editable Promo Flyer</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Print-ready dental flyer template.</p>
+       </div>
+      </div>
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-3">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="instagram" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">Instagram Post Templates</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">5 ready-to-post social graphics.</p>
+       </div>
+      </div>
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-4">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="ticket" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">New-Patient Coupon Sheet</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Printable coupons to hand out in-office.</p>
+       </div>
+      </div>
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-5">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="message-circle" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">FAQ Script</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Pre-written answers for front desk staff.</p>
+       </div>
+      </div>
+      <div class="glass rounded-xl p-5 flex items-start gap-4 card-hover scroll-reveal delay-6">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,229,199,.1)">
+        <i data-lucide="shield" style="width:20px;height:20px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <h4 class="font-semibold text-sm mb-1">Commercial License</h4>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Use for your practice or client projects.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SOCIAL PROOF -->
+   <section id="proof" class="relative py-20">
+    <div class="max-w-5xl mx-auto px-4">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color:#00e5c7">Trusted By Dentists</p>
+      <h2 class="text-3xl md:text-5xl font-black" style="letter-spacing:-.02em">Real results. Real practices.</h2>
+     </div><!-- Review Carousel -->
+     <div class="relative overflow-hidden mb-16 scroll-reveal">
+      <div id="carousel" class="carousel-track" style="width:max-content">
+       <div class="glass-bright rounded-2xl p-6 w-72 flex-shrink-0 card-hover">
+        <div class="flex gap-1 mb-3 star text-sm">
+         ★★★★★
+        </div>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.7)">"We booked 14 new patients in the first week. The template paid for itself in one appointment."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(0,229,199,.15);color:#00e5c7">
+          DR
+         </div>
+         <div>
+          <p class="text-xs font-semibold">Dr. Rachel Kim</p>
+          <p class="text-xs" style="color:rgba(232,236,244,.35)">Kim Family Dental, TX</p>
+         </div>
+        </div>
+       </div>
+       <div class="glass-bright rounded-2xl p-6 w-72 flex-shrink-0 card-hover">
+        <div class="flex gap-1 mb-3 star text-sm">
+         ★★★★★
+        </div>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.7)">"Set it up during lunch break. Had bookings by end of day. Absolutely incredible."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(0,229,199,.15);color:#00e5c7">
+          JM
+         </div>
+         <div>
+          <p class="text-xs font-semibold">Dr. James Miller</p>
+          <p class="text-xs" style="color:rgba(232,236,244,.35)">Bright Smile Clinic, CA</p>
+         </div>
+        </div>
+       </div>
+       <div class="glass-bright rounded-2xl p-6 w-72 flex-shrink-0 card-hover">
+        <div class="flex gap-1 mb-3 star text-sm">
+         ★★★★★
+        </div>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.7)">"My front desk loves the FAQ script. Patients love the coupon sheets. Everyone wins."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(0,229,199,.15);color:#00e5c7">
+          SP
+         </div>
+         <div>
+          <p class="text-xs font-semibold">Dr. Sarah Patel</p>
+          <p class="text-xs" style="color:rgba(232,236,244,.35)">Patel Dental Group, FL</p>
+         </div>
+        </div>
+       </div>
+       <div class="glass-bright rounded-2xl p-6 w-72 flex-shrink-0 card-hover">
+        <div class="flex gap-1 mb-3 star text-sm">
+         ★★★★★
+        </div>
+        <p class="text-sm mb-4" style="color:rgba(232,236,244,.7)">"The Instagram templates alone are worth it. Professional quality, zero design skills."</p>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(0,229,199,.15);color:#00e5c7">
+          AL
+         </div>
+         <div>
+          <p class="text-xs font-semibold">Dr. Alex Lopez</p>
+          <p class="text-xs" style="color:rgba(232,236,244,.35)">Lopez Orthodontics, NY</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex justify-center gap-3 mt-6"><button id="prev-btn" class="w-10 h-10 rounded-full glass flex items-center justify-center" style="color:#00e5c7"><i data-lucide="chevron-left" style="width:18px;height:18px"></i></button> <button id="next-btn" class="w-10 h-10 rounded-full glass flex items-center justify-center" style="color:#00e5c7"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></button>
+      </div>
+     </div><!-- Before/After Gallery -->
+     <div class="scroll-reveal">
+      <h3 class="text-center text-lg font-bold mb-6" style="color:rgba(232,236,244,.6)">Before &amp; After Gallery</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+       <div class="rounded-xl overflow-hidden aspect-square relative" style="background:linear-gradient(135deg,rgba(0,229,199,.1),rgba(8,145,178,.1))">
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+         <i data-lucide="image" style="width:32px;height:32px;color:rgba(0,229,199,.3)"></i><span class="text-xs mt-2" style="color:rgba(232,236,244,.3)">Before</span>
+        </div>
+       </div>
+       <div class="rounded-xl overflow-hidden aspect-square relative" style="background:linear-gradient(135deg,rgba(0,229,199,.15),rgba(8,145,178,.15))">
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+         <i data-lucide="image" style="width:32px;height:32px;color:rgba(0,229,199,.4)"></i><span class="text-xs mt-2" style="color:rgba(232,236,244,.3)">After</span>
+        </div>
+       </div>
+       <div class="rounded-xl overflow-hidden aspect-square relative" style="background:linear-gradient(135deg,rgba(0,229,199,.1),rgba(8,145,178,.1))">
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+         <i data-lucide="image" style="width:32px;height:32px;color:rgba(0,229,199,.3)"></i><span class="text-xs mt-2" style="color:rgba(232,236,244,.3)">Before</span>
+        </div>
+       </div>
+       <div class="rounded-xl overflow-hidden aspect-square relative" style="background:linear-gradient(135deg,rgba(0,229,199,.15),rgba(8,145,178,.15))">
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+         <i data-lucide="image" style="width:32px;height:32px;color:rgba(0,229,199,.4)"></i><span class="text-xs mt-2" style="color:rgba(232,236,244,.3)">After</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="relative py-20">
+    <div class="max-w-3xl mx-auto px-4">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color:#00e5c7">Questions?</p>
+      <h2 class="text-3xl md:text-5xl font-black" style="letter-spacing:-.02em">FAQ + Guarantee</h2>
+     </div>
+     <div class="flex justify-center mb-10 scroll-reveal">
+      <div class="guarantee-badge glass-bright rounded-2xl px-8 py-5 inline-flex items-center gap-4">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center" style="background:rgba(0,229,199,.15)">
+        <i data-lucide="shield-check" style="width:28px;height:28px;color:#00e5c7"></i>
+       </div>
+       <div>
+        <p class="font-bold text-sm">100% Satisfaction Guarantee</p>
+        <p class="text-xs" style="color:rgba(232,236,244,.4)">Not happy? Full refund. No questions asked.</p>
+       </div>
+      </div>
+     </div>
+     <div id="faq-list" class="space-y-3">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="cta" class="relative py-20">
+    <div class="max-w-4xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <h2 id="bottom-headline" class="text-3xl md:text-5xl font-black mb-4" style="letter-spacing:-.02em">Launch your promo <span class="gradient-text">today.</span></h2>
+      <p id="bottom-subhead" class="text-lg mb-8" style="color:rgba(232,236,244,.45)">Edit in Canva, publish fast, start booking.</p><a href="#cta" class="btn-primary text-sm font-bold px-10 py-4 rounded-full text-gray-900 inline-flex items-center gap-2"><i data-lucide="download" style="width:18px;height:18px"></i> Get Template + License + Digital Product</a>
+     </div><!-- VOTING MODULE -->
+     <div class="glass-bright rounded-3xl p-6 md:p-10 mt-16 scroll-reveal" style="border-color:rgba(0,229,199,.15)">
+      <div class="text-center mb-8">
+       <p class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#00e5c7">🗳️ Community Poll</p>
+       <h3 class="text-2xl md:text-3xl font-black mb-2">Help us pick winners</h3>
+       <p class="text-xs" style="color:rgba(232,236,244,.35)">Voting is instant. Commenting requires a free account and sign-in.</p>
+      </div><!-- Reactions -->
+      <div id="reactions-area" class="flex flex-wrap justify-center gap-3 mb-8"><button data-reaction="slaps" class="reaction-btn glass rounded-xl px-4 py-3 flex flex-col items-center gap-1 min-w-[80px]"><span class="text-2xl">🔥</span><span class="text-xs font-medium">This slaps</span><span class="reaction-count text-xs font-bold" style="color:#00e5c7">0</span></button> <button data-reaction="buy" class="reaction-btn glass rounded-xl px-4 py-3 flex flex-col items-center gap-1 min-w-[80px]"><span class="text-2xl">💰</span><span class="text-xs font-medium">I'd buy it</span><span class="reaction-count text-xs font-bold" style="color:#00e5c7">0</span></button> <button data-reaction="tweaks" class="reaction-btn glass rounded-xl px-4 py-3 flex flex-col items-center gap-1 min-w-[80px]"><span class="text-2xl">🔧</span><span class="text-xs font-medium">Needs tweaks</span><span class="reaction-count text-xs font-bold" style="color:#00e5c7">0</span></button> <button data-reaction="notforme" class="reaction-btn glass rounded-xl px-4 py-3 flex flex-col items-center gap-1 min-w-[80px]"><span class="text-2xl">🤷</span><span class="text-xs font-medium">Not for me</span><span class="reaction-count text-xs font-bold" style="color:#00e5c7">0</span></button> <button data-reaction="takemoney" class="reaction-btn glass rounded-xl px-4 py-3 flex flex-col items-center gap-1 min-w-[80px]"><span class="text-2xl">💸</span><span class="text-xs font-medium">Take my money</span><span class="reaction-count text-xs font-bold" style="color:#00e5c7">0</span></button>
+      </div><!-- Poll bars -->
+      <div id="poll-bars" class="space-y-2 mb-8" style="display:none"></div><!-- Price Intent -->
+      <div id="price-intent-area" style="display:none" class="mb-8">
+       <p class="text-center text-sm font-semibold mb-4" style="color:rgba(232,236,244,.6)">💡 What would you pay for this?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-buttons"></div>
+      </div><!-- Comment Section -->
+      <div class="mt-6">
+       <p class="text-sm font-semibold mb-3" style="color:rgba(232,236,244,.6)">💬 Leave a comment</p>
+       <div class="flex gap-3"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 rounded-xl px-4 py-3 text-sm outline-none" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text)"> <button id="comment-submit" class="btn-primary rounded-xl px-5 py-3 text-sm font-bold text-gray-900 flex items-center gap-2"><i data-lucide="send" style="width:16px;height:16px"></i></button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-3"></div>
+      </div>
+      <div class="text-center mt-6" style="border-top:1px solid rgba(255,255,255,.06);padding-top:16px">
+       <p class="text-xs" style="color:rgba(232,236,244,.2)">Embed Widget Here — Voting is instant. Commenting requires a free account and sign-in.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 text-center" style="border-top:1px solid rgba(255,255,255,.04)">
+    <p class="text-xs" style="color:rgba(232,236,244,.2)">© 2024 SmileSpark Leads. All rights reserved.</p>
+   </footer>
+  </div>
+  <script>
+// ---- CONFIG & SDK ----
+const defaultConfig = {
+  background_color: '#0a0e17',
+  surface_color: 'rgba(255,255,255,0.06)',
+  text_color: '#e8ecf4',
+  primary_color: '#00e5c7',
+  secondary_color: '#0891b2',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_headline: 'Fill your chair schedule with one irresistible offer.',
+  hero_subhead: 'One page. One offer. More bookings.',
+  offer_title: 'New Patient Special',
+  bottom_headline: 'Launch your promo today.',
+  bottom_subhead: 'Edit in Canva, publish fast, start booking.'
+};
+
+let allVotes = [];
+const REACTIONS = ['slaps','buy','tweaks','notforme','takemoney'];
+const PRICES = ['$5','$15','$25','$35','$49','$75','$99','$149','$199','$299'];
+
+// FAQ data
+const faqs = [
+  {q:"Do I need any coding skills?", a:"Nope! Everything edits directly in Canva with drag-and-drop. If you can use Google Docs, you can use this."},
+  {q:"Can I use this for my dental practice?", a:"Absolutely. Commercial license is included — use it for your own practice or for client work."},
+  {q:"How fast can I launch?", a:"Most dentists have their page live within 20 minutes. Just swap your info and publish."},
+  {q:"What if I'm not satisfied?", a:"100% money-back guarantee. If it's not for you, just let us know and we'll refund you immediately."},
+  {q:"What's in the Dental Promo Pack?", a:"An editable flyer, 5 Instagram post templates, a printable new-patient coupon sheet, and a front-desk FAQ script."}
+];
+
+function renderFAQs() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = faqs.map((f,i) => `
+    <div class="glass rounded-xl overflow-hidden scroll-reveal delay-${i+1}">
+      <button onclick="toggleFAQ(this)" class="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-semibold">
+        <span>${f.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;color:#00e5c7;transition:transform .3s;flex-shrink:0"></i>
+      </button>
+      <div class="faq-answer" style="max-height:0;overflow:hidden;transition:max-height .4s ease">
+        <p class="px-5 pb-4 text-sm" style="color:rgba(232,236,244,.5)">${f.a}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = answer.style.maxHeight !== '0px' && answer.style.maxHeight !== '';
+  document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = '0px');
+  document.querySelectorAll('#faq-list i').forEach(ic => ic.style.transform = 'rotate(0)');
+  if (!isOpen) { answer.style.maxHeight = answer.scrollHeight + 'px'; icon.style.transform = 'rotate(180deg)'; }
+}
+
+// Render price buttons
+function renderPriceButtons() {
+  document.getElementById('price-buttons').innerHTML = PRICES.map(p =>
+    `<button data-price="${p}" class="price-btn glass rounded-lg px-4 py-2 text-sm font-bold" style="color:rgba(232,236,244,.7)">${p}</button>`
+  ).join('');
+  document.querySelectorAll('.price-btn').forEach(b => b.addEventListener('click', handlePriceSelect));
+}
+
+// ---- POLL RENDERING ----
+function updatePollUI() {
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  const priceVotes = {};
+  const comments = [];
+  allVotes.forEach(v => {
+    if (v.reaction && counts[v.reaction] !== undefined) counts[v.reaction]++;
+    if (v.price_intent) priceVotes[v.price_intent] = (priceVotes[v.price_intent]||0) + 1;
+    if (v.comment) comments.push(v);
+  });
+  const total = Object.values(counts).reduce((a,b)=>a+b,0) || 1;
+
+  // Update reaction counts
+  document.querySelectorAll('#reactions-area .reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.reaction-count').textContent = counts[r];
+  });
+
+  // Poll bars
+  const barsEl = document.getElementById('poll-bars');
+  if (total > 1) {
+    barsEl.style.display = 'block';
+    const labels = {slaps:'🔥 This slaps',buy:'💰 I\'d buy it',tweaks:'🔧 Needs tweaks',notforme:'🤷 Not for me',takemoney:'💸 Take my money'};
+    barsEl.innerHTML = REACTIONS.map(r => {
+      const pct = Math.round((counts[r]/total)*100);
+      return `<div class="flex items-center gap-3"><span class="text-xs w-28 flex-shrink-0" style="color:rgba(232,236,244,.5)">${labels[r]}</span><div class="flex-1 h-4 rounded-full" style="background:rgba(255,255,255,.05)"><div class="poll-bar" style="width:${pct}%"></div></div><span class="text-xs font-bold w-10 text-right" style="color:#00e5c7">${pct}%</span></div>`;
+    }).join('');
+  }
+
+  // Comments
+  const cl = document.getElementById('comments-list');
+  cl.innerHTML = comments.slice(-20).reverse().map(c =>
+    `<div class="glass rounded-lg px-4 py-3 text-sm" style="color:rgba(232,236,244,.6)">${escapeHtml(c.comment)} <span class="text-xs" style="color:rgba(232,236,244,.2)">· ${new Date(c.timestamp).toLocaleDateString()}</span></div>`
+  ).join('');
+}
+
+function escapeHtml(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+
+// ---- EVENT HANDLERS ----
+async function handleReaction(e) {
+  const btn = e.currentTarget;
+  const reaction = btn.dataset.reaction;
+  btn.classList.add('active');
+  setTimeout(()=>btn.classList.remove('active'),300);
+  if (allVotes.length >= 999) { return; }
+  const result = await window.dataSdk.create({section:'vote',reaction,price_intent:'',comment:'',timestamp:new Date().toISOString()});
+  if (!result.isOk) console.error('Vote failed');
+  // Show price intent after voting
+  document.getElementById('price-intent-area').style.display = 'block';
+}
+
+async function handlePriceSelect(e) {
+  const btn = e.currentTarget;
+  const price = btn.dataset.price;
+  document.querySelectorAll('.price-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (allVotes.length >= 999) return;
+  await window.dataSdk.create({section:'price',reaction:'',price_intent:price,comment:'',timestamp:new Date().toISOString()});
+}
+
+async function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allVotes.length >= 999) return;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.style.opacity = '.5';
+  const result = await window.dataSdk.create({section:'comment',reaction:'',price_intent:'',comment:text,timestamp:new Date().toISOString()});
+  btn.disabled = false; btn.style.opacity = '1';
+  if (result.isOk) input.value = '';
+}
+
+document.querySelectorAll('#reactions-area .reaction-btn').forEach(b => b.addEventListener('click', handleReaction));
+document.getElementById('comment-submit').addEventListener('click', handleComment);
+document.getElementById('comment-input').addEventListener('keydown', e => { if(e.key==='Enter') handleComment(e); });
+
+// ---- CAROUSEL ----
+let carouselPos = 0;
+const cardW = 308;
+document.getElementById('next-btn').addEventListener('click', () => {
+  const track = document.getElementById('carousel');
+  const max = track.children.length - 1;
+  carouselPos = Math.min(carouselPos + 1, max);
+  track.style.transform = `translateX(-${carouselPos * cardW}px)`;
+});
+document.getElementById('prev-btn').addEventListener('click', () => {
+  const track = document.getElementById('carousel');
+  carouselPos = Math.max(carouselPos - 1, 0);
+  track.style.transform = `translateX(-${carouselPos * cardW}px)`;
+});
+
+// ---- SCROLL REVEAL ----
+function checkReveal() {
+  document.querySelectorAll('.scroll-reveal').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.88) el.classList.add('visible');
+  });
+}
+document.getElementById('app-root').addEventListener('scroll', checkReveal);
+
+// ---- SDK INIT ----
+const dataHandler = {
+  onDataChanged(data) {
+    allVotes = data;
+    updatePollUI();
+  }
+};
+
+(async () => {
+  renderFAQs();
+  renderPriceButtons();
+
+  await window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      const c = {...defaultConfig, ...config};
+      const hh = document.getElementById('hero-headline');
+      if(hh) hh.innerHTML = c.hero_headline.replace(/(one irresistible offer\.?)/i, '<span class="gradient-text">$1</span>');
+      const hs = document.getElementById('hero-subhead');
+      if(hs) hs.textContent = c.hero_subhead;
+      const ot = document.getElementById('offer-title');
+      if(ot) ot.textContent = c.offer_title;
+      const bh = document.getElementById('bottom-headline');
+      if(bh) bh.innerHTML = c.bottom_headline.replace(/(today\.?)/i, '<span class="gradient-text">$1</span>');
+      const bs = document.getElementById('bottom-subhead');
+      if(bs) bs.textContent = c.bottom_subhead;
+      document.body.style.fontFamily = `${c.font_family}, Outfit, sans-serif`;
+      document.body.style.fontSize = c.font_size + 'px';
+      document.body.style.background = c.background_color;
+      document.body.style.color = c.text_color;
+    },
+    mapToCapabilities: (config) => {
+      const c = {...defaultConfig, ...config};
+      return {
+        recolorables: [
+          {get:()=>c.background_color||defaultConfig.background_color, set:v=>{c.background_color=v;window.elementSdk.setConfig({background_color:v})}},
+          {get:()=>c.surface_color||defaultConfig.surface_color, set:v=>{c.surface_color=v;window.elementSdk.setConfig({surface_color:v})}},
+          {get:()=>c.text_color||defaultConfig.text_color, set:v=>{c.text_color=v;window.elementSdk.setConfig({text_color:v})}},
+          {get:()=>c.primary_color||defaultConfig.primary_color, set:v=>{c.primary_color=v;window.elementSdk.setConfig({primary_color:v})}},
+          {get:()=>c.secondary_color||defaultConfig.secondary_color, set:v=>{c.secondary_color=v;window.elementSdk.setConfig({secondary_color:v})}}
+        ],
+        borderables: [],
+        fontEditable: {get:()=>c.font_family||defaultConfig.font_family, set:v=>{c.font_family=v;window.elementSdk.setConfig({font_family:v})}},
+        fontSizeable: {get:()=>c.font_size||defaultConfig.font_size, set:v=>{c.font_size=v;window.elementSdk.setConfig({font_size:v})}}
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = {...defaultConfig, ...config};
+      return new Map([
+        ['hero_headline', c.hero_headline],
+        ['hero_subhead', c.hero_subhead],
+        ['offer_title', c.offer_title],
+        ['bottom_headline', c.bottom_headline],
+        ['bottom_subhead', c.bottom_subhead]
+      ]);
+    }
+  });
+
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) console.error('Data SDK init failed');
+
+  lucide.createIcons();
+  setTimeout(checkReveal, 100);
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e34043e04c427cf',t:'MTc3NDY3MzQ1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
