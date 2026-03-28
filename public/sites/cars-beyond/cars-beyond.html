@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Garage</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;family=Barlow:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html{scroll-behavior:smooth}
+html,body{height:100%;margin:0;padding:0}
+*{box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:#0a0a0f;color:#e0e0e8;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6,.font-heading{font-family:'Oswald',sans-serif}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0a0f}
+::-webkit-scrollbar-thumb{background:#1e90ff44;border-radius:3px}
+
+/* Glassmorphism */
+.glass{background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px}
+.glass-strong{background:rgba(255,255,255,0.07);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.12);border-radius:16px}
+
+/* Neon glow */
+.neon-blue{color:#1e90ff;text-shadow:0 0 10px #1e90ff66}
+.neon-red{color:#ff3040;text-shadow:0 0 10px #ff304066}
+.glow-blue{box-shadow:0 0 30px #1e90ff33,0 0 60px #1e90ff11}
+.glow-red{box-shadow:0 0 30px #ff304033,0 0 60px #ff304011}
+
+/* Pulse CTA */
+@keyframes cta-pulse{
+  0%,100%{box-shadow:0 0 20px #1e90ff44,0 0 40px #1e90ff22}
+  50%{box-shadow:0 0 30px #1e90ff66,0 0 60px #1e90ff33}
+}
+.pulse-cta{animation:cta-pulse 2.5s ease-in-out infinite}
+
+/* Hero pan */
+@keyframes hero-pan{
+  0%{transform:scale(1.12) translate(0,0)}
+  50%{transform:scale(1.18) translate(-2%,-1%)}
+  100%{transform:scale(1.12) translate(0,0)}
+}
+.hero-pan{animation:hero-pan 20s ease-in-out infinite}
+
+/* Speed lines */
+@keyframes speed-line{
+  0%{transform:translateX(-100%);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateX(200%);opacity:0}
+}
+
+/* Section reveal */
+@keyframes reveal-up{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal{opacity:0;transform:translateY(40px)}
+.reveal.visible{animation:reveal-up .8s ease-out forwards}
+
+/* Checklist tick */
+@keyframes tick-draw{
+  from{stroke-dashoffset:20}
+  to{stroke-dashoffset:0}
+}
+.tick-animate{stroke-dasharray:20;stroke-dashoffset:20}
+.tick-animate.drawn{animation:tick-draw .5s ease-out forwards}
+
+/* Motion blur overlay */
+@keyframes blur-sweep{
+  0%{transform:translateX(-100%);opacity:.3}
+  100%{transform:translateX(200%);opacity:0}
+}
+
+/* Star rating */
+.star-filled{fill:#1e90ff;stroke:#1e90ff}
+.star-empty{fill:none;stroke:#555}
+
+/* Nav active */
+.nav-link{position:relative;transition:color .3s}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#1e90ff;transition:width .3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-link:hover,.nav-link.active{color:#1e90ff}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto"><!-- STICKY NAV -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(10,10,15,0)">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-heading text-xl font-700 tracking-widest uppercase flex items-center gap-2" style="color:#1e90ff"> <!-- Steering wheel icon -->
+      <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="2" /><line x1="12" y1="2" x2="12" y2="10" /><line x1="4.93" y1="18.5" x2="10.27" y2="13.16" /><line x1="19.07" y1="18.5" x2="13.73" y2="13.16" />
+      </svg> Velocity Garage </a>
+     <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase" style="font-family:'Barlow',sans-serif"><a href="#home" class="nav-link active" data-section="home">Home</a> <a href="#wallpapers" class="nav-link" data-section="wallpapers">Wallpapers</a> <a href="#planner" class="nav-link" data-section="planner">Ride Planner</a> <a href="#preview" class="nav-link" data-section="preview">Preview</a> <a href="#reviews" class="nav-link" data-section="reviews">Reviews</a> <a href="#download" class="nav-link" data-section="download">Download</a>
+     </div><!-- Mobile menu button --> <button id="mobile-toggle" class="md:hidden" aria-label="Toggle menu">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#e0e0e8" stroke-width="1.5">
+       <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm font-medium tracking-wide uppercase" style="font-family:'Barlow',sans-serif"><a href="#home" class="nav-link">Home</a> <a href="#wallpapers" class="nav-link">Wallpapers</a> <a href="#planner" class="nav-link">Ride Planner</a> <a href="#preview" class="nav-link">Preview</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" class="relative w-full" style="height:100%;min-height:600px">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1920&amp;q=80" alt="Sports car on dramatic road" loading="lazy" class="hero-pan w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#111,#1a1a2e)';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(10,10,15,.5) 0%,rgba(10,10,15,.85) 70%,#0a0a0f 100%)"></div><!-- Speed lines -->
+     <div class="absolute top-1/3 left-0 w-full h-px" style="background:linear-gradient(90deg,transparent,#1e90ff44,transparent);animation:blur-sweep 6s linear infinite"></div>
+     <div class="absolute top-1/2 left-0 w-full h-px" style="background:linear-gradient(90deg,transparent,#ff304022,transparent);animation:blur-sweep 8s linear 2s infinite"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center h-full px-6" style="min-height:600px">
+     <p class="text-xs tracking-[.4em] uppercase mb-6 font-medium" style="color:#1e90ff">Premium Automotive Lifestyle</p>
+     <h1 id="hero-tagline" class="font-heading font-700 uppercase leading-none mb-6" style="font-size:clamp(2.5rem,8vw,6rem);letter-spacing:.02em">Feel the thrill,<br>
+      own the street.</h1>
+     <p id="hero-subhead" class="max-w-xl text-base md:text-lg mb-10" style="color:#999;line-height:1.7">Automotive visuals and ride templates built from real photography.</p>
+     <div class="flex flex-wrap gap-4 justify-center"><a href="#download" id="cta-primary-btn" class="pulse-cta px-8 py-3.5 font-heading font-600 uppercase tracking-wider text-sm rounded-lg transition-all" style="background:#1e90ff;color:#fff">Download the Pack</a> <a href="#preview" id="cta-secondary-btn" class="px-8 py-3.5 font-heading font-600 uppercase tracking-wider text-sm rounded-lg transition-all" style="border:1px solid rgba(255,255,255,.15);color:#ccc;background:rgba(255,255,255,.04)">Preview Gallery</a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 flex flex-col items-center gap-2" style="color:#555"><span class="text-xs tracking-widest uppercase">Scroll</span>
+      <svg width="16" height="24" viewbox="0 0 16 24" fill="none" stroke="#555" stroke-width="1.2">
+       <rect x="3" y="1" width="10" height="18" rx="5" /><line x1="8" y1="5" x2="8" y2="9" style="animation:speed-line 2s ease-in-out infinite" />
+      </svg>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS SECTION -->
+   <section id="wallpapers" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[.35em] uppercase mb-3 neon-blue">Collection</p>
+      <h2 class="font-heading font-700 text-3xl md:text-5xl uppercase mb-4">120+ Wallpapers &amp; 30 Posters</h2>
+      <p class="max-w-lg mx-auto" style="color:#777">Cinematic automotive photography. Sports cars, motorcycles, engine details, highway dusk, and neon city nights.</p>
+     </div>
+     <div class="reveal grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div class="group relative rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;q=75" alt="Motorcycle silhouette at dusk" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-wider uppercase font-medium">Biker Silhouette</span>
+       </div>
+      </div>
+      <div class="group relative rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&amp;q=75" alt="Sports car front view" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-wider uppercase font-medium">Supercar Portrait</span>
+       </div>
+      </div>
+      <div class="group relative rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1493238792000-8113da705763?w=600&amp;q=75" alt="Neon city night drive" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-wider uppercase font-medium">Neon City</span>
+       </div>
+      </div>
+      <div class="group relative rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&amp;q=75" alt="Highway at dusk" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-wider uppercase font-medium">Highway Dusk</span>
+       </div>
+      </div>
+     </div>
+     <p class="reveal text-center mt-8 text-sm" style="color:#555">+ story templates, caption pack, and more inside the vault.</p>
+    </div>
+   </section><!-- RIDE PLANNER SECTION -->
+   <section id="planner" class="relative w-full py-24 px-6" style="background:linear-gradient(180deg,#0a0a0f,#0d0d18,#0a0a0f)">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[.35em] uppercase mb-3 neon-red">Templates</p>
+      <h2 id="planner-title" class="font-heading font-700 text-3xl md:text-5xl uppercase mb-4">Ride Planner Kit</h2>
+      <p class="max-w-lg mx-auto" style="color:#777">Itinerary planners, maintenance checklists, and trip logs designed for riders who take their craft seriously.</p>
+     </div>
+     <div class="reveal grid md:grid-cols-3 gap-6"><!-- Itinerary Card -->
+      <div class="glass-strong p-6 flex flex-col gap-4 hover:border-[#1e90ff33] transition-all duration-500">
+       <div class="flex items-center gap-3 mb-2"><!-- Map pin icon -->
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+        </svg>
+        <h3 class="font-heading font-600 text-lg uppercase tracking-wide">Ride Itinerary</h3>
+       </div>
+       <div class="space-y-3 text-sm" style="color:#888">
+        <div class="flex items-center gap-3 p-3 rounded-lg" style="background:rgba(30,144,255,.06)"><span class="neon-blue font-heading font-600">01</span> <span>Route Planning Sheet</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-lg" style="background:rgba(30,144,255,.06)"><span class="neon-blue font-heading font-600">02</span> <span>Fuel &amp; Rest Stop Log</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-lg" style="background:rgba(30,144,255,.06)"><span class="neon-blue font-heading font-600">03</span> <span>Weather &amp; Gear Checklist</span>
+        </div>
+       </div>
+      </div><!-- Maintenance Card -->
+      <div class="glass-strong p-6 flex flex-col gap-4 hover:border-[#ff304033] transition-all duration-500">
+       <div class="flex items-center gap-3 mb-2"><!-- Wrench icon -->
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#ff3040" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+        </svg>
+        <h3 class="font-heading font-600 text-lg uppercase tracking-wide">Maintenance Log</h3>
+       </div>
+       <div class="space-y-2 text-sm" style="color:#888">
+        <div class="checklist-item flex items-center gap-3 p-2">
+         <svg class="tick-animate" width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#ff3040" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,9 8,13 14,5" />
+         </svg><span>Oil change schedule</span>
+        </div>
+        <div class="checklist-item flex items-center gap-3 p-2">
+         <svg class="tick-animate" width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#ff3040" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,9 8,13 14,5" />
+         </svg><span>Tire pressure tracker</span>
+        </div>
+        <div class="checklist-item flex items-center gap-3 p-2">
+         <svg class="tick-animate" width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#ff3040" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,9 8,13 14,5" />
+         </svg><span>Brake inspection log</span>
+        </div>
+        <div class="checklist-item flex items-center gap-3 p-2">
+         <svg class="tick-animate" width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#ff3040" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,9 8,13 14,5" />
+         </svg><span>Chain &amp; belt service</span>
+        </div>
+        <div class="checklist-item flex items-center gap-3 p-2">
+         <svg class="tick-animate" width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#ff3040" stroke-width="1.5" stroke-linecap="round">
+          <polyline points="4,9 8,13 14,5" />
+         </svg><span>Battery health check</span>
+        </div>
+       </div>
+      </div><!-- Trip Log Card -->
+      <div class="glass-strong p-6 flex flex-col gap-4 hover:border-[#1e90ff33] transition-all duration-500">
+       <div class="flex items-center gap-3 mb-2"><!-- Checklist icon -->
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+        </svg>
+        <h3 class="font-heading font-600 text-lg uppercase tracking-wide">Trip Log</h3>
+       </div>
+       <div class="space-y-3 text-sm" style="color:#888">
+        <div class="p-3 rounded-lg" style="background:rgba(30,144,255,.06)">
+         <p class="neon-blue text-xs uppercase tracking-wider mb-1">Last Ride</p>
+         <p>Coastal Highway — 142 mi</p>
+        </div>
+        <div class="p-3 rounded-lg" style="background:rgba(30,144,255,.06)">
+         <p class="neon-blue text-xs uppercase tracking-wider mb-1">Total Distance</p>
+         <p>2,847 miles logged</p>
+        </div>
+        <div class="p-3 rounded-lg" style="background:rgba(30,144,255,.06)">
+         <p class="neon-blue text-xs uppercase tracking-wider mb-1">Next Service</p>
+         <p>In 320 miles</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION -->
+   <section id="preview" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[.35em] uppercase mb-3 neon-blue">Inside the Vault</p>
+      <h2 class="font-heading font-700 text-3xl md:text-5xl uppercase mb-4">Preview Gallery</h2>
+      <p class="max-w-lg mx-auto" style="color:#777">A glimpse of what's inside: wallpapers, posters, story templates, and more.</p>
+     </div>
+     <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="relative rounded-2xl overflow-hidden group" style="aspect-ratio:16/10"><img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900&amp;q=75" alt="Classic sports car" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-end p-6" style="background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)">
+        <div>
+         <p class="neon-blue text-xs tracking-widest uppercase mb-1">Poster Pack</p>
+         <p class="font-heading font-600 text-xl uppercase">30 Printable Designs</p>
+        </div>
+       </div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden group" style="aspect-ratio:16/10"><img src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=900&amp;q=75" alt="Motorcycle engine close-up" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.background='#1a1a2e';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-end p-6" style="background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 60%)">
+        <div>
+         <p class="neon-red text-xs tracking-widest uppercase mb-1">Story Templates</p>
+         <p class="font-heading font-600 text-xl uppercase">Caption Pack Included</p>
+        </div>
+       </div>
+      </div>
+     </div><!-- What's included -->
+     <div class="reveal grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-12">
+      <div class="glass text-center py-5 px-3">
+       <p class="font-heading font-700 text-2xl neon-blue">120</p>
+       <p class="text-xs mt-1" style="color:#777">Wallpapers</p>
+      </div>
+      <div class="glass text-center py-5 px-3">
+       <p class="font-heading font-700 text-2xl neon-red">30</p>
+       <p class="text-xs mt-1" style="color:#777">Posters</p>
+      </div>
+      <div class="glass text-center py-5 px-3"><!-- Helmet icon -->
+       <svg class="mx-auto mb-1" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 16a10 10 0 0 1 20 0" /><path d="M2 16h20" /><path d="M6 16v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1" />
+       </svg>
+       <p class="text-xs mt-1" style="color:#777">Ride Planner</p>
+      </div>
+      <div class="glass text-center py-5 px-3">
+       <svg class="mx-auto mb-1" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#ff3040" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+       </svg>
+       <p class="text-xs mt-1" style="color:#777">Maintenance</p>
+      </div>
+      <div class="glass text-center py-5 px-3"><!-- Speedometer icon -->
+       <svg class="mx-auto mb-1" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" /><path d="M12 6v2" /><path d="M16.24 7.76l-1.42 1.42" /><path d="M18 12h-2" /><path d="M12 12l-3 3" />
+       </svg>
+       <p class="text-xs mt-1" style="color:#777">Story Kit</p>
+      </div>
+      <div class="glass text-center py-5 px-3">
+       <svg class="mx-auto mb-1" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#ff3040" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+       </svg>
+       <p class="text-xs mt-1" style="color:#777">Caption Pack</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="relative w-full py-24 px-6" style="background:linear-gradient(180deg,#0a0a0f,#0d0d18,#0a0a0f)">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[.35em] uppercase mb-3 neon-red">Testimonials</p>
+      <h2 class="font-heading font-700 text-3xl md:text-5xl uppercase mb-4">What Riders Say</h2>
+     </div>
+     <div class="reveal grid md:grid-cols-3 gap-6">
+      <div class="glass p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+       </div>
+       <p class="text-sm mb-4" style="color:#999;line-height:1.7">"The wallpapers alone were worth it. Cinematic quality that makes my phone look like a movie poster."</p>
+       <p class="font-heading font-600 text-sm uppercase tracking-wider">Marcus D.</p>
+       <p class="text-xs" style="color:#555">Car Enthusiast</p>
+      </div>
+      <div class="glass p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+       </div>
+       <p class="text-sm mb-4" style="color:#999;line-height:1.7">"The ride planner changed how I prep for weekend rides. Everything in one kit — routes, maintenance, gear."</p>
+       <p class="font-heading font-600 text-sm uppercase tracking-wider">Jess R.</p>
+       <p class="text-xs" style="color:#555">Motorcycle Rider</p>
+      </div>
+      <div class="glass p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-filled">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 16 16" class="star-empty">
+         <polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" />
+        </svg>
+       </div>
+       <p class="text-sm mb-4" style="color:#999;line-height:1.7">"Used the caption pack for my car page. My engagement jumped 40% in the first week. Solid content."</p>
+       <p class="font-heading font-600 text-sm uppercase tracking-wider">Tyler K.</p>
+       <p class="text-xs" style="color:#555">Content Creator</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD SECTION -->
+   <section id="download" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1920&amp;q=75" alt="Speed blur highway" loading="lazy" class="w-full h-full object-cover" style="filter:blur(2px) brightness(.3)" onerror="this.style.background='#0d0d18';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background:rgba(10,10,15,.8)"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="reveal">
+      <p class="text-xs tracking-[.35em] uppercase mb-4 neon-blue">Get the Full Pack</p>
+      <h2 id="bottom-cta-heading" class="font-heading font-700 text-3xl md:text-5xl uppercase mb-6">Upgrade your ride lifestyle.</h2>
+      <p class="mb-4 text-sm" style="color:#777">120 wallpapers, 30 posters, ride planner templates, maintenance checklist, story templates, and caption pack.</p><!-- Pricing angles -->
+      <div class="flex flex-wrap gap-3 justify-center mb-10"><span class="glass px-4 py-2 text-xs tracking-wider uppercase font-medium neon-blue">Speed Addict Seasonal Drops</span> <span class="glass px-4 py-2 text-xs tracking-wider uppercase font-medium" style="color:#ccc">Evergreen Ride Kit</span> <span class="glass px-4 py-2 text-xs tracking-wider uppercase font-medium neon-red">Premium Automotive Lifestyle</span>
+      </div><a href="#download" class="pulse-cta inline-block px-10 py-4 font-heading font-600 uppercase tracking-wider text-sm rounded-lg transition-all" style="background:#1e90ff;color:#fff">Download the Pack</a>
+     </div><!-- Vote + Comment Widget Placeholder -->
+     <div class="reveal glass-strong mt-16 p-8">
+      <div class="flex items-center justify-center gap-3 mb-4">
+       <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+       </svg>
+       <h3 class="font-heading font-600 text-lg uppercase tracking-wider">Vote + Comment</h3>
+      </div>
+      <p class="text-sm mb-6" style="color:#666">Embed Widget Here — Connect your favorite voting or comment platform.</p>
+      <div class="flex items-center justify-center gap-4"><button id="vote-up-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all hover:scale-105" style="background:rgba(30,144,255,.15);color:#1e90ff;border:1px solid rgba(30,144,255,.2)">
+        <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" /><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+        </svg><span id="vote-count">42</span> </button>
+       <div class="flex-1 max-w-sm">
+        <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 px-4 py-2.5 rounded-lg text-sm bg-transparent outline-none" style="border:1px solid rgba(255,255,255,.1);color:#ccc" aria-label="Comment"> <button id="comment-submit" class="px-4 py-2.5 rounded-lg text-sm font-medium transition-all hover:scale-105" style="background:rgba(255,48,64,.15);color:#ff3040;border:1px solid rgba(255,48,64,.2)">
+          <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg></button>
+        </div>
+       </div>
+      </div>
+      <div id="comments-list" class="mt-4 space-y-2 text-left"></div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-6 text-center" style="border-top:1px solid rgba(255,255,255,.05)">
+    <p class="font-heading text-sm tracking-widest uppercase" style="color:#333">Velocity Garage © 2025</p>
+   </footer>
+  </div>
+  <script>
+// === Element SDK ===
+const defaultConfig = {
+  hero_tagline: 'Feel the thrill, own the street.',
+  hero_subhead: 'Automotive visuals and ride templates built from real photography.',
+  cta_primary: 'Download the Pack',
+  cta_secondary: 'Preview Gallery',
+  planner_title: 'Ride Planner Kit',
+  bottom_cta_text: 'Upgrade your ride lifestyle.',
+  background_color: '#0a0a0f',
+  surface_color: 'rgba(255,255,255,0.04)',
+  text_color: '#e0e0e8',
+  primary_action_color: '#1e90ff',
+  secondary_action_color: '#ff3040',
+  font_family: 'Oswald',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  const c = (k) => config[k] || defaultConfig[k];
+
+  el('hero-tagline').innerHTML = c('hero_tagline').replace(',', ',<br>');
+  el('hero-subhead').textContent = c('hero_subhead');
+  el('cta-primary-btn').textContent = c('cta_primary');
+  el('cta-secondary-btn').textContent = c('cta_secondary');
+  el('planner-title').textContent = c('planner_title');
+  el('bottom-cta-heading').textContent = c('bottom_cta_text');
+
+  // Colors
+  const bg = c('background_color');
+  const txt = c('text_color');
+  const primary = c('primary_action_color');
+  const secondary = c('secondary_action_color');
+
+  document.body.style.background = bg;
+  document.body.style.color = txt;
+  el('cta-primary-btn').style.background = primary;
+
+  document.querySelectorAll('.neon-blue').forEach(e => {
+    e.style.color = primary;
+    e.style.textShadow = `0 0 10px ${primary}66`;
+  });
+  document.querySelectorAll('.neon-red').forEach(e => {
+    e.style.color = secondary;
+    e.style.textShadow = `0 0 10px ${secondary}66`;
+  });
+
+  // Fonts
+  const font = c('font_family');
+  const baseFontStack = 'sans-serif';
+  document.querySelectorAll('.font-heading, h1, h2, h3, h4, h5, h6').forEach(e => {
+    e.style.fontFamily = `${font}, ${baseFontStack}`;
+  });
+
+  const baseSize = c('font_size');
+  el('hero-tagline').style.fontSize = `clamp(${baseSize * 2.5}px, 8vw, ${baseSize * 6}px)`;
+  el('hero-subhead').style.fontSize = `${baseSize * 1.1}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    const mut = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        mut('background_color'),
+        mut('surface_color'),
+        mut('text_color'),
+        mut('primary_action_color'),
+        mut('secondary_action_color')
+      ],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['planner_title', config.planner_title || defaultConfig.planner_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// === Scroll reveal ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// === Checklist tick animation ===
+const tickObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const ticks = e.target.querySelectorAll('.tick-animate');
+      ticks.forEach((t, i) => setTimeout(() => t.classList.add('drawn'), i * 300));
+      tickObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.checklist-item').forEach(el => tickObserver.observe(el.parentElement));
+
+// === Nav scroll effect ===
+const appRoot = document.getElementById('app-root');
+const nav = document.getElementById('sticky-nav');
+appRoot.addEventListener('scroll', () => {
+  nav.style.background = appRoot.scrollTop > 60 ? 'rgba(10,10,15,.95)' : 'rgba(10,10,15,0)';
+  nav.style.borderBottom = appRoot.scrollTop > 60 ? '1px solid rgba(255,255,255,.05)' : 'none';
+
+  // Active nav link
+  const sections = ['home','wallpapers','planner','preview','reviews','download'];
+  let current = 'home';
+  sections.forEach(s => {
+    const sec = document.getElementById(s);
+    if (sec && sec.offsetTop - 100 <= appRoot.scrollTop) current = s;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('data-section') === current);
+  });
+});
+
+// === Mobile menu ===
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// === Vote + Comment widget ===
+let voteCount = 42;
+document.getElementById('vote-up-btn').addEventListener('click', () => {
+  voteCount++;
+  document.getElementById('vote-count').textContent = voteCount;
+});
+document.getElementById('comment-submit').addEventListener('click', () => submitComment());
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); submitComment(); }
+});
+function submitComment() {
+  const input = document.getElementById('comment-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'glass px-4 py-3 text-sm';
+  div.style.color = '#999';
+  div.textContent = val;
+  list.prepend(div);
+  input.value = '';
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e339e9115ae27cf',t:'MTc3NDY2OTI4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

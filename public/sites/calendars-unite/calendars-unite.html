@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GridFlow Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['Instrument Serif', 'Georgia', 'serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slowPan {
+  0% { transform: scale(1.08) translate(0, 0); }
+  50% { transform: scale(1.12) translate(-2%, -1%); }
+  100% { transform: scale(1.08) translate(0, 0); }
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0.1); }
+  50% { transform: scale(1.03); box-shadow: 0 0 20px 4px rgba(0,0,0,0.08); }
+}
+@keyframes tickDraw {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes gridSlide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible {
+  animation: fadeUp 0.8s ease-out forwards;
+}
+.anim-fade-in { opacity: 0; }
+.anim-fade-in.visible {
+  animation: fadeIn 0.7s ease-out forwards;
+}
+.hero-pan { animation: slowPan 25s ease-in-out infinite; }
+.cta-pulse:hover { animation: pulse-soft 1.5s ease-in-out infinite; }
+
+.glass-card {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(220,220,220,0.5);
+}
+
+.tick-line {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+}
+.tick-line.drawn {
+  animation: tickDraw 0.4s ease-out forwards;
+}
+
+.grid-accent {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+.scroll-smooth { scroll-behavior: smooth; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-white font-sans text-neutral-800 scroll-smooth overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05);">
+   <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-14"><a href="#home" class="font-serif text-xl tracking-tight" id="nav-logo">GridFlow Studio</a>
+    <div class="hidden md:flex items-center gap-8 text-xs tracking-widest uppercase font-medium text-neutral-500"><a href="#home" class="nav-link hover:text-neutral-900">Home</a> <a href="#calendars" class="nav-link hover:text-neutral-900">Calendars</a> <a href="#planner" class="nav-link hover:text-neutral-900">Planner</a> <a href="#preview" class="nav-link hover:text-neutral-900">Preview</a> <a href="#reviews" class="nav-link hover:text-neutral-900">Reviews</a> <a href="#download" class="nav-link hover:text-neutral-900">Download</a>
+    </div><button id="mobile-menu-btn" class="md:hidden" aria-label="Menu"> <i data-lucide="menu" style="width:20px;height:20px;"></i> </button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 text-xs tracking-widest uppercase font-medium text-neutral-500 flex flex-col gap-3"><a href="#home" class="hover:text-neutral-900">Home</a> <a href="#calendars" class="hover:text-neutral-900">Calendars</a> <a href="#planner" class="hover:text-neutral-900">Planner</a> <a href="#preview" class="hover:text-neutral-900">Preview</a> <a href="#reviews" class="hover:text-neutral-900">Reviews</a> <a href="#download" class="hover:text-neutral-900">Download</a>
+   </div>
+  </nav><!-- Hero -->
+  <section id="home" class="relative w-full overflow-hidden" style="min-height: 90%;">
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1600&amp;q=80" alt="Minimalist planning workspace" class="w-full h-full object-cover hero-pan" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5f5f5,#e0e0e0)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-white/70"></div>
+   </div>
+   <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-32 pb-20" style="min-height: 90%;">
+    <div class="mb-6 anim-fade-up visible" style="animation-delay:0.1s">
+     <svg width="48" height="48" viewbox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" class="text-neutral-400 mx-auto"><rect x="6" y="10" width="36" height="32" rx="3" /> <line x1="6" y1="20" x2="42" y2="20" /> <line x1="16" y1="6" x2="16" y2="14" /> <line x1="32" y1="6" x2="32" y2="14" /> <line x1="16" y1="26" x2="16" y2="26.01" stroke-width="2.5" stroke-linecap="round" /> <line x1="24" y1="26" x2="24" y2="26.01" stroke-width="2.5" stroke-linecap="round" /> <line x1="32" y1="26" x2="32" y2="26.01" stroke-width="2.5" stroke-linecap="round" /> <line x1="16" y1="34" x2="16" y2="34.01" stroke-width="2.5" stroke-linecap="round" /> <line x1="24" y1="34" x2="24" y2="34.01" stroke-width="2.5" stroke-linecap="round" />
+     </svg>
+    </div>
+    <h1 id="hero-title" class="font-serif text-5xl sm:text-6xl md:text-7xl leading-tight tracking-tight anim-fade-up visible" style="animation-delay:0.2s">Plan visually. Move faster.</h1>
+    <p id="hero-subtitle" class="mt-6 max-w-xl text-neutral-500 text-lg leading-relaxed anim-fade-up visible font-light" style="animation-delay:0.35s">Calendar visuals and planning templates built from real photography.</p>
+    <div class="mt-10 flex flex-col sm:flex-row gap-4 anim-fade-up visible" style="animation-delay:0.5s"><a href="#download" id="cta-primary-btn" class="cta-pulse px-8 py-3.5 bg-neutral-900 text-white text-sm font-medium tracking-wide rounded-full hover:bg-neutral-700 transition-colors"> Download the Pack </a> <a href="#preview" id="cta-secondary-btn" class="px-8 py-3.5 border border-neutral-300 text-neutral-700 text-sm font-medium tracking-wide rounded-full hover:border-neutral-500 hover:text-neutral-900 transition-colors"> Preview Gallery </a>
+    </div>
+    <div class="mt-16 flex items-center gap-8 text-xs text-neutral-400 tracking-wide uppercase anim-fade-up visible" style="animation-delay:0.65s"><span>160 Wallpapers</span> <span class="w-1 h-1 rounded-full bg-neutral-300"></span> <span>32 Planners</span> <span class="w-1 h-1 rounded-full bg-neutral-300"></span> <span>Instant Download</span>
+    </div>
+   </div>
+  </section><!-- Calendars Section -->
+  <section id="calendars" class="w-full py-24 px-6 grid-accent">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-xs tracking-widest uppercase text-neutral-400 mb-3 font-medium">The Collection</p>
+     <h2 id="calendars-title" class="font-serif text-4xl md:text-5xl tracking-tight">160 Calendar Wallpapers</h2>
+     <p class="mt-4 text-neutral-500 max-w-lg mx-auto leading-relaxed">Minimal, aesthetic calendar wallpapers designed for phones, tablets, and desktops. Updated monthly.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="glass-card rounded-2xl overflow-hidden anim-fade-up stagger-1">
+      <div class="aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=600&amp;q=80" alt="Clean desk calendar setup" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5">
+       <div class="flex items-center gap-2 text-neutral-400 mb-2"><i data-lucide="calendar" style="width:14px;height:14px;"></i> <span class="text-xs tracking-wide uppercase">Monthly Layouts</span>
+       </div>
+       <h3 class="font-serif text-xl">Desktop Wallpapers</h3>
+       <p class="text-sm text-neutral-500 mt-1">48 high-resolution calendar wallpapers sized for desktop displays.</p>
+      </div>
+     </div>
+     <div class="glass-card rounded-2xl overflow-hidden anim-fade-up stagger-2">
+      <div class="aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=600&amp;q=80" alt="Notebook and pen planning" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5">
+       <div class="flex items-center gap-2 text-neutral-400 mb-2"><i data-lucide="grid" style="width:14px;height:14px;"></i> <span class="text-xs tracking-wide uppercase">Grid View</span>
+       </div>
+       <h3 class="font-serif text-xl">Phone Wallpapers</h3>
+       <p class="text-sm text-neutral-500 mt-1">64 vertical calendar wallpapers crafted for mobile screens.</p>
+      </div>
+     </div>
+     <div class="glass-card rounded-2xl overflow-hidden anim-fade-up stagger-3">
+      <div class="aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&amp;q=80" alt="Tablet planning workspace" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5">
+       <div class="flex items-center gap-2 text-neutral-400 mb-2"><i data-lucide="clock" style="width:14px;height:14px;"></i> <span class="text-xs tracking-wide uppercase">All Year</span>
+       </div>
+       <h3 class="font-serif text-xl">Tablet Wallpapers</h3>
+       <p class="text-sm text-neutral-500 mt-1">48 landscape calendar wallpapers optimized for tablet displays.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Planner Section -->
+  <section id="planner" class="w-full py-24 px-6 bg-neutral-50">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-xs tracking-widest uppercase text-neutral-400 mb-3 font-medium">Templates</p>
+     <h2 id="planner-title" class="font-serif text-4xl md:text-5xl tracking-tight">32 Printable Planners</h2>
+     <p class="mt-4 text-neutral-500 max-w-lg mx-auto leading-relaxed">Weekly templates, yearly planners, and habit trackers. Print-ready, minimal design.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><!-- Weekly Planner Preview -->
+     <div class="glass-card rounded-2xl p-8 anim-fade-up stagger-1">
+      <div class="flex items-center gap-3 mb-6">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="text-neutral-400"><rect x="3" y="4" width="18" height="18" rx="2" /> <line x1="3" y1="10" x2="21" y2="10" /> <line x1="9" y1="4" x2="9" y2="22" />
+       </svg>
+       <h3 class="font-serif text-2xl">Weekly Planner</h3>
+      </div>
+      <div class="grid grid-cols-7 gap-1 mb-4">
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Mon
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Tue
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Wed
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Thu
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Fri
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Sat
+       </div>
+       <div class="text-center text-[10px] tracking-wider uppercase text-neutral-400 font-medium py-1">
+        Sun
+       </div>
+      </div>
+      <div class="grid grid-cols-7 gap-1">
+       <div class="bg-white/60 rounded-lg p-2 min-h-[80px] border border-neutral-100"><span class="text-[10px] text-neutral-400">Focus block</span>
+       </div>
+       <div class="bg-white/60 rounded-lg p-2 min-h-[80px] border border-neutral-100"><span class="text-[10px] text-neutral-400">Meetings</span>
+       </div>
+       <div class="bg-white/60 rounded-lg p-2 min-h-[80px] border border-neutral-100 ring-1 ring-neutral-300"><span class="text-[10px] text-neutral-600 font-medium">Today</span>
+       </div>
+       <div class="bg-white/60 rounded-lg p-2 min-h-[80px] border border-neutral-100"></div>
+       <div class="bg-white/60 rounded-lg p-2 min-h-[80px] border border-neutral-100"></div>
+       <div class="bg-neutral-100/50 rounded-lg p-2 min-h-[80px] border border-neutral-100"></div>
+       <div class="bg-neutral-100/50 rounded-lg p-2 min-h-[80px] border border-neutral-100"></div>
+      </div>
+      <div class="mt-4 pt-4 border-t border-neutral-100 flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="pencil" style="width:12px;height:12px;"></i> <span>Notes section included on every template</span>
+      </div>
+     </div><!-- Habit Tracker Preview -->
+     <div class="glass-card rounded-2xl p-8 anim-fade-up stagger-2">
+      <div class="flex items-center gap-3 mb-6">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="text-neutral-400"><circle cx="12" cy="12" r="9" /> <path d="M9 12l2 2 4-4" />
+       </svg>
+       <h3 class="font-serif text-2xl">Habit Tracker</h3>
+      </div>
+      <div class="space-y-3" id="habit-tracker">
+       <div class="flex items-center gap-3 habit-row">
+        <div class="w-5 h-5 rounded border border-neutral-300 flex items-center justify-center cursor-pointer hover:border-neutral-500 transition-colors habit-check" data-checked="false">
+         <svg width="12" height="12" viewbox="0 0 12 12" class="hidden">
+          <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tick-line" />
+         </svg>
+        </div><span class="text-sm text-neutral-600">Morning routine</span>
+        <div class="ml-auto flex gap-1">
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+        </div>
+       </div>
+       <div class="flex items-center gap-3 habit-row">
+        <div class="w-5 h-5 rounded border border-neutral-300 flex items-center justify-center cursor-pointer hover:border-neutral-500 transition-colors habit-check" data-checked="false">
+         <svg width="12" height="12" viewbox="0 0 12 12" class="hidden">
+          <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tick-line" />
+         </svg>
+        </div><span class="text-sm text-neutral-600">Read 30 minutes</span>
+        <div class="ml-auto flex gap-1">
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+        </div>
+       </div>
+       <div class="flex items-center gap-3 habit-row">
+        <div class="w-5 h-5 rounded border border-neutral-300 flex items-center justify-center cursor-pointer hover:border-neutral-500 transition-colors habit-check" data-checked="false">
+         <svg width="12" height="12" viewbox="0 0 12 12" class="hidden">
+          <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tick-line" />
+         </svg>
+        </div><span class="text-sm text-neutral-600">Exercise</span>
+        <div class="ml-auto flex gap-1">
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+        </div>
+       </div>
+       <div class="flex items-center gap-3 habit-row">
+        <div class="w-5 h-5 rounded border border-neutral-300 flex items-center justify-center cursor-pointer hover:border-neutral-500 transition-colors habit-check" data-checked="false">
+         <svg width="12" height="12" viewbox="0 0 12 12" class="hidden">
+          <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="tick-line" />
+         </svg>
+        </div><span class="text-sm text-neutral-600">Plan tomorrow</span>
+        <div class="ml-auto flex gap-1">
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-900"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-300"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+         <div class="w-3 h-3 rounded-full bg-neutral-200"></div>
+        </div>
+       </div>
+      </div>
+      <div class="mt-6 pt-4 border-t border-neutral-100">
+       <div class="flex items-center justify-between text-xs text-neutral-400"><span>Track up to 12 habits daily</span>
+        <div class="flex items-center gap-1"><i data-lucide="target" style="width:12px;height:12px;"></i> <span>30-day format</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Extra Templates -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+     <div class="glass-card rounded-xl p-5 text-center anim-fade-up stagger-3"><i data-lucide="calendar" style="width:20px;height:20px;" class="mx-auto text-neutral-400 mb-3"></i>
+      <p class="text-sm font-medium">Yearly Planner</p>
+      <p class="text-xs text-neutral-400 mt-1">Full 12-month overview</p>
+     </div>
+     <div class="glass-card rounded-xl p-5 text-center anim-fade-up stagger-4"><i data-lucide="check-square" style="width:20px;height:20px;" class="mx-auto text-neutral-400 mb-3"></i>
+      <p class="text-sm font-medium">Weekly Templates</p>
+      <p class="text-xs text-neutral-400 mt-1">7 layout variations</p>
+     </div>
+     <div class="glass-card rounded-xl p-5 text-center anim-fade-up stagger-5"><i data-lucide="target" style="width:20px;height:20px;" class="mx-auto text-neutral-400 mb-3"></i>
+      <p class="text-sm font-medium">Habit Tracker</p>
+      <p class="text-xs text-neutral-400 mt-1">30-day grids</p>
+     </div>
+     <div class="glass-card rounded-xl p-5 text-center anim-fade-up stagger-6"><i data-lucide="pencil" style="width:20px;height:20px;" class="mx-auto text-neutral-400 mb-3"></i>
+      <p class="text-sm font-medium">Caption Pack</p>
+      <p class="text-xs text-neutral-400 mt-1">90 ready captions</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Preview Gallery -->
+  <section id="preview" class="w-full py-24 px-6 grid-accent">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-xs tracking-widest uppercase text-neutral-400 mb-3 font-medium">Gallery</p>
+     <h2 class="font-serif text-4xl md:text-5xl tracking-tight">Preview the Pack</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+     <div class="rounded-xl overflow-hidden aspect-[3/4] anim-fade-up stagger-1"><img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&amp;q=80" alt="Calendar notebook" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-xl overflow-hidden aspect-[3/4] anim-fade-up stagger-2"><img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=400&amp;q=80" alt="Weekly planner layout" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-xl overflow-hidden aspect-[3/4] anim-fade-up stagger-3"><img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=400&amp;q=80" alt="Clean desk setup" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-xl overflow-hidden aspect-[3/4] anim-fade-up stagger-4"><img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&amp;q=80" alt="Schedule planning" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" loading="lazy" onerror="this.style.background='#f0f0f0';this.alt='Image unavailable';">
+     </div>
+    </div>
+   </div>
+  </section><!-- Reviews -->
+  <section id="reviews" class="w-full py-24 px-6 bg-neutral-50">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-xs tracking-widest uppercase text-neutral-400 mb-3 font-medium">Reviews</p>
+     <h2 class="font-serif text-4xl md:text-5xl tracking-tight">What People Say</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+     <div class="glass-card rounded-2xl p-6 anim-fade-up stagger-1">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+      </div>
+      <p class="text-sm text-neutral-600 leading-relaxed">"Finally, calendar wallpapers that actually look good. I've been using these on every device for months."</p>
+      <p class="mt-4 text-xs text-neutral-400 font-medium">Sarah M. — Content Creator</p>
+     </div>
+     <div class="glass-card rounded-2xl p-6 anim-fade-up stagger-2">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+      </div>
+      <p class="text-sm text-neutral-600 leading-relaxed">"The printable planners are minimal and beautiful. I printed the weekly template and use it every single week."</p>
+      <p class="mt-4 text-xs text-neutral-400 font-medium">James T. — Freelance Designer</p>
+     </div>
+     <div class="glass-card rounded-2xl p-6 anim-fade-up stagger-3">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 14 14" fill="currentColor" class="text-neutral-800">
+        <path d="M7 1l1.76 3.57 3.94.57-2.85 2.78.67 3.93L7 10.27l-3.52 1.58.67-3.93L1.3 5.14l3.94-.57z" />
+       </svg>
+      </div>
+      <p class="text-sm text-neutral-600 leading-relaxed">"Great value. The habit tracker alone was worth it. Clean design, no clutter, just what I needed."</p>
+      <p class="mt-4 text-xs text-neutral-400 font-medium">Leila K. — Productivity Coach</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Bottom CTA / Download -->
+  <section id="download" class="w-full py-28 px-6 relative overflow-hidden">
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&amp;q=80" alt="Productivity workspace" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f5f5f5,#e0e0e0)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-white/85"></div>
+   </div>
+   <div class="relative z-10 max-w-2xl mx-auto text-center">
+    <div class="anim-fade-up">
+     <p class="text-xs tracking-widest uppercase text-neutral-400 mb-4 font-medium">Get the Pack</p>
+     <h2 id="bottom-cta-heading" class="font-serif text-4xl md:text-5xl tracking-tight mb-6">Make time look clean.</h2>
+     <p class="text-neutral-500 mb-4 leading-relaxed">160 calendar wallpapers, 32 printable planners, yearly planner, weekly templates, habit tracker, and a full caption pack. One download. Instant access.</p>
+     <div class="inline-flex flex-col sm:flex-row gap-3 mb-10">
+      <div class="glass-card rounded-xl px-5 py-3 text-sm"><span class="text-neutral-400">One-time price</span> <span class="ml-2 font-serif text-xl text-neutral-900">$29</span>
+      </div><a href="#download" class="cta-pulse inline-flex items-center gap-2 px-8 py-3.5 bg-neutral-900 text-white text-sm font-medium tracking-wide rounded-full hover:bg-neutral-700 transition-colors"> <i data-lucide="download" style="width:16px;height:16px;"></i> Download Now </a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="glass-card rounded-2xl p-6 max-w-md mx-auto mt-6">
+      <p class="text-xs tracking-widest uppercase text-neutral-400 mb-4 font-medium">Vote + Comment</p>
+      <div class="flex items-center justify-center gap-4 mb-5"><button id="vote-btn" class="flex items-center gap-2 px-5 py-2.5 border border-neutral-200 rounded-full hover:border-neutral-400 transition-colors text-sm">
+        <svg width="16" height="16" viewbox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
+         <path d="M8 3l0 10M4 7l4-4 4 4" />
+        </svg><span id="vote-count">0</span> </button> <span class="text-xs text-neutral-400">Upvote this pack</span>
+      </div>
+      <div class="space-y-3"><textarea id="comment-input" rows="2" placeholder="Leave a comment..." class="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:border-neutral-400 transition-colors bg-white/50"></textarea> <button id="comment-btn" class="w-full py-2.5 bg-neutral-900 text-white text-sm rounded-xl hover:bg-neutral-700 transition-colors font-medium">Post Comment</button>
+       <div id="comments-list" class="space-y-2 max-h-40 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full py-8 px-6 border-t border-neutral-100">
+   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-serif text-sm text-neutral-400">GridFlow Studio</p>
+    <p class="text-xs text-neutral-400">Planning aesthetic. Daily-use digital products.</p>
+   </div>
+  </footer>
+  <script>
+  // Element SDK
+  const defaultConfig = {
+    background_color: '#ffffff',
+    surface_color: 'rgba(255,255,255,0.72)',
+    text_color: '#262626',
+    primary_action_color: '#171717',
+    secondary_action_color: '#a3a3a3',
+    font_family: 'Instrument Serif',
+    font_size: 16,
+    hero_title: 'Plan visually. Move faster.',
+    hero_subtitle: 'Calendar visuals and planning templates built from real photography.',
+    cta_primary: 'Download the Pack',
+    cta_secondary: 'Preview Gallery',
+    calendars_title: '160 Calendar Wallpapers',
+    planner_title: '32 Printable Planners',
+    bottom_cta_text: 'Make time look clean.'
+  };
+
+  function applyConfig(config) {
+    const c = { ...defaultConfig, ...config };
+    const body = document.getElementById('app-body');
+    body.style.backgroundColor = c.background_color;
+    body.style.color = c.text_color;
+
+    // Font
+    const ff = c.font_family + ', Georgia, serif';
+    const sf = 'DM Sans, system-ui, sans-serif';
+    document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = ff);
+    body.style.fontFamily = sf;
+
+    // Font size
+    const bs = c.font_size;
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) {
+      heroTitle.style.fontSize = `${bs * 3.5}px`;
+      heroTitle.textContent = c.hero_title;
+    }
+    const heroSub = document.getElementById('hero-subtitle');
+    if (heroSub) {
+      heroSub.style.fontSize = `${bs * 1.125}px`;
+      heroSub.textContent = c.hero_subtitle;
+    }
+
+    // Texts
+    const ctaPrimary = document.getElementById('cta-primary-btn');
+    if (ctaPrimary) {
+      ctaPrimary.textContent = c.cta_primary;
+      ctaPrimary.style.backgroundColor = c.primary_action_color;
+    }
+    const ctaSecondary = document.getElementById('cta-secondary-btn');
+    if (ctaSecondary) {
+      ctaSecondary.textContent = c.cta_secondary;
+      ctaSecondary.style.borderColor = c.secondary_action_color;
+      ctaSecondary.style.color = c.text_color;
+    }
+    const calTitle = document.getElementById('calendars-title');
+    if (calTitle) calTitle.textContent = c.calendars_title;
+    const planTitle = document.getElementById('planner-title');
+    if (planTitle) planTitle.textContent = c.planner_title;
+    const bottomCta = document.getElementById('bottom-cta-heading');
+    if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+
+    // Colors on action elements
+    document.querySelectorAll('.cta-pulse, #comment-btn').forEach(el => {
+      el.style.backgroundColor = c.primary_action_color;
+    });
+    document.querySelectorAll('.nav-link, .text-neutral-400').forEach(el => {
+      // Keep secondary color on muted items
+    });
+
+    // Glass cards surface
+    document.querySelectorAll('.glass-card').forEach(el => {
+      el.style.background = c.surface_color;
+    });
+  }
+
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => {
+        const c = { ...defaultConfig, ...config };
+        return {
+          recolorables: [
+            { get: () => c.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => c.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => c.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => c.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+            { get: () => c.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => c.font_family,
+            set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => c.font_size,
+            set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        };
+      },
+      mapToEditPanelValues: (config) => {
+        const c = { ...defaultConfig, ...config };
+        return new Map([
+          ['hero_title', c.hero_title],
+          ['hero_subtitle', c.hero_subtitle],
+          ['cta_primary', c.cta_primary],
+          ['cta_secondary', c.cta_secondary],
+          ['calendars_title', c.calendars_title],
+          ['planner_title', c.planner_title],
+          ['bottom_cta_text', c.bottom_cta_text]
+        ]);
+      }
+    });
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.anim-fade-up, .anim-fade-in').forEach(el => {
+    if (!el.classList.contains('visible')) observer.observe(el);
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Habit tracker checkboxes
+  document.querySelectorAll('.habit-check').forEach(check => {
+    check.addEventListener('click', () => {
+      const isChecked = check.dataset.checked === 'true';
+      check.dataset.checked = isChecked ? 'false' : 'true';
+      const svg = check.querySelector('svg');
+      const tick = svg.querySelector('.tick-line');
+      if (!isChecked) {
+        svg.classList.remove('hidden');
+        tick.classList.add('drawn');
+        check.style.backgroundColor = '#171717';
+        check.style.borderColor = '#171717';
+      } else {
+        svg.classList.add('hidden');
+        tick.classList.remove('drawn');
+        check.style.backgroundColor = '';
+        check.style.borderColor = '';
+      }
+    });
+  });
+
+  // Vote + Comment widget
+  let voteCount = 0;
+  let hasVoted = false;
+  const comments = [];
+
+  document.getElementById('vote-btn').addEventListener('click', () => {
+    if (!hasVoted) {
+      voteCount++;
+      hasVoted = true;
+      document.getElementById('vote-count').textContent = voteCount;
+      document.getElementById('vote-btn').style.borderColor = '#171717';
+      document.getElementById('vote-btn').style.backgroundColor = '#171717';
+      document.getElementById('vote-btn').style.color = '#fff';
+    } else {
+      voteCount--;
+      hasVoted = false;
+      document.getElementById('vote-count').textContent = voteCount;
+      document.getElementById('vote-btn').style.borderColor = '';
+      document.getElementById('vote-btn').style.backgroundColor = '';
+      document.getElementById('vote-btn').style.color = '';
+    }
+  });
+
+  document.getElementById('comment-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if (!text) return;
+    comments.push(text);
+    input.value = '';
+    const list = document.getElementById('comments-list');
+    const div = document.createElement('div');
+    div.className = 'bg-white/60 rounded-lg px-4 py-2.5 text-sm text-neutral-600 border border-neutral-100';
+    div.textContent = text;
+    div.style.animation = 'fadeUp 0.3s ease-out';
+    list.prepend(div);
+  });
+
+  // Init icons
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e339de0919027cf',t:'MTc3NDY2OTI2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

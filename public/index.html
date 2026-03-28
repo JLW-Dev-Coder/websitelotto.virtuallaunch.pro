@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Lotto.Virtual Launch Pro</title>
+  <title>Website Lotto</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
@@ -238,8 +238,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-
-
     .stagger-1 { animation-delay: 0.1s; }
     .stagger-2 { animation-delay: 0.2s; }
     .stagger-3 { animation-delay: 0.3s; }
@@ -258,6 +256,112 @@
     /* FAQ */
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; opacity: 0; }
     .faq-answer.open { max-height: 500px; opacity: 1; }
+
+    /* Template Card Styles */
+    .template-card {
+      position: relative;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 280px;
+    }
+
+    .template-card:hover {
+      border-color: rgba(0,212,255,0.3);
+      background: rgba(0,212,255,0.05);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,212,255,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .template-preview {
+      height: 140px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(255,45,138,0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .template-preview::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,212,255,0.1) 8px, rgba(0,212,255,0.1) 16px);
+    }
+
+    .template-preview span {
+      font-size: 3rem;
+      animation: iconBounce 3s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    .template-info {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .template-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+    }
+
+    .template-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+
+    .template-cta {
+      font-size: 0.85rem;
+      padding: 0.7rem 1rem;
+      border-radius: 0.75rem;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.2);
+      color: #00D4FF;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .template-cta:hover {
+      background: rgba(0,212,255,0.2);
+      border-color: rgba(0,212,255,0.4);
+      box-shadow: 0 0 15px rgba(0,212,255,0.3);
+    }
+
+    .template-card.hidden {
+      display: none;
+    }
+
+    .category-filter {
+      cursor: pointer;
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .category-filter.active {
+      background: rgba(0,212,255,0.2) !important;
+      border-color: rgba(0,212,255,0.4) !important;
+      color: #00D4FF !important;
+      box-shadow: 0 0 15px rgba(0,212,255,0.3);
+    }
   </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -269,10 +373,10 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#hero" class="flex items-center gap-2 group">
       <div class="w-8 h-8 rounded-lg bg-neonBlue/20 neon-border flex items-center justify-center"><i data-lucide="diamond" class="w-4 h-4 text-neonBlue"></i>
       </div><span id="nav-logo-text" class="font-heading font-bold text-white text-lg">Website Lotto</span> </a>
-     <div class="hidden md:flex items-center gap-6 text-sm text-gray-400"><a href="#how" class="hover:text-neonBlue transition">How it works</a> <a href="#sites" class="hover:text-neonBlue transition">Sites available</a> <a href="#features" class="hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="hover:text-neonBlue transition">FAQ</a>
+     <div class="hidden md:flex items-center gap-6 text-sm text-gray-400"><a href="#how" class="hover:text-neonBlue transition">How it works</a> <a href="#sites" class="hover:text-neonBlue transition">Template Library</a> <a href="#features" class="hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="hover:text-neonBlue transition">FAQ</a>
      </div><a href="#sites" id="nav-cta" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neonBlue text-void font-heading font-bold text-sm btn-glow-blue hover:bg-neonBlue/90 transition"> Claim a site </a> <!-- Mobile menu button --> <button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white p-2"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
     </div><!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm text-gray-400" style="background: rgba(7,7,10,0.95);"><a href="#how" class="block py-2 hover:text-neonBlue transition">How it works</a> <a href="#sites" class="block py-2 hover:text-neonBlue transition">Sites available</a> <a href="#features" class="block py-2 hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="block py-2 hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="block py-2 hover:text-neonBlue transition">FAQ</a> <a href="#sites" class="inline-block mt-2 px-4 py-2 rounded-full bg-neonBlue text-void font-heading font-bold text-sm">Claim a site</a>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm text-gray-400" style="background: rgba(7,7,10,0.95);"><a href="#how" class="block py-2 hover:text-neonBlue transition">How it works</a> <a href="#sites" class="block py-2 hover:text-neonBlue transition">Template Library</a> <a href="#features" class="block py-2 hover:text-neonBlue transition">What's included</a> <a href="#pricing" class="block py-2 hover:text-neonBlue transition">Pricing</a> <a href="#faq" class="block py-2 hover:text-neonBlue transition">FAQ</a> <a href="#sites" class="inline-block mt-2 px-4 py-2 rounded-full bg-neonBlue text-void font-heading font-bold text-sm">Claim a site</a>
     </div>
    </nav><!-- HERO -->
    <section id="hero" class="relative pt-28 pb-20 sm:pt-36 sm:pb-28 px-4">
@@ -289,7 +393,7 @@
      <p id="hero-desc" class="mt-6 text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed animate-in stagger-2">Claim a ready-made, high-converting website today. Hosted on a reliable domain with Cloudflare-backed security. Plug in your Stripe or payment link and start selling online in minutes.</p><!-- Neon badges -->
      <div class="mt-8 flex flex-wrap justify-center gap-3 animate-in stagger-3"><span id="badge-price" class="px-4 py-2 rounded-full neon-border font-heading font-bold text-sm text-neonBlue glow-blue">$99/mo</span> <span class="px-4 py-2 rounded-full neon-border-yellow font-heading font-bold text-sm text-neonYellow glow-yellow">Easy to transfer</span> <span class="px-4 py-2 rounded-full font-heading font-bold text-sm text-neonCyan" style="border:1px solid rgba(0,240,208,0.2); text-shadow:0 0 15px rgba(0,240,208,0.4);">Cloudflare-backed security</span>
      </div><!-- Buttons -->
-     <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-in stagger-3"><a href="#sites" id="hero-cta-primary" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-neonYellow text-void font-heading font-bold text-base btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="eye" class="w-5 h-5"></i> See sites available </a> <a href="#how" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-transparent neon-border text-neonBlue font-heading font-bold text-base hover:bg-neonBlue/10 transition"> <i data-lucide="play-circle" class="w-5 h-5"></i> How it works </a>
+     <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-in stagger-3"><a href="#sites" id="hero-cta-primary" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-neonYellow text-void font-heading font-bold text-base btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="eye" class="w-5 h-5"></i> See templates </a> <a href="#how" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-transparent neon-border text-neonBlue font-heading font-bold text-base hover:bg-neonBlue/10 transition"> <i data-lucide="play-circle" class="w-5 h-5"></i> How it works </a>
      </div>
     </div>
    </section>
@@ -305,7 +409,7 @@
        <div class="mt-4 w-14 h-14 mx-auto rounded-xl bg-neonBlue/10 flex items-center justify-center icon-bounce"><i data-lucide="mouse-pointer-click" class="w-7 h-7 text-neonBlue"></i>
        </div>
        <h3 class="mt-5 font-heading font-bold text-lg text-white">Pick a site</h3>
-       <p class="mt-2 text-gray-400 text-sm leading-relaxed">Browse available sites and choose one that fits your business.</p>
+       <p class="mt-2 text-gray-400 text-sm leading-relaxed">Browse 50+ templates and choose one that fits your business.</p>
       </div><!-- Step 2 -->
       <div class="relative rounded-2xl p-8 neon-border card-glow transition-all duration-300 card-dance" style="background: rgba(255,255,255,0.03);">
        <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-neonYellow/20 flex items-center justify-center neon-border-yellow badge-pulse"><span class="font-heading font-bold text-neonYellow text-sm">2</span>
@@ -326,50 +430,22 @@
      </div>
     </div>
    </section>
-   <div class="neon-line max-w-4xl mx-auto"></div><!-- SITES AVAILABLE -->
+   <div class="neon-line max-w-4xl mx-auto"></div><!-- TEMPLATE LIBRARY -->
    <section id="sites" class="py-20 sm:py-28 px-4">
-    <div class="max-w-5xl mx-auto text-center">
-     <h2 id="sites-title" class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue">Sites Available</h2>
-     <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">First come, first served</p>
-     <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Site 1 -->
-      <div class="rounded-2xl overflow-hidden neon-border card-glow transition-all duration-300 group card-sway-left" style="background: rgba(255,255,255,0.03);">
-       <div class="h-44 bg-gradient-to-br from-neonBlue/10 to-neonCyan/5 flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,212,255,0.05) 10px, rgba(0,212,255,0.05) 20px);"></div>
-        <div class="relative text-center"><span class="text-4xl icon-bounce">🐾</span>
-         <p class="mt-2 font-heading font-bold text-neonBlue text-sm">Happy Paw-ter</p>
-        </div>
-       </div>
-       <div class="p-6 text-left">
-        <h3 class="font-heading font-bold text-white text-lg">Happy Paw-ter Dog Walking</h3>
-        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Friendly, trustworthy pet care with instant booking.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonBlue text-void font-heading font-bold text-sm btn-glow-blue hover:bg-neonBlue/90 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
-       </div>
-      </div><!-- Site 2 -->
-      <div class="rounded-2xl overflow-hidden neon-border card-glow transition-all duration-300 group card-pulse-scale" style="background: rgba(255,255,255,0.03);">
-       <div class="h-44 bg-gradient-to-br from-neonYellow/10 to-neonMagenta/5 flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,229,52,0.05) 10px, rgba(255,229,52,0.05) 20px);"></div>
-        <div class="relative text-center"><span class="text-4xl icon-bounce">🏎️</span>
-         <p class="mt-2 font-heading font-bold text-neonYellow text-sm">Car Custom Nation</p>
-        </div>
-       </div>
-       <div class="p-6 text-left">
-        <h3 class="font-heading font-bold text-white text-lg">Car Custom Nation</h3>
-        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Bold automotive style for custom builds and product sales.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonYellow text-void font-heading font-bold text-sm btn-glow-yellow hover:brightness-110 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
-       </div>
-      </div><!-- Site 3 -->
-      <div class="rounded-2xl overflow-hidden card-glow transition-all duration-300 group card-sway-right" style="background: rgba(255,255,255,0.03); border:1px solid rgba(255,45,138,0.15);">
-       <div class="h-44 bg-gradient-to-br from-neonMagenta/10 to-neonBlue/5 flex items-center justify-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,45,138,0.05) 10px, rgba(255,45,138,0.05) 20px);"></div>
-        <div class="relative text-center"><span class="text-4xl icon-bounce">🧹</span>
-         <p class="mt-2 font-heading font-bold text-neonMagenta text-sm">Clean Sweep</p>
-        </div>
-       </div>
-       <div class="p-6 text-left">
-        <h3 class="font-heading font-bold text-white text-lg">Clean Sweep House Cleaning</h3>
-        <p class="mt-2 text-gray-400 text-sm leading-relaxed">Crisp, clean design for recurring clients and easy scheduling.</p><button class="mt-5 w-full py-2.5 rounded-full bg-neonMagenta text-void font-heading font-bold text-sm btn-glow-magenta hover:brightness-110 transition button-hover-glow flex items-center justify-center gap-2"> <i data-lucide="check-circle" class="w-4 h-4"></i> Claim this site </button>
-       </div>
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 id="sites-title" class="font-heading font-extrabold text-3xl sm:text-5xl glow-blue">Template Library</h2>
+      <p class="mt-3 text-gray-500 text-sm uppercase tracking-widest font-heading">50+ categories, unlimited potential</p>
+     </div><!-- Category Filter Pills -->
+     <div class="mb-16">
+      <div class="flex flex-wrap gap-2 justify-center"><button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="all" style="background: rgba(0,212,255,0.2); border: 1px solid rgba(0,212,255,0.4); color: #00D4FF;">All</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="adventure">Adventure</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="animals">Animals</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="art">Art</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="beauty">Beauty</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="beverages">Beverages</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="brand">Brand</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="cosmetics">Cosmetics</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="cosmos">Cosmos</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="culture">Culture</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="entertainment">Entertainment</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="events">Events</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="family">Family</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="fame">Fame</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="fashion">Fashion</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="fitness">Fitness</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="food">Food</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="games">Games</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="hair">Hair</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="hobby">Hobby</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="holidays">Holidays</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="home">Home</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="jewelry">Jewelry</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="learning">Learning</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="legal">Legal</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="lifestyle">Lifestyle</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="movies">Movies</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="mood">Mood</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="mystery">Mystery</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="mystical">Mystical</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="nature">Nature</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="photography">Photography</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="prompts">Prompts</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="real-estate">Real Estate</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="services">Services</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="social">Social</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="stickers">Stickers</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="toys">Toys</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="travel">Travel</button> <button class="category-filter px-4 py-2 rounded-full text-sm font-heading font-bold transition-all duration-300" data-filter="weather">Weather</button>
       </div>
+     </div><!-- Template Grid -->
+     <div id="template-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"><!-- Templates generated by JavaScript -->
      </div>
-     <p class="mt-8 text-gray-500 text-sm italic">First come, first served. When a site is claimed, it's removed from availability.</p>
+     <div class="mt-12 text-center">
+      <p class="text-gray-500 text-sm">First come, first served. When a site is claimed, it's removed from availability.</p>
+     </div>
     </div>
    </section>
    <div class="neon-line max-w-4xl mx-auto"></div><!-- WHAT'S INCLUDED -->
@@ -454,7 +530,7 @@
      <div class="mt-12 space-y-3" id="faq-list">
       <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">What kind of sites are available?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
        <div class="faq-answer px-5 pb-5">
-        <p class="text-gray-400 text-sm leading-relaxed">Each site is a unique, professionally designed, high-converting website built for a specific niche. Once claimed, it's yours — no one else gets it.</p>
+        <p class="text-gray-400 text-sm leading-relaxed">We have 50+ professionally designed, high-converting websites across every category — from Adventure to Weather. Each template is unique and built to sell. Once claimed, it's yours exclusively.</p>
        </div>
       </div>
       <div class="faq-item rounded-xl neon-border overflow-hidden" style="background: rgba(255,255,255,0.02);"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-heading font-bold text-white text-sm sm:text-base">Can I use my own domain?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-neonBlue flex-shrink-0 transition-transform duration-300"></i> </button>
@@ -487,7 +563,7 @@
     </div>
     <div class="relative z-10 max-w-2xl mx-auto">
      <h2 class="font-heading font-extrabold text-3xl sm:text-5xl text-white glow-blue">Ready to go live?</h2>
-     <p class="mt-4 text-gray-400 text-lg">Stop overthinking your website. Claim one and start selling today.</p><a href="#sites" class="mt-8 inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full bg-neonYellow text-void font-heading font-bold text-lg btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="sparkles" class="w-5 h-5"></i> See sites available </a>
+     <p class="mt-4 text-gray-400 text-lg">Stop overthinking your website. Claim one and start selling today.</p><a href="#sites" class="mt-8 inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full bg-neonYellow text-void font-heading font-bold text-lg btn-glow-yellow hover:brightness-110 transition"> <i data-lucide="sparkles" class="w-5 h-5"></i> See templates </a>
     </div>
    </section><!-- FOOTER -->
    <footer class="border-t border-white/5 py-10 px-4">
@@ -503,6 +579,154 @@
    <div class="marquee-strip w-full"></div>
   </div>
   <script>
+    // Template data — 50+ sites across all categories
+    const templates = [
+      { name: 'Summit Explorer', category: 'adventure', emoji: '🏔️' },
+      { name: 'Trail Blazer', category: 'adventure', emoji: '🥾' },
+      { name: 'Happy Paws', category: 'animals', emoji: '🐾' },
+      { name: 'Wild Kingdom', category: 'animals', emoji: '🦁' },
+      { name: 'Canvas Dreams', category: 'art', emoji: '🎨' },
+      { name: 'Gallery Studio', category: 'art', emoji: '🖼️' },
+      { name: 'Glow Beauty', category: 'beauty', emoji: '✨' },
+      { name: 'Radiant Skin', category: 'beauty', emoji: '💄' },
+      { name: 'Craft Beverage', category: 'beverages', emoji: '🍸' },
+      { name: 'Bean & Brew', category: 'beverages', emoji: '☕' },
+      { name: 'Bold Identity', category: 'brand', emoji: '🎯' },
+      { name: 'Brand Forge', category: 'brand', emoji: '⚡' },
+      { name: 'Makeup Magic', category: 'cosmetics', emoji: '💅' },
+      { name: 'Beauty Box', category: 'cosmetics', emoji: '💋' },
+      { name: 'Starlight', category: 'cosmos', emoji: '⭐' },
+      { name: 'Galaxy Gaze', category: 'cosmos', emoji: '🌌' },
+      { name: 'Heritage Hub', category: 'culture', emoji: '🎭' },
+      { name: 'Traditions', category: 'culture', emoji: '🏛️' },
+      { name: 'Stage Light', category: 'entertainment', emoji: '🎬' },
+      { name: 'Show Time', category: 'entertainment', emoji: '🎪' },
+      { name: 'Event Pro', category: 'events', emoji: '📅' },
+      { name: 'Party Central', category: 'events', emoji: '🎉' },
+      { name: 'Family Bond', category: 'family', emoji: '👨‍👩‍👧' },
+      { name: 'Home Hub', category: 'family', emoji: '🏠' },
+      { name: 'Celebrity Connect', category: 'fame', emoji: '⭐' },
+      { name: 'Star Reach', category: 'fame', emoji: '🌟' },
+      { name: 'Trend Setter', category: 'fashion', emoji: '👗' },
+      { name: 'Style Studio', category: 'fashion', emoji: '👠' },
+      { name: 'Fit Life', category: 'fitness', emoji: '💪' },
+      { name: 'Gym Elite', category: 'fitness', emoji: '🏋️' },
+      { name: 'Taste Journey', category: 'food', emoji: '🍕' },
+      { name: 'Kitchen Delight', category: 'food', emoji: '👨‍🍳' },
+      { name: 'Game Zone', category: 'games', emoji: '🎮' },
+      { name: 'Play Arena', category: 'games', emoji: '🕹️' },
+      { name: 'Hair Studio', category: 'hair', emoji: '💇' },
+      { name: 'Curl Care', category: 'hair', emoji: '✂️' },
+      { name: 'Passion Project', category: 'hobby', emoji: '🎯' },
+      { name: 'Creative Space', category: 'hobby', emoji: '🧩' },
+      { name: 'Festive Vibes', category: 'holidays', emoji: '🎄' },
+      { name: 'Celebration Hub', category: 'holidays', emoji: '🎁' },
+      { name: 'Home Essentials', category: 'home', emoji: '🛋️' },
+      { name: 'Interior Dreams', category: 'home', emoji: '🏡' },
+      { name: 'Luxury Gems', category: 'jewelry', emoji: '💎' },
+      { name: 'Sparkle Shine', category: 'jewelry', emoji: '👑' },
+      { name: 'Knowledge Hub', category: 'learning', emoji: '📚' },
+      { name: 'Skill Builder', category: 'learning', emoji: '🎓' },
+      { name: 'Legal Shield', category: 'legal', emoji: '⚖️' },
+      { name: 'Court Ready', category: 'legal', emoji: '📋' },
+      { name: 'Life Flow', category: 'lifestyle', emoji: '🌿' },
+      { name: 'Wellness Way', category: 'lifestyle', emoji: '🧘' },
+      { name: 'Cinema Screen', category: 'movies', emoji: '🎬' },
+      { name: 'Blockbuster', category: 'movies', emoji: '🎞️' },
+      { name: 'Mood Board', category: 'mood', emoji: '😊' },
+      { name: 'Vibe Check', category: 'mood', emoji: '🎵' },
+      { name: 'Mystery Manor', category: 'mystery', emoji: '🔍' },
+      { name: 'Secret Revealed', category: 'mystery', emoji: '🕵️' },
+      { name: 'Magic Circle', category: 'mystical', emoji: '🔮' },
+      { name: 'Enchanted', category: 'mystical', emoji: '✨' },
+      { name: 'Nature Trail', category: 'nature', emoji: '🌲' },
+      { name: 'Eco Haven', category: 'nature', emoji: '🌿' },
+      { name: 'Lens Capture', category: 'photography', emoji: '📸' },
+      { name: 'Photo Gallery', category: 'photography', emoji: '🖼️' },
+      { name: 'Idea Spark', category: 'prompts', emoji: '💡' },
+      { name: 'Create More', category: 'prompts', emoji: '📝' },
+      { name: 'Property Dreams', category: 'real-estate', emoji: '🏘️' },
+      { name: 'Estate Finder', category: 'real-estate', emoji: '🔑' },
+      { name: 'Service Master', category: 'services', emoji: '🔧' },
+      { name: 'Pro Services', category: 'services', emoji: '👔' },
+      { name: 'Connect Social', category: 'social', emoji: '📱' },
+      { name: 'Network Hub', category: 'social', emoji: '🤝' },
+      { name: 'Fun Stickers', category: 'stickers', emoji: '🎀' },
+      { name: 'Sticker Studio', category: 'stickers', emoji: '✏️' },
+      { name: 'Toy Kingdom', category: 'toys', emoji: '🧸' },
+      { name: 'Play Land', category: 'toys', emoji: '🎠' },
+      { name: 'Wander World', category: 'travel', emoji: '✈️' },
+      { name: 'Adventure Awaits', category: 'travel', emoji: '🗺️' },
+      { name: 'Weather Watch', category: 'weather', emoji: '⛅' },
+      { name: 'Forecast Hub', category: 'weather', emoji: '🌡️' },
+    ];
+
+    function createTemplateCard(template, index) {
+      const card = document.createElement('div');
+      card.className = 'template-card';
+      card.dataset.category = template.category;
+      card.style.animation = `fadeInUp 0.5s ease-out forwards`;
+      card.style.animationDelay = `${(index % 12) * 0.05}s`;
+      
+      card.innerHTML = `
+        <div class="template-preview">
+          <span>${template.emoji}</span>
+        </div>
+        <div class="template-info">
+          <div>
+            <div class="template-category">${template.category}</div>
+            <div class="template-name">${template.name}</div>
+          </div>
+          <button class="template-cta" onclick="claimSite('${template.name}')">Claim site</button>
+        </div>
+      `;
+      
+      return card;
+    }
+
+    // Render templates
+    const grid = document.getElementById('template-grid');
+    templates.forEach((template, index) => {
+      grid.appendChild(createTemplateCard(template, index));
+    });
+
+    // Filter functionality
+    document.querySelectorAll('.category-filter').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const filter = this.dataset.filter;
+        
+        // Update active state
+        document.querySelectorAll('.category-filter').forEach(b => {
+          b.classList.remove('active');
+          b.style.background = 'transparent';
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+          b.style.color = '#999';
+        });
+        
+        this.classList.add('active');
+        this.style.background = 'rgba(0,212,255,0.2)';
+        this.style.borderColor = 'rgba(0,212,255,0.4)';
+        this.style.color = '#00D4FF';
+        
+        // Filter cards with animation
+        document.querySelectorAll('.template-card').forEach((card, index) => {
+          const matches = filter === 'all' || card.dataset.category === filter;
+          
+          if (matches) {
+            card.classList.remove('hidden');
+            card.style.animation = `fadeInUp 0.5s ease-out forwards`;
+            card.style.animationDelay = `${(index % 12) * 0.05}s`;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    function claimSite(name) {
+      alert(`You've claimed "${name}"! Next: Connect your payments and go live.`);
+    }
+
     // Default config
     const defaultConfig = {
       brand_name: 'Website Lotto',
@@ -510,9 +734,9 @@
       hero_description: 'Claim a ready-made, high-converting website today. Hosted on a reliable domain with Cloudflare-backed security. Plug in your Stripe or payment link and start selling online in minutes.',
       price_text: '$99/mo',
       how_it_works_title: 'How It Works',
-      sites_title: 'Sites Available',
+      sites_title: 'Template Library',
       features_title: "What's Included",
-      cta_text: 'See sites available',
+      cta_text: 'See templates',
       background_color: '#07070A',
       surface_color: '#0f0f17',
       text_color: '#ffffff',
@@ -555,10 +779,6 @@
       document.querySelectorAll('.font-heading, [class*="font-heading"]').forEach(el => {
         el.style.fontFamily = fontStack;
       });
-
-      // Font size scaling
-      const base = c.font_size;
-      document.querySelectorAll('p:not(.font-heading)').forEach(p => { p.style.fontSize = `${base}px`; });
     }
 
     // Element SDK init
@@ -588,9 +808,7 @@
         ['tagline', config.tagline || defaultConfig.tagline],
         ['hero_description', config.hero_description || defaultConfig.hero_description],
         ['price_text', config.price_text || defaultConfig.price_text],
-        ['how_it_works_title', config.how_it_works_title || defaultConfig.how_it_works_title],
         ['sites_title', config.sites_title || defaultConfig.sites_title],
-        ['features_title', config.features_title || defaultConfig.features_title],
         ['cta_text', config.cta_text || defaultConfig.cta_text],
       ]),
     });
@@ -601,7 +819,6 @@
       const icon = btn.querySelector('i');
       const isOpen = answer.classList.contains('open');
       
-      // Close all others
       document.querySelectorAll('.faq-item').forEach(item => {
         const itemAnswer = item.querySelector('.faq-answer');
         const itemIcon = item.querySelector('.faq-toggle i');
@@ -611,7 +828,6 @@
         }
       });
       
-      // Toggle current
       if (isOpen) {
         answer.classList.remove('open');
         icon.style.transform = '';
@@ -633,7 +849,6 @@
       const menu = document.getElementById('mobile-menu');
       menu.classList.toggle('hidden');
     });
-    // Close mobile menu on link click
     document.querySelectorAll('#mobile-menu a').forEach(a => {
       a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
     });
@@ -641,5 +856,5 @@
     // Init icons
     lucide.createIcons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e20b592a5506a30',t:'MTc3NDQ3MTAwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e336dfbe15d27cf',t:'MTc3NDY2NzI5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

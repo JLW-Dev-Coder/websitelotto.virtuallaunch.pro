@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elsewhere Terrain Lab</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Exo+2:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'Exo 2', sans-serif; }
+
+:root {
+  --bg: #0a0a12;
+  --surface: #14142a;
+  --text: #e0e0f0;
+  --primary: #7b2ff2;
+  --secondary: #39ff14;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* Particles */
+@keyframes floatUp {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100%) translateX(40px); opacity: 0; }
+}
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-border {
+  background: linear-gradient(90deg, transparent, var(--secondary), var(--primary), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(123,47,242,0.4), 0 0 60px rgba(57,255,20,0.1); }
+  50% { box-shadow: 0 0 40px rgba(123,47,242,0.7), 0 0 80px rgba(57,255,20,0.3); }
+}
+.pulse-cta { animation: pulseGlow 2.5s ease-in-out infinite; }
+
+/* Card hover */
+.world-card {
+  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.5s ease;
+}
+.world-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 0 40px rgba(123,47,242,0.5), 0 0 80px rgba(57,255,20,0.15);
+}
+
+/* Slow zoom on card images */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+.world-card img, .world-card .card-bg {
+  animation: slowZoom 12s ease-in-out alternate infinite;
+}
+
+/* Portal ring */
+@keyframes portalSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.portal-ring { animation: portalSpin 20s linear infinite; }
+
+/* Reveal */
+@keyframes revealUp {
+  0% { opacity: 0; transform: translateY(60px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; }
+.reveal.visible { animation: revealUp 0.8s cubic-bezier(0.23,1,0.32,1) forwards; }
+
+/* Holo card float */
+@keyframes holoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.holo-float { animation: holoFloat 4s ease-in-out infinite; }
+
+/* Grid shimmer for overlays */
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Star field */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* Vote card */
+.vote-card {
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(123,47,242,0.4);
+}
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        alien: { bg: '#0a0a12', surface: '#14142a', text: '#e0e0f0', primary: '#7b2ff2', secondary: '#39ff14' }
+      },
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        exo: ['Exo 2', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto" style="background:var(--bg); color:var(--text);"><!-- PARTICLES CONTAINER -->
+   <div id="particles" class="fixed inset-0 pointer-events-none z-0" style="height:100%;"></div><!-- STICKY NAV -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,10,18,0.85); backdrop-filter:blur(16px); border-bottom:1px solid rgba(123,47,242,0.2);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="font-orbitron font-bold text-lg tracking-wider" style="color:var(--secondary);"> <span style="color:var(--primary);">◈</span> ELSEWHERE </a>
+     <div class="hidden md:flex gap-6 text-sm font-exo tracking-wide"><a href="#home" class="nav-link" style="color:var(--text);">Home</a> <a href="#worlds" class="nav-link" style="color:var(--text);">Worlds</a> <a href="#overlays" class="nav-link" style="color:var(--text);">Overlays</a> <a href="#preview" class="nav-link" style="color:var(--text);">Preview</a> <a href="#reviews" class="nav-link" style="color:var(--text);">Reviews</a> <a href="#download" class="nav-link" style="color:var(--text);">Download</a>
+     </div><button id="mobile-toggle" class="md:hidden" style="color:var(--text);"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-exo"><a href="#home" class="nav-link" style="color:var(--text);">Home</a> <a href="#worlds" class="nav-link" style="color:var(--text);">Worlds</a> <a href="#overlays" class="nav-link" style="color:var(--text);">Overlays</a> <a href="#preview" class="nav-link" style="color:var(--text);">Preview</a> <a href="#reviews" class="nav-link" style="color:var(--text);">Reviews</a> <a href="#download" class="nav-link" style="color:var(--text);">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="min-height:100%; padding-top:80px;"><!-- Portal ring bg -->
+    <div class="absolute portal-ring" style="width:600px;height:600px;border-radius:50%;border:2px solid rgba(123,47,242,0.15);top:50%;left:50%;margin-top:-300px;margin-left:-300px;"></div>
+    <div class="absolute portal-ring" style="width:450px;height:450px;border-radius:50%;border:1px solid rgba(57,255,20,0.1);top:50%;left:50%;margin-top:-225px;margin-left:-225px;animation-direction:reverse;animation-duration:15s;"></div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+     <div class="inline-block mb-6 px-4 py-1 rounded-full text-xs font-exo tracking-widest uppercase" style="border:1px solid var(--primary); color:var(--primary);">
+      190+ Digital Assets Inside
+     </div>
+     <h1 id="hero-title" class="font-orbitron font-900 text-5xl md:text-7xl lg:text-8xl leading-tight mb-6" style="background:linear-gradient(135deg,var(--secondary),#00f0ff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Welcome to Elsewhere.</h1>
+     <p id="hero-subtitle" class="font-exo text-lg md:text-xl mb-10 max-w-2xl mx-auto" style="color:rgba(224,224,240,0.7);">Alien worlds built from real photography.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12"><a href="#download" id="btn-cta-primary" class="pulse-cta font-orbitron font-bold text-sm px-8 py-4 rounded-lg tracking-wider uppercase" style="background:linear-gradient(135deg,var(--primary),#5a1fd0);color:#fff;"> Download the Lab Pack </a> <a href="#worlds" id="btn-cta-secondary" class="font-orbitron font-bold text-sm px-8 py-4 rounded-lg tracking-wider uppercase" style="border:1px solid var(--secondary);color:var(--secondary);"> See the Worlds </a>
+     </div><!-- Floating vote card -->
+     <div class="vote-card holo-float inline-block rounded-2xl p-5 text-left" style="background:rgba(20,20,42,0.7);">
+      <div class="flex items-center gap-3 mb-3">
+       <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background:var(--primary);">
+        <i data-lucide="message-circle" style="width:16px;height:16px;color:#fff;"></i>
+       </div><span class="font-orbitron text-xs tracking-wider" style="color:var(--secondary);">COMMUNITY</span>
+      </div>
+      <p class="font-exo text-sm mb-3" style="color:var(--text);">Vote + Comment (Embed Widget Here)</p>
+      <div class="flex gap-3"><button id="vote-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-exo" style="background:rgba(123,47,242,0.2);border:1px solid var(--primary);color:var(--primary);"> <i data-lucide="arrow-up" style="width:14px;height:14px;"></i> <span id="vote-count">247</span> </button> <button class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-exo" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.3);color:var(--secondary);"> <i data-lucide="message-circle" style="width:14px;height:14px;"></i> 38 </button>
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2" style="animation:holoFloat 2s ease-in-out infinite;"><i data-lucide="chevrons-down" style="width:28px;height:28px;color:var(--primary);opacity:0.6;"></i>
+    </div>
+   </section><!-- WORLDS -->
+   <section id="worlds" class="relative w-full py-24 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="font-exo text-xs tracking-widest uppercase" style="color:var(--primary);">Explore</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl mt-3 mb-4" style="color:var(--text);">The Worlds</h2>
+      <p class="font-exo max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">6 alien terrain collections. Real Unsplash landscapes, reimagined through color grading and overlays.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- World Card 1 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#d4a853,#c2702a,#8b3a0f);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         01
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Dune Moon</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Golden sands under an amber haze. Desert dunes transformed into alien seas.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div><!-- World Card 2 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#a8d8ea,#6fc3df,#374785);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         02
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Ice Planet</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Frozen peaks shimmering in crystalline blue. Icy mountains become alien glaciers.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div><!-- World Card 3 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#ff006e,#8338ec,#3a0ca3);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         03
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Neon Rain City</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Wet neon streets pulse with electric color. Urban nights turned cyberpunk worlds.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div><!-- World Card 4 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#f72585,#b5179e,#7209b7);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         04
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Crystal Canyon</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Strange rock formations glow with inner light. Geological wonders become alien mineral veins.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div><!-- World Card 5 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#555555,#333333,#8b0000);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         05
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Ash Desert</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Volcanic landscapes draped in smoke and ember. Scorched earth reimagined as alien wastelands.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div><!-- World Card 6 -->
+      <div class="world-card reveal rounded-2xl overflow-hidden relative" style="background:var(--surface);border:1px solid rgba(123,47,242,0.2);">
+       <div class="relative overflow-hidden" style="height:220px;">
+        <div class="card-bg absolute inset-0" style="background:linear-gradient(135deg,#2d6a4f,#40916c,#95d5b2);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 40%,var(--surface));"></div>
+        <div class="absolute top-3 left-3 px-2 py-1 rounded text-xs font-orbitron" style="background:rgba(10,10,18,0.7);color:var(--secondary);">
+         06
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-orbitron font-bold text-lg mb-1" style="color:var(--text);">Cloud Jungle</h3>
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.5);">Fog forests drifting in emerald mist. Tropical canopies become alien biospheres.</p>
+        <div class="mt-3 flex gap-2"><span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(123,47,242,0.15);color:var(--primary);">20 wallpapers</span> <span class="px-2 py-0.5 rounded-full text-xs font-exo" style="background:rgba(57,255,20,0.1);color:var(--secondary);">5 posters</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- OVERLAYS -->
+   <section id="overlays" class="relative w-full py-24 px-4" style="background:linear-gradient(180deg,var(--bg),rgba(20,20,42,0.8),var(--bg));">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="font-exo text-xs tracking-widest uppercase" style="color:var(--secondary);">Toolkit</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl mt-3 mb-4" style="color:var(--text);">Overlays &amp; Textures</h2>
+      <p class="font-exo max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">40 texture overlays + portal frames + color grading presets to transform any image.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><!-- Overlay tiles -->
+      <div class="reveal rounded-xl overflow-hidden relative group" style="height:180px;background:linear-gradient(45deg,rgba(123,47,242,0.3),rgba(57,255,20,0.1));border:1px solid rgba(123,47,242,0.2);">
+       <div class="absolute inset-0 flex items-center justify-center">
+        <div style="width:80px;height:80px;border:2px solid var(--primary);border-radius:50%;opacity:0.5;"></div>
+       </div>
+       <div class="absolute bottom-0 left-0 right-0 p-3" style="background:linear-gradient(transparent,rgba(10,10,18,0.9));"><span class="font-orbitron text-xs" style="color:var(--secondary);">Portal Frames</span>
+        <p class="font-exo text-xs mt-0.5" style="color:rgba(224,224,240,0.5);">12 designs</p>
+       </div>
+      </div>
+      <div class="reveal rounded-xl overflow-hidden relative" style="height:180px;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(57,255,20,0.05) 4px,rgba(57,255,20,0.05) 5px);border:1px solid rgba(57,255,20,0.15);">
+       <div class="absolute inset-0" style="background:repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(123,47,242,0.05) 4px,rgba(123,47,242,0.05) 5px);"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-3" style="background:linear-gradient(transparent,rgba(10,10,18,0.9));"><span class="font-orbitron text-xs" style="color:var(--secondary);">Grid Textures</span>
+        <p class="font-exo text-xs mt-0.5" style="color:rgba(224,224,240,0.5);">10 patterns</p>
+       </div>
+      </div>
+      <div class="reveal rounded-xl overflow-hidden relative" style="height:180px;border:1px solid rgba(123,47,242,0.2);">
+       <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 50%,rgba(123,47,242,0.4),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(57,255,20,0.2),transparent 60%);"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-3" style="background:linear-gradient(transparent,rgba(10,10,18,0.9));"><span class="font-orbitron text-xs" style="color:var(--secondary);">Light Leaks</span>
+        <p class="font-exo text-xs mt-0.5" style="color:rgba(224,224,240,0.5);">8 overlays</p>
+       </div>
+      </div>
+      <div class="reveal rounded-xl overflow-hidden relative" style="height:180px;border:1px solid rgba(123,47,242,0.2);">
+       <div class="absolute inset-0 flex flex-wrap gap-1 p-3 items-start">
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#39ff14,#00f0ff);"></div>
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#7b2ff2,#f72585);"></div>
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#ff006e,#ffbe0b);"></div>
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#3a86ff,#8338ec);"></div>
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#06d6a0,#118ab2);"></div>
+        <div class="w-8 h-5 rounded" style="background:linear-gradient(135deg,#e63946,#1d3557);"></div>
+       </div>
+       <div class="absolute bottom-0 left-0 right-0 p-3" style="background:linear-gradient(transparent,rgba(10,10,18,0.9));"><span class="font-orbitron text-xs" style="color:var(--secondary);">Color Presets</span>
+        <p class="font-exo text-xs mt-0.5" style="color:rgba(224,224,240,0.5);">10 grades</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="relative w-full py-24 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="font-exo text-xs tracking-widest uppercase" style="color:var(--primary);">Before / After</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl mt-3 mb-4" style="color:var(--text);">See the Transformation</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+      <div class="rounded-2xl overflow-hidden relative" style="height:300px;border:1px solid rgba(224,224,240,0.1);">
+       <div class="absolute inset-0" style="background:linear-gradient(135deg,#8b7355,#a0936a,#6b5b3e);"></div>
+       <div class="absolute top-3 left-3 px-3 py-1 rounded-full font-orbitron text-xs" style="background:rgba(10,10,18,0.7);color:rgba(224,224,240,0.6);">
+        ORIGINAL
+       </div>
+       <div class="absolute bottom-4 left-4 right-4">
+        <p class="font-exo text-sm" style="color:rgba(224,224,240,0.6);">Salt flat landscape — Earth</p>
+       </div>
+      </div>
+      <div class="rounded-2xl overflow-hidden relative" style="height:300px;border:1px solid var(--primary);">
+       <div class="absolute inset-0" style="background:linear-gradient(135deg,#7b2ff2,#00f0ff,#39ff14);"></div>
+       <div class="absolute inset-0" style="background:radial-gradient(circle at center,transparent 30%,rgba(10,10,18,0.4));"></div>
+       <div class="absolute top-3 left-3 px-3 py-1 rounded-full font-orbitron text-xs shimmer-border" style="color:#fff;">
+        ELSEWHERE
+       </div>
+       <div class="absolute bottom-4 left-4 right-4">
+        <p class="font-exo text-sm" style="color:rgba(255,255,255,0.8);">Chromatic Flats — Planet Xyris</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full py-24 px-4" style="background:linear-gradient(180deg,var(--bg),rgba(20,20,42,0.5),var(--bg));">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="font-exo text-xs tracking-widest uppercase" style="color:var(--secondary);">Testimonials</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl mt-3 mb-4" style="color:var(--text);">Creator Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal rounded-2xl p-6" style="background:var(--surface);border:1px solid rgba(123,47,242,0.15);">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i>
+       </div>
+       <p class="font-exo text-sm mb-4" style="color:rgba(224,224,240,0.7);">"These wallpapers stopped my entire feed. People thought I was using AI art — nope, just real photos graded to look extraterrestrial."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-orbitron text-xs" style="background:var(--primary);color:#fff;">
+         M
+        </div>
+        <div>
+         <p class="font-exo text-sm font-semibold" style="color:var(--text);">Maya R.</p>
+         <p class="font-exo text-xs" style="color:rgba(224,224,240,0.4);">Content Creator</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-2xl p-6" style="background:var(--surface);border:1px solid rgba(123,47,242,0.15);">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i>
+       </div>
+       <p class="font-exo text-sm mb-4" style="color:rgba(224,224,240,0.7);">"The overlays alone are worth it. I layer them on my own shots and suddenly I'm living on another planet. Creator gold."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-orbitron text-xs" style="background:var(--secondary);color:var(--bg);">
+         J
+        </div>
+        <div>
+         <p class="font-exo text-sm font-semibold" style="color:var(--text);">Jake T.</p>
+         <p class="font-exo text-xs" style="color:rgba(224,224,240,0.4);">Photographer</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-2xl p-6" style="background:var(--surface);border:1px solid rgba(123,47,242,0.15);">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--secondary);fill:var(--secondary);"></i>
+       </div>
+       <p class="font-exo text-sm mb-4" style="color:rgba(224,224,240,0.7);">"High shareability is an understatement. Every poster I use gets screenshot by at least 20 people. Never seen anything like it."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-orbitron text-xs" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;">
+         S
+        </div>
+        <div>
+         <p class="font-exo text-sm font-semibold" style="color:var(--text);">Suki L.</p>
+         <p class="font-exo text-xs" style="color:rgba(224,224,240,0.4);">Designer</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="relative w-full py-32 px-4">
+    <div class="max-w-4xl mx-auto text-center reveal">
+     <h2 id="bottom-cta" class="font-orbitron font-900 text-4xl md:text-6xl mb-6" style="background:linear-gradient(135deg,var(--secondary),#00f0ff,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Make reality look unreal.</h2>
+     <p class="font-exo text-lg mb-4" style="color:rgba(224,224,240,0.6);">120 wallpapers · 30 posters · 40 overlays · Color presets</p>
+     <div class="inline-flex flex-wrap justify-center gap-3 mb-10"><span class="px-3 py-1 rounded-full text-xs font-exo" style="border:1px solid var(--primary);color:var(--primary);">Never-seen-before vibe</span> <span class="px-3 py-1 rounded-full text-xs font-exo" style="border:1px solid var(--secondary);color:var(--secondary);">Creator gold</span> <span class="px-3 py-1 rounded-full text-xs font-exo" style="border:1px solid #00f0ff;color:#00f0ff;">High shareability</span>
+     </div>
+     <div><a href="#" id="final-cta" class="pulse-cta inline-block font-orbitron font-bold text-sm px-12 py-5 rounded-lg tracking-wider uppercase" style="background:linear-gradient(135deg,var(--primary),#5a1fd0);color:#fff;"> Download the Lab Pack </a>
+      <p class="font-exo text-xs mt-4" style="color:rgba(224,224,240,0.3);">Instant digital download · All 190+ assets included</p>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-4 text-center" style="border-top:1px solid rgba(123,47,242,0.15);">
+    <p class="font-orbitron text-xs tracking-wider" style="color:rgba(224,224,240,0.3);"><span style="color:var(--primary);">◈</span> ELSEWHERE TERRAIN LAB — Real places that look not from here.</p>
+   </footer>
+  </div>
+  <script>
+// Config
+const defaultConfig = {
+  background_color: '#0a0a12',
+  surface_color: '#14142a',
+  text_color: '#e0e0f0',
+  primary_color: '#7b2ff2',
+  secondary_color: '#39ff14',
+  font_family: 'Orbitron',
+  font_size: 16,
+  hero_title: 'Welcome to Elsewhere.',
+  hero_subtitle: 'Alien worlds built from real photography.',
+  cta_primary: 'Download the Lab Pack',
+  cta_secondary: 'See the Worlds',
+  bottom_cta_text: 'Make reality look unreal.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  // CSS vars
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--primary', c.primary_color);
+  document.documentElement.style.setProperty('--secondary', c.secondary_color);
+
+  // Font
+  const ff = c.font_family + ', Exo 2, sans-serif';
+  document.querySelectorAll('.font-orbitron').forEach(el => el.style.fontFamily = ff);
+
+  // Font size
+  const base = c.font_size || 16;
+  document.querySelectorAll('p:not(.font-orbitron)').forEach(el => {
+    if (el.classList.contains('text-xs')) el.style.fontSize = (base * 0.75) + 'px';
+    else if (el.classList.contains('text-sm')) el.style.fontSize = (base * 0.875) + 'px';
+    else if (el.classList.contains('text-lg')) el.style.fontSize = (base * 1.125) + 'px';
+    else el.style.fontSize = base + 'px';
+  });
+
+  // Text content
+  const t = document.getElementById('hero-title');
+  if (t) t.textContent = c.hero_title;
+  const s = document.getElementById('hero-subtitle');
+  if (s) s.textContent = c.hero_subtitle;
+  const bp = document.getElementById('btn-cta-primary');
+  if (bp) bp.textContent = c.cta_primary;
+  const bs = document.getElementById('btn-cta-secondary');
+  if (bs) bs.textContent = c.cta_secondary;
+  const bc = document.getElementById('bottom-cta');
+  if (bc) bc.textContent = c.bottom_cta_text;
+  const fc = document.getElementById('final-cta');
+  if (fc) fc.textContent = c.cta_primary;
+}
+
+// Element SDK
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+// Particles
+(function() {
+  const container = document.getElementById('particles');
+  const colors = ['var(--primary)', 'var(--secondary)', '#00f0ff'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.width = (2 + Math.random() * 3) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+})();
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+// Close on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.add('hidden');
+}));
+
+// Vote button
+document.getElementById('vote-btn').addEventListener('click', function() {
+  const el = document.getElementById('vote-count');
+  el.textContent = parseInt(el.textContent) + 1;
+  this.style.background = 'rgba(123,47,242,0.4)';
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = ['home','worlds','overlays','preview','reviews','download'];
+document.getElementById('app').addEventListener('scroll', function() {
+  const scrollTop = this.scrollTop;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e337c9a30c727cf',t:'MTc3NDY2Nzg5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

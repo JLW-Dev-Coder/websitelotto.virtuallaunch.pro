@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KilnKissed Ceramics</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sand: '#E8DDD3',
+            clay: '#C4A882',
+            cream: '#F5F0EB',
+            terracotta: '#A0522D',
+            olive: '#5C6B4F',
+            charcoal: '#2C2825',
+          },
+          fontFamily: {
+            serif: ['DM Serif Display', 'Georgia', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .app-root { height: 100%; overflow-y: auto; overflow-x: hidden; }
+
+    /* Slow pan animation for hero images */
+    @keyframes slowPan {
+      0% { transform: scale(1.05) translate(0, 0); }
+      50% { transform: scale(1.12) translate(-2%, -1%); }
+      100% { transform: scale(1.05) translate(0, 0); }
+    }
+    .slow-pan { animation: slowPan 20s ease-in-out infinite; }
+
+    /* Gentle float for badge */
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    .float-badge { animation: floatBadge 3s ease-in-out infinite; }
+
+    /* Pulse for CTA */
+    @keyframes subtlePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(160,82,45,0.3); }
+      50% { box-shadow: 0 0 0 12px rgba(160,82,45,0); }
+    }
+    .pulse-cta { animation: subtlePulse 2.5s ease-in-out infinite; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Texture overlay */
+    .texture-overlay {
+      background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* Stagger children */
+    .stagger > * { transition-delay: calc(var(--i, 0) * 0.12s); }
+
+    /* Nav glass */
+    .nav-glass {
+      background: rgba(245,240,235,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Product card hover */
+    .product-card img {
+      transition: transform 1.2s cubic-bezier(0.22,1,0.36,1);
+    }
+    .product-card:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Star rating */
+    .star { color: #C4A882; }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Vote card */
+    @keyframes slideInCard {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .vote-card { animation: slideInCard 1s 0.8s cubic-bezier(0.22,1,0.36,1) both; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-cream font-sans text-charcoal">
+  <div class="app-root" id="app-root"><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-clay/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-14"><a href="#home" class="font-serif text-xl text-terracotta tracking-tight" id="nav-logo">KilnKissed</a>
+     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal/70"><a href="#home" class="hover:text-terracotta transition-colors">Home</a> <a href="#new-drop" class="hover:text-terracotta transition-colors">New Drop</a> <a href="#pieces" class="hover:text-terracotta transition-colors">Pieces</a> <a href="#studio" class="hover:text-terracotta transition-colors">Studio</a> <a href="#reviews" class="hover:text-terracotta transition-colors">Reviews</a> <a href="#buy-now" class="bg-terracotta text-cream px-5 py-2 rounded-full hover:bg-terracotta/90 transition-colors">Buy Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-charcoal" aria-label="Menu"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-cream/95 border-t border-clay/20 px-6 py-4 space-y-3 text-sm font-medium"><a href="#home" class="block py-1 text-charcoal/70 hover:text-terracotta">Home</a> <a href="#new-drop" class="block py-1 text-charcoal/70 hover:text-terracotta">New Drop</a> <a href="#pieces" class="block py-1 text-charcoal/70 hover:text-terracotta">Pieces</a> <a href="#studio" class="block py-1 text-charcoal/70 hover:text-terracotta">Studio</a> <a href="#reviews" class="block py-1 text-charcoal/70 hover:text-terracotta">Reviews</a> <a href="#buy-now" class="block py-2 text-center bg-terracotta text-cream rounded-full">Buy Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 90%;">
+    <div class="absolute inset-0 bg-gradient-to-br from-sand/60 via-cream to-sand/40"></div>
+    <div class="texture-overlay absolute inset-0 pointer-events-none"></div><!-- Hero background image -->
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1400&amp;q=80" alt="Handmade pottery on shelf" class="w-full h-full object-cover slow-pan opacity-20" loading="lazy" onerror="this.style.display='none';">
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-32 pb-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+     <div class="flex-1 text-center lg:text-left">
+      <div class="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta px-4 py-1.5 rounded-full text-xs font-medium mb-6 float-badge"><span class="w-2 h-2 bg-terracotta rounded-full animate-pulse"></span> New Drop Live
+      </div>
+      <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-charcoal leading-[1.05] mb-6" id="hero-title">Your favorite mug, upgraded.</h1>
+      <p class="text-charcoal/60 text-lg sm:text-xl max-w-lg mx-auto lg:mx-0 mb-8 font-light leading-relaxed" id="hero-subtitle">Handmade ceramics, released in limited drops.</p>
+      <div class="flex flex-wrap gap-4 justify-center lg:justify-start"><a href="#pieces" class="pulse-cta bg-terracotta text-cream px-8 py-3.5 rounded-full font-medium hover:bg-terracotta/90 transition-all" id="hero-cta-primary">Shop the Drop</a> <a href="#pieces" class="border-2 border-charcoal/20 text-charcoal px-8 py-3.5 rounded-full font-medium hover:border-terracotta hover:text-terracotta transition-all" id="hero-cta-secondary">See Pieces</a>
+      </div>
+     </div><!-- Hero image cluster -->
+     <div class="flex-1 relative w-full max-w-md lg:max-w-lg">
+      <div class="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-charcoal/10"><img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&amp;q=80" alt="Handmade ceramic mug" class="w-full h-full object-cover slow-pan" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#E8DDD3,#C4A882)'; this.alt='Ceramic piece';">
+      </div><!-- Floating vote card -->
+      <div class="vote-card absolute -left-4 sm:-left-8 bottom-8 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg shadow-charcoal/8 max-w-[200px]">
+       <p class="text-xs font-medium text-charcoal/50 mb-2">Vote + Comment</p>
+       <div class="flex items-center gap-2 mb-2"><button class="vote-btn flex items-center gap-1 bg-terracotta/10 text-terracotta px-3 py-1.5 rounded-full text-xs font-medium hover:bg-terracotta/20 transition-colors" aria-label="Vote up"> <i data-lucide="heart" class="w-3.5 h-3.5"></i> <span class="vote-count">247</span> </button> <button class="flex items-center gap-1 bg-charcoal/5 text-charcoal/60 px-3 py-1.5 rounded-full text-xs hover:bg-charcoal/10 transition-colors" aria-label="Comment"> <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> 38 </button>
+       </div>
+       <p class="text-[10px] text-charcoal/40">Embed Widget Here</p>
+      </div><!-- Floating badge -->
+      <div class="absolute -right-2 top-6 bg-olive text-cream text-xs font-medium px-4 py-2 rounded-full float-badge shadow-md">
+       Limited Edition
+      </div>
+     </div>
+    </div>
+   </section><!-- NEW DROP -->
+   <section id="new-drop" class="w-full bg-charcoal text-cream py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+     <div class="reveal text-center mb-14">
+      <p class="text-clay text-sm font-medium tracking-widest uppercase mb-3">Spring 2025</p>
+      <h2 class="font-serif text-4xl sm:text-5xl mb-4">The Earth Collection</h2>
+      <p class="text-cream/50 max-w-xl mx-auto font-light">Each piece is wheel-thrown, hand-glazed, and kiln-fired in our small studio. No two are ever alike.</p>
+     </div>
+     <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="relative rounded-2xl overflow-hidden aspect-[3/4] group"><img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&amp;q=80" alt="Ceramic bowl" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" onerror="this.style.background='#5C6B4F'; this.alt='Ceramic piece';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent"></div>
+       <div class="absolute bottom-4 left-4">
+        <p class="font-serif text-xl">Ritual Bowls</p>
+        <p class="text-cream/50 text-sm">From $48</p>
+       </div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden aspect-[3/4] group"><img src="https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=600&amp;q=80" alt="Ceramic vase" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" onerror="this.style.background='#A0522D'; this.alt='Ceramic piece';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent"></div>
+       <div class="absolute bottom-4 left-4">
+        <p class="font-serif text-xl">Studio Vases</p>
+        <p class="text-cream/50 text-sm">From $72</p>
+       </div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden aspect-[3/4] group"><img src="https://images.unsplash.com/photo-1525973132219-a04d4127e6e6?w=600&amp;q=80" alt="Ceramic mugs" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" onerror="this.style.background='#C4A882'; this.alt='Ceramic piece';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent"></div>
+       <div class="absolute bottom-4 left-4">
+        <p class="font-serif text-xl">Morning Mugs</p>
+        <p class="text-cream/50 text-sm">From $36</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PIECES -->
+   <section id="pieces" class="w-full py-20 bg-cream">
+    <div class="texture-overlay absolute inset-0 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-8">
+     <div class="reveal text-center mb-14">
+      <p class="text-terracotta text-sm font-medium tracking-widest uppercase mb-3">Handmade Pieces</p>
+      <h2 class="font-serif text-4xl sm:text-5xl text-charcoal">Made with patience</h2>
+     </div>
+     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 stagger" id="product-grid"><!-- Products injected by JS -->
+     </div>
+    </div>
+   </section><!-- STUDIO -->
+   <section id="studio" class="w-full py-20 bg-sand/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+     <div class="reveal flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1 relative">
+       <div class="aspect-square rounded-3xl overflow-hidden shadow-xl"><img src="https://images.unsplash.com/photo-1556036518-6a2071ab9f44?w=700&amp;q=80" alt="Potter at wheel" class="w-full h-full object-cover slow-pan" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#C4A882,#E8DDD3)'; this.alt='Studio';">
+       </div>
+       <div class="absolute -bottom-4 -right-4 bg-terracotta text-cream px-6 py-3 rounded-2xl font-serif text-lg shadow-lg">
+        Est. 2019
+       </div>
+      </div>
+      <div class="flex-1">
+       <p class="text-terracotta text-sm font-medium tracking-widest uppercase mb-3">The Studio</p>
+       <h2 class="font-serif text-4xl sm:text-5xl text-charcoal mb-6 leading-tight">Where clay<br>
+        becomes ceremony</h2>
+       <p class="text-charcoal/60 font-light leading-relaxed mb-6">Every KilnKissed piece starts as a lump of stoneware clay, centered on our wheel in a sunlit Portland studio. We believe in slow craft — each mug takes 3 days from wedging to final glaze fire at 2,300°F.</p>
+       <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="bg-cream rounded-xl p-4">
+         <p class="font-serif text-2xl text-terracotta">2,300°</p>
+         <p class="text-xs text-charcoal/50 mt-1">Kiln Temperature</p>
+        </div>
+        <div class="bg-cream rounded-xl p-4">
+         <p class="font-serif text-2xl text-terracotta">72h</p>
+         <p class="text-xs text-charcoal/50 mt-1">Per Piece</p>
+        </div>
+        <div class="bg-cream rounded-xl p-4">
+         <p class="font-serif text-2xl text-terracotta">100%</p>
+         <p class="text-xs text-charcoal/50 mt-1">Handmade</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 bg-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+     <div class="reveal text-center mb-14">
+      <p class="text-terracotta text-sm font-medium tracking-widest uppercase mb-3">Love Letters</p>
+      <h2 class="font-serif text-4xl sm:text-5xl text-charcoal">What people say</h2>
+     </div>
+     <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid"><!-- Reviews injected by JS -->
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="buy-now" class="w-full py-24 bg-charcoal relative overflow-hidden">
+    <div class="texture-overlay absolute inset-0 pointer-events-none opacity-50"></div>
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-8 text-center reveal">
+     <p class="text-clay text-sm font-medium tracking-widest uppercase mb-4">Limited Availability</p>
+     <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-cream mb-6 leading-tight" id="bottom-cta-title">Own a piece of the studio.</h2>
+     <p class="text-cream/40 font-light max-w-lg mx-auto mb-8">Each drop sells out within days. Join 4,000+ collectors who start their mornings with KilnKissed.</p><a href="#pieces" class="pulse-cta inline-block bg-terracotta text-cream px-10 py-4 rounded-full font-medium text-lg hover:bg-terracotta/90 transition-all">Shop the Drop</a>
+     <div class="flex justify-center gap-8 mt-10 text-cream/30 text-xs"><span>Free shipping over $80</span> <span>·</span> <span>Gift wrapping available</span> <span>·</span> <span>Handmade guarantee</span>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full bg-charcoal border-t border-cream/10 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+     <p class="font-serif text-cream/60 text-lg">KilnKissed Ceramics</p>
+     <p class="text-cream/30 text-sm">Handmade pieces that feel like art. © 2025</p>
+     <div class="flex gap-4"><a href="#" class="text-cream/30 hover:text-clay transition-colors" aria-label="Instagram"><i data-lucide="instagram" class="w-5 h-5"></i></a> <a href="#" class="text-cream/30 hover:text-clay transition-colors" aria-label="Mail"><i data-lucide="mail" class="w-5 h-5"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Product data
+    const products = [
+      { name: 'Ritual Bowl', price: '$48', img: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400&q=80', left: 3 },
+      { name: 'Morning Mug', price: '$36', img: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&q=80', left: 7 },
+      { name: 'Bud Vase', price: '$52', img: 'https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=400&q=80', left: 2 },
+      { name: 'Pour-Over Set', price: '$68', img: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&q=80', left: 5 },
+      { name: 'Serving Plate', price: '$54', img: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400&q=80', left: 4 },
+      { name: 'Speckled Tumbler', price: '$32', img: 'https://images.unsplash.com/photo-1525973132219-a04d4127e6e6?w=400&q=80', left: 8 },
+      { name: 'Nesting Bowls', price: '$78', img: 'https://images.unsplash.com/photo-1556036518-6a2071ab9f44?w=400&q=80', left: 1 },
+      { name: 'Tea Cup Duo', price: '$44', img: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400&q=80', left: 6 },
+    ];
+
+    const reviews = [
+      { name: 'Sarah M.', text: 'The morning mug changed my entire routine. It feels like holding a warm hug. Absolutely obsessed.', stars: 5 },
+      { name: 'James T.', text: 'Bought the nesting bowls as a gift — my partner literally cried. The craftsmanship is unreal.', stars: 5 },
+      { name: 'Priya K.', text: 'I\'ve collected ceramics for years. KilnKissed is the first brand where every single piece feels special.', stars: 5 },
+    ];
+
+    // Render products
+    const grid = document.getElementById('product-grid');
+    products.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'product-card reveal bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-500';
+      card.style.setProperty('--i', i);
+      card.innerHTML = `
+        <div class="relative aspect-square overflow-hidden">
+          <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy"
+               onerror="this.style.background='linear-gradient(135deg,#E8DDD3,#C4A882)'; this.alt='Ceramic piece';">
+          ${p.left <= 3 ? `<span class="absolute top-3 left-3 bg-terracotta/90 text-cream text-[10px] font-medium px-3 py-1 rounded-full">Only ${p.left} left</span>` : `<span class="absolute top-3 left-3 bg-charcoal/70 text-cream text-[10px] font-medium px-3 py-1 rounded-full">${p.left} remaining</span>`}
+        </div>
+        <div class="p-4">
+          <h3 class="font-serif text-base text-charcoal">${p.name}</h3>
+          <div class="flex items-center justify-between mt-1">
+            <p class="text-terracotta font-medium text-sm">${p.price}</p>
+            <p class="text-charcoal/30 text-[10px]">Limited qty</p>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Render reviews
+    const rGrid = document.getElementById('reviews-grid');
+    reviews.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-2xl p-6 shadow-sm';
+      card.innerHTML = `
+        <div class="flex gap-1 mb-3">${'<i data-lucide="star" class="w-4 h-4 star fill-current"></i>'.repeat(r.stars)}</div>
+        <p class="text-charcoal/70 font-light leading-relaxed mb-4">"${r.text}"</p>
+        <p class="text-sm font-medium text-charcoal">${r.name}</p>
+      `;
+      rGrid.appendChild(card);
+    });
+
+    // Init icons
+    lucide.createIcons();
+
+    // Scroll reveal observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Mobile menu
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+    });
+
+    // Vote button
+    document.querySelector('.vote-btn').addEventListener('click', function() {
+      const count = this.querySelector('.vote-count');
+      const current = parseInt(count.textContent);
+      if (this.classList.contains('voted')) {
+        count.textContent = current - 1;
+        this.classList.remove('voted');
+        this.style.background = '';
+      } else {
+        count.textContent = current + 1;
+        this.classList.add('voted');
+        this.style.background = 'rgba(160,82,45,0.25)';
+      }
+    });
+
+    // Element SDK
+    const defaultConfig = {
+      hero_title: 'Your favorite mug, upgraded.',
+      hero_subtitle: 'Handmade ceramics, released in limited drops.',
+      cta_primary: 'Shop the Drop',
+      cta_secondary: 'See Pieces',
+      bottom_cta_title: 'Own a piece of the studio.',
+      background_color: '#F5F0EB',
+      surface_color: '#FFFFFF',
+      text_color: '#2C2825',
+      primary_action: '#A0522D',
+      secondary_action: '#5C6B4F',
+      font_family: 'DM Serif Display',
+      font_size: 16,
+    };
+
+    function applyConfig(config) {
+      const el = (id) => document.getElementById(id);
+      const c = (k) => config[k] || defaultConfig[k];
+
+      el('hero-title').textContent = c('hero_title');
+      el('hero-subtitle').textContent = c('hero_subtitle');
+      el('hero-cta-primary').textContent = c('cta_primary');
+      el('hero-cta-secondary').textContent = c('cta_secondary');
+      el('bottom-cta-title').textContent = c('bottom_cta_title');
+
+      // Colors
+      document.body.style.backgroundColor = c('background_color');
+      document.querySelectorAll('.bg-white, .product-card .p-4').forEach(e => {
+        if (e.closest('.product-card') || e.closest('#reviews-grid')) {
+          e.style.backgroundColor = c('surface_color');
+        }
+      });
+
+      // Text color
+      el('hero-title').style.color = c('text_color');
+
+      // Primary action
+      document.querySelectorAll('.bg-terracotta, .pulse-cta').forEach(btn => {
+        if (btn.tagName === 'A' || btn.tagName === 'BUTTON') {
+          btn.style.backgroundColor = c('primary_action');
+        }
+      });
+
+      // Secondary action (olive badge)
+      document.querySelectorAll('.bg-olive').forEach(e => e.style.backgroundColor = c('secondary_action'));
+
+      // Font
+      const fontStack = `${c('font_family')}, Georgia, serif`;
+      document.querySelectorAll('.font-serif, h1, h2').forEach(e => e.style.fontFamily = fontStack);
+
+      // Font size
+      const base = c('font_size');
+      el('hero-title').style.fontSize = `${base * 3.5}px`;
+      el('hero-subtitle').style.fontSize = `${base * 1.2}px`;
+      el('bottom-cta-title').style.fontSize = `${base * 3}px`;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => applyConfig(config),
+        mapToCapabilities: (config) => {
+          const c = (k) => config[k] || defaultConfig[k];
+          const mut = (key) => ({
+            get: () => c(key),
+            set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+          });
+          return {
+            recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_action'), mut('secondary_action')],
+            borderables: [],
+            fontEditable: mut('font_family'),
+            fontSizeable: mut('font_size'),
+          };
+        },
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+          ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+          ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+        ]),
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a15ba6b927cf',t:'MTc3NDY2OTQwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

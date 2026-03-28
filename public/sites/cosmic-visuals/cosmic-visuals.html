@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GalaxyGlow Vault</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(139,92,246,.4)} 50%{box-shadow:0 0 40px rgba(139,92,246,.7),0 0 80px rgba(6,182,212,.3)} }
+    @keyframes drift { 0%{transform:translate(0,0)} 25%{transform:translate(10px,-15px)} 50%{transform:translate(-5px,-25px)} 75%{transform:translate(-15px,-10px)} 100%{transform:translate(0,0)} }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    @keyframes fade-up { 0%{opacity:0;transform:translateY(30px)} 100%{opacity:1;transform:translateY(0)} }
+    @keyframes rotate-slow { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    @keyframes twinkle { 0%,100%{opacity:.2} 50%{opacity:1} }
+
+    .anim-float { animation: float 6s ease-in-out infinite; }
+    .anim-float-delay { animation: float 7s ease-in-out 1s infinite; }
+    .anim-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+    .anim-drift { animation: drift 20s ease-in-out infinite; }
+    .anim-shimmer { background-size: 200% 100%; animation: shimmer 3s linear infinite; }
+    .anim-fade-up { animation: fade-up .8s ease-out both; }
+    .anim-rotate { animation: rotate-slow 60s linear infinite; }
+
+    .glass {
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .glass-strong {
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .glow-border {
+      position: relative;
+    }
+    .glow-border::before {
+      content:'';position:absolute;inset:-1px;border-radius:inherit;
+      background:linear-gradient(135deg,rgba(139,92,246,.5),rgba(6,182,212,.5),rgba(139,92,246,.2));
+      z-index:-1;opacity:.6;filter:blur(1px);
+    }
+
+    .star {
+      position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;
+      animation:twinkle var(--dur) ease-in-out var(--delay) infinite;
+    }
+
+    .scroll-section { opacity:0; transform:translateY(40px); transition:opacity .7s ease,transform .7s ease; }
+    .scroll-section.visible { opacity:1; transform:translateY(0); }
+
+    .gallery-card {
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .gallery-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(139,92,246,.3), 0 0 30px rgba(6,182,212,.15);
+    }
+
+    .nav-link { position:relative; }
+    .nav-link::after {
+      content:'';position:absolute;bottom:-2px;left:50%;width:0;height:2px;
+      background:linear-gradient(90deg,#8b5cf6,#06b6d4);transition:all .3s ease;transform:translateX(-50%);
+    }
+    .nav-link:hover::after,.nav-link.active::after { width:100%; }
+
+    .cta-btn {
+      position:relative;overflow:hidden;
+    }
+    .cta-btn::before {
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+      transform:translateX(-100%);transition:transform .6s ease;
+    }
+    .cta-btn:hover::before { transform:translateX(100%); }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:rgba(0,0,0,.3); }
+    ::-webkit-scrollbar-thumb { background:rgba(139,92,246,.4);border-radius:3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-black text-white" style="font-family:'Outfit',sans-serif;">
+  <div id="app-root" class="w-full h-full overflow-auto relative" style="background:#030014;"><!-- Stars Background -->
+   <div id="stars-container" class="fixed inset-0 pointer-events-none" style="z-index:0;"></div><!-- Ambient Orbs -->
+   <div class="fixed pointer-events-none" style="z-index:0;width:500px;height:500px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(139,92,246,.12) 0%,transparent 70%);border-radius:50%;"></div>
+   <div class="fixed pointer-events-none anim-drift" style="z-index:0;width:600px;height:600px;bottom:-150px;left:-150px;background:radial-gradient(circle,rgba(6,182,212,.1) 0%,transparent 70%);border-radius:50%;"></div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(3,0,20,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between" style="height:64px;"><a href="#home" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);"><i data-lucide="sparkles" style="width:16px;height:16px;color:#fff;"></i>
+      </div><span class="font-bold text-lg tracking-tight" style="font-family:'Space Mono',monospace;">GalaxyGlow</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Home</a> <a href="#gallery" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Gallery</a> <a href="#wallpapers" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Wallpapers</a> <a href="#prints" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Prints</a> <a href="#reviews" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Reviews</a> <a href="#download" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2 text-gray-300 hover:text-white"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4" style="background:rgba(3,0,20,.95);"><a href="#home" class="block py-2 text-sm text-gray-300 hover:text-white">Home</a> <a href="#gallery" class="block py-2 text-sm text-gray-300 hover:text-white">Gallery</a> <a href="#wallpapers" class="block py-2 text-sm text-gray-300 hover:text-white">Wallpapers</a> <a href="#prints" class="block py-2 text-sm text-gray-300 hover:text-white">Prints</a> <a href="#reviews" class="block py-2 text-sm text-gray-300 hover:text-white">Reviews</a> <a href="#download" class="block py-2 text-sm text-gray-300 hover:text-white">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="min-height:100%;padding:120px 16px 80px;"><!-- Hero BG Image -->
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1920&amp;q=80" alt="Galaxy nebula" loading="lazy" class="w-full h-full object-cover" style="opacity:.25;filter:blur(2px);" onerror="this.style.background='linear-gradient(135deg,#1a0533,#030014)';this.alt='Space background';">
+     <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(3,0,20,.4) 0%,rgba(3,0,20,.95) 85%,#030014 100%);"></div>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-6 anim-fade-up" style="animation-delay:.1s;"><span class="w-2 h-2 rounded-full" style="background:#06b6d4;box-shadow:0 0 8px #06b6d4;"></span> <span id="el-tagline" class="text-xs font-medium tracking-wider uppercase" style="color:#a5b4fc;font-family:'Space Mono',monospace;">Cosmic visuals that hit like a soundtrack.</span>
+     </div>
+     <h1 id="el-hero-title" class="text-4xl sm:text-5xl md:text-7xl font-black leading-none mb-6 anim-fade-up" style="animation-delay:.25s;background:linear-gradient(135deg,#ffffff 0%,#c4b5fd 40%,#67e8f9 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Put the cosmos where<br>
+      you can see it.</h1>
+     <p id="el-hero-subtitle" class="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 anim-fade-up" style="animation-delay:.4s;color:#a5b4fc;line-height:1.7;">Wallpapers, prints, and gradients made from real space imagery.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up" style="animation-delay:.55s;"><a href="#download" id="el-cta-primary" class="cta-btn anim-pulse-glow px-8 py-3.5 rounded-xl font-semibold text-white text-base" style="background:linear-gradient(135deg,#7c3aed,#0891b2);min-width:180px;text-align:center;"> Download Vault </a> <a href="#gallery" id="el-cta-secondary" class="cta-btn glass px-8 py-3.5 rounded-xl font-semibold text-white text-base hover:bg-white/10 transition-colors" style="min-width:180px;text-align:center;"> Browse Gallery </a>
+     </div><!-- Stats -->
+     <div class="flex items-center justify-center gap-6 sm:gap-10 mt-14 anim-fade-up" style="animation-delay:.7s;">
+      <div class="text-center">
+       <div class="text-2xl sm:text-3xl font-bold" style="color:#c4b5fd;">
+        150+
+       </div>
+       <div class="text-xs mt-1" style="color:#7c8db5;font-family:'Space Mono',monospace;">
+        WALLPAPERS
+       </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,.1);"></div>
+      <div class="text-center">
+       <div class="text-2xl sm:text-3xl font-bold" style="color:#67e8f9;">
+        30
+       </div>
+       <div class="text-xs mt-1" style="color:#7c8db5;font-family:'Space Mono',monospace;">
+        PRINT POSTERS
+       </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(255,255,255,.1);"></div>
+      <div class="text-center">
+       <div class="text-2xl sm:text-3xl font-bold" style="color:#f0abfc;">
+        ∞
+       </div>
+       <div class="text-xs mt-1" style="color:#7c8db5;font-family:'Space Mono',monospace;">
+        GRADIENTS
+       </div>
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 anim-float"><i data-lucide="chevron-down" style="width:24px;height:24px;color:rgba(139,92,246,.5);"></i>
+    </div>
+   </section><!-- GALLERY ROOMS -->
+   <section id="gallery" class="relative w-full scroll-section" style="padding:80px 16px;">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-widest uppercase" style="color:#06b6d4;font-family:'Space Mono',monospace;">Gallery Rooms</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3" style="color:#e0e7ff;">Step Into the Void</h2>
+      <p class="mt-3 text-base max-w-lg mx-auto" style="color:#7c8db5;">Four curated rooms. Each a different corner of the cosmos.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-6"><!-- Nebula -->
+      <div class="gallery-card rounded-2xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:16/10;"><img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?w=800&amp;q=75" alt="Nebula room" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='linear-gradient(135deg,#4c1d95,#0e7490)';this.alt='Nebula';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 30%,rgba(3,0,20,.9) 100%);"></div>
+       <div class="absolute bottom-0 left-0 p-5 sm:p-6">
+        <div class="flex items-center gap-2 mb-2">
+         <div class="w-3 h-3 rounded-full" style="background:#8b5cf6;box-shadow:0 0 10px #8b5cf6;"></div><span class="text-xs tracking-wider uppercase" style="color:#c4b5fd;font-family:'Space Mono',monospace;">Room 01</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white">Nebula</h3>
+        <p class="text-sm mt-1" style="color:#a5b4fc;">Gas clouds &amp; stellar nurseries</p>
+       </div>
+      </div><!-- Planets -->
+      <div class="gallery-card rounded-2xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:16/10;"><img src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=800&amp;q=75" alt="Planets room" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0c4a6e)';this.alt='Planets';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 30%,rgba(3,0,20,.9) 100%);"></div>
+       <div class="absolute bottom-0 left-0 p-5 sm:p-6">
+        <div class="flex items-center gap-2 mb-2">
+         <div class="w-3 h-3 rounded-full" style="background:#06b6d4;box-shadow:0 0 10px #06b6d4;"></div><span class="text-xs tracking-wider uppercase" style="color:#67e8f9;font-family:'Space Mono',monospace;">Room 02</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white">Planets</h3>
+        <p class="text-sm mt-1" style="color:#a5b4fc;">Horizons &amp; orbital beauty</p>
+       </div>
+      </div><!-- Astronaut -->
+      <div class="gallery-card rounded-2xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:16/10;"><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&amp;q=75" alt="Astronaut room" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='linear-gradient(135deg,#312e81,#1e1b4b)';this.alt='Astronaut';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 30%,rgba(3,0,20,.9) 100%);"></div>
+       <div class="absolute bottom-0 left-0 p-5 sm:p-6">
+        <div class="flex items-center gap-2 mb-2">
+         <div class="w-3 h-3 rounded-full" style="background:#f0abfc;box-shadow:0 0 10px #d946ef;"></div><span class="text-xs tracking-wider uppercase" style="color:#f0abfc;font-family:'Space Mono',monospace;">Room 03</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white">Astronaut</h3>
+        <p class="text-sm mt-1" style="color:#a5b4fc;">Human meets the infinite</p>
+       </div>
+      </div><!-- Abstract Space -->
+      <div class="gallery-card rounded-2xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:16/10;"><img src="https://images.unsplash.com/photo-1507499739999-097706ad8914?w=800&amp;q=75" alt="Abstract space room" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='linear-gradient(135deg,#701a75,#134e4a)';this.alt='Abstract Space';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 30%,rgba(3,0,20,.9) 100%);"></div>
+       <div class="absolute bottom-0 left-0 p-5 sm:p-6">
+        <div class="flex items-center gap-2 mb-2">
+         <div class="w-3 h-3 rounded-full" style="background:#fbbf24;box-shadow:0 0 10px #f59e0b;"></div><span class="text-xs tracking-wider uppercase" style="color:#fde68a;font-family:'Space Mono',monospace;">Room 04</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white">Abstract Space</h3>
+        <p class="text-sm mt-1" style="color:#a5b4fc;">Cosmic textures &amp; color fields</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="relative w-full scroll-section" style="padding:80px 16px;">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-widest uppercase" style="color:#8b5cf6;font-family:'Space Mono',monospace;">150+ Wallpapers</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3" style="color:#e0e7ff;">Your Screen, Reimagined</h2>
+      <p class="mt-3 text-base max-w-lg mx-auto" style="color:#7c8db5;">Desktop, mobile, tablet. Every resolution. Every vibe.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div class="rounded-xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:9/16;"><img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&amp;q=75" alt="Starscape wallpaper" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.background='linear-gradient(180deg,#1e1b4b,#030014)';this.alt='Wallpaper';">
+       <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity glass-strong px-4 py-2 rounded-lg"><i data-lucide="download" style="width:18px;height:18px;color:#67e8f9;display:inline-block;vertical-align:middle;"></i> <span class="text-sm ml-2 font-medium" style="color:#67e8f9;">Preview</span>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:9/16;"><img src="https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=400&amp;q=75" alt="Deep space wallpaper" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.background='linear-gradient(180deg,#312e81,#030014)';this.alt='Wallpaper';">
+       <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity glass-strong px-4 py-2 rounded-lg"><i data-lucide="download" style="width:18px;height:18px;color:#67e8f9;display:inline-block;vertical-align:middle;"></i> <span class="text-sm ml-2 font-medium" style="color:#67e8f9;">Preview</span>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:9/16;"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&amp;q=75" alt="Earth from space" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.background='linear-gradient(180deg,#0c4a6e,#030014)';this.alt='Wallpaper';">
+       <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity glass-strong px-4 py-2 rounded-lg"><i data-lucide="download" style="width:18px;height:18px;color:#67e8f9;display:inline-block;vertical-align:middle;"></i> <span class="text-sm ml-2 font-medium" style="color:#67e8f9;">Preview</span>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden relative group cursor-pointer" style="aspect-ratio:9/16;"><img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=400&amp;q=75" alt="Cosmic clouds" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.background='linear-gradient(180deg,#4c1d95,#030014)';this.alt='Wallpaper';">
+       <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity glass-strong px-4 py-2 rounded-lg"><i data-lucide="download" style="width:18px;height:18px;color:#67e8f9;display:inline-block;vertical-align:middle;"></i> <span class="text-sm ml-2 font-medium" style="color:#67e8f9;">Preview</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Gradient Pack Preview -->
+     <div class="mt-10 glass rounded-2xl p-6 sm:p-8 glow-border">
+      <div class="flex flex-col sm:flex-row items-center gap-6">
+       <div class="flex gap-3 flex-shrink-0">
+        <div class="w-14 h-14 rounded-xl" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);"></div>
+        <div class="w-14 h-14 rounded-xl" style="background:linear-gradient(135deg,#d946ef,#f59e0b);"></div>
+        <div class="w-14 h-14 rounded-xl" style="background:linear-gradient(135deg,#06b6d4,#10b981);"></div>
+        <div class="w-14 h-14 rounded-xl" style="background:linear-gradient(135deg,#e11d48,#7c3aed);"></div>
+       </div>
+       <div>
+        <h3 class="text-lg font-bold text-white">Nebula Gradient Background Pack</h3>
+        <p class="text-sm mt-1" style="color:#7c8db5;">24 hand-crafted gradients extracted from real nebula photography. Perfect for designs, presentations &amp; social media.</p>
+       </div>
+       <div class="flex-shrink-0"><span class="px-4 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(139,92,246,.2);color:#c4b5fd;border:1px solid rgba(139,92,246,.3);">INCLUDED</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRINTS -->
+   <section id="prints" class="relative w-full scroll-section" style="padding:80px 16px;">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-widest uppercase" style="color:#f0abfc;font-family:'Space Mono',monospace;">30 Cosmic Posters</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-3" style="color:#e0e7ff;">Print-Ready Art</h2>
+      <p class="mt-3 text-base max-w-lg mx-auto" style="color:#7c8db5;">High-resolution posters + cosmic quote overlays. Frame-worthy from pixel one.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div class="gallery-card rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=600&amp;q=75" alt="Galaxy poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(180deg,#1e1b4b,#030014)';this.alt='Poster';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 50%,rgba(3,0,20,.85) 100%);"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5 text-center">
+        <p class="text-sm italic" style="color:#c4b5fd;">"We are made of star stuff."</p>
+        <p class="text-xs mt-2" style="color:#7c8db5;">— Carl Sagan</p>
+       </div>
+      </div>
+      <div class="gallery-card rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?w=600&amp;q=75" alt="Space poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(180deg,#312e81,#030014)';this.alt='Poster';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 50%,rgba(3,0,20,.85) 100%);"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5 text-center">
+        <p class="text-sm italic" style="color:#67e8f9;">"The universe is under no obligation to make sense to you."</p>
+        <p class="text-xs mt-2" style="color:#7c8db5;">— Neil deGrasse Tyson</p>
+       </div>
+      </div>
+      <div class="gallery-card rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=600&amp;q=75" alt="Nebula poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(180deg,#4c1d95,#030014)';this.alt='Poster';">
+       <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 50%,rgba(3,0,20,.85) 100%);"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5 text-center">
+        <p class="text-sm italic" style="color:#f0abfc;">"Look up at the stars and not down at your feet."</p>
+        <p class="text-xs mt-2" style="color:#7c8db5;">— Stephen Hawking</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INSIDE / PRICING -->
+   <section class="relative w-full scroll-section" style="padding:60px 16px;">
+    <div class="max-w-3xl mx-auto">
+     <div class="glass-strong rounded-3xl p-6 sm:p-10 text-center glow-border"><span id="el-pricing-badge" class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-5 anim-shimmer" style="background:linear-gradient(90deg,rgba(139,92,246,.3),rgba(6,182,212,.3),rgba(139,92,246,.3));color:#c4b5fd;border:1px solid rgba(139,92,246,.2);">Premium Aesthetic Collection</span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold mb-6" style="color:#e0e7ff;">Everything in the Vault</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left mb-8">
+       <div class="flex items-center gap-3 p-3 rounded-xl" style="background:rgba(139,92,246,.06);"><i data-lucide="image" style="width:20px;height:20px;color:#8b5cf6;flex-shrink:0;"></i> <span class="text-sm" style="color:#c4b5fd;">150 Galaxy Wallpapers (4K+)</span>
+       </div>
+       <div class="flex items-center gap-3 p-3 rounded-xl" style="background:rgba(6,182,212,.06);"><i data-lucide="frame" style="width:20px;height:20px;color:#06b6d4;flex-shrink:0;"></i> <span class="text-sm" style="color:#67e8f9;">30 Cosmic Print Posters</span>
+       </div>
+       <div class="flex items-center gap-3 p-3 rounded-xl" style="background:rgba(217,70,239,.06);"><i data-lucide="palette" style="width:20px;height:20px;color:#d946ef;flex-shrink:0;"></i> <span class="text-sm" style="color:#f0abfc;">Nebula Gradient Pack</span>
+       </div>
+       <div class="flex items-center gap-3 p-3 rounded-xl" style="background:rgba(251,191,36,.06);"><i data-lucide="type" style="width:20px;height:20px;color:#fbbf24;flex-shrink:0;"></i> <span class="text-sm" style="color:#fde68a;">Cosmic Quote Overlays</span>
+       </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 text-xs" style="color:#7c8db5;"><span class="flex items-center gap-1"><i data-lucide="zap" style="width:12px;height:12px;color:#fbbf24;"></i> Instant wow factor</span> <span>•</span> <span class="flex items-center gap-1"><i data-lucide="sparkles" style="width:12px;height:12px;color:#d946ef;"></i> Perfect for creators</span> <span>•</span> <span class="flex items-center gap-1"><i data-lucide="crown" style="width:12px;height:12px;color:#8b5cf6;"></i> Premium aesthetic</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full scroll-section" style="padding:80px 16px;">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-widest uppercase" style="color:#fbbf24;font-family:'Space Mono',monospace;">Reviews</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold mt-3" style="color:#e0e7ff;">What Creators Say</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:#a5b4fc;">"Set my whole brand aesthetic in 10 minutes. The gradients alone are worth it."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;">
+         JM
+        </div>
+        <div>
+         <div class="text-sm font-medium text-white">
+          Jenna M.
+         </div>
+         <div class="text-xs" style="color:#7c8db5;">
+          Content Creator
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:#a5b4fc;">"The print posters are insane quality. I framed three and my studio looks like a NASA gallery."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#d946ef,#f59e0b);color:#fff;">
+         AK
+        </div>
+        <div>
+         <div class="text-sm font-medium text-white">
+          Alex K.
+         </div>
+         <div class="text-xs" style="color:#7c8db5;">
+          Graphic Designer
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24;fill:#fbbf24;"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:#a5b4fc;">"Every wallpaper feels like a movie scene. My phone lock screen gets compliments daily."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#06b6d4,#10b981);color:#fff;">
+         RP
+        </div>
+        <div>
+         <div class="text-sm font-medium text-white">
+          Ravi P.
+         </div>
+         <div class="text-xs" style="color:#7c8db5;">
+          Photographer
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD CTA -->
+   <section id="download" class="relative w-full scroll-section" style="padding:80px 16px;">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="relative rounded-3xl overflow-hidden p-8 sm:p-14" style="background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.1));">
+      <div class="absolute inset-0 anim-rotate" style="background:conic-gradient(from 0deg,rgba(139,92,246,.05),rgba(6,182,212,.05),rgba(217,70,239,.05),rgba(139,92,246,.05));filter:blur(40px);"></div>
+      <div class="relative z-10">
+       <div class="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center anim-float" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);"><i data-lucide="rocket" style="width:28px;height:28px;color:#fff;"></i>
+       </div>
+       <h2 id="el-bottom-cta" class="text-3xl sm:text-4xl md:text-5xl font-black mb-4" style="background:linear-gradient(135deg,#ffffff,#c4b5fd,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Make your screen feel infinite.</h2>
+       <p class="text-base mb-8 max-w-md mx-auto" style="color:#7c8db5;">Get the full GalaxyGlow Vault — wallpapers, posters, gradients, and overlays. One download. Endless cosmic energy.</p><a href="#" id="el-download-btn" class="cta-btn anim-pulse-glow inline-block px-10 py-4 rounded-xl font-bold text-white text-lg" style="background:linear-gradient(135deg,#7c3aed,#0891b2);" onclick="event.preventDefault();"> Download the Vault </a>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT -->
+   <section class="relative w-full scroll-section" style="padding:40px 16px 80px;">
+    <div class="max-w-2xl mx-auto">
+     <div class="glass-strong rounded-2xl p-6 sm:p-8 text-center glow-border">
+      <h3 class="text-xl font-bold mb-2" style="color:#e0e7ff;">Vote + Comment</h3>
+      <p class="text-sm mb-6" style="color:#7c8db5;">Love the vault? Drop a vote or tell us your favorite room.</p><!-- Vote buttons -->
+      <div class="flex items-center justify-center gap-4 mb-6"><button id="vote-up" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all hover:scale-105" style="background:rgba(139,92,246,.15);color:#c4b5fd;border:1px solid rgba(139,92,246,.2);"> <i data-lucide="thumbs-up" style="width:16px;height:16px;"></i> <span id="vote-up-count">47</span> </button> <button id="vote-down" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all hover:scale-105" style="background:rgba(255,255,255,.05);color:#7c8db5;border:1px solid rgba(255,255,255,.08);"> <i data-lucide="thumbs-down" style="width:16px;height:16px;"></i> <span id="vote-down-count">2</span> </button>
+      </div><!-- Comment form -->
+      <form id="comment-form" class="text-left"><label for="comment-input" class="block text-xs font-medium mb-2" style="color:#7c8db5;">Leave a comment</label>
+       <div class="flex gap-3"><input id="comment-input" type="text" placeholder="This vault is incredible..." class="flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-500 outline-none focus:ring-2" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);--tw-ring-color:rgba(139,92,246,.4);"> <button type="submit" class="px-5 py-2.5 rounded-xl font-medium text-sm text-white transition-all hover:scale-105" style="background:linear-gradient(135deg,#7c3aed,#0891b2);">Send</button>
+       </div>
+      </form><!-- Comments list -->
+      <div id="comments-list" class="mt-5 space-y-3 text-left"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full text-center py-8 px-4" style="border-top:1px solid rgba(255,255,255,.05);">
+    <div class="flex items-center justify-center gap-2 mb-3">
+     <div class="w-6 h-6 rounded-md flex items-center justify-center" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);"><i data-lucide="sparkles" style="width:12px;height:12px;color:#fff;"></i>
+     </div><span class="font-bold text-sm" style="font-family:'Space Mono',monospace;color:#7c8db5;">GalaxyGlow Vault</span>
+    </div>
+    <p class="text-xs" style="color:#4b5563;">© 2024 GalaxyGlow. Cosmic visuals for creators everywhere.</p>
+   </footer>
+  </div>
+  <script>
+  // Config defaults
+  const defaultConfig = {
+    hero_title: 'Put the cosmos where\nyou can see it.',
+    hero_subtitle: 'Wallpapers, prints, and gradients made from real space imagery.',
+    tagline: 'Cosmic visuals that hit like a soundtrack.',
+    cta_primary: 'Download Vault',
+    cta_secondary: 'Browse Gallery',
+    bottom_cta_text: 'Make your screen feel infinite.',
+    pricing_badge: 'Premium Aesthetic Collection',
+    background_color: '#030014',
+    surface_color: '#0f0a2e',
+    text_color: '#e0e7ff',
+    primary_action_color: '#7c3aed',
+    secondary_action_color: '#06b6d4',
+    font_family: 'Outfit',
+    font_size: 16
+  };
+
+  // Generate stars
+  (function(){
+    const c = document.getElementById('stars-container');
+    let html = '';
+    for(let i=0;i<80;i++){
+      const x=Math.random()*100, y=Math.random()*100, dur=2+Math.random()*4, delay=Math.random()*5, size=1+Math.random()*1.5;
+      html+=`<div class="star" style="left:${x}%;top:${y}%;width:${size}px;height:${size}px;--dur:${dur}s;--delay:${delay}s;"></div>`;
+    }
+    c.innerHTML=html;
+  })();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+  },{threshold:0.1});
+  document.querySelectorAll('.scroll-section').forEach(s=>observer.observe(s));
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click',()=>{
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a=>{
+    a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Vote system
+  let votes = {up:47,down:2,voted:null};
+  document.getElementById('vote-up').addEventListener('click',function(){
+    if(votes.voted==='up')return;
+    if(votes.voted==='down'){votes.down--;document.getElementById('vote-down-count').textContent=votes.down;}
+    votes.up++;votes.voted='up';
+    document.getElementById('vote-up-count').textContent=votes.up;
+    this.style.background='rgba(139,92,246,.35)';
+    document.getElementById('vote-down').style.background='rgba(255,255,255,.05)';
+  });
+  document.getElementById('vote-down').addEventListener('click',function(){
+    if(votes.voted==='down')return;
+    if(votes.voted==='up'){votes.up--;document.getElementById('vote-up-count').textContent=votes.up;}
+    votes.down++;votes.voted='down';
+    document.getElementById('vote-down-count').textContent=votes.down;
+    this.style.background='rgba(239,68,68,.2)';
+    document.getElementById('vote-up').style.background='rgba(139,92,246,.15)';
+  });
+
+  // Comment system
+  const comments = [];
+  document.getElementById('comment-form').addEventListener('submit',function(e){
+    e.preventDefault();
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if(!text)return;
+    comments.push({text,time:new Date()});
+    input.value='';
+    renderComments();
+  });
+  function renderComments(){
+    const list = document.getElementById('comments-list');
+    list.innerHTML = comments.map(c=>`
+      <div class="glass rounded-xl p-3 flex items-start gap-3">
+        <div class="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;">?</div>
+        <div>
+          <div class="text-xs" style="color:#7c8db5;">Just now</div>
+          <div class="text-sm mt-0.5" style="color:#c4b5fd;">${c.text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Element SDK
+  function applyConfig(config) {
+    const cf = (k) => config[k] || defaultConfig[k];
+    const font = cf('font_family');
+    const baseSize = cf('font_size');
+    const baseFontStack = `${font}, sans-serif`;
+
+    document.getElementById('el-tagline').textContent = cf('tagline');
+    document.getElementById('el-hero-title').innerHTML = cf('hero_title').replace(/\n/g,'<br>');
+    document.getElementById('el-hero-subtitle').textContent = cf('hero_subtitle');
+    document.getElementById('el-cta-primary').textContent = cf('cta_primary');
+    document.getElementById('el-cta-secondary').textContent = cf('cta_secondary');
+    document.getElementById('el-bottom-cta').textContent = cf('bottom_cta_text');
+    document.getElementById('el-pricing-badge').textContent = cf('pricing_badge');
+
+    // Colors
+    const bg = cf('background_color');
+    const surface = cf('surface_color');
+    const txt = cf('text_color');
+    const primary = cf('primary_action_color');
+    const secondary = cf('secondary_action_color');
+
+    document.getElementById('app-root').style.background = bg;
+
+    document.querySelectorAll('h1,h2').forEach(el=>{el.style.fontFamily=baseFontStack;});
+    document.querySelectorAll('p,span,a,button,input,div').forEach(el=>{
+      if(!el.closest('[style*="Space Mono"]') && !el.style.fontFamily?.includes('Space Mono'))
+        el.style.fontFamily=baseFontStack;
+    });
+
+    document.getElementById('el-hero-title').style.fontSize = `${baseSize*3}px`;
+    document.getElementById('el-hero-subtitle').style.fontSize = `${baseSize}px`;
+    document.getElementById('el-bottom-cta').style.fontSize = `${baseSize*2.5}px`;
+
+    // Apply primary action color to CTA buttons
+    document.getElementById('el-cta-primary').style.background = `linear-gradient(135deg,${primary},${secondary})`;
+    document.getElementById('el-download-btn').style.background = `linear-gradient(135deg,${primary},${secondary})`;
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        {get:()=>config.background_color||defaultConfig.background_color,set:(v)=>{config.background_color=v;window.elementSdk.setConfig({background_color:v})}},
+        {get:()=>config.surface_color||defaultConfig.surface_color,set:(v)=>{config.surface_color=v;window.elementSdk.setConfig({surface_color:v})}},
+        {get:()=>config.text_color||defaultConfig.text_color,set:(v)=>{config.text_color=v;window.elementSdk.setConfig({text_color:v})}},
+        {get:()=>config.primary_action_color||defaultConfig.primary_action_color,set:(v)=>{config.primary_action_color=v;window.elementSdk.setConfig({primary_action_color:v})}},
+        {get:()=>config.secondary_action_color||defaultConfig.secondary_action_color,set:(v)=>{config.secondary_action_color=v;window.elementSdk.setConfig({secondary_action_color:v})}}
+      ],
+      borderables:[],
+      fontEditable:{get:()=>config.font_family||defaultConfig.font_family,set:(v)=>{config.font_family=v;window.elementSdk.setConfig({font_family:v})}},
+      fontSizeable:{get:()=>config.font_size||defaultConfig.font_size,set:(v)=>{config.font_size=v;window.elementSdk.setConfig({font_size:v})}}
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title||defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle||defaultConfig.hero_subtitle],
+      ['tagline', config.tagline||defaultConfig.tagline],
+      ['cta_primary', config.cta_primary||defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary||defaultConfig.cta_secondary],
+      ['bottom_cta_text', config.bottom_cta_text||defaultConfig.bottom_cta_text],
+      ['pricing_badge', config.pricing_badge||defaultConfig.pricing_badge]
+    ])
+  });
+
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a90a214d27cf',t:'MTc3NDY2OTcxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

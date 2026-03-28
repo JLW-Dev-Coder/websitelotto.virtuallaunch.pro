@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibertyLine Justice</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0a1628',
+        navyLight: '#121f36',
+        navyMid: '#162544',
+        charcoal: '#1a1f2e',
+        gold: '#c9a84c',
+        goldLight: '#e0c76a',
+        goldDim: '#8a7233',
+        cream: '#f0ead6',
+        slate: '#94a3b8',
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.3); }
+  50% { box-shadow: 0 0 35px rgba(201,168,76,0.6); }
+}
+@keyframes spotlightSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes badgeGlow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+.animate-slide-left { animation: slideInLeft 0.7s ease-out forwards; }
+.animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
+
+.cta-pulse { animation: goldPulse 2.5s ease-in-out infinite; }
+
+.spotlight-text {
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.15) 45%, rgba(201,168,76,0.3) 50%, rgba(201,168,76,0.15) 55%, transparent 100%);
+  background-size: 200% 100%;
+  animation: spotlightSweep 6s ease-in-out infinite;
+}
+
+.badge-glow { animation: badgeGlow 3s ease-in-out infinite; }
+
+.gold-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+}
+
+.nav-glass {
+  background: rgba(10, 22, 40, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Intersection Observer reveal */
+.reveal-section { opacity: 0; transform: translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-section.visible { opacity: 1; transform: translateY(0); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Testimonial carousel */
+.testimonial-track { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Form styles */
+.form-input {
+  background: rgba(22, 37, 68, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-input:focus {
+  border-color: #c9a84c;
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+  outline: none;
+}
+
+/* Timeline connector */
+.timeline-connector {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #c9a84c 0%, rgba(201,168,76,0.3) 100%);
+  z-index: 0;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-navy text-white"><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-gold/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2">
+       <div class="w-8 h-8 rounded bg-gold/20 flex items-center justify-center"><i data-lucide="shield" class="w-5 h-5 text-gold"></i>
+       </div><span class="font-display font-bold text-lg tracking-wide" id="nav-brand">LibertyLine<span class="text-gold"> Justice</span></span> </a> <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8"><a href="#home" class="text-sm text-slate hover:text-gold transition-colors">Home</a> <a href="#services" class="text-sm text-slate hover:text-gold transition-colors">Services</a> <a href="#how-it-works" class="text-sm text-slate hover:text-gold transition-colors">How It Works</a> <a href="#proof" class="text-sm text-slate hover:text-gold transition-colors">Proof</a> <a href="#faq" class="text-sm text-slate hover:text-gold transition-colors">FAQ</a> <a href="#consult" class="bg-gold text-navy text-sm font-semibold px-5 py-2 rounded hover:bg-goldLight transition-colors" id="nav-cta">Request Consult</a>
+      </div><!-- Mobile Menu Toggle --> <button id="mobile-toggle" class="md:hidden text-slate hover:text-gold transition-colors" aria-label="Open menu"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+     </div>
+    </div><!-- Mobile Nav -->
+    <div id="mobile-nav" class="hidden md:hidden border-t border-gold/10 pb-4 px-4">
+     <div class="flex flex-col gap-3 pt-3"><a href="#home" class="text-sm text-slate hover:text-gold transition-colors py-1">Home</a> <a href="#services" class="text-sm text-slate hover:text-gold transition-colors py-1">Services</a> <a href="#how-it-works" class="text-sm text-slate hover:text-gold transition-colors py-1">How It Works</a> <a href="#proof" class="text-sm text-slate hover:text-gold transition-colors py-1">Proof</a> <a href="#faq" class="text-sm text-slate hover:text-gold transition-colors py-1">FAQ</a> <a href="#consult" class="bg-gold text-navy text-sm font-semibold px-5 py-2 rounded text-center mt-1">Request Consult</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden"><!-- Atmospheric background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-navy via-navyLight to-charcoal"></div>
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 1px 1px, rgba(201,168,76,0.4) 1px, transparent 0); background-size: 40px 40px;"></div>
+    <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 bg-gradient-to-l from-gold/20 to-transparent"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="max-w-3xl">
+      <p class="text-gold/80 text-sm font-semibold tracking-[0.2em] uppercase mb-4 animate-fade-in" id="hero-tagline" style="animation-delay: 0.1s;">When it matters most, clarity matters.</p>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-800 leading-[1.05] mb-6 animate-fade-up spotlight-text" id="hero-title" style="animation-delay: 0.2s;">Take control of what happens next.</h1>
+      <p class="text-slate text-lg md:text-xl leading-relaxed mb-10 max-w-xl animate-fade-up" id="hero-subtitle" style="animation-delay: 0.4s;">Confidential consultation. Clear next steps.</p>
+      <div class="flex flex-col sm:flex-row gap-4 animate-fade-up" style="animation-delay: 0.6s;"><a href="#consult" class="cta-pulse bg-gold text-navy font-bold px-8 py-4 rounded text-center hover:bg-goldLight transition-colors text-base" id="hero-cta-primary"> Request Confidential Consult </a> <a href="#how-it-works" class="border border-gold/40 text-gold font-semibold px-8 py-4 rounded text-center hover:bg-gold/10 transition-colors text-base" id="hero-cta-secondary"> See How It Works </a>
+      </div>
+     </div><!-- Credibility badges -->
+     <div class="mt-16 flex flex-wrap gap-6 animate-fade-up" style="animation-delay: 0.9s;">
+      <div class="badge-glow flex items-center gap-2 bg-navyMid/60 border border-gold/15 rounded-full px-5 py-2"><i data-lucide="shield-check" class="w-4 h-4 text-gold"></i> <span class="text-xs text-slate font-medium">Confidential &amp; Secure</span>
+      </div>
+      <div class="badge-glow flex items-center gap-2 bg-navyMid/60 border border-gold/15 rounded-full px-5 py-2" style="animation-delay: 0.5s;"><i data-lucide="clock" class="w-4 h-4 text-gold"></i> <span class="text-xs text-slate font-medium">Response Within 24 Hours</span>
+      </div>
+      <div class="badge-glow flex items-center gap-2 bg-navyMid/60 border border-gold/15 rounded-full px-5 py-2" style="animation-delay: 1s;"><i data-lucide="users" class="w-4 h-4 text-gold"></i> <span class="text-xs text-slate font-medium">Thousands of Clients Served</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- GOLD DIVIDER -->
+   <div class="gold-line w-full"></div><!-- SERVICES -->
+   <section id="services" class="reveal-section w-full py-20 md:py-28 bg-navyLight relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16">
+      <p class="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Our Services</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Focused on Your Situation</h2>
+      <p class="text-slate max-w-xl mx-auto">Every case is unique. We provide focused support across key areas of criminal justice services.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"><!-- Service Cards -->
+      <div class="group bg-navy/60 border border-gold/10 rounded-lg p-7 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors"><i data-lucide="scale" class="w-6 h-6 text-gold"></i>
+       </div>
+       <h3 class="font-display text-lg font-semibold mb-2">Representation</h3>
+       <p class="text-slate text-sm leading-relaxed">Dedicated legal representation tailored to the specifics of your case and circumstances.</p>
+      </div>
+      <div class="group bg-navy/60 border border-gold/10 rounded-lg p-7 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors"><i data-lucide="file-search" class="w-6 h-6 text-gold"></i>
+       </div>
+       <h3 class="font-display text-lg font-semibold mb-2">Record Review</h3>
+       <p class="text-slate text-sm leading-relaxed">Thorough examination of your records to identify options and next steps available to you.</p>
+      </div>
+      <div class="group bg-navy/60 border border-gold/10 rounded-lg p-7 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors"><i data-lucide="landmark" class="w-6 h-6 text-gold"></i>
+       </div>
+       <h3 class="font-display text-lg font-semibold mb-2">Court Support</h3>
+       <p class="text-slate text-sm leading-relaxed">Guidance and support through court proceedings so you never face the process alone.</p>
+      </div>
+      <div class="group bg-navy/60 border border-gold/10 rounded-lg p-7 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors"><i data-lucide="compass" class="w-6 h-6 text-gold"></i>
+       </div>
+       <h3 class="font-display text-lg font-semibold mb-2">Case Guidance</h3>
+       <p class="text-slate text-sm leading-relaxed">Strategic direction and clarity on the best path forward for your unique situation.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- HOW IT WORKS -->
+   <section id="how-it-works" class="reveal-section w-full py-20 md:py-28 bg-navy relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16">
+      <p class="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">How It Works</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Three Steps to Clarity</h2>
+      <p class="text-slate max-w-xl mx-auto">A straightforward, confidential process designed to move at your pace.</p>
+     </div>
+     <div class="relative max-w-4xl mx-auto"><!-- Timeline line (desktop) -->
+      <div class="hidden md:block absolute top-16 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-gold/60 via-gold/40 to-gold/60"></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 relative z-10"><!-- Step 1 -->
+       <div class="flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-full bg-gold text-navy font-display font-bold text-xl flex items-center justify-center mb-5 shadow-lg shadow-gold/20">
+         1
+        </div>
+        <h3 class="font-display text-xl font-semibold mb-2">Contact Us</h3>
+        <p class="text-slate text-sm leading-relaxed max-w-xs">Reach out through our secure form. Everything you share is held in strict confidence.</p>
+       </div><!-- Step 2 -->
+       <div class="flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-full bg-gold text-navy font-display font-bold text-xl flex items-center justify-center mb-5 shadow-lg shadow-gold/20">
+         2
+        </div>
+        <h3 class="font-display text-xl font-semibold mb-2">Review &amp; Assess</h3>
+        <p class="text-slate text-sm leading-relaxed max-w-xs">We carefully review your situation and identify the clearest path forward.</p>
+       </div><!-- Step 3 -->
+       <div class="flex flex-col items-center text-center">
+        <div class="w-14 h-14 rounded-full bg-gold text-navy font-display font-bold text-xl flex items-center justify-center mb-5 shadow-lg shadow-gold/20">
+         3
+        </div>
+        <h3 class="font-display text-xl font-semibold mb-2">Next Steps</h3>
+        <p class="text-slate text-sm leading-relaxed max-w-xs">Receive clear guidance and actionable next steps — no jargon, no confusion.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- GOLD DIVIDER -->
+   <div class="gold-line w-full"></div><!-- PROOF / TESTIMONIALS -->
+   <section id="proof" class="reveal-section w-full py-20 md:py-28 bg-navyLight relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16">
+      <p class="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">What Clients Say</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Client-First. Always.</h2>
+      <p class="text-slate max-w-xl mx-auto">We don't guarantee outcomes — we guarantee that you will be heard, respected, and guided with integrity.</p>
+     </div><!-- Testimonial Carousel -->
+     <div class="relative max-w-3xl mx-auto">
+      <div class="overflow-hidden rounded-lg">
+       <div id="testimonial-track" class="testimonial-track flex"><!-- Testimonial 1 -->
+        <div class="w-full flex-shrink-0 p-8 md:p-12">
+         <div class="bg-navy/60 border border-gold/15 rounded-lg p-8">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i>
+          </div>
+          <p class="text-cream/90 text-base leading-relaxed mb-6 italic">"From the very first call, I felt like someone was actually listening. They walked me through everything step by step. I finally felt like I understood what was happening with my case."</p>
+          <div class="flex items-center gap-3">
+           <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm">M.R.</span>
+           </div>
+           <div>
+            <p class="text-white text-sm font-semibold">M. Rodriguez</p>
+            <p class="text-slate text-xs">Verified Client</p>
+           </div>
+          </div>
+         </div>
+        </div><!-- Testimonial 2 -->
+        <div class="w-full flex-shrink-0 p-8 md:p-12">
+         <div class="bg-navy/60 border border-gold/15 rounded-lg p-8">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i>
+          </div>
+          <p class="text-cream/90 text-base leading-relaxed mb-6 italic">"I was terrified and didn't know where to turn. The team gave me clarity when I needed it most. Professional, compassionate, and genuinely invested in my wellbeing."</p>
+          <div class="flex items-center gap-3">
+           <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm">J.T.</span>
+           </div>
+           <div>
+            <p class="text-white text-sm font-semibold">J. Thompson</p>
+            <p class="text-slate text-xs">Verified Client</p>
+           </div>
+          </div>
+         </div>
+        </div><!-- Testimonial 3 -->
+        <div class="w-full flex-shrink-0 p-8 md:p-12">
+         <div class="bg-navy/60 border border-gold/15 rounded-lg p-8">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i> <i data-lucide="star" class="w-4 h-4 text-gold fill-gold"></i>
+          </div>
+          <p class="text-cream/90 text-base leading-relaxed mb-6 italic">"No false promises, no pressure — just honest guidance and real support. They treated me with dignity at a time when I felt like I had none left."</p>
+          <div class="flex items-center gap-3">
+           <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center">
+            <span class="text-gold font-bold text-sm">A.K.</span>
+           </div>
+           <div>
+            <p class="text-white text-sm font-semibold">A. Kim</p>
+            <p class="text-slate text-xs">Verified Client</p>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Carousel Controls -->
+      <div class="flex items-center justify-center gap-4 mt-6"><button id="prev-btn" class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-gold hover:bg-gold/10 transition-colors" aria-label="Previous testimonial"> <i data-lucide="chevron-left" class="w-5 h-5"></i> </button>
+       <div class="flex gap-2" id="carousel-dots"></div><button id="next-btn" class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-gold hover:bg-gold/10 transition-colors" aria-label="Next testimonial"> <i data-lucide="chevron-right" class="w-5 h-5"></i> </button>
+      </div>
+     </div><!-- Assurance badges -->
+     <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+      <div class="flex items-center gap-3 bg-navy/40 border border-gold/10 rounded-lg p-4"><i data-lucide="lock" class="w-5 h-5 text-gold flex-shrink-0"></i> <span class="text-sm text-slate">100% Confidential Process</span>
+      </div>
+      <div class="flex items-center gap-3 bg-navy/40 border border-gold/10 rounded-lg p-4"><i data-lucide="heart-handshake" class="w-5 h-5 text-gold flex-shrink-0"></i> <span class="text-sm text-slate">Client-First Commitment</span>
+      </div>
+      <div class="flex items-center gap-3 bg-navy/40 border border-gold/10 rounded-lg p-4"><i data-lucide="badge-check" class="w-5 h-5 text-gold flex-shrink-0"></i> <span class="text-sm text-slate">No Outcome Guarantees</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="reveal-section w-full py-20 md:py-28 bg-navy relative">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16">
+      <p class="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Frequently Asked</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold">Common Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-container">
+      <div class="faq-item border border-gold/10 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-navyMid/30 transition-colors" aria-expanded="false"> <span class="font-semibold text-sm pr-4">Is my consultation truly confidential?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">Absolutely. Everything you share with us is protected by attorney-client privilege. Your information is never shared without your explicit consent.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-gold/10 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-navyMid/30 transition-colors" aria-expanded="false"> <span class="font-semibold text-sm pr-4">What should I expect during the first consultation?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">Your first consultation is a chance for us to listen. We'll review your situation, answer your questions, and outline the options available to you — all in plain language.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-gold/10 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-navyMid/30 transition-colors" aria-expanded="false"> <span class="font-semibold text-sm pr-4">Do you guarantee a specific outcome?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">No ethical attorney can guarantee outcomes. What we guarantee is dedicated representation, clear communication, and our full commitment to your case.</p>
+       </div>
+      </div>
+      <div class="faq-item border border-gold/10 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-navyMid/30 transition-colors" aria-expanded="false"> <span class="font-semibold text-sm pr-4">How quickly will I hear back?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold flex-shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">We respond to all consultation requests within 24 hours. Urgent matters may receive same-day attention depending on availability.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- GOLD DIVIDER -->
+   <div class="gold-line w-full"></div><!-- CONSULT FORM -->
+   <section id="consult" class="reveal-section w-full py-20 md:py-28 bg-gradient-to-b from-navyLight to-navy relative">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12">
+      <p class="text-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Request a Consultation</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4" id="bottom-cta-heading">Get clarity today.</h2>
+      <p class="text-slate max-w-lg mx-auto">Complete the form below and a member of our team will reach out within 24 hours. All inquiries are strictly confidential.</p>
+     </div>
+     <form id="consult-form" class="bg-navy/80 border border-gold/15 rounded-xl p-8 md:p-10 space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+       <div><label for="first-name" class="block text-sm text-slate mb-1.5">First Name</label> <input type="text" id="first-name" class="form-input w-full rounded px-4 py-3 text-white text-sm" placeholder="Your first name" required>
+       </div>
+       <div><label for="last-name" class="block text-sm text-slate mb-1.5">Last Name</label> <input type="text" id="last-name" class="form-input w-full rounded px-4 py-3 text-white text-sm" placeholder="Your last name" required>
+       </div>
+      </div>
+      <div><label for="email" class="block text-sm text-slate mb-1.5">Email</label> <input type="email" id="email" class="form-input w-full rounded px-4 py-3 text-white text-sm" placeholder="your@email.com" required>
+      </div>
+      <div><label for="phone" class="block text-sm text-slate mb-1.5">Phone (optional)</label> <input type="tel" id="phone" class="form-input w-full rounded px-4 py-3 text-white text-sm" placeholder="(555) 000-0000">
+      </div>
+      <div><label for="service-type" class="block text-sm text-slate mb-1.5">Service Needed</label> <select id="service-type" class="form-input w-full rounded px-4 py-3 text-white text-sm"> <option value="" class="bg-navy">Select a service...</option> <option value="representation" class="bg-navy">Representation</option> <option value="record-review" class="bg-navy">Record Review</option> <option value="court-support" class="bg-navy">Court Support</option> <option value="case-guidance" class="bg-navy">Case Guidance</option> <option value="other" class="bg-navy">Other / Not Sure</option> </select>
+      </div>
+      <div><label for="message" class="block text-sm text-slate mb-1.5">Brief Description (optional)</label> <textarea id="message" rows="4" class="form-input w-full rounded px-4 py-3 text-white text-sm resize-none" placeholder="Briefly describe your situation..."></textarea>
+      </div>
+      <div class="flex items-start gap-3"><input type="checkbox" id="consent" class="mt-1 accent-gold" required> <label for="consent" class="text-xs text-slate leading-relaxed">I understand this form does not create an attorney-client relationship. I consent to being contacted regarding my inquiry.</label>
+      </div><button type="submit" id="submit-btn" class="cta-pulse w-full bg-gold text-navy font-bold py-4 rounded text-base hover:bg-goldLight transition-colors"> Request Confidential Consult </button> <!-- Success message -->
+      <div id="form-success" class="hidden text-center py-6">
+       <div class="w-14 h-14 rounded-full bg-gold/20 flex items-center justify-center mx-auto mb-4"><i data-lucide="check-circle" class="w-8 h-8 text-gold"></i>
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2">Request Received</h3>
+       <p class="text-slate text-sm">Thank you. A member of our team will be in touch within 24 hours.</p>
+      </div>
+     </form>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="reveal-section w-full py-16 bg-charcoal relative">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="bg-navyMid border border-gold/15 rounded-xl p-8 text-center">
+      <div class="flex items-center justify-center gap-2 mb-4"><i data-lucide="message-square" class="w-5 h-5 text-gold"></i>
+       <h3 class="font-display text-lg font-semibold">Vote + Comment</h3>
+      </div>
+      <p class="text-slate text-sm mb-6">Share your thoughts or vote on topics that matter to you.</p>
+      <div class="bg-navy/50 border border-dashed border-gold/20 rounded-lg p-10 text-slate text-sm"><i data-lucide="code" class="w-8 h-8 text-gold/40 mx-auto mb-3"></i>
+       <p class="text-gold/60 font-medium">Embed Widget Here</p>
+       <p class="text-xs text-slate/60 mt-1">Place your voting or comment widget in this space</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 bg-navy border-t border-gold/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2"><i data-lucide="shield" class="w-4 h-4 text-gold"></i> <span class="font-display text-sm font-semibold">LibertyLine<span class="text-gold"> Justice</span></span>
+      </div>
+      <p class="text-slate text-xs text-center">© 2024 LibertyLine Justice. This website does not constitute legal advice. Consult an attorney for your specific situation.</p>
+      <div class="flex gap-4"><a href="#home" class="text-slate hover:text-gold transition-colors text-xs">Privacy</a> <a href="#home" class="text-slate hover:text-gold transition-colors text-xs">Terms</a>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// === DEFAULT CONFIG ===
+const defaultConfig = {
+  hero_title: 'Take control of what happens next.',
+  hero_subtitle: 'Confidential consultation. Clear next steps.',
+  tagline: 'When it matters most, clarity matters.',
+  cta_primary: 'Request Confidential Consult',
+  cta_secondary: 'See How It Works',
+  bottom_cta_text: 'Get clarity today.',
+  background_color: '#0a1628',
+  surface_color: '#121f36',
+  text_color: '#94a3b8',
+  primary_action_color: '#c9a84c',
+  secondary_action_color: '#e0c76a',
+  font_family: 'Playfair Display',
+  font_size: 16,
+};
+
+// === ELEMENT SDK ===
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+
+    // Text
+    document.getElementById('hero-title').textContent = c.hero_title;
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('hero-tagline').textContent = c.tagline;
+    document.getElementById('hero-cta-primary').textContent = c.cta_primary;
+    document.getElementById('hero-cta-secondary').textContent = c.cta_secondary;
+    document.getElementById('nav-cta').textContent = c.cta_primary;
+    document.getElementById('submit-btn').textContent = c.cta_primary;
+    document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+    // Colors
+    const root = document.documentElement;
+    document.getElementById('app-wrapper').style.backgroundColor = c.background_color;
+
+    document.querySelectorAll('.bg-navyLight, .bg-navy\\/60, .bg-navy\\/80, .bg-navyMid').forEach(el => {
+      el.style.borderColor = c.primary_action_color + '1a';
+    });
+
+    document.querySelectorAll('.text-gold, .text-gold\\/80').forEach(el => {
+      el.style.color = c.primary_action_color;
+    });
+    document.querySelectorAll('.text-slate').forEach(el => {
+      el.style.color = c.text_color;
+    });
+
+    document.querySelectorAll('.bg-gold').forEach(el => {
+      el.style.backgroundColor = c.primary_action_color;
+    });
+
+    // Font
+    const fontStack = `${c.font_family}, Georgia, serif`;
+    document.querySelectorAll('.font-display').forEach(el => {
+      el.style.fontFamily = fontStack;
+    });
+
+    // Font size
+    const base = c.font_size;
+    document.getElementById('hero-title').style.fontSize = '';
+    document.getElementById('hero-subtitle').style.fontSize = `${base * 1.25}px`;
+    document.querySelectorAll('#faq-container .faq-toggle span:first-child').forEach(el => {
+      el.style.fontSize = `${base * 0.875}px`;
+    });
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return {
+      recolorables: [
+        { get: () => c.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => c.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => c.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => c.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => c.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      },
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['tagline', c.tagline],
+      ['cta_primary', c.cta_primary],
+      ['cta_secondary', c.cta_secondary],
+      ['bottom_cta_text', c.bottom_cta_text],
+    ]);
+  }
+});
+
+// === MOBILE NAV ===
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  nav.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-nav').classList.add('hidden'));
+});
+
+// === TESTIMONIAL CAROUSEL ===
+let currentSlide = 0;
+const totalSlides = 3;
+const track = document.getElementById('testimonial-track');
+const dotsContainer = document.getElementById('carousel-dots');
+
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('button');
+  dot.className = `w-2.5 h-2.5 rounded-full transition-colors ${i === 0 ? 'bg-gold' : 'bg-gold/30'}`;
+  dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+  dot.addEventListener('click', () => goToSlide(i));
+  dotsContainer.appendChild(dot);
+}
+
+function goToSlide(n) {
+  currentSlide = n;
+  track.style.transform = `translateX(-${n * 100}%)`;
+  dotsContainer.querySelectorAll('button').forEach((d, i) => {
+    d.className = `w-2.5 h-2.5 rounded-full transition-colors ${i === n ? 'bg-gold' : 'bg-gold/30'}`;
+  });
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => goToSlide((currentSlide - 1 + totalSlides) % totalSlides));
+document.getElementById('next-btn').addEventListener('click', () => goToSlide((currentSlide + 1) % totalSlides));
+
+// Auto-advance
+setInterval(() => goToSlide((currentSlide + 1) % totalSlides), 6000);
+
+// === FAQ ACCORDION ===
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('[data-lucide="chevron-down"]');
+    const isOpen = !answer.classList.contains('hidden');
+
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+    document.querySelectorAll('.faq-toggle [data-lucide="chevron-down"]').forEach(i => i.style.transform = 'rotate(0deg)');
+    document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+
+    if (!isOpen) {
+      answer.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// === FORM HANDLING ===
+document.getElementById('consult-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const fields = form.querySelectorAll('input, select, textarea');
+  const submitBtn = document.getElementById('submit-btn');
+  const success = document.getElementById('form-success');
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  setTimeout(() => {
+    fields.forEach(f => { if (f.type !== 'checkbox') f.closest('div').style.display = 'none'; });
+    document.querySelector('[for="consent"]').closest('div').style.display = 'none';
+    submitBtn.style.display = 'none';
+    success.classList.remove('hidden');
+    lucide.createIcons();
+  }, 1200);
+});
+
+// === SCROLL REVEAL ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal-section').forEach(s => observer.observe(s));
+
+// === INIT ICONS ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33aa4a834527cf',t:'MTc3NDY2OTc2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

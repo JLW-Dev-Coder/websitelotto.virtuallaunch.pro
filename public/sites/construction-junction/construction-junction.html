@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildRight Collective</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Bebas Neue', 'sans-serif'],
+        body: ['DM Sans', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideRight {
+  from { width: 0%; }
+  to { width: var(--bar-width); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234,88,12,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(234,88,12,0); }
+}
+@keyframes panZoom {
+  0% { transform: scale(1) translate(0,0); }
+  50% { transform: scale(1.08) translate(-2%, -1%); }
+  100% { transform: scale(1) translate(0,0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible { animation: fadeUp 0.7s ease forwards; }
+.anim-scale-in { opacity: 0; }
+.anim-scale-in.visible { animation: scaleIn 0.6s ease forwards; }
+.anim-slide-in { opacity: 0; }
+.anim-slide-in.visible { animation: slideIn 0.6s ease forwards; }
+
+.progress-fill { width: 0%; transition: width 1.5s ease; }
+.progress-fill.active { animation: slideRight 1.5s ease forwards; }
+
+.pulse-cta { animation: pulse-glow 2s infinite; }
+
+.project-img { animation: panZoom 12s ease-in-out infinite; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0;
+  height: 2px; background: currentColor; transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+.testimonial-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.timeline-node {
+  transition: all 0.4s ease;
+}
+.timeline-node:hover {
+  transform: scale(1.05);
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body bg-white text-gray-900 overflow-auto">
+  <div id="app-wrapper" class="w-full h-full"><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,0.05);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#home" class="font-display text-2xl tracking-wide" id="nav-brand" style="color:#1e40af;">BUILD<span style="color:#ea580c;">RIGHT</span></a>
+     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600"><a href="#home" class="nav-link hover:text-gray-900">Home</a> <a href="#projects" class="nav-link hover:text-gray-900">Projects</a> <a href="#services" class="nav-link hover:text-gray-900">Services</a> <a href="#timeline" class="nav-link hover:text-gray-900">Timeline</a> <a href="#reviews" class="nav-link hover:text-gray-900">Reviews</a> <a href="#estimate" class="px-4 py-2 rounded-md text-white text-sm font-semibold transition-colors" style="background:#ea580c;" onmouseover="this.style.background='#c2410c'" onmouseout="this.style.background='#ea580c'">Get Estimate</a>
+     </div><button id="mobile-toggle" class="md:hidden p-2 text-gray-700" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm font-medium text-gray-600 bg-white"><a href="#home" class="block py-2 hover:text-gray-900" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#projects" class="block py-2 hover:text-gray-900" onclick="this.parentElement.classList.add('hidden')">Projects</a> <a href="#services" class="block py-2 hover:text-gray-900" onclick="this.parentElement.classList.add('hidden')">Services</a> <a href="#timeline" class="block py-2 hover:text-gray-900" onclick="this.parentElement.classList.add('hidden')">Timeline</a> <a href="#reviews" class="block py-2 hover:text-gray-900" onclick="this.parentElement.classList.add('hidden')">Reviews</a> <a href="#estimate" class="block py-2 font-semibold" style="color:#ea580c;" onclick="this.parentElement.classList.add('hidden')">Get Estimate</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:600px;padding-top:80px;">
+    <div class="absolute inset-0" style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);"></div><!-- Diagonal accent -->
+    <div class="absolute top-0 right-0 w-1/2 h-full opacity-10" style="background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(234,88,12,0.3) 40px,rgba(234,88,12,0.3) 42px);"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32 flex flex-col items-center text-center">
+     <p id="el-tagline" class="text-orange-400 font-medium tracking-widest uppercase text-sm mb-4 anim-fade-up" style="animation-delay:0.1s;">Projects done right, the first time.</p>
+     <h1 id="el-hero-title" class="font-display text-5xl sm:text-7xl md:text-8xl text-white leading-none mb-6 anim-fade-up" style="animation-delay:0.3s;">Build with a team<br>
+      you trust.</h1>
+     <p id="el-hero-subtitle" class="text-gray-300 text-lg sm:text-xl max-w-xl mb-10 anim-fade-up" style="animation-delay:0.5s;">Clear estimates. Real timelines. Quality work.</p>
+     <div class="flex flex-col sm:flex-row gap-4 anim-fade-up" style="animation-delay:0.7s;"><a href="#estimate" class="pulse-cta px-8 py-4 rounded-lg text-white font-semibold text-lg transition-colors" style="background:#ea580c;" onmouseover="this.style.background='#c2410c'" onmouseout="this.style.background='#ea580c'">Get an Estimate</a> <a href="#projects" class="px-8 py-4 rounded-lg text-white font-semibold text-lg border-2 border-white/30 hover:border-white/60 transition-colors">View Projects</a>
+     </div><!-- Trust badges -->
+     <div class="flex flex-wrap justify-center gap-6 mt-14 anim-fade-up" style="animation-delay:0.9s;">
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="shield-check" style="width:18px;height:18px;color:#ea580c;"></i> Licensed &amp; Insured
+      </div>
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="award" style="width:18px;height:18px;color:#ea580c;"></i> 15+ Years Experience
+      </div>
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="star" style="width:18px;height:18px;color:#ea580c;"></i> 4.9★ Rated
+      </div>
+     </div>
+    </div>
+   </section><!-- STATS BAR -->
+   <section class="w-full" style="background:#1e40af;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+     <div class="anim-fade-up">
+      <p class="font-display text-4xl text-white stat-num" data-target="320">0</p>
+      <p class="text-blue-200 text-sm mt-1">Projects Completed</p>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.1s;">
+      <p class="font-display text-4xl text-white stat-num" data-target="98">0</p>
+      <p class="text-blue-200 text-sm mt-1">% On-Time Delivery</p>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.2s;">
+      <p class="font-display text-4xl text-white stat-num" data-target="150">0</p>
+      <p class="text-blue-200 text-sm mt-1">Happy Clients</p>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.3s;">
+      <p class="font-display text-4xl text-white stat-num" data-target="15">0</p>
+      <p class="text-blue-200 text-sm mt-1">Years in Business</p>
+     </div>
+    </div>
+   </section><!-- PROJECTS -->
+   <section id="projects" class="w-full py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-14 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase" style="color:#ea580c;">Our Work</p>
+      <h2 class="font-display text-4xl sm:text-5xl mt-2" style="color:#1e40af;">Featured Projects</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="rounded-xl overflow-hidden bg-white shadow-lg anim-scale-in group cursor-pointer">
+       <div class="h-56 overflow-hidden relative" style="background:linear-gradient(135deg,#d4a373,#a0845c);"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&amp;q=80" alt="Modern home construction" loading="lazy" class="w-full h-full object-cover project-img" onerror="this.style.display='none';">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center"><span class="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Details →</span>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-semibold text-lg">Lakewood Custom Home</h3>
+        <p class="text-gray-500 text-sm mt-1">4,200 sq ft · Custom Build · 8 months</p>
+        <div class="mt-3">
+         <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="progress-fill h-full rounded-full" style="--bar-width:100%;background:#ea580c;"></div>
+         </div>
+         <p class="text-xs text-gray-400 mt-1">Complete</p>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden bg-white shadow-lg anim-scale-in group cursor-pointer" style="animation-delay:0.15s;">
+       <div class="h-56 overflow-hidden relative" style="background:linear-gradient(135deg,#7c8a96,#4a5568);"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&amp;q=80" alt="Commercial renovation" loading="lazy" class="w-full h-full object-cover project-img" onerror="this.style.display='none';">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center"><span class="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Details →</span>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-semibold text-lg">Downtown Office Remodel</h3>
+        <p class="text-gray-500 text-sm mt-1">12,000 sq ft · Commercial · 6 months</p>
+        <div class="mt-3">
+         <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="progress-fill h-full rounded-full" style="--bar-width:100%;background:#ea580c;"></div>
+         </div>
+         <p class="text-xs text-gray-400 mt-1">Complete</p>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden bg-white shadow-lg anim-scale-in group cursor-pointer" style="animation-delay:0.3s;">
+       <div class="h-56 overflow-hidden relative" style="background:linear-gradient(135deg,#8fa38b,#5a7a55);"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&amp;q=80" alt="Modern home exterior" loading="lazy" class="w-full h-full object-cover project-img" onerror="this.style.display='none';">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center"><span class="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Details →</span>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-semibold text-lg">Maple Ridge Renovation</h3>
+        <p class="text-gray-500 text-sm mt-1">2,800 sq ft · Renovation · 4 months</p>
+        <div class="mt-3">
+         <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div class="progress-fill h-full rounded-full" style="--bar-width:85%;background:#ea580c;"></div>
+         </div>
+         <p class="text-xs text-gray-400 mt-1">85% Complete</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SERVICES -->
+   <section id="services" class="w-full py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-14 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase" style="color:#ea580c;">Expertise</p>
+      <h2 id="el-services-heading" class="font-display text-4xl sm:text-5xl mt-2" style="color:#1e40af;">What We Build</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#fef3c7;">
+        <i data-lucide="home" style="width:24px;height:24px;color:#ea580c;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Custom Homes</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Ground-up builds tailored to your vision, from foundation to finishing touches.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group" style="animation-delay:0.1s;">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#dbeafe;">
+        <i data-lucide="building" style="width:24px;height:24px;color:#1e40af;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Commercial Build-Outs</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Office spaces, retail, and mixed-use projects built to code and on schedule.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group" style="animation-delay:0.2s;">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#fef3c7;">
+        <i data-lucide="wrench" style="width:24px;height:24px;color:#ea580c;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Renovations</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Kitchen, bath, and whole-home renovations that transform your space.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group" style="animation-delay:0.3s;">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#dbeafe;">
+        <i data-lucide="ruler" style="width:24px;height:24px;color:#1e40af;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Additions &amp; ADUs</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Expand your footprint with seamless additions and accessory dwelling units.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group" style="animation-delay:0.4s;">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#fef3c7;">
+        <i data-lucide="layout" style="width:24px;height:24px;color:#ea580c;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Tenant Improvements</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Customize leased spaces to match brand and function requirements.</p>
+      </div>
+      <div class="p-6 rounded-xl border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all anim-fade-up group" style="animation-delay:0.5s;">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#dbeafe;">
+        <i data-lucide="hard-hat" style="width:24px;height:24px;color:#1e40af;"></i>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Project Management</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Full oversight from permits to punch list—we manage every detail.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- TIMELINE -->
+   <section id="timeline" class="w-full py-20" style="background:#f8fafc;">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-14 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase" style="color:#ea580c;">Our Process</p>
+      <h2 class="font-display text-4xl sm:text-5xl mt-2" style="color:#1e40af;">How We Build</h2>
+     </div>
+     <div class="relative"><!-- Vertical line -->
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gray-200 md:-translate-x-px"></div>
+      <div class="space-y-10"><!-- Step 1 -->
+       <div class="relative flex items-start md:items-center anim-slide-in">
+        <div class="absolute left-6 md:left-1/2 w-4 h-4 rounded-full border-4 border-white -translate-x-1/2 z-10" style="background:#ea580c;"></div>
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pr-12 md:text-right timeline-node">
+         <div class="bg-white p-5 rounded-xl shadow-md inline-block text-left">
+          <div class="flex items-center gap-2 mb-2">
+           <span class="font-display text-2xl" style="color:#ea580c;">01</span><span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Week 1</span>
+          </div>
+          <h3 class="font-semibold">Consultation &amp; Estimate</h3>
+          <p class="text-gray-500 text-sm mt-1">We visit your site, understand your goals, and deliver a transparent estimate.</p>
+         </div>
+        </div>
+       </div><!-- Step 2 -->
+       <div class="relative flex items-start md:items-center md:flex-row-reverse anim-slide-in" style="animation-delay:0.15s;">
+        <div class="absolute left-6 md:left-1/2 w-4 h-4 rounded-full border-4 border-white -translate-x-1/2 z-10" style="background:#1e40af;"></div>
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pl-12 timeline-node">
+         <div class="bg-white p-5 rounded-xl shadow-md inline-block text-left">
+          <div class="flex items-center gap-2 mb-2">
+           <span class="font-display text-2xl" style="color:#1e40af;">02</span><span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Week 2–3</span>
+          </div>
+          <h3 class="font-semibold">Design &amp; Permits</h3>
+          <p class="text-gray-500 text-sm mt-1">Finalize plans, pull permits, and lock in your project timeline.</p>
+         </div>
+        </div>
+       </div><!-- Step 3 -->
+       <div class="relative flex items-start md:items-center anim-slide-in" style="animation-delay:0.3s;">
+        <div class="absolute left-6 md:left-1/2 w-4 h-4 rounded-full border-4 border-white -translate-x-1/2 z-10" style="background:#ea580c;"></div>
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pr-12 md:text-right timeline-node">
+         <div class="bg-white p-5 rounded-xl shadow-md inline-block text-left">
+          <div class="flex items-center gap-2 mb-2">
+           <span class="font-display text-2xl" style="color:#ea580c;">03</span><span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Week 4+</span>
+          </div>
+          <h3 class="font-semibold">Construction Begins</h3>
+          <p class="text-gray-500 text-sm mt-1">Our crews break ground with weekly progress updates and open communication.</p>
+         </div>
+        </div>
+       </div><!-- Step 4 -->
+       <div class="relative flex items-start md:items-center md:flex-row-reverse anim-slide-in" style="animation-delay:0.45s;">
+        <div class="absolute left-6 md:left-1/2 w-4 h-4 rounded-full border-4 border-white -translate-x-1/2 z-10" style="background:#1e40af;"></div>
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pl-12 timeline-node">
+         <div class="bg-white p-5 rounded-xl shadow-md inline-block text-left">
+          <div class="flex items-center gap-2 mb-2">
+           <span class="font-display text-2xl" style="color:#1e40af;">04</span><span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Final</span>
+          </div>
+          <h3 class="font-semibold">Walkthrough &amp; Handoff</h3>
+          <p class="text-gray-500 text-sm mt-1">Final inspection, punch list, and keys in your hand. Built right.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-14 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase" style="color:#ea580c;">Social Proof</p>
+      <h2 class="font-display text-4xl sm:text-5xl mt-2" style="color:#1e40af;">What Clients Say</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="testimonial-card bg-gray-50 p-6 rounded-xl anim-fade-up">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i>
+       </div>
+       <p class="text-gray-600 text-sm leading-relaxed mb-4">"They finished our kitchen remodel two days early and under budget. Communication was incredible—weekly updates with photos."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm" style="background:#1e40af;">
+         MR
+        </div>
+        <div>
+         <p class="font-semibold text-sm">Maria R.</p>
+         <p class="text-xs text-gray-400">Kitchen Renovation</p>
+        </div>
+       </div>
+      </div>
+      <div class="testimonial-card bg-gray-50 p-6 rounded-xl anim-fade-up" style="animation-delay:0.15s;">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i>
+       </div>
+       <p class="text-gray-600 text-sm leading-relaxed mb-4">"BuildRight managed our full commercial build-out. Professional, organized, and zero surprises. They're our go-to now."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm" style="background:#ea580c;">
+         JT
+        </div>
+        <div>
+         <p class="font-semibold text-sm">James T.</p>
+         <p class="text-xs text-gray-400">Commercial Build-Out</p>
+        </div>
+       </div>
+      </div>
+      <div class="testimonial-card bg-gray-50 p-6 rounded-xl anim-fade-up" style="animation-delay:0.3s;">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ea580c;fill:#ea580c;"></i>
+       </div>
+       <p class="text-gray-600 text-sm leading-relaxed mb-4">"From blueprint to move-in, they made building our dream home feel effortless. The estimate was spot-on and the quality speaks for itself."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm" style="background:#1e40af;">
+         SK
+        </div>
+        <div>
+         <p class="font-semibold text-sm">Sarah K.</p>
+         <p class="text-xs text-gray-400">Custom Home</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DIGITAL PRODUCTS -->
+   <section class="w-full py-20" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-14 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase text-orange-400">Free Resources</p>
+      <h2 class="font-display text-4xl sm:text-5xl mt-2 text-white">Contractor Toolkit</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto text-sm">Everything you need to run a tighter, more professional operation. Download our free templates.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:border-orange-400/40 transition-all anim-scale-in group">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style="background:rgba(234,88,12,0.2);">
+        <i data-lucide="file-text" style="width:20px;height:20px;color:#ea580c;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-sm">Estimate Template</h3>
+       <p class="text-gray-400 text-xs mt-1 mb-3">Professional line-item estimates that win trust.</p><span class="text-orange-400 text-xs font-semibold group-hover:underline cursor-pointer">Download →</span>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:border-orange-400/40 transition-all anim-scale-in group" style="animation-delay:0.1s;">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style="background:rgba(30,64,175,0.2);">
+        <i data-lucide="calendar" style="width:20px;height:20px;color:#93b4f5;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-sm">Project Timeline</h3>
+       <p class="text-gray-400 text-xs mt-1 mb-3">Visual timeline template for any build phase.</p><span class="text-orange-400 text-xs font-semibold group-hover:underline cursor-pointer">Download →</span>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:border-orange-400/40 transition-all anim-scale-in group" style="animation-delay:0.2s;">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style="background:rgba(234,88,12,0.2);">
+        <i data-lucide="check-square" style="width:20px;height:20px;color:#ea580c;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-sm">Onboarding Checklist</h3>
+       <p class="text-gray-400 text-xs mt-1 mb-3">Smooth client intake from day one.</p><span class="text-orange-400 text-xs font-semibold group-hover:underline cursor-pointer">Download →</span>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/10 hover:border-orange-400/40 transition-all anim-scale-in group" style="animation-delay:0.3s;">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style="background:rgba(30,64,175,0.2);">
+        <i data-lucide="users" style="width:20px;height:20px;color:#93b4f5;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-sm">Sub Tracker Sheet</h3>
+       <p class="text-gray-400 text-xs mt-1 mb-3">Track subs, bids, and schedules in one place.</p><span class="text-orange-400 text-xs font-semibold group-hover:underline cursor-pointer">Download →</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- ESTIMATE FORM -->
+   <section id="estimate" class="w-full py-20 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-10 anim-fade-up">
+      <p class="text-sm font-semibold tracking-widest uppercase" style="color:#ea580c;">Get Started</p>
+      <h2 id="el-bottom-cta" class="font-display text-4xl sm:text-5xl mt-2" style="color:#1e40af;">Start your build today.</h2>
+      <p class="text-gray-500 mt-3">Fill out the form and we'll get back to you within 24 hours with a free estimate.</p>
+     </div>
+     <form id="estimate-form" class="bg-white rounded-2xl shadow-lg p-8 space-y-5 anim-scale-in">
+      <div class="grid sm:grid-cols-2 gap-5">
+       <div><label for="fname" class="text-sm font-medium text-gray-700 block mb-1">First Name</label> <input id="fname" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm" placeholder="John">
+       </div>
+       <div><label for="lname" class="text-sm font-medium text-gray-700 block mb-1">Last Name</label> <input id="lname" type="text" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm" placeholder="Smith">
+       </div>
+      </div>
+      <div><label for="email" class="text-sm font-medium text-gray-700 block mb-1">Email</label> <input id="email" type="email" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm" placeholder="john@example.com">
+      </div>
+      <div><label for="project-type" class="text-sm font-medium text-gray-700 block mb-1">Project Type</label> <select id="project-type" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm bg-white"> <option value="">Select a project type</option> <option>Custom Home</option> <option>Renovation</option> <option>Commercial Build-Out</option> <option>Addition / ADU</option> <option>Other</option> </select>
+      </div>
+      <div><label for="details" class="text-sm font-medium text-gray-700 block mb-1">Project Details</label> <textarea id="details" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-sm resize-none" placeholder="Tell us about your project..."></textarea>
+      </div><button type="submit" class="w-full py-4 rounded-lg text-white font-semibold text-lg transition-colors pulse-cta" style="background:#ea580c;" onmouseover="this.style.background='#c2410c'" onmouseout="this.style.background='#ea580c'">Request Free Estimate</button>
+      <div id="form-success" class="hidden text-center py-4 rounded-lg text-sm font-medium" style="background:#ecfdf5;color:#059669;"><i data-lucide="check-circle" style="width:20px;height:20px;display:inline;vertical-align:middle;margin-right:6px;"></i> Thank you! We'll be in touch within 24 hours.
+      </div>
+     </form>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="w-full py-16 bg-white">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+     <div class="rounded-2xl border-2 border-dashed border-gray-200 p-8 text-center anim-fade-up">
+      <div class="w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-4" style="background:#fef3c7;"><i data-lucide="message-square" style="width:24px;height:24px;color:#ea580c;"></i>
+      </div>
+      <h3 class="font-display text-2xl" style="color:#1e40af;">Vote + Comment</h3>
+      <p class="text-gray-500 text-sm mt-2 mb-4">Embed Widget Here — Connect your favorite voting or comment tool (e.g., Disqus, Canny, or a custom embed).</p>
+      <div class="inline-flex items-center gap-3 px-5 py-3 rounded-lg bg-gray-50 text-sm text-gray-400"><i data-lucide="code" style="width:16px;height:16px;"></i> <span>Paste embed code to activate</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-12" style="background:#0f172a;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div>
+       <p class="font-display text-2xl text-white">BUILD<span style="color:#ea580c;">RIGHT</span></p>
+       <p class="text-gray-500 text-sm mt-1">Projects done right, the first time.</p>
+      </div>
+      <div class="flex items-center gap-6 text-gray-400 text-sm"><a href="#home" class="hover:text-white transition-colors">Home</a> <a href="#projects" class="hover:text-white transition-colors">Projects</a> <a href="#services" class="hover:text-white transition-colors">Services</a> <a href="#estimate" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <div class="flex items-center gap-4"><a href="#" class="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i data-lucide="facebook" style="width:18px;height:18px;"></i></a> <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"><i data-lucide="linkedin" style="width:18px;height:18px;"></i></a>
+      </div>
+     </div>
+     <div class="border-t border-white/10 mt-8 pt-6 text-center text-gray-500 text-xs">
+      © 2024 BuildRight Collective. All rights reserved.
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Build with a team\nyou trust.',
+  hero_subtitle: 'Clear estimates. Real timelines. Quality work.',
+  tagline: 'Projects done right, the first time.',
+  services_heading: 'What We Build',
+  bottom_cta_text: 'Start your build today.',
+  background_color: '#ffffff',
+  surface_color: '#f8fafc',
+  text_color: '#0f172a',
+  primary_action: '#ea580c',
+  secondary_action: '#1e40af',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  el('el-hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  el('el-hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  el('el-tagline').textContent = config.tagline || defaultConfig.tagline;
+  el('el-services-heading').textContent = config.services_heading || defaultConfig.services_heading;
+  el('el-bottom-cta').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+  document.body.style.fontFamily = `${font}, DM Sans, sans-serif`;
+  document.body.style.fontSize = `${size}px`;
+
+  // Apply colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action || defaultConfig.primary_action;
+  const secondary = config.secondary_action || defaultConfig.secondary_action;
+
+  document.body.style.color = text;
+
+  // Update primary action buttons
+  document.querySelectorAll('.pulse-cta').forEach(btn => {
+    btn.style.background = primary;
+    btn.onmouseover = () => btn.style.filter = 'brightness(0.85)';
+    btn.onmouseout = () => btn.style.filter = '';
+  });
+
+  // Update nav brand
+  const brand = el('nav-brand');
+  if (brand) brand.innerHTML = `BUILD<span style="color:${primary}">RIGHT</span>`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+      { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['tagline', config.tagline || defaultConfig.tagline],
+    ['services_heading', config.services_heading || defaultConfig.services_heading],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Animate progress bars
+      entry.target.querySelectorAll('.progress-fill').forEach(bar => bar.classList.add('active'));
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.anim-fade-up, .anim-scale-in, .anim-slide-in').forEach(el => observer.observe(el));
+
+// Stat counter animation
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.stat-num').forEach(num => {
+        const target = parseInt(num.dataset.target);
+        let current = 0;
+        const step = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          num.textContent = current + (num.parentElement.querySelector('p').textContent.includes('%') ? '' : '+');
+        }, 30);
+      });
+      statObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el.closest('div')));
+
+// Form handling
+document.getElementById('estimate-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('form-success').classList.remove('hidden');
+  e.target.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+  lucide.createIcons();
+  setTimeout(() => document.getElementById('form-success').classList.add('hidden'), 5000);
+});
+
+// Nav scroll effect
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  const scroll = window.scrollY;
+  if (scroll > 100) {
+    nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
+  lastScroll = scroll;
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a7b7c2c527cf',t:'MTc3NDY2OTY2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

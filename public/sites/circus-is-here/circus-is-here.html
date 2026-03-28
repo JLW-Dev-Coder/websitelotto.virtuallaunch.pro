@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CircusHush Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;family=Oswald:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        circus: { red: '#E2252B', black: '#1A1A1A', cream: '#F5EDE0', blue: '#2563EB', darkred: '#8B0000' }
+      },
+      fontFamily: {
+        bebas: ['Bebas Neue', 'sans-serif'],
+        mono: ['Space Mono', 'monospace'],
+        oswald: ['Oswald', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes spotlightSweep {
+  0%, 100% { opacity: 0.05; transform: translateX(-100%) skewX(-15deg); }
+  50% { opacity: 0.15; transform: translateX(200%) skewX(-15deg); }
+}
+@keyframes popIn {
+  0% { transform: scale(0.7) rotate(-3deg); opacity: 0; }
+  60% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes jitter {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+  50% { transform: translate(1px, -1px) rotate(0.5deg); }
+  75% { transform: translate(-1px, -1px) rotate(-0.3deg); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0px rgba(226,37,43,0.4); }
+  50% { box-shadow: 0 0 25px rgba(226,37,43,0.8); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 2px); }
+  40% { clip-path: inset(40% 0 30% 0); transform: translate(3px, -1px); }
+  60% { clip-path: inset(60% 0 10% 0); transform: translate(-2px, 1px); }
+  80% { clip-path: inset(10% 0 80% 0); transform: translate(2px, -2px); }
+}
+.marquee-track { animation: marquee 20s linear infinite; }
+.spotlight { animation: spotlightSweep 6s ease-in-out infinite; }
+.pop-in { animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.jitter:hover { animation: jitter 0.3s ease infinite; }
+.pulse-cta { animation: pulse-glow 2s ease infinite; }
+.float-el { animation: float 4s ease-in-out infinite; }
+.slide-up { animation: slideUp 0.7s ease both; }
+
+.halftone {
+  background-image: radial-gradient(circle, #1A1A1A 1px, transparent 1px);
+  background-size: 6px 6px;
+  opacity: 0.06;
+}
+.poster-card {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.poster-card:hover {
+  transform: scale(1.04) rotate(-1deg);
+  box-shadow: 8px 8px 0 #1A1A1A;
+}
+.sticker-shape {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.ticket-tear {
+  background-image: radial-gradient(circle, #F5EDE0 6px, transparent 6px);
+  background-size: 16px 16px;
+  background-position: -8px center;
+}
+html { scroll-behavior: smooth; }
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: #E2252B; transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.grid-item { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.grid-item:hover { z-index: 10; }
+
+body::-webkit-scrollbar { width: 8px; }
+body::-webkit-scrollbar-track { background: #1A1A1A; }
+body::-webkit-scrollbar-thumb { background: #E2252B; border-radius: 4px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-circus-black text-circus-cream font-mono overflow-auto">
+  <div class="w-full h-full" id="app-wrapper"><!-- STICKY NAV -->
+   <nav id="sticky-nav" class="sticky top-0 z-50 bg-circus-black border-b-2 border-circus-red" role="navigation" aria-label="Main navigation">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-bebas text-2xl tracking-wider text-circus-red flex items-center gap-2"> <span class="w-8 h-8 bg-circus-red rounded-full flex items-center justify-center text-circus-cream text-sm">🎪</span> CircusHush </a>
+     <div class="hidden md:flex gap-6 text-sm uppercase tracking-widest"><a href="#home" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Home</a> <a href="#posters" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Posters</a> <a href="#stories" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Stories</a> <a href="#tickets" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Tickets</a> <a href="#preview" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Preview</a> <a href="#download" class="nav-link text-circus-cream hover:text-circus-red transition-colors">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-circus-cream" aria-label="Toggle menu"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-circus-black border-t border-circus-red/30 px-4 pb-4"><a href="#home" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Home</a> <a href="#posters" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Posters</a> <a href="#stories" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Stories</a> <a href="#tickets" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Tickets</a> <a href="#preview" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Preview</a> <a href="#download" class="block py-2 text-sm uppercase tracking-widest text-circus-cream hover:text-circus-red">Download</a>
+    </div>
+   </nav><!-- MARQUEE STRIP -->
+   <div class="overflow-hidden bg-circus-red py-2 relative">
+    <div class="flex whitespace-nowrap marquee-track"><span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎪 LOUD VISUALS</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">🤡 SILENT COMEDY ENERGY</span> <span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎭 60 POSTER TEMPLATES</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">✨ 100 STICKER ELEMENTS</span> <span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎟️ 25 TICKET STUBS</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">📱 40 STORY TEMPLATES</span> <span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎪 LOUD VISUALS</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">🤡 SILENT COMEDY ENERGY</span> <span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎭 60 POSTER TEMPLATES</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">✨ 100 STICKER ELEMENTS</span> <span class="font-bebas text-xl tracking-wider text-circus-cream mx-8">🎟️ 25 TICKET STUBS</span> <span class="font-bebas text-xl tracking-wider text-circus-black mx-8">📱 40 STORY TEMPLATES</span>
+    </div>
+   </div><!-- HERO SECTION -->
+   <section id="home" class="relative overflow-hidden py-20 md:py-32 px-4">
+    <div class="absolute inset-0 halftone"></div>
+    <div class="absolute inset-0 spotlight bg-gradient-to-r from-transparent via-circus-red/20 to-transparent pointer-events-none"></div><!-- Floating stickers -->
+    <div class="absolute top-10 left-8 w-16 h-16 bg-circus-red rounded-full flex items-center justify-center text-3xl float-el" style="animation-delay: 0s;">
+     🎪
+    </div>
+    <div class="absolute top-20 right-12 w-14 h-14 bg-circus-blue rounded-full flex items-center justify-center text-2xl float-el" style="animation-delay: 1s;">
+     🎭
+    </div>
+    <div class="absolute bottom-16 left-16 w-12 h-12 bg-circus-cream rounded-full flex items-center justify-center text-xl float-el" style="animation-delay: 2s;">
+     ⭐
+    </div>
+    <div class="absolute bottom-24 right-20 w-10 h-10 bg-circus-red rounded-full flex items-center justify-center text-lg float-el" style="animation-delay: 0.5s;">
+     🤡
+    </div>
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+     <div class="inline-block bg-circus-red text-circus-cream font-mono text-xs uppercase tracking-[0.3em] px-4 py-1 mb-6 pop-in">
+      CircusHush Studio — Est. 2024
+     </div>
+     <h1 id="hero-title" class="font-bebas text-6xl md:text-9xl lg:text-[10rem] leading-[0.85] text-circus-cream mb-6 pop-in" style="animation-delay: 0.2s; text-shadow: 4px 4px 0 #E2252B, 8px 8px 0 rgba(0,0,0,0.3);">Make the crowd<br>
+      stop scrolling.</h1>
+     <p id="hero-subtitle" class="font-oswald text-lg md:text-2xl text-circus-cream/80 max-w-2xl mx-auto mb-10 pop-in" style="animation-delay: 0.4s;">Circus and mime promo designs that look like collectible posters.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center pop-in" style="animation-delay: 0.6s;"><a href="#download" class="pulse-cta bg-circus-red text-circus-cream font-bebas text-2xl tracking-wider px-10 py-4 border-2 border-circus-cream hover:bg-circus-cream hover:text-circus-red transition-all duration-300 jitter inline-block"> Get the Kit </a> <a href="#posters" class="bg-transparent text-circus-cream font-bebas text-2xl tracking-wider px-10 py-4 border-2 border-circus-cream hover:bg-circus-cream hover:text-circus-black transition-all duration-300 inline-block"> See Posters </a>
+     </div><!-- Stats strip -->
+     <div class="mt-14 flex flex-wrap justify-center gap-8 md:gap-16 pop-in" style="animation-delay: 0.8s;">
+      <div class="text-center">
+       <div class="font-bebas text-5xl text-circus-red">
+        225+
+       </div>
+       <div class="text-xs uppercase tracking-widest text-circus-cream/60">
+        Total Assets
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-bebas text-5xl text-circus-blue">
+        60
+       </div>
+       <div class="text-xs uppercase tracking-widest text-circus-cream/60">
+        Poster Templates
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-bebas text-5xl text-circus-red">
+        100
+       </div>
+       <div class="text-xs uppercase tracking-widest text-circus-cream/60">
+        Sticker Elements
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- POSTERS SECTION -->
+   <section id="posters" class="py-20 px-4 bg-circus-cream text-circus-black relative overflow-hidden">
+    <div class="absolute inset-0 halftone"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="text-center mb-16"><span class="inline-block bg-circus-black text-circus-cream font-mono text-xs uppercase tracking-[0.3em] px-4 py-1 mb-4">Featured Collections</span>
+      <h2 id="posters-heading" class="font-bebas text-5xl md:text-7xl text-circus-black" style="text-shadow: 3px 3px 0 #E2252B;">Poster Collections</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Clown Night -->
+      <div class="poster-card bg-circus-red p-1 cursor-pointer group" data-poster="clown">
+       <div class="bg-circus-black p-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-circus-red/20 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="text-6xl mb-4">
+         🤡
+        </div>
+        <h3 class="font-bebas text-4xl text-circus-red mb-2">Clown Night</h3>
+        <p class="text-circus-cream/70 text-sm mb-4">20 bold posters for late-night comedy shows. Neon vibes, face paint chaos, and laugh-till-you-cry energy.</p>
+        <div class="flex flex-wrap gap-2 mb-4"><span class="bg-circus-red/20 text-circus-red text-xs px-2 py-1 font-mono">A3 Print</span> <span class="bg-circus-red/20 text-circus-red text-xs px-2 py-1 font-mono">Instagram</span> <span class="bg-circus-red/20 text-circus-red text-xs px-2 py-1 font-mono">Flyer</span>
+        </div>
+        <div class="flex items-center gap-2 text-circus-cream/50 text-xs"><i data-lucide="layers" class="w-3 h-3"></i> <span>20 templates included</span>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-circus-red transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+       </div>
+      </div><!-- Silent Mime Show -->
+      <div class="poster-card bg-circus-black p-1 cursor-pointer group" data-poster="mime" style="transform: translateY(20px);">
+       <div class="bg-circus-cream p-6 relative overflow-hidden text-circus-black">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-circus-black/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="text-6xl mb-4">
+         🎭
+        </div>
+        <h3 class="font-bebas text-4xl text-circus-black mb-2">Silent Mime Show</h3>
+        <p class="text-circus-black/70 text-sm mb-4">20 minimal, high-contrast posters. Black &amp; white drama with a whisper of red. Pure street theater.</p>
+        <div class="flex flex-wrap gap-2 mb-4"><span class="bg-circus-black/10 text-circus-black text-xs px-2 py-1 font-mono">Poster</span> <span class="bg-circus-black/10 text-circus-black text-xs px-2 py-1 font-mono">Story</span> <span class="bg-circus-black/10 text-circus-black text-xs px-2 py-1 font-mono">Billboard</span>
+        </div>
+        <div class="flex items-center gap-2 text-circus-black/50 text-xs"><i data-lucide="layers" class="w-3 h-3"></i> <span>20 templates included</span>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-circus-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+       </div>
+      </div><!-- Carnival Parade -->
+      <div class="poster-card bg-circus-blue p-1 cursor-pointer group" data-poster="carnival">
+       <div class="bg-circus-black p-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-circus-blue/20 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="text-6xl mb-4">
+         🎪
+        </div>
+        <h3 class="font-bebas text-4xl text-circus-blue mb-2">Carnival Parade</h3>
+        <p class="text-circus-cream/70 text-sm mb-4">20 explosive, confetti-soaked designs. For parades, festivals, and anything that makes noise.</p>
+        <div class="flex flex-wrap gap-2 mb-4"><span class="bg-circus-blue/20 text-circus-blue text-xs px-2 py-1 font-mono">Banner</span> <span class="bg-circus-blue/20 text-circus-blue text-xs px-2 py-1 font-mono">Ticket</span> <span class="bg-circus-blue/20 text-circus-blue text-xs px-2 py-1 font-mono">Social</span>
+        </div>
+        <div class="flex items-center gap-2 text-circus-cream/50 text-xs"><i data-lucide="layers" class="w-3 h-3"></i> <span>20 templates included</span>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-circus-blue transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- STORIES SECTION -->
+   <section id="stories" class="py-20 px-4 bg-circus-black relative">
+    <div class="absolute inset-0 spotlight bg-gradient-to-r from-transparent via-circus-blue/10 to-transparent pointer-events-none"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="text-center mb-16"><span class="inline-block bg-circus-red text-circus-cream font-mono text-xs uppercase tracking-[0.3em] px-4 py-1 mb-4">Instagram Ready</span>
+      <h2 class="font-bebas text-5xl md:text-7xl text-circus-cream">40 Story Templates</h2>
+      <p class="text-circus-cream/60 mt-3 max-w-xl mx-auto font-oswald">Designed for daily performer promos. Post show dates, behind-the-scenes, and hype content that stops thumbs.</p>
+     </div>
+     <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory" id="stories-scroll"><!-- Story mockups -->
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-red to-circus-black rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-red/30 poster-card">
+        <div class="text-3xl">
+         🤡
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-cream leading-tight">
+          TONIGHT<br>
+          ONLY
+         </div>
+         <div class="text-[10px] text-circus-cream/50 mt-1 font-mono">
+          Clown Night Series
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-cream to-circus-black rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-cream/30 poster-card">
+        <div class="text-3xl">
+         🎭
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-black leading-tight">
+          THE<br>
+          SILENCE
+         </div>
+         <div class="text-[10px] text-circus-black/50 mt-1 font-mono">
+          Mime Show Series
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-blue to-circus-black rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-blue/30 poster-card">
+        <div class="text-3xl">
+         🎪
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-cream leading-tight">
+          CARNIVAL<br>
+          CHAOS
+         </div>
+         <div class="text-[10px] text-circus-cream/50 mt-1 font-mono">
+          Parade Series
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-red/80 to-circus-blue rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-red/30 poster-card">
+        <div class="text-3xl">
+         ⭐
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-cream leading-tight">
+          SHOW<br>
+          TIME
+         </div>
+         <div class="text-[10px] text-circus-cream/50 mt-1 font-mono">
+          Event Promo
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-black to-circus-red rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-cream/20 poster-card">
+        <div class="text-3xl">
+         🎬
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-cream leading-tight">
+          BEHIND<br>
+          SCENES
+         </div>
+         <div class="text-[10px] text-circus-cream/50 mt-1 font-mono">
+          BTS Template
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-shrink-0 w-44 snap-center">
+       <div class="bg-gradient-to-b from-circus-cream to-circus-red rounded-2xl p-4 aspect-[9/16] flex flex-col justify-between border border-circus-cream/30 poster-card">
+        <div class="text-3xl">
+         🎵
+        </div>
+        <div>
+         <div class="font-bebas text-2xl text-circus-black leading-tight">
+          WEEKLY<br>
+          SHOW
+         </div>
+         <div class="text-[10px] text-circus-black/50 mt-1 font-mono">
+          Recurring Series
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TICKETS SECTION -->
+   <section id="tickets" class="py-20 px-4 bg-circus-cream text-circus-black relative overflow-hidden">
+    <div class="absolute inset-0 halftone"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="text-center mb-16"><span class="inline-block bg-circus-red text-circus-cream font-mono text-xs uppercase tracking-[0.3em] px-4 py-1 mb-4">Collectible Stubs</span>
+      <h2 class="font-bebas text-5xl md:text-7xl text-circus-black" style="text-shadow: 3px 3px 0 #2563EB;">25 Ticket Designs</h2>
+      <p class="text-circus-black/60 mt-3 max-w-xl mx-auto font-oswald">Retro-style ticket stubs that double as keepsakes. Print or share digitally.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Ticket 1 -->
+      <div class="poster-card">
+       <div class="flex bg-circus-black rounded-lg overflow-hidden">
+        <div class="flex-1 p-5">
+         <div class="font-bebas text-xl text-circus-red">
+          CLOWN NIGHT
+         </div>
+         <div class="text-circus-cream/70 text-xs mt-1 font-mono">
+          ADMIT ONE
+         </div>
+         <div class="mt-4 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="calendar" class="w-3 h-3"></i> SAT 8PM
+         </div>
+         <div class="mt-1 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="map-pin" class="w-3 h-3"></i> MAIN TENT
+         </div>
+        </div>
+        <div class="w-px bg-circus-cream/20 relative ticket-tear"></div>
+        <div class="w-16 flex items-center justify-center bg-circus-red/10"><span class="font-bebas text-2xl text-circus-red -rotate-90">001</span>
+        </div>
+       </div>
+      </div><!-- Ticket 2 -->
+      <div class="poster-card">
+       <div class="flex bg-circus-black rounded-lg overflow-hidden">
+        <div class="flex-1 p-5">
+         <div class="font-bebas text-xl text-circus-blue">
+          MIME SHOW
+         </div>
+         <div class="text-circus-cream/70 text-xs mt-1 font-mono">
+          VIP PASS
+         </div>
+         <div class="mt-4 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="calendar" class="w-3 h-3"></i> FRI 9PM
+         </div>
+         <div class="mt-1 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="map-pin" class="w-3 h-3"></i> STREET STAGE
+         </div>
+        </div>
+        <div class="w-px bg-circus-cream/20 relative ticket-tear"></div>
+        <div class="w-16 flex items-center justify-center bg-circus-blue/10"><span class="font-bebas text-2xl text-circus-blue -rotate-90">002</span>
+        </div>
+       </div>
+      </div><!-- Ticket 3 -->
+      <div class="poster-card">
+       <div class="flex bg-circus-black rounded-lg overflow-hidden">
+        <div class="flex-1 p-5">
+         <div class="font-bebas text-xl text-circus-cream">
+          CARNIVAL
+         </div>
+         <div class="text-circus-cream/70 text-xs mt-1 font-mono">
+          GENERAL
+         </div>
+         <div class="mt-4 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="calendar" class="w-3 h-3"></i> SUN 2PM
+         </div>
+         <div class="mt-1 flex items-center gap-2 text-circus-cream/50 text-[10px]"><i data-lucide="map-pin" class="w-3 h-3"></i> PARADE ROUTE
+         </div>
+        </div>
+        <div class="w-px bg-circus-cream/20 relative ticket-tear"></div>
+        <div class="w-16 flex items-center justify-center bg-circus-cream/10"><span class="font-bebas text-2xl text-circus-cream -rotate-90">003</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION - Animated Grid -->
+   <section id="preview" class="py-20 px-4 bg-circus-black relative overflow-hidden">
+    <div class="absolute inset-0 spotlight bg-gradient-to-r from-transparent via-circus-red/10 to-transparent pointer-events-none" style="animation-delay: 3s;"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="text-center mb-16"><span class="inline-block bg-circus-blue text-circus-cream font-mono text-xs uppercase tracking-[0.3em] px-4 py-1 mb-4">Full Preview</span>
+      <h2 class="font-bebas text-5xl md:text-7xl text-circus-cream">See Everything</h2>
+      <p class="text-circus-cream/60 mt-3 font-oswald">100 circus sticker elements included</p>
+     </div><!-- Filter buttons -->
+     <div class="flex flex-wrap gap-3 justify-center mb-10"><button class="filter-btn active bg-circus-red text-circus-cream font-mono text-xs uppercase tracking-widest px-5 py-2 border-2 border-circus-red transition-all" data-filter="all">All</button> <button class="filter-btn bg-transparent text-circus-cream/70 font-mono text-xs uppercase tracking-widest px-5 py-2 border-2 border-circus-cream/30 hover:border-circus-red transition-all" data-filter="sticker">Stickers</button> <button class="filter-btn bg-transparent text-circus-cream/70 font-mono text-xs uppercase tracking-widest px-5 py-2 border-2 border-circus-cream/30 hover:border-circus-red transition-all" data-filter="poster">Posters</button> <button class="filter-btn bg-transparent text-circus-cream/70 font-mono text-xs uppercase tracking-widest px-5 py-2 border-2 border-circus-cream/30 hover:border-circus-red transition-all" data-filter="element">Elements</button>
+     </div><!-- Animated grid -->
+     <div id="preview-grid" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"><!-- Items populated by JS -->
+     </div>
+    </div>
+   </section><!-- PRICING / WHY SECTION -->
+   <section class="py-20 px-4 bg-circus-red relative overflow-hidden">
+    <div class="absolute inset-0 halftone" style="opacity:0.08;"></div>
+    <div class="max-w-4xl mx-auto relative z-10 text-center">
+     <h2 class="font-bebas text-5xl md:text-7xl text-circus-cream mb-10">Why CircusHush?</h2>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-circus-black/30 backdrop-blur-sm p-6 border border-circus-cream/20 rounded-lg">
+       <div class="text-3xl mb-3">
+        🎯
+       </div>
+       <h3 class="font-bebas text-2xl text-circus-cream mb-2">For Performers</h3>
+       <p class="text-circus-cream/70 text-sm">Perfect for performers and event promoters who need pro-level visuals without a designer.</p>
+      </div>
+      <div class="bg-circus-black/30 backdrop-blur-sm p-6 border border-circus-cream/20 rounded-lg">
+       <div class="text-3xl mb-3">
+        🔁
+       </div>
+       <h3 class="font-bebas text-2xl text-circus-cream mb-2">Recurring Posters</h3>
+       <p class="text-circus-cream/70 text-sm">Weekly show? Monthly gig? Templates built for recurring events that stay fresh every time.</p>
+      </div>
+      <div class="bg-circus-black/30 backdrop-blur-sm p-6 border border-circus-cream/20 rounded-lg">
+       <div class="text-3xl mb-3">
+        👁️
+       </div>
+       <h3 class="font-bebas text-2xl text-circus-cream mb-2">Instantly Recognizable</h3>
+       <p class="text-circus-cream/70 text-sm">A cohesive style system so your audience knows it's you before they read a word.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD SECTION -->
+   <section id="download" class="py-24 px-4 bg-circus-black relative overflow-hidden">
+    <div class="absolute inset-0 spotlight bg-gradient-to-r from-transparent via-circus-blue/10 to-transparent pointer-events-none"></div>
+    <div class="max-w-3xl mx-auto text-center relative z-10">
+     <div class="text-6xl mb-6">
+      🎪
+     </div>
+     <h2 id="bottom-cta" class="font-bebas text-5xl md:text-8xl text-circus-cream mb-4" style="text-shadow: 4px 4px 0 #E2252B;">Turn performances<br>
+      into a brand.</h2>
+     <p class="text-circus-cream/60 font-oswald text-lg mb-8">225+ assets. One kit. Unlimited shows.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><button class="pulse-cta bg-circus-red text-circus-cream font-bebas text-3xl tracking-wider px-12 py-5 border-2 border-circus-cream hover:bg-circus-cream hover:text-circus-red transition-all duration-300 jitter"> Get the Full Kit — $29 </button>
+     </div>
+     <div class="mt-6 flex flex-wrap justify-center gap-4 text-circus-cream/40 text-xs font-mono"><span class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-circus-red"></i> 60 Posters</span> <span class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-circus-red"></i> 40 Stories</span> <span class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-circus-red"></i> 25 Tickets</span> <span class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3 text-circus-red"></i> 100 Stickers</span>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="py-16 px-4 bg-circus-cream text-circus-black relative">
+    <div class="absolute inset-0 halftone"></div>
+    <div class="max-w-2xl mx-auto relative z-10">
+     <div class="bg-circus-black text-circus-cream p-8 border-4 border-circus-red">
+      <div class="text-center mb-6">
+       <h3 class="font-bebas text-4xl text-circus-red mb-2">Vote + Comment</h3>
+       <p class="text-circus-cream/60 text-sm font-mono">What poster set should we make next?</p>
+      </div><!-- Vote buttons -->
+      <div class="grid grid-cols-3 gap-3 mb-8"><button class="vote-btn bg-circus-red/10 border-2 border-circus-red/30 p-4 text-center hover:bg-circus-red/30 transition-all rounded" data-vote="fire">
+        <div class="text-3xl mb-1">
+         🔥
+        </div>
+        <div class="text-xs font-mono text-circus-cream/60">
+         Fire Breathers
+        </div>
+        <div class="font-bebas text-2xl text-circus-red vote-count mt-1">
+         0
+        </div></button> <button class="vote-btn bg-circus-blue/10 border-2 border-circus-blue/30 p-4 text-center hover:bg-circus-blue/30 transition-all rounded" data-vote="acrobat">
+        <div class="text-3xl mb-1">
+         🤸
+        </div>
+        <div class="text-xs font-mono text-circus-cream/60">
+         Acrobats
+        </div>
+        <div class="font-bebas text-2xl text-circus-blue vote-count mt-1">
+         0
+        </div></button> <button class="vote-btn bg-circus-cream/10 border-2 border-circus-cream/30 p-4 text-center hover:bg-circus-cream/30 transition-all rounded" data-vote="magic">
+        <div class="text-3xl mb-1">
+         🪄
+        </div>
+        <div class="text-xs font-mono text-circus-cream/60">
+         Magicians
+        </div>
+        <div class="font-bebas text-2xl text-circus-cream vote-count mt-1">
+         0
+        </div></button>
+      </div><!-- Comment form -->
+      <form id="comment-form" class="space-y-3"><label for="comment-input" class="block text-xs uppercase tracking-widest text-circus-cream/50 font-mono">Leave a comment</label> <textarea id="comment-input" class="w-full bg-circus-cream/10 border border-circus-cream/20 text-circus-cream p-3 text-sm font-mono rounded focus:border-circus-red focus:outline-none resize-none" rows="3" placeholder="What do you want to see?"></textarea> <button type="submit" class="bg-circus-red text-circus-cream font-bebas text-xl tracking-wider px-6 py-2 hover:bg-circus-cream hover:text-circus-red transition-all">Post Comment</button>
+      </form>
+      <div id="comments-list" class="mt-6 space-y-3"></div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-10 px-4 bg-circus-black border-t-2 border-circus-red">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="font-bebas text-2xl text-circus-red tracking-wider">
+      🎪 CircusHush Studio
+     </div>
+     <div class="text-circus-cream/40 text-xs font-mono">
+      "Loud visuals. Silent comedy energy."
+     </div>
+     <div class="flex gap-4"><a href="#" class="text-circus-cream/40 hover:text-circus-red transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a> <a href="#" class="text-circus-cream/40 hover:text-circus-red transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a> <a href="#" class="text-circus-cream/40 hover:text-circus-red transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- Element SDK ---
+const defaultConfig = {
+  background_color: '#1A1A1A',
+  surface_color: '#F5EDE0',
+  text_color: '#F5EDE0',
+  primary_action_color: '#E2252B',
+  secondary_action_color: '#2563EB',
+  font_family: 'Bebas Neue',
+  font_size: 16,
+  hero_title: 'Make the crowd\nstop scrolling.',
+  hero_subtitle: 'Circus and mime promo designs that look like collectible posters.',
+  posters_heading: 'Poster Collections',
+  bottom_cta_text: 'Turn performances into a brand.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.body.style.backgroundColor = c.background_color;
+  
+  // Hero
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    heroTitle.textContent = c.hero_title.replace(/\\n/g, '\n');
+    heroTitle.style.fontFamily = `${c.font_family}, Bebas Neue, sans-serif`;
+    heroTitle.style.fontSize = `${c.font_size * 5}px`;
+    heroTitle.style.color = c.text_color;
+    heroTitle.style.textShadow = `4px 4px 0 ${c.primary_action_color}`;
+  }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) {
+    heroSub.textContent = c.hero_subtitle;
+    heroSub.style.color = c.text_color;
+    heroSub.style.opacity = '0.8';
+  }
+  const postersH = document.getElementById('posters-heading');
+  if (postersH) {
+    postersH.textContent = c.posters_heading;
+    postersH.style.textShadow = `3px 3px 0 ${c.primary_action_color}`;
+  }
+  const bottomCta = document.getElementById('bottom-cta');
+  if (bottomCta) {
+    bottomCta.textContent = c.bottom_cta_text;
+    bottomCta.style.fontFamily = `${c.font_family}, Bebas Neue, sans-serif`;
+    bottomCta.style.color = c.text_color;
+    bottomCta.style.textShadow = `4px 4px 0 ${c.primary_action_color}`;
+  }
+
+  // All bebas headings
+  document.querySelectorAll('.font-bebas').forEach(el => {
+    el.style.fontFamily = `${c.font_family}, Bebas Neue, sans-serif`;
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return {
+        recolorables: [
+          { get: () => c.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => c.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => c.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => c.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+          { get: () => c.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_title', c.hero_title],
+        ['hero_subtitle', c.hero_subtitle],
+        ['posters_heading', c.posters_heading],
+        ['bottom_cta_text', c.bottom_cta_text]
+      ]);
+    }
+  });
+}
+
+// --- Mobile Menu ---
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// --- Preview Grid ---
+const gridItems = [
+  { emoji: '🤡', label: 'Clown Face', cat: 'sticker', bg: 'from-circus-red/30 to-circus-black' },
+  { emoji: '🎭', label: 'Masks', cat: 'sticker', bg: 'from-circus-blue/30 to-circus-black' },
+  { emoji: '🎪', label: 'Big Top', cat: 'poster', bg: 'from-circus-red/20 to-circus-black' },
+  { emoji: '⭐', label: 'Star Burst', cat: 'element', bg: 'from-yellow-500/30 to-circus-black' },
+  { emoji: '🎈', label: 'Balloon', cat: 'sticker', bg: 'from-circus-red/40 to-circus-black' },
+  { emoji: '🎩', label: 'Top Hat', cat: 'element', bg: 'from-circus-cream/20 to-circus-black' },
+  { emoji: '🎵', label: 'Music', cat: 'element', bg: 'from-circus-blue/20 to-circus-black' },
+  { emoji: '🌟', label: 'Sparkle', cat: 'sticker', bg: 'from-yellow-400/30 to-circus-black' },
+  { emoji: '🎬', label: 'Action', cat: 'poster', bg: 'from-circus-red/30 to-circus-black' },
+  { emoji: '🎯', label: 'Target', cat: 'element', bg: 'from-circus-red/20 to-circus-black' },
+  { emoji: '🔥', label: 'Fire', cat: 'sticker', bg: 'from-orange-500/30 to-circus-black' },
+  { emoji: '💫', label: 'Dizzy', cat: 'poster', bg: 'from-circus-blue/30 to-circus-black' },
+];
+
+const grid = document.getElementById('preview-grid');
+function renderGrid(filter) {
+  grid.innerHTML = '';
+  const items = filter === 'all' ? gridItems : gridItems.filter(i => i.cat === filter);
+  items.forEach((item, idx) => {
+    const el = document.createElement('div');
+    el.className = `grid-item bg-gradient-to-b ${item.bg} rounded-lg p-4 aspect-square flex flex-col items-center justify-center border border-circus-cream/10 poster-card cursor-pointer pop-in`;
+    el.style.animationDelay = `${idx * 0.08}s`;
+    el.innerHTML = `<div class="text-3xl md:text-4xl mb-2">${item.emoji}</div><div class="text-[10px] font-mono text-circus-cream/50 uppercase tracking-wider">${item.label}</div><div class="mt-1 text-[8px] font-mono text-circus-cream/30 uppercase">${item.cat}</div>`;
+    grid.appendChild(el);
+  });
+}
+renderGrid('all');
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active', 'bg-circus-red', 'text-circus-cream', 'border-circus-red');
+      b.classList.add('bg-transparent', 'text-circus-cream/70', 'border-circus-cream/30');
+    });
+    btn.classList.add('active', 'bg-circus-red', 'text-circus-cream', 'border-circus-red');
+    btn.classList.remove('bg-transparent', 'text-circus-cream/70', 'border-circus-cream/30');
+    renderGrid(btn.dataset.filter);
+  });
+});
+
+// --- Vote Widget ---
+const votes = { fire: 0, acrobat: 0, magic: 0 };
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.vote;
+    votes[key]++;
+    btn.querySelector('.vote-count').textContent = votes[key];
+    btn.style.transform = 'scale(1.1)';
+    setTimeout(() => btn.style.transform = '', 200);
+  });
+});
+
+// --- Comment Form ---
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleTimeString() });
+  input.value = '';
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'bg-circus-cream/5 border border-circus-cream/10 p-3 rounded pop-in';
+  div.innerHTML = `<p class="text-sm text-circus-cream/80 font-mono">${text.replace(/</g,'&lt;')}</p><div class="text-[10px] text-circus-cream/30 mt-1 font-mono">${comments[0].time}</div>`;
+  list.prepend(div);
+});
+
+// --- Intersection Observer for animations ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('slide-up');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+// --- Lucide Icons ---
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a427908f27cf',t:'MTc3NDY2OTUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
