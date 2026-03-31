@@ -1,12 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getTemplate, getTemplateBids, voteTemplate, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
 import styles from './page.module.css';
 
-export default function SiteClient() {
-  const { slug } = useParams<{ slug: string }>();
+interface Props {
+  slug: string;
+}
+
+export default function SiteClient({ slug }: Props) {
   const router = useRouter();
   const [template, setTemplate] = useState<Template | null>(null);
   const [bids, setBids] = useState<Bid[]>([]);

@@ -1,9 +1,14 @@
 import SiteClient from './SiteClient';
 
 export function generateStaticParams() {
-  return [];
+  return [{ slug: '__placeholder__' }];
 }
 
-export default function SitePage() {
-  return <SiteClient />;
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function SitePage({ params }: Props) {
+  const { slug } = await params;
+  return <SiteClient slug={slug} />;
 }
