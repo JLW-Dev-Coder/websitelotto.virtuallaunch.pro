@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { getTemplate, getTemplateBids, voteTemplate, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
 import styles from './page.module.css';
 
+export function generateStaticParams() {
+  return [];
+}
+
+export const dynamicParams = true;
+
 export default function TemplatePage() {
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
