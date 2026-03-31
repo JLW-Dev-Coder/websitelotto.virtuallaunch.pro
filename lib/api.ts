@@ -123,3 +123,38 @@ export async function uploadLogo(slug: string, file: File): Promise<{ url: strin
 export function logout(): Promise<{ ok: boolean }> {
   return apiFetch('/v1/auth/logout', { method: 'POST' });
 }
+
+export interface Affiliate {
+  referral_code: string;
+  connect_status: string;
+  balance_pending: number;
+  balance_paid: number;
+  referral_url: string;
+}
+
+export interface AffiliateEvent {
+  platform: string;
+  gross_amount: number;
+  commission_amount: number;
+  status: 'pending' | 'paid';
+  created_at: string;
+}
+
+export function getAffiliate(account_id: string): Promise<Affiliate> {
+  return apiFetch(`/v1/affiliates/${account_id}`);
+}
+
+export function getAffiliateEvents(account_id: string): Promise<AffiliateEvent[]> {
+  return apiFetch(`/v1/affiliates/${account_id}/events`);
+}
+
+export function startAffiliateOnboarding(): Promise<{ onboard_url: string }> {
+  return apiFetch('/v1/affiliates/connect/onboard', { method: 'POST' });
+}
+
+export function requestPayout(amount: number): Promise<{ payout_id: string; amount: number; status: string }> {
+  return apiFetch('/v1/affiliates/payout/request', {
+    method: 'POST',
+    body: JSON.stringify({ amount }),
+  });
+}
