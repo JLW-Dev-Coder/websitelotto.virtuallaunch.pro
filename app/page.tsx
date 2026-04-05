@@ -267,6 +267,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* BOTTOM CTA */}
+      <section className={styles.section} id="cta">
+        <div className={styles.sectionInner}>
+          <div className={styles.ctaBlock}>
+            <h2 className={styles.ctaBlockTitle}>48 professional websites. Ready to launch.</h2>
+            <p className={styles.ctaBlockDesc}>Skip the agency. Get a designer-quality website for your practice or business — subscription, auction, or outright purchase.</p>
+            <a href="#sites" className={styles.btnPrimary}>Browse templates</a>
+          </div>
+        </div>
+      </section>
+
       <footer className={styles.footer}>
         <div className={styles.sectionInner}>
           <p>© 2025 Website Lotto · <Link href="/support">Support</Link> · <Link href="/sign-in">Sign In</Link></p>

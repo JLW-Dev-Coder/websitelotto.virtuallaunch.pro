@@ -177,6 +177,27 @@ export default function SiteClient({ slug }: Props) {
         </div>
       </main>
 
+      <section className={styles.ctaBanner}>
+        <div className={styles.ctaInner}>
+          <h2 className={styles.ctaTitle}>Get this website for your business</h2>
+          <div className={styles.ctaOptions}>
+            <div className={styles.ctaOption}>
+              <span className={styles.ctaOptionLabel}>Subscribe</span>
+              <span className={styles.ctaOptionPrice}>$99/mo</span>
+            </div>
+            <div className={styles.ctaOption}>
+              <span className={styles.ctaOptionLabel}>Bid</span>
+              <span className={styles.ctaOptionPrice}>from $29</span>
+            </div>
+            <div className={styles.ctaOption}>
+              <span className={styles.ctaOptionLabel}>Buy now</span>
+              <span className={styles.ctaOptionPrice}>instant</span>
+            </div>
+          </div>
+          <Link href="/" className={styles.ctaLink}>Or browse all templates →</Link>
+        </div>
+      </section>
+
       <footer className={styles.footer}>
         <div className={styles.navInner}>
           <p>© 2025 Website Lotto · <Link href="/support">Support</Link></p>
