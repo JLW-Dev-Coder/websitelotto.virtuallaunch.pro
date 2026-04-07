@@ -31,14 +31,45 @@ One-line: Canva-site marketplace — vote, bid, buy-now, or scratch-to-win HTML 
 
 ## Pricing (current)
 
-| Tier | Price | Notes |
-|------|-------|-------|
-| Standard template | **$249** one-time | Instant claim |
-| Premium template | **$399** one-time | Featured/curated templates |
-| Hosting | **$14/mo** | Standard hosting on VLP infra |
-| Premium hosting | **$49/mo** | Custom domain + priority support |
+| Stripe Product | Price | Type | When charged |
+|----------------|-------|------|-------------|
+| WLVLP Site — Standard | $249 | One-time | At purchase |
+| WLVLP Site — Premium | $399 | One-time | At purchase |
+| WLVLP Hosting | $14/mo | Subscription | After year 1 |
+| WLVLP Premium Hosting | $49/mo | Subscription | Optional upgrade anytime |
 
 Auctions and scratch tickets discount the one-time template price; hosting is billed separately.
+
+---
+
+## Purchase Flow
+
+1. Visitor browses WLVLP, clicks "Buy Now" on a site
+2. Site's category determines price ($249 or $399)
+3. Stripe checkout opens (anonymous allowed, same pattern as TMP)
+4. After payment, webhook creates site instance, assigns to account
+5. Hosting is free for 12 months (tracked by `purchased_at` date)
+6. Month 11: email reminder about hosting renewal
+7. Month 13+: $14/mo subscription auto-starts
+
+---
+
+## Canva Folder Structure
+
+| Folder | Canva ID |
+|--------|----------|
+| WLVLP Templates (parent) | FAHGJNOrtCY |
+| Services | FAHGJDzQLsA |
+| Tax and Finance | FAHGJGDn5YE |
+| Food and Beverage | FAHGJB9wuqE |
+| Entertainment | FAHGJNstHBo |
+| Real Estate and Home | FAHGJHTNC7c |
+| Beauty and Fashion | FAHGJJ1w_PE |
+| Legal | FAHGJDTUvMs |
+| Sports and Fitness | FAHGJIFCNLs |
+| Tech and Digital | FAHGJHSPsr8 |
+| Travel and Adventure | FAHGJBX47vk |
+| Lifestyle and Hobby | FAHGJPBcFUE |
 
 ---
 

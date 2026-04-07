@@ -40,14 +40,50 @@ Website Lotto is a marketplace for pre-built HTML website templates. Buyers brow
 
 ## Pricing
 
-| Item | Price | Notes |
-|------|-------|-------|
-| Standard template | **$249** one-time | Instant claim — full template + schema |
-| Premium template | **$399** one-time | Featured/curated templates |
-| Hosting | **$14/mo** | Standard hosting on VLP infra |
-| Premium hosting | **$49/mo** | Custom domain + priority support |
-| Auction bid | Min $29 | 7-day auction; winner pays template price |
-| Scratch ticket | Free | Lead gen; prizes discount template + hosting |
+| Stripe Product | Price | Type | When charged |
+|----------------|-------|------|-------------|
+| WLVLP Site — Standard | $249 | One-time | At purchase |
+| WLVLP Site — Premium | $399 | One-time | At purchase |
+| WLVLP Hosting | $14/mo | Subscription | After year 1 |
+| WLVLP Premium Hosting | $49/mo | Subscription | Optional upgrade anytime |
+
+Auction bid: min $29 — winner pays template price. Scratch ticket: free; prizes discount template + hosting.
+
+---
+
+## Pricing Strategy
+
+**Why one-time purchase converts better:**
+The buyer is a local business owner (barber, dentist, tax pro, roofer) who thinks in one-time costs, not SaaS subscriptions. They're used to paying a web designer $500–2,000 for a website. A polished, ready-to-go site for $249–399 feels like a deal. A $99/mo subscription feels like a recurring cost they'll eventually cancel.
+
+**Niche pricing tiers:**
+
+| Niche | One-time price | Rationale |
+|-------|---------------|-----------|
+| Tax professional sites (34) | $399–499 | Bill $150–400/hr, this is 1–3 hours of their time |
+| Legal sites (7) | $399–499 | Same logic, high billing rates |
+| Service businesses (barber, dental, roofing) | $249–349 | Lower billing rates but desperate for web presence |
+| Food/beverage, beauty | $199–299 | Competitive market, more price-sensitive |
+| Lifestyle/hobby/entertainment | $99–149 | Impulse buys, lower perceived value |
+
+**Revenue model detail:**
+
+| Model | Price | What they get |
+|-------|-------|---------------|
+| Buy outright | $199–499 one-time | Static site, hosted 12 months free, no edits |
+| Subscription | $29–49/mo | Hosted site + editor access + updates |
+| Premium | $99/mo | Hosted + editor + SEO + content updates + VLP ecosystem bundle |
+| Auction win | Variable ($29+ bid) | Same as buy outright |
+
+**Hosting after year 1:**
+- Free for first 12 months (tracked by `purchased_at` date)
+- Month 11: email reminder — "Your hosting renews at $14/mo next month"
+- Month 13+: $14/mo subscription auto-starts
+- Optional $49/mo premium tier with content updates, SEO, priority support
+
+**Niche-to-tier mapping:** Standard ($249) = Lifestyle, hobby, entertainment, food, beauty. Premium ($399) = Tax, legal, services, real estate, tech. The catalog category determines tier — Stripe only needs 2 one-time products.
+
+**Competitive edge:** The gamification (vote/bid/buy) creates urgency and engagement that a standard template marketplace doesn't have.
 
 ---
 

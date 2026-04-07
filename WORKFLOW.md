@@ -74,6 +74,12 @@ git push origin main
 
 ## Adding a New Site (ongoing)
 
+**Canva-to-repo pipeline:**
+- All site HTML originates from Canva AI Code chats
+- Open the Canva chat → find the final HTML → copy all → paste into `public/sites/{slug}/preview.html` (replacing any comment placeholder) → save
+- Once HTML is in repo, RC scans it, auto-generates `schema.json`, and creates the marketplace listing
+- Future sites created via Canva AI Code or the Canva connector follow the same flow
+
 1. Create in Canva AI Code (or ask Chat Claude to generate)
 2. Copy the final HTML
 3. `mkdir public/sites/{slug} && paste into public/sites/{slug}/preview.html`
