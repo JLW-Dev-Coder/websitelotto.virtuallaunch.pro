@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getTemplates, getSession, voteTemplate, Template } from '@/lib/api';
+import { getTemplatesWithFallback, getSession, voteTemplate, Template } from '@/lib/api';
 import { getPriceForSlug } from '@/lib/pricing';
 import styles from './page.module.css';
 
@@ -17,7 +17,10 @@ export default function HomePage() {
   const [session, setSession] = useState<{ account_id: string } | null>(null);
 
   useEffect(() => {
-    getTemplates().then(setTemplates).finally(() => setLoading(false));
+    getTemplatesWithFallback()
+      .then(setTemplates)
+      .catch(() => setTemplates([]))
+      .finally(() => setLoading(false));
     getSession().then(setSession).catch(() => {});
   }, []);
 

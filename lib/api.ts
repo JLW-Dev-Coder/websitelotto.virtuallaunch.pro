@@ -1,3 +1,5 @@
+import catalog from '@/wlvlp-catalog.json';
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'https://api.virtuallaunch.pro';
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
@@ -60,6 +62,56 @@ export function getSession(): Promise<Session> {
 export function getTemplates(params?: Record<string, string>): Promise<Template[]> {
   const qs = params ? '?' + new URLSearchParams(params).toString() : '';
   return apiFetch(`/v1/wlvlp/templates${qs}`);
+}
+
+interface CatalogSite {
+  slug: string;
+  title: string;
+  categories: string[];
+  status?: string;
+  price?: number | null;
+}
+
+const CATEGORY_MAP: Record<string, Template['category']> = {
+  'Tax and Finance': 'finance',
+  'Legal': 'legal',
+  'Food and Beverage': 'food/bev',
+  'Sports and Fitness': 'health',
+  'Services': 'services',
+  'Beauty and Fashion': 'creative',
+  'Entertainment': 'creative',
+  'Real Estate and Home': 'services',
+  'Tech and Digital': 'services',
+  'Lifestyle and Hobby': 'other',
+  'Travel and Adventure': 'other',
+  'Uncategorized': 'other',
+};
+
+export function getTemplatesFromCatalog(): Template[] {
+  const sites = (catalog as { sites: CatalogSite[] }).sites;
+  return sites
+    .filter(s => s.slug && s.slug !== 'index')
+    .map(s => {
+      const primary = s.categories?.[0] ?? 'Uncategorized';
+      return {
+        slug: s.slug,
+        title: s.title,
+        category: CATEGORY_MAP[primary] ?? 'other',
+        status: (s.status as Template['status']) ?? 'available',
+        vote_count: 0,
+        price_monthly: 0,
+      };
+    });
+}
+
+export async function getTemplatesWithFallback(): Promise<Template[]> {
+  try {
+    const list = await getTemplates();
+    if (Array.isArray(list) && list.length > 0) return list;
+    return getTemplatesFromCatalog();
+  } catch {
+    return getTemplatesFromCatalog();
+  }
 }
 
 export function getTemplate(slug: string): Promise<Template> {
