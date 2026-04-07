@@ -1,1 +1,483 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/f556868c-3ff2-4773-82f2-5b4af572da5d -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassportPosters Co.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Country tiles hover */
+.country-tile { position: relative; overflow: hidden; border-radius: 12px; cursor: pointer; }
+.country-tile img { transition: transform 6s ease; width: 100%; height: 100%; object-fit: cover; }
+.country-tile:hover img { transform: scale(1.15); }
+.country-tile .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); transition: background 0.4s ease; }
+.country-tile:hover .overlay { background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%); }
+.country-tile .stamp { position: absolute; top: 12px; right: 12px; border: 2px solid rgba(255,255,255,0.8); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); transform: rotate(-12deg); transition: transform 0.3s ease; }
+.country-tile:hover .stamp { transform: rotate(0deg) scale(1.1); }
+
+/* Postcard flip */
+.postcard { perspective: 800px; cursor: pointer; }
+.postcard-inner { transition: transform 0.7s ease; transform-style: preserve-3d; position: relative; }
+.postcard.flipped .postcard-inner { transform: rotateY(180deg); }
+.postcard-front, .postcard-back { backface-visibility: hidden; border-radius: 12px; overflow: hidden; }
+.postcard-back { transform: rotateY(180deg); position: absolute; inset: 0; }
+
+/* Map pin bounce */
+@keyframes pinBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.map-pin { animation: pinBounce 2s ease-in-out infinite; }
+
+/* Stagger children */
+.stagger-children > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.12s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.18s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.24s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
+.stagger-children.visible > *:nth-child(7) { transition-delay: 0.36s; }
+.stagger-children.visible > *:nth-child(8) { transition-delay: 0.42s; }
+.stagger-children.visible > * { opacity: 1; transform: translateY(0); }
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+
+/* Poster grid hover */
+.poster-card { transition: transform 0.4s ease, box-shadow 0.4s ease; border-radius: 12px; overflow: hidden; }
+.poster-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+
+/* Star rating */
+.star-filled { color: #F59E0B; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Hero parallax text */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-animate { animation: heroFadeUp 1s ease forwards; }
+.hero-animate-delay { animation: heroFadeUp 1s ease 0.3s forwards; opacity: 0; }
+.hero-animate-delay2 { animation: heroFadeUp 1s ease 0.5s forwards; opacity: 0; }
+
+/* Badge pulse */
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+.badge-pulse { animation: badgePulse 2s ease-in-out infinite; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background-color: #FDFAF6;"><!-- Sticky Nav -->
+   <nav id="main-nav" style="background: rgba(253,250,246,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.06);" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16"><a href="#home" class="flex items-center gap-2"> <span style="color: #E63946;" class="text-xl">✦</span> <span style="font-family: 'Playfair Display', serif; font-weight: 900; color: #1A1A2E;" class="text-lg sm:text-xl tracking-tight">PassportPosters</span> <span style="color: #E63946; font-family: 'DM Sans', sans-serif; font-weight: 600;" class="text-xs sm:text-sm">Co.</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium" style="color: #1A1A2E;"><a href="#home" class="nav-link" style="--underline-color: #E63946;">Home</a> <a href="#countries" class="nav-link">Countries</a> <a href="#posters" class="nav-link">Posters</a> <a href="#postcards" class="nav-link">Postcards</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link" style="background: #E63946; color: white; padding: 6px 16px; border-radius: 99px;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" style="color: #1A1A2E;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+     <div class="flex flex-col gap-3 text-sm font-medium" style="color: #1A1A2E;"><a href="#home" class="py-2 border-b border-gray-100">Home</a> <a href="#countries" class="py-2 border-b border-gray-100">Countries</a> <a href="#posters" class="py-2 border-b border-gray-100">Posters</a> <a href="#postcards" class="py-2 border-b border-gray-100">Postcards</a> <a href="#reviews" class="py-2 border-b border-gray-100">Reviews</a> <a href="#download" class="py-2" style="color: #E63946; font-weight: 700;">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="pt-20 sm:pt-24 pb-16 sm:pb-24 px-4 sm:px-6 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+     <div>
+      <div class="hero-animate flex items-center gap-2 mb-6"><span class="badge-pulse inline-block w-2.5 h-2.5 rounded-full" style="background:#E63946;"></span> <span class="text-xs font-semibold tracking-widest uppercase" style="color:#E63946;">New Collection 2025</span>
+      </div>
+      <h1 id="hero-title" class="hero-animate" style="font-family: 'Playfair Display', serif; font-weight: 900; color: #1A1A2E; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.08; letter-spacing: -0.02em;">Your favorite country,<br>
+       in poster form.</h1>
+      <p id="hero-subtitle" class="hero-animate-delay mt-5 text-base sm:text-lg max-w-lg" style="color: #555; line-height: 1.7;">Download templates for travel posters, postcards, and itinerary covers. Designed for creators who collect the world.</p>
+      <div class="hero-animate-delay2 flex flex-wrap gap-3 mt-8"><a href="#download" id="cta-primary-btn" style="background: #E63946; color: white;" class="px-7 py-3.5 rounded-full font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"> <i data-lucide="download" style="width:16px;height:16px;"></i> <span>Get the Collection</span> </a> <a href="#countries" id="cta-secondary-btn" style="border: 2px solid #1A1A2E; color: #1A1A2E;" class="px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-gray-900 hover:text-white transition-all duration-300 inline-flex items-center gap-2"> <i data-lucide="compass" style="width:16px;height:16px;"></i> <span>Browse Countries</span> </a>
+      </div>
+      <div class="hero-animate-delay2 mt-8 flex items-center gap-6 text-xs" style="color: #888;"><span class="flex items-center gap-1.5"><strong style="color:#1A1A2E; font-size:1.1rem;">60+</strong> Poster templates</span> <span class="flex items-center gap-1.5"><strong style="color:#1A1A2E; font-size:1.1rem;">30</strong> Itinerary covers</span> <span class="flex items-center gap-1.5"><strong style="color:#1A1A2E; font-size:1.1rem;">20</strong> Postcards</span>
+      </div>
+     </div><!-- Hero visual grid -->
+     <div class="relative hidden lg:block">
+      <div class="grid grid-cols-2 gap-3" style="transform: rotate(2deg);">
+       <div class="rounded-xl overflow-hidden shadow-2xl" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&amp;h=533&amp;fit=crop" alt="Japan temple" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#E63946,#F4A261)';this.alt='Travel poster';">
+       </div>
+       <div class="rounded-xl overflow-hidden shadow-2xl mt-8" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400&amp;h=533&amp;fit=crop" alt="Morocco market" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#2A9D8F,#264653)';this.alt='Travel poster';">
+       </div>
+       <div class="rounded-xl overflow-hidden shadow-xl -mt-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&amp;h=533&amp;fit=crop" alt="Paris Eiffel" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#457B9D,#1D3557)';this.alt='Travel poster';">
+       </div>
+       <div class="rounded-xl overflow-hidden shadow-xl mt-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&amp;h=533&amp;fit=crop" alt="Italy coast" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#F4A261,#E76F51)';this.alt='Travel poster';">
+       </div>
+      </div><!-- Floating stamp badge -->
+      <div class="absolute -top-4 -left-4 map-pin" style="background: #E63946; color: white; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 11px; text-align: center; line-height: 1.1; box-shadow: 0 8px 24px rgba(230,57,70,0.4);">
+       BEST<br>
+       SELLER
+      </div>
+     </div>
+    </div>
+   </section><!-- COUNTRIES -->
+   <section id="countries" class="py-16 sm:py-24 px-4 sm:px-6" style="background: #1A1A2E;">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-12"><span class="text-xs font-semibold tracking-widest uppercase" style="color: #E63946;">Curated Destinations</span>
+      <h2 id="countries-heading" style="font-family: 'Playfair Display', serif; font-weight: 900; color: white; font-size: clamp(1.8rem, 4vw, 3rem);" class="mt-3">Explore Countries</h2>
+      <p class="mt-3 max-w-md mx-auto" style="color: rgba(255,255,255,0.5);">Each pack is crafted with local textures, colors, and landmarks.</p>
+     </div>
+     <div id="countries-grid" class="stagger-children grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+     </div>
+    </div>
+   </section><!-- POSTERS -->
+   <section id="posters" class="py-16 sm:py-24 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-12"><span class="text-xs font-semibold tracking-widest uppercase" style="color: #E63946;">Premium Templates</span>
+      <h2 id="posters-heading" style="font-family: 'Playfair Display', serif; font-weight: 900; color: #1A1A2E; font-size: clamp(1.8rem, 4vw, 3rem);" class="mt-3">Poster Collection</h2>
+      <p class="mt-3 max-w-md mx-auto" style="color: #888;">60+ editable poster templates. Print-ready, social-ready, gift-ready.</p>
+     </div>
+     <div class="stagger-children grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="poster-card" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+       <div style="aspect-ratio:3/4; position:relative; overflow:hidden;"><img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=500&amp;h=667&amp;fit=crop" alt="Tokyo skyline poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#ddd';">
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);"><span style="color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;">TOKYO</span> <span style="color:rgba(255,255,255,0.6);display:block;font-size:0.75rem;margin-top:2px;">Neon Nights Collection</span>
+        </div>
+       </div>
+       <div class="p-4 flex justify-between items-center"><span class="text-xs font-semibold" style="color:#E63946;">5 Templates</span> <span class="text-xs" style="color:#aaa;">A3 / A4 / Social</span>
+       </div>
+      </div>
+      <div class="poster-card" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+       <div style="aspect-ratio:3/4; position:relative; overflow:hidden;"><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=500&amp;h=667&amp;fit=crop" alt="Italy poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#ddd';">
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);"><span style="color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;">ITALY</span> <span style="color:rgba(255,255,255,0.6);display:block;font-size:0.75rem;margin-top:2px;">La Dolce Vita Series</span>
+        </div>
+       </div>
+       <div class="p-4 flex justify-between items-center"><span class="text-xs font-semibold" style="color:#E63946;">8 Templates</span> <span class="text-xs" style="color:#aaa;">A3 / A4 / Social</span>
+       </div>
+      </div>
+      <div class="poster-card" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+       <div style="aspect-ratio:3/4; position:relative; overflow:hidden;"><img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=500&amp;h=667&amp;fit=crop" alt="Brazil poster" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#ddd';">
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);"><span style="color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;">BRAZIL</span> <span style="color:rgba(255,255,255,0.6);display:block;font-size:0.75rem;margin-top:2px;">Tropical Heat Pack</span>
+        </div>
+       </div>
+       <div class="p-4 flex justify-between items-center"><span class="text-xs font-semibold" style="color:#E63946;">6 Templates</span> <span class="text-xs" style="color:#aaa;">A3 / A4 / Social</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- POSTCARDS -->
+   <section id="postcards" class="py-16 sm:py-24 px-4 sm:px-6" style="background: linear-gradient(135deg, #264653 0%, #1A1A2E 100%);">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-12"><span class="text-xs font-semibold tracking-widest uppercase" style="color: #F4A261;">Flip to Preview</span>
+      <h2 id="postcards-heading" style="font-family: 'Playfair Display', serif; font-weight: 900; color: white; font-size: clamp(1.8rem, 4vw, 3rem);" class="mt-3">Postcard Layouts</h2>
+      <p class="mt-3 max-w-md mx-auto" style="color: rgba(255,255,255,0.5);">Click any postcard to flip it. 20 editable designs included.</p>
+     </div>
+     <div class="stagger-children grid sm:grid-cols-2 lg:grid-cols-4 gap-5" id="postcards-grid">
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-16 sm:py-24 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-12"><span class="text-xs font-semibold tracking-widest uppercase" style="color: #E63946;">Community Love</span>
+      <h2 style="font-family: 'Playfair Display', serif; font-weight: 900; color: #1A1A2E; font-size: clamp(1.8rem, 4vw, 3rem);" class="mt-3">What Creators Say</h2>
+     </div>
+     <div class="stagger-children grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal rounded-2xl p-6" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+       <div class="flex gap-1 mb-3">
+        <span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span>
+       </div>
+       <p style="color:#555; line-height:1.7; font-size:0.9rem;">"I made an entire Japan travel series in under 2 hours. My audience went crazy for the poster aesthetic."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#E63946,#F4A261);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.8rem;">
+         AK
+        </div>
+        <div>
+         <span class="block text-sm font-semibold" style="color:#1A1A2E;">Aiko K.</span><span class="text-xs" style="color:#aaa;">Travel Creator, 45K followers</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-2xl p-6" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+       <div class="flex gap-1 mb-3">
+        <span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span>
+       </div>
+       <p style="color:#555; line-height:1.7; font-size:0.9rem;">"Bought as a gift for my partner who loves Italy. They printed 3 posters and framed them. Incredible quality."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2A9D8F,#264653);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.8rem;">
+         MR
+        </div>
+        <div>
+         <span class="block text-sm font-semibold" style="color:#1A1A2E;">Marco R.</span><span class="text-xs" style="color:#aaa;">Gift buyer</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-2xl p-6" style="background:white; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+       <div class="flex gap-1 mb-3">
+        <span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span class="star-filled">★</span><span style="color:#ddd;">★</span>
+       </div>
+       <p style="color:#555; line-height:1.7; font-size:0.9rem;">"The postcard templates alone are worth it. I sell custom postcards on Etsy and these scale perfectly across niches."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#F4A261,#E76F51);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.8rem;">
+         SL
+        </div>
+        <div>
+         <span class="block text-sm font-semibold" style="color:#1A1A2E;">Sarah L.</span><span class="text-xs" style="color:#aaa;">Etsy Seller, 1.2K sales</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / PRICING -->
+   <section id="download" class="py-16 sm:py-24 px-4 sm:px-6" style="background: #1A1A2E;">
+    <div class="max-w-3xl mx-auto text-center reveal">
+     <div class="map-pin inline-flex items-center justify-center mb-6" style="width:56px;height:56px;border-radius:50%;background:#E63946;"><i data-lucide="map-pin" style="width:28px;height:28px;color:white;"></i>
+     </div>
+     <h2 id="bottom-cta-heading" style="font-family: 'Playfair Display', serif; font-weight: 900; color: white; font-size: clamp(1.8rem, 4vw, 3rem);">Turn travel into a collectible.</h2>
+     <p class="mt-4 mx-auto max-w-lg" style="color: rgba(255,255,255,0.5); line-height:1.7;">60 poster templates + 30 itinerary covers + 20 postcard layouts + map pin icon pack. One download, endless countries.</p>
+     <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+      <div class="rounded-2xl p-6 text-left" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); min-width: 220px;"><span class="text-xs uppercase tracking-widest" style="color: #F4A261;">Starter</span>
+       <div class="mt-2" style="font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:2rem;">
+        $29
+       </div>
+       <ul class="mt-4 space-y-2 text-sm" style="color:rgba(255,255,255,0.6);">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#2A9D8F;"></i> 20 Poster Templates</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#2A9D8F;"></i> 10 Postcard Layouts</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#2A9D8F;"></i> Map Pin Icons</li>
+       </ul><button class="w-full mt-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105" style="border:2px solid rgba(255,255,255,0.3);color:white;">Choose Starter</button>
+      </div>
+      <div class="rounded-2xl p-6 text-left relative" style="background: linear-gradient(135deg, #E63946, #c62838); min-width: 220px; box-shadow: 0 12px 40px rgba(230,57,70,0.4);"><span class="absolute -top-3 right-4 px-3 py-1 rounded-full text-xs font-bold" style="background:#F4A261;color:#1A1A2E;">BEST VALUE</span> <span class="text-xs uppercase tracking-widest" style="color: rgba(255,255,255,0.7);">Full Collection</span>
+       <div class="mt-2" style="font-family:'Playfair Display',serif;font-weight:900;color:white;font-size:2rem;">
+        $49
+       </div>
+       <ul class="mt-4 space-y-2 text-sm" style="color:rgba(255,255,255,0.85);">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:white;"></i> 60 Poster Templates</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:white;"></i> 30 Itinerary Covers</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:white;"></i> 20 Postcards + Icons</li>
+       </ul><button class="w-full mt-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:scale-105" style="background:white;color:#E63946;">Get Full Collection</button>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="mt-10 flex flex-wrap justify-center gap-4 text-xs" style="color: rgba(255,255,255,0.4);"><span class="flex items-center gap-1.5"><i data-lucide="palette" style="width:14px;height:14px;"></i> Great for travel creators</span> <span class="flex items-center gap-1.5"><i data-lucide="gift" style="width:14px;height:14px;"></i> Giftable</span> <span class="flex items-center gap-1.5"><i data-lucide="trending-up" style="width:14px;height:14px;"></i> Scales across endless niches</span>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="py-12 sm:py-16 px-4 sm:px-6" style="background: #FDFAF6;">
+    <div class="max-w-2xl mx-auto reveal">
+     <div class="rounded-2xl p-6 sm:p-8 text-center" style="background:white; box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 2px dashed rgba(0,0,0,0.1);">
+      <div class="flex items-center justify-center gap-2 mb-4"><i data-lucide="message-circle" style="width:20px;height:20px;color:#E63946;"></i> <span class="text-sm font-semibold" style="color:#1A1A2E;">Vote + Comment</span>
+      </div>
+      <p class="text-sm" style="color:#888;">Which country should we design next?</p>
+      <div class="mt-5 flex flex-wrap justify-center gap-2" id="vote-buttons">
+      </div>
+      <div class="mt-6 pt-5" style="border-top: 1px solid #eee;">
+       <p class="text-xs" style="color:#bbb;">Embed Widget Here — Connect your favorite voting or comment tool</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-8 px-4 sm:px-6" style="background: #1A1A2E;">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2"><span style="color: #E63946;" class="text-lg">✦</span> <span style="font-family: 'Playfair Display', serif; font-weight: 700; color: white;" class="text-sm">PassportPosters Co.</span>
+     </div>
+     <p class="text-xs" style="color: rgba(255,255,255,0.3);">Collect countries like art. © 2025</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Countries data
+const countries = [
+  { name: 'Japan', emoji: '🇯🇵', img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=500&fit=crop', tag: '12 templates' },
+  { name: 'Mexico', emoji: '🇲🇽', img: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&h=500&fit=crop', tag: '8 templates' },
+  { name: 'Italy', emoji: '🇮🇹', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=500&fit=crop', tag: '10 templates' },
+  { name: 'Brazil', emoji: '🇧🇷', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&h=500&fit=crop', tag: '8 templates' },
+  { name: 'Morocco', emoji: '🇲🇦', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400&h=500&fit=crop', tag: '6 templates' },
+  { name: 'USA', emoji: '🇺🇸', img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f04?w=400&h=500&fit=crop', tag: '10 templates' },
+  { name: 'France', emoji: '🇫🇷', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=500&fit=crop', tag: '9 templates' },
+  { name: 'Thailand', emoji: '🇹🇭', img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=400&h=500&fit=crop', tag: '7 templates' }
+];
+
+// Build country tiles
+const countriesGrid = document.getElementById('countries-grid');
+countries.forEach(c => {
+  const tile = document.createElement('div');
+  tile.className = 'country-tile';
+  tile.style.aspectRatio = '3/4';
+  tile.innerHTML = `
+    <img src="${c.img}" alt="${c.name} travel" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#E63946,#264653)';this.alt='${c.name}';">
+    <div class="overlay"></div>
+    <div class="stamp">${c.emoji}</div>
+    <div style="position:absolute;bottom:16px;left:16px;right:16px;">
+      <span style="color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;display:block;">${c.name}</span>
+      <span style="color:rgba(255,255,255,0.6);font-size:0.7rem;">${c.tag}</span>
+    </div>
+  `;
+  countriesGrid.appendChild(tile);
+});
+
+// Build postcards
+const postcardData = [
+  { front: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=400&h=280&fit=crop', city: 'Marrakech', back: 'Warm spice market tones with intricate tile patterns.' },
+  { front: 'https://images.unsplash.com/photo-1533050487297-09b450131914?w=400&h=280&fit=crop', city: 'Rio de Janeiro', back: 'Vibrant carnival colors meet coastal sunset hues.' },
+  { front: 'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=400&h=280&fit=crop', city: 'Bangkok', back: 'Golden temple glow with street food energy.' },
+  { front: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&h=280&fit=crop', city: 'Paris', back: 'Soft pastels with vintage Parisian charm.' }
+];
+
+const postcardsGrid = document.getElementById('postcards-grid');
+postcardData.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'postcard';
+  card.style.height = '220px';
+  card.innerHTML = `
+    <div class="postcard-inner" style="width:100%;height:100%;">
+      <div class="postcard-front" style="width:100%;height:100%;position:relative;">
+        <img src="${p.front}" alt="${p.city} postcard" loading="lazy" class="w-full h-full object-cover" style="border-radius:12px;" onerror="this.style.background='#264653';">
+        <div style="position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);padding:4px 12px;border-radius:99px;">
+          <span style="color:white;font-size:0.75rem;font-weight:600;">${p.city}</span>
+        </div>
+        <div style="position:absolute;top:10px;right:10px;">
+          <i data-lucide="rotate-cw" style="width:14px;height:14px;color:rgba(255,255,255,0.7);"></i>
+        </div>
+      </div>
+      <div class="postcard-back flex items-center justify-center p-5" style="background:#FDFAF6;border:2px dashed #ddd;">
+        <div class="text-center">
+          <div style="font-family:'Playfair Display',serif;font-weight:700;color:#1A1A2E;font-size:1rem;margin-bottom:6px;">${p.city}</div>
+          <p style="color:#888;font-size:0.78rem;line-height:1.5;">${p.back}</p>
+          <div class="mt-3" style="width:40px;height:40px;border:2px solid #E63946;border-radius:4px;margin:0 auto;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);">
+            <span style="font-size:0.55rem;color:#E63946;font-weight:700;">STAMP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  postcardsGrid.appendChild(card);
+});
+
+// Vote buttons
+const voteCountries = ['🇬🇧 UK', '🇬🇷 Greece', '🇰🇷 Korea', '🇵🇪 Peru', '🇮🇳 India', '🇦🇺 Australia'];
+const voteContainer = document.getElementById('vote-buttons');
+const votes = {};
+voteCountries.forEach(v => {
+  votes[v] = 0;
+  const btn = document.createElement('button');
+  btn.className = 'vote-btn px-4 py-2 rounded-full text-sm font-medium transition-all hover:scale-105';
+  btn.style.cssText = 'background:#f5f0eb;color:#1A1A2E;border:1px solid transparent;';
+  btn.innerHTML = `${v} <span class="vote-count" style="color:#E63946;font-weight:700;margin-left:4px;">0</span>`;
+  btn.addEventListener('click', () => {
+    votes[v]++;
+    btn.querySelector('.vote-count').textContent = votes[v];
+    btn.style.borderColor = '#E63946';
+    btn.style.background = '#fef2f2';
+  });
+  voteContainer.appendChild(btn);
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .stagger-children').forEach(el => observer.observe(el));
+
+// Lucide
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Your favorite country, in poster form.',
+  hero_subtitle: 'Download templates for travel posters, postcards, and itinerary covers. Designed for creators who collect the world.',
+  cta_primary: 'Get the Collection',
+  cta_secondary: 'Browse Countries',
+  countries_heading: 'Explore Countries',
+  posters_heading: 'Poster Collection',
+  postcards_heading: 'Postcard Layouts',
+  bottom_cta_text: 'Turn travel into a collectible.',
+  background_color: '#FDFAF6',
+  dark_color: '#1A1A2E',
+  accent_color: '#E63946',
+  text_color: '#555555',
+  surface_color: '#FFFFFF',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.getElementById('hero-title').innerHTML = c.hero_title.replace(',', ',<br>');
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.querySelector('#cta-primary-btn span').textContent = c.cta_primary;
+  document.querySelector('#cta-secondary-btn span').textContent = c.cta_secondary;
+  document.getElementById('countries-heading').textContent = c.countries_heading;
+  document.getElementById('posters-heading').textContent = c.posters_heading;
+  document.getElementById('postcards-heading').textContent = c.postcards_heading;
+  document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+  // Colors
+  document.getElementById('app-wrapper').style.backgroundColor = c.background_color;
+  document.getElementById('main-nav').style.background = c.background_color + 'e8';
+
+  document.querySelectorAll('#countries, #download, footer').forEach(el => el.style.background = c.dark_color);
+  document.getElementById('cta-primary-btn').style.background = c.accent_color;
+  document.querySelectorAll('.badge-pulse').forEach(el => el.style.background = c.accent_color);
+
+  document.getElementById('hero-title').style.color = c.dark_color;
+  document.getElementById('hero-subtitle').style.color = c.text_color;
+
+  // Font
+  const fontStack = `${c.font_family}, 'DM Sans', sans-serif`;
+  document.body.style.fontFamily = fontStack;
+  const baseSize = c.font_size || 16;
+  document.body.style.fontSize = baseSize + 'px';
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return {
+        recolorables: [
+          { get: () => c.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => c.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => c.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => c.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+          { get: () => c.dark_color, set: (v) => { config.dark_color = v; window.elementSdk.setConfig({ dark_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => c.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => c.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_title', c.hero_title],
+        ['hero_subtitle', c.hero_subtitle],
+        ['cta_primary', c.cta_primary],
+        ['cta_secondary', c.cta_secondary],
+        ['countries_heading', c.countries_heading],
+        ['posters_heading', c.posters_heading],
+        ['postcards_heading', c.postcards_heading],
+        ['bottom_cta_text', c.bottom_cta_text]
+      ]);
+    }
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a7763e26f27c5',t:'MTc3NTU3OTk0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

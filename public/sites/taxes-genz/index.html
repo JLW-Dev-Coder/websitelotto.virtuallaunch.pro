@@ -1,1 +1,746 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/47a9c07d-d92e-4797-a175-230bc1769b42 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaxFlow Gen Z</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        neon: '#39FF14',
+        purp: '#B026FF',
+        dark: '#0A0A0A',
+        card: '#151515',
+      },
+      fontFamily: {
+        syne: ['Syne', 'sans-serif'],
+        mono: ['Space Mono', 'monospace'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { scroll-behavior: smooth; }
+
+.flip-card { perspective: 800px; }
+.flip-inner { transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
+.flip-card:hover .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57,255,20,0.4); }
+  50% { box-shadow: 0 0 20px 8px rgba(57,255,20,0.15); }
+}
+.anim-fade { opacity: 0; }
+.anim-fade.visible { animation: fadeUp 0.7s ease forwards; }
+.anim-bounce { opacity: 0; }
+.anim-bounce.visible { animation: bounceIn 0.6s ease forwards; }
+.anim-left { opacity: 0; }
+.anim-left.visible { animation: slideLeft 0.7s ease forwards; }
+.anim-right { opacity: 0; }
+.anim-right.visible { animation: slideRight 0.7s ease forwards; }
+
+.cta-pulse:hover { animation: pulse 1.5s infinite; }
+
+.counter-num { font-variant-numeric: tabular-nums; }
+
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #39FF14; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.hover-pop { transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s; }
+.hover-pop:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 40px rgba(57,255,20,0.12); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-dark text-white font-syne overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-dark/90 backdrop-blur-md border-b border-white/5">
+   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="font-mono font-bold text-lg tracking-tight" id="nav-logo"> <span class="text-neon">Tax</span><span class="text-white">Flow</span> </a>
+    <div class="hidden md:flex gap-6 text-sm font-mono"><a href="#home" class="nav-link text-white/70 hover:text-white">Home</a> <a href="#how" class="nav-link text-white/70 hover:text-white">How It Works</a> <a href="#deductions" class="nav-link text-white/70 hover:text-white">Deductions</a> <a href="#pricing" class="nav-link text-white/70 hover:text-white">Pricing</a> <a href="#reviews" class="nav-link text-white/70 hover:text-white">Reviews</a> <a href="#start" class="nav-link text-white/70 hover:text-white">Start</a>
+    </div><button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Toggle menu">
+     <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+     </svg></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden bg-dark/95 border-t border-white/5 px-4 pb-4">
+    <div class="flex flex-col gap-3 text-sm font-mono pt-2"><a href="#home" class="text-white/70 hover:text-white mobile-link">Home</a> <a href="#how" class="text-white/70 hover:text-white mobile-link">How It Works</a> <a href="#deductions" class="text-white/70 hover:text-white mobile-link">Deductions</a> <a href="#pricing" class="text-white/70 hover:text-white mobile-link">Pricing</a> <a href="#reviews" class="text-white/70 hover:text-white mobile-link">Reviews</a> <a href="#start" class="text-white/70 hover:text-white mobile-link">Start</a>
+    </div>
+   </div>
+  </nav>
+  <main class="w-full"><!-- HERO -->
+   <section id="home" class="min-h-screen flex items-center relative overflow-hidden pt-16">
+    <div class="absolute inset-0 opacity-20">
+     <div class="absolute top-20 right-20 w-96 h-96 bg-neon/20 rounded-full blur-3xl"></div>
+     <div class="absolute bottom-20 left-10 w-72 h-72 bg-purp/20 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 py-20 relative z-10 w-full">
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+       <div class="inline-block bg-neon/10 border border-neon/30 rounded-full px-4 py-1 text-xs font-mono text-neon mb-6 anim-fade"><!-- lightning icon -->
+        <svg class="inline w-3 h-3 mr-1 -mt-0.5" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg> FOR GEN Z EARNERS
+       </div>
+       <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold leading-[0.95] mb-6 anim-fade" style="animation-delay:0.1s">Taxes, but actually understandable.</h1>
+       <p id="hero-subtitle" class="text-lg md:text-xl text-white/60 font-mono mb-8 max-w-md anim-fade" style="animation-delay:0.2s">Built for creators, freelancers, and first-time earners.</p>
+       <div class="flex flex-wrap gap-4 anim-fade" style="animation-delay:0.3s"><a href="#start" class="bg-neon text-dark font-bold px-8 py-4 rounded-xl text-sm hover:bg-neon/90 transition cta-pulse inline-flex items-center gap-2">
+         <svg class="w-4 h-4" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+         </svg> Start My Taxes </a> <a href="#how" class="border border-white/20 text-white font-bold px-8 py-4 rounded-xl text-sm hover:border-purp hover:text-purp transition inline-flex items-center gap-2"> See How It Works 
+         <svg class="w-4 h-4" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+         </svg></a>
+       </div>
+       <div class="flex gap-8 mt-10 font-mono text-sm anim-fade" style="animation-delay:0.4s">
+        <div>
+         <span class="text-neon text-2xl font-bold counter-num" data-target="12847">0</span><br><span class="text-white/40">Gen Z filers</span>
+        </div>
+        <div>
+         <span class="text-purp text-2xl font-bold counter-num" data-target="2400">0</span><br><span class="text-white/40">Avg. saved</span>
+        </div>
+        <div>
+         <span class="text-white text-2xl font-bold counter-num" data-target="4">0</span><br><span class="text-white/40">Min to file</span>
+        </div>
+       </div>
+      </div>
+      <div class="relative anim-right">
+       <div class="relative rounded-2xl overflow-hidden border border-white/10"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&amp;h=400&amp;fit=crop" alt="Young professional at laptop" loading="lazy" class="w-full h-80 object-cover" onerror="this.style.background='linear-gradient(135deg,#151515,#1a1a2e)';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-dark/80 to-transparent"></div>
+        <div class="absolute bottom-4 left-4 right-4 bg-card/90 backdrop-blur rounded-xl p-3 border border-white/5 flex items-center gap-3">
+         <div class="w-8 h-8 bg-neon/20 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 10h20" />
+          </svg>
+         </div>
+         <div class="text-xs font-mono">
+          <span class="text-white/40">Refund estimate</span><br><span class="text-neon font-bold">$2,847.00</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- HOW IT WORKS -->
+   <section id="how" class="py-24 relative">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-16"><span class="text-purp font-mono text-xs tracking-widest uppercase anim-fade">How It Works</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-3 anim-fade" style="animation-delay:0.1s">Three steps. Zero confusion.</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-card border border-white/5 rounded-2xl p-8 hover-pop anim-fade" style="animation-delay:0.1s">
+       <div class="w-12 h-12 bg-neon/10 rounded-xl flex items-center justify-center mb-6">
+        <svg class="w-6 h-6 text-neon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+       </div>
+       <div class="text-purp font-mono text-xs mb-2">
+        01
+       </div>
+       <h3 class="text-xl font-bold mb-2">Upload your docs</h3>
+       <p class="text-white/50 text-sm font-mono">Snap a photo or drag-drop your W-2, 1099s, and receipts. We handle the rest.</p>
+      </div>
+      <div class="bg-card border border-white/5 rounded-2xl p-8 hover-pop anim-fade" style="animation-delay:0.2s">
+       <div class="w-12 h-12 bg-purp/10 rounded-xl flex items-center justify-center mb-6">
+        <svg class="w-6 h-6 text-purp" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+       </div>
+       <div class="text-purp font-mono text-xs mb-2">
+        02
+       </div>
+       <h3 class="text-xl font-bold mb-2">Smart deductions</h3>
+       <p class="text-white/50 text-sm font-mono">Our engine finds every deduction you qualify for. No tax jargon, just money back.</p>
+      </div>
+      <div class="bg-card border border-white/5 rounded-2xl p-8 hover-pop anim-fade" style="animation-delay:0.3s">
+       <div class="w-12 h-12 bg-neon/10 rounded-xl flex items-center justify-center mb-6">
+        <svg class="w-6 h-6 text-neon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+       </div>
+       <div class="text-purp font-mono text-xs mb-2">
+        03
+       </div>
+       <h3 class="text-xl font-bold mb-2">File and get paid</h3>
+       <p class="text-white/50 text-sm font-mono">E-file in minutes. Get your refund direct deposited in as fast as 7 days.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DEDUCTIONS - FLIP CARDS -->
+   <section id="deductions" class="py-24 bg-card/50">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-16"><span class="text-neon font-mono text-xs tracking-widest uppercase anim-fade">Deductions</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-3 anim-fade" style="animation-delay:0.1s">Tap to reveal deductions</h2>
+      <p class="text-white/40 font-mono text-sm mt-3 anim-fade" style="animation-delay:0.2s">Hover each card to see what you could claim</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Card 1 -->
+      <div class="flip-card h-72 anim-bounce" style="animation-delay:0.1s">
+       <div class="flip-inner relative w-full h-full">
+        <div class="flip-front absolute inset-0 bg-card border border-neon/20 rounded-2xl p-8 flex flex-col items-center justify-center">
+         <div class="w-16 h-16 bg-neon/10 rounded-2xl flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-neon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 10h20" />
+          </svg>
+         </div>
+         <h3 class="text-xl font-bold">Side Hustle Income</h3>
+         <p class="text-white/30 font-mono text-xs mt-2">Hover to reveal</p>
+        </div>
+        <div class="flip-back absolute inset-0 bg-gradient-to-br from-neon/20 to-dark border border-neon/30 rounded-2xl p-8 flex flex-col justify-center">
+         <h3 class="text-xl font-bold text-neon mb-3">Side Hustle Deductions</h3>
+         <ul class="text-sm font-mono text-white/70 space-y-2">
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Home office expenses</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Mileage &amp; transport</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Self-employment tax (50%)</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Health insurance premiums</li>
+         </ul>
+        </div>
+       </div>
+      </div><!-- Card 2 -->
+      <div class="flip-card h-72 anim-bounce" style="animation-delay:0.2s">
+       <div class="flip-inner relative w-full h-full">
+        <div class="flip-front absolute inset-0 bg-card border border-purp/20 rounded-2xl p-8 flex flex-col items-center justify-center">
+         <div class="w-16 h-16 bg-purp/10 rounded-2xl flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-purp" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <rect x="5" y="2" width="14" height="20" rx="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
+          </svg>
+         </div>
+         <h3 class="text-xl font-bold">Content Creation</h3>
+         <p class="text-white/30 font-mono text-xs mt-2">Hover to reveal</p>
+        </div>
+        <div class="flip-back absolute inset-0 bg-gradient-to-br from-purp/20 to-dark border border-purp/30 rounded-2xl p-8 flex flex-col justify-center">
+         <h3 class="text-xl font-bold text-purp mb-3">Creator Deductions</h3>
+         <ul class="text-sm font-mono text-white/70 space-y-2">
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-purp mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Camera &amp; equipment</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-purp mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Editing software subs</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-purp mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Studio or set costs</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-purp mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Paid promotions &amp; ads</li>
+         </ul>
+        </div>
+       </div>
+      </div><!-- Card 3 -->
+      <div class="flip-card h-72 anim-bounce" style="animation-delay:0.3s">
+       <div class="flip-inner relative w-full h-full">
+        <div class="flip-front absolute inset-0 bg-card border border-neon/20 rounded-2xl p-8 flex flex-col items-center justify-center">
+         <div class="w-16 h-16 bg-neon/10 rounded-2xl flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-neon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+         </div>
+         <h3 class="text-xl font-bold">Digital Tools</h3>
+         <p class="text-white/30 font-mono text-xs mt-2">Hover to reveal</p>
+        </div>
+        <div class="flip-back absolute inset-0 bg-gradient-to-br from-neon/20 to-dark border border-neon/30 rounded-2xl p-8 flex flex-col justify-center">
+         <h3 class="text-xl font-bold text-neon mb-3">Tool Deductions</h3>
+         <ul class="text-sm font-mono text-white/70 space-y-2">
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> SaaS subscriptions</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Cloud hosting &amp; domains</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Internet &amp; phone (biz %)</li>
+          <li class="flex items-start gap-2">
+           <svg class="w-4 h-4 text-neon mt-0.5 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+           </svg> Hardware &amp; peripherals</li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SPONSORED BLOCKS -->
+   <section class="py-24">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-6">
+     <div class="relative rounded-2xl overflow-hidden border border-white/5 hover-pop anim-left"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&amp;h=350&amp;fit=crop" alt="Creator workspace" loading="lazy" class="w-full h-64 object-cover" onerror="this.style.background='linear-gradient(135deg,#151515,#1a1a2e)';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6"><span class="text-[10px] font-mono text-purp uppercase tracking-widest">Spotlight</span>
+       <h3 class="text-2xl font-bold mt-1">Creators are saving more than ever</h3>
+       <p class="text-white/50 font-mono text-xs mt-2">Average creator deduction: $4,200/year. Don't leave money on the table.</p>
+      </div>
+     </div>
+     <div class="relative rounded-2xl overflow-hidden border border-white/5 hover-pop anim-right"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&amp;h=350&amp;fit=crop" alt="Phone payments" loading="lazy" class="w-full h-64 object-cover" onerror="this.style.background='linear-gradient(135deg,#151515,#1a1a2e)';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6"><span class="text-[10px] font-mono text-neon uppercase tracking-widest">Featured</span>
+       <h3 class="text-2xl font-bold mt-1">Stop guessing your taxes</h3>
+       <p class="text-white/50 font-mono text-xs mt-2">Real-time estimates. No surprise bills. Know exactly what you owe.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-24 bg-card/50">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-16"><span class="text-neon font-mono text-xs tracking-widest uppercase anim-fade">Pricing</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-3 anim-fade" style="animation-delay:0.1s">Pick your filing speed</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Starter -->
+      <div class="bg-dark border border-white/10 rounded-2xl p-8 hover-pop anim-fade" style="animation-delay:0.1s">
+       <div class="text-xs font-mono text-white/40 uppercase tracking-widest mb-4">
+        Young Earners
+       </div>
+       <div class="text-4xl font-extrabold mb-1" id="price-starter">
+        $29
+       </div>
+       <div class="text-white/30 font-mono text-xs mb-6">
+        First-time filers
+       </div>
+       <ul class="space-y-3 text-sm font-mono text-white/60 mb-8">
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> W-2 filing</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Standard deductions</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Onboarding templates</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-white/20 shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+         </svg><span class="text-white/30">1099 support</span></li>
+       </ul><a href="#start" class="block text-center bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl text-sm hover:bg-white/10 transition">Get Started</a>
+      </div><!-- Pro -->
+      <div class="bg-dark border-2 border-neon rounded-2xl p-8 relative hover-pop anim-fade" style="animation-delay:0.2s">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-neon text-dark text-[10px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+        Most Popular
+       </div>
+       <div class="text-xs font-mono text-neon uppercase tracking-widest mb-4">
+        Gig Economy
+       </div>
+       <div class="text-4xl font-extrabold mb-1" id="price-pro">
+        $59
+       </div>
+       <div class="text-white/30 font-mono text-xs mb-6">
+        Freelancers &amp; creators
+       </div>
+       <ul class="space-y-3 text-sm font-mono text-white/60 mb-8">
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> W-2 + 1099 filing</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Smart deduction finder</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Deduction guides + checklists</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-neon shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Client dashboard access</li>
+       </ul><a href="#start" class="block text-center bg-neon text-dark font-bold py-3 rounded-xl text-sm hover:bg-neon/90 transition cta-pulse">Start Filing</a>
+      </div><!-- Max -->
+      <div class="bg-dark border border-white/10 rounded-2xl p-8 hover-pop anim-fade" style="animation-delay:0.3s">
+       <div class="text-xs font-mono text-purp uppercase tracking-widest mb-4">
+        First-Time Filers
+       </div>
+       <div class="text-4xl font-extrabold mb-1" id="price-max">
+        $99
+       </div>
+       <div class="text-white/30 font-mono text-xs mb-6">
+        Full concierge support
+       </div>
+       <ul class="space-y-3 text-sm font-mono text-white/60 mb-8">
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-purp shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Everything in Pro</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-purp shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> 1-on-1 tax advisor</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-purp shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Content templates kit</li>
+        <li class="flex items-center gap-2">
+         <svg class="w-4 h-4 text-purp shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Audit protection</li>
+       </ul><a href="#start" class="block text-center bg-purp/20 border border-purp/30 text-purp font-bold py-3 rounded-xl text-sm hover:bg-purp/30 transition">Go Max</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-24">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-16"><span class="text-purp font-mono text-xs tracking-widest uppercase anim-fade">Reviews</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold mt-3 anim-fade" style="animation-delay:0.1s">What filers are saying</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-card border border-white/5 rounded-2xl p-6 hover-pop anim-fade" style="animation-delay:0.1s">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-white/70 text-sm font-mono mb-4">"I had no idea what a 1099 was. TaxFlow walked me through everything. Got $1,800 back."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-neon/20 flex items-center justify-center text-neon text-xs font-bold">
+         JM
+        </div>
+        <div>
+         <div class="text-sm font-bold">
+          Jordan M.
+         </div>
+         <div class="text-[10px] font-mono text-white/30">
+          Freelance Designer
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="bg-card border border-white/5 rounded-2xl p-6 hover-pop anim-fade" style="animation-delay:0.2s">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-white/70 text-sm font-mono mb-4">"Filed in literally 4 minutes from my phone. The deduction finder caught stuff I would've missed."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-purp/20 flex items-center justify-center text-purp text-xs font-bold">
+         AK
+        </div>
+        <div>
+         <div class="text-sm font-bold">
+          Aisha K.
+         </div>
+         <div class="text-[10px] font-mono text-white/30">
+          Content Creator
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="bg-card border border-white/5 rounded-2xl p-6 hover-pop anim-fade" style="animation-delay:0.3s">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-neon" viewbox="0 0 24 24" fill="currentColor">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-white/70 text-sm font-mono mb-4">"First time doing taxes myself. TaxFlow made it feel like filling out a survey. Super painless."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-neon/20 flex items-center justify-center text-neon text-xs font-bold">
+         TS
+        </div>
+        <div>
+         <div class="text-sm font-bold">
+          Tyler S.
+         </div>
+         <div class="text-[10px] font-mono text-white/30">
+          Gig Worker
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="start" class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0">
+     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon/5 rounded-full blur-3xl"></div>
+     <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-96 h-96 bg-purp/5 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-3xl mx-auto px-4 text-center relative z-10">
+     <h2 id="bottom-cta" class="text-5xl md:text-6xl font-extrabold mb-6 anim-fade">File smart. Keep more.</h2>
+     <p class="text-white/50 font-mono text-lg mb-10 anim-fade" style="animation-delay:0.1s">Join 12,000+ Gen Z earners who stopped overpaying on taxes.</p><a href="#" class="inline-flex items-center gap-3 bg-neon text-dark font-bold px-12 py-5 rounded-2xl text-lg hover:bg-neon/90 transition cta-pulse anim-bounce" style="animation-delay:0.2s" onclick="event.preventDefault();">
+      <svg class="w-5 h-5" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg> Start My Taxes Free </a>
+     <div class="mt-16 border-t border-white/5 pt-10 anim-fade" style="animation-delay:0.3s">
+      <div class="bg-card border border-white/5 rounded-2xl p-6 max-w-md mx-auto">
+       <h3 class="font-bold text-sm mb-3">Vote + Comment</h3>
+       <p class="text-white/40 font-mono text-xs mb-4">What feature should we build next?</p>
+       <div class="space-y-2" id="vote-widget"><button class="vote-btn w-full text-left bg-dark border border-white/10 rounded-xl px-4 py-3 text-sm font-mono flex justify-between items-center hover:border-neon/30 transition" data-votes="0"> <span>Crypto tax support</span> <span class="vote-count text-white/30 text-xs">0 votes</span> </button> <button class="vote-btn w-full text-left bg-dark border border-white/10 rounded-xl px-4 py-3 text-sm font-mono flex justify-between items-center hover:border-neon/30 transition" data-votes="0"> <span>State-by-state guide</span> <span class="vote-count text-white/30 text-xs">0 votes</span> </button> <button class="vote-btn w-full text-left bg-dark border border-white/10 rounded-xl px-4 py-3 text-sm font-mono flex justify-between items-center hover:border-neon/30 transition" data-votes="0"> <span>AI receipt scanner</span> <span class="vote-count text-white/30 text-xs">0 votes</span> </button>
+       </div>
+       <div class="mt-4 flex gap-2"><input type="text" id="comment-input" placeholder="Leave a comment..." class="flex-1 bg-dark border border-white/10 rounded-xl px-4 py-2 text-sm font-mono text-white placeholder-white/20 focus:outline-none focus:border-neon/30"> <button id="comment-submit" class="bg-neon/10 text-neon border border-neon/20 rounded-xl px-4 py-2 text-sm font-mono font-bold hover:bg-neon/20 transition">Post</button>
+       </div>
+       <div id="comments-list" class="mt-3 space-y-2"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+     <div class="font-mono text-sm">
+      <span class="text-neon">Tax</span><span class="text-white">Flow</span> <span class="text-white/20">Gen Z</span>
+     </div>
+     <div class="text-white/20 font-mono text-xs">
+      Taxes, but actually understandable.
+     </div>
+    </div>
+   </footer>
+  </main>
+  <script>
+const defaultConfig = {
+  hero_title: 'Taxes, but actually understandable.',
+  hero_subtitle: 'Built for creators, freelancers, and first-time earners.',
+  pricing_starter_price: '$29',
+  pricing_pro_price: '$59',
+  pricing_max_price: '$99',
+  bottom_cta_text: 'File smart. Keep more.',
+  background_color: '#0A0A0A',
+  surface_color: '#151515',
+  text_color: '#FFFFFF',
+  primary_action_color: '#39FF14',
+  secondary_action_color: '#B026FF',
+  font_family: 'Syne',
+  font_size: 16
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+
+  document.getElementById('hero-title').textContent = c.hero_title;
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.getElementById('price-starter').textContent = c.pricing_starter_price;
+  document.getElementById('price-pro').textContent = c.pricing_pro_price;
+  document.getElementById('price-max').textContent = c.pricing_max_price;
+  document.getElementById('bottom-cta').textContent = c.bottom_cta_text;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+  document.getElementById('sticky-nav').style.backgroundColor = c.background_color + 'e6';
+
+  document.querySelectorAll('.bg-card, .bg-card\\/50').forEach(el => {
+    if (el.classList.contains('bg-card/50')) {
+      el.style.backgroundColor = c.surface_color + '80';
+    } else {
+      el.style.backgroundColor = c.surface_color;
+    }
+  });
+
+  // Font
+  const ff = c.font_family + ', Syne, sans-serif';
+  document.body.style.fontFamily = ff;
+
+  // Font size
+  const bs = c.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${bs * 3.5}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${bs * 2.5}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${bs * 1.25}px`);
+  document.querySelectorAll('p, li, span, a, button, input').forEach(el => {
+    if (!el.closest('h1') && !el.closest('h2') && !el.closest('h3')) {
+      // keep relative sizing from tailwind
+    }
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['pricing_starter_price', config.pricing_starter_price || defaultConfig.pricing_starter_price],
+      ['pricing_pro_price', config.pricing_pro_price || defaultConfig.pricing_pro_price],
+      ['pricing_max_price', config.pricing_max_price || defaultConfig.pricing_max_price],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ])
+  });
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.anim-fade, .anim-bounce, .anim-left, .anim-right').forEach(el => observer.observe(el));
+
+// Animated counters
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const duration = 2000;
+  const start = performance.now();
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(target * eased).toLocaleString();
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter-num').forEach(el => counterObserver.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-link').forEach(l => {
+  l.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Active nav
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+  });
+  navLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+
+// Vote widget
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    let v = parseInt(btn.dataset.votes) + 1;
+    btn.dataset.votes = v;
+    btn.querySelector('.vote-count').textContent = v + ' vote' + (v !== 1 ? 's' : '');
+    btn.style.borderColor = 'rgba(57,255,20,0.3)';
+    btn.style.background = 'rgba(57,255,20,0.05)';
+  });
+});
+
+// Comments
+document.getElementById('comment-submit').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const div = document.createElement('div');
+  div.className = 'bg-dark border border-white/5 rounded-xl px-4 py-2 text-xs font-mono text-white/60';
+  div.textContent = val;
+  document.getElementById('comments-list').appendChild(div);
+  input.value = '';
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6cd2a1fd27c5',t:'MTc3NTU3OTUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

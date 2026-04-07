@@ -1,1 +1,715 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a778cef8-da2f-47d3-9e00-3259198ccd84 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyRise Balloon Tours</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0B1120;
+  --surface: #14203A;
+  --text: #F0E6D3;
+  --primary: #E8976C;
+  --secondary: #6BA4C9;
+}
+
+.font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+.font-body { font-family: 'DM Sans', system-ui, sans-serif; }
+
+@keyframes float1 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-30px) translateX(8px); }
+  50% { transform: translateY(-15px) translateX(-5px); }
+  75% { transform: translateY(-40px) translateX(12px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-50px) translateX(-15px); }
+  66% { transform: translateY(-20px) translateX(10px); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-35px) translateX(-8px); }
+}
+@keyframes driftCloud {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateX(calc(100vw + 100%)); opacity: 0; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+@keyframes horizonGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.balloon-float-1 { animation: float1 18s ease-in-out infinite; }
+.balloon-float-2 { animation: float2 22s ease-in-out infinite; }
+.balloon-float-3 { animation: float3 15s ease-in-out infinite; }
+.cloud-drift { animation: driftCloud 60s linear infinite; }
+.cloud-drift-2 { animation: driftCloud 80s linear infinite; animation-delay: -30s; }
+.cloud-drift-3 { animation: driftCloud 70s linear infinite; animation-delay: -50s; }
+.fade-up { animation: fadeUp 1s ease-out forwards; }
+.fade-up-delay-1 { animation-delay: 0.2s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.4s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.6s; opacity: 0; }
+.star-pulse { animation: gentlePulse 3s ease-in-out infinite; }
+.horizon-glow { animation: horizonGlow 6s ease-in-out infinite; }
+
+.pricing-card {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 80px -20px rgba(232, 151, 108, 0.25);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: var(--primary); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #D4805A);
+  transition: all 0.4s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -10px rgba(232, 151, 108, 0.5);
+}
+
+.btn-outline {
+  border: 1px solid rgba(240, 230, 211, 0.3);
+  transition: all 0.4s ease;
+}
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.section-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+.section-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reaction-btn {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { transform: scale(1.1); box-shadow: 0 0 20px rgba(232, 151, 108, 0.3); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 3px; }
+
+.smooth-scroll { scroll-behavior: smooth; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sky: { deep: '#0B1120', mid: '#14203A', light: '#1C2D4F' },
+        dawn: { warm: '#E8976C', soft: '#D4805A', glow: '#F4B88A' },
+        cloud: { light: '#F0E6D3', muted: '#C4B9A8' },
+        azure: { main: '#6BA4C9', muted: '#4A7FA3' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background: var(--bg); color: var(--text);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto smooth-scroll font-body" style="background: var(--bg);">
+   <!-- Floating Stars BG -->
+   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
+    <div class="star-pulse absolute rounded-full" style="width:2px;height:2px;background:var(--text);top:8%;left:15%;animation-delay:0s;"></div>
+    <div class="star-pulse absolute rounded-full" style="width:3px;height:3px;background:var(--text);top:12%;left:45%;animation-delay:1s;"></div>
+    <div class="star-pulse absolute rounded-full" style="width:2px;height:2px;background:var(--text);top:5%;left:72%;animation-delay:2s;"></div>
+    <div class="star-pulse absolute rounded-full" style="width:2px;height:2px;background:var(--text);top:18%;left:88%;animation-delay:0.5s;"></div>
+    <div class="star-pulse absolute rounded-full" style="width:3px;height:3px;background:var(--text);top:25%;left:30%;animation-delay:1.5s;"></div>
+    <div class="star-pulse absolute rounded-full" style="width:2px;height:2px;background:var(--text);top:3%;left:60%;animation-delay:2.5s;"></div>
+   </div><!-- Drifting Clouds -->
+   <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:1;">
+    <svg class="cloud-drift absolute" style="top:15%;width:200px;height:60px;" viewbox="0 0 200 60" fill="none"><ellipse cx="100" cy="35" rx="80" ry="20" fill="rgba(240,230,211,0.08)" /><ellipse cx="70" cy="28" rx="50" ry="18" fill="rgba(240,230,211,0.05)" />
+    </svg>
+    <svg class="cloud-drift-2 absolute" style="top:35%;width:300px;height:80px;" viewbox="0 0 300 80" fill="none"><ellipse cx="150" cy="45" rx="120" ry="25" fill="rgba(240,230,211,0.06)" /><ellipse cx="100" cy="35" rx="70" ry="20" fill="rgba(240,230,211,0.04)" />
+    </svg>
+    <svg class="cloud-drift-3 absolute" style="top:60%;width:250px;height:70px;" viewbox="0 0 250 70" fill="none"><ellipse cx="125" cy="40" rx="100" ry="22" fill="rgba(240,230,211,0.05)" />
+    </svg>
+   </div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: transparent;">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <a href="#home" class="font-display text-xl font-semibold tracking-wide" style="color: var(--primary);"> <span class="inline-flex items-center gap-2">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none"><path d="M12 2C8.5 2 6 6 6 10c0 2.5 1.5 4 3 5l1 7h4l1-7c1.5-1 3-2.5 3-5 0-4-2.5-8-6-8z" fill="currentColor" opacity="0.8" /><path d="M9 22h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+       </svg><span id="nav-brand">SkyRise</span> </span> </a>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">Home</a> <a href="#experience" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">Experience</a> <a href="#routes" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">Routes</a> <a href="#moments" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">Moments</a> <a href="#pricing" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">Pricing</a> <a href="#faq" class="nav-link text-sm tracking-wider uppercase" style="color: var(--text); opacity: 0.7;">FAQ</a> <a href="#book" class="btn-primary px-5 py-2 rounded-full text-sm font-medium" style="color: #fff;">Book Flight</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color: var(--text);"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-6" style="background: var(--surface);">
+     <div class="flex flex-col gap-4 pt-2">
+      <a href="#home" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">Home</a> <a href="#experience" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">Experience</a> <a href="#routes" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">Routes</a> <a href="#moments" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">Moments</a> <a href="#pricing" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">Pricing</a> <a href="#faq" class="text-sm tracking-wider uppercase mobile-nav-link" style="color: var(--text); opacity: 0.7;">FAQ</a> <a href="#book" class="btn-primary px-5 py-2 rounded-full text-sm font-medium text-center" style="color: #fff;">Book Flight</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="min-height: 100%; z-index: 2;">
+    <!-- Horizon glow -->
+    <div class="absolute bottom-0 left-0 w-full horizon-glow" style="height: 40%; background: linear-gradient(to top, rgba(232,151,108,0.08), transparent);"></div><!-- Balloon SVGs -->
+    <svg class="balloon-float-1 absolute" style="top:12%;left:8%;opacity:0.25;" width="50" height="80" viewbox="0 0 50 80" fill="none">
+     <ellipse cx="25" cy="28" rx="20" ry="26" fill="var(--primary)" /> <rect x="20" y="54" width="10" height="14" rx="2" fill="var(--surface)" stroke="var(--primary)" stroke-width="0.5" /> <line x1="20" y1="54" x2="25" y2="45" stroke="var(--text)" stroke-width="0.5" opacity="0.5" /> <line x1="30" y1="54" x2="25" y2="45" stroke="var(--text)" stroke-width="0.5" opacity="0.5" />
+    </svg>
+    <svg class="balloon-float-2 absolute" style="top:20%;right:12%;opacity:0.18;" width="40" height="65" viewbox="0 0 40 65" fill="none">
+     <ellipse cx="20" cy="22" rx="16" ry="21" fill="var(--secondary)" /> <rect x="15" y="43" width="10" height="12" rx="2" fill="var(--surface)" stroke="var(--secondary)" stroke-width="0.5" /> <line x1="15" y1="43" x2="20" y2="36" stroke="var(--text)" stroke-width="0.5" opacity="0.4" /> <line x1="25" y1="43" x2="20" y2="36" stroke="var(--text)" stroke-width="0.5" opacity="0.4" />
+    </svg>
+    <svg class="balloon-float-3 absolute" style="top:35%;left:75%;opacity:0.12;" width="35" height="55" viewbox="0 0 35 55" fill="none">
+     <ellipse cx="17.5" cy="18" rx="14" ry="17" fill="var(--dawn-glow, #F4B88A)" /> <rect x="12" y="35" width="11" height="10" rx="2" fill="var(--surface)" />
+    </svg>
+    <div class="relative text-center px-6 max-w-4xl mx-auto">
+     <p class="font-body text-sm tracking-[0.35em] uppercase fade-up" style="color: var(--primary); opacity:0.8;">SkyRise Balloon Tours</p>
+     <h1 id="hero-title" class="font-display text-5xl sm:text-7xl lg:text-8xl font-light mt-6 fade-up fade-up-delay-1" style="line-height:1.05; color: var(--text);">The view changes everything.</h1>
+     <p id="hero-subtitle" class="font-body text-lg sm:text-xl mt-8 fade-up fade-up-delay-2" style="color: var(--cloud-muted, #C4B9A8); max-width: 520px; margin-left: auto; margin-right: auto;">Experience the sky in complete stillness.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 fade-up fade-up-delay-3">
+      <a href="#book" class="btn-primary px-8 py-3.5 rounded-full font-medium text-sm tracking-wider uppercase" style="color:#fff;">Book Flight</a> <a href="#experience" class="btn-outline px-8 py-3.5 rounded-full font-medium text-sm tracking-wider uppercase" style="color: var(--text);">View Experience</a>
+     </div><!-- Scroll indicator -->
+     <div class="mt-20 flex flex-col items-center gap-2" style="opacity:0.4;">
+      <span class="text-xs tracking-widest uppercase">Scroll</span> <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+     </div>
+    </div>
+   </section><!-- EXPERIENCE -->
+   <section id="experience" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-20">
+      <p class="text-sm tracking-[0.3em] uppercase font-body" style="color: var(--primary);">The Journey</p>
+      <h2 id="experience-heading" class="font-display text-4xl sm:text-6xl font-light mt-4" style="color: var(--text);">What the Flight Feels Like</h2>
+      <div class="w-16 h-px mx-auto mt-8" style="background: var(--primary); opacity: 0.5;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center p-8 rounded-2xl" style="background: rgba(20,32,58,0.6); border: 1px solid rgba(240,230,211,0.06);">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6" style="background: rgba(232,151,108,0.1);">
+        <i data-lucide="sunrise" style="width:28px;height:28px;color:var(--primary);"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium mb-3" style="color: var(--text);">Golden Lift-Off</h3>
+       <p class="font-body text-sm leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">Rise gently as the first light paints the horizon. Feel the earth release you into absolute silence.</p>
+      </div>
+      <div class="text-center p-8 rounded-2xl" style="background: rgba(20,32,58,0.6); border: 1px solid rgba(240,230,211,0.06);">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6" style="background: rgba(107,164,201,0.1);">
+        <i data-lucide="wind" style="width:28px;height:28px;color:var(--secondary);"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium mb-3" style="color: var(--text);">Floating Stillness</h3>
+       <p class="font-body text-sm leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">No engine, no turbulence — just the soft whisper of wind as the world unfolds beneath you.</p>
+      </div>
+      <div class="text-center p-8 rounded-2xl" style="background: rgba(20,32,58,0.6); border: 1px solid rgba(240,230,211,0.06);">
+       <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6" style="background: rgba(232,151,108,0.1);">
+        <i data-lucide="camera" style="width:28px;height:28px;color:var(--primary);"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium mb-3" style="color: var(--text);">Infinite Horizons</h3>
+       <p class="font-body text-sm leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">360° views that stretch beyond imagination. Every direction holds a new masterpiece.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ROUTES -->
+   <section id="routes" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-20">
+      <p class="text-sm tracking-[0.3em] uppercase font-body" style="color: var(--primary);">Destinations</p>
+      <h2 id="routes-heading" class="font-display text-4xl sm:text-6xl font-light mt-4" style="color: var(--text);">Scenic Routes</h2>
+      <div class="w-16 h-px mx-auto mt-8" style="background: var(--primary); opacity: 0.5;"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="group relative rounded-2xl overflow-hidden p-8 flex flex-col justify-end" style="min-height: 280px; background: linear-gradient(135deg, rgba(232,151,108,0.12), rgba(20,32,58,0.9)); border: 1px solid rgba(232,151,108,0.1);">
+       <svg class="absolute top-4 right-4" style="opacity:0.15;" width="80" height="80" viewbox="0 0 80 80" fill="none"><path d="M40 5C25 5 15 20 15 35c0 12 10 25 25 40 15-15 25-28 25-40C65 20 55 5 40 5z" fill="var(--primary)" />
+       </svg><span class="text-xs tracking-[0.25em] uppercase" style="color: var(--primary);">Route 01</span>
+       <h3 class="font-display text-3xl font-medium mt-2" style="color: var(--text);">Valley of Dawn</h3>
+       <p class="font-body text-sm mt-3 leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">Glide over misty valleys as the sun breaks through ancient peaks. A 90-minute journey through nature's cathedral.</p>
+       <div class="flex items-center gap-4 mt-4">
+        <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="clock" style="width:14px;height:14px;"></i> 90 min</span> <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 45 km</span>
+       </div>
+      </div>
+      <div class="group relative rounded-2xl overflow-hidden p-8 flex flex-col justify-end" style="min-height: 280px; background: linear-gradient(135deg, rgba(107,164,201,0.12), rgba(20,32,58,0.9)); border: 1px solid rgba(107,164,201,0.1);">
+       <svg class="absolute top-4 right-4" style="opacity:0.15;" width="80" height="80" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="30" fill="var(--secondary)" /><path d="M20 50 Q40 30 60 50" stroke="var(--bg)" stroke-width="2" fill="none" />
+       </svg><span class="text-xs tracking-[0.25em] uppercase" style="color: var(--secondary);">Route 02</span>
+       <h3 class="font-display text-3xl font-medium mt-2" style="color: var(--text);">Coastal Horizon</h3>
+       <p class="font-body text-sm mt-3 leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">Where the sky meets the sea. Float above dramatic coastlines and watch waves trace patterns in turquoise waters.</p>
+       <div class="flex items-center gap-4 mt-4">
+        <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="clock" style="width:14px;height:14px;"></i> 120 min</span> <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 60 km</span>
+       </div>
+      </div>
+      <div class="group relative rounded-2xl overflow-hidden p-8 flex flex-col justify-end md:col-span-2" style="min-height: 240px; background: linear-gradient(135deg, rgba(244,184,138,0.1), rgba(107,164,201,0.08), rgba(20,32,58,0.9)); border: 1px solid rgba(240,230,211,0.06);">
+       <span class="text-xs tracking-[0.25em] uppercase" style="color: var(--dawn-glow, #F4B88A);">Route 03 — Signature</span>
+       <h3 class="font-display text-3xl font-medium mt-2" style="color: var(--text);">The Grand Traverse</h3>
+       <p class="font-body text-sm mt-3 leading-relaxed max-w-xl" style="color: var(--cloud-muted, #C4B9A8);">Our signature 3-hour journey across valleys, rivers, and mountain ridges. Champagne breakfast served mid-air. The ultimate sky experience.</p>
+       <div class="flex items-center gap-4 mt-4">
+        <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="clock" style="width:14px;height:14px;"></i> 180 min</span> <span class="flex items-center gap-1 text-xs" style="color: var(--secondary);"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 95 km</span> <span class="flex items-center gap-1 text-xs" style="color: var(--primary);"><i data-lucide="star" style="width:14px;height:14px;"></i> Signature</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- MOMENTS -->
+   <section id="moments" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-20">
+      <p class="text-sm tracking-[0.3em] uppercase font-body" style="color: var(--primary);">Gallery</p>
+      <h2 class="font-display text-4xl sm:text-6xl font-light mt-4" style="color: var(--text);">Captured Moments</h2>
+      <div class="w-16 h-px mx-auto mt-8" style="background: var(--primary); opacity: 0.5;"></div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- Moment cards with Unsplash images -->
+      <div class="rounded-xl overflow-hidden aspect-square relative group"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&amp;h=400&amp;fit=crop" alt="First Light" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(180deg, #1a1a3e 0%, #E8976C 60%, #F4B88A 100%)'; this.alt='First Light';">
+       <div class="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/40 to-transparent"><span class="font-body text-xs tracking-wider uppercase" style="color:#fff; opacity:0.9;">First Light</span>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square relative group"><img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&amp;h=400&amp;fit=crop" alt="Above Clouds" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(160deg, #14203A 0%, #6BA4C9 50%, #F0E6D3 100%)'; this.alt='Above Clouds';">
+       <div class="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/40 to-transparent"><span class="font-body text-xs tracking-wider uppercase" style="color:#fff; opacity:0.9;">Above Clouds</span>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square relative group"><img src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?w=400&amp;h=400&amp;fit=crop" alt="Golden Hour" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(200deg, #0B1120 0%, #D4805A 70%, #F4B88A 100%)'; this.alt='Golden Hour';">
+       <div class="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/40 to-transparent"><span class="font-body text-xs tracking-wider uppercase" style="color:#fff; opacity:0.9;">Golden Hour</span>
+       </div>
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square relative group"><img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&amp;h=400&amp;fit=crop" alt="Horizon Line" loading="lazy" class="w-full h-full object-cover" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(170deg, #14203A 0%, #4A7FA3 40%, #E8976C 100%)'; this.alt='Horizon Line';">
+       <div class="absolute inset-0 flex items-end p-4 bg-gradient-to-t from-black/40 to-transparent"><span class="font-body text-xs tracking-wider uppercase" style="color:#fff; opacity:0.9;">Horizon Line</span>
+       </div>
+      </div>
+     </div><!-- Testimonial -->
+     <div class="mt-16 text-center max-w-2xl mx-auto">
+      <svg width="32" height="24" viewbox="0 0 32 24" fill="none" class="mx-auto mb-6" style="opacity:0.3;"><path d="M0 24V14.4C0 6.4 5.3 1.1 13.3 0l1.3 3.2C9.1 4.8 6.4 8 6.4 12H12v12H0zm18.7 0V14.4C18.7 6.4 24 1.1 32 0l1.3 3.2c-5.5 1.6-8.2 4.8-8.2 8.8H30.7v12H18.7z" fill="var(--primary)" />
+      </svg>
+      <p class="font-display text-xl sm:text-2xl italic font-light leading-relaxed" style="color: var(--text);">"Time stopped. The world below became a painting, and we were floating inside a dream we didn't want to wake from."</p>
+      <p class="mt-6 text-sm font-body" style="color: var(--primary);">— Elena &amp; Marco, Valley of Dawn</p>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-20">
+      <p class="text-sm tracking-[0.3em] uppercase font-body" style="color: var(--primary);">Packages</p>
+      <h2 class="font-display text-4xl sm:text-6xl font-light mt-4" style="color: var(--text);">Choose Your Sky</h2>
+      <div class="w-16 h-px mx-auto mt-8" style="background: var(--primary); opacity: 0.5;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <!-- Classic -->
+      <div class="pricing-card rounded-2xl p-8 text-center" style="background: rgba(20,32,58,0.7); border: 1px solid rgba(240,230,211,0.08);">
+       <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-4" style="background: rgba(107,164,201,0.1);">
+        <i data-lucide="cloud" style="width:22px;height:22px;color:var(--secondary);"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium" style="color: var(--text);">Classic</h3>
+       <p class="text-sm mt-2 mb-6" style="color: var(--cloud-muted, #C4B9A8);">Shared flight experience</p>
+       <p class="font-display text-5xl font-light" style="color: var(--text);">$249</p>
+       <p class="text-xs mt-1 mb-8" style="color: var(--cloud-muted, #C4B9A8);">per person</p>
+       <ul class="text-left space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary);flex-shrink:0;"></i>60-minute shared flight</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary);flex-shrink:0;"></i>Up to 8 passengers</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary);flex-shrink:0;"></i>Post-flight toast</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary);flex-shrink:0;"></i>Digital photo pack</li>
+       </ul><a href="#book" class="btn-outline block w-full py-3 rounded-full text-sm font-medium tracking-wider uppercase" style="color: var(--text);">Select Classic</a>
+      </div><!-- Private (Featured) -->
+      <div class="pricing-card rounded-2xl p-8 text-center relative" style="background: linear-gradient(180deg, rgba(232,151,108,0.12), rgba(20,32,58,0.8)); border: 1px solid rgba(232,151,108,0.25); box-shadow: 0 0 60px -20px rgba(232,151,108,0.15);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-medium tracking-wider uppercase" style="background: var(--primary); color: #fff;">
+        Most Popular
+       </div>
+       <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-4 mt-2" style="background: rgba(232,151,108,0.15);">
+        <i data-lucide="sparkles" style="width:22px;height:22px;color:var(--primary);"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium" style="color: var(--text);">Private</h3>
+       <p class="text-sm mt-2 mb-6" style="color: var(--cloud-muted, #C4B9A8);">Exclusive ride for your group</p>
+       <p class="font-display text-5xl font-light" style="color: var(--primary);">$599</p>
+       <p class="text-xs mt-1 mb-8" style="color: var(--cloud-muted, #C4B9A8);">per group (up to 4)</p>
+       <ul class="text-left space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i>90-minute private flight</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i>Exclusive basket — your group only</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i>Champagne celebration</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i>Professional photo + video</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i>Route customization</li>
+       </ul><a href="#book" class="btn-primary block w-full py-3 rounded-full text-sm font-medium tracking-wider uppercase" style="color: #fff;">Select Private</a>
+      </div><!-- Premium -->
+      <div class="pricing-card rounded-2xl p-8 text-center" style="background: rgba(20,32,58,0.7); border: 1px solid rgba(240,230,211,0.08);">
+       <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-4" style="background: rgba(244,184,138,0.1);">
+        <i data-lucide="crown" style="width:22px;height:22px;color:#F4B88A;"></i>
+       </div>
+       <h3 class="font-display text-2xl font-medium" style="color: var(--text);">Premium</h3>
+       <p class="text-sm mt-2 mb-6" style="color: var(--cloud-muted, #C4B9A8);">Luxury sky experience</p>
+       <p class="font-display text-5xl font-light" style="color: var(--text);">$1,299</p>
+       <p class="text-xs mt-1 mb-8" style="color: var(--cloud-muted, #C4B9A8);">per couple</p>
+       <ul class="text-left space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>3-hour Grand Traverse</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>Private balloon + pilot</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>Gourmet breakfast in the sky</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>Cinematic drone footage</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>Luxury ground transport</li>
+        <li class="flex items-center gap-3 text-sm" style="color: var(--cloud-muted, #C4B9A8);"><i data-lucide="check" style="width:16px;height:16px;color:#F4B88A;flex-shrink:0;"></i>Keepsake flight certificate</li>
+       </ul><a href="#book" class="btn-outline block w-full py-3 rounded-full text-sm font-medium tracking-wider uppercase" style="color: var(--text);">Select Premium</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm tracking-[0.3em] uppercase font-body" style="color: var(--primary);">Questions</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4" style="color: var(--text);">Before You Fly</h2>
+      <div class="w-16 h-px mx-auto mt-8" style="background: var(--primary); opacity: 0.5;"></div>
+     </div>
+     <div id="faq-list" class="space-y-4">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="book" class="relative w-full py-32 px-6 section-reveal" style="z-index:2;">
+    <div class="max-w-4xl mx-auto text-center">
+     <!-- Decorative balloon -->
+     <svg class="balloon-float-1 mx-auto mb-8" width="60" height="95" viewbox="0 0 60 95" fill="none" style="opacity:0.5;">
+      <ellipse cx="30" cy="33" rx="24" ry="30" fill="var(--primary)" /> <rect x="23" y="63" width="14" height="16" rx="3" fill="var(--surface)" stroke="var(--primary)" stroke-width="0.5" /> <line x1="23" y1="63" x2="30" y2="54" stroke="var(--text)" stroke-width="0.5" opacity="0.4" /> <line x1="37" y1="63" x2="30" y2="54" stroke="var(--text)" stroke-width="0.5" opacity="0.4" />
+     </svg>
+     <h2 id="bottom-cta-text" class="font-display text-4xl sm:text-6xl lg:text-7xl font-light" style="color: var(--text);">Rise above the ordinary.</h2>
+     <p class="font-body text-lg mt-6" style="color: var(--cloud-muted, #C4B9A8);">Your sky story begins with a single step — upward.</p><a href="#home" class="btn-primary inline-block px-10 py-4 rounded-full font-medium text-sm tracking-wider uppercase mt-10" style="color:#fff;">Book Your Flight</a> <!-- VOTE + COMMENT MODULE -->
+     <div class="mt-24 pt-16" style="border-top: 1px solid rgba(240,230,211,0.08);">
+      <p class="text-sm tracking-[0.3em] uppercase font-body mb-2" style="color: var(--primary);">Community</p>
+      <h3 class="font-display text-3xl font-light mb-8" style="color: var(--text);">Rate This Experience</h3><!-- Reactions -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-8" id="reaction-container">
+      </div>
+      <p id="reaction-summary" class="text-sm mb-10" style="color: var(--cloud-muted, #C4B9A8);"></p><!-- Price Vote -->
+      <div class="mb-10">
+       <p class="text-sm font-body mb-4" style="color: var(--cloud-muted, #C4B9A8);">What would you pay for this experience?</p>
+       <div class="flex flex-wrap items-center justify-center gap-2" id="price-container">
+       </div>
+       <p id="price-summary" class="text-sm mt-4" style="color: var(--cloud-muted, #C4B9A8);"></p>
+      </div><!-- Comment -->
+      <div class="max-w-lg mx-auto">
+       <form id="comment-form" class="flex flex-col gap-3">
+        <textarea id="comment-input" rows="3" placeholder="Share your thoughts about this experience..." class="w-full rounded-xl px-5 py-4 text-sm font-body resize-none focus:outline-none" style="background: var(--surface); color: var(--text); border: 1px solid rgba(240,230,211,0.1);"></textarea> <button type="submit" id="comment-submit-btn" class="btn-primary self-end px-6 py-2.5 rounded-full text-sm font-medium" style="color:#fff;">Post Comment</button>
+       </form>
+       <div id="comments-list" class="mt-8 space-y-4 text-left"></div>
+      </div><!-- Embed note -->
+      <p class="mt-12 text-xs tracking-wider uppercase" style="color: var(--cloud-muted, #C4B9A8); opacity:0.4;">Embed Widget Here</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="relative w-full py-12 px-6 text-center" style="z-index:2; border-top: 1px solid rgba(240,230,211,0.05);">
+    <p class="font-display text-lg" style="color: var(--primary);">SkyRise Balloon Tours</p>
+    <p class="text-xs mt-2" style="color: var(--cloud-muted, #C4B9A8); opacity:0.5;">See the world from a different level.</p>
+   </footer>
+  </div>
+  <script>
+// === CONFIG & SDK ===
+const defaultConfig = {
+  background_color: '#0B1120',
+  surface_color: '#14203A',
+  text_color: '#F0E6D3',
+  primary_color: '#E8976C',
+  secondary_color: '#6BA4C9',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_title: 'The view changes everything.',
+  hero_subtitle: 'Experience the sky in complete stillness.',
+  experience_title: 'What the Flight Feels Like',
+  routes_title: 'Scenic Routes',
+  bottom_cta_text: 'Rise above the ordinary.'
+};
+
+// FAQ data
+const faqData = [
+  { q: 'How long does a typical flight last?', a: 'Our Classic flights last approximately 60 minutes. Private flights are 90 minutes, and our Premium Grand Traverse is a full 3-hour experience.' },
+  { q: 'What happens if the weather is bad?', a: 'Safety is our priority. If conditions are unfavorable, we\'ll reschedule your flight at no extra cost. You\'ll receive 24-hour advance notice.' },
+  { q: 'Is it safe for children?', a: 'Children aged 6+ are welcome on our Classic and Private flights. The basket is chest-height for adults with no open edges.' },
+  { q: 'What should I wear?', a: 'Dress in layers. Mornings can be cool at altitude. Flat, closed-toe shoes are required. We provide blankets on Premium flights.' },
+  { q: 'Can I bring a camera?', a: 'Absolutely! We encourage it. Premium guests also receive professional photography and drone footage included.' }
+];
+
+// Reactions & prices
+const reactions = [
+  { emoji: '🎈', label: 'Love it' },
+  { emoji: '😍', label: 'Amazing' },
+  { emoji: '🌅', label: 'Beautiful' },
+  { emoji: '✨', label: 'Magical' },
+  { emoji: '🔥', label: 'Must-do' },
+  { emoji: '💯', label: 'Perfect' }
+];
+const priceOptions = ['$49','$99','$149','$199','$249','$349','$499','$599','$999','$1,299'];
+
+let allRecords = [];
+let currentRecordCount = 0;
+
+// Build FAQ
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  faqData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'rounded-xl overflow-hidden';
+    div.style.cssText = 'background: rgba(20,32,58,0.5); border: 1px solid rgba(240,230,211,0.06);';
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left faq-toggle" data-index="${i}">
+        <span class="font-display text-lg" style="color: var(--text);">${item.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;color:var(--primary);flex-shrink:0;transition:transform 0.3s;"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm font-body leading-relaxed" style="color: var(--cloud-muted, #C4B9A8);">${item.a}</p>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+// Build reactions
+function buildReactions() {
+  const container = document.getElementById('reaction-container');
+  reactions.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn flex flex-col items-center gap-1 px-4 py-3 rounded-xl';
+    btn.style.cssText = 'background: rgba(20,32,58,0.7); border: 1px solid rgba(240,230,211,0.08); min-width: 70px;';
+    btn.dataset.emoji = r.emoji;
+    btn.innerHTML = `<span class="text-2xl">${r.emoji}</span><span class="text-xs font-body" style="color: var(--cloud-muted, #C4B9A8);">${r.label}</span><span class="reaction-count text-xs font-medium" style="color: var(--primary);">0</span>`;
+    btn.addEventListener('click', () => handleReaction(r.emoji));
+    container.appendChild(btn);
+  });
+}
+
+// Build prices
+function buildPrices() {
+  const container = document.getElementById('price-container');
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn px-4 py-2 rounded-full text-sm font-body';
+    btn.style.cssText = 'background: rgba(20,32,58,0.7); border: 1px solid rgba(240,230,211,0.08); color: var(--text);';
+    btn.dataset.price = p;
+    btn.innerHTML = `${p} <span class="price-count text-xs ml-1" style="color: var(--primary);">0</span>`;
+    btn.addEventListener('click', () => handlePriceVote(p));
+    container.appendChild(btn);
+  });
+}
+
+async function handleReaction(emoji) {
+  if (currentRecordCount >= 999) { showInlineMsg('Limit reached'); return; }
+  const btn = document.querySelector(`.reaction-btn[data-emoji="${emoji}"]`);
+  if (btn) { btn.classList.add('selected'); btn.style.borderColor = 'var(--primary)'; }
+  const result = await window.dataSdk.create({ type: 'reaction', emoji: emoji, price: '', comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showInlineMsg('Could not save reaction');
+}
+
+async function handlePriceVote(price) {
+  if (currentRecordCount >= 999) { showInlineMsg('Limit reached'); return; }
+  const btn = document.querySelector(`.reaction-btn[data-price="${price}"]`);
+  if (btn) { btn.classList.add('selected'); btn.style.borderColor = 'var(--primary)'; }
+  const result = await window.dataSdk.create({ type: 'price', emoji: '', price: price, comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showInlineMsg('Could not save vote');
+}
+
+function showInlineMsg(msg) {
+  const el = document.getElementById('reaction-summary');
+  el.textContent = msg;
+  setTimeout(() => updateSummaries(), 2000);
+}
+
+function updateSummaries() {
+  // Reaction counts
+  const reactionCounts = {};
+  reactions.forEach(r => reactionCounts[r.emoji] = 0);
+  allRecords.filter(r => r.type === 'reaction').forEach(r => { if (reactionCounts[r.emoji] !== undefined) reactionCounts[r.emoji]++; });
+  document.querySelectorAll('#reaction-container .reaction-btn').forEach(btn => {
+    const e = btn.dataset.emoji;
+    const countEl = btn.querySelector('.reaction-count');
+    if (countEl && reactionCounts[e] !== undefined) countEl.textContent = reactionCounts[e];
+  });
+  const totalReactions = allRecords.filter(r => r.type === 'reaction').length;
+  document.getElementById('reaction-summary').textContent = totalReactions > 0 ? `${totalReactions} reaction${totalReactions > 1 ? 's' : ''}` : '';
+
+  // Price counts
+  const priceCounts = {};
+  priceOptions.forEach(p => priceCounts[p] = 0);
+  allRecords.filter(r => r.type === 'price').forEach(r => { if (priceCounts[r.price] !== undefined) priceCounts[r.price]++; });
+  document.querySelectorAll('#price-container .reaction-btn').forEach(btn => {
+    const p = btn.dataset.price;
+    const countEl = btn.querySelector('.price-count');
+    if (countEl && priceCounts[p] !== undefined) countEl.textContent = priceCounts[p];
+  });
+  const totalPrices = allRecords.filter(r => r.type === 'price').length;
+  document.getElementById('price-summary').textContent = totalPrices > 0 ? `${totalPrices} vote${totalPrices > 1 ? 's' : ''}` : '';
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allRecords.filter(r => r.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'rounded-xl p-4';
+      div.style.cssText = 'background: rgba(20,32,58,0.5); border: 1px solid rgba(240,230,211,0.06);';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p class="text-sm font-body leading-relaxed" style="color: var(--text);">${escapeHTML(c.comment)}</p><p class="text-xs mt-2" style="color: var(--cloud-muted, #C4B9A8); opacity:0.5;">${timeStr}</p>`;
+      list.prepend(div);
+    }
+  });
+
+  existing.forEach(el => el.remove());
+}
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Data SDK handler
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    currentRecordCount = data.length;
+    updateSummaries();
+    renderComments();
+  }
+};
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { showInlineMsg('Limit reached'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.textContent = 'Posting...';
+  const result = await window.dataSdk.create({ type: 'comment', emoji: '', price: '', comment: text, timestamp: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post Comment';
+  if (result.isOk) { input.value = ''; } else { showInlineMsg('Could not post comment'); }
+});
+
+// Nav scroll effect
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  if (wrapper.scrollTop > 80) {
+    nav.style.background = 'rgba(11,17,32,0.95)';
+    nav.style.backdropFilter = 'blur(12px)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+  }
+
+  // Section reveals
+  document.querySelectorAll('.section-reveal').forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) s.classList.add('visible');
+  });
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(l => {
+  l.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// FAQ toggles
+document.addEventListener('click', (e) => {
+  const toggle = e.target.closest('.faq-toggle');
+  if (!toggle) return;
+  const answer = toggle.nextElementSibling;
+  const icon = toggle.querySelector('i');
+  answer.classList.toggle('hidden');
+  icon.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+});
+
+// Element SDK
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseFontStack = 'Georgia, serif';
+  const bodyFontStack = 'system-ui, sans-serif';
+
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = `${font}, ${baseFontStack}`);
+
+  const baseSize = c.font_size || defaultConfig.font_size;
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) { heroTitle.textContent = c.hero_title || defaultConfig.hero_title; }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) { heroSub.textContent = c.hero_subtitle || defaultConfig.hero_subtitle; }
+  const expH = document.getElementById('experience-heading');
+  if (expH) { expH.textContent = c.experience_title || defaultConfig.experience_title; }
+  const routesH = document.getElementById('routes-heading');
+  if (routesH) { routesH.textContent = c.routes_title || defaultConfig.routes_title; }
+  const bottomCta = document.getElementById('bottom-cta-text');
+  if (bottomCta) { bottomCta.textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text; }
+
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--primary', c.primary_color);
+  document.documentElement.style.setProperty('--secondary', c.secondary_color);
+  document.getElementById('app-wrapper').style.background = c.background_color;
+  document.body.style.color = c.text_color;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['experience_title', config.experience_title || defaultConfig.experience_title],
+    ['routes_title', config.routes_title || defaultConfig.routes_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Init
+buildFAQ();
+buildReactions();
+buildPrices();
+lucide.createIcons();
+
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a651aa6e727c5',t:'MTc3NTU3OTE5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

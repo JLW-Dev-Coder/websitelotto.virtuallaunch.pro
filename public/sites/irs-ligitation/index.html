@@ -1,1 +1,979 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a424f4ef-534e-4fff-80ef-cd9581a554f3 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourtPath Tax Litigation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Georgia', serif;
+      background: #0f1419;
+      color: #e8eaed;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #0f1419 0%, #1a1f28 50%, #0f1419 100%);
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 20, 25, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 1rem 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #e8eaed;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #d4af37;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #0f1419 0%, #1a1f28 50%, #0f1419 100%);
+      padding: 2rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(212, 175, 55, 0.05) 49px, rgba(212, 175, 55, 0.05) 50px),
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(212, 175, 55, 0.05) 49px, rgba(212, 175, 55, 0.05) 50px);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-content h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #d4af37;
+      margin-bottom: 1rem;
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+
+    .hero-content p {
+      font-size: 1.5rem;
+      color: #b0b3b8;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid #d4af37;
+      background: transparent;
+      color: #d4af37;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: #d4af37;
+      z-index: -1;
+      transition: left 0.4s ease;
+    }
+
+    .cta-btn:hover {
+      color: #0f1419;
+    }
+
+    .cta-btn:hover::before {
+      left: 0;
+    }
+
+    .cta-btn-primary {
+      background: #d4af37;
+      color: #0f1419;
+    }
+
+    .cta-btn-primary::before {
+      background: transparent;
+    }
+
+    .cta-btn-primary:hover {
+      color: #d4af37;
+      background: transparent;
+    }
+
+    /* Sections */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    section h2 {
+      font-size: 3rem;
+      color: #d4af37;
+      margin-bottom: 3rem;
+      text-align: center;
+      letter-spacing: 2px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    /* Cases Grid */
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .case-card {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 2rem;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(212, 175, 55, 0.1);
+      transition: left 0.4s ease;
+      z-index: -1;
+    }
+
+    .case-card:hover::before {
+      left: 0;
+    }
+
+    .case-card:hover {
+      border-color: #d4af37;
+      transform: translateY(-4px);
+    }
+
+    .case-card h3 {
+      color: #d4af37;
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .case-card p {
+      color: #b0b3b8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Strategy Cards */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .strategy-card {
+      background: rgba(26, 31, 40, 0.6);
+      border-left: 4px solid #d4af37;
+      padding: 2rem;
+      animation: slideRight 0.7s ease-out;
+    }
+
+    .strategy-card h3 {
+      color: #d4af37;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .strategy-card p {
+      color: #b0b3b8;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .strategy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, #d4af37, transparent);
+    }
+
+    .timeline-item {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .timeline-item:nth-child(odd) {
+      text-align: right;
+      padding-right: 52%;
+    }
+
+    .timeline-item:nth-child(even) {
+      text-align: left;
+      padding-left: 52%;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 12px;
+      height: 12px;
+      background: #d4af37;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    .timeline-content {
+      background: rgba(26, 31, 40, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 1.5rem;
+      animation: fadeInScale 0.6s ease-out;
+    }
+
+    .timeline-content h4 {
+      color: #d4af37;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .timeline-content p {
+      color: #b0b3b8;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 0;
+      }
+
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
+        text-align: left;
+        padding-left: 40px;
+        padding-right: 0;
+      }
+
+      .timeline-dot {
+        left: 0;
+      }
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: rgba(26, 31, 40, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    .faq-question {
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    .faq-question h3 {
+      color: #d4af37;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .faq-toggle {
+      color: #d4af37;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-answer p {
+      padding: 0 1.5rem 1.5rem;
+      color: #b0b3b8;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    /* Bottom CTA Section */
+    .bottom-cta-section {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 4rem 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .bottom-cta-section h3 {
+      font-size: 2rem;
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .bottom-cta-section .cta-btn {
+      margin: 0 auto;
+    }
+
+    /* Vote + Comment Widget */
+    .vote-comment-widget {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      background: rgba(26, 31, 40, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .widget-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .widget-header h3 {
+      color: #d4af37;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .widget-header p {
+      color: #b0b3b8;
+      font-size: 0.95rem;
+    }
+
+    .reactions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .reaction-btn {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .reaction-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: #d4af37;
+    }
+
+    .reaction-btn.active {
+      background: #d4af37;
+      color: #0f1419;
+    }
+
+    .comment-box {
+      margin-bottom: 1.5rem;
+    }
+
+    .comment-box textarea {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(224, 224, 224, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #e8eaed;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 100px;
+      transition: border 0.3s ease;
+    }
+
+    .comment-box textarea:focus {
+      outline: none;
+      border-color: #d4af37;
+      background: rgba(224, 224, 224, 0.08);
+    }
+
+    .comment-box textarea::placeholder {
+      color: #666;
+    }
+
+    .price-tier-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-tier {
+      padding: 0.75rem;
+      text-align: center;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .price-tier:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: #d4af37;
+    }
+
+    .price-tier.selected {
+      background: #d4af37;
+      color: #0f1419;
+      border-color: #d4af37;
+    }
+
+    .submit-comment {
+      width: 100%;
+      padding: 1rem;
+      background: transparent;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-comment::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: #d4af37;
+      z-index: -1;
+      transition: left 0.3s ease;
+    }
+
+    .submit-comment:hover {
+      color: #0f1419;
+    }
+
+    .submit-comment:hover::before {
+      left: 0;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideRight {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper">
+   <!-- Navigation -->
+   <nav>
+    <ul>
+     <li><a href="#home">Home</a></li>
+     <li><a href="#cases">Cases</a></li>
+     <li><a href="#strategy">Strategy</a></li>
+     <li><a href="#timeline">Timeline</a></li>
+     <li><a href="#faq">FAQ</a></li>
+     <li><a href="#start-case">Start Case</a></li>
+    </ul>
+   </nav><!-- Hero Section -->
+   <section id="home" class="hero">
+    <div class="hero-content">
+     <h1 id="hero-heading">When the IRS won't settle, we litigate.</h1>
+     <p id="hero-subheading">Tax Court and federal litigation handled with precision.</p>
+     <div class="hero-cta">
+      <button class="cta-btn cta-btn-primary" onclick="document.getElementById('start-case').scrollIntoView({ behavior: 'smooth' })">Start Case</button> <button class="cta-btn" onclick="document.getElementById('strategy').scrollIntoView({ behavior: 'smooth' })">View Strategy</button>
+     </div>
+    </div>
+   </section><!-- Cases Section -->
+   <section id="cases">
+    <h2 id="cases-title">Types of Disputes</h2>
+    <div class="cases-grid">
+     <div class="case-card">
+      <h3>Transfer Pricing</h3>
+      <p>Complex intercompany transaction disputes requiring advanced economic analysis and comparable data.</p>
+     </div>
+     <div class="case-card">
+      <h3>Valuation Challenges</h3>
+      <p>Asset and entity valuation disputes in acquisition contexts, requiring expert testimony and forensic analysis.</p>
+     </div>
+     <div class="case-card">
+      <h3>Tax Shelter Litigation</h3>
+      <p>Defense against IRS challenges to tax-efficient strategies across multiple jurisdictions.</p>
+     </div>
+     <div class="case-card">
+      <h3>Reasonable Compensation</h3>
+      <p>S-corporation and pass-through entity disputes regarding reasonable salary allocations.</p>
+     </div>
+     <div class="case-card">
+      <h3>Business Deduction Disputes</h3>
+      <p>Contested depreciation, R&amp;D credits, and ordinary business expense determinations.</p>
+     </div>
+     <div class="case-card">
+      <h3>Statute &amp; Procedural</h3>
+      <p>Jurisdictional and procedural challenges, limitations periods, and assessment validity.</p>
+     </div>
+    </div>
+   </section><!-- Strategy Section -->
+   <section id="strategy">
+    <h2 id="strategy-title">Our Litigation Strategy</h2>
+    <div class="strategy-grid">
+     <div class="strategy-card">
+      <h3>Pre-Litigation Assessment</h3>
+      <p>We conduct a thorough evaluation of your position, IRS arguments, and settlement potential. This determines whether Tax Court, District Court, or Claims Court is optimal for your case.</p>
+     </div>
+     <div class="strategy-card">
+      <h3>Expert Coordination</h3>
+      <p>Our team coordinates with valuation specialists, economists, and technical experts to build compelling evidence and testimony strategies.</p>
+     </div>
+     <div class="strategy-card">
+      <h3>Discovery &amp; Evidence</h3>
+      <p>Strategic document collection, witness preparation, and deposition strategy to maximize your case strength at trial or settlement.</p>
+     </div>
+     <div class="strategy-card">
+      <h3>Trial Readiness</h3>
+      <p>From motions practice to courtroom presentation, we prepare every element to ensure your case is compelling and professionally executed.</p>
+     </div>
+    </div>
+   </section><!-- Timeline Section -->
+   <section id="timeline">
+    <h2 id="timeline-title">From Filing to Resolution</h2>
+    <div class="timeline">
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Assessment &amp; Notice</h4>
+       <p>IRS issues Statutory Notice of Deficiency. 90-day window opens for Tax Court filing.</p>
+      </div>
+     </div>
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Petition Filed</h4>
+       <p>Formal petition filed in Tax Court, District Court, or Claims Court depending on strategy.</p>
+      </div>
+     </div>
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Discovery Phase</h4>
+       <p>Exchange of documents, expert reports, and deposition of key witnesses (6-9 months).</p>
+      </div>
+     </div>
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Motions &amp; Settlement</h4>
+       <p>Summary judgment motions, settlement conferences, and mediation opportunities.</p>
+      </div>
+     </div>
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Trial Preparation</h4>
+       <p>Final witness prep, trial exhibits, and opening statement strategy finalized.</p>
+      </div>
+     </div>
+     <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+       <h4>Trial &amp; Resolution</h4>
+       <p>Courtroom argument, judicial opinion issued, post-trial motions if necessary.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq">
+    <h2 id="faq-title">Frequently Asked Questions</h2>
+    <div class="faq-item active">
+     <div class="faq-question">
+      <h3>When should I file in Tax Court vs. District Court?</h3><span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      <p>Tax Court is ideal for disputing assessments before payment. District Court requires payment first but offers jury trial options and may be better for certain factual disputes. We assess your specific situation to recommend the optimal forum.</p>
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      <h3>What are my chances in court?</h3><span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      <p>Litigation outcomes depend on facts, law, judge, and expert evidence. We provide candid assessments after evaluating IRS arguments, comparable cases, and your position strength. Settlement is often the optimal path.</p>
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      <h3>How long does tax litigation take?</h3><span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      <p>Tax Court cases typically take 2-4 years from petition to resolution. District Court cases may take 3-5 years. Complex cases with multiple issues or appeals can extend timelines significantly.</p>
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      <h3>Can I settle after litigation begins?</h3><span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      <p>Yes. Settlement is possible at any stage—pre-trial, post-discovery, even post-trial before appeals. As litigation progresses and positions clarify, settlement often becomes more attractive to both parties.</p>
+     </div>
+    </div>
+    <div class="faq-item">
+     <div class="faq-question">
+      <h3>What if I disagree with the court decision?</h3><span class="faq-toggle">+</span>
+     </div>
+     <div class="faq-answer">
+      <p>Appeals are available to the Circuit Court of Appeals, and in rare cases, to the Supreme Court. We evaluate appealability and appeal strategy after the trial decision. Most cases are not appealed due to cost and likelihood of reversal.</p>
+     </div>
+    </div>
+   </section><!-- Bottom CTA Section -->
+   <section class="bottom-cta-section" id="start-case">
+    <h3 id="bottom-cta-text">Prepare your case the right way.</h3><button class="cta-btn">Schedule Consultation</button>
+   </section><!-- Vote + Comment Widget -->
+   <section style="padding: 2rem;">
+    <div class="vote-comment-widget">
+     <div class="widget-header">
+      <h3>Embed Widget Here</h3>
+      <p>Vote and share feedback on this litigation strategy</p>
+     </div><!-- Reactions -->
+     <div class="reactions" id="reactions-container">
+      <button class="reaction-btn" data-reaction="helpful">👍 Helpful</button> <button class="reaction-btn" data-reaction="insightful">💡 Insightful</button> <button class="reaction-btn" data-reaction="thorough">✓ Thorough</button> <button class="reaction-btn" data-reaction="professional">⭐ Professional</button> <button class="reaction-btn" data-reaction="trust">🔒 Trust</button>
+     </div><!-- Price Tier Selector -->
+     <div class="price-tier-selector" id="price-tiers">
+      <div class="price-tier" data-price="1">
+       $2.5K
+      </div>
+      <div class="price-tier" data-price="2">
+       $5K
+      </div>
+      <div class="price-tier" data-price="3">
+       $7.5K
+      </div>
+      <div class="price-tier" data-price="4">
+       $10K
+      </div>
+      <div class="price-tier" data-price="5">
+       $15K
+      </div>
+      <div class="price-tier" data-price="6">
+       $20K
+      </div>
+      <div class="price-tier" data-price="7">
+       $25K
+      </div>
+      <div class="price-tier" data-price="8">
+       $30K
+      </div>
+      <div class="price-tier" data-price="9">
+       $50K
+      </div>
+      <div class="price-tier" data-price="10">
+       $75K+
+      </div>
+     </div><!-- Comment Box -->
+     <div class="comment-box">
+      <textarea id="comment-input" placeholder="Share your thoughts on this litigation strategy..."></textarea>
+     </div><!-- Submit Button --> <button class="submit-comment" onclick="submitFeedback()">Submit Feedback</button> <!-- Display Section for Feedback -->
+     <div id="feedback-display" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(212, 175, 55, 0.2);"></div>
+    </div>
+   </section>
+  </div>
+  <script>
+    // Element SDK Initialization
+    const defaultConfig = {
+      hero_heading: "When the IRS won't settle, we litigate.",
+      hero_subheading: "Tax Court and federal litigation handled with precision.",
+      cases_title: "Types of Disputes",
+      strategy_title: "Our Litigation Strategy",
+      timeline_title: "From Filing to Resolution",
+      faq_title: "Frequently Asked Questions",
+      bottom_cta_text: "Prepare your case the right way."
+    };
+
+    let config = { ...defaultConfig };
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (newConfig) => {
+        config = newConfig;
+        document.getElementById('hero-heading').textContent = config.hero_heading || defaultConfig.hero_heading;
+        document.getElementById('hero-subheading').textContent = config.hero_subheading || defaultConfig.hero_subheading;
+        document.getElementById('cases-title').textContent = config.cases_title || defaultConfig.cases_title;
+        document.getElementById('strategy-title').textContent = config.strategy_title || defaultConfig.strategy_title;
+        document.getElementById('timeline-title').textContent = config.timeline_title || defaultConfig.timeline_title;
+        document.getElementById('faq-title').textContent = config.faq_title || defaultConfig.faq_title;
+        document.getElementById('bottom-cta-text').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+      },
+      mapToCapabilities: () => ({
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (cfg) => new Map([
+        ['hero_heading', cfg.hero_heading || defaultConfig.hero_heading],
+        ['hero_subheading', cfg.hero_subheading || defaultConfig.hero_subheading],
+        ['cases_title', cfg.cases_title || defaultConfig.cases_title],
+        ['strategy_title', cfg.strategy_title || defaultConfig.strategy_title],
+        ['timeline_title', cfg.timeline_title || defaultConfig.timeline_title],
+        ['faq_title', cfg.faq_title || defaultConfig.faq_title],
+        ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text]
+      ])
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', function() {
+        const faqItem = this.parentElement;
+        faqItem.classList.toggle('active');
+      });
+    });
+
+    // Vote & Comment Widget
+    let selectedReaction = null;
+    let selectedPrice = null;
+
+    document.querySelectorAll('.reaction-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedReaction = this.dataset.reaction;
+      });
+    });
+
+    document.querySelectorAll('.price-tier').forEach(tier => {
+      tier.addEventListener('click', function() {
+        document.querySelectorAll('.price-tier').forEach(t => t.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedPrice = this.dataset.price;
+      });
+    });
+
+    function submitFeedback() {
+      const comment = document.getElementById('comment-input').value.trim();
+      const feedbackDisplay = document.getElementById('feedback-display');
+
+      if (!comment && !selectedReaction && !selectedPrice) {
+        feedbackDisplay.innerHTML = '<p style="color: #d4af37; text-align: center;">Please provide feedback before submitting.</p>';
+        return;
+      }
+
+      let feedbackHTML = '<div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 1.5rem; border-radius: 4px;">';
+      feedbackHTML += '<p style="color: #d4af37; font-weight: 600; margin-bottom: 0.5rem;">✓ Feedback Submitted</p>';
+      
+      if (selectedReaction) {
+        feedbackHTML += `<p style="color: #b0b3b8; font-size: 0.9rem;">Reaction: <strong>${selectedReaction}</strong></p>`;
+      }
+      if (selectedPrice) {
+        feedbackHTML += `<p style="color: #b0b3b8; font-size: 0.9rem;">Budget Range: Tier ${selectedPrice}</p>`;
+      }
+      if (comment) {
+        feedbackHTML += `<p style="color: #b0b3b8; font-size: 0.9rem; font-style: italic;">Comment: "${comment}"</p>`;
+      }
+      
+      feedbackHTML += '</div>';
+      feedbackDisplay.innerHTML = feedbackHTML;
+
+      // Reset form
+      document.getElementById('comment-input').value = '';
+      document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.price-tier').forEach(t => t.classList.remove('selected'));
+      selectedReaction = null;
+      selectedPrice = null;
+    }
+
+    // Call lucide after DOM load
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4cf9415127c5',t:'MTc3NTU3ODIwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

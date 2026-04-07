@@ -1,1 +1,587 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7d62284f-efec-4f4b-889f-30d19998f5c4 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StringFire Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;family=DM+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  @keyframes spotlightSweep {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes eqBar {
+    0%, 100% { height: 20%; }
+    25% { height: 80%; }
+    50% { height: 40%; }
+    75% { height: 95%; }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217,119,6,0.4); }
+    50% { box-shadow: 0 0 30px 8px rgba(217,119,6,0.15); }
+  }
+  @keyframes grainShift {
+    0% { transform: translate(0,0); }
+    10% { transform: translate(-2%,-2%); }
+    20% { transform: translate(1%,3%); }
+    30% { transform: translate(-3%,1%); }
+    40% { transform: translate(3%,-1%); }
+    50% { transform: translate(-1%,2%); }
+    60% { transform: translate(2%,-3%); }
+    70% { transform: translate(-2%,1%); }
+    80% { transform: translate(1%,-2%); }
+    90% { transform: translate(3%,2%); }
+    100% { transform: translate(0,0); }
+  }
+  @keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+  }
+  @keyframes starPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .grain-overlay {
+    position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.5;
+    animation: grainShift 0.5s steps(5) infinite;
+  }
+
+  .spotlight-text {
+    background: linear-gradient(90deg, transparent 0%, rgba(245,158,11,0.15) 40%, rgba(245,158,11,0.3) 50%, rgba(245,158,11,0.15) 60%, transparent 100%);
+    background-size: 200% 100%;
+    animation: spotlightSweep 4s ease-in-out infinite;
+  }
+
+  .eq-bar { animation: eqBar var(--duration) ease-in-out infinite; animation-delay: var(--delay); }
+  .pulse-cta { animation: pulseGlow 2.5s ease-in-out infinite; }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .hero-img { animation: slowZoom 20s ease-in-out infinite alternate; }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+    background: #d97706; transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .template-card {
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+  }
+  .template-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(217,119,6,0.15);
+  }
+
+  .star-icon { animation: starPulse 2s ease-in-out infinite; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#0a0a0a; color:#f5f0e8; font-family:'DM Sans',sans-serif;">
+   <div class="grain-overlay"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position:sticky;top:0;z-index:1000;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(217,119,6,0.15);">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;">
+     <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#d97706,#92400e);display:flex;align-items:center;justify-content:center;">
+       <i data-lucide="flame" style="width:18px;height:18px;color:#fef3c7;"></i>
+      </div><span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:#f59e0b;" id="nav-brand">STRINGFIRE</span>
+     </div>
+     <div style="display:flex;gap:24px;align-items:center;" id="nav-links-desktop">
+      <a href="#home" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">HOME</a> <a href="#posters" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">POSTERS</a> <a href="#stories" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">STORIES</a> <a href="#setlists" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">SETLISTS</a> <a href="#reviews" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">REVIEWS</a> <a href="#download" class="nav-link" style="color:#a8a29e;font-size:13px;text-decoration:none;letter-spacing:1px;font-family:'Space Mono',monospace;">DOWNLOAD</a>
+     </div><button id="mobile-menu-btn" style="display:none;background:none;border:none;color:#d97706;cursor:pointer;" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-nav" class="hidden" style="padding:0 24px 16px;display:flex;flex-direction:column;gap:12px;">
+     <a href="#home" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">HOME</a> <a href="#posters" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">POSTERS</a> <a href="#stories" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">STORIES</a> <a href="#setlists" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">SETLISTS</a> <a href="#reviews" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">REVIEWS</a> <a href="#download" style="color:#a8a29e;font-size:13px;text-decoration:none;font-family:'Space Mono',monospace;" onclick="document.getElementById('mobile-nav').classList.add('hidden')">DOWNLOAD</a>
+    </div>
+   </nav>
+   <main>
+    <!-- HERO -->
+    <section id="home" style="position:relative;overflow:hidden;min-height:600px;display:flex;align-items:center;">
+     <div style="position:absolute;inset:0;overflow:hidden;">
+      <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1400&amp;q=80" alt="Guitar close up" class="hero-img" loading="lazy" style="width:100%;height:100%;object-fit:cover;opacity:0.3;" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,0.4),rgba(10,10,10,0.95));"></div>
+     </div><!-- Equalizer decoration -->
+     <div style="position:absolute;bottom:0;left:0;right:0;height:80px;display:flex;align-items:flex-end;justify-content:center;gap:4px;padding-bottom:20px;opacity:0.15;">
+      <div class="eq-bar" style="--duration:0.8s;--delay:0s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.6s;--delay:0.1s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.9s;--delay:0.2s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.5s;--delay:0.05s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.7s;--delay:0.15s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:1s;--delay:0.25s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.65s;--delay:0.1s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.85s;--delay:0.3s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.55s;--delay:0.2s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.75s;--delay:0s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.9s;--delay:0.15s;width:4px;background:#d97706;border-radius:2px;"></div>
+      <div class="eq-bar" style="--duration:0.6s;--delay:0.05s;width:4px;background:#d97706;border-radius:2px;"></div>
+     </div>
+     <div style="position:relative;z-index:10;max-width:900px;margin:0 auto;padding:80px 24px;text-align:center;">
+      <p id="hero-tagline" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:4px;color:#d97706;margin-bottom:24px;text-transform:uppercase;">Make music look as good as it sounds.</p>
+      <h1 id="hero-title" class="spotlight-text" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,10vw,96px);line-height:0.95;letter-spacing:3px;color:#f5f0e8;margin-bottom:24px;">Turn your sound<br>
+        into a brand.</h1>
+      <p id="hero-subtitle" style="font-size:18px;color:#a8a29e;max-width:500px;margin:0 auto 40px;line-height:1.6;font-weight:300;">Templates for musicians, teachers, and guitar creators.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+       <a href="#download" id="cta-primary-btn" class="pulse-cta" style="display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:linear-gradient(135deg,#d97706,#b45309);color:#fef3c7;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;text-decoration:none;border-radius:4px;transition:all 0.3s;"> <i data-lucide="download" style="width:18px;height:18px;"></i> <span>Get the Kit</span> </a> <a href="#posters" id="cta-secondary-btn" style="display:inline-flex;align-items:center;gap:8px;padding:16px 36px;border:1px solid rgba(217,119,6,0.4);color:#d97706;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;text-decoration:none;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='rgba(217,119,6,0.1)'" onmouseout="this.style.background='transparent'"> <i data-lucide="eye" style="width:18px;height:18px;"></i> <span>See Templates</span> </a>
+      </div>
+     </div>
+    </section><!-- Stats Bar -->
+    <section style="border-top:1px solid rgba(217,119,6,0.1);border-bottom:1px solid rgba(217,119,6,0.1);background:rgba(217,119,6,0.03);">
+     <div class="reveal" style="max-width:1000px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center;">
+      <div>
+       <p style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f59e0b;">60+</p>
+       <p style="font-size:12px;color:#78716c;font-family:'Space Mono',monospace;letter-spacing:1px;">POSTER TEMPLATES</p>
+      </div>
+      <div>
+       <p style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f59e0b;">40+</p>
+       <p style="font-size:12px;color:#78716c;font-family:'Space Mono',monospace;letter-spacing:1px;">STORY COVERS</p>
+      </div>
+      <div>
+       <p style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f59e0b;">∞</p>
+       <p style="font-size:12px;color:#78716c;font-family:'Space Mono',monospace;letter-spacing:1px;">SETLIST TEMPLATES</p>
+      </div>
+      <div>
+       <p style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f59e0b;">100+</p>
+       <p style="font-size:12px;color:#78716c;font-family:'Space Mono',monospace;letter-spacing:1px;">CAPTION HOOKS</p>
+      </div>
+     </div>
+    </section><!-- WHO IT'S FOR -->
+    <section style="max-width:1100px;margin:0 auto;padding:80px 24px;">
+     <div class="reveal" style="text-align:center;margin-bottom:48px;">
+      <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">WHO IT'S FOR</p>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">Perfect for teachers, bands, creators</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div class="reveal" style="background:rgba(245,158,11,0.04);border:1px solid rgba(217,119,6,0.1);border-radius:8px;padding:32px;transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(217,119,6,0.4)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.1)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(217,119,6,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="book-open" style="width:24px;height:24px;color:#d97706;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:8px;">Guitar Teachers</h3>
+       <p style="font-size:14px;color:#78716c;line-height:1.7;">Lesson promo flyers, schedule templates, and student showcase graphics ready to post.</p>
+      </div>
+      <div class="reveal" style="background:rgba(245,158,11,0.04);border:1px solid rgba(217,119,6,0.1);border-radius:8px;padding:32px;transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(217,119,6,0.4)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.1)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(217,119,6,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="music" style="width:24px;height:24px;color:#d97706;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:8px;">Bands &amp; Artists</h3>
+       <p style="font-size:14px;color:#78716c;line-height:1.7;">Gig posters, release announcements, and setlist graphics that match your sonic identity.</p>
+      </div>
+      <div class="reveal" style="background:rgba(245,158,11,0.04);border:1px solid rgba(217,119,6,0.1);border-radius:8px;padding:32px;transition:border-color 0.3s;" onmouseover="this.style.borderColor='rgba(217,119,6,0.4)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.1)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(217,119,6,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="video" style="width:24px;height:24px;color:#d97706;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:8px;">Content Creators</h3>
+       <p style="font-size:14px;color:#78716c;line-height:1.7;">Story covers, reel thumbnails, and caption packs to stay weekly-promo ready.</p>
+      </div>
+     </div>
+    </section><!-- POSTERS - TEMPLATE SET: LESSONS -->
+    <section id="posters" style="padding:80px 0;background:linear-gradient(180deg,transparent,rgba(217,119,6,0.03),transparent);">
+     <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+       <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">TEMPLATE SET 01</p>
+       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">Lessons Collection</h2>
+       <p style="color:#78716c;margin-top:8px;font-size:15px;">Promo flyers, lesson schedules, and student spotlights.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1525201548942-d8732f6617a0?w=600&amp;q=80" alt="Hands playing acoustic guitar" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          LESSON PROMO
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Weekly Lesson Flyer</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Promote private or group sessions</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&amp;q=80" alt="Studio recording session" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          SCHEDULE
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Class Schedule Card</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Clean weekly availability layout</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&amp;q=80" alt="Musician on stage" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          SPOTLIGHT
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Student Showcase</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Celebrate student progress &amp; wins</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- STORIES - TEMPLATE SET: GIGS -->
+    <section id="stories" style="padding:80px 0;">
+     <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+       <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">TEMPLATE SET 02</p>
+       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">Gigs Collection</h2>
+       <p style="color:#78716c;margin-top:8px;font-size:15px;">Event posters, venue announcements, and live show graphics.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1501612780327-45045538702b?w=600&amp;q=80" alt="Live concert lights" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          GIG POSTER
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Show Night Flyer</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Bold event poster for any venue</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600&amp;q=80" alt="Electric guitar amplifier" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          STORY COVER
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Reel Thumbnail</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Eye-catching story &amp; reel covers</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&amp;q=80" alt="Guitar close-up detail" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          ANNOUNCEMENT
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Tour Date Card</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Multi-date tour announcement graphic</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- SETLISTS - TEMPLATE SET: RELEASES -->
+    <section id="setlists" style="padding:80px 0;background:linear-gradient(180deg,transparent,rgba(217,119,6,0.03),transparent);">
+     <div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+       <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">TEMPLATE SET 03</p>
+       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">Releases Collection</h2>
+       <p style="color:#78716c;margin-top:8px;font-size:15px;">Setlists, single drops, and album release graphics.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0f00,#0d0d0d);">
+         <div style="text-align:center;padding:24px;">
+          <p style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:#d97706;margin-bottom:16px;">SETLIST</p>
+          <div style="text-align:left;font-family:'Space Mono',monospace;font-size:13px;color:#a8a29e;line-height:2.2;">
+           <p>01 — Opening Riff</p>
+           <p>02 — Amber Waves</p>
+           <p>03 — Midnight Fret</p>
+           <p>04 — Encore Fire</p>
+          </div>
+          <div style="margin-top:20px;width:100%;height:1px;background:rgba(217,119,6,0.2);"></div>
+          <p style="font-family:'Space Mono',monospace;font-size:9px;color:#57534e;margin-top:12px;letter-spacing:2px;">THE VENUE · 9PM</p>
+         </div>
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          SETLIST
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Minimal Setlist</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Clean typographic setlist card</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&amp;q=80" alt="Studio recording equipment" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          SINGLE DROP
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">New Single Promo</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Release day announcement graphic</p>
+        </div>
+       </div>
+       <div class="reveal template-card" style="border-radius:8px;overflow:hidden;background:#141414;border:1px solid rgba(217,119,6,0.08);">
+        <div style="height:320px;overflow:hidden;position:relative;">
+         <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=600&amp;q=80" alt="Guitar headstock detail" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#1a0f00,#0a0a0a)';this.alt='Image unavailable';">
+         <div style="position:absolute;top:12px;left:12px;background:rgba(217,119,6,0.9);padding:4px 12px;border-radius:3px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;color:#0a0a0a;font-weight:700;">
+          ALBUM ART
+         </div>
+        </div>
+        <div style="padding:20px;">
+         <h4 style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">Album Release Card</h4>
+         <p style="font-size:12px;color:#78716c;margin-top:4px;">Full album launch graphic template</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- WHAT'S INCLUDED -->
+    <section style="padding:80px 0;">
+     <div style="max-width:900px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+       <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">THE FULL KIT</p>
+       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">Everything Inside</h2>
+      </div>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(217,119,6,0.04);border:1px solid rgba(217,119,6,0.08);border-radius:6px;">
+        <i data-lucide="image" style="width:20px;height:20px;color:#d97706;flex-shrink:0;"></i> <span style="font-size:14px;">60 Musician Poster Templates</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(217,119,6,0.04);border:1px solid rgba(217,119,6,0.08);border-radius:6px;">
+        <i data-lucide="smartphone" style="width:20px;height:20px;color:#d97706;flex-shrink:0;"></i> <span style="font-size:14px;">40 Story &amp; Reel Covers</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(217,119,6,0.04);border:1px solid rgba(217,119,6,0.08);border-radius:6px;">
+        <i data-lucide="list" style="width:20px;height:20px;color:#d97706;flex-shrink:0;"></i> <span style="font-size:14px;">Setlist Templates</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(217,119,6,0.04);border:1px solid rgba(217,119,6,0.08);border-radius:6px;">
+        <i data-lucide="megaphone" style="width:20px;height:20px;color:#d97706;flex-shrink:0;"></i> <span style="font-size:14px;">Lesson Promo Flyers</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(217,119,6,0.04);border:1px solid rgba(217,119,6,0.08);border-radius:6px;grid-column:1/-1;">
+        <i data-lucide="message-circle" style="width:20px;height:20px;color:#d97706;flex-shrink:0;"></i> <span style="font-size:14px;">100+ Caption Hooks &amp; Copy Pack</span>
+       </div>
+      </div>
+     </div>
+    </section><!-- REVIEWS -->
+    <section id="reviews" style="padding:80px 0;background:linear-gradient(180deg,transparent,rgba(217,119,6,0.03),transparent);">
+     <div style="max-width:1000px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="text-align:center;margin-bottom:48px;">
+       <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:#d97706;margin-bottom:12px;">HIGH-TRUST &amp; STYLISH</p>
+       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;">What Creators Say</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+       <div class="reveal" style="background:#141414;border:1px solid rgba(217,119,6,0.08);border-radius:8px;padding:28px;">
+        <div style="display:flex;gap:4px;margin-bottom:16px;">
+         <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;--delay:0s;animation-delay:0s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.2s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.4s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.6s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.8s;"></i>
+        </div>
+        <p style="font-size:14px;color:#a8a29e;line-height:1.7;margin-bottom:16px;">"My lesson sign-ups doubled after using these templates. Finally, my promo looks as good as my playing."</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11px;color:#d97706;letter-spacing:1px;">— MARIA G. · GUITAR TEACHER</p>
+       </div>
+       <div class="reveal" style="background:#141414;border:1px solid rgba(217,119,6,0.08);border-radius:8px;padding:28px;">
+        <div style="display:flex;gap:4px;margin-bottom:16px;">
+         <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.1s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.3s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.5s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.7s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.9s;"></i>
+        </div>
+        <p style="font-size:14px;color:#a8a29e;line-height:1.7;margin-bottom:16px;">"We used the gig posters for our tour and got more shares than ever. Weekly promo ready is an understatement."</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11px;color:#d97706;letter-spacing:1px;">— THE FRET COLLECTIVE · BAND</p>
+       </div>
+       <div class="reveal" style="background:#141414;border:1px solid rgba(217,119,6,0.08);border-radius:8px;padding:28px;">
+        <div style="display:flex;gap:4px;margin-bottom:16px;">
+         <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.15s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.35s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.55s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.75s;"></i> <i data-lucide="star" class="star-icon" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;animation-delay:0.95s;"></i>
+        </div>
+        <p style="font-size:14px;color:#a8a29e;line-height:1.7;margin-bottom:16px;">"The caption pack alone saved me 5 hours a week. And the setlist templates? Chef's kiss for my YouTube content."</p>
+        <p style="font-family:'Space Mono',monospace;font-size:11px;color:#d97706;letter-spacing:1px;">— JAKE R. · CONTENT CREATOR</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- BOTTOM CTA -->
+    <section id="download" style="padding:80px 0;">
+     <div style="max-width:700px;margin:0 auto;padding:0 24px;text-align:center;">
+      <div class="reveal">
+       <div style="display:flex;justify-content:center;gap:6px;margin-bottom:24px;">
+        <div class="eq-bar" style="--duration:0.7s;--delay:0s;width:3px;background:#d97706;border-radius:2px;height:30px;"></div>
+        <div class="eq-bar" style="--duration:0.5s;--delay:0.1s;width:3px;background:#d97706;border-radius:2px;height:30px;"></div>
+        <div class="eq-bar" style="--duration:0.8s;--delay:0.05s;width:3px;background:#d97706;border-radius:2px;height:30px;"></div>
+        <div class="eq-bar" style="--duration:0.6s;--delay:0.15s;width:3px;background:#d97706;border-radius:2px;height:30px;"></div>
+        <div class="eq-bar" style="--duration:0.9s;--delay:0.2s;width:3px;background:#d97706;border-radius:2px;height:30px;"></div>
+       </div>
+       <h2 id="bottom-cta-heading" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,7vw,64px);letter-spacing:2px;line-height:1;margin-bottom:16px;">Make every post hit.</h2>
+       <p style="color:#78716c;font-size:16px;margin-bottom:36px;">60 posters · 40 stories · setlists · lesson flyers · caption pack</p><a href="#" id="bottom-cta-btn" class="pulse-cta" style="display:inline-flex;align-items:center;gap:10px;padding:18px 48px;background:linear-gradient(135deg,#d97706,#b45309);color:#fef3c7;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;text-decoration:none;border-radius:4px;" onclick="event.preventDefault();"> <i data-lucide="zap" style="width:20px;height:20px;"></i> GET THE FULL KIT </a>
+       <p style="font-size:12px;color:#57534e;margin-top:16px;font-family:'Space Mono',monospace;letter-spacing:1px;">INSTANT DOWNLOAD · CANVA READY</p>
+      </div>
+     </div>
+    </section><!-- VOTE + COMMENT WIDGET -->
+    <section style="padding:60px 0;border-top:1px solid rgba(217,119,6,0.08);">
+     <div style="max-width:600px;margin:0 auto;padding:0 24px;">
+      <div class="reveal" style="background:#141414;border:1px solid rgba(217,119,6,0.12);border-radius:12px;padding:32px;">
+       <div style="text-align:center;margin-bottom:24px;">
+        <p style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:#d97706;margin-bottom:8px;">COMMUNITY</p>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;">Vote + Comment</h3>
+       </div><!-- Vote -->
+       <div style="display:flex;justify-content:center;gap:24px;margin-bottom:28px;">
+        <button id="vote-fire" onclick="handleVote('fire')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:1px solid rgba(217,119,6,0.15);border-radius:8px;padding:16px 24px;cursor:pointer;color:#f5f0e8;transition:all 0.3s;" onmouseover="this.style.borderColor='#d97706';this.style.background='rgba(217,119,6,0.08)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.15)';this.style.background='none'">
+         <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+         </svg><span id="fire-count" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#d97706;">0</span> <span style="font-family:'Space Mono',monospace;font-size:9px;color:#78716c;letter-spacing:1px;">FIRE</span> </button> <button id="vote-guitar" onclick="handleVote('guitar')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:1px solid rgba(217,119,6,0.15);border-radius:8px;padding:16px 24px;cursor:pointer;color:#f5f0e8;transition:all 0.3s;" onmouseover="this.style.borderColor='#d97706';this.style.background='rgba(217,119,6,0.08)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.15)';this.style.background='none'">
+         <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="6" cy="6" r="2" /><path d="M6 8v8a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V8" /><circle cx="12" cy="14" r="1.5" />
+         </svg><span id="guitar-count" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#d97706;">0</span> <span style="font-family:'Space Mono',monospace;font-size:9px;color:#78716c;letter-spacing:1px;">SHRED</span> </button> <button id="vote-heart" onclick="handleVote('heart')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:1px solid rgba(217,119,6,0.15);border-radius:8px;padding:16px 24px;cursor:pointer;color:#f5f0e8;transition:all 0.3s;" onmouseover="this.style.borderColor='#d97706';this.style.background='rgba(217,119,6,0.08)'" onmouseout="this.style.borderColor='rgba(217,119,6,0.15)';this.style.background='none'">
+         <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+         </svg><span id="heart-count" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#d97706;">0</span> <span style="font-family:'Space Mono',monospace;font-size:9px;color:#78716c;letter-spacing:1px;">LOVE</span> </button>
+       </div><!-- Comment -->
+       <form id="comment-form" onsubmit="handleComment(event)" style="margin-bottom:20px;">
+        <label for="comment-input" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:#78716c;display:block;margin-bottom:8px;">LEAVE A COMMENT</label>
+        <div style="display:flex;gap:8px;">
+         <input type="text" id="comment-input" placeholder="This kit is amazing..." style="flex:1;background:#0a0a0a;border:1px solid rgba(217,119,6,0.15);border-radius:4px;padding:12px 16px;color:#f5f0e8;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;" onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='rgba(217,119,6,0.15)'"> <button type="submit" style="background:linear-gradient(135deg,#d97706,#b45309);border:none;border-radius:4px;padding:12px 20px;cursor:pointer;color:#fef3c7;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:14px;">POST</button>
+        </div>
+       </form>
+       <div id="comments-list" style="display:flex;flex-direction:column;gap:12px;max-height:200px;overflow-y:auto;"></div>
+      </div>
+     </div>
+    </section><!-- FOOTER -->
+    <footer style="border-top:1px solid rgba(217,119,6,0.08);padding:32px 24px;text-align:center;">
+     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;">
+      <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#d97706,#92400e);display:flex;align-items:center;justify-content:center;">
+       <i data-lucide="flame" style="width:14px;height:14px;color:#fef3c7;"></i>
+      </div><span style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#57534e;">STRINGFIRE STUDIO</span>
+     </div>
+     <p style="font-family:'Space Mono',monospace;font-size:10px;color:#44403c;letter-spacing:1px;">MAKE MUSIC LOOK AS GOOD AS IT SOUNDS · © 2025</p>
+    </footer>
+   </main>
+  </div>
+  <script>
+// Vote & Comment state
+let votes = { fire: 0, guitar: 0, heart: 0 };
+let comments = [];
+
+function handleVote(type) {
+  votes[type]++;
+  document.getElementById(type + '-count').textContent = votes[type];
+  const btn = document.getElementById('vote-' + type);
+  btn.style.transform = 'scale(1.15)';
+  setTimeout(() => btn.style.transform = 'scale(1)', 200);
+}
+
+function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+  input.value = '';
+  renderComments();
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div style="background:#0a0a0a;border:1px solid rgba(217,119,6,0.06);border-radius:6px;padding:12px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+      <p style="font-size:13px;color:#a8a29e;line-height:1.5;margin:0;">${c.text.replace(/</g,'&lt;')}</p>
+      <span style="font-family:'Space Mono',monospace;font-size:9px;color:#57534e;white-space:nowrap;">${c.time}</span>
+    </div>
+  `).join('');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Responsive nav
+function checkNav() {
+  const w = window.innerWidth;
+  document.getElementById('nav-links-desktop').style.display = w > 768 ? 'flex' : 'none';
+  document.getElementById('mobile-menu-btn').style.display = w <= 768 ? 'block' : 'none';
+  if (w > 768) document.getElementById('mobile-nav').classList.add('hidden');
+}
+window.addEventListener('resize', checkNav);
+checkNav();
+
+// Element SDK
+const defaultConfig = {
+  hero_title: "Turn your sound into a brand.",
+  hero_subtitle: "Templates for musicians, teachers, and guitar creators.",
+  tagline: "Make music look as good as it sounds.",
+  cta_primary: "Get the Kit",
+  cta_secondary: "See Templates",
+  bottom_cta_text: "Make every post hit.",
+  background_color: "#0a0a0a",
+  surface_color: "#141414",
+  text_color: "#f5f0e8",
+  accent_color: "#d97706",
+  muted_color: "#78716c",
+  font_family: "DM Sans",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Text
+  document.getElementById('hero-title').innerHTML = c.hero_title.replace(/ /g, ' ').replace(/brand/, 'brand.');
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.getElementById('hero-tagline').textContent = c.tagline;
+  document.getElementById('cta-primary-btn').querySelector('span').textContent = c.cta_primary;
+  document.getElementById('cta-secondary-btn').querySelector('span').textContent = c.cta_secondary;
+  document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+  // Colors
+  const wrapper = document.getElementById('app-wrapper');
+  wrapper.style.background = c.background_color;
+  wrapper.style.color = c.text_color;
+
+  document.querySelectorAll('.template-card, #comments-list > div').forEach(el => {
+    el.style.background = c.surface_color;
+  });
+
+  // Font
+  const fontStack = `${c.font_family}, Arial, sans-serif`;
+  wrapper.style.fontFamily = fontStack;
+  const baseSize = c.font_size;
+  document.getElementById('hero-subtitle').style.fontSize = `${baseSize * 1.125}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.muted_color || defaultConfig.muted_color, set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["tagline", config.tagline || defaultConfig.tagline],
+    ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+    ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a32ecd74627c5',t:'MTc3NTU3NzE0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,531 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/eba47557-d40c-4bf7-8897-ac401cbb64ea -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LakeGlass Vault</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Playfair Display', 'Georgia', 'serif'],
+            body: ['DM Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 0.6; transform: translateY(-8px); }
+    }
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes grainMove {
+      0% { transform: translate(0,0); }
+      10% { transform: translate(-2%,-2%); }
+      20% { transform: translate(1%,3%); }
+      30% { transform: translate(-3%,1%); }
+      40% { transform: translate(3%,-1%); }
+      50% { transform: translate(-1%,2%); }
+      60% { transform: translate(2%,-3%); }
+      70% { transform: translate(-2%,1%); }
+      80% { transform: translate(1%,-2%); }
+      90% { transform: translate(3%,2%); }
+      100% { transform: translate(0,0); }
+    }
+    @keyframes pulse-soft {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.4); }
+      50% { box-shadow: 0 0 20px 8px rgba(212,175,55,0.15); }
+    }
+    @keyframes waterline {
+      0% { transform: translateX(-100%) scaleY(0.5); }
+      50% { transform: translateX(0%) scaleY(1); }
+      100% { transform: translateX(100%) scaleY(0.5); }
+    }
+
+    .grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      animation: grainMove 8s steps(10) infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .glass-card-light {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-active { color: #d4af37; }
+
+    .waterline-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+      animation: waterline 6s ease-in-out infinite;
+    }
+
+    .review-scroll { scrollbar-width: none; }
+    .review-scroll::-webkit-scrollbar { display: none; }
+
+    .collection-img-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .collection-img-wrap img {
+      transition: transform 6s ease;
+    }
+    .collection-img-wrap:hover img {
+      transform: scale(1.1);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto bg-slate-950 font-body text-white"><!-- STICKY NAV -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(15,23,42,0.6);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="font-display text-lg tracking-wide" style="color:#d4af37;">LakeGlass</a>
+    <div class="hidden md:flex items-center gap-6 text-xs tracking-widest uppercase font-medium text-slate-400"><a href="#home" class="nav-link hover:text-white transition">Home</a> <a href="#wallpapers" class="nav-link hover:text-white transition">Wallpapers</a> <a href="#collections" class="nav-link hover:text-white transition">Collections</a> <a href="#prints" class="nav-link hover:text-white transition">Prints</a> <a href="#reviews" class="nav-link hover:text-white transition">Reviews</a> <a href="#download" class="nav-link hover:text-white transition">Download</a>
+    </div><button id="mobile-toggle" class="md:hidden text-slate-300"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-3 text-xs tracking-widest uppercase text-slate-400"><a href="#home" class="block nav-link">Home</a> <a href="#wallpapers" class="block nav-link">Wallpapers</a> <a href="#collections" class="block nav-link">Collections</a> <a href="#prints" class="block nav-link">Prints</a> <a href="#reviews" class="block nav-link">Reviews</a> <a href="#download" class="block nav-link">Download</a>
+   </div>
+   <div class="waterline-bar"></div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full grain-overlay" style="min-height:100%;">
+   <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&amp;q=80" alt="Serene mountain lake at sunrise" loading="lazy" onerror="console.error('Hero image failed:', this.src); this.style.display='none';" class="w-full h-full object-cover" style="animation:slowZoom 25s ease-in-out infinite alternate;">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/40 to-slate-950"></div><!-- Water reflection overlay -->
+    <div class="absolute bottom-0 left-0 w-full" style="height:40%;background:linear-gradient(to top,rgba(30,58,95,0.5),transparent);animation:shimmer 5s ease-in-out infinite;"></div>
+   </div>
+   <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height:100%;padding-top:120px;padding-bottom:80px;">
+    <p class="text-xs tracking-[0.35em] uppercase mb-4 font-medium" style="color:#d4af37;animation:fadeUp 1s ease both;">Still water, loud beauty.</p>
+    <h1 id="hero-title" class="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-none mb-6" style="animation:fadeUp 1s ease 0.2s both;">Your calm, curated.</h1>
+    <p id="hero-subtitle" class="text-slate-300 text-lg sm:text-xl max-w-xl mb-10 font-light" style="animation:fadeUp 1s ease 0.4s both;">Lake wallpapers and prints for screens and spaces.</p>
+    <div class="flex flex-col sm:flex-row gap-4" style="animation:fadeUp 1s ease 0.6s both;"><a href="#download" class="px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide text-slate-950 transition" id="hero-cta-1" style="background:#d4af37;animation:pulse-soft 3s ease infinite;">Download the Vault</a> <a href="#collections" class="px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide border transition hover:bg-white/10" style="border-color:rgba(255,255,255,0.25);color:#fff;">Browse Collections</a>
+    </div><!-- Scroll hint -->
+    <div class="mt-16" style="animation:float 3s ease-in-out infinite;"><i data-lucide="chevron-down" style="width:28px;height:28px;color:rgba(212,175,55,0.5);"></i>
+    </div>
+   </div>
+  </section><!-- WHAT'S INSIDE -->
+  <section id="wallpapers" class="relative w-full py-24 px-6 grain-overlay" style="background:linear-gradient(180deg,#0f172a,#0c1929);">
+   <div class="max-w-6xl mx-auto">
+    <div class="animate-on-scroll text-center mb-16">
+     <p class="text-xs tracking-[0.3em] uppercase mb-3 font-medium" style="color:#d4af37;">What's Inside</p>
+     <h2 class="font-display text-3xl sm:text-5xl font-bold mb-4">The Full Vault</h2>
+     <p class="text-slate-400 max-w-lg mx-auto">180 wallpapers. 30 printable posters. 20 postcard templates. One sunrise-vs-sunset mini-collection. All yours.</p>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 text-center" style="transition-delay:0.05s;">
+      <div class="text-4xl mb-3">
+       🖼️
+      </div>
+      <p class="text-2xl font-bold font-display" style="color:#d4af37;">180</p>
+      <p class="text-xs tracking-wider uppercase text-slate-400 mt-1">Lake Wallpapers</p>
+      <p class="text-slate-500 text-xs mt-2">Mobile + Desktop</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 text-center" style="transition-delay:0.15s;">
+      <div class="text-4xl mb-3">
+       🎨
+      </div>
+      <p class="text-2xl font-bold font-display" style="color:#d4af37;">30</p>
+      <p class="text-xs tracking-wider uppercase text-slate-400 mt-1">Printable Posters</p>
+      <p class="text-slate-500 text-xs mt-2">High-res ready</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 text-center" style="transition-delay:0.25s;">
+      <div class="text-4xl mb-3">
+       💌
+      </div>
+      <p class="text-2xl font-bold font-display" style="color:#d4af37;">20</p>
+      <p class="text-xs tracking-wider uppercase text-slate-400 mt-1">Postcard Templates</p>
+      <p class="text-slate-500 text-xs mt-2">Send or display</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 text-center" style="transition-delay:0.35s;">
+      <div class="text-4xl mb-3">
+       🌅
+      </div>
+      <p class="text-2xl font-bold font-display" style="color:#d4af37;">Bonus</p>
+      <p class="text-xs tracking-wider uppercase text-slate-400 mt-1">Sunrise vs Sunset</p>
+      <p class="text-slate-500 text-xs mt-2">Mini-collection</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- COLLECTIONS -->
+  <section id="collections" class="relative w-full py-24 px-6 grain-overlay" style="background:linear-gradient(180deg,#0c1929,#0a1628);">
+   <div class="max-w-6xl mx-auto">
+    <div class="animate-on-scroll text-center mb-16">
+     <p class="text-xs tracking-[0.3em] uppercase mb-3 font-medium" style="color:#d4af37;">Curated Sets</p>
+     <h2 class="font-display text-3xl sm:text-5xl font-bold">Collections</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5"><!-- Collection 1 -->
+     <div class="animate-on-scroll collection-img-wrap rounded-2xl relative group cursor-pointer" style="transition-delay:0.05s;"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=800&amp;q=75" alt="Foggy lake" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full aspect-[16/10] object-cover rounded-2xl">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent rounded-2xl"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+       <h3 id="coll-1" class="font-display text-2xl font-bold">Fog + Glass</h3>
+       <p class="text-slate-400 text-sm mt-1">Misty mornings, mirror surfaces</p>
+      </div>
+      <div class="absolute top-4 right-4 glass-card rounded-full px-3 py-1 text-xs font-medium" style="color:#d4af37;">
+       42 files
+      </div>
+     </div><!-- Collection 2 -->
+     <div class="animate-on-scroll collection-img-wrap rounded-2xl relative group cursor-pointer" style="transition-delay:0.15s;"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&amp;q=75" alt="Lake dock" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full aspect-[16/10] object-cover rounded-2xl">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent rounded-2xl"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+       <h3 id="coll-2" class="font-display text-2xl font-bold">Dock Days</h3>
+       <p class="text-slate-400 text-sm mt-1">Wooden piers, golden hours</p>
+      </div>
+      <div class="absolute top-4 right-4 glass-card rounded-full px-3 py-1 text-xs font-medium" style="color:#d4af37;">
+       38 files
+      </div>
+     </div><!-- Collection 3 -->
+     <div class="animate-on-scroll collection-img-wrap rounded-2xl relative group cursor-pointer" style="transition-delay:0.25s;"><img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&amp;q=75" alt="Mountain lake reflection" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full aspect-[16/10] object-cover rounded-2xl">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent rounded-2xl"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+       <h3 id="coll-3" class="font-display text-2xl font-bold">Mountain Mirror</h3>
+       <p class="text-slate-400 text-sm mt-1">Peaks reflected, doubled beauty</p>
+      </div>
+      <div class="absolute top-4 right-4 glass-card rounded-full px-3 py-1 text-xs font-medium" style="color:#d4af37;">
+       55 files
+      </div>
+     </div><!-- Collection 4 -->
+     <div class="animate-on-scroll collection-img-wrap rounded-2xl relative group cursor-pointer" style="transition-delay:0.35s;"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&amp;q=75" alt="Night lake" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full aspect-[16/10] object-cover rounded-2xl">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent rounded-2xl"></div>
+      <div class="absolute bottom-0 left-0 p-6">
+       <h3 id="coll-4" class="font-display text-2xl font-bold">Night Lakes</h3>
+       <p class="text-slate-400 text-sm mt-1">Moonlight, stars, stillness</p>
+      </div>
+      <div class="absolute top-4 right-4 glass-card rounded-full px-3 py-1 text-xs font-medium" style="color:#d4af37;">
+       45 files
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRINTS -->
+  <section id="prints" class="relative w-full py-24 px-6 grain-overlay" style="background:linear-gradient(180deg,#0a1628,#0d1f35);">
+   <div class="max-w-6xl mx-auto">
+    <div class="animate-on-scroll text-center mb-16">
+     <p class="text-xs tracking-[0.3em] uppercase mb-3 font-medium" style="color:#d4af37;">Beyond the Screen</p>
+     <h2 class="font-display text-3xl sm:text-5xl font-bold mb-4">Printable Posters &amp; Postcards</h2>
+     <p class="text-slate-400 max-w-lg mx-auto">High-resolution files ready for your cabin wall, home office, or gift envelope.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+     <div class="animate-on-scroll glass-card rounded-2xl overflow-hidden" style="transition-delay:0.05s;">
+      <div class="aspect-[3/4] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&amp;q=75" alt="Lake poster preview" loading="lazy" onerror="this.style.background='linear-gradient(180deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full h-full object-cover transition-transform duration-[4s] hover:scale-110">
+      </div>
+      <div class="p-4 text-center">
+       <p class="text-sm font-medium">Alpine Calm</p>
+       <p class="text-xs text-slate-500">Poster — 4000×6000px</p>
+      </div>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl overflow-hidden" style="transition-delay:0.15s;">
+      <div class="aspect-[3/4] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1433838552652-f9a46b332c40?w=600&amp;q=75" alt="Lake postcard preview" loading="lazy" onerror="this.style.background='linear-gradient(180deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full h-full object-cover transition-transform duration-[4s] hover:scale-110">
+      </div>
+      <div class="p-4 text-center">
+       <p class="text-sm font-medium">Still Morning</p>
+       <p class="text-xs text-slate-500">Postcard — Print-ready</p>
+      </div>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl overflow-hidden" style="transition-delay:0.25s;">
+      <div class="aspect-[3/4] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&amp;q=75" alt="Sunset poster preview" loading="lazy" onerror="this.style.background='linear-gradient(180deg,#1e3a5f,#0f172a)';this.alt='Image unavailable';" class="w-full h-full object-cover transition-transform duration-[4s] hover:scale-110">
+      </div>
+      <div class="p-4 text-center">
+       <p class="text-sm font-medium">Golden Hour</p>
+       <p class="text-xs text-slate-500">Poster — 4000×6000px</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRICING ANGLES -->
+  <section class="relative w-full py-20 px-6" style="background:linear-gradient(180deg,#0d1f35,#0f172a);">
+   <div class="max-w-4xl mx-auto">
+    <div class="animate-on-scroll grid sm:grid-cols-3 gap-5 text-center">
+     <div class="glass-card rounded-2xl p-6">
+      <div class="text-3xl mb-3">
+       🧘
+      </div>
+      <p class="font-display text-lg font-bold mb-1">Calming Aesthetic</p>
+      <p class="text-slate-400 text-sm">The aesthetic that sells itself. Peaceful, premium, evergreen.</p>
+     </div>
+     <div class="glass-card rounded-2xl p-6">
+      <div class="text-3xl mb-3">
+       🏡
+      </div>
+      <p class="font-display text-lg font-bold mb-1">Cabins &amp; Offices</p>
+      <p class="text-slate-400 text-sm">Perfect for wall art, screen savers, and mood boards.</p>
+     </div>
+     <div class="glass-card rounded-2xl p-6">
+      <div class="text-3xl mb-3">
+       ✨
+      </div>
+      <p class="font-display text-lg font-bold mb-1">Instant Upgrade</p>
+      <p class="text-slate-400 text-sm">One download. Every device transformed. Mood shifted.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="relative w-full py-24 px-6 grain-overlay" style="background:linear-gradient(180deg,#0f172a,#0c1929);">
+   <div class="max-w-6xl mx-auto">
+    <div class="animate-on-scroll text-center mb-14">
+     <p class="text-xs tracking-[0.3em] uppercase mb-3 font-medium" style="color:#d4af37;">What People Say</p>
+     <h2 class="font-display text-3xl sm:text-5xl font-bold">Reviews</h2>
+    </div>
+    <div class="flex gap-5 overflow-x-auto review-scroll pb-4 snap-x snap-mandatory">
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 min-w-[300px] max-w-[340px] flex-shrink-0 snap-start">
+      <div class="flex gap-1 mb-3" style="color:#d4af37;">
+       ★★★★★
+      </div>
+      <p class="text-slate-300 text-sm mb-4 italic">"Set my entire phone and laptop to the Fog + Glass collection. My coworkers keep asking where I got these."</p>
+      <p class="text-xs text-slate-500 font-medium">— Sarah M., Designer</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 min-w-[300px] max-w-[340px] flex-shrink-0 snap-start" style="transition-delay:0.1s;">
+      <div class="flex gap-1 mb-3" style="color:#d4af37;">
+       ★★★★★
+      </div>
+      <p class="text-slate-300 text-sm mb-4 italic">"Printed three posters for my cabin. They look like they belong in a gallery. Insane quality."</p>
+      <p class="text-xs text-slate-500 font-medium">— Jake T., Photographer</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 min-w-[300px] max-w-[340px] flex-shrink-0 snap-start" style="transition-delay:0.2s;">
+      <div class="flex gap-1 mb-3" style="color:#d4af37;">
+       ★★★★★
+      </div>
+      <p class="text-slate-300 text-sm mb-4 italic">"The sunrise vs sunset collection alone was worth it. Every image is a mood."</p>
+      <p class="text-xs text-slate-500 font-medium">— Priya K., Writer</p>
+     </div>
+     <div class="animate-on-scroll glass-card rounded-2xl p-6 min-w-[300px] max-w-[340px] flex-shrink-0 snap-start" style="transition-delay:0.3s;">
+      <div class="flex gap-1 mb-3" style="color:#d4af37;">
+       ★★★★★
+      </div>
+      <p class="text-slate-300 text-sm mb-4 italic">"Used the postcards for thank-you notes. People thought they were hand-painted. 10/10."</p>
+      <p class="text-xs text-slate-500 font-medium">— Marcus L., Teacher</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- DOWNLOAD CTA -->
+  <section id="download" class="relative w-full py-28 px-6 grain-overlay" style="background:linear-gradient(180deg,#0c1929,#0a1628);">
+   <div class="max-w-3xl mx-auto text-center">
+    <div class="animate-on-scroll">
+     <p class="text-xs tracking-[0.3em] uppercase mb-4 font-medium" style="color:#d4af37;">Ready?</p>
+     <h2 id="bottom-cta" class="font-display text-4xl sm:text-6xl font-bold mb-6">Make your screen breathe.</h2>
+     <p class="text-slate-400 mb-10 max-w-md mx-auto">180 wallpapers · 30 posters · 20 postcards · Sunrise vs Sunset bonus. One instant download.</p><a href="#" id="download-cta" class="inline-block px-10 py-4 rounded-full font-semibold text-sm tracking-wide text-slate-950 transition hover:scale-105" style="background:#d4af37;animation:pulse-soft 3s ease infinite;" onclick="event.preventDefault();">Download the Vault — Instant Access</a>
+    </div>
+   </div>
+  </section><!-- VOTE + COMMENT -->
+  <section class="relative w-full py-20 px-6" style="background:linear-gradient(180deg,#0a1628,#0f172a);">
+   <div class="max-w-2xl mx-auto">
+    <div class="animate-on-scroll glass-card rounded-2xl p-8 text-center">
+     <h3 class="font-display text-2xl font-bold mb-2">Vote + Comment</h3>
+     <p class="text-slate-400 text-sm mb-6">Which collection should we expand next? Drop your vote below.</p>
+     <div class="grid grid-cols-2 gap-3 mb-6" id="vote-area"><button onclick="vote(this,'Fog + Glass')" class="vote-btn glass-card rounded-xl py-3 px-4 text-sm font-medium transition hover:border-amber-400/50 flex items-center justify-center gap-2">🌫️ Fog + Glass <span class="vote-count text-xs opacity-50"></span></button> <button onclick="vote(this,'Dock Days')" class="vote-btn glass-card rounded-xl py-3 px-4 text-sm font-medium transition hover:border-amber-400/50 flex items-center justify-center gap-2">🛶 Dock Days <span class="vote-count text-xs opacity-50"></span></button> <button onclick="vote(this,'Mountain Mirror')" class="vote-btn glass-card rounded-xl py-3 px-4 text-sm font-medium transition hover:border-amber-400/50 flex items-center justify-center gap-2">🏔️ Mountain Mirror <span class="vote-count text-xs opacity-50"></span></button> <button onclick="vote(this,'Night Lakes')" class="vote-btn glass-card rounded-xl py-3 px-4 text-sm font-medium transition hover:border-amber-400/50 flex items-center justify-center gap-2">🌙 Night Lakes <span class="vote-count text-xs opacity-50"></span></button>
+     </div>
+     <p id="vote-msg" class="text-sm mb-6 hidden" style="color:#d4af37;"></p>
+     <div class="border-t border-white/10 pt-6"><textarea id="comment-box" placeholder="Leave a comment or suggestion..." rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50 resize-none"></textarea> <button onclick="submitComment()" class="mt-3 px-6 py-2.5 rounded-full text-sm font-semibold transition hover:scale-105" style="background:#d4af37;color:#0f172a;">Submit Comment</button>
+      <p id="comment-msg" class="text-sm mt-3 hidden" style="color:#d4af37;"></p>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full py-10 px-6 text-center" style="background:#0f172a;border-top:1px solid rgba(255,255,255,0.06);">
+   <p class="font-display text-lg mb-2" style="color:#d4af37;">LakeGlass Vault</p>
+   <p class="text-slate-500 text-xs">Still water, loud beauty. © 2025</p>
+  </footer>
+  <script>
+    // Default config
+    const defaultConfig = {
+      hero_title: "Your calm, curated.",
+      hero_subtitle: "Lake wallpapers and prints for screens and spaces.",
+      collection_1_name: "Fog + Glass",
+      collection_2_name: "Dock Days",
+      collection_3_name: "Mountain Mirror",
+      collection_4_name: "Night Lakes",
+      bottom_cta_text: "Make your screen breathe.",
+      background_color: "#0f172a",
+      accent_color: "#d4af37",
+      text_color: "#f1f5f9",
+      surface_color: "rgba(255,255,255,0.08)",
+      secondary_action_color: "#94a3b8",
+      font_family: "Playfair Display",
+      font_size: 16
+    };
+
+    // Element SDK
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => {
+        const c = { ...defaultConfig, ...config };
+        // Text
+        document.getElementById('hero-title').textContent = c.hero_title;
+        document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+        document.getElementById('coll-1').textContent = c.collection_1_name;
+        document.getElementById('coll-2').textContent = c.collection_2_name;
+        document.getElementById('coll-3').textContent = c.collection_3_name;
+        document.getElementById('coll-4').textContent = c.collection_4_name;
+        document.getElementById('bottom-cta').textContent = c.bottom_cta_text;
+
+        // Colors
+        document.body.style.backgroundColor = c.background_color;
+        document.querySelectorAll('.glass-card').forEach(el => {
+          el.style.borderColor = `${c.accent_color}15`;
+        });
+
+        // Font
+        const fontStack = `${c.font_family}, Playfair Display, Georgia, serif`;
+        document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => {
+          el.style.fontFamily = fontStack;
+        });
+
+        // Font size
+        const base = c.font_size;
+        const heroTitle = document.getElementById('hero-title');
+        const isMobile = window.innerWidth < 640;
+        heroTitle.style.fontSize = `${base * (isMobile ? 3 : 5)}px`;
+        document.getElementById('hero-subtitle').style.fontSize = `${base * 1.25}px`;
+        document.getElementById('bottom-cta').style.fontSize = `${base * (isMobile ? 2.5 : 3.75)}px`;
+
+        // Accent color application
+        document.querySelectorAll('[style*="color:#d4af37"], [style*="color: #d4af37"]').forEach(el => {
+          el.style.color = c.accent_color;
+        });
+        document.getElementById('hero-cta-1').style.backgroundColor = c.accent_color;
+        document.getElementById('download-cta').style.backgroundColor = c.accent_color;
+      },
+      mapToCapabilities: (config) => {
+        const c = { ...defaultConfig, ...config };
+        return {
+          recolorables: [
+            { get: () => c.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => c.surface_color === defaultConfig.surface_color ? '#1e293b' : c.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => c.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => c.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+            { get: () => c.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => c.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => c.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        };
+      },
+      mapToEditPanelValues: (config) => {
+        const c = { ...defaultConfig, ...config };
+        return new Map([
+          ["hero_title", c.hero_title],
+          ["hero_subtitle", c.hero_subtitle],
+          ["collection_1_name", c.collection_1_name],
+          ["collection_2_name", c.collection_2_name],
+          ["collection_3_name", c.collection_3_name],
+          ["collection_4_name", c.collection_4_name],
+          ["bottom_cta_text", c.bottom_cta_text]
+        ]);
+      }
+    });
+
+    // Mobile nav
+    document.getElementById('mobile-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Active nav
+    const sections = ['home','wallpapers','collections','prints','reviews','download'];
+    const navLinks = document.querySelectorAll('.nav-link');
+    const scrollContainer = document.querySelector('body');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top < 200) current = id;
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('nav-active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('nav-active');
+      });
+    }, { passive: true });
+
+    // Vote
+    let voted = false;
+    function vote(btn, name) {
+      if (voted) return;
+      voted = true;
+      btn.style.borderColor = '#d4af37';
+      btn.style.background = 'rgba(212,175,55,0.15)';
+      const msg = document.getElementById('vote-msg');
+      msg.textContent = `Thanks! You voted for "${name}." 🌊`;
+      msg.classList.remove('hidden');
+    }
+
+    // Comment
+    function submitComment() {
+      const box = document.getElementById('comment-box');
+      const msg = document.getElementById('comment-msg');
+      if (box.value.trim()) {
+        msg.textContent = "Comment received — thank you! 💙";
+        msg.classList.remove('hidden');
+        box.value = '';
+      }
+    }
+
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5149e7ae27c5',t:'MTc3NTU3ODM4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

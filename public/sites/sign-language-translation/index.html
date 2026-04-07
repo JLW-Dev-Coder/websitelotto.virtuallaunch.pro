@@ -1,1 +1,576 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/de96edd4-b6db-4e9c-8cfa-f36a90ed0b43 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenHands Interpreting</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; }
+    .grad-text { background: linear-gradient(135deg, #0d9488, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .grad-bg { background: linear-gradient(135deg, #0d9488, #7c3aed); }
+    .grad-bg-soft { background: linear-gradient(135deg, #f0fdfa, #f5f3ff); }
+    .grad-border { border-image: linear-gradient(135deg, #0d9488, #7c3aed) 1; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(13,148,136,0.4); } 50% { box-shadow: 0 0 20px 6px rgba(124,58,237,0.2); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+    .anim-fade-up { animation: fadeUp 0.7s ease both; }
+    .anim-delay-1 { animation-delay: 0.1s; }
+    .anim-delay-2 { animation-delay: 0.2s; }
+    .anim-delay-3 { animation-delay: 0.3s; }
+    .anim-delay-4 { animation-delay: 0.4s; }
+    .anim-delay-5 { animation-delay: 0.5s; }
+    .anim-delay-6 { animation-delay: 0.6s; }
+    .pulse-cta { animation: pulse-glow 2.5s ease-in-out infinite; }
+    .float-icon { animation: float 3s ease-in-out infinite; }
+    .slide-in { animation: slideIn 0.6s ease both; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #0d9488, #7c3aed); transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    .tile-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .tile-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+
+    .sticky-nav { backdrop-filter: blur(12px); background: rgba(255,255,255,0.9); }
+
+    .review-track { display: flex; gap: 1.5rem; animation: scroll-reviews 20s linear infinite; }
+    @keyframes scroll-reviews { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+    .faq-answer.open { max-height: 500px; padding-top: 0.75rem; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 600: '#0d9488', 700: '#0f766e' },
+            violet: { 600: '#7c3aed', 700: '#6d28d9' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-white"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="sticky-nav fixed top-0 left-0 w-full z-50 border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2"> <span class="grad-bg text-white rounded-xl w-9 h-9 flex items-center justify-center text-lg">🤟</span> <span class="font-bold text-gray-900 text-lg tracking-tight">OpenHands</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600"><a href="#home" class="nav-link hover:text-gray-900">Home</a> <a href="#services" class="nav-link hover:text-gray-900">Services</a> <a href="#who" class="nav-link hover:text-gray-900">Who It's For</a> <a href="#process" class="nav-link hover:text-gray-900">Process</a> <a href="#faq" class="nav-link hover:text-gray-900">FAQ</a> <a href="#book" class="grad-bg text-white px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition">Book</a>
+     </div><button id="mobile-toggle" class="md:hidden text-gray-700" aria-label="Toggle menu"><i data-lucide="menu" class="w-6 h-6"></i></button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-100 bg-white px-4 pb-4 pt-2 space-y-3 text-sm font-medium text-gray-600"><a href="#home" class="block py-1">Home</a> <a href="#services" class="block py-1">Services</a> <a href="#who" class="block py-1">Who It's For</a> <a href="#process" class="block py-1">Process</a> <a href="#faq" class="block py-1">FAQ</a> <a href="#book" class="block grad-bg text-white text-center py-2 rounded-full font-semibold">Book Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="pt-28 pb-20 px-4 sm:px-6 grad-bg-soft relative overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+     <div class="flex-1 text-center lg:text-left">
+      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-4 anim-fade-up">Accessibility you can trust</p>
+      <h1 id="el-hero-title" class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6 anim-fade-up anim-delay-1">Make every conversation <span class="grad-text">accessible.</span></h1>
+      <p id="el-hero-subtitle" class="text-gray-600 text-lg sm:text-xl max-w-lg mx-auto lg:mx-0 mb-8 anim-fade-up anim-delay-2">Professional sign language support for events, business, and education.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start anim-fade-up anim-delay-3"><a href="#book" class="grad-bg text-white px-8 py-3.5 rounded-full font-semibold text-center hover:opacity-90 transition pulse-cta">Book Now</a> <a href="#services" class="border-2 border-gray-300 text-gray-700 px-8 py-3.5 rounded-full font-semibold text-center hover:border-teal-600 hover:text-teal-600 transition">View Services</a>
+      </div>
+     </div>
+     <div class="flex-1 relative anim-fade-up anim-delay-4">
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&amp;h=450&amp;fit=crop" alt="Professional interpreter at work" loading="lazy" class="w-full h-auto" onerror="this.style.background='linear-gradient(135deg,#f0fdfa,#f5f3ff)';this.alt='Professional interpreter';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      </div>
+      <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 float-icon"><span class="grad-bg text-white w-10 h-10 rounded-full flex items-center justify-center text-xl">✋</span>
+       <div>
+        <p class="font-semibold text-gray-900 text-sm">500+ Events</p>
+        <p class="text-gray-500 text-xs">Supported this year</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Services -->
+   <section id="services" class="py-20 px-4 sm:px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal">
+      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">What We Offer</p>
+      <h2 id="el-services-title" class="font-display text-3xl sm:text-4xl font-bold text-gray-900">Our Services</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="users" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Event Interpreting</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Live ASL interpreting for conferences, ceremonies, meetings, and public events of any size.</p>
+      </div>
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center" style="transition-delay:0.1s">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="video" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Virtual / Remote</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Video remote interpreting (VRI) for Zoom, Teams, and all major platforms with seamless integration.</p>
+      </div>
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center" style="transition-delay:0.2s">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="heart" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Healthcare Access</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">HIPAA-compliant interpreting for hospitals, clinics, therapy sessions, and medical consultations.</p>
+      </div>
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center" style="transition-delay:0.3s">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="book-open" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Education Support</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">K-12 and higher ed interpreting, IEP meetings, lectures, and parent-teacher conferences.</p>
+      </div>
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center" style="transition-delay:0.4s">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="briefcase" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Workplace Access</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Staff meetings, onboarding, HR sessions, and ongoing workplace accommodation support.</p>
+      </div>
+      <div class="reveal tile-card bg-white border border-gray-100 rounded-2xl p-7 text-center" style="transition-delay:0.5s">
+       <div class="grad-bg w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <i data-lucide="file-text" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-bold text-gray-900 text-lg mb-2">Consulting &amp; Policy</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Communication access plans, ADA compliance reviews, and accessibility policy templates.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Who It's For -->
+   <section id="who" class="py-20 px-4 sm:px-6 grad-bg-soft">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal">
+      <p class="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3">Built For You</p>
+      <h2 id="el-who-title" class="font-display text-3xl sm:text-4xl font-bold text-gray-900">Who It's For</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal tile-card bg-white rounded-2xl overflow-hidden shadow-sm"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&amp;h=250&amp;fit=crop" alt="Classroom setting" loading="lazy" class="w-full h-40 object-cover" onerror="this.style.background='#f0fdfa';this.alt='Education';">
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+         <i data-lucide="graduation-cap" class="w-5 h-5 text-teal-600"></i>
+         <h3 class="font-bold text-gray-900">Schools</h3>
+        </div>
+        <p class="text-gray-500 text-sm">K-12, universities, and training programs.</p>
+       </div>
+      </div>
+      <div class="reveal tile-card bg-white rounded-2xl overflow-hidden shadow-sm" style="transition-delay:0.1s"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&amp;h=250&amp;fit=crop" alt="Healthcare setting" loading="lazy" class="w-full h-40 object-cover" onerror="this.style.background='#f5f3ff';this.alt='Healthcare';">
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+         <i data-lucide="heart-pulse" class="w-5 h-5 text-teal-600"></i>
+         <h3 class="font-bold text-gray-900">Healthcare</h3>
+        </div>
+        <p class="text-gray-500 text-sm">Hospitals, clinics, and therapy providers.</p>
+       </div>
+      </div>
+      <div class="reveal tile-card bg-white rounded-2xl overflow-hidden shadow-sm" style="transition-delay:0.2s"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&amp;h=250&amp;fit=crop" alt="Diverse team in meeting" loading="lazy" class="w-full h-40 object-cover" onerror="this.style.background='#f0fdfa';this.alt='Workplace';">
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+         <i data-lucide="building-2" class="w-5 h-5 text-teal-600"></i>
+         <h3 class="font-bold text-gray-900">Workplaces</h3>
+        </div>
+        <p class="text-gray-500 text-sm">Corporate, government, and non-profit orgs.</p>
+       </div>
+      </div>
+      <div class="reveal tile-card bg-white rounded-2xl overflow-hidden shadow-sm" style="transition-delay:0.3s"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&amp;h=250&amp;fit=crop" alt="Conference event" loading="lazy" class="w-full h-40 object-cover" onerror="this.style.background='#f5f3ff';this.alt='Events';">
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+         <i data-lucide="calendar" class="w-5 h-5 text-teal-600"></i>
+         <h3 class="font-bold text-gray-900">Events</h3>
+        </div>
+        <p class="text-gray-500 text-sm">Conferences, ceremonies, and public gatherings.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Process -->
+   <section id="process" class="py-20 px-4 sm:px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14 reveal">
+      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Simple &amp; Clear</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900">How It Works</h2>
+     </div>
+     <div class="space-y-0 relative">
+      <div class="absolute left-6 sm:left-8 top-8 bottom-8 w-0.5 grad-bg opacity-20"></div>
+      <div class="reveal flex gap-5 sm:gap-7 items-start py-6">
+       <div class="grad-bg text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-lg shrink-0 z-10 shadow-lg">
+        1
+       </div>
+       <div>
+        <h3 class="font-bold text-gray-900 text-lg mb-1">Submit Your Request</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Fill out our quick booking form with event details, date, and access needs.</p>
+       </div>
+      </div>
+      <div class="reveal flex gap-5 sm:gap-7 items-start py-6" style="transition-delay:0.1s">
+       <div class="grad-bg text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-lg shrink-0 z-10 shadow-lg">
+        2
+       </div>
+       <div>
+        <h3 class="font-bold text-gray-900 text-lg mb-1">Get Matched</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">We pair you with a certified interpreter who fits your specific context and needs.</p>
+       </div>
+      </div>
+      <div class="reveal flex gap-5 sm:gap-7 items-start py-6" style="transition-delay:0.2s">
+       <div class="grad-bg text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-lg shrink-0 z-10 shadow-lg">
+        3
+       </div>
+       <div>
+        <h3 class="font-bold text-gray-900 text-lg mb-1">Confirm &amp; Prepare</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Review your interpreter's profile, confirm logistics, and share any prep materials.</p>
+       </div>
+      </div>
+      <div class="reveal flex gap-5 sm:gap-7 items-start py-6" style="transition-delay:0.3s">
+       <div class="grad-bg text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-bold text-lg shrink-0 z-10 shadow-lg">
+        4
+       </div>
+       <div>
+        <h3 class="font-bold text-gray-900 text-lg mb-1">Accessible Event Day</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Your interpreter arrives prepared. Everyone participates fully and equally.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section class="py-20 px-4 sm:px-6 grad-bg-soft overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="text-violet-600 font-semibold text-sm uppercase tracking-widest mb-3">Trusted By Many</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900">What People Say</h2>
+     </div>
+     <div class="overflow-hidden">
+      <div class="review-track" style="width: max-content;">
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"OpenHands made our annual conference fully accessible for the first time. The interpreter was outstanding."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Maria L., Event Director</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"Booking was effortless. Our Deaf employees finally felt fully included in team meetings."</p>
+        <p class="font-semibold text-gray-900 text-sm">— James T., HR Manager</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"The healthcare interpreter understood medical terminology perfectly. Our patient felt safe and heard."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Dr. Sarah K., Clinic Director</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"They helped us develop a full communication access policy. True partners in inclusion."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Priya N., School Administrator</p>
+       </div><!-- Duplicate for infinite scroll -->
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"OpenHands made our annual conference fully accessible for the first time. The interpreter was outstanding."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Maria L., Event Director</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"Booking was effortless. Our Deaf employees finally felt fully included in team meetings."</p>
+        <p class="font-semibold text-gray-900 text-sm">— James T., HR Manager</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"The healthcare interpreter understood medical terminology perfectly. Our patient felt safe and heard."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Dr. Sarah K., Clinic Director</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-sm min-w-[300px] max-w-[340px]">
+        <div class="flex gap-1 mb-3 text-yellow-400">
+         ★★★★★
+        </div>
+        <p class="text-gray-600 text-sm mb-4 leading-relaxed">"They helped us develop a full communication access policy. True partners in inclusion."</p>
+        <p class="font-semibold text-gray-900 text-sm">— Priya N., School Administrator</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 sm:px-6 bg-white">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14 reveal">
+      <p class="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">Common Questions</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-900">FAQ</h2>
+     </div>
+     <div class="space-y-3 reveal" id="faq-list">
+      <div class="faq-item border border-gray-100 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between font-semibold text-gray-900 hover:bg-gray-50 transition" aria-expanded="false"> <span>How far in advance should I book?</span><i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i> </button>
+       <div class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+        We recommend at least 5–7 business days. Rush requests are accommodated when possible with a small surcharge.
+       </div>
+      </div>
+      <div class="faq-item border border-gray-100 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between font-semibold text-gray-900 hover:bg-gray-50 transition" aria-expanded="false"> <span>Are your interpreters certified?</span><i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i> </button>
+       <div class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+        Yes. All of our interpreters hold national certification (NIC, CI/CT, or BEI) and carry professional liability insurance.
+       </div>
+      </div>
+      <div class="faq-item border border-gray-100 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between font-semibold text-gray-900 hover:bg-gray-50 transition" aria-expanded="false"> <span>Do you provide virtual interpreting?</span><i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i> </button>
+       <div class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+        Absolutely. We support Zoom, Microsoft Teams, Google Meet, Webex, and most other video platforms.
+       </div>
+      </div>
+      <div class="faq-item border border-gray-100 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between font-semibold text-gray-900 hover:bg-gray-50 transition" aria-expanded="false"> <span>What does it cost?</span><i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i> </button>
+       <div class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+        Pricing depends on duration, specialization, and format. Contact us for a free quote — no obligation.
+       </div>
+      </div>
+      <div class="faq-item border border-gray-100 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between font-semibold text-gray-900 hover:bg-gray-50 transition" aria-expanded="false"> <span>What's included in the digital toolkit?</span><i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i> </button>
+       <div class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+        Our toolkit includes an accessibility checklist PDF, booking intake form, communication access policy template, promo flyers, and FAQ scripts.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Book / CTA -->
+   <section id="book" class="py-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 grad-bg opacity-95"></div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="reveal"><span class="text-5xl mb-6 block">🤟</span>
+      <h2 id="el-bottom-cta" class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">Book support with confidence.</h2>
+      <p class="text-white/80 text-lg mb-8 max-w-md mx-auto">Fill out our quick intake form and we'll match you with the right interpreter within 24 hours.</p>
+     </div><!-- Booking Form -->
+     <form id="booking-form" class="reveal bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 text-left space-y-4 max-w-lg mx-auto border border-white/20" style="transition-delay:0.15s">
+      <div class="grid sm:grid-cols-2 gap-4">
+       <div><label for="bf-name" class="text-white/90 text-sm font-medium mb-1 block">Your Name</label> <input id="bf-name" type="text" placeholder="Jane Smith" class="w-full px-4 py-2.5 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:border-white/60 text-sm">
+       </div>
+       <div><label for="bf-email" class="text-white/90 text-sm font-medium mb-1 block">Email</label> <input id="bf-email" type="email" placeholder="jane@org.com" class="w-full px-4 py-2.5 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:border-white/60 text-sm">
+       </div>
+      </div>
+      <div><label for="bf-type" class="text-white/90 text-sm font-medium mb-1 block">Service Type</label> <select id="bf-type" class="w-full px-4 py-2.5 rounded-xl bg-white/20 text-white border border-white/20 focus:outline-none focus:border-white/60 text-sm"> <option value="" class="text-gray-800">Select service...</option> <option value="event" class="text-gray-800">Event Interpreting</option> <option value="virtual" class="text-gray-800">Virtual / Remote</option> <option value="healthcare" class="text-gray-800">Healthcare Access</option> <option value="education" class="text-gray-800">Education Support</option> <option value="workplace" class="text-gray-800">Workplace Access</option> <option value="consulting" class="text-gray-800">Consulting &amp; Policy</option> </select>
+      </div>
+      <div><label for="bf-date" class="text-white/90 text-sm font-medium mb-1 block">Preferred Date</label> <input id="bf-date" type="date" class="w-full px-4 py-2.5 rounded-xl bg-white/20 text-white border border-white/20 focus:outline-none focus:border-white/60 text-sm">
+      </div>
+      <div><label for="bf-details" class="text-white/90 text-sm font-medium mb-1 block">Additional Details</label> <textarea id="bf-details" rows="3" placeholder="Tell us about your event or needs..." class="w-full px-4 py-2.5 rounded-xl bg-white/20 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:border-white/60 text-sm resize-none"></textarea>
+      </div><button type="submit" class="w-full bg-white text-teal-700 font-bold py-3 rounded-xl hover:bg-gray-100 transition text-sm">Submit Booking Request</button>
+      <p id="form-msg" class="text-center text-sm text-white/80 hidden"></p>
+     </form>
+    </div>
+   </section><!-- Vote + Comment Widget -->
+   <section class="py-16 px-4 sm:px-6 grad-bg-soft">
+    <div class="max-w-2xl mx-auto reveal">
+     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+      <h3 class="font-display text-xl font-bold text-gray-900 mb-2 text-center">Vote + Comment</h3>
+      <p class="text-gray-500 text-sm text-center mb-6">How important is accessibility at your organization?</p>
+      <div class="flex justify-center gap-3 mb-6" id="vote-buttons"><button data-vote="essential" class="vote-btn px-5 py-2.5 rounded-full border-2 border-teal-200 text-teal-700 font-semibold text-sm hover:bg-teal-50 transition">🟢 Essential</button> <button data-vote="important" class="vote-btn px-5 py-2.5 rounded-full border-2 border-violet-200 text-violet-700 font-semibold text-sm hover:bg-violet-50 transition">🟣 Important</button> <button data-vote="learning" class="vote-btn px-5 py-2.5 rounded-full border-2 border-gray-200 text-gray-600 font-semibold text-sm hover:bg-gray-50 transition">📘 Still Learning</button>
+      </div>
+      <div id="vote-result" class="hidden text-center mb-6">
+       <p class="text-teal-600 font-semibold text-sm">Thanks for voting!</p>
+       <div class="flex justify-center gap-6 mt-3 text-xs text-gray-500" id="vote-counts"></div>
+      </div>
+      <div class="border-t border-gray-100 pt-5"><label for="widget-comment" class="text-gray-700 font-medium text-sm mb-2 block">Leave a comment</label>
+       <div class="flex gap-2"><input id="widget-comment" type="text" placeholder="Share your thoughts..." class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-teal-400"> <button id="comment-submit" class="grad-bg text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition">Post</button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-3"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 px-4 sm:px-6 bg-gray-900 text-gray-400">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2"><span class="grad-bg text-white rounded-lg w-8 h-8 flex items-center justify-center text-sm">🤟</span> <span class="text-white font-semibold">OpenHands Interpreting</span>
+     </div>
+     <p class="text-sm">© 2024 OpenHands Interpreting. Accessibility you can trust.</p>
+     <div class="flex gap-4"><a href="#" class="hover:text-white transition"><i data-lucide="facebook" class="w-5 h-5"></i></a> <a href="#" class="hover:text-white transition"><i data-lucide="instagram" class="w-5 h-5"></i></a> <a href="#" class="hover:text-white transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a> <a href="#" class="hover:text-white transition"><i data-lucide="mail" class="w-5 h-5"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+  // Default config
+  const defaultConfig = {
+    hero_title: 'Make every conversation accessible.',
+    hero_subtitle: 'Professional sign language support for events, business, and education.',
+    services_title: 'Our Services',
+    who_title: "Who It's For",
+    bottom_cta_text: 'Book support with confidence.',
+    background_color: '#ffffff',
+    surface_color: '#f0fdfa',
+    text_color: '#111827',
+    primary_action_color: '#0d9488',
+    secondary_action_color: '#7c3aed'
+  };
+
+  function applyConfig(config) {
+    const g = (k) => config[k] || defaultConfig[k];
+
+    // Text
+    const heroEl = document.getElementById('el-hero-title');
+    const heroText = g('hero_title');
+    heroEl.innerHTML = heroText.replace(/(accessible\.?)$/i, '<span class="grad-text">$1</span>');
+
+    document.getElementById('el-hero-subtitle').textContent = g('hero_subtitle');
+    document.getElementById('el-services-title').textContent = g('services_title');
+    document.getElementById('el-who-title').textContent = g('who_title');
+    document.getElementById('el-bottom-cta').textContent = g('bottom_cta_text');
+
+    // Colors
+    const bg = g('background_color');
+    const surface = g('surface_color');
+    const text = g('text_color');
+    const primary = g('primary_action_color');
+    const secondary = g('secondary_action_color');
+
+    document.documentElement.style.setProperty('--bg', bg);
+    document.getElementById('app-wrapper').style.backgroundColor = bg;
+
+    // Apply text color to main headings
+    document.querySelectorAll('.font-display').forEach(el => { el.style.color = text; });
+    document.querySelectorAll('.text-gray-900').forEach(el => { el.style.color = text; });
+
+    // Gradient backgrounds
+    const gradEls = document.querySelectorAll('.grad-bg');
+    gradEls.forEach(el => { el.style.background = `linear-gradient(135deg, ${primary}, ${secondary})`; });
+
+    const gradSoftEls = document.querySelectorAll('.grad-bg-soft');
+    gradSoftEls.forEach(el => { el.style.background = `linear-gradient(135deg, ${surface}, #f5f3ff)`; });
+
+    // Font
+    const font = g('font_family');
+    if (font) {
+      document.querySelectorAll('.font-display').forEach(el => {
+        el.style.fontFamily = `${font}, Playfair Display, serif`;
+      });
+      document.body.style.fontFamily = `${font}, DM Sans, sans-serif`;
+    }
+
+    const fs = g('font_size');
+    if (fs) {
+      document.querySelectorAll('.font-display').forEach(el => {
+        // Scale display headings
+      });
+    }
+  }
+
+  // Element SDK init
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family || 'DM Sans',
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size || 16,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['services_title', config.services_title || defaultConfig.services_title],
+      ['who_title', config.who_title || defaultConfig.who_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-toggle').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const answer = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      const isOpen = answer.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-toggle i').forEach(i => i.style.transform = '');
+      document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      if (!isOpen) {
+        answer.classList.add('open');
+        icon.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Booking form
+  document.getElementById('booking-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('form-msg');
+    msg.textContent = '✓ Request submitted! We\'ll be in touch within 24 hours.';
+    msg.classList.remove('hidden');
+    e.target.reset();
+    setTimeout(() => msg.classList.add('hidden'), 5000);
+  });
+
+  // Vote widget
+  const votes = { essential: 0, important: 0, learning: 0 };
+  document.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.vote;
+      votes[v]++;
+      document.getElementById('vote-buttons').classList.add('hidden');
+      const result = document.getElementById('vote-result');
+      result.classList.remove('hidden');
+      document.getElementById('vote-counts').innerHTML =
+        `<span>🟢 Essential: ${votes.essential}</span><span>🟣 Important: ${votes.important}</span><span>📘 Learning: ${votes.learning}</span>`;
+    });
+  });
+
+  // Comment widget
+  const comments = [];
+  document.getElementById('comment-submit').addEventListener('click', () => {
+    const input = document.getElementById('widget-comment');
+    const text = input.value.trim();
+    if (!text) return;
+    comments.push(text);
+    input.value = '';
+    const list = document.getElementById('comments-list');
+    const div = document.createElement('div');
+    div.className = 'bg-gray-50 rounded-xl px-4 py-3 text-sm text-gray-700 slide-in';
+    div.innerHTML = `<span class="text-gray-400 text-xs">Just now</span><p class="mt-1">${text.replace(/</g,'&lt;')}</p>`;
+    list.prepend(div);
+  });
+
+  // Init lucide
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6492677127c5',t:'MTc3NTU3OTE3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

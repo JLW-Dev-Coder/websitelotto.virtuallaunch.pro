@@ -1,1 +1,481 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5cfc5fcd-601c-4ae1-a91e-e5e5744e0c07 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrameFolio Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['DM Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .app-root { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(191, 163, 128, 0.4); } 50% { box-shadow: 0 0 20px 6px rgba(191, 163, 128, 0.15); } }
+    @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+
+    .anim-fade-up { animation: fadeUp 0.8s ease both; }
+    .anim-fade-in { animation: fadeIn 1s ease both; }
+    .anim-shimmer { background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%); background-size: 200% 100%; animation: shimmer 3s infinite; }
+    .anim-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
+    .anim-zoom { animation: slowZoom 12s ease-in-out infinite alternate; }
+    .anim-slide-left { animation: slideInLeft 0.7s ease both; }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hero-overlay {
+      background: linear-gradient(135deg, rgba(250,247,242,0.92) 0%, rgba(250,247,242,0.6) 50%, rgba(250,247,242,0.3) 100%);
+    }
+
+    .section-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .section-reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .star-rating { color: #BFA380; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-[#FAF7F2]">
+  <div class="app-root w-full font-sans text-[#2C2825]" id="app-root"><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-[#E8E2D9]" id="main-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="font-serif text-xl font-bold tracking-tight" id="nav-logo" style="color:#2C2825;">FrameFolio</a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium" id="nav-links"><a href="#home" class="hover:opacity-70 transition">Home</a> <a href="#bestsellers" class="hover:opacity-70 transition">Best Sellers</a> <a href="#gallery" class="hover:opacity-70 transition">Gallery Walls</a> <a href="#sizing" class="hover:opacity-70 transition">Sizing</a> <a href="#reviews" class="hover:opacity-70 transition">Reviews</a> <a href="#shop" class="anim-pulse rounded-full px-4 py-1.5 text-white text-sm font-semibold" style="background:#BFA380;" id="nav-cta">Shop Now</a>
+     </div><button class="md:hidden" id="mobile-menu-btn" aria-label="Menu"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    </div><!-- Mobile menu -->
+    <div class="md:hidden hidden flex-col gap-3 px-6 pb-4 text-sm font-medium" id="mobile-menu"><a href="#home" class="py-1">Home</a> <a href="#bestsellers" class="py-1">Best Sellers</a> <a href="#gallery" class="py-1">Gallery Walls</a> <a href="#sizing" class="py-1">Sizing</a> <a href="#reviews" class="py-1">Reviews</a> <a href="#shop" class="py-1 font-semibold" style="color:#BFA380;">Shop Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:600px;">
+    <div class="absolute inset-0 anim-zoom"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=1600&amp;q=80" alt="Modern interior with gallery wall" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#E8E2D9,#D4C9BC)';this.alt='Image unavailable';">
+    </div>
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col justify-center items-start max-w-7xl mx-auto px-6 sm:px-10 py-32 sm:py-40" style="min-height:600px;">
+     <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4 anim-fade-up delay-1" style="color:#BFA380;" id="hero-tagline">Make every wall look curated.</p>
+     <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight max-w-2xl anim-fade-up delay-2" id="hero-title">Your home deserves a gallery moment.</h1>
+     <p class="font-sans text-base sm:text-lg mt-4 max-w-lg opacity-80 anim-fade-up delay-3" id="hero-subtitle">Frames and sets designed to look curated instantly.</p>
+     <div class="flex flex-wrap gap-3 mt-8 anim-fade-up delay-4"><a href="#bestsellers" class="anim-pulse rounded-full px-7 py-3 text-white font-semibold text-sm shadow-lg transition hover:scale-105" style="background:#BFA380;" id="hero-cta-primary">Shop Frames</a> <a href="#gallery" class="rounded-full px-7 py-3 font-semibold text-sm border-2 transition hover:scale-105" style="border-color:#BFA380;color:#BFA380;" id="hero-cta-secondary">See Gallery Walls</a>
+     </div>
+    </div>
+   </section><!-- BEST SELLERS -->
+   <section id="bestsellers" class="section-reveal w-full py-20 px-6">
+    <div class="max-w-7xl mx-auto">
+     <p class="text-xs tracking-[0.3em] uppercase mb-2 text-center" style="color:#BFA380;">Curated for you</p>
+     <h2 class="font-serif text-3xl sm:text-4xl font-bold text-center mb-12" id="bestsellers-title">Best Sellers</h2>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="products-grid"><!-- Product 1 -->
+      <div class="glass-card rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-500 anim-fade-up delay-1">
+       <div class="relative overflow-hidden aspect-[4/5]"><img src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=600&amp;q=80" alt="Slim Oak Frame" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.style.background='#E8E2D9';this.alt='Image unavailable';">
+        <div class="absolute top-3 left-3 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold" style="color:#BFA380;">
+         ★ Best Seller
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-serif font-semibold text-lg">Slim Oak Frame</h3>
+        <p class="text-sm opacity-60 mt-1">Natural wood · 8×10"</p>
+        <div class="flex items-center justify-between mt-3"><span class="font-semibold text-lg" style="color:#BFA380;">$38</span> <button class="rounded-full px-4 py-1.5 text-xs font-semibold text-white transition hover:scale-105" style="background:#2C2825;">Add to Cart</button>
+        </div>
+       </div>
+      </div><!-- Product 2 -->
+      <div class="glass-card rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-500 anim-fade-up delay-2">
+       <div class="relative overflow-hidden aspect-[4/5]"><img src="https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&amp;q=80" alt="Matte Black Frame" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.style.background='#E8E2D9';this.alt='Image unavailable';">
+       </div>
+       <div class="p-4">
+        <h3 class="font-serif font-semibold text-lg">Matte Black Frame</h3>
+        <p class="text-sm opacity-60 mt-1">Aluminium · 11×14"</p>
+        <div class="flex items-center justify-between mt-3"><span class="font-semibold text-lg" style="color:#BFA380;">$42</span> <button class="rounded-full px-4 py-1.5 text-xs font-semibold text-white transition hover:scale-105" style="background:#2C2825;">Add to Cart</button>
+        </div>
+       </div>
+      </div><!-- Product 3 -->
+      <div class="glass-card rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-500 anim-fade-up delay-3">
+       <div class="relative overflow-hidden aspect-[4/5]"><img src="https://images.unsplash.com/photo-1596900779744-2bdc4a90509a?w=600&amp;q=80" alt="Walnut Gallery Frame" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.style.background='#E8E2D9';this.alt='Image unavailable';">
+       </div>
+       <div class="p-4">
+        <h3 class="font-serif font-semibold text-lg">Walnut Gallery Frame</h3>
+        <p class="text-sm opacity-60 mt-1">Premium walnut · 16×20"</p>
+        <div class="flex items-center justify-between mt-3"><span class="font-semibold text-lg" style="color:#BFA380;">$56</span> <button class="rounded-full px-4 py-1.5 text-xs font-semibold text-white transition hover:scale-105" style="background:#2C2825;">Add to Cart</button>
+        </div>
+       </div>
+      </div><!-- Product 4 -->
+      <div class="glass-card rounded-2xl overflow-hidden group hover:shadow-xl transition-all duration-500 anim-fade-up delay-4">
+       <div class="relative overflow-hidden aspect-[4/5]"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=600&amp;q=80" alt="White Float Frame" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.style.background='#E8E2D9';this.alt='Image unavailable';">
+        <div class="absolute top-3 left-3 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold" style="color:#BFA380;">
+         New
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-serif font-semibold text-lg">White Float Frame</h3>
+        <p class="text-sm opacity-60 mt-1">Lacquered wood · 12×16"</p>
+        <div class="flex items-center justify-between mt-3"><span class="font-semibold text-lg" style="color:#BFA380;">$45</span> <button class="rounded-full px-4 py-1.5 text-xs font-semibold text-white transition hover:scale-105" style="background:#2C2825;">Add to Cart</button>
+        </div>
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="flex flex-wrap justify-center gap-4 mt-12">
+      <div class="glass-card rounded-full px-5 py-2 text-sm font-medium flex items-center gap-2">
+       <i data-lucide="trending-up" style="width:16px;height:16px;color:#BFA380;"></i> Higher AOV with sets
+      </div>
+      <div class="glass-card rounded-full px-5 py-2 text-sm font-medium flex items-center gap-2">
+       <i data-lucide="home" style="width:16px;height:16px;color:#BFA380;"></i> Home decor always sells
+      </div>
+      <div class="glass-card rounded-full px-5 py-2 text-sm font-medium flex items-center gap-2">
+       <i data-lucide="sparkles" style="width:16px;height:16px;color:#BFA380;"></i> Premium minimal aesthetic
+      </div>
+     </div>
+    </div>
+   </section><!-- GALLERY WALLS -->
+   <section id="gallery" class="section-reveal w-full py-20 px-6" style="background:linear-gradient(180deg,#FAF7F2 0%,#F0EBE3 100%);">
+    <div class="max-w-7xl mx-auto">
+     <p class="text-xs tracking-[0.3em] uppercase mb-2 text-center" style="color:#BFA380;">Design your wall</p>
+     <h2 class="font-serif text-3xl sm:text-4xl font-bold text-center mb-4" id="gallery-title">Gallery Wall Sets</h2>
+     <p class="text-center opacity-60 mb-12 max-w-lg mx-auto">Pre-designed layouts that arrive ready to hang. No measuring, no guesswork.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6"><!-- Layout 1: 3-Piece -->
+      <div class="glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-500 group cursor-pointer">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-20 h-20 rounded-xl flex items-center justify-center gap-1" style="background:#F0EBE3;">
+         <div class="w-5 h-7 rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="w-6 h-9 rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="w-5 h-7 rounded-sm border-2" style="border-color:#BFA380;"></div>
+        </div>
+        <div>
+         <h3 class="font-serif font-semibold text-xl group-hover:translate-x-1 transition-transform">3-Piece Trio</h3>
+         <p class="text-sm opacity-60">Classic horizontal arrangement</p>
+        </div>
+       </div>
+       <div class="flex items-center justify-between"><span class="font-semibold text-lg" style="color:#BFA380;">$99 <span class="text-xs opacity-50 line-through ml-1">$114</span></span> <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:#BFA380;color:white;">Save 13%</span>
+       </div>
+      </div><!-- Layout 2: 6-Piece -->
+      <div class="glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-500 group cursor-pointer">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-20 h-20 rounded-xl grid grid-cols-3 grid-rows-2 gap-1 p-2" style="background:#F0EBE3;">
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="rounded-sm border-2" style="border-color:#BFA380;"></div>
+        </div>
+        <div>
+         <h3 class="font-serif font-semibold text-xl group-hover:translate-x-1 transition-transform">6-Piece Grid</h3>
+         <p class="text-sm opacity-60">Statement grid wall</p>
+        </div>
+       </div>
+       <div class="flex items-center justify-between"><span class="font-semibold text-lg" style="color:#BFA380;">$189 <span class="text-xs opacity-50 line-through ml-1">$228</span></span> <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:#BFA380;color:white;">Save 17%</span>
+       </div>
+      </div><!-- Layout 3: Staircase -->
+      <div class="glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-500 group cursor-pointer">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-20 h-20 rounded-xl flex items-end gap-1 p-2" style="background:#F0EBE3;">
+         <div class="w-4 h-4 rounded-sm border-2 mb-6" style="border-color:#BFA380;"></div>
+         <div class="w-4 h-5 rounded-sm border-2 mb-4" style="border-color:#BFA380;"></div>
+         <div class="w-4 h-4 rounded-sm border-2 mb-2" style="border-color:#BFA380;"></div>
+         <div class="w-4 h-5 rounded-sm border-2" style="border-color:#BFA380;"></div>
+        </div>
+        <div>
+         <h3 class="font-serif font-semibold text-xl group-hover:translate-x-1 transition-transform">Staircase Set</h3>
+         <p class="text-sm opacity-60">Perfect for hallways &amp; stairs</p>
+        </div>
+       </div>
+       <div class="flex items-center justify-between"><span class="font-semibold text-lg" style="color:#BFA380;">$129 <span class="text-xs opacity-50 line-through ml-1">$152</span></span> <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:#BFA380;color:white;">Save 15%</span>
+       </div>
+      </div><!-- Layout 4: Minimal -->
+      <div class="glass-card rounded-2xl p-6 hover:shadow-xl transition-all duration-500 group cursor-pointer">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-20 h-20 rounded-xl flex items-center justify-center gap-3 p-2" style="background:#F0EBE3;">
+         <div class="w-6 h-8 rounded-sm border-2" style="border-color:#BFA380;"></div>
+         <div class="w-6 h-8 rounded-sm border-2" style="border-color:#BFA380;"></div>
+        </div>
+        <div>
+         <h3 class="font-serif font-semibold text-xl group-hover:translate-x-1 transition-transform">Minimal Pair</h3>
+         <p class="text-sm opacity-60">Clean &amp; understated duo</p>
+        </div>
+       </div>
+       <div class="flex items-center justify-between"><span class="font-semibold text-lg" style="color:#BFA380;">$72 <span class="text-xs opacity-50 line-through ml-1">$84</span></span> <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:#BFA380;color:white;">Save 14%</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SIZING GUIDE -->
+   <section id="sizing" class="section-reveal w-full py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+     <p class="text-xs tracking-[0.3em] uppercase mb-2 text-center" style="color:#BFA380;">Find your fit</p>
+     <h2 class="font-serif text-3xl sm:text-4xl font-bold text-center mb-12" id="sizing-title">Frame Sizing Guide</h2>
+     <div class="glass-card rounded-2xl overflow-hidden">
+      <table class="w-full text-sm">
+       <thead>
+        <tr style="background:#F0EBE3;">
+         <th class="text-left px-6 py-4 font-semibold">Size</th>
+         <th class="text-left px-6 py-4 font-semibold">Dimensions</th>
+         <th class="text-left px-6 py-4 font-semibold">Best For</th>
+         <th class="text-right px-6 py-4 font-semibold">From</th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr class="border-t border-[#E8E2D9]">
+         <td class="px-6 py-4 font-medium">Small</td>
+         <td class="px-6 py-4 opacity-70">5×7" / 6×8"</td>
+         <td class="px-6 py-4 opacity-70">Shelves, desks</td>
+         <td class="px-6 py-4 text-right font-semibold" style="color:#BFA380;">$24</td>
+        </tr>
+        <tr class="border-t border-[#E8E2D9]">
+         <td class="px-6 py-4 font-medium">Medium</td>
+         <td class="px-6 py-4 opacity-70">8×10" / 11×14"</td>
+         <td class="px-6 py-4 opacity-70">Gallery walls</td>
+         <td class="px-6 py-4 text-right font-semibold" style="color:#BFA380;">$34</td>
+        </tr>
+        <tr class="border-t border-[#E8E2D9]">
+         <td class="px-6 py-4 font-medium">Large</td>
+         <td class="px-6 py-4 opacity-70">16×20" / 18×24"</td>
+         <td class="px-6 py-4 opacity-70">Statement pieces</td>
+         <td class="px-6 py-4 text-right font-semibold" style="color:#BFA380;">$52</td>
+        </tr>
+        <tr class="border-t border-[#E8E2D9]">
+         <td class="px-6 py-4 font-medium">Oversized</td>
+         <td class="px-6 py-4 opacity-70">24×36" / 30×40"</td>
+         <td class="px-6 py-4 opacity-70">Above sofa, bed</td>
+         <td class="px-6 py-4 text-right font-semibold" style="color:#BFA380;">$78</td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="section-reveal w-full py-20 px-6" style="background:linear-gradient(180deg,#FAF7F2 0%,#F0EBE3 100%);">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-xs tracking-[0.3em] uppercase mb-2 text-center" style="color:#BFA380;">Real customers</p>
+     <h2 class="font-serif text-3xl sm:text-4xl font-bold text-center mb-12" id="reviews-title">What Our Customers Say</h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass-card rounded-2xl p-6">
+       <div class="star-rating text-lg mb-3">
+        ★★★★★
+       </div>
+       <p class="italic opacity-80 mb-4">"These frames made my apartment look like it was styled by a professional. The gallery set was so easy to hang!"</p>
+       <p class="font-semibold text-sm">— Sarah M.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="star-rating text-lg mb-3">
+        ★★★★★
+       </div>
+       <p class="italic opacity-80 mb-4">"Finally, frames that don't look cheap. The walnut finish is gorgeous and the quality is incredible for the price."</p>
+       <p class="font-semibold text-sm">— James K.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <div class="star-rating text-lg mb-3">
+        ★★★★★
+       </div>
+       <p class="italic opacity-80 mb-4">"Bought the 6-piece set for our living room. Took 20 minutes to hang and it looks like we hired a decorator!"</p>
+       <p class="font-semibold text-sm">— Priya L.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="shop" class="section-reveal w-full py-24 px-6 text-center">
+    <div class="max-w-3xl mx-auto">
+     <h2 class="font-serif text-3xl sm:text-5xl font-bold mb-4" id="bottom-cta-title">Turn blank walls into art.</h2>
+     <p class="opacity-60 mb-8 max-w-md mx-auto">Shop curated frames and gallery wall sets designed for effortless style.</p><a href="#bestsellers" class="anim-pulse inline-block rounded-full px-10 py-4 text-white font-semibold text-base shadow-xl transition hover:scale-105" style="background:#BFA380;" id="bottom-shop-cta">Shop Frames</a>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="section-reveal w-full py-16 px-6" style="background:#F0EBE3;">
+    <div class="max-w-2xl mx-auto">
+     <div class="glass-card rounded-2xl p-8 text-center">
+      <h3 class="font-serif text-2xl font-bold mb-2">Vote + Comment</h3>
+      <p class="opacity-60 text-sm mb-6">Tell us what you'd love to see next!</p>
+      <div class="flex justify-center gap-4 mb-6" id="vote-buttons"><button class="vote-btn flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-sm border-2 transition hover:scale-105" style="border-color:#BFA380;color:#BFA380;" data-vote="new-colors" onclick="castVote(this)"> <i data-lucide="palette" style="width:16px;height:16px;"></i> New Colors <span class="vote-count font-bold">24</span> </button> <button class="vote-btn flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-sm border-2 transition hover:scale-105" style="border-color:#BFA380;color:#BFA380;" data-vote="larger-sizes" onclick="castVote(this)"> <i data-lucide="maximize" style="width:16px;height:16px;"></i> Larger Sizes <span class="vote-count font-bold">18</span> </button> <button class="vote-btn flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-sm border-2 transition hover:scale-105" style="border-color:#BFA380;color:#BFA380;" data-vote="custom-mats" onclick="castVote(this)"> <i data-lucide="scissors" style="width:16px;height:16px;"></i> Custom Mats <span class="vote-count font-bold">31</span> </button>
+      </div>
+      <div class="max-w-md mx-auto"><textarea id="comment-input" rows="3" placeholder="Leave a comment or suggestion..." class="w-full rounded-xl border p-4 text-sm resize-none focus:outline-none focus:ring-2" style="border-color:#E8E2D9;focus:ring-color:#BFA380;background:rgba(255,255,255,0.7);"></textarea> <button onclick="submitComment()" class="mt-3 rounded-full px-6 py-2.5 text-white font-semibold text-sm transition hover:scale-105" style="background:#2C2825;">Submit Comment</button>
+       <div id="comment-list" class="mt-4 space-y-2 text-left"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-6 border-t" style="border-color:#E8E2D9;">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <p class="font-serif text-lg font-bold">FrameFolio Studio</p>
+     <p class="text-xs opacity-50">© 2025 FrameFolio Studio. All rights reserved.</p>
+     <div class="flex gap-4"><i data-lucide="instagram" style="width:18px;height:18px;opacity:0.5;cursor:pointer;" class="hover:opacity-100 transition"></i> <i data-lucide="twitter" style="width:18px;height:18px;opacity:0.5;cursor:pointer;" class="hover:opacity-100 transition"></i> <i data-lucide="mail" style="width:18px;height:18px;opacity:0.5;cursor:pointer;" class="hover:opacity-100 transition"></i>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+  // Config & SDK
+  const defaultConfig = {
+    hero_title: "Your home deserves a gallery moment.",
+    hero_subtitle: "Frames and sets designed to look curated instantly.",
+    tagline: "Make every wall look curated.",
+    cta_primary: "Shop Frames",
+    cta_secondary: "See Gallery Walls",
+    bestsellers_title: "Best Sellers",
+    gallery_title: "Gallery Wall Sets",
+    sizing_title: "Frame Sizing Guide",
+    reviews_title: "What Our Customers Say",
+    bottom_cta_text: "Turn blank walls into art.",
+    background_color: "#FAF7F2",
+    surface_color: "#F0EBE3",
+    text_color: "#2C2825",
+    primary_action_color: "#BFA380",
+    secondary_action_color: "#2C2825",
+    font_family: "Playfair Display",
+    font_size: 16
+  };
+
+  function applyConfig(config) {
+    const g = (k) => config[k] || defaultConfig[k];
+    // Text
+    document.getElementById('hero-title').textContent = g('hero_title');
+    document.getElementById('hero-subtitle').textContent = g('hero_subtitle');
+    document.getElementById('hero-tagline').textContent = g('tagline');
+    document.getElementById('hero-cta-primary').textContent = g('cta_primary');
+    document.getElementById('hero-cta-secondary').textContent = g('cta_secondary');
+    document.getElementById('bestsellers-title').textContent = g('bestsellers_title');
+    document.getElementById('gallery-title').textContent = g('gallery_title');
+    document.getElementById('sizing-title').textContent = g('sizing_title');
+    document.getElementById('reviews-title').textContent = g('reviews_title');
+    document.getElementById('bottom-cta-title').textContent = g('bottom_cta_text');
+    document.getElementById('bottom-shop-cta').textContent = g('cta_primary');
+    document.getElementById('nav-cta').textContent = g('cta_primary');
+
+    // Colors
+    const bg = g('background_color');
+    const surface = g('surface_color');
+    const txt = g('text_color');
+    const primary = g('primary_action_color');
+    const secondary = g('secondary_action_color');
+
+    document.body.style.background = bg;
+    document.getElementById('app-root').style.color = txt;
+
+    // Primary action buttons
+    document.getElementById('hero-cta-primary').style.background = primary;
+    document.getElementById('bottom-shop-cta').style.background = primary;
+    document.getElementById('nav-cta').style.background = primary;
+
+    // Secondary CTA
+    document.getElementById('hero-cta-secondary').style.borderColor = primary;
+    document.getElementById('hero-cta-secondary').style.color = primary;
+
+    // Accent text
+    document.getElementById('hero-tagline').style.color = primary;
+
+    // Secondary action (add to cart buttons)
+    document.querySelectorAll('#products-grid button').forEach(b => b.style.background = secondary);
+
+    // Font
+    const ff = g('font_family');
+    const fs = g('font_size');
+    document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = `${ff}, Georgia, serif`);
+    document.getElementById('hero-title').style.fontSize = `${fs * 3}px`;
+    document.getElementById('hero-subtitle').style.fontSize = `${fs * 1.1}px`;
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${fs * 2.2}px`);
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const g = (k) => config[k] || defaultConfig[k];
+      const mut = (key) => ({
+        get: () => g(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_action_color'), mut('secondary_action_color')],
+        borderables: [],
+        fontEditable: mut('font_family'),
+        fontSizeable: mut('font_size')
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const g = (k) => config[k] || defaultConfig[k];
+      return new Map([
+        ['hero_title', g('hero_title')],
+        ['hero_subtitle', g('hero_subtitle')],
+        ['tagline', g('tagline')],
+        ['cta_primary', g('cta_primary')],
+        ['cta_secondary', g('cta_secondary')],
+        ['bestsellers_title', g('bestsellers_title')],
+        ['gallery_title', g('gallery_title')],
+        ['sizing_title', g('sizing_title')],
+        ['reviews_title', g('reviews_title')],
+        ['bottom_cta_text', g('bottom_cta_text')]
+      ]);
+    }
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    const m = document.getElementById('mobile-menu');
+    m.classList.toggle('hidden');
+    m.classList.toggle('flex');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+    document.getElementById('mobile-menu').classList.remove('flex');
+  }));
+
+  // Section reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section-reveal').forEach(s => observer.observe(s));
+
+  // Vote
+  function castVote(btn) {
+    const countEl = btn.querySelector('.vote-count');
+    let count = parseInt(countEl.textContent);
+    if (btn.dataset.voted) { count--; btn.dataset.voted = ''; btn.style.background = 'transparent'; btn.style.color = '#BFA380'; }
+    else { count++; btn.dataset.voted = '1'; btn.style.background = '#BFA380'; btn.style.color = 'white'; }
+    countEl.textContent = count;
+  }
+
+  // Comment
+  function submitComment() {
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if (!text) return;
+    const list = document.getElementById('comment-list');
+    const div = document.createElement('div');
+    div.className = 'glass-card rounded-xl p-3 text-sm anim-fade-up';
+    div.innerHTML = `<span class="opacity-50 text-xs">Just now</span><p class="mt-1">${text.replace(/</g,'&lt;')}</p>`;
+    list.prepend(div);
+    input.value = '';
+  }
+
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2ec7c2a127c5',t:'MTc3NTU3Njk3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

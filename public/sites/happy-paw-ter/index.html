@@ -1,1 +1,1134 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6804295f-22d7-43de-b03c-2f0fd069ccbd -->
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Paw-ter | Magical Dog Adventures</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #0f172a 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    /* Background Elements */
+    .floating-paws {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .paw {
+      position: absolute;
+      opacity: 0.03;
+      font-size: 60px;
+      animation: float-paw 8s infinite ease-in-out;
+    }
+
+    @keyframes float-paw {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(5deg); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fbbf24;
+      border-radius: 50%;
+      animation: sparkle-drift 6s infinite ease-in;
+      opacity: 0.6;
+    }
+
+    @keyframes sparkle-drift {
+      0% { opacity: 0; transform: translateY(0px) translateX(0px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-100px) translateX(20px); }
+    }
+
+    /* Content */
+    .content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    /* Sticky Header */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: -1px;
+    }
+
+    .book-btn {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .book-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(251, 191, 36, 0.5);
+      animation: wiggle 0.5s ease;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: translateX(0px) translateY(-2px); }
+      25% { transform: translateX(-3px) translateY(-2px); }
+      75% { transform: translateX(3px) translateY(-2px); }
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #fefce8;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: -2px;
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      color: #d4d4d8;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(251, 191, 36, 0.6);
+      animation: wiggle 0.4s ease;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fbbf24;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid #fbbf24;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #fbbf24;
+      color: #0f172a;
+      transform: translateY(-3px);
+    }
+
+    .hero-illustration {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wizard-dog {
+      font-size: 180px;
+      animation: float-dog 3s ease-in-out infinite;
+      filter: drop-shadow(0 20px 30px rgba(251, 191, 36, 0.3));
+    }
+
+    @keyframes float-dog {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Adventure Cards Section */
+    .adventures-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, transparent, rgba(6, 95, 70, 0.1));
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #fefce8;
+      margin-bottom: 3rem;
+    }
+
+    .adventures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .adventure-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(6, 95, 70, 0.3));
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .adventure-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .adventure-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(251, 191, 36, 0.5);
+      box-shadow: 0 20px 50px rgba(251, 191, 36, 0.3);
+    }
+
+    .adventure-card:hover::before {
+      opacity: 1;
+    }
+
+    .adventure-icon {
+      font-size: 48px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .adventure-icon svg {
+      width: 60px;
+      height: 60px;
+    }
+
+    .adventure-card h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fefce8;
+      margin-bottom: 0.8rem;
+    }
+
+    .adventure-card p {
+      color: #d4d4d8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .features-list li {
+      color: #cbd5e1;
+      margin-bottom: 0.6rem;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.9rem;
+    }
+
+    .features-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #065f46;
+      font-weight: bold;
+    }
+
+    .btn-card {
+      background: #7c3aed;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn-card:hover {
+      background: #6d28d9;
+      transform: translateY(-2px);
+      animation: wiggle 0.4s ease;
+    }
+
+    /* Membership Section */
+    .membership-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, rgba(6, 95, 70, 0.05), rgba(15, 23, 42, 0.5));
+      position: relative;
+    }
+
+    .membership-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      margin-top: 2rem;
+    }
+
+    .membership-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(124, 58, 237, 0.1));
+      border: 2px solid rgba(251, 191, 36, 0.2);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .membership-card:hover {
+      border-color: rgba(251, 191, 36, 0.6);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(124, 58, 237, 0.2);
+    }
+
+    .membership-badge {
+      display: inline-block;
+      background: #fbbf24;
+      color: #0f172a;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .membership-card h3 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fefce8;
+      margin-bottom: 1rem;
+    }
+
+    .membership-price {
+      font-size: 2.5rem;
+      color: #fbbf24;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .membership-price-label {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .membership-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .membership-features li {
+      color: #cbd5e1;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.9rem;
+    }
+
+    .membership-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #fbbf24;
+      font-weight: bold;
+    }
+
+    .btn-membership {
+      background: #fbbf24;
+      color: #0f172a;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn-membership:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+      animation: wiggle 0.4s ease;
+    }
+
+    /* How It Works Section */
+    .how-it-works {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #7c3aed, #065f46);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .step:nth-child(2) .step-icon { animation-delay: 0.2s; }
+    .step:nth-child(3) .step-icon { animation-delay: 0.4s; }
+    .step:nth-child(4) .step-icon { animation-delay: 0.6s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .step h4 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fefce8;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    /* Trust Section */
+    .trust-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, rgba(124, 58, 237, 0.05), transparent);
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 3rem;
+    }
+
+    .trust-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(124, 58, 237, 0.1));
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .trust-card:hover {
+      border-color: rgba(251, 191, 36, 0.6);
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.2);
+    }
+
+    .trust-icon {
+      font-size: 40px;
+      margin-bottom: 1rem;
+      color: #fbbf24;
+    }
+
+    .trust-card h4 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fefce8;
+      margin-bottom: 0.5rem;
+    }
+
+    .trust-card p {
+      color: #cbd5e1;
+      font-size: 0.85rem;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, transparent, rgba(6, 95, 70, 0.05));
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 3rem;
+    }
+
+    .testimonial-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(6, 95, 70, 0.2));
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(251, 191, 36, 0.5);
+    }
+
+    .dog-avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    .dog-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fefce8;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial-text {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .stars {
+      color: #fbbf24;
+      margin-bottom: 1rem;
+    }
+
+    /* Big CTA Section */
+    .big-cta-section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(124, 58, 237, 0.2), transparent);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .big-cta-content h2 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #fefce8;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .big-cta-content p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      margin-bottom: 2rem;
+    }
+
+    .btn-big-cta {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      padding: 1.2rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4); }
+      50% { box-shadow: 0 8px 40px rgba(251, 191, 36, 0.7); }
+    }
+
+    .btn-big-cta:hover {
+      transform: translateY(-4px) scale(1.03);
+      animation: wiggle 0.4s ease, pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.8), #0f172a);
+      border-top: 1px solid rgba(251, 191, 36, 0.1);
+      padding: 3rem 2rem 2rem;
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+      color: #fbbf24;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .footer-col p {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .footer-col a {
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col a:hover {
+      color: #fbbf24;
+    }
+
+    .footer-divider {
+      border-top: 1px solid rgba(251, 191, 36, 0.1);
+      margin: 2rem 0;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    /* Mobile Sticky Footer */
+    .mobile-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      border-top: 2px solid #fbbf24;
+      padding: 1rem;
+      z-index: 40;
+    }
+
+    .mobile-cta button {
+      width: 100%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      padding: 1rem;
+      border-radius: 50px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sticky-header {
+        padding: 1rem;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 1rem;
+        gap: 2rem;
+      }
+
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-illustration {
+        height: 250px;
+      }
+
+      .wizard-dog {
+        font-size: 100px;
+      }
+
+      .mobile-cta {
+        display: block;
+      }
+
+      .app-wrapper {
+        padding-bottom: 80px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .big-cta-content h2 {
+        font-size: 1.8rem;
+      }
+
+      .adventures-grid, .trust-grid, .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="floating-paws" id="paw-container"></div>
+  <div class="app-wrapper">
+   <div class="sticky-header">
+    <div class="logo">
+     🧙‍♂️ Happy Paw-ter
+    </div><button class="book-btn" onclick="scrollToAdventures()">Book Now</button>
+   </div>
+   <div class="content"><!-- Hero Section -->
+    <section class="hero">
+     <div class="hero-content">
+      <h1>Where Every Walk Becomes a Magical Adventure</h1>
+      <p>Premium dog walking, beach trips, and enchanted adventures for your best friend.</p>
+      <div class="hero-buttons"><button class="btn-primary" onclick="handleBooking('adventure')">Book Your Dog's First Adventure</button> <button class="btn-secondary" onclick="scrollToAdventures()">See The Adventures</button>
+      </div>
+     </div>
+     <div class="hero-illustration">
+      <svg class="wizard-dog" viewbox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+       <!-- Dog body --> <ellipse cx="100" cy="130" rx="45" ry="50" fill="#D4A574" /> <!-- Dog head --> <circle cx="100" cy="70" r="35" fill="#D4A574" /> <!-- Left ear --> <ellipse cx="75" cy="45" rx="12" ry="20" fill="#D4A574" /> <!-- Right ear --> <ellipse cx="125" cy="45" rx="12" ry="20" fill="#D4A574" /> <!-- Snout --> <ellipse cx="100" cy="85" rx="18" ry="15" fill="#E8C9A0" /> <!-- Eyes --> <circle cx="90" cy="65" r="5" fill="#2C1810" /> <circle cx="110" cy="65" r="5" fill="#2C1810" /> <!-- Eye shine --> <circle cx="91" cy="63" r="2" fill="#FFFFFF" /> <circle cx="111" cy="63" r="2" fill="#FFFFFF" /> <!-- Nose --> <ellipse cx="100" cy="88" rx="4" ry="3" fill="#2C1810" /> <!-- Front paws --> <rect x="80" y="170" width="10" height="40" rx="5" fill="#D4A574" /> <rect x="110" y="170" width="10" height="40" rx="5" fill="#D4A574" /> <!-- Tail --> <path d="M 140 120 Q 160 110 155 80" stroke="#D4A574" stroke-width="12" fill="none" stroke-linecap="round" /> <!-- Wizard hat --> <path d="M 70 35 L 100 5 L 130 35 Z" fill="#7C3AED" /> <ellipse cx="100" cy="38" rx="35" ry="8" fill="#7C3AED" /> <!-- Hat stars --> <circle cx="90" cy="20" r="2" fill="#FBD824" /> <circle cx="110" cy="15" r="2" fill="#FBD824" /> <circle cx="100" cy="12" r="2.5" fill="#FBD824" />
+      </svg>
+     </div>
+    </section><!-- Adventures Section -->
+    <section class="adventures-section" id="adventures">
+     <h2 class="section-title">Choose Your Dog's Adventure</h2>
+     <div class="adventures-grid"><!-- Forest Wand Walk -->
+      <div class="adventure-card">
+       <div class="adventure-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Trees --> <path d="M 30 70 L 35 50 L 40 70" stroke="#10b981" stroke-width="3" fill="none" stroke-linecap="round" /> <path d="M 50 75 L 58 45 L 66 75" stroke="#059669" stroke-width="4" fill="none" stroke-linecap="round" /> <path d="M 70 70 L 75 55 L 80 70" stroke="#10b981" stroke-width="3" fill="none" stroke-linecap="round" /> <!-- Ground --> <ellipse cx="50" cy="85" rx="40" ry="8" fill="#065f46" /> <!-- Magic sparkles --> <circle cx="35" cy="40" r="2" fill="#fbbf24" /> <circle cx="60" cy="30" r="2" fill="#fbbf24" /> <circle cx="75" cy="45" r="2" fill="#fbbf24" />
+        </svg>
+       </div>
+       <h3>Forest Wand Walk</h3>
+       <p>Guided neighborhood walks with magical themed play and photo updates.</p>
+       <ul class="features-list">
+        <li>30 minute walk</li>
+        <li>Potty break</li>
+        <li>Photo updates</li>
+        <li>Treat reward</li>
+       </ul><button class="btn-card" onclick="handleBooking('forest')">Choose This Adventure</button>
+      </div><!-- Beach Fetch Quest -->
+      <div class="adventure-card">
+       <div class="adventure-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Ocean --> <rect x="0" y="50" width="100" height="50" fill="#0369a1" /> <!-- Waves --> <path d="M 0 60 Q 10 55 20 60 T 40 60 T 60 60 T 80 60 T 100 60" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round" /> <!-- Sand --> <rect x="0" y="45" width="100" height="5" fill="#d4a574" /> <!-- Sun --> <circle cx="80" cy="20" r="12" fill="#fbbf24" /> <!-- Umbrella --> <path d="M 25 30 Q 20 35 25 40" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round" /> <circle cx="25" cy="30" r="8" fill="#dc2626" opacity="0.8" /> <rect x="24" y="38" width="2" height="7" fill="#8b4513" />
+        </svg>
+       </div>
+       <h3>Beach Fetch Quest</h3>
+       <p>Beach adventure with fetch, exploration, and energy burning fun.</p>
+       <ul class="features-list">
+        <li>Transportation included</li>
+        <li>Beach playtime</li>
+        <li>Fresh water breaks</li>
+        <li>Post-adventure photo</li>
+       </ul><button class="btn-card" onclick="handleBooking('beach')">Book Beach Adventure</button>
+      </div><!-- Groomer Express Ride -->
+      <div class="adventure-card">
+       <div class="adventure-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Van body --> <rect x="15" y="40" width="70" height="35" rx="5" fill="#7c3aed" /> <!-- Van cabin --> <rect x="15" y="35" width="25" height="15" rx="3" fill="#6d28d9" /> <!-- Front window --> <rect x="18" y="38" width="10" height="10" fill="#0369a1" opacity="0.6" /> <!-- Side window --> <rect x="45" y="42" width="12" height="12" fill="#0369a1" opacity="0.6" /> <!-- Back window --> <rect x="65" y="42" width="12" height="12" fill="#0369a1" opacity="0.6" /> <!-- Wheels --> <circle cx="30" cy="77" r="6" fill="#1f2937" /> <circle cx="70" cy="77" r="6" fill="#1f2937" /> <!-- Door handles --> <circle cx="50" cy="58" r="2" fill="#fbbf24" /> <!-- Road --> <rect x="0" y="85" width="100" height="15" fill="#64748b" /> <line x1="0" y1="92" x2="100" y2="92" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,5" />
+        </svg>
+       </div>
+       <h3>Groomer Express Ride</h3>
+       <p>We pick up your dog, transport to groomer, and return safely home.</p>
+       <ul class="features-list">
+        <li>Door pickup</li>
+        <li>Safe crate transport</li>
+        <li>Groomer coordination</li>
+        <li>Return home</li>
+       </ul><button class="btn-card" onclick="handleBooking('groomer')">Schedule Ride</button>
+      </div>
+     </div>
+    </section><!-- Membership Section -->
+    <section class="membership-section">
+     <h2 class="section-title">Join The Happy Paw-ter Pack</h2>
+     <div class="membership-grid">
+      <div class="membership-card">
+       <h3>Starter</h3>
+       <div class="membership-price">
+        $59
+       </div>
+       <div class="membership-price-label">
+        per month
+       </div>
+       <ul class="membership-features">
+        <li>4 walks per month</li>
+        <li>Photo updates</li>
+        <li>Priority booking</li>
+        <li>24/7 support</li>
+       </ul><button class="btn-membership" onclick="handleBooking('starter')">Choose Plan</button>
+      </div>
+      <div class="membership-card" style="border-color: rgba(251, 191, 36, 0.6); position: relative;">
+       <div class="membership-badge">
+        MOST POPULAR
+       </div>
+       <h3>Adventurer</h3>
+       <div class="membership-price">
+        $129
+       </div>
+       <div class="membership-price-label">
+        per month
+       </div>
+       <ul class="membership-features">
+        <li>10 walks per month</li>
+        <li>Daily photo updates</li>
+        <li>Priority booking</li>
+        <li>GPS tracking</li>
+        <li>24/7 support</li>
+       </ul><button class="btn-membership" onclick="handleBooking('adventurer')">Choose Plan</button>
+      </div>
+      <div class="membership-card">
+       <h3>Legend</h3>
+       <div class="membership-price">
+        $249
+       </div>
+       <div class="membership-price-label">
+        per month
+       </div>
+       <ul class="membership-features">
+        <li>Unlimited priority booking</li>
+        <li>Hourly photo updates</li>
+        <li>Premium GPS tracking</li>
+        <li>Custom adventures</li>
+        <li>VIP concierge</li>
+       </ul><button class="btn-membership" onclick="handleBooking('legend')">Choose Plan</button>
+      </div>
+     </div>
+    </section><!-- How It Works Section -->
+    <section class="how-it-works">
+     <h2 class="section-title">How It Works</h2>
+     <div class="steps-grid">
+      <div class="step">
+       <div class="step-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Phone body --> <rect x="20" y="10" width="60" height="80" rx="8" fill="#0369a1" stroke="#fbbf24" stroke-width="2" /> <!-- Screen --> <rect x="25" y="15" width="50" height="60" rx="4" fill="#06b6d4" /> <!-- Home button --> <circle cx="50" cy="80" r="4" fill="#fbbf24" /> <!-- App icons --> <circle cx="35" cy="30" r="4" fill="#fbbf24" /> <circle cx="65" cy="30" r="4" fill="#fbbf24" /> <circle cx="35" cy="45" r="4" fill="#fbbf24" /> <circle cx="65" cy="45" r="4" fill="#fbbf24" />
+        </svg>
+       </div>
+       <h4>Book Online</h4>
+       <p>Select your adventure and preferred time</p>
+      </div>
+      <div class="step">
+       <div class="step-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Car body --> <rect x="15" y="45" width="70" height="30" rx="5" fill="#7c3aed" /> <!-- Car cabin --> <rect x="20" y="35" width="30" height="15" rx="3" fill="#6d28d9" /> <!-- Front window --> <rect x="23" y="38" width="12" height="10" fill="#0369a1" opacity="0.7" /> <!-- Back window --> <rect x="45" y="38" width="12" height="10" fill="#0369a1" opacity="0.7" /> <!-- Wheels --> <circle cx="30" cy="75" r="7" fill="#1f2937" /> <circle cx="70" cy="75" r="7" fill="#1f2937" /> <!-- Headlights --> <circle cx="15" cy="52" r="3" fill="#fbbf24" /> <circle cx="20" cy="52" r="3" fill="#fbbf24" />
+        </svg>
+       </div>
+       <h4>We Pick Up Your Pup</h4>
+       <p>Safe pickup from your home</p>
+      </div>
+      <div class="step">
+       <div class="step-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Central star --> <polygon points="50,15 60,40 85,40 65,60 75,85 50,65 25,85 35,60 15,40 40,40" fill="#fbbf24" /> <!-- Sparkle stars around --> <polygon points="30,25 33,30 38,30 34,34 36,39 31,35 26,39 28,34 24,30 29,30" fill="#fbbf24" opacity="0.8" /> <polygon points="70,30 72,35 77,35 73,39 75,44 70,40 65,44 67,39 63,35 68,35" fill="#fbbf24" opacity="0.8" /> <polygon points="25,65 27,70 32,70 28,74 30,79 25,75 20,79 22,74 18,70 23,70" fill="#fbbf24" opacity="0.8" /> <polygon points="75,70 77,75 82,75 78,79 80,84 75,80 70,84 72,79 68,75 73,75" fill="#fbbf24" opacity="0.8" />
+        </svg>
+       </div>
+       <h4>Adventure Begins</h4>
+       <p>Photos and updates along the way</p>
+      </div>
+      <div class="step">
+       <div class="step-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Pillow --> <rect x="20" y="30" width="60" height="40" rx="8" fill="#e5e7eb" /> <!-- Dog sleeping on pillow --> <ellipse cx="50" cy="55" rx="30" ry="25" fill="#D4A574" /> <!-- Head --> <circle cx="50" cy="40" r="20" fill="#D4A574" /> <!-- Ears --> <ellipse cx="35" cy="28" rx="8" ry="14" fill="#D4A574" /> <ellipse cx="65" cy="28" rx="8" ry="14" fill="#D4A574" /> <!-- Snout --> <ellipse cx="50" cy="48" rx="12" ry="10" fill="#E8C9A0" /> <!-- Eyes closed (Z marks) --> <path d="M 45 38 Q 43 36 45 34" stroke="#2C1810" stroke-width="1.5" fill="none" stroke-linecap="round" /> <path d="M 55 38 Q 53 36 55 34" stroke="#2C1810" stroke-width="1.5" fill="none" stroke-linecap="round" /> <!-- Tail curved --> <path d="M 65 50 Q 75 45 78 35" stroke="#D4A574" stroke-width="8" fill="none" stroke-linecap="round" />
+        </svg>
+       </div>
+       <h4>Happy Tired Dog Returns</h4>
+       <p>Safe return and adventure summary</p>
+      </div>
+     </div>
+    </section><!-- Trust Section -->
+    <section class="trust-section">
+     <h2 class="section-title">Why Trust Happy Paw-ter?</h2>
+     <div class="trust-grid">
+      <div class="trust-card">
+       <div class="trust-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Shield body --> <path d="M 50 10 L 80 25 L 80 50 Q 80 75 50 90 Q 20 75 20 50 L 20 25 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2" /> <!-- Checkmark --> <path d="M 40 50 L 48 60 L 65 40" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <h4>Insured &amp; Bonded</h4>
+       <p>Full coverage for peace of mind</p>
+      </div>
+      <div class="trust-card">
+       <div class="trust-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Heart shape --> <path d="M 50 85 C 30 70 15 55 15 40 C 15 25 25 15 35 15 C 42 15 50 20 50 20 C 50 20 58 15 65 15 C 75 15 85 25 85 40 C 85 55 70 70 50 85 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2" /> <!-- Inner glow --> <circle cx="50" cy="45" r="15" fill="#f59e0b" opacity="0.3" />
+        </svg>
+       </div>
+       <h4>Certified Dog Care</h4>
+       <p>Professional and passionate</p>
+      </div>
+      <div class="trust-card">
+       <div class="trust-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Map background --> <rect x="15" y="15" width="70" height="70" rx="5" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.3" /> <!-- Location pin --> <path d="M 50 25 C 40 25 32 33 32 43 C 32 55 50 75 50 75 C 50 75 68 55 68 43 C 68 33 60 25 50 25 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2" /> <!-- Center dot --> <circle cx="50" cy="42" r="5" fill="#0f172a" /> <!-- Signal rings --> <circle cx="50" cy="42" r="15" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.5" /> <circle cx="50" cy="42" r="22" fill="none" stroke="#fbbf24" stroke-width="1" opacity="0.3" />
+        </svg>
+       </div>
+       <h4>GPS Walk Tracking</h4>
+       <p>Real-time location updates</p>
+      </div>
+      <div class="trust-card">
+       <div class="trust-icon">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <!-- Lock body --> <rect x="30" y="40" width="40" height="35" rx="3" fill="#fbbf24" stroke="#f59e0b" stroke-width="2" /> <!-- Lock shackle --> <path d="M 40 40 Q 40 20 50 20 Q 60 20 60 40" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" /> <!-- Keyhole --> <circle cx="50" cy="55" r="4" fill="#0f172a" /> <!-- Lock highlight --> <rect x="33" y="43" width="34" height="8" rx="2" fill="#f59e0b" opacity="0.4" />
+        </svg>
+       </div>
+       <h4>Safe Transport</h4>
+       <p>Climate controlled vehicles</p>
+      </div>
+     </div>
+    </section><!-- Testimonials Section -->
+    <section class="testimonials-section">
+     <h2 class="section-title">Happy Pups, Happy Owners</h2>
+     <div class="testimonials-grid">
+      <div class="testimonial-card">
+       <div class="stars">
+        <svg viewbox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" style="width: 100px; height: 20px;"><polygon points="12,2 15,10 23,10 17,15 19,23 12,18 5,23 7,15 1,10 9,10" fill="#fbbf24" /> <polygon points="36,2 39,10 47,10 41,15 43,23 36,18 29,23 31,15 25,10 33,10" fill="#fbbf24" /> <polygon points="60,2 63,10 71,10 65,15 67,23 60,18 53,23 55,15 49,10 57,10" fill="#fbbf24" /> <polygon points="84,2 87,10 95,10 89,15 91,23 84,18 77,23 79,15 73,10 81,10" fill="#fbbf24" /> <polygon points="108,2 111,10 119,10 113,15 115,23 108,18 101,23 103,15 97,10 105,10" fill="#fbbf24" />
+        </svg>
+       </div>
+       <div class="dog-avatar">
+        <svg viewbox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px;"><!-- Dog body --> <ellipse cx="40" cy="50" rx="22" ry="25" fill="#D4A574" /> <!-- Dog head --> <circle cx="40" cy="28" r="18" fill="#D4A574" /> <!-- Left ear --> <ellipse cx="25" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Right ear --> <ellipse cx="55" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Snout --> <ellipse cx="40" cy="35" rx="9" ry="8" fill="#E8C9A0" /> <!-- Eyes --> <circle cx="33" cy="25" r="3" fill="#2C1810" /> <circle cx="47" cy="25" r="3" fill="#2C1810" /> <!-- Nose --> <ellipse cx="40" cy="37" rx="2" ry="1.5" fill="#2C1810" /> <!-- Tail --> <path d="M 60 45 Q 70 40 68 25" stroke="#D4A574" stroke-width="5" fill="none" stroke-linecap="round" />
+        </svg>
+       </div>
+       <div class="dog-name">
+        Luna
+       </div>
+       <p class="testimonial-text">"Luna comes back happier every time. Worth every penny!"</p>
+      </div>
+      <div class="testimonial-card">
+       <div class="stars">
+        <svg viewbox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" style="width: 100px; height: 20px;"><polygon points="12,2 15,10 23,10 17,15 19,23 12,18 5,23 7,15 1,10 9,10" fill="#fbbf24" /> <polygon points="36,2 39,10 47,10 41,15 43,23 36,18 29,23 31,15 25,10 33,10" fill="#fbbf24" /> <polygon points="60,2 63,10 71,10 65,15 67,23 60,18 53,23 55,15 49,10 57,10" fill="#fbbf24" /> <polygon points="84,2 87,10 95,10 89,15 91,23 84,18 77,23 79,15 73,10 81,10" fill="#fbbf24" /> <polygon points="108,2 111,10 119,10 113,15 115,23 108,18 101,23 103,15 97,10 105,10" fill="#fbbf24" />
+        </svg>
+       </div>
+       <div class="dog-avatar">
+        <svg viewbox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px;"><!-- Dog body --> <ellipse cx="40" cy="50" rx="22" ry="25" fill="#D4A574" /> <!-- Dog head --> <circle cx="40" cy="28" r="18" fill="#D4A574" /> <!-- Left ear --> <ellipse cx="25" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Right ear --> <ellipse cx="55" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Snout --> <ellipse cx="40" cy="35" rx="9" ry="8" fill="#E8C9A0" /> <!-- Eyes --> <circle cx="33" cy="25" r="3" fill="#2C1810" /> <circle cx="47" cy="25" r="3" fill="#2C1810" /> <!-- Nose --> <ellipse cx="40" cy="37" rx="2" ry="1.5" fill="#2C1810" /> <!-- Tail --> <path d="M 60 45 Q 70 40 68 25" stroke="#D4A574" stroke-width="5" fill="none" stroke-linecap="round" />
+        </svg>
+       </div>
+       <div class="dog-name">
+        Max
+       </div>
+       <p class="testimonial-text">"Best service in the area. Max looks forward to his adventures."</p>
+      </div>
+      <div class="testimonial-card">
+       <div class="stars">
+        <svg viewbox="0 0 120 24" xmlns="http://www.w3.org/2000/svg" style="width: 100px; height: 20px;"><polygon points="12,2 15,10 23,10 17,15 19,23 12,18 5,23 7,15 1,10 9,10" fill="#fbbf24" /> <polygon points="36,2 39,10 47,10 41,15 43,23 36,18 29,23 31,15 25,10 33,10" fill="#fbbf24" /> <polygon points="60,2 63,10 71,10 65,15 67,23 60,18 53,23 55,15 49,10 57,10" fill="#fbbf24" /> <polygon points="84,2 87,10 95,10 89,15 91,23 84,18 77,23 79,15 73,10 81,10" fill="#fbbf24" /> <polygon points="108,2 111,10 119,10 113,15 115,23 108,18 101,23 103,15 97,10 105,10" fill="#fbbf24" />
+        </svg>
+       </div>
+       <div class="dog-avatar">
+        <svg viewbox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width: 60px; height: 60px;"><!-- Dog body --> <ellipse cx="40" cy="50" rx="22" ry="25" fill="#D4A574" /> <!-- Dog head --> <circle cx="40" cy="28" r="18" fill="#D4A574" /> <!-- Left ear --> <ellipse cx="25" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Right ear --> <ellipse cx="55" cy="18" rx="6" ry="10" fill="#D4A574" /> <!-- Snout --> <ellipse cx="40" cy="35" rx="9" ry="8" fill="#E8C9A0" /> <!-- Eyes --> <circle cx="33" cy="25" r="3" fill="#2C1810" /> <circle cx="47" cy="25" r="3" fill="#2C1810" /> <!-- Nose --> <ellipse cx="40" cy="37" rx="2" ry="1.5" fill="#2C1810" /> <!-- Tail --> <path d="M 60 45 Q 70 40 68 25" stroke="#D4A574" stroke-width="5" fill="none" stroke-linecap="round" />
+        </svg>
+       </div>
+       <div class="dog-name">
+        Bella
+       </div>
+       <p class="testimonial-text">"Reliable, trustworthy, and genuinely loves dogs. Highly recommended!"</p>
+      </div>
+     </div>
+    </section><!-- Big CTA Section -->
+    <section class="big-cta-section">
+     <div class="big-cta-content">
+      <h2>Your Dog Deserves More Than Just A Walk</h2>
+      <p>Give them the magical experience they'll never forget</p><button class="btn-big-cta" onclick="handleBooking('cta')">Start Your Dog's Adventure</button>
+     </div>
+    </section><!-- Footer -->
+    <footer class="footer">
+     <div class="footer-content" style="position: relative; z-index: 1;">
+      <div class="footer-col">
+       <h4>🧙‍♂️ Happy Paw-ter</h4>
+       <p>Premium dog adventures in El Cajon</p>
+      </div>
+      <div class="footer-col">
+       <h4>Contact</h4>
+       <p><strong>Phone:</strong> (619) 555-PAWS<br><strong>Email:</strong> adventures@happypawter.com</p>
+      </div>
+      <div class="footer-col">
+       <h4>Service Area</h4>
+       <p>El Cajon<br>
+         Surrounding neighborhoods<br>
+         Beach locations</p>
+      </div>
+      <div class="footer-col">
+       <h4>Quick Links</h4>
+       <p><a href="#adventures">Adventures</a><br><a href="#" onclick="handleBooking('footer')">Book Now</a><br><a href="#testimonials">Reviews</a></p>
+      </div>
+     </div>
+     <div class="footer-divider"></div>
+     <div class="footer-bottom">
+      <p>© 2024 Happy Paw-ter. All rights reserved. Magical adventures guaranteed. ✨</p>
+     </div>
+    </footer>
+   </div><!-- Mobile Sticky CTA -->
+   <div class="mobile-cta"><button onclick="handleBooking('mobile')">Book Adventure Now</button>
+   </div>
+  </div>
+  <script>
+    // Generate floating paw prints
+    function generatePaws() {
+      const container = document.getElementById('paw-container');
+      const pawCount = 15;
+      
+      for (let i = 0; i < pawCount; i++) {
+        const paw = document.createElement('div');
+        paw.className = 'paw';
+        paw.textContent = '🐾';
+        paw.style.left = Math.random() * 100 + '%';
+        paw.style.top = Math.random() * 100 + '%';
+        paw.style.animationDelay = Math.random() * 8 + 's';
+        container.appendChild(paw);
+      }
+
+      // Generate sparkles
+      for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 6 + 's';
+        container.appendChild(sparkle);
+      }
+    }
+
+    // Scroll to adventures section
+    function scrollToAdventures() {
+      document.getElementById('adventures').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Handle booking click
+    function handleBooking(type) {
+      // Show confirmation or redirect
+      const messages = {
+        adventure: "Adventure booking initiated! Coming soon to El Cajon. 🎉",
+        forest: "Forest Walk booking! Your dog will love it. 🌲",
+        beach: "Beach adventure selected! Pack sunscreen. 🏖️",
+        groomer: "Groomer Express scheduled! 🚐",
+        starter: "Starter plan selected! 4 magical walks await. ✨",
+        adventurer: "Adventurer plan selected! Most popular choice! 🎪",
+        legend: "Legend plan selected! Ultimate pup experience! 👑",
+        cta: "Let's make your dog's dreams come true! 🧙‍♂️",
+        footer: "Ready to book? Let's go! 🐕",
+        mobile: "Opening booking form... 📱"
+      };
+
+      alert(messages[type] || "Thank you for your interest!");
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      generatePaws();
+      lucide.createIcons();
+    });
+
+    // Parallax effect on scroll
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const paws = document.querySelectorAll('.paw');
+      paws.forEach((paw, index) => {
+        paw.style.transform = `translateY(${scrolled * 0.5}px)`;
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3446e7ff27c5',t:'MTc3NTU3NzE5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,627 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6eed4c2a-7111-4bef-9409-bdb37f1c9ebc -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MysteryMix Market</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a1a;
+  --surface: #16163a;
+  --text: #f0e6ff;
+  --primary: #ff3cac;
+  --secondary: #00e5ff;
+}
+
+body { font-family: 'Fredoka', sans-serif; background: var(--bg); color: var(--text); }
+
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(255,60,172,.3)} 50%{box-shadow:0 0 40px rgba(255,60,172,.6)} }
+@keyframes spin-slow { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+@keyframes bounce-in { 0%{transform:scale(0.3);opacity:0} 50%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes confetti-fall { 0%{transform:translateY(-100%) rotate(0);opacity:1} 100%{transform:translateY(100%) rotate(720deg);opacity:0} }
+@keyframes wiggle { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+@keyframes slide-up { 0%{transform:translateY(40px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+@keyframes question-float { 0%{transform:translateY(0) rotate(0);opacity:.15} 50%{transform:translateY(-30px) rotate(15deg);opacity:.25} 100%{transform:translateY(0) rotate(0);opacity:.15} }
+@keyframes reveal-flash { 0%{opacity:0;transform:scale(.8)} 40%{opacity:1;transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
+@keyframes glow-ring { 0%{box-shadow:0 0 0 0 rgba(0,229,255,.4)} 70%{box-shadow:0 0 0 15px rgba(0,229,255,0)} 100%{box-shadow:0 0 0 0 rgba(0,229,255,0)} }
+
+.float-anim { animation: float 3s ease-in-out infinite; }
+.float-anim-d1 { animation: float 3.5s ease-in-out infinite 0.5s; }
+.float-anim-d2 { animation: float 4s ease-in-out infinite 1s; }
+.pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.spin-slow { animation: spin-slow 8s linear infinite; }
+.bounce-in { animation: bounce-in 0.6s ease-out both; }
+.wiggle { animation: wiggle 0.5s ease-in-out infinite; }
+.slide-up { animation: slide-up 0.6s ease-out both; }
+.glow-ring { animation: glow-ring 2s ease-out infinite; }
+
+.shimmer-bg {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.nav-glass {
+  background: rgba(10,10,26,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,60,172,.2);
+}
+
+.box-card {
+  background: var(--surface);
+  border: 2px solid rgba(255,60,172,.2);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(.175,.885,.32,1.275);
+  position: relative;
+  overflow: hidden;
+}
+.box-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--primary);
+  box-shadow: 0 20px 60px rgba(255,60,172,.2);
+}
+.box-card::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.question-mark {
+  position: absolute;
+  font-size: 2rem;
+  color: var(--primary);
+  opacity: .15;
+  pointer-events: none;
+}
+
+.reveal-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid rgba(0,229,255,.15);
+  overflow: hidden;
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.reveal-card:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 0 30px rgba(0,229,255,.15);
+}
+.reveal-card.revealed .reveal-cover { opacity:0; transform:scale(1.2); }
+.reveal-card.revealed .reveal-content { opacity:1; animation: reveal-flash .5s ease-out; }
+.reveal-cover { transition: all .4s ease; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #1a1a4a, #2a1a3a); z-index:2; }
+.reveal-content { opacity:0; transition: opacity .3s ease .2s; }
+
+.badge-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 50px;
+  font-size: .85rem; font-weight: 600;
+  animation: slide-up .5s ease-out both;
+}
+
+.vote-card {
+  background: rgba(22,22,58,.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,60,172,.3);
+  border-radius: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #c026d3);
+  color: white; font-weight: 700; border-radius: 50px;
+  padding: 14px 32px; border:none; cursor:pointer;
+  transition: all .3s ease; font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+}
+.btn-primary:hover { transform:scale(1.05); box-shadow: 0 8px 30px rgba(255,60,172,.4); }
+
+.btn-secondary {
+  background: transparent; color: var(--secondary);
+  border: 2px solid var(--secondary); border-radius: 50px;
+  padding: 12px 28px; cursor:pointer; font-weight: 600;
+  transition: all .3s ease; font-family: 'Fredoka', sans-serif;
+  font-size: 1rem;
+}
+.btn-secondary:hover { background: rgba(0,229,255,.1); transform:scale(1.05); }
+
+.confetti-piece {
+  position: fixed; width: 10px; height: 10px;
+  pointer-events: none; z-index: 9999; border-radius: 2px;
+}
+
+.star-rating i { cursor: pointer; transition: all .2s; }
+.star-rating i:hover { transform: scale(1.3); }
+
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: all .6s ease; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: var(--bg);"><!-- Floating question marks (background) -->
+   <div id="question-bg" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div><!-- STICKY NAV -->
+   <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex items-center justify-between"><a href="#home" class="flex items-center gap-2 text-lg font-bold" style="color:var(--primary)"> <span class="text-2xl">🎁</span> MysteryMix </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="hover:text-pink-400 transition">Home</a> <a href="#choose" class="hover:text-pink-400 transition">Choose a Box</a> <a href="#inside" class="hover:text-pink-400 transition">What's Inside</a> <a href="#reveal" class="hover:text-pink-400 transition">Reveal Preview</a> <a href="#reviews" class="hover:text-pink-400 transition">Reviews</a> <a href="#get" class="hover:text-pink-400 transition">Get the Template</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:var(--text)"><i data-lucide="menu" style="width:24px;height:24px"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden flex-col gap-3 pt-4 pb-2 text-sm font-medium"><a href="#home" class="block py-1 hover:text-pink-400">Home</a> <a href="#choose" class="block py-1 hover:text-pink-400">Choose a Box</a> <a href="#inside" class="block py-1 hover:text-pink-400">What's Inside</a> <a href="#reveal" class="block py-1 hover:text-pink-400">Reveal Preview</a> <a href="#reviews" class="block py-1 hover:text-pink-400">Reviews</a> <a href="#get" class="block py-1 hover:text-pink-400">Get the Template</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-16" style="background: radial-gradient(ellipse at 30% 20%, rgba(255,60,172,.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(0,229,255,.08) 0%, transparent 50%);">
+    <div class="max-w-6xl mx-auto w-full flex flex-col lg:flex-row items-center gap-10 relative z-10">
+     <div class="flex-1 text-center lg:text-left">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 bounce-in" style="background:rgba(255,60,172,.15); color:var(--primary);"><span class="wiggle inline-block">🎲</span> Gamified Digital Downloads
+      </div>
+      <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4" style="background:linear-gradient(135deg,#fff,#ff3cac,#00e5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Open a mystery bundle in 10 seconds.</h1>
+      <p id="hero-subtitle" class="text-lg sm:text-xl mb-8 opacity-80 max-w-lg mx-auto lg:mx-0">Gamified shopping for digital downloads.</p>
+      <div class="flex flex-wrap gap-4 justify-center lg:justify-start"><a href="#choose" class="btn-primary pulse-glow">🎁 Choose a Box</a> <a href="#reveal" class="btn-secondary">👁 See Reveal</a>
+      </div><!-- Animated stats -->
+      <div class="flex gap-6 mt-10 justify-center lg:justify-start">
+       <div class="text-center slide-up" style="animation-delay:.2s">
+        <div class="text-2xl font-bold" style="color:var(--primary)">
+         50+
+        </div>
+        <div class="text-xs opacity-60">
+         Reveal Animations
+        </div>
+       </div>
+       <div class="text-center slide-up" style="animation-delay:.4s">
+        <div class="text-2xl font-bold" style="color:var(--secondary)">
+         20
+        </div>
+        <div class="text-xs opacity-60">
+         Bundle Pages
+        </div>
+       </div>
+       <div class="text-center slide-up" style="animation-delay:.6s">
+        <div class="text-2xl font-bold" style="color:var(--primary)">
+         100+
+        </div>
+        <div class="text-xs opacity-60">
+         Badge Stickers
+        </div>
+       </div>
+      </div>
+     </div><!-- Spinning mystery box visual -->
+     <div class="flex-shrink-0 relative">
+      <div class="w-64 h-64 sm:w-72 sm:h-72 relative float-anim">
+       <div class="absolute inset-0 rounded-3xl spin-slow" style="background:conic-gradient(from 0deg, var(--primary), var(--secondary), #c026d3, var(--primary)); opacity:.2; filter:blur(30px);"></div>
+       <div class="absolute inset-4 rounded-2xl flex items-center justify-center" style="background: linear-gradient(135deg, #1a1a4a, #2a1a5a); border: 2px solid rgba(255,60,172,.3);">
+        <div class="text-center">
+         <div class="text-7xl mb-2 wiggle">
+          🎁
+         </div>
+         <div class="text-sm font-bold tracking-wider" style="color:var(--primary)">
+          TAP TO REVEAL
+         </div>
+         <div class="mt-3 flex justify-center gap-1"><span class="w-2 h-2 rounded-full float-anim" style="background:var(--primary)"></span> <span class="w-2 h-2 rounded-full float-anim-d1" style="background:var(--secondary)"></span> <span class="w-2 h-2 rounded-full float-anim-d2" style="background:#c026d3"></span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Vote floating card -->
+      <div class="vote-card absolute -bottom-4 -right-4 sm:right-[-2rem] p-4 w-56 float-anim-d1 z-20">
+       <div class="flex items-center gap-2 mb-2"><span class="text-lg">🗳️</span> <span class="font-bold text-sm" style="color:var(--primary)">Vote this concept</span>
+       </div>
+       <div class="flex gap-1 mb-3" id="vote-reactions"><button onclick="castReaction(this,'🔥')" class="px-2 py-1 rounded-lg text-sm transition hover:scale-110" style="background:rgba(255,60,172,.15)">🔥 <span>24</span></button> <button onclick="castReaction(this,'💎')" class="px-2 py-1 rounded-lg text-sm transition hover:scale-110" style="background:rgba(0,229,255,.15)">💎 <span>18</span></button> <button onclick="castReaction(this,'🚀')" class="px-2 py-1 rounded-lg text-sm transition hover:scale-110" style="background:rgba(192,38,211,.15)">🚀 <span>31</span></button>
+       </div><select class="w-full rounded-lg px-3 py-2 text-sm font-medium mb-2" style="background:rgba(255,255,255,.05); color:var(--text); border:1px solid rgba(255,60,172,.2);"> <option>💰 Pick your price...</option> <option>$5</option><option>$9</option><option>$15</option><option>$19</option><option>$25</option> <option>$29</option><option>$35</option><option>$39</option><option>$49</option><option>$59</option> </select>
+       <div class="text-center text-xs opacity-40 mt-1 font-mono">
+        [ Embed Widget Here ]
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CHOOSE A BOX -->
+   <section id="choose" class="py-20 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <div class="inline-block px-4 py-1 rounded-full text-sm font-bold mb-4" style="background:rgba(0,229,255,.1);color:var(--secondary);">
+       STEP 1
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-3">Pick Your Mystery Box</h2>
+      <p class="opacity-60 max-w-md mx-auto">Each tier unlocks more digital goodies. The bigger the box, the bigger the surprise.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Basic -->
+      <div class="box-card p-6 text-center scroll-reveal" style="animation-delay:.1s">
+       <div class="text-5xl mb-4 float-anim">
+        📦
+       </div>
+       <h3 id="basic-box-name" class="text-xl font-bold mb-1">Basic Box</h3>
+       <div class="text-3xl font-bold mb-2" style="color:var(--primary)">
+        $19
+       </div>
+       <div class="text-sm opacity-50 mb-4 line-through">
+        $39 value
+       </div>
+       <ul class="text-left text-sm space-y-2 mb-6 opacity-80">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 10 reveal animations</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 5 bundle pages</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 20 badge stickers</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> Commercial license</li>
+       </ul><button class="btn-primary w-full" onclick="triggerConfetti()">Unwrap Basic</button>
+      </div><!-- Deluxe -->
+      <div class="box-card p-6 text-center scroll-reveal relative" style="animation-delay:.2s; border-color:var(--primary); transform:scale(1.03);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold z-10" style="background:linear-gradient(135deg,var(--primary),#c026d3);color:#fff;">
+        ⭐ MOST POPULAR
+       </div>
+       <div class="text-5xl mb-4 float-anim-d1">
+        🎁
+       </div>
+       <h3 id="deluxe-box-name" class="text-xl font-bold mb-1">Deluxe Box</h3>
+       <div class="text-3xl font-bold mb-2" style="color:var(--primary)">
+        $39
+       </div>
+       <div class="text-sm opacity-50 mb-4 line-through">
+        $89 value
+       </div>
+       <ul class="text-left text-sm space-y-2 mb-6 opacity-80">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 25 reveal animations</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 12 bundle pages</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 50 badge stickers</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> Upsell copy prompts</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> Commercial license</li>
+       </ul><button class="btn-primary w-full pulse-glow" onclick="triggerConfetti()">Unwrap Deluxe 🎉</button>
+      </div><!-- Ultra -->
+      <div class="box-card p-6 text-center scroll-reveal" style="animation-delay:.3s">
+       <div class="text-5xl mb-4 float-anim-d2">
+        🏆
+       </div>
+       <h3 id="ultra-box-name" class="text-xl font-bold mb-1">Ultra Box</h3>
+       <div class="text-3xl font-bold mb-2" style="color:var(--primary)">
+        $59
+       </div>
+       <div class="text-sm opacity-50 mb-4 line-through">
+        $149 value
+       </div>
+       <ul class="text-left text-sm space-y-2 mb-6 opacity-80">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 50 reveal animations</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 20 bundle pages</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> 100 badge stickers</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> All upsell copy prompts</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> Seasonal mystery drops</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i> Commercial license</li>
+       </ul><button class="btn-primary w-full" onclick="triggerConfetti()">Unwrap Ultra 🚀</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INSIDE -->
+   <section id="inside" class="py-20 px-4" style="background: linear-gradient(180deg, rgba(22,22,58,.5) 0%, rgba(10,10,26,1) 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <div class="inline-block px-4 py-1 rounded-full text-sm font-bold mb-4" style="background:rgba(255,60,172,.1);color:var(--primary);">
+       VALUE STACK
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-3">What's Inside Every Box</h2>
+      <p class="opacity-60 max-w-md mx-auto">Everything you need to run a gamified digital store.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="scroll-reveal text-center p-6 rounded-2xl" style="background:var(--surface); animation-delay:.1s">
+       <div class="text-4xl mb-3">
+        ✨
+       </div>
+       <h4 class="font-bold mb-2">50 Reveal Animations</h4>
+       <p class="text-sm opacity-60">Eye-catching unbox moments that keep buyers hooked.</p>
+       <div class="badge-pill mt-4 mx-auto w-fit" style="background:rgba(255,60,172,.1);color:var(--primary);animation-delay:.3s">
+        <i data-lucide="zap" style="width:14px;height:14px"></i> Instant Download
+       </div>
+      </div>
+      <div class="scroll-reveal text-center p-6 rounded-2xl" style="background:var(--surface); animation-delay:.2s">
+       <div class="text-4xl mb-3">
+        📄
+       </div>
+       <h4 class="font-bold mb-2">20 Bundle Pages</h4>
+       <p class="text-sm opacity-60">Pre-built layouts for Basic, Deluxe, and Ultra tiers.</p>
+       <div class="badge-pill mt-4 mx-auto w-fit" style="background:rgba(0,229,255,.1);color:var(--secondary);animation-delay:.5s">
+        <i data-lucide="shield" style="width:14px;height:14px"></i> Commercial License
+       </div>
+      </div>
+      <div class="scroll-reveal text-center p-6 rounded-2xl" style="background:var(--surface); animation-delay:.3s">
+       <div class="text-4xl mb-3">
+        🏷️
+       </div>
+       <h4 class="font-bold mb-2">100 Badge Stickers</h4>
+       <p class="text-sm opacity-60">"Best Seller", "Limited", "New Drop" — all animated.</p>
+       <div class="badge-pill mt-4 mx-auto w-fit" style="background:rgba(192,38,211,.1);color:#c026d3;animation-delay:.7s">
+        <i data-lucide="award" style="width:14px;height:14px"></i> Fully Editable
+       </div>
+      </div>
+      <div class="scroll-reveal text-center p-6 rounded-2xl" style="background:var(--surface); animation-delay:.4s">
+       <div class="text-4xl mb-3">
+        💬
+       </div>
+       <h4 class="font-bold mb-2">Upsell Copy Prompts</h4>
+       <p class="text-sm opacity-60">Plug-and-play text that converts browsers to buyers.</p>
+       <div class="badge-pill mt-4 mx-auto w-fit" style="background:rgba(255,60,172,.1);color:var(--primary);animation-delay:.9s">
+        <i data-lucide="trending-up" style="width:14px;height:14px"></i> Boost AOV
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVEAL PREVIEW -->
+   <section id="reveal" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <div class="inline-block px-4 py-1 rounded-full text-sm font-bold mb-4" style="background:rgba(0,229,255,.1);color:var(--secondary);">
+       PREVIEW
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-3">Tap to Reveal</h2>
+      <p class="opacity-60 max-w-md mx-auto">Click any card to see the mystery reveal animation.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-5" id="reveal-grid"><!-- 6 reveal cards generated by JS -->
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-20 px-4" style="background: linear-gradient(180deg, rgba(22,22,58,.3) 0%, var(--bg) 100%);">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <div class="inline-block px-4 py-1 rounded-full text-sm font-bold mb-4" style="background:rgba(255,60,172,.1);color:var(--primary);">
+       REVIEWS
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-3">Sellers Love It</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-reveal p-5 rounded-2xl" style="background:var(--surface);animation-delay:.1s">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm opacity-80 mb-3">"My AOV jumped 40% after adding mystery box tiers. The reveal animations are addictive!"</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="background:var(--primary)">
+         J
+        </div><span class="text-sm font-medium">Jess M.</span>
+       </div>
+      </div>
+      <div class="scroll-reveal p-5 rounded-2xl" style="background:var(--surface);animation-delay:.2s">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm opacity-80 mb-3">"Customers DM me asking when the next mystery drop is. This template prints engagement."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="background:var(--secondary);color:var(--bg)">
+         K
+        </div><span class="text-sm font-medium">Kyle R.</span>
+       </div>
+      </div>
+      <div class="scroll-reveal p-5 rounded-2xl" style="background:var(--surface);animation-delay:.3s">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm opacity-80 mb-3">"The badge stickers alone are worth it. Everything is so polished and easy to customize."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="background:#c026d3">
+         A
+        </div><span class="text-sm font-medium">Amara T.</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="get" class="py-24 px-4 text-center relative overflow-hidden">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(255,60,172,.15) 0%, transparent 60%);"></div>
+    <div class="max-w-2xl mx-auto relative z-10 scroll-reveal">
+     <div class="text-6xl mb-6 wiggle">
+      🎁
+     </div>
+     <h2 id="bottom-cta-text" class="text-3xl sm:text-4xl font-bold mb-4">Turn browsing into buying.</h2>
+     <p class="opacity-60 mb-8 max-w-md mx-auto">Get the full MysteryMix Market template — animations, pages, stickers, and copy prompts included.</p><a href="#choose" class="btn-primary text-lg px-10 py-4 pulse-glow inline-block">Get the Template 🚀</a>
+     <div class="mt-6 flex justify-center gap-6 text-sm opacity-50"><span class="flex items-center gap-1"><i data-lucide="download" style="width:14px;height:14px"></i> Instant Download</span> <span class="flex items-center gap-1"><i data-lucide="shield" style="width:14px;height:14px"></i> Commercial License</span> <span class="flex items-center gap-1"><i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Free Updates</span>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-8 px-4 text-center text-sm opacity-40 border-t" style="border-color:rgba(255,60,172,.1);">
+    <p>© 2025 MysteryMix Market. All rights reserved. Built for digital creators who love a good surprise.</p>
+   </footer>
+  </div>
+  <script>
+// --- Default Config ---
+const defaultConfig = {
+  background_color: '#0a0a1a',
+  surface_color: '#16163a',
+  text_color: '#f0e6ff',
+  primary_color: '#ff3cac',
+  secondary_color: '#00e5ff',
+  font_family: 'Fredoka',
+  font_size: 16,
+  hero_title: 'Open a mystery bundle in 10 seconds.',
+  hero_subtitle: 'Gamified shopping for digital downloads.',
+  basic_box_name: 'Basic Box',
+  deluxe_box_name: 'Deluxe Box',
+  ultra_box_name: 'Ultra Box',
+  bottom_cta_text: 'Turn browsing into buying.'
+};
+
+// --- Element SDK ---
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    // Colors
+    document.documentElement.style.setProperty('--bg', c.background_color);
+    document.documentElement.style.setProperty('--surface', c.surface_color);
+    document.documentElement.style.setProperty('--text', c.text_color);
+    document.documentElement.style.setProperty('--primary', c.primary_color);
+    document.documentElement.style.setProperty('--secondary', c.secondary_color);
+    document.body.style.color = c.text_color;
+
+    // Font
+    const fontStack = `${c.font_family}, Fredoka, sans-serif`;
+    document.body.style.fontFamily = fontStack;
+
+    // Font size
+    const base = c.font_size || 16;
+    document.getElementById('hero-title').style.fontSize = '';
+    document.querySelectorAll('h2').forEach(h => h.style.fontSize = `${base * 2}px`);
+    document.querySelectorAll('h3').forEach(h => h.style.fontSize = `${base * 1.3}px`);
+    document.querySelectorAll('h4').forEach(h => h.style.fontSize = `${base * 1.1}px`);
+    document.querySelectorAll('p, li, span, div').forEach(el => {
+      if (!el.closest('h1,h2,h3,h4') && !el.id) el.style.fontSize = '';
+    });
+
+    // Text content
+    document.getElementById('hero-title').textContent = c.hero_title;
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('basic-box-name').textContent = c.basic_box_name;
+    document.getElementById('deluxe-box-name').textContent = c.deluxe_box_name;
+    document.getElementById('ultra-box-name').textContent = c.ultra_box_name;
+    document.getElementById('bottom-cta-text').textContent = c.bottom_cta_text;
+
+    // Update primary-colored elements
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      btn.style.background = `linear-gradient(135deg, ${c.primary_color}, #c026d3)`;
+    });
+    document.querySelectorAll('.btn-secondary').forEach(btn => {
+      btn.style.color = c.secondary_color;
+      btn.style.borderColor = c.secondary_color;
+    });
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    const makeColor = (key) => ({
+      get: () => c[key] || defaultConfig[key],
+      set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        makeColor('background_color'),
+        makeColor('surface_color'),
+        makeColor('text_color'),
+        makeColor('primary_color'),
+        makeColor('secondary_color')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['basic_box_name', c.basic_box_name],
+      ['deluxe_box_name', c.deluxe_box_name],
+      ['ultra_box_name', c.ultra_box_name],
+      ['bottom_cta_text', c.bottom_cta_text]
+    ]);
+  }
+});
+
+// --- Floating question marks ---
+(function() {
+  const bg = document.getElementById('question-bg');
+  const marks = ['?', '❓', '❔', '🎁', '✨', '🎲'];
+  for (let i = 0; i < 20; i++) {
+    const span = document.createElement('span');
+    span.className = 'question-mark';
+    span.textContent = marks[i % marks.length];
+    span.style.left = Math.random() * 100 + '%';
+    span.style.top = Math.random() * 100 + '%';
+    span.style.fontSize = (1 + Math.random() * 2) + 'rem';
+    span.style.animation = `question-float ${3 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s`;
+    bg.appendChild(span);
+  }
+})();
+
+// --- Reveal cards ---
+(function() {
+  const grid = document.getElementById('reveal-grid');
+  const reveals = [
+    { emoji: '🎨', label: 'Design Pack', desc: 'Premium templates' },
+    { emoji: '📸', label: 'Photo Bundle', desc: 'Stock photo collection' },
+    { emoji: '🖋️', label: 'Font Set', desc: 'Custom typefaces' },
+    { emoji: '🎵', label: 'Audio Kit', desc: 'Music & sound FX' },
+    { emoji: '📊', label: 'Data Toolkit', desc: 'Charts & dashboards' },
+    { emoji: '🎯', label: 'Marketing Pack', desc: 'Ad templates & copy' }
+  ];
+  reveals.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'reveal-card relative scroll-reveal';
+    card.style.animationDelay = (i * 0.1) + 's';
+    card.style.minHeight = '180px';
+    card.innerHTML = `
+      <div class="reveal-cover flex-col gap-2">
+        <div class="text-4xl wiggle">❓</div>
+        <span class="text-sm font-bold" style="color:var(--primary)">Tap to reveal</span>
+      </div>
+      <div class="reveal-content p-6 text-center">
+        <div class="text-4xl mb-2">${r.emoji}</div>
+        <h4 class="font-bold mb-1">${r.label}</h4>
+        <p class="text-sm opacity-60">${r.desc}</p>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      card.classList.toggle('revealed');
+      if (card.classList.contains('revealed')) triggerConfetti();
+    });
+    grid.appendChild(card);
+  });
+})();
+
+// --- Confetti ---
+function triggerConfetti() {
+  const colors = ['#ff3cac','#00e5ff','#c026d3','#ffd700','#00ff88'];
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.top = '-10px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    piece.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+    piece.style.animation = `confetti-fall ${1 + Math.random() * 2}s ease-out forwards`;
+    piece.style.animationDelay = Math.random() * 0.3 + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 3000);
+  }
+}
+
+// --- Vote reaction ---
+function castReaction(btn, emoji) {
+  const span = btn.querySelector('span');
+  span.textContent = parseInt(span.textContent) + 1;
+  btn.style.transform = 'scale(1.2)';
+  setTimeout(() => btn.style.transform = '', 200);
+}
+
+// --- Mobile menu ---
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+  menu.classList.toggle('flex');
+});
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+    document.getElementById('mobile-menu').classList.remove('flex');
+  });
+});
+
+// --- Scroll reveal ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// --- Lucide icons ---
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a56dd229927c5',t:'MTc3NTU3ODYxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,608 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c82b4724-8f06-4f08-957f-6740cb9c5dac -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeakShield Roofing</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0B1D3A',
+        steel: '#3A4A5C',
+        accent: '#F59E0B',
+        surface: '#F1F5F9',
+        darksurf: '#162842'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+
+/* Rain overlay */
+.rain-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.rain-drop {
+  position: absolute;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(200,220,255,0.3));
+  animation: rainFall linear infinite;
+}
+@keyframes rainFall {
+  0% { transform: translateY(-100%); opacity: 0.6; }
+  100% { transform: translateY(800px); opacity: 0; }
+}
+
+/* Reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Checklist tick */
+.check-item .tick {
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.check-item.checked .tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Pulse CTA */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.5); }
+  50% { box-shadow: 0 0 20px 8px rgba(245,158,11,0.25); }
+}
+.pulse-cta { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+/* Review card slide */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.review-card-anim { animation: slideIn 0.6s ease forwards; }
+
+/* Sticky nav */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #F59E0B;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.hero-img { background-image: url('https://images.unsplash.com/photo-1632759145351-1d592919f522?w=1400&q=80'); background-size: cover; background-position: center; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-navy" style="font-family: 'Source Sans 3', sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(11,29,58,0.92); backdrop-filter: blur(12px);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2 text-white">
+      <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
+       <path d="M16 2L2 14h4v14h20V14h4L16 2z" fill="#F59E0B" /><path d="M16 5L5 14h3v12h16V14h3L16 5z" fill="#0B1D3A" /><path d="M13 18h6v8h-6z" fill="#F59E0B" opacity="0.7" />
+      </svg><span class="font-bold text-lg" style="font-family:'Oswald',sans-serif; letter-spacing:1px;" id="nav-brand">PEAKSHIELD</span> </a> <button id="mobile-toggle" class="sm:hidden text-white"><i data-lucide="menu" class="w-6 h-6"></i></button>
+     <div id="nav-links" class="hidden sm:flex items-center gap-6 text-sm text-gray-300"><a href="#home" class="nav-link hover:text-white transition">Home</a> <a href="#services" class="nav-link hover:text-white transition">Services</a> <a href="#inspection" class="nav-link hover:text-white transition">Inspection</a> <a href="#reviews" class="nav-link hover:text-white transition">Reviews</a> <a href="#faq" class="nav-link hover:text-white transition">FAQ</a> <a href="#schedule" class="bg-accent text-navy px-4 py-2 rounded font-semibold hover:bg-yellow-400 transition text-sm" id="nav-cta">Schedule</a>
+     </div>
+    </div>
+    <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4 flex flex-col gap-3 text-gray-300 text-sm"><a href="#home" class="hover:text-white">Home</a> <a href="#services" class="hover:text-white">Services</a> <a href="#inspection" class="hover:text-white">Inspection</a> <a href="#reviews" class="hover:text-white">Reviews</a> <a href="#faq" class="hover:text-white">FAQ</a> <a href="#schedule" class="bg-accent text-navy px-4 py-2 rounded font-semibold text-center">Schedule</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full hero-img" style="min-height: 600px;">
+    <div class="absolute inset-0 bg-gradient-to-br from-navy/90 via-navy/75 to-transparent"></div>
+    <div class="rain-container" id="rain-container"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 flex items-center" style="min-height: 600px; padding-top: 80px;">
+     <div class="max-w-2xl">
+      <div class="inline-flex items-center gap-2 bg-accent/15 border border-accent/30 rounded-full px-4 py-1.5 mb-6"><i data-lucide="shield-check" class="w-4 h-4 text-accent"></i> <span class="text-accent text-sm font-medium">Protect your home like it's priceless.</span>
+      </div>
+      <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5" style="font-family:'Oswald',sans-serif;">Know your roof before the storm does.</h1>
+      <p id="hero-subhead" class="text-lg sm:text-xl text-gray-300 mb-8 max-w-lg">Fast inspections. Clear quotes. Solid work.</p>
+      <div class="flex flex-wrap gap-4"><a href="#schedule" id="hero-cta-primary" class="pulse-cta bg-accent text-navy font-bold px-8 py-3.5 rounded-lg hover:bg-yellow-400 transition text-lg flex items-center gap-2"> <i data-lucide="calendar-check" class="w-5 h-5"></i> <span>Schedule Inspection</span> </a> <a href="#services" id="hero-cta-secondary" class="border-2 border-white/30 text-white font-semibold px-8 py-3.5 rounded-lg hover:bg-white/10 transition text-lg flex items-center gap-2"> <i data-lucide="arrow-down" class="w-5 h-5"></i> <span>See Services</span> </a>
+      </div>
+      <div class="flex items-center gap-6 mt-10 text-gray-400 text-sm">
+       <div class="flex items-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4 text-accent"></i> Same-day inspections
+       </div>
+       <div class="flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4 text-accent"></i> Licensed &amp; insured
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Trust Bar -->
+   <section class="w-full bg-darksurf border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+     <div>
+      <span class="text-3xl font-bold text-accent" style="font-family:'Oswald',sans-serif;">1,200+</span>
+      <p class="text-gray-400 text-sm mt-1">Roofs Inspected</p>
+     </div>
+     <div>
+      <span class="text-3xl font-bold text-accent" style="font-family:'Oswald',sans-serif;">98%</span>
+      <p class="text-gray-400 text-sm mt-1">Customer Satisfaction</p>
+     </div>
+     <div>
+      <span class="text-3xl font-bold text-accent" style="font-family:'Oswald',sans-serif;">15+</span>
+      <p class="text-gray-400 text-sm mt-1">Years Experience</p>
+     </div>
+     <div>
+      <span class="text-3xl font-bold text-accent" style="font-family:'Oswald',sans-serif;">5★</span>
+      <p class="text-gray-400 text-sm mt-1">Average Rating</p>
+     </div>
+    </div>
+   </section><!-- Services -->
+   <section id="services" class="w-full bg-surface py-20">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-14 reveal"><span class="text-accent font-semibold text-sm uppercase tracking-widest">What We Do</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-navy mt-3" style="font-family:'Oswald',sans-serif;">Storm-Ready Roofing Services</h2>
+      <p class="text-steel mt-3 max-w-xl mx-auto">From inspections to full replacements, we keep your home protected through every season.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="search" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Free Roof Inspection</h3>
+       <p class="text-steel text-sm leading-relaxed">Thorough 21-point inspection with photo documentation. Know your roof's condition before storm season.</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300" style="transition-delay:0.1s">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="cloud-lightning" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Storm Damage Repair</h3>
+       <p class="text-steel text-sm leading-relaxed">Fast response after hail, wind, or fallen debris. We work directly with your insurance.</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300" style="transition-delay:0.2s">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="home" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Full Roof Replacement</h3>
+       <p class="text-steel text-sm leading-relaxed">Premium materials, clean install, and backed by our 25-year workmanship warranty.</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="droplets" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Leak Detection &amp; Fix</h3>
+       <p class="text-steel text-sm leading-relaxed">Pinpoint leaks fast with infrared scanning. Repair before water damage spreads.</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300" style="transition-delay:0.1s">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="wrench" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Gutter &amp; Flashing</h3>
+       <p class="text-steel text-sm leading-relaxed">Protect edges and drainage. Prevents 80% of common roof failures.</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-7 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300" style="transition-delay:0.2s">
+       <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+        <i data-lucide="shield" class="w-6 h-6 text-accent"></i>
+       </div>
+       <h3 class="text-xl font-bold text-navy mb-2" style="font-family:'Oswald',sans-serif;">Maintenance Plans</h3>
+       <p class="text-steel text-sm leading-relaxed">Annual check-ups that extend your roof's life by up to 10 years. Peace of mind, year-round.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Inspection -->
+   <section id="inspection" class="w-full bg-navy py-20">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal"><span class="text-accent font-semibold text-sm uppercase tracking-widest">Our Process</span>
+       <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3 mb-4" style="font-family:'Oswald',sans-serif;">What to Expect from Your Inspection</h2>
+       <p class="text-gray-400 mb-8 leading-relaxed">Our certified inspectors follow a detailed 21-point checklist. Every finding is photo-documented and explained in plain language — no surprises, no pressure.</p>
+       <div class="flex flex-wrap gap-3"><a href="#schedule" class="bg-accent text-navy font-bold px-6 py-3 rounded-lg hover:bg-yellow-400 transition flex items-center gap-2"> <i data-lucide="calendar" class="w-5 h-5"></i> Book Inspection </a> <span class="flex items-center gap-2 text-gray-400 text-sm"><i data-lucide="clock" class="w-4 h-4 text-accent"></i> Takes only 30–45 min</span>
+       </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+       <div class="bg-darksurf rounded-xl p-6 border border-white/10">
+        <h3 class="text-white font-bold text-lg mb-5 flex items-center gap-2" style="font-family:'Oswald',sans-serif;"><i data-lucide="clipboard-check" class="w-5 h-5 text-accent"></i> Inspection Checklist Preview</h3>
+        <div id="checklist" class="space-y-3">
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Shingle condition &amp; granule loss</span>
+         </div>
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Flashing &amp; sealant integrity</span>
+         </div>
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Gutter alignment &amp; drainage</span>
+         </div>
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Ventilation &amp; attic airflow</span>
+         </div>
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Chimney &amp; skylight seals</span>
+         </div>
+         <div class="check-item flex items-center gap-3 bg-navy/50 rounded-lg px-4 py-3">
+          <div class="w-6 h-6 rounded-full border-2 border-accent/40 flex items-center justify-center flex-shrink-0">
+           <span class="tick text-accent text-sm">✓</span>
+          </div><span class="text-gray-300 text-sm">Photo report + written summary</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Digital Toolkit -->
+   <section class="w-full bg-surface py-20">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-12 reveal"><span class="text-accent font-semibold text-sm uppercase tracking-widest">Free Resources</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-navy mt-3" style="font-family:'Oswald',sans-serif;">Your Storm-Ready Toolkit</h2>
+      <p class="text-steel mt-3 max-w-lg mx-auto">Download our free digital bundle — everything you need to prepare and protect.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="reveal bg-white rounded-xl p-5 text-center border border-gray-100 hover:shadow-md transition">
+       <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="clipboard-list" class="w-5 h-5 text-accent"></i>
+       </div>
+       <h4 class="font-bold text-navy text-sm" style="font-family:'Oswald',sans-serif;">Inspection Checklist</h4>
+       <p class="text-steel text-xs mt-1">21-point DIY guide</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-5 text-center border border-gray-100 hover:shadow-md transition" style="transition-delay:0.05s">
+       <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="camera" class="w-5 h-5 text-accent"></i>
+       </div>
+       <h4 class="font-bold text-navy text-sm" style="font-family:'Oswald',sans-serif;">Storm Damage Guide</h4>
+       <p class="text-steel text-xs mt-1">Photo reference</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-5 text-center border border-gray-100 hover:shadow-md transition" style="transition-delay:0.1s">
+       <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="file-text" class="w-5 h-5 text-accent"></i>
+       </div>
+       <h4 class="font-bold text-navy text-sm" style="font-family:'Oswald',sans-serif;">Quote Template</h4>
+       <p class="text-steel text-xs mt-1">Copy &amp; customize</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-5 text-center border border-gray-100 hover:shadow-md transition" style="transition-delay:0.15s">
+       <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="shield-check" class="w-5 h-5 text-accent"></i>
+       </div>
+       <h4 class="font-bold text-navy text-sm" style="font-family:'Oswald',sans-serif;">Warranty Explainer</h4>
+       <p class="text-steel text-xs mt-1">One-page guide</p>
+      </div>
+      <div class="reveal bg-white rounded-xl p-5 text-center border border-gray-100 hover:shadow-md transition" style="transition-delay:0.2s">
+       <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="megaphone" class="w-5 h-5 text-accent"></i>
+       </div>
+       <h4 class="font-bold text-navy text-sm" style="font-family:'Oswald',sans-serif;">Neighborhood Flyer</h4>
+       <p class="text-steel text-xs mt-1">Ready to print</p>
+      </div>
+     </div>
+     <div class="text-center mt-8 reveal"><a href="#schedule" class="inline-flex items-center gap-2 bg-navy text-white font-semibold px-6 py-3 rounded-lg hover:bg-steel transition"> <i data-lucide="download" class="w-5 h-5"></i> Get Free Toolkit </a>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="w-full bg-navy py-20">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-12 reveal"><span class="text-accent font-semibold text-sm uppercase tracking-widest">Testimonials</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3" style="font-family:'Oswald',sans-serif;">What Homeowners Say</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="review-cards">
+      <div class="reveal bg-darksurf rounded-xl p-6 border border-white/10">
+       <div class="flex gap-1 mb-3 text-accent">
+        ★★★★★
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"They found hail damage I didn't even know about. Filed my insurance claim and had a new roof in 5 days. Incredible team."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-accent/20 rounded-full flex items-center justify-center text-accent font-bold text-sm">
+         MJ
+        </div>
+        <div>
+         <p class="text-white text-sm font-semibold">Maria Johnson</p>
+         <p class="text-gray-500 text-xs">Maple Heights</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal bg-darksurf rounded-xl p-6 border border-white/10" style="transition-delay:0.1s">
+       <div class="flex gap-1 mb-3 text-accent">
+        ★★★★★
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"Most transparent roofing company I've worked with. The inspection report had photos of every single issue. No pressure, just facts."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-accent/20 rounded-full flex items-center justify-center text-accent font-bold text-sm">
+         DW
+        </div>
+        <div>
+         <p class="text-white text-sm font-semibold">David Wright</p>
+         <p class="text-gray-500 text-xs">Cedar Park</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal bg-darksurf rounded-xl p-6 border border-white/10" style="transition-delay:0.2s">
+       <div class="flex gap-1 mb-3 text-accent">
+        ★★★★★
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"After the tornado came through, PeakShield was on our block the next morning. They tarped our roof for free while we sorted insurance."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-accent/20 rounded-full flex items-center justify-center text-accent font-bold text-sm">
+         SK
+        </div>
+        <div>
+         <p class="text-white text-sm font-semibold">Sarah Kim</p>
+         <p class="text-gray-500 text-xs">Riverside</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full bg-surface py-20">
+    <div class="max-w-3xl mx-auto px-6">
+     <div class="text-center mb-12 reveal"><span class="text-accent font-semibold text-sm uppercase tracking-widest">Questions</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-navy mt-3" style="font-family:'Oswald',sans-serif;">Frequently Asked</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="reveal faq-item bg-white rounded-xl border border-gray-100 overflow-hidden"><button class="faq-btn w-full flex items-center justify-between px-6 py-4 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-navy text-sm">How long does an inspection take?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-steel transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-6 pb-4 text-steel text-sm leading-relaxed">
+        Most inspections take 30–45 minutes. We'll walk the roof, check the attic, and have a full report to you within 24 hours.
+       </div>
+      </div>
+      <div class="reveal faq-item bg-white rounded-xl border border-gray-100 overflow-hidden" style="transition-delay:0.05s"><button class="faq-btn w-full flex items-center justify-between px-6 py-4 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-navy text-sm">Do you work with insurance companies?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-steel transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-6 pb-4 text-steel text-sm leading-relaxed">
+        Yes. We handle the entire claims process — documentation, adjuster meetings, and supplemental filings — at no extra charge.
+       </div>
+      </div>
+      <div class="reveal faq-item bg-white rounded-xl border border-gray-100 overflow-hidden" style="transition-delay:0.1s"><button class="faq-btn w-full flex items-center justify-between px-6 py-4 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-navy text-sm">What kind of warranty do you offer?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-steel transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-6 pb-4 text-steel text-sm leading-relaxed">
+        All full replacements include a 25-year workmanship warranty plus the manufacturer's material warranty (typically 30–50 years).
+       </div>
+      </div>
+      <div class="reveal faq-item bg-white rounded-xl border border-gray-100 overflow-hidden" style="transition-delay:0.15s"><button class="faq-btn w-full flex items-center justify-between px-6 py-4 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-navy text-sm">Is the inspection really free?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-steel transition-transform duration-300"></i> </button>
+       <div class="faq-answer hidden px-6 pb-4 text-steel text-sm leading-relaxed">
+        100% free, no strings. If your roof is in good shape, we'll tell you. We earn trust by being honest.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Schedule Form -->
+   <section id="schedule" class="w-full bg-navy py-20">
+    <div class="max-w-3xl mx-auto px-6">
+     <div class="reveal bg-darksurf rounded-2xl p-8 sm:p-10 border border-white/10 text-center">
+      <div class="w-14 h-14 bg-accent/15 rounded-full flex items-center justify-center mx-auto mb-5"><i data-lucide="calendar-check" class="w-7 h-7 text-accent"></i>
+      </div>
+      <h2 id="bottom-cta-heading" class="text-3xl sm:text-4xl font-bold text-white mb-3" style="font-family:'Oswald',sans-serif;">Book Your Inspection Today</h2>
+      <p class="text-gray-400 mb-8">Fill out the form and we'll confirm your appointment within 2 hours.</p>
+      <form id="schedule-form" class="space-y-4 text-left max-w-md mx-auto">
+       <div><label for="s-name" class="text-gray-400 text-xs font-medium mb-1 block">Full Name</label> <input type="text" id="s-name" required class="w-full bg-navy/70 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-accent transition" placeholder="John Smith">
+       </div>
+       <div><label for="s-phone" class="text-gray-400 text-xs font-medium mb-1 block">Phone Number</label> <input type="tel" id="s-phone" required class="w-full bg-navy/70 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-accent transition" placeholder="(555) 123-4567">
+       </div>
+       <div><label for="s-address" class="text-gray-400 text-xs font-medium mb-1 block">Property Address</label> <input type="text" id="s-address" required class="w-full bg-navy/70 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-accent transition" placeholder="123 Main St, City, State">
+       </div>
+       <div><label for="s-concern" class="text-gray-400 text-xs font-medium mb-1 block">Primary Concern</label> <select id="s-concern" class="w-full bg-navy/70 border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-accent transition"> <option value="">Select...</option> <option>Storm damage</option> <option>Leak / water stain</option> <option>Aging roof</option> <option>Insurance claim</option> <option>General inspection</option> </select>
+       </div><button type="submit" class="pulse-cta w-full bg-accent text-navy font-bold py-3.5 rounded-lg hover:bg-yellow-400 transition text-lg flex items-center justify-center gap-2"> <i data-lucide="send" class="w-5 h-5"></i> <span id="form-cta-text">Schedule Inspection</span> </button>
+      </form>
+      <div id="form-success" class="hidden mt-6 bg-green-500/15 border border-green-500/30 rounded-lg p-4">
+       <p class="text-green-400 font-semibold flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> Request received! We'll call within 2 hours.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Vote + Comment Widget -->
+   <section class="w-full bg-darksurf py-16 border-t border-white/5">
+    <div class="max-w-2xl mx-auto px-6">
+     <div class="reveal bg-navy rounded-2xl p-8 border border-white/10 text-center">
+      <h3 class="text-2xl font-bold text-white mb-2" style="font-family:'Oswald',sans-serif;">Vote + Comment</h3>
+      <p class="text-gray-400 text-sm mb-6">How important is a roof inspection before storm season?</p>
+      <div class="flex justify-center gap-4 mb-6" id="vote-buttons"><button onclick="castVote('essential')" class="vote-btn bg-accent/10 border border-accent/30 text-accent px-5 py-2.5 rounded-lg hover:bg-accent/20 transition text-sm font-semibold flex items-center gap-2"><i data-lucide="thumbs-up" class="w-4 h-4"></i> Essential</button> <button onclick="castVote('helpful')" class="vote-btn bg-white/5 border border-white/15 text-gray-300 px-5 py-2.5 rounded-lg hover:bg-white/10 transition text-sm font-semibold flex items-center gap-2"><i data-lucide="heart" class="w-4 h-4"></i> Helpful</button> <button onclick="castVote('unsure')" class="vote-btn bg-white/5 border border-white/15 text-gray-300 px-5 py-2.5 rounded-lg hover:bg-white/10 transition text-sm font-semibold flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4"></i> Not Sure</button>
+      </div>
+      <div id="vote-result" class="hidden mb-6">
+       <div class="flex justify-center gap-6 text-sm"><span class="text-accent font-semibold">Essential: <span id="v-essential">0</span></span> <span class="text-gray-300">Helpful: <span id="v-helpful">0</span></span> <span class="text-gray-400">Not Sure: <span id="v-unsure">0</span></span>
+       </div>
+      </div>
+      <div class="text-left"><label for="widget-comment" class="text-gray-400 text-xs font-medium mb-1 block">Leave a comment</label>
+       <div class="flex gap-2"><input type="text" id="widget-comment" class="flex-1 bg-darksurf border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-accent transition" placeholder="Your thoughts..."> <button onclick="postComment()" class="bg-accent text-navy font-semibold px-4 py-2.5 rounded-lg hover:bg-yellow-400 transition text-sm">Post</button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-2 max-h-48 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full bg-navy border-t border-white/5 py-10">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+     <div class="flex items-center justify-center gap-2 mb-4">
+      <svg width="28" height="28" viewbox="0 0 32 32" fill="none">
+       <path d="M16 2L2 14h4v14h20V14h4L16 2z" fill="#F59E0B" /><path d="M16 5L5 14h3v12h16V14h3L16 5z" fill="#0B1D3A" />
+      </svg><span class="text-white font-bold" style="font-family:'Oswald',sans-serif; letter-spacing:1px;">PEAKSHIELD ROOFING</span>
+     </div>
+     <p class="text-gray-500 text-sm">Protect your home like it's priceless.</p>
+     <p class="text-gray-600 text-xs mt-4">© 2024 PeakShield Roofing. All rights reserved. Licensed &amp; Insured.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ============ CONFIG & SDK ============
+const defaultConfig = {
+  background_color: '#0B1D3A',
+  surface_color: '#F1F5F9',
+  text_color: '#FFFFFF',
+  primary_action_color: '#F59E0B',
+  secondary_action_color: '#3A4A5C',
+  font_family: 'Oswald',
+  font_size: 16,
+  hero_headline: 'Know your roof before the storm does.',
+  hero_subhead: 'Fast inspections. Clear quotes. Solid work.',
+  cta_primary: 'Schedule Inspection',
+  cta_secondary: 'See Services',
+  bottom_cta_text: 'Book Your Inspection Today'
+};
+
+function applyConfig(config) {
+  const c = key => config[key] || defaultConfig[key];
+
+  // Colors
+  document.documentElement.style.setProperty('--bg', c('background_color'));
+  document.documentElement.style.setProperty('--accent', c('primary_action_color'));
+
+  document.getElementById('app-wrapper').style.background = c('background_color');
+
+  // All accent-colored elements
+  const accentBtns = document.querySelectorAll('.bg-accent, .pulse-cta');
+  accentBtns.forEach(b => { if (b.classList.contains('bg-accent') || b.classList.contains('pulse-cta')) b.style.backgroundColor = c('primary_action_color'); });
+
+  // Surface sections
+  document.querySelectorAll('.bg-surface').forEach(s => s.style.backgroundColor = c('surface_color'));
+
+  // Navy sections
+  document.querySelectorAll('section.bg-navy, .bg-darksurf, nav').forEach(s => {
+    if (s.classList.contains('bg-darksurf')) s.style.backgroundColor = c('background_color') + 'dd';
+  });
+
+  // Text
+  const font = c('font_family');
+  const baseSize = c('font_size');
+  const headingFont = `${font}, sans-serif`;
+
+  document.querySelectorAll('[style*="font-family:\'Oswald"]').forEach(el => el.style.fontFamily = headingFont);
+  document.getElementById('nav-brand').style.fontFamily = headingFont;
+
+  // Scale text
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 3}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+
+  // Editable text
+  document.getElementById('hero-headline').textContent = c('hero_headline');
+  document.getElementById('hero-subhead').textContent = c('hero_subhead');
+  document.getElementById('hero-cta-primary').querySelector('span').textContent = c('cta_primary');
+  document.getElementById('hero-cta-secondary').querySelector('span').textContent = c('cta_secondary');
+  document.getElementById('bottom-cta-heading').textContent = c('bottom_cta_text');
+  document.getElementById('form-cta-text').textContent = c('cta_primary');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }},
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }},
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }},
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_headline', config.hero_headline || defaultConfig.hero_headline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// ============ RAIN EFFECT ============
+(function createRain() {
+  const container = document.getElementById('rain-container');
+  for (let i = 0; i < 40; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'rain-drop';
+    drop.style.left = Math.random() * 100 + '%';
+    drop.style.height = (15 + Math.random() * 25) + 'px';
+    drop.style.animationDuration = (0.6 + Math.random() * 0.8) + 's';
+    drop.style.animationDelay = Math.random() * 2 + 's';
+    container.appendChild(drop);
+  }
+})();
+
+// ============ REVEAL ON SCROLL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ============ CHECKLIST ANIMATION ============
+const checkObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const items = entry.target.querySelectorAll('.check-item');
+      items.forEach((item, i) => setTimeout(() => item.classList.add('checked'), 300 + i * 350));
+    }
+  });
+}, { threshold: 0.3 });
+checkObserver.observe(document.getElementById('checklist'));
+
+// ============ FAQ ============
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-btn [data-lucide]').forEach(i => i.style.transform = 'rotate(0)');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// ============ FORM ============
+document.getElementById('schedule-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.classList.add('hidden');
+  document.getElementById('form-success').classList.remove('hidden');
+});
+
+// ============ MOBILE NAV ============
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// ============ VOTE & COMMENT WIDGET ============
+const votes = { essential: 0, helpful: 0, unsure: 0 };
+let hasVoted = false;
+
+function castVote(type) {
+  if (hasVoted) return;
+  hasVoted = true;
+  votes[type]++;
+  document.getElementById('v-essential').textContent = votes.essential;
+  document.getElementById('v-helpful').textContent = votes.helpful;
+  document.getElementById('v-unsure').textContent = votes.unsure;
+  document.getElementById('vote-result').classList.remove('hidden');
+  document.querySelectorAll('.vote-btn').forEach(b => { b.style.opacity = '0.5'; b.style.pointerEvents = 'none'; });
+}
+
+function postComment() {
+  const input = document.getElementById('widget-comment');
+  const text = input.value.trim();
+  if (!text) return;
+  const div = document.createElement('div');
+  div.className = 'bg-darksurf rounded-lg px-4 py-2.5 text-gray-300 text-sm flex items-start gap-2';
+  div.innerHTML = `<span class="text-accent mt-0.5">●</span><span>${text.replace(/</g,'&lt;')}</span>`;
+  document.getElementById('comments-list').appendChild(div);
+  input.value = '';
+}
+
+// ============ INIT ICONS ============
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a62e5403d27c5',t:'MTc3NTU3OTEwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

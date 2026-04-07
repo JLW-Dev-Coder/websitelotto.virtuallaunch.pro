@@ -1,1 +1,652 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a2509b55-5cb2-4ffa-907c-e78d8f545111 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExitPath Blueprint</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: { 50:'#fdf8e8', 100:'#f9edbe', 200:'#f3d98b', 300:'#edc455', 400:'#e5b12a', 500:'#c9951a', 600:'#a07414', 700:'#785610', 800:'#523b0c', 900:'#2e2108' },
+        midnight: { 800:'#0d1117', 900:'#080c10' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+.app-root { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 0 0 rgba(229,177,42,0.3); } 50% { box-shadow: 0 0 20px 4px rgba(229,177,42,0.15); } }
+@keyframes draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+
+.anim-fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.anim-fade-up.visible { opacity: 1; transform: translateY(0); }
+.anim-scale { opacity: 0; transform: scale(0.85); transition: opacity 0.6s ease, transform 0.6s ease; }
+.anim-scale.visible { opacity: 1; transform: scale(1); }
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #e5b12a 0%, #f3d98b 40%, #e5b12a 60%, #f3d98b 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+.gold-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e5b12a, transparent);
+}
+.card-glow:hover { box-shadow: 0 0 30px rgba(229,177,42,0.08); }
+
+/* Nav */
+.nav-link { position: relative; color: #9ca3af; transition: color 0.3s; }
+.nav-link:hover, .nav-link.active { color: #e5b12a; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#e5b12a; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+/* Timeline connector */
+.timeline-dot { width:16px; height:16px; border-radius:50%; border:2px solid #e5b12a; background:#0d1117; position:relative; z-index:2; flex-shrink:0; }
+.timeline-dot.active { background:#e5b12a; animation: pulse-gold 2s infinite; }
+.timeline-line { width:2px; background: linear-gradient(to bottom, #e5b12a, rgba(229,177,42,0.2)); flex-shrink:0; }
+
+/* Vote widget */
+.reaction-btn { transition: all 0.2s; cursor: pointer; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { outline: 2px solid #e5b12a; outline-offset: 2px; border-radius: 8px; }
+.price-chip { transition: all 0.2s; cursor: pointer; border: 1px solid rgba(229,177,42,0.2); }
+.price-chip:hover { border-color: #e5b12a; background: rgba(229,177,42,0.1); }
+.price-chip.selected { border-color: #e5b12a; background: rgba(229,177,42,0.2); }
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1c2333; border: 1px solid rgba(229,177,42,0.3); color: #f3d98b;
+  padding: 10px 24px; border-radius: 8px; z-index: 999; font-size: 14px;
+  animation: fadeIn 0.3s ease;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-midnight-900 text-gray-200">
+  <div class="app-root" id="appRoot">
+   <!-- Sticky Nav -->
+   <nav id="stickyNav" class="sticky top-0 z-50 backdrop-blur-md bg-midnight-900/80 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+     <a href="#home" class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none"><path d="M4 24L14 4L24 24" stroke="#e5b12a" stroke-width="2" stroke-linecap="round" /><path d="M8 18H20" stroke="#e5b12a" stroke-width="2" stroke-linecap="round" />
+      </svg><span class="font-display text-lg font-bold text-white" id="navBrand">ExitPath</span> </a>
+     <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="#home" class="nav-link active" data-nav>Home</a> <a href="#exitplan" class="nav-link" data-nav>Exit Plan</a> <a href="#valuation" class="nav-link" data-nav>Valuation</a> <a href="#timeline" class="nav-link" data-nav>Timeline</a> <a href="#faq" class="nav-link" data-nav>FAQ</a> <a href="#start" class="px-4 py-2 bg-gold-400 text-midnight-900 rounded font-semibold text-sm hover:bg-gold-300 transition">Start Exit</a>
+     </div><button id="mobileMenuBtn" class="md:hidden text-gray-400 hover:text-gold-400 transition"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm font-medium">
+     <a href="#home" class="nav-link" data-nav>Home</a> <a href="#exitplan" class="nav-link" data-nav>Exit Plan</a> <a href="#valuation" class="nav-link" data-nav>Valuation</a> <a href="#timeline" class="nav-link" data-nav>Timeline</a> <a href="#faq" class="nav-link" data-nav>FAQ</a> <a href="#start" class="px-4 py-2 bg-gold-400 text-midnight-900 rounded font-semibold text-sm text-center hover:bg-gold-300 transition">Start Exit</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-[90%] flex items-center justify-center px-6 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-midnight-900 via-midnight-800 to-midnight-900"></div><!-- Subtle geometric bg -->
+    <svg class="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg"><defs>
+      <pattern id="grid" width="60" height="60" patternunits="userSpaceOnUse">
+       <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#e5b12a" stroke-width="0.5" />
+      </pattern>
+     </defs><rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+    <div class="relative z-10 text-center max-w-4xl mx-auto">
+     <div class="anim-fade-up mb-4">
+      <span class="inline-block px-4 py-1.5 border border-gold-400/30 rounded-full text-gold-400 text-xs font-semibold tracking-widest uppercase">Business Exit Engine</span>
+     </div>
+     <h1 id="heroTitle" class="font-display text-4xl sm:text-5xl md:text-7xl font-800 leading-tight mb-6 anim-fade-up stagger-1"><span class="gold-shimmer">Your exit should be</span><br><span class="text-white">your biggest win.</span></h1>
+     <p id="heroSubtitle" class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 anim-fade-up stagger-2">Plan your business exit with precision. Valuation frameworks, tax scenarios, and succession tools — all in one blueprint.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center anim-fade-up stagger-3">
+      <a href="#start" class="px-8 py-4 bg-gold-400 text-midnight-900 font-bold rounded-lg hover:bg-gold-300 transition text-base">Start Exit Plan</a> <a href="#timeline" class="px-8 py-4 border border-gold-400/40 text-gold-400 font-semibold rounded-lg hover:bg-gold-400/10 transition text-base">View Timeline</a>
+     </div>
+     <div class="mt-14 gold-line w-48 mx-auto anim-fade-up stagger-4"></div>
+     <p class="mt-4 text-xs text-gray-600 anim-fade-up stagger-5">Build now. Exit smart.</p>
+    </div>
+   </section><!-- EXIT PLAN -->
+   <section id="exitplan" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Phase-by-Phase</span>
+      <h2 id="exitPlanTitle" class="font-display text-3xl sm:text-5xl font-bold text-white mt-3">Strategic Exit Planning</h2>
+      <div class="gold-line w-24 mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6" id="exitCards">
+      <!-- Cards injected by JS -->
+     </div>
+    </div>
+   </section><!-- VALUATION -->
+   <section id="valuation" class="py-24 px-6 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Valuation &amp; Tax</span>
+      <h2 id="valuationTitle" class="font-display text-3xl sm:text-5xl font-bold text-white mt-3">Know Your True Value</h2>
+      <div class="gold-line w-24 mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 anim-fade-up stagger-1 card-glow">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-lg bg-gold-400/10 flex items-center justify-center"><i data-lucide="bar-chart-3" style="width:20px;height:20px;color:#e5b12a;"></i>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white">Business Valuation</h3>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed mb-6">Understand what your business is truly worth using EBITDA multiples, DCF analysis, and comparable market data.</p>
+       <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">Revenue Multiple</span><span class="text-gold-400 font-semibold text-sm">3.2–5.8×</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">EBITDA Multiple</span><span class="text-gold-400 font-semibold text-sm">6.0–12.0×</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">Asset-Based Floor</span><span class="text-gold-400 font-semibold text-sm">Calculated</span>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 anim-fade-up stagger-2 card-glow">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-lg bg-gold-400/10 flex items-center justify-center"><i data-lucide="receipt" style="width:20px;height:20px;color:#e5b12a;"></i>
+        </div>
+        <h3 class="font-display text-xl font-bold text-white">Tax Impact Scenarios</h3>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed mb-6">Model after-tax proceeds across different exit structures — asset sale, stock sale, earnouts, and installment agreements.</p>
+       <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">Asset Sale Tax</span><span class="text-red-400 font-semibold text-sm">Higher</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">Stock Sale Tax</span><span class="text-emerald-400 font-semibold text-sm">Lower</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg"><span class="text-sm text-gray-300">Installment Benefits</span><span class="text-gold-400 font-semibold text-sm">Deferred</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TIMELINE -->
+   <section id="timeline" class="py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Step by Step</span>
+      <h2 id="timelineTitle" class="font-display text-3xl sm:text-5xl font-bold text-white mt-3">Your Exit Timeline</h2>
+      <div class="gold-line w-24 mx-auto mt-6"></div>
+     </div>
+     <div id="timelineContainer" class="relative">
+      <!-- Timeline injected by JS -->
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-24 px-6 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Investment</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-bold text-white mt-3">Transparent Pricing</h2>
+      <p class="text-gray-400 text-lg mt-4">Choose the blueprint that matches your exit journey.</p>
+      <div class="gold-line w-24 mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6" id="pricingCards">
+      <!-- Pricing cards injected by JS -->
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-6 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-gold-400/[0.02] to-transparent"></div>
+    <div class="relative max-w-3xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Questions</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-bold text-white mt-3">Frequently Asked</h2>
+      <div class="gold-line w-24 mx-auto mt-6"></div>
+     </div>
+     <div id="faqContainer" class="space-y-3">
+      <!-- FAQ injected by JS -->
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="start" class="py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="anim-fade-up">
+      <h2 id="bottomCtaText" class="font-display text-3xl sm:text-5xl font-bold text-white mb-6">Leave on your terms.</h2>
+      <p class="text-gray-400 text-lg mb-10">Your exit is the culmination of everything you've built. Make it count with a structured, strategic plan.</p><a href="#home" class="inline-block px-10 py-4 bg-gold-400 text-midnight-900 font-bold rounded-lg hover:bg-gold-300 transition text-lg">Begin Your Exit Plan</a>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="py-16 px-6 border-t border-white/5">
+    <div class="max-w-2xl mx-auto">
+     <div class="text-center mb-10 anim-fade-up">
+      <span class="text-gold-400 text-xs tracking-widest uppercase font-semibold">Community</span>
+      <h3 class="font-display text-2xl font-bold text-white mt-2">Rate &amp; Discuss</h3>
+      <p class="text-gray-500 text-sm mt-2">Embed Widget Here</p>
+      <div class="gold-line w-16 mx-auto mt-4"></div>
+     </div><!-- Reactions -->
+     <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 mb-6 anim-fade-up stagger-1">
+      <p class="text-sm text-gray-400 mb-4">Your reaction:</p>
+      <div class="flex flex-wrap gap-3 justify-center" id="reactionsRow">
+       <!-- Injected by JS -->
+      </div>
+     </div><!-- Price Vote -->
+     <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 mb-6 anim-fade-up stagger-2">
+      <p class="text-sm text-gray-400 mb-4">What would you pay for a complete exit blueprint?</p>
+      <div class="flex flex-wrap gap-2 justify-center" id="priceRow">
+       <!-- Injected by JS -->
+      </div>
+     </div><!-- Comment -->
+     <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 mb-6 anim-fade-up stagger-3">
+      <p class="text-sm text-gray-400 mb-3">Leave a comment:</p>
+      <form id="commentForm" class="flex gap-3">
+       <input id="commentInput" type="text" maxlength="280" placeholder="Share your thoughts…" class="flex-1 bg-white/[0.05] border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gold-400/50 transition" aria-label="Comment"> <button type="submit" id="commentBtn" class="px-5 py-3 bg-gold-400 text-midnight-900 font-semibold rounded-lg hover:bg-gold-300 transition text-sm flex items-center gap-2"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post </button>
+      </form>
+     </div><!-- Vote Summary -->
+     <div id="voteSummary" class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 mb-6 anim-fade-up stagger-4">
+      <p class="text-sm text-gray-400 mb-3">Community results:</p>
+      <div id="summaryContent" class="text-sm text-gray-300">
+       Loading…
+      </div>
+     </div><!-- Comments List -->
+     <div id="commentsSection" class="anim-fade-up stagger-5">
+      <p class="text-sm text-gray-400 mb-3">Recent comments:</p>
+      <div id="commentsList" class="space-y-3 max-h-64 overflow-y-auto"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-6 border-t border-white/5 text-center">
+    <p class="text-xs text-gray-600">© 2025 ExitPath Blueprint · Build now. Exit smart.</p>
+   </footer>
+  </div><!-- end app-root -->
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  background_color: '#080c10',
+  surface_color: '#131a25',
+  text_color: '#e5e7eb',
+  primary_action_color: '#e5b12a',
+  secondary_action_color: '#a07414',
+  font_family: 'Playfair Display',
+  font_size: 16,
+  hero_title: 'Your exit should be your biggest win.',
+  hero_subtitle: 'Plan your business exit with precision. Valuation frameworks, tax scenarios, and succession tools — all in one blueprint.',
+  exit_plan_title: 'Strategic Exit Planning',
+  valuation_title: 'Know Your True Value',
+  timeline_title: 'Your Exit Timeline',
+  bottom_cta_text: 'Leave on your terms.'
+};
+
+// ===== STATIC DATA =====
+const exitCards = [
+  { icon:'target', title:'Discovery & Assessment', desc:'Audit your current position, identify value drivers, and define your exit objectives with clarity.' },
+  { icon:'shield-check', title:'Preparation & Optimization', desc:'Strengthen financials, streamline operations, and resolve risks to maximize your exit value.' },
+  { icon:'rocket', title:'Execution & Transition', desc:'Navigate negotiations, close the deal, and ensure a smooth leadership handoff.' }
+];
+
+const timelineSteps = [
+  { month:'Month 1–3', title:'Financial Audit', desc:'Deep dive into financials. Clean up books, reconcile accounts, project forward.' },
+  { month:'Month 3–6', title:'Valuation & Positioning', desc:'Establish fair market value. Build a compelling information memorandum.' },
+  { month:'Month 6–9', title:'Buyer Identification', desc:'Screen strategic and financial buyers. Manage NDAs and initial offers.' },
+  { month:'Month 9–12', title:'Negotiation & Due Diligence', desc:'Navigate LOIs, due diligence, and deal structure with precision.' },
+  { month:'Month 12–15', title:'Close & Transition', desc:'Finalize legal, transfer ownership, and execute your succession plan.' }
+];
+
+const faqData = [
+  { q:'When should I start planning my exit?', a:'Ideally 2–5 years before your target exit date. The longer you prepare, the higher your valuation and the smoother the transition.' },
+  { q:'What\'s included in the ExitPath Blueprint?', a:'Exit timelines, valuation frameworks, tax impact scenario modeling, succession planning tools, and step-by-step checklists.' },
+  { q:'How is my business valued?', a:'We use a combination of EBITDA multiples, discounted cash flow analysis, and comparable market transactions tailored to your industry.' },
+  { q:'Can I plan for family succession?', a:'Absolutely. The blueprint covers internal succession, management buyouts, and family transfer structures with tax optimization.' }
+];
+
+const pricingTiers = [
+  { name:'Starter', price:'$497', desc:'Essential planning', features:['Exit timeline framework','Basic valuation template','Tax scenario overview','Succession checklist'] },
+  { name:'Professional', price:'$1,997', desc:'Full strategic blueprint', features:['Everything in Starter','Advanced valuation models','Complete tax impact analysis','Detailed succession planning','1 advisory consultation'], featured: true },
+  { name:'Enterprise', price:'$4,997', desc:'White-glove exit strategy', features:['Everything in Professional','Custom deal structure analysis','Multi-scenario modeling','Ongoing advisory (6 months)','Buyer strategy guide','Legal roadmap'] }
+];
+
+const reactions = ['🔥','💎','🚀','🎯','💡','⭐'];
+const priceOptions = ['$47','$97','$197','$297','$497','$697','$997','$1,497','$1,997','$2,997'];
+
+// ===== BUILD STATIC UI =====
+function buildExitCards() {
+  const c = document.getElementById('exitCards');
+  c.innerHTML = exitCards.map((card, i) => `
+    <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-8 anim-scale stagger-${i+1} card-glow">
+      <div class="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center mb-5"><i data-lucide="${card.icon}" style="width:22px;height:22px;color:#e5b12a;"></i></div>
+      <h3 class="font-display text-lg font-bold text-white mb-3">${card.title}</h3>
+      <p class="text-gray-400 text-sm leading-relaxed">${card.desc}</p>
+    </div>
+  `).join('');
+}
+
+function buildTimeline() {
+  const c = document.getElementById('timelineContainer');
+  c.innerHTML = timelineSteps.map((s, i) => `
+    <div class="flex gap-6 anim-fade-up stagger-${i+1}">
+      <div class="flex flex-col items-center">
+        <div class="timeline-dot ${i===0?'active':''}"></div>
+        ${i < timelineSteps.length-1 ? '<div class="timeline-line flex-1 min-h-[60px]"></div>' : ''}
+      </div>
+      <div class="pb-10">
+        <span class="text-gold-400 text-xs font-semibold tracking-widest uppercase">${s.month}</span>
+        <h4 class="font-display text-lg font-bold text-white mt-1 mb-2">${s.title}</h4>
+        <p class="text-gray-400 text-sm leading-relaxed">${s.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildFaq() {
+  const c = document.getElementById('faqContainer');
+  c.innerHTML = faqData.map((f, i) => `
+    <div class="border border-white/5 rounded-xl overflow-hidden anim-fade-up stagger-${i+1}">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left hover:bg-white/[0.02] transition" aria-expanded="false">
+        <span class="text-white text-sm font-medium pr-4">${f.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;color:#e5b12a;flex-shrink:0;" class="faq-chevron transition-transform"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5"><p class="text-gray-400 text-sm leading-relaxed">${f.a}</p></div>
+    </div>
+  `).join('');
+}
+
+function buildPricing() {
+  const c = document.getElementById('pricingCards');
+  c.innerHTML = pricingTiers.map((tier, i) => `
+    <div class="bg-white/[0.03] border ${tier.featured ? 'border-gold-400/40' : 'border-white/5'} rounded-2xl p-8 anim-scale stagger-${i+1} card-glow relative overflow-hidden transition-transform hover:-translate-y-1">
+      ${tier.featured ? '<div class="absolute -top-1 -right-1 w-20 h-20 bg-gold-400/10 rounded-full blur-2xl"></div>' : ''}
+      <div class="relative z-10">
+        ${tier.featured ? '<span class="inline-block px-3 py-1 bg-gold-400/20 text-gold-400 text-xs font-bold tracking-widest uppercase rounded-full mb-4">Recommended</span>' : ''}
+        <h3 class="font-display text-2xl font-bold text-white mb-1">${tier.name}</h3>
+        <p class="text-gray-500 text-sm mb-5">${tier.desc}</p>
+        <div class="mb-6">
+          <span class="text-4xl font-bold text-gold-400">${tier.price}</span>
+          <span class="text-gray-500 text-sm ml-2">one-time</span>
+        </div>
+        <button class="w-full px-4 py-3 rounded-lg font-semibold text-sm transition mb-8 ${tier.featured ? 'bg-gold-400 text-midnight-900 hover:bg-gold-300' : 'border border-gold-400/30 text-gold-400 hover:bg-gold-400/10'}">
+          Get ${tier.name}
+        </button>
+        <div class="space-y-3">
+          ${tier.features.map(f => `
+            <div class="flex items-start gap-3">
+              <i data-lucide="check" style="width:16px;height:16px;color:#e5b12a;flex-shrink:0;margin-top:2px;"></i>
+              <span class="text-sm text-gray-300">${f}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildReactions() {
+  document.getElementById('reactionsRow').innerHTML = reactions.map(r =>
+    `<button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="${r}" onclick="handleReaction('${r}')">${r}</button>`
+  ).join('');
+}
+
+function buildPrices() {
+  document.getElementById('priceRow').innerHTML = priceOptions.map(p =>
+    `<button class="price-chip px-3 py-1.5 rounded-lg text-sm text-gray-300" data-price="${p}" onclick="handlePrice('${p}')">${p}</button>`
+  ).join('');
+}
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const chevron = btn.querySelector('.faq-chevron');
+  const open = !answer.classList.contains('hidden');
+  answer.classList.toggle('hidden');
+  btn.setAttribute('aria-expanded', !open);
+  chevron.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// ===== SCROLL ANIMATIONS =====
+function initScrollObserver() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.anim-fade-up, .anim-scale').forEach(el => obs.observe(el));
+}
+
+// ===== NAV ACTIVE STATE =====
+function initNavHighlight() {
+  const sections = ['home','exitplan','valuation','timeline','faq','start'];
+  const root = document.getElementById('appRoot');
+  root.addEventListener('scroll', () => {
+    let current = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 200) current = id;
+    });
+    document.querySelectorAll('[data-nav]').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+}
+
+// ===== MOBILE MENU =====
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// ===== DATA SDK =====
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Vote limit reached.'); return; }
+  // Deselect if same
+  if (selectedReaction === emoji) { selectedReaction = null; updateReactionUI(); return; }
+  selectedReaction = emoji;
+  updateReactionUI();
+  const btn = document.querySelector(`[data-reaction="${emoji}"]`);
+  if (btn) btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type:'reaction', reaction: emoji, price:'', comment:'', timestamp: new Date().toISOString(), reference_id:'widget' });
+  if (btn) btn.style.opacity = '1';
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+async function handlePrice(price) {
+  if (allData.length >= 999) { showToast('Vote limit reached.'); return; }
+  if (selectedPrice === price) { selectedPrice = null; updatePriceUI(); return; }
+  selectedPrice = price;
+  updatePriceUI();
+  const chip = document.querySelector(`[data-price="${price}"]`);
+  if (chip) chip.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type:'price', reaction:'', price: price, comment:'', timestamp: new Date().toISOString(), reference_id:'widget' });
+  if (chip) chip.style.opacity = '1';
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+function updateReactionUI() {
+  document.querySelectorAll('.reaction-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.reaction === selectedReaction);
+  });
+}
+function updatePriceUI() {
+  document.querySelectorAll('.price-chip').forEach(c => {
+    c.classList.toggle('selected', c.dataset.price === selectedPrice);
+  });
+}
+
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Comment limit reached.'); return; }
+  const btn = document.getElementById('commentBtn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type:'comment', reaction:'', price:'', comment: text, timestamp: new Date().toISOString(), reference_id:'widget' });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment.'); }
+});
+
+function renderSummary() {
+  const reactionCounts = {};
+  const priceCounts = {};
+  let commentCount = 0;
+  allData.forEach(d => {
+    if (d.type === 'reaction' && d.reaction) reactionCounts[d.reaction] = (reactionCounts[d.reaction]||0) + 1;
+    if (d.type === 'price' && d.price) priceCounts[d.price] = (priceCounts[d.price]||0) + 1;
+    if (d.type === 'comment') commentCount++;
+  });
+  const topReactions = Object.entries(reactionCounts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const topPrice = Object.entries(priceCounts).sort((a,b)=>b[1]-a[1])[0];
+  let html = '<div class="flex flex-wrap gap-4">';
+  if (topReactions.length) {
+    html += '<div><span class="text-gray-500 text-xs">Top reactions:</span><div class="flex gap-2 mt-1">';
+    topReactions.forEach(([e,c]) => { html += `<span class="text-sm">${e} <span class="text-gold-400 font-semibold">${c}</span></span>`; });
+    html += '</div></div>';
+  }
+  if (topPrice) html += `<div><span class="text-gray-500 text-xs">Most voted price:</span><div class="text-gold-400 font-semibold mt-1">${topPrice[0]} (${topPrice[1]})</div></div>`;
+  html += `<div><span class="text-gray-500 text-xs">Comments:</span><div class="text-white font-semibold mt-1">${commentCount}</div></div>`;
+  html += '</div>';
+  document.getElementById('summaryContent').innerHTML = html;
+}
+
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment' && d.comment).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const container = document.getElementById('commentsList');
+  const existingMap = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  comments.forEach(c => {
+    const id = c.__backendId;
+    if (existingMap.has(id)) {
+      existingMap.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'bg-white/[0.03] border border-white/5 rounded-lg p-4';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleDateString(undefined, { month:'short', day:'numeric' }) + ' · ' + time.toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+      div.innerHTML = `<p class="text-sm text-gray-300">${c.comment.replace(/</g,'&lt;')}</p><p class="text-xs text-gray-600 mt-2">${timeStr}</p>`;
+      container.prepend(div);
+    }
+  });
+  // Remove deleted
+  existingMap.forEach(el => el.remove());
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderSummary();
+    renderComments();
+  }
+};
+
+// ===== ELEMENT SDK =====
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.body.style.backgroundColor = bg;
+  document.querySelectorAll('.bg-white\\/\\[0\\.03\\]').forEach(el => el.style.backgroundColor = surface + '0d');
+
+  // Text
+  const heroT = document.getElementById('heroTitle');
+  if (heroT) {
+    const parts = (config.hero_title || defaultConfig.hero_title).split('.');
+    if (parts.length > 1) {
+      heroT.innerHTML = `<span class="gold-shimmer">${parts[0]}.</span><br><span class="text-white">${parts.slice(1).join('.').trim()}</span>`;
+    } else {
+      heroT.innerHTML = `<span class="gold-shimmer">${config.hero_title || defaultConfig.hero_title}</span>`;
+    }
+  }
+  const heroS = document.getElementById('heroSubtitle');
+  if (heroS) heroS.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  const epT = document.getElementById('exitPlanTitle');
+  if (epT) epT.textContent = config.exit_plan_title || defaultConfig.exit_plan_title;
+  const vT = document.getElementById('valuationTitle');
+  if (vT) vT.textContent = config.valuation_title || defaultConfig.valuation_title;
+  const tT = document.getElementById('timelineTitle');
+  if (tT) tT.textContent = config.timeline_title || defaultConfig.timeline_title;
+  const bCta = document.getElementById('bottomCtaText');
+  if (bCta) bCta.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  // Font
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = `${font}, Georgia, serif`;
+  });
+  document.body.style.fontFamily = `'DM Sans', sans-serif`;
+
+  // Font size scaling
+  document.body.style.fontSize = size + 'px';
+
+  // Primary color on gold elements
+  document.querySelectorAll('.bg-gold-400').forEach(el => el.style.backgroundColor = primary);
+  document.querySelectorAll('.text-gold-400').forEach(el => el.style.color = primary);
+  document.querySelectorAll('.border-gold-400\\/30, .border-gold-400\\/40').forEach(el => el.style.borderColor = primary + '60');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['exit_plan_title', config.exit_plan_title || defaultConfig.exit_plan_title],
+    ['valuation_title', config.valuation_title || defaultConfig.valuation_title],
+    ['timeline_title', config.timeline_title || defaultConfig.timeline_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ===== INIT =====
+buildExitCards();
+buildTimeline();
+buildFaq();
+buildPricing();
+buildReactions();
+buildPrices();
+lucide.createIcons();
+initScrollObserver();
+initNavHighlight();
+
+window.dataSdk.init(dataHandler);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a28e9e10c27c5',t:'MTc3NTU3NjczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

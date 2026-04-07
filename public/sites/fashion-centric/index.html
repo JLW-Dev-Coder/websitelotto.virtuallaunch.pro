@@ -1,1 +1,566 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a34ce687-ca63-46ec-b073-1e9e91535843 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RunwayEveryday Boutique</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&amp;family=DM+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Playfair Display"', 'serif'],
+        body: ['"DM Sans"', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Animations */
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.6); }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ken-burns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes chip-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(1deg); }
+  66% { transform: translateY(2px) rotate(-1deg); }
+}
+
+.animate-float { animation: floatUp 3s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-ken-burns { animation: ken-burns 20s ease-in-out alternate infinite; }
+.animate-marquee { animation: marquee 30s linear infinite; }
+.animate-chip { animation: chip-float 4s ease-in-out infinite; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+.reveal-delay-5 { transition-delay: 0.75s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 3px; }
+
+/* Image pan on hover */
+.img-pan { overflow: hidden; }
+.img-pan img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.img-pan:hover img { transform: scale(1.06); }
+
+/* Shop button float */
+.shop-btn-float {
+  animation: floatUp 3s ease-in-out infinite;
+}
+
+/* Nav link active indicator */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; width: 0; height: 2px;
+  background: #dc2626;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Vote card */
+.vote-card {
+  backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Size guide grid */
+.size-grid td, .size-grid th {
+  padding: 10px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto bg-[#0a0a0a] text-white font-body"><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);">
+   <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-14 sm:h-16"><a href="#home" class="font-display font-bold text-lg sm:text-xl tracking-tight" id="nav-brand">Runway<span class="text-red-600">Everyday</span></a>
+    <div class="hidden md:flex items-center gap-6 text-xs uppercase tracking-widest font-medium"><a href="#home" class="nav-link text-white/70 hover:text-white transition">Home</a> <a href="#new-arrivals" class="nav-link text-white/70 hover:text-white transition">New Arrivals</a> <a href="#shop-the-look" class="nav-link text-white/70 hover:text-white transition">Shop the Look</a> <a href="#size-guide" class="nav-link text-white/70 hover:text-white transition">Size Guide</a> <a href="#reviews" class="nav-link text-white/70 hover:text-white transition">Reviews</a> <a href="#shop-now" class="nav-link bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-full transition">Shop Now</a>
+    </div><button id="mobile-menu-btn" class="md:hidden text-white/70" aria-label="Open menu"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+   </div><!-- Mobile menu -->
+   <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-white/5 px-6 py-6 space-y-4 text-sm uppercase tracking-widest"><a href="#home" class="block text-white/70 hover:text-white">Home</a> <a href="#new-arrivals" class="block text-white/70 hover:text-white">New Arrivals</a> <a href="#shop-the-look" class="block text-white/70 hover:text-white">Shop the Look</a> <a href="#size-guide" class="block text-white/70 hover:text-white">Size Guide</a> <a href="#reviews" class="block text-white/70 hover:text-white">Reviews</a> <a href="#shop-now" class="block text-red-500">Shop Now</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;"><!-- Background image via CSS gradient + pattern -->
+   <div class="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a0a0a] to-[#0a0a0a]"></div>
+   <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 1px, transparent 40px);"></div><!-- Decorative red light bleed -->
+   <div class="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, #dc2626, transparent 70%);"></div>
+   <div class="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-[0.06]" style="background: radial-gradient(circle, #dc2626, transparent 70%);"></div>
+   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 flex flex-col justify-center" style="min-height: 100%; padding-top: 100px; padding-bottom: 60px;">
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"><!-- Left Content -->
+     <div class="order-2 lg:order-1">
+      <p class="text-xs uppercase tracking-[0.3em] text-red-500 font-medium mb-4 reveal" id="hero-tagline-el">Outfits that look styled, instantly.</p>
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-900 leading-[0.95] mb-6 reveal reveal-delay-1" id="hero-title-el">Your closet's<br><span class="italic text-red-600">new energy.</span></h1>
+      <p class="text-white/50 text-base sm:text-lg max-w-md mb-8 reveal reveal-delay-2 leading-relaxed" id="hero-subtitle-el">Curated looks that photograph beautifully.</p>
+      <div class="flex flex-wrap gap-3 reveal reveal-delay-3"><a href="#new-arrivals" class="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-full text-sm font-medium tracking-wide transition-all animate-pulse-glow">Shop New Arrivals</a> <a href="#shop-the-look" class="border border-white/20 hover:border-white/50 text-white px-6 py-3 rounded-full text-sm font-medium tracking-wide transition-all hover:bg-white/5">Browse Looks</a>
+      </div><!-- Category chips -->
+      <div class="flex flex-wrap gap-2 mt-10 reveal reveal-delay-4"><span class="animate-chip bg-white/5 border border-white/10 text-white/60 text-xs px-3 py-1.5 rounded-full" style="animation-delay:0s">Dresses</span> <span class="animate-chip bg-white/5 border border-white/10 text-white/60 text-xs px-3 py-1.5 rounded-full" style="animation-delay:0.5s">Blazers</span> <span class="animate-chip bg-white/5 border border-white/10 text-white/60 text-xs px-3 py-1.5 rounded-full" style="animation-delay:1s">Knitwear</span> <span class="animate-chip bg-white/5 border border-white/10 text-white/60 text-xs px-3 py-1.5 rounded-full" style="animation-delay:1.5s">Accessories</span> <span class="animate-chip bg-white/5 border border-white/10 text-white/60 text-xs px-3 py-1.5 rounded-full" style="animation-delay:2s">Sets</span>
+      </div>
+     </div><!-- Right - Visual Block -->
+     <div class="order-1 lg:order-2 relative reveal reveal-delay-2">
+      <div class="relative rounded-2xl overflow-hidden aspect-[3/4] max-w-md mx-auto lg:ml-auto shadow-2xl">
+       <div class="absolute inset-0 animate-ken-burns">
+        <svg viewbox="0 0 400 533" xmlns="http://www.w3.org/2000/svg" class="w-full h-full"><defs>
+          <lineargradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#1a1a2e" />
+           <stop offset="50%" style="stop-color:#16213e" />
+           <stop offset="100%" style="stop-color:#0f3460" />
+          </lineargradient>
+         </defs> <rect width="400" height="533" fill="url(#heroGrad)" /> <!-- Stylized fashion figure silhouette --> <ellipse cx="200" cy="140" rx="38" ry="46" fill="#e5e7eb" opacity="0.15" /> <rect x="175" y="180" width="50" height="100" rx="10" fill="#e5e7eb" opacity="0.12" /> <rect x="170" y="270" width="24" height="120" rx="6" fill="#e5e7eb" opacity="0.1" /> <rect x="206" y="270" width="24" height="120" rx="6" fill="#e5e7eb" opacity="0.1" /> <line x1="145" y1="200" x2="175" y2="220" stroke="#e5e7eb" stroke-width="12" stroke-linecap="round" opacity="0.1" /> <line x1="255" y1="200" x2="225" y2="220" stroke="#e5e7eb" stroke-width="12" stroke-linecap="round" opacity="0.1" /> <!-- Runway lights --> <circle cx="60" cy="500" r="4" fill="#dc2626" opacity="0.6" /> <circle cx="140" cy="510" r="3" fill="#dc2626" opacity="0.4" /> <circle cx="260" cy="510" r="3" fill="#dc2626" opacity="0.4" /> <circle cx="340" cy="500" r="4" fill="#dc2626" opacity="0.6" /> <circle cx="200" cy="520" r="5" fill="#dc2626" opacity="0.8" /> <!-- Fashion text overlay --> <text x="200" y="480" text-anchor="middle" font-family="serif" font-size="14" fill="white" opacity="0.15" letter-spacing="8">
+          RUNWAY EVERYDAY
+         </text>
+        </svg>
+       </div>
+       <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60"></div>
+      </div><!-- Floating Vote + Comment Card -->
+      <div class="vote-card absolute -bottom-4 -left-4 sm:left-0 rounded-xl p-4 w-56 shop-btn-float" style="animation-delay: 1s;">
+       <p class="text-[10px] uppercase tracking-widest text-red-400 mb-2 font-medium">Vote + Comment</p>
+       <div class="flex items-center gap-3 mb-3"><button id="vote-btn" class="flex items-center gap-1 bg-red-600/20 hover:bg-red-600/40 border border-red-600/30 rounded-full px-3 py-1.5 text-xs text-red-400 transition"> <i data-lucide="heart" style="width:12px;height:12px;"></i> <span id="vote-count">247</span> </button> <span class="text-white/30 text-xs">|</span> <span class="text-white/40 text-xs flex items-center gap-1"><i data-lucide="message-circle" style="width:11px;height:11px;"></i> 38</span>
+       </div>
+       <p class="text-[10px] text-white/30">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Marquee Ticker -->
+  <div class="w-full bg-red-600 py-2.5 overflow-hidden relative z-10">
+   <div class="animate-marquee whitespace-nowrap flex items-center"><span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Free Shipping on $100+</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">New Drops Every Friday</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Styled Sets Save 20%</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Lookbook Drives AOV</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Mobile-First Boutique</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Free Shipping on $100+</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">New Drops Every Friday</span> <span class="inline-block mx-4 text-red-300">✦</span> <span class="inline-block mx-8 text-xs uppercase tracking-[0.3em] font-medium">Styled Sets Save 20%</span> <span class="inline-block mx-4 text-red-300">✦</span>
+   </div>
+  </div><!-- NEW ARRIVALS -->
+  <section id="new-arrivals" class="w-full py-20 sm:py-28 px-4 sm:px-8">
+   <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 reveal">
+     <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-3">Just Dropped</p>
+     <h2 class="font-display text-4xl sm:text-5xl font-bold" id="new-arrivals-heading">New Arrivals</h2>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"><!-- Product 1 -->
+     <div class="group reveal reveal-delay-1">
+      <div class="img-pan rounded-xl overflow-hidden aspect-[3/4] bg-[#151515] relative mb-3">
+       <svg viewbox="0 0 300 400" class="w-full h-full">
+        <defs>
+         <lineargradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#2d1b2e" />
+          <stop offset="100%" style="stop-color:#1a1a2e" />
+         </lineargradient>
+        </defs><rect width="300" height="400" fill="url(#p1)" /><rect x="90" y="120" width="120" height="160" rx="8" fill="white" opacity="0.06" /><text x="150" y="330" text-anchor="middle" font-family="serif" font-size="11" fill="white" opacity="0.12">
+         OVERSIZED BLAZER
+        </text>
+       </svg>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><button class="bg-white text-black text-xs font-medium px-4 py-2 rounded-full w-full hover:bg-red-600 hover:text-white transition">Quick Add</button>
+       </div><span class="absolute top-3 left-3 bg-red-600 text-[10px] uppercase tracking-wider px-2 py-1 rounded-full font-medium">New</span>
+      </div>
+      <h3 class="text-sm font-medium">Oversized Linen Blazer</h3>
+      <p class="text-white/40 text-xs mt-1">$128</p>
+     </div><!-- Product 2 -->
+     <div class="group reveal reveal-delay-2">
+      <div class="img-pan rounded-xl overflow-hidden aspect-[3/4] bg-[#151515] relative mb-3">
+       <svg viewbox="0 0 300 400" class="w-full h-full">
+        <defs>
+         <lineargradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a2e1a" />
+          <stop offset="100%" style="stop-color:#1a1a2e" />
+         </lineargradient>
+        </defs><rect width="300" height="400" fill="url(#p2)" /><ellipse cx="150" cy="180" rx="50" ry="70" fill="white" opacity="0.05" /><text x="150" y="330" text-anchor="middle" font-family="serif" font-size="11" fill="white" opacity="0.12">
+         SILK MIDI DRESS
+        </text>
+       </svg>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><button class="bg-white text-black text-xs font-medium px-4 py-2 rounded-full w-full hover:bg-red-600 hover:text-white transition">Quick Add</button>
+       </div>
+      </div>
+      <h3 class="text-sm font-medium">Silk Midi Dress</h3>
+      <p class="text-white/40 text-xs mt-1">$186</p>
+     </div><!-- Product 3 -->
+     <div class="group reveal reveal-delay-3">
+      <div class="img-pan rounded-xl overflow-hidden aspect-[3/4] bg-[#151515] relative mb-3">
+       <svg viewbox="0 0 300 400" class="w-full h-full">
+        <defs>
+         <lineargradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#2e2e1a" />
+          <stop offset="100%" style="stop-color:#1a1a2e" />
+         </lineargradient>
+        </defs><rect width="300" height="400" fill="url(#p3)" /><rect x="110" y="100" width="80" height="180" rx="40" fill="white" opacity="0.05" /><text x="150" y="330" text-anchor="middle" font-family="serif" font-size="11" fill="white" opacity="0.12">
+         KNIT CO-ORD SET
+        </text>
+       </svg>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><button class="bg-white text-black text-xs font-medium px-4 py-2 rounded-full w-full hover:bg-red-600 hover:text-white transition">Quick Add</button>
+       </div><span class="absolute top-3 left-3 bg-white/10 backdrop-blur text-[10px] uppercase tracking-wider px-2 py-1 rounded-full font-medium">Bundle</span>
+      </div>
+      <h3 class="text-sm font-medium">Knit Co-Ord Set</h3>
+      <p class="text-white/40 text-xs mt-1"><span class="line-through mr-2">$210</span><span class="text-red-400">$168</span></p>
+     </div><!-- Product 4 -->
+     <div class="group reveal reveal-delay-4">
+      <div class="img-pan rounded-xl overflow-hidden aspect-[3/4] bg-[#151515] relative mb-3">
+       <svg viewbox="0 0 300 400" class="w-full h-full">
+        <defs>
+         <lineargradient id="p4" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a1a2e" />
+          <stop offset="100%" style="stop-color:#2e1a1a" />
+         </lineargradient>
+        </defs><rect width="300" height="400" fill="url(#p4)" /><polygon points="150,90 200,280 100,280" fill="white" opacity="0.04" /><text x="150" y="330" text-anchor="middle" font-family="serif" font-size="11" fill="white" opacity="0.12">
+         LEATHER TOTE BAG
+        </text>
+       </svg>
+       <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><button class="bg-white text-black text-xs font-medium px-4 py-2 rounded-full w-full hover:bg-red-600 hover:text-white transition">Quick Add</button>
+       </div>
+      </div>
+      <h3 class="text-sm font-medium">Structured Leather Tote</h3>
+      <p class="text-white/40 text-xs mt-1">$96</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- SHOP THE LOOK -->
+  <section id="shop-the-look" class="w-full py-20 sm:py-28 px-4 sm:px-8 bg-[#0f0f0f]">
+   <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 reveal">
+     <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-3">Editorial Picks</p>
+     <h2 class="font-display text-4xl sm:text-5xl font-bold">Shop the Look</h2>
+     <p class="text-white/40 text-sm mt-3 max-w-lg mx-auto">Complete outfits curated by our stylists. Each look comes with accessory suggestions.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="looks-grid">
+    </div>
+   </div>
+  </section><!-- SIZE GUIDE -->
+  <section id="size-guide" class="w-full py-20 sm:py-28 px-4 sm:px-8">
+   <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14 reveal">
+     <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-3">Fit Matters</p>
+     <h2 class="font-display text-4xl sm:text-5xl font-bold">Size Guide</h2>
+    </div>
+    <div class="reveal reveal-delay-1 overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02]">
+     <table class="size-grid w-full text-sm">
+      <thead>
+       <tr class="bg-white/[0.04]">
+        <th class="text-left text-xs uppercase tracking-wider text-white/50 font-medium">Size</th>
+        <th class="text-xs uppercase tracking-wider text-white/50 font-medium">Bust</th>
+        <th class="text-xs uppercase tracking-wider text-white/50 font-medium">Waist</th>
+        <th class="text-xs uppercase tracking-wider text-white/50 font-medium">Hips</th>
+        <th class="text-xs uppercase tracking-wider text-white/50 font-medium hidden sm:table-cell">Length</th>
+       </tr>
+      </thead>
+      <tbody class="text-white/60">
+       <tr>
+        <td class="text-left font-medium text-white">XS</td>
+        <td>31–32"</td>
+        <td>24–25"</td>
+        <td>34–35"</td>
+        <td class="hidden sm:table-cell">54"</td>
+       </tr>
+       <tr>
+        <td class="text-left font-medium text-white">S</td>
+        <td>33–34"</td>
+        <td>26–27"</td>
+        <td>36–37"</td>
+        <td class="hidden sm:table-cell">55"</td>
+       </tr>
+       <tr>
+        <td class="text-left font-medium text-white">M</td>
+        <td>35–36"</td>
+        <td>28–29"</td>
+        <td>38–39"</td>
+        <td class="hidden sm:table-cell">56"</td>
+       </tr>
+       <tr>
+        <td class="text-left font-medium text-white">L</td>
+        <td>37–39"</td>
+        <td>30–32"</td>
+        <td>40–42"</td>
+        <td class="hidden sm:table-cell">57"</td>
+       </tr>
+       <tr>
+        <td class="text-left font-medium text-white">XL</td>
+        <td>40–42"</td>
+        <td>33–35"</td>
+        <td>43–45"</td>
+        <td class="hidden sm:table-cell">58"</td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p class="text-center text-white/30 text-xs mt-4 reveal reveal-delay-2">All measurements in inches. For best fit, measure over undergarments.</p>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-20 sm:py-28 px-4 sm:px-8 bg-[#0f0f0f]">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+     <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-3">Real People, Real Style</p>
+     <h2 class="font-display text-4xl sm:text-5xl font-bold">Reviews</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid">
+    </div>
+   </div>
+  </section><!-- BUNDLE PRICING -->
+  <section class="w-full py-20 sm:py-28 px-4 sm:px-8">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 reveal">
+     <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-3">Save More, Wear More</p>
+     <h2 class="font-display text-4xl sm:text-5xl font-bold">Bundle &amp; Save</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+     <div class="reveal reveal-delay-1 rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center hover:border-white/20 transition">
+      <p class="text-white/40 text-xs uppercase tracking-wider mb-2">Starter</p>
+      <p class="font-display text-3xl font-bold mb-1">2 Pieces</p>
+      <p class="text-red-400 text-sm mb-4">Save 10%</p>
+      <p class="text-white/50 text-xs leading-relaxed">Mix any top + bottom. Auto-applied at checkout.</p>
+     </div>
+     <div class="reveal reveal-delay-2 rounded-2xl border border-red-600/50 bg-red-600/5 p-6 text-center relative overflow-hidden hover:border-red-500/60 transition"><span class="absolute top-3 right-3 bg-red-600 text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">Popular</span>
+      <p class="text-red-400 text-xs uppercase tracking-wider mb-2">Full Look</p>
+      <p class="font-display text-3xl font-bold mb-1">3 Pieces</p>
+      <p class="text-red-400 text-sm mb-4">Save 20%</p>
+      <p class="text-white/50 text-xs leading-relaxed">Top + bottom + accessory. Our best-selling combo.</p>
+     </div>
+     <div class="reveal reveal-delay-3 rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center hover:border-white/20 transition">
+      <p class="text-white/40 text-xs uppercase tracking-wider mb-2">Wardrobe</p>
+      <p class="font-display text-3xl font-bold mb-1">5+ Pieces</p>
+      <p class="text-red-400 text-sm mb-4">Save 30%</p>
+      <p class="text-white/50 text-xs leading-relaxed">Build your capsule wardrobe. Free styling consult included.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA -->
+  <section id="shop-now" class="w-full py-28 sm:py-36 px-4 sm:px-8 relative overflow-hidden">
+   <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#1a0808] to-[#0a0a0a]"></div>
+   <div class="absolute inset-0 opacity-[0.02]" style="background-image: repeating-linear-gradient(-45deg, #fff 0, #fff 1px, transparent 1px, transparent 60px);"></div>
+   <div class="relative z-10 text-center max-w-2xl mx-auto reveal">
+    <p class="text-xs uppercase tracking-[0.3em] text-red-500 mb-4">Your Next Chapter</p>
+    <h2 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-[0.95]" id="bottom-cta-el">Wear the <span class="italic text-red-600">vibe.</span></h2>
+    <p class="text-white/40 mb-8 max-w-md mx-auto">Every piece in our collection is designed to make you feel like the main character.</p><a href="#new-arrivals" class="inline-block bg-red-600 hover:bg-red-500 text-white px-10 py-4 rounded-full text-sm font-medium tracking-wide transition-all animate-pulse-glow">Shop the Collection</a>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full border-t border-white/5 py-10 px-4 sm:px-8">
+   <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-display font-bold text-sm">Runway<span class="text-red-600">Everyday</span></p>
+    <p class="text-white/30 text-xs">© 2025 RunwayEveryday Boutique. All rights reserved.</p>
+    <div class="flex items-center gap-4"><a href="#" class="text-white/30 hover:text-white transition"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a> <a href="#" class="text-white/30 hover:text-white transition"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a> <a href="#" class="text-white/30 hover:text-white transition"><i data-lucide="mail" style="width:16px;height:16px;"></i></a>
+    </div>
+   </div>
+  </footer>
+  <script>
+// ============ DATA ============
+const looks = [
+  { name: "The Power Meeting", pieces: "Blazer + Silk Cami + Tailored Trousers", accessory: "Gold chain necklace + structured bag", price: "$342", colors: ["#2d1b2e","#1a1a2e"] },
+  { name: "Weekend Brunch", pieces: "Linen Dress + Woven Belt + Sandals", accessory: "Straw crossbody + oversized sunglasses", price: "$264", colors: ["#1a2e1a","#2e2e1a"] },
+  { name: "Date Night", pieces: "Slip Dress + Leather Jacket + Heels", accessory: "Drop earrings + mini clutch", price: "$398", colors: ["#2e1a1a","#1a1a2e"] },
+  { name: "Street Editorial", pieces: "Cargo Pants + Crop Top + Sneakers", accessory: "Baseball cap + layered chains", price: "$196", colors: ["#1a1a2e","#2e2e1a"] },
+  { name: "Office to After", pieces: "Knit Set + Pointed Mules + Trench", accessory: "Tortoise cuff + tote bag", price: "$310", colors: ["#2e2e1a","#2d1b2e"] },
+  { name: "Golden Hour", pieces: "Maxi Skirt + Bodysuit + Wedges", accessory: "Hoop earrings + woven belt", price: "$228", colors: ["#2d1b2e","#2e1a1a"] }
+];
+
+const reviews = [
+  { name: "Mia R.", rating: 5, text: "The blazer fits like it was tailored for me. I've gotten so many compliments at work.", item: "Oversized Linen Blazer" },
+  { name: "Janelle K.", rating: 5, text: "Ordered the bundle set and saved $60. Everything pairs perfectly together.", item: "Knit Co-Ord Set" },
+  { name: "Sofia L.", rating: 4, text: "Beautiful silk dress. Runs slightly long for petites but the quality is unmatched.", item: "Silk Midi Dress" }
+];
+
+// ============ RENDER FUNCTIONS ============
+function renderLooks() {
+  const grid = document.getElementById('looks-grid');
+  grid.innerHTML = looks.map((look, i) => `
+    <div class="group reveal reveal-delay-${Math.min(i+1, 5)} rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] hover:border-white/20 transition-all relative">
+      <div class="aspect-[4/3] relative overflow-hidden">
+        <svg viewBox="0 0 400 300" class="w-full h-full transition-transform duration-700 group-hover:scale-105">
+          <defs><linearGradient id="look${i}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:${look.colors[0]}"/><stop offset="100%" style="stop-color:${look.colors[1]}"/></linearGradient></defs>
+          <rect width="400" height="300" fill="url(#look${i})"/>
+          <text x="200" y="155" text-anchor="middle" font-family="serif" font-size="16" fill="white" opacity="0.08" letter-spacing="4">${look.name.toUpperCase()}</text>
+        </svg>
+        <button class="shop-btn-float absolute bottom-3 right-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:bg-red-600 hover:border-red-600" style="animation-delay: ${i * 0.2}s">
+          Shop This Look
+        </button>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-display text-lg font-bold">${look.name}</h3>
+          <span class="text-red-400 text-sm font-medium">${look.price}</span>
+        </div>
+        <p class="text-white/40 text-xs leading-relaxed mb-2">${look.pieces}</p>
+        <p class="text-white/30 text-[10px] uppercase tracking-wider"><i data-lucide="sparkles" style="width:10px;height:10px;display:inline;vertical-align:middle;margin-right:4px;"></i>${look.accessory}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderReviews() {
+  const grid = document.getElementById('reviews-grid');
+  grid.innerHTML = reviews.map((r, i) => `
+    <div class="reveal reveal-delay-${i+1} rounded-2xl border border-white/10 bg-white/[0.02] p-6 hover:border-white/20 transition">
+      <div class="flex items-center gap-1 mb-3">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+      <p class="text-white/60 text-sm leading-relaxed mb-4">"${r.text}"</p>
+      <div class="flex items-center justify-between">
+        <span class="text-white font-medium text-sm">${r.name}</span>
+        <span class="text-white/30 text-xs">${r.item}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ SCROLL REVEALS ============
+function setupReveals() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ============ MOBILE MENU ============
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ============ VOTE BUTTON ============
+let voted = false;
+document.getElementById('vote-btn').addEventListener('click', () => {
+  const countEl = document.getElementById('vote-count');
+  let count = parseInt(countEl.textContent);
+  if (!voted) { count++; voted = true; } else { count--; voted = false; }
+  countEl.textContent = count;
+});
+
+// ============ ELEMENT SDK ============
+const defaultConfig = {
+  hero_title: "Your closet's new energy.",
+  hero_subtitle: "Curated looks that photograph beautifully.",
+  brand_tagline: "Outfits that look styled, instantly.",
+  bottom_cta_text: "Wear the vibe.",
+  background_color: "#0a0a0a",
+  accent_color: "#dc2626",
+  text_color: "#ffffff",
+  surface_color: "#0f0f0f",
+  muted_text_color: "#737373",
+  font_family: "Playfair Display",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  // Text content
+  const heroTitle = config.hero_title || defaultConfig.hero_title;
+  const words = heroTitle.split(' ');
+  const half = Math.ceil(words.length / 2);
+  document.getElementById('hero-title-el').innerHTML = words.slice(0, half).join(' ') + '<br><span class="italic" style="color:' + (config.accent_color || defaultConfig.accent_color) + '">' + words.slice(half).join(' ') + '</span>';
+
+  document.getElementById('hero-subtitle-el').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('hero-tagline-el').textContent = config.brand_tagline || defaultConfig.brand_tagline;
+
+  const bottomText = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  const bWords = bottomText.split(' ');
+  const bHalf = Math.max(1, bWords.length - 1);
+  document.getElementById('bottom-cta-el').innerHTML = bWords.slice(0, bHalf).join(' ') + ' <span class="italic" style="color:' + (config.accent_color || defaultConfig.accent_color) + '">' + bWords.slice(bHalf).join(' ') + '</span>';
+
+  // Colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const muted = config.muted_text_color || defaultConfig.muted_text_color;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = txt;
+
+  document.querySelectorAll('.bg-\\[\\#0f0f0f\\]').forEach(el => el.style.backgroundColor = surface);
+
+  // Accent elements
+  document.querySelectorAll('.bg-red-600').forEach(el => { el.style.backgroundColor = accent; });
+  document.querySelectorAll('.text-red-600, .text-red-500, .text-red-400').forEach(el => { el.style.color = accent; });
+  document.querySelectorAll('.border-red-600\\/50').forEach(el => { el.style.borderColor = accent; });
+
+  // Font
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = `${font}, serif`;
+  });
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2.5}px`);
+  document.querySelectorAll('p, td, th, span, a, button').forEach(el => {
+    if (!el.closest('h1') && !el.closest('h2')) {
+      // Don't override specific sizing classes
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.muted_text_color || defaultConfig.muted_text_color, set: (v) => { config.muted_text_color = v; window.elementSdk.setConfig({ muted_text_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["brand_tagline", config.brand_tagline || defaultConfig.brand_tagline],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ============ INIT ============
+renderLooks();
+renderReviews();
+lucide.createIcons();
+setupReveals();
+// Re-observe dynamically added elements
+setTimeout(() => { setupReveals(); lucide.createIcons(); }, 100);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2bf3907e27c5',t:'MTc3NTU3Njg1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

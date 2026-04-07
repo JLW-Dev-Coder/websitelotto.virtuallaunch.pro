@@ -1,1 +1,437 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/28c9a626-897f-48ce-85f8-0cd45183c53c -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AltitudeRush Aerials</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+    .font-bebas { font-family: 'Bebas Neue', cursive; }
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 0 20px rgba(0,200,255,0.3)} 50%{box-shadow:0 0 40px rgba(0,200,255,0.6)} }
+    @keyframes altimeter { 0%{height:10%} 50%{height:85%} 100%{height:60%} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes scaleIn { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    @keyframes motionLine { 0%{transform:translateY(100%);opacity:0} 30%{opacity:1} 100%{transform:translateY(-100%);opacity:0} }
+
+    .anim-float { animation: float 3s ease-in-out infinite; }
+    .anim-pulse { animation: pulse-glow 2s ease-in-out infinite; }
+    .anim-altimeter { animation: altimeter 3s ease-in-out forwards; }
+    .anim-marquee { animation: marquee 20s linear infinite; }
+
+    .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+    .glass-dark { background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+
+    .observe-slide { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .observe-slide.visible { opacity: 1; transform: translateY(0); }
+    .observe-scale { opacity: 0; transform: scale(0.92); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .observe-scale.visible { opacity: 1; transform: scale(1); }
+
+    .motion-line {
+      position: absolute; width: 1px; background: linear-gradient(to top, transparent, rgba(0,200,255,0.4), transparent);
+      animation: motionLine 2.5s ease-in-out infinite;
+    }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:linear-gradient(90deg,#00c8ff,#7b2fff); transition:width 0.3s; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    .collection-card { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s; }
+    .collection-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 60px rgba(0,200,255,0.15); }
+
+    .cta-btn { transition: all 0.3s; }
+    .cta-btn:hover { transform: translateY(-2px); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#00c8ff, #7b2fff); border-radius: 3px; }
+
+    .star-field { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.3; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            abyss: '#07070e',
+            electric: '#00c8ff',
+            violet: '#7b2fff',
+            surface: '#111119',
+            cream: '#e8e6e1'
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-outfit" style="background:#07070e; color:#e8e6e1;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="scroll-behavior:smooth;"><!-- Motion Lines -->
+   <div id="motion-lines" style="position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent;">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-bebas text-2xl tracking-wider" style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"> ALTITUDERUSH </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Home</a> <a href="#gallery" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Gallery</a> <a href="#collections" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Collections</a> <a href="#preview" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Preview</a> <a href="#reviews" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Reviews</a> <a href="#download" class="nav-link text-sm tracking-wide opacity-70 hover:opacity-100 transition">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden glass-dark px-6 pb-4"><a href="#home" class="block py-2 text-sm opacity-70 hover:opacity-100">Home</a> <a href="#gallery" class="block py-2 text-sm opacity-70 hover:opacity-100">Gallery</a> <a href="#collections" class="block py-2 text-sm opacity-70 hover:opacity-100">Collections</a> <a href="#preview" class="block py-2 text-sm opacity-70 hover:opacity-100">Preview</a> <a href="#reviews" class="block py-2 text-sm opacity-70 hover:opacity-100">Reviews</a> <a href="#download" class="block py-2 text-sm opacity-70 hover:opacity-100">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full" style="min-height:100%;">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&amp;q=80" alt="Mountain summit view" loading="lazy" class="w-full h-full object-cover" style="filter:brightness(0.35) contrast(1.2);" onerror="this.style.background='linear-gradient(135deg,#07070e,#1a1a2e)';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background:linear-gradient(to bottom, rgba(7,7,14,0.3) 0%, rgba(7,7,14,0.6) 60%, #07070e 100%);"></div>
+    </div><!-- Altimeter -->
+    <div class="absolute right-6 md:right-12 top-1/4 bottom-1/4 w-1 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.08);">
+     <div class="absolute bottom-0 w-full rounded-full anim-altimeter" style="background:linear-gradient(to top,#00c8ff,#7b2fff);"></div>
+    </div>
+    <div class="absolute right-10 md:right-16 top-1/4 font-bebas text-xs tracking-widest opacity-40" style="writing-mode:vertical-lr;">
+     10,000 FT
+    </div><!-- Star field for depth -->
+    <div class="star-field" id="star-field"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 py-32" style="min-height:100%;">
+     <div class="anim-float mb-4"><span class="inline-block px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase glass" style="color:#00c8ff;"> <i data-lucide="mountain" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:6px;"></i> 120 Wallpapers · 20 Posters · 30 Overlays </span>
+     </div>
+     <h1 id="hero-title" class="font-bebas leading-none mb-6" style="font-size:clamp(3rem,10vw,9rem);animation:slideUp 1s ease-out;"><span style="display:block;">Some people fear heights.</span> <span style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">You collect them.</span></h1>
+     <p id="hero-subtitle" class="max-w-xl text-lg opacity-60 mb-10" style="animation:fadeIn 1.5s ease-out;">Aerial visuals that look expensive anywhere.</p>
+     <div class="flex flex-wrap gap-4 justify-center" style="animation:slideUp 1.2s ease-out;"><a href="#download" id="cta-primary-btn" class="cta-btn anim-pulse px-8 py-4 rounded-xl font-semibold text-sm tracking-wide text-white" style="background:linear-gradient(135deg,#00c8ff,#7b2fff);"> <i data-lucide="download" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:8px;"></i> <span id="cta-primary-text">Download Collection</span> </a> <a href="#preview" id="cta-secondary-btn" class="cta-btn px-8 py-4 rounded-xl font-semibold text-sm tracking-wide glass hover:bg-white/10"> <i data-lucide="eye" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:8px;"></i> <span id="cta-secondary-text">See Previews</span> </a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40"><span class="text-xs tracking-widest uppercase">Scroll</span> <i data-lucide="chevron-down" style="width:16px;height:16px;" class="anim-float"></i>
+     </div>
+    </div>
+   </section><!-- Stats Marquee -->
+   <div class="w-full overflow-hidden py-4" style="background:linear-gradient(90deg,#00c8ff10,#7b2fff10);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div class="anim-marquee whitespace-nowrap"><span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">120 WALLPAPERS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">20 PRINTABLE POSTERS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">30 ADRENALINE OVERLAYS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">STORY TEMPLATES</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">INSTANT SCROLL-STOPPERS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">120 WALLPAPERS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">20 PRINTABLE POSTERS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">30 ADRENALINE OVERLAYS</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">STORY TEMPLATES</span> <span class="inline-block mx-4 opacity-20">◆</span> <span class="inline-block mx-8 font-bebas text-xl tracking-wider opacity-50">INSTANT SCROLL-STOPPERS</span>
+    </div>
+   </div><!-- GALLERY -->
+   <section id="gallery" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="observe-slide text-center mb-16"><span class="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase mb-4 glass" style="color:#00c8ff;">Gallery</span>
+      <h2 class="font-bebas text-5xl md:text-7xl">Visuals That Hit<br><span style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Different</span></h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div class="observe-scale col-span-2 row-span-2 rounded-2xl overflow-hidden relative group" style="transition-delay:0.1s;"><img src="https://images.unsplash.com/photo-1477346611705-65d1883cee1e?w=800&amp;q=80" alt="Mountain ridge at sunset" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="min-height:300px;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6"><span class="font-bebas text-2xl">Summit Glory</span>
+       </div>
+      </div>
+      <div class="observe-scale rounded-2xl overflow-hidden relative group" style="transition-delay:0.2s;"><img src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=600&amp;q=80" alt="Skyscraper aerial view" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="min-height:150px;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+      </div>
+      <div class="observe-scale rounded-2xl overflow-hidden relative group" style="transition-delay:0.3s;"><img src="https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=600&amp;q=80" alt="Clouds from above" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="min-height:150px;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+      </div>
+      <div class="observe-scale rounded-2xl overflow-hidden relative group" style="transition-delay:0.4s;"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&amp;q=80" alt="Mountain night sky" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="min-height:150px;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+      </div>
+      <div class="observe-scale rounded-2xl overflow-hidden relative group" style="transition-delay:0.5s;"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&amp;q=80" alt="Jagged mountain peak" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style="min-height:150px;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+      </div>
+     </div>
+    </div>
+   </section><!-- COLLECTIONS -->
+   <section id="collections" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%, rgba(123,47,255,0.08) 0%, transparent 60%);"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
+     <div class="observe-slide text-center mb-16"><span class="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase mb-4 glass" style="color:#7b2fff;">Collections</span>
+      <h2 class="font-bebas text-5xl md:text-7xl">Five Worlds.<br><span style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">One Obsession.</span></h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="collections-grid">
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="relative w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="observe-slide text-center mb-16"><span class="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase mb-4 glass" style="color:#00c8ff;">Preview</span>
+      <h2 class="font-bebas text-5xl md:text-7xl">See What's <span style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Inside</span></h2>
+     </div><!-- Device mockups -->
+     <div class="observe-scale flex flex-col md:flex-row items-center justify-center gap-8"><!-- Phone -->
+      <div class="relative rounded-3xl overflow-hidden" style="width:220px;border:3px solid rgba(255,255,255,0.15);box-shadow:0 30px 80px rgba(0,200,255,0.1);"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=400&amp;q=80" alt="Phone wallpaper preview - mountain" loading="lazy" class="w-full" style="aspect-ratio:9/16;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';">
+       <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full glass text-xs">
+        Wallpaper
+       </div>
+      </div><!-- Desktop -->
+      <div class="relative rounded-2xl overflow-hidden" style="width:420px;max-width:90%;border:3px solid rgba(255,255,255,0.15);box-shadow:0 30px 80px rgba(123,47,255,0.1);"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&amp;q=80" alt="Desktop wallpaper preview - foggy summit" loading="lazy" class="w-full" style="aspect-ratio:16/9;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';">
+       <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full glass text-xs">
+        Desktop Wallpaper
+       </div>
+      </div><!-- Poster -->
+      <div class="relative rounded-2xl overflow-hidden" style="width:180px;border:3px solid rgba(255,255,255,0.15);box-shadow:0 30px 80px rgba(0,200,255,0.1);"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=400&amp;q=80" alt="Poster preview - cliff edge" loading="lazy" class="w-full" style="aspect-ratio:2/3;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';">
+       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bebas text-xl text-center leading-tight" style="text-shadow:0 2px 20px rgba(0,0,0,0.8);">
+        FEAR IS<br>
+        A COMPASS
+       </div>
+       <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full glass text-xs">
+        Poster
+       </div>
+      </div>
+     </div><!-- Pricing chips -->
+     <div class="observe-slide flex flex-wrap justify-center gap-3 mt-12"><span class="px-4 py-2 rounded-full glass text-xs font-medium anim-float" style="animation-delay:0s;color:#00c8ff;"><i data-lucide="zap" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i>Adrenaline aesthetic sells</span> <span class="px-4 py-2 rounded-full glass text-xs font-medium anim-float" style="animation-delay:0.3s;color:#7b2fff;"><i data-lucide="palette" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i>Creator-ready</span> <span class="px-4 py-2 rounded-full glass text-xs font-medium anim-float" style="animation-delay:0.6s;color:#00c8ff;"><i data-lucide="trending-up" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i>Instant scroll-stopper visuals</span>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 100%, rgba(0,200,255,0.06) 0%, transparent 60%);"></div>
+    <div class="max-w-5xl mx-auto relative z-10">
+     <div class="observe-slide text-center mb-16"><span class="inline-block px-3 py-1 rounded-full text-xs tracking-widest uppercase mb-4 glass" style="color:#00c8ff;">Reviews</span>
+      <h2 class="font-bebas text-5xl md:text-7xl">What Creators <span style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Say</span></h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid"></div>
+    </div>
+   </section><!-- DOWNLOAD / Bottom CTA -->
+   <section id="download" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920&amp;q=80" alt="Rooftop city view at night" loading="lazy" class="w-full h-full object-cover" style="filter:brightness(0.2) contrast(1.3);" onerror="this.style.background='linear-gradient(135deg,#07070e,#1a1a2e)';">
+     <div class="absolute inset-0" style="background:linear-gradient(to bottom, #07070e 0%, rgba(7,7,14,0.7) 40%, #07070e 100%);"></div>
+    </div>
+    <div class="max-w-3xl mx-auto relative z-10 text-center">
+     <div class="observe-scale glass rounded-3xl p-10 md:p-16" style="box-shadow:0 0 80px rgba(0,200,255,0.08);">
+      <div class="font-bebas text-6xl md:text-8xl mb-6 leading-none" style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+       10,000 FT
+      </div>
+      <p id="bottom-cta-text" class="text-xl md:text-2xl font-light mb-8 opacity-80">Make your screen feel 10,000 feet higher.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6"><a href="#" class="cta-btn anim-pulse px-10 py-4 rounded-xl font-semibold tracking-wide text-white inline-flex items-center justify-center gap-2" style="background:linear-gradient(135deg,#00c8ff,#7b2fff);" onclick="event.preventDefault();"> <i data-lucide="download" style="width:18px;height:18px;"></i> Download Full Collection </a>
+      </div>
+      <p class="text-xs opacity-40">Instant delivery · All formats included · Commercial license</p>
+     </div><!-- Vote + Comment Widget -->
+     <div class="observe-slide glass rounded-2xl p-8 mt-8">
+      <h3 class="font-bebas text-2xl mb-4" style="color:#00c8ff;">Vote + Comment</h3>
+      <p class="text-sm opacity-50 mb-6">Drop your altitude rating and tell us your favorite collection.</p><!-- Rating -->
+      <div class="flex justify-center gap-2 mb-6" id="vote-stars"><button class="vote-star p-1 transition hover:scale-125" data-rating="1"><i data-lucide="star" style="width:28px;height:28px;color:rgba(255,255,255,0.2);"></i></button> <button class="vote-star p-1 transition hover:scale-125" data-rating="2"><i data-lucide="star" style="width:28px;height:28px;color:rgba(255,255,255,0.2);"></i></button> <button class="vote-star p-1 transition hover:scale-125" data-rating="3"><i data-lucide="star" style="width:28px;height:28px;color:rgba(255,255,255,0.2);"></i></button> <button class="vote-star p-1 transition hover:scale-125" data-rating="4"><i data-lucide="star" style="width:28px;height:28px;color:rgba(255,255,255,0.2);"></i></button> <button class="vote-star p-1 transition hover:scale-125" data-rating="5"><i data-lucide="star" style="width:28px;height:28px;color:rgba(255,255,255,0.2);"></i></button>
+      </div><!-- Comment form -->
+      <form id="comment-form" class="flex gap-3 max-w-md mx-auto"><input type="text" id="comment-input" placeholder="Leave a comment..." class="flex-1 px-4 py-3 rounded-xl text-sm bg-white/5 border border-white/10 focus:border-electric focus:outline-none transition" style="color:#e8e6e1;"> <button type="submit" class="px-5 py-3 rounded-xl font-medium text-sm text-white transition hover:scale-105" style="background:linear-gradient(135deg,#00c8ff,#7b2fff);"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+      </form>
+      <div id="comment-list" class="mt-4 space-y-2 max-w-md mx-auto text-left"></div>
+      <div id="vote-toast" class="hidden mt-3 text-xs text-center" style="color:#00c8ff;"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 text-center" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <p class="font-bebas text-lg tracking-widest opacity-30" style="background:linear-gradient(90deg,#00c8ff,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">ALTITUDERUSH AERIALS</p>
+    <p class="text-xs opacity-20 mt-2">For people who live above the fear.</p>
+   </footer>
+  </div>
+  <script>
+  // Collections data
+  const collections = [
+    { name: 'Rooftops', icon: 'building', img: 'https://images.unsplash.com/photo-1514565131-fce0801e5785?w=500&q=80', count: 28 },
+    { name: 'Summits', icon: 'mountain', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&q=80', count: 32 },
+    { name: 'Edge Views', icon: 'compass', img: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=500&q=80', count: 24 },
+    { name: 'Cloud Worlds', icon: 'cloud', img: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=500&q=80', count: 20 },
+    { name: 'Night Heights', icon: 'moon', img: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500&q=80', count: 16 }
+  ];
+
+  const reviews = [
+    { name: 'Maya R.', role: 'Content Creator', text: 'These wallpapers literally stopped people mid-scroll on my feed. The quality is unreal.', stars: 5 },
+    { name: 'Jake T.', role: 'Brand Designer', text: 'Used the posters for a luxury brand pitch. Client thought we shot them custom. Worth every cent.', stars: 5 },
+    { name: 'Aria K.', role: 'Travel Blogger', text: 'The adrenaline overlays are my secret weapon for story engagement. Absolute game-changer.', stars: 5 }
+  ];
+
+  // Build collections
+  const collectionsGrid = document.getElementById('collections-grid');
+  collections.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'observe-scale collection-card rounded-2xl overflow-hidden relative group cursor-pointer';
+    card.style.transitionDelay = `${i * 0.1}s`;
+    card.innerHTML = `
+      <img src="${c.img}" alt="${c.name} collection" loading="lazy" class="w-full object-cover transition-transform duration-700 group-hover:scale-110" style="aspect-ratio:3/4;" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#07070e)';this.alt='Image unavailable';">
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(7,7,14,0.9) 0%, transparent 60%);"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-4">
+        <div class="flex items-center gap-2 mb-1">
+          <i data-lucide="${c.icon}" style="width:16px;height:16px;color:#00c8ff;"></i>
+          <span class="font-bebas text-xl tracking-wider">${c.name}</span>
+        </div>
+        <span class="text-xs opacity-40">${c.count} visuals</span>
+      </div>
+    `;
+    collectionsGrid.appendChild(card);
+  });
+
+  // Build reviews
+  const reviewsGrid = document.getElementById('reviews-grid');
+  reviews.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'observe-slide glass rounded-2xl p-6';
+    card.style.transitionDelay = `${i * 0.15}s`;
+    const stars = '★'.repeat(r.stars);
+    card.innerHTML = `
+      <div class="text-sm mb-3" style="color:#00c8ff;">${stars}</div>
+      <p class="text-sm opacity-70 mb-4 leading-relaxed">"${r.text}"</p>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs" style="background:linear-gradient(135deg,#00c8ff,#7b2fff);">${r.name[0]}</div>
+        <div>
+          <div class="text-sm font-medium">${r.name}</div>
+          <div class="text-xs opacity-40">${r.role}</div>
+        </div>
+      </div>
+    `;
+    reviewsGrid.appendChild(card);
+  });
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.observe-slide, .observe-scale').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  const wrapper = document.getElementById('app-wrapper');
+  const nav = document.getElementById('sticky-nav');
+  wrapper.addEventListener('scroll', () => {
+    if (wrapper.scrollTop > 80) {
+      nav.style.background = 'rgba(7,7,14,0.85)';
+      nav.style.backdropFilter = 'blur(20px)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+    }
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Motion lines
+  const motionContainer = document.getElementById('motion-lines');
+  for (let i = 0; i < 5; i++) {
+    const line = document.createElement('div');
+    line.className = 'motion-line';
+    line.style.left = `${15 + Math.random() * 70}%`;
+    line.style.height = `${60 + Math.random() * 100}px`;
+    line.style.animationDelay = `${Math.random() * 3}s`;
+    line.style.animationDuration = `${2 + Math.random() * 2}s`;
+    motionContainer.appendChild(line);
+  }
+
+  // Star field
+  const starField = document.getElementById('star-field');
+  for (let i = 0; i < 30; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = `${Math.random()*100}%`;
+    star.style.top = `${Math.random()*100}%`;
+    star.style.opacity = `${0.1 + Math.random()*0.3}`;
+    star.style.animationDelay = `${Math.random()*3}s`;
+    starField.appendChild(star);
+  }
+
+  // Vote stars
+  let currentRating = 0;
+  document.querySelectorAll('.vote-star').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentRating = parseInt(btn.dataset.rating);
+      document.querySelectorAll('.vote-star i').forEach((icon, idx) => {
+        icon.style.color = idx < currentRating ? '#00c8ff' : 'rgba(255,255,255,0.2)';
+        icon.style.fill = idx < currentRating ? '#00c8ff' : 'none';
+      });
+      const toast = document.getElementById('vote-toast');
+      toast.textContent = `You rated ${currentRating}/5 — thanks for the altitude check! 🏔️`;
+      toast.classList.remove('hidden');
+    });
+  });
+
+  // Comment form
+  const comments = [];
+  document.getElementById('comment-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('comment-input');
+    const val = input.value.trim();
+    if (!val) return;
+    comments.unshift(val);
+    input.value = '';
+    renderComments();
+  });
+
+  function renderComments() {
+    const list = document.getElementById('comment-list');
+    list.innerHTML = comments.slice(0, 5).map(c => `
+      <div class="glass rounded-lg px-4 py-2 text-sm opacity-70">
+        <i data-lucide="message-circle" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:6px;color:#7b2fff;"></i>${c}
+      </div>
+    `).join('');
+    lucide.createIcons();
+  }
+
+  // Init icons
+  lucide.createIcons();
+
+  // Element SDK
+  const defaultConfig = {
+    hero_title: 'Some people fear heights. You collect them.',
+    hero_subtitle: 'Aerial visuals that look expensive anywhere.',
+    cta_primary: 'Download Collection',
+    cta_secondary: 'See Previews',
+    bottom_cta_text: 'Make your screen feel 10,000 feet higher.',
+    background_color: '#07070e',
+    accent_color: '#00c8ff',
+    text_color: '#e8e6e1',
+    surface_color: '#111119',
+    highlight_color: '#7b2fff',
+    font_family: 'Bebas Neue',
+    font_size: 16
+  };
+
+  function applyConfig(config) {
+    const c = { ...defaultConfig, ...config };
+
+    // Text
+    const heroTitle = document.getElementById('hero-title');
+    const parts = (c.hero_title || defaultConfig.hero_title).split('.');
+    if (parts.length >= 2) {
+      heroTitle.innerHTML = `<span style="display:block;">${parts[0].trim()}.</span><span style="background:linear-gradient(90deg,${c.accent_color},${c.highlight_color});-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${parts.slice(1).join('.').trim()}</span>`;
+    } else {
+      heroTitle.innerHTML = `<span style="background:linear-gradient(90deg,${c.accent_color},${c.highlight_color});-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${c.hero_title}</span>`;
+    }
+
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+    document.getElementById('cta-primary-text').textContent = c.cta_primary || defaultConfig.cta_primary;
+    document.getElementById('cta-secondary-text').textContent = c.cta_secondary || defaultConfig.cta_secondary;
+    document.getElementById('bottom-cta-text').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+    // Colors
+    document.body.style.background = c.background_color;
+    document.body.style.color = c.text_color;
+
+    // Font
+    const fontStack = `${c.font_family}, Bebas Neue, cursive`;
+    document.querySelectorAll('.font-bebas, h1, h2, h3').forEach(el => el.style.fontFamily = fontStack);
+
+    // Font size
+    const base = c.font_size || 16;
+    document.querySelectorAll('#hero-subtitle, #bottom-cta-text').forEach(el => el.style.fontSize = `${base * 1.25}px`);
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }},
+        { get: () => config.highlight_color || defaultConfig.highlight_color, set: (v) => { config.highlight_color = v; window.elementSdk.setConfig({ highlight_color: v }); }}
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }},
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }}
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a34f4579827c5',t:'MTc3NTU3NzIyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

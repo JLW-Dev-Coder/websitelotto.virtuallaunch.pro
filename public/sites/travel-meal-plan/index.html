@@ -1,1 +1,647 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/fc5af19e-e289-4cd0-877a-96d985941c5b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BiteMap NOLA</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        jazz: '#5B2D8E',
+        gumbo: '#E8A838',
+        teal: '#1A8F8F',
+        cream: '#FFF8F0',
+        deep: '#1A0F2E'
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['DM Sans', 'Arial', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pinBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-12px) scale(1.15); }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,168,56,0.4); }
+  50% { box-shadow: 0 0 20px 8px rgba(232,168,56,0.15); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-pin { animation: pinBounce 2s ease-in-out infinite; }
+.anim-fadein { animation: fadeSlideUp 0.7s ease-out forwards; opacity: 0; }
+.anim-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+.anim-shimmer {
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+.gradient-bg {
+  background: linear-gradient(-45deg, #1A0F2E, #5B2D8E, #1A8F8F, #1A0F2E);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: #E8A838; transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.timeline-line {
+  position: absolute; left: 24px; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to bottom, #5B2D8E, #1A8F8F, #E8A838);
+}
+
+.card-hover { transition: transform 0.3s, box-shadow 0.3s; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+
+.pin-marker {
+  width: 36px; height: 36px; border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg); display: flex; align-items: center; justify-content: center;
+}
+.pin-marker > * { transform: rotate(45deg); }
+
+.star { color: #E8A838; }
+
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1A0F2E; }
+::-webkit-scrollbar-thumb { background: #5B2D8E; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-deep font-body text-cream"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(26,15,46,0.85);backdrop-filter:blur(12px);">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-display font-black text-lg tracking-tight"> <span class="text-gumbo">Bite</span><span class="text-teal">Map</span> <span class="text-cream/70 text-sm font-body">NOLA</span> </a>
+     <div class="hidden md:flex gap-6 text-sm font-medium"><a href="#home" class="nav-link text-cream/80 hover:text-gumbo transition">Home</a> <a href="#itinerary" class="nav-link text-cream/80 hover:text-gumbo transition">Itinerary</a> <a href="#map" class="nav-link text-cream/80 hover:text-gumbo transition">Map</a> <a href="#included" class="nav-link text-cream/80 hover:text-gumbo transition">What's Included</a> <a href="#reviews" class="nav-link text-cream/80 hover:text-gumbo transition">Reviews</a> <a href="#download" class="nav-link text-cream/80 hover:text-gumbo transition">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-cream" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-medium"><a href="#home" class="text-cream/80 hover:text-gumbo transition py-1">Home</a> <a href="#itinerary" class="text-cream/80 hover:text-gumbo transition py-1">Itinerary</a> <a href="#map" class="text-cream/80 hover:text-gumbo transition py-1">Map</a> <a href="#included" class="text-cream/80 hover:text-gumbo transition py-1">What's Included</a> <a href="#reviews" class="text-cream/80 hover:text-gumbo transition py-1">Reviews</a> <a href="#download" class="text-cream/80 hover:text-gumbo transition py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="gradient-bg relative w-full overflow-hidden" style="min-height:100%;">
+    <div class="absolute inset-0 opacity-10" style="background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><circle cx=%2230%22 cy=%2230%22 r=%222%22 fill=%22white%22/></svg>');"></div><!-- Floating decorative pins -->
+    <div class="absolute top-20 left-8 anim-float" style="animation-delay:0s;">
+     <div class="pin-marker bg-gumbo">
+      <span class="text-deep text-xs font-bold">🍤</span>
+     </div>
+    </div>
+    <div class="absolute top-32 right-12 anim-float" style="animation-delay:0.8s;">
+     <div class="pin-marker bg-teal">
+      <span class="text-cream text-xs">🎷</span>
+     </div>
+    </div>
+    <div class="absolute bottom-32 left-16 anim-float" style="animation-delay:1.5s;">
+     <div class="pin-marker bg-jazz">
+      <span class="text-cream text-xs">🫘</span>
+     </div>
+    </div>
+    <div class="absolute bottom-20 right-20 anim-float" style="animation-delay:0.4s;">
+     <div class="pin-marker bg-gumbo">
+      <span class="text-deep text-xs">☕</span>
+     </div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 py-32" style="min-height:100%;">
+     <p id="el-tagline" class="text-gumbo font-semibold text-sm uppercase tracking-widest mb-4 anim-fadein">Eat your way through the city, zero planning stress.</p>
+     <h1 id="el-hero-headline" class="font-display font-black text-4xl sm:text-5xl md:text-7xl leading-tight max-w-4xl mb-6 anim-fadein" style="animation-delay:0.15s;">Your next favorite meal is already on this map.</h1>
+     <p class="text-cream/60 text-lg max-w-xl mb-8 anim-fadein" style="animation-delay:0.3s;">3 days. 18+ spots. One delicious itinerary through New Orleans' best bites, from beignets at dawn to late-night po'boys.</p>
+     <div class="flex flex-col sm:flex-row gap-4 items-center anim-fadein" style="animation-delay:0.45s;"><a href="#download" id="el-hero-cta" class="bg-gumbo text-deep font-bold px-8 py-4 rounded-full text-lg hover:bg-yellow-400 transition anim-glow inline-flex items-center gap-2"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Itinerary </a> <span id="el-price" class="text-cream/50 text-sm">Only <strong class="text-gumbo text-lg">$12</strong> — instant download</span>
+     </div>
+     <div class="flex gap-6 mt-10 text-cream/40 text-xs anim-fadein" style="animation-delay:0.6s;"><span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> Save 10+ hours</span> <span class="flex items-center gap-1"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> Local picks</span> <span class="flex items-center gap-1"><i data-lucide="zap" style="width:14px;height:14px;"></i> Instant upgrade</span>
+     </div>
+    </div>
+   </section><!-- ITINERARY -->
+   <section id="itinerary" class="w-full py-20 px-4 bg-deep relative">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16 scroll-reveal">
+      <p class="text-teal font-semibold text-sm uppercase tracking-widest mb-2">The Plan</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl">3 Days of Pure Flavor</h2>
+      <p class="text-cream/50 mt-3 max-w-lg mx-auto">A curated timeline from morning café au lait to midnight snacks. Swipe through each day.</p>
+     </div><!-- Day Tabs -->
+     <div class="flex justify-center gap-2 mb-12"><button class="day-tab active bg-gumbo text-deep font-bold px-6 py-2 rounded-full text-sm transition" data-day="1">Day 1</button> <button class="day-tab bg-cream/10 text-cream/60 font-bold px-6 py-2 rounded-full text-sm hover:bg-cream/20 transition" data-day="2">Day 2</button> <button class="day-tab bg-cream/10 text-cream/60 font-bold px-6 py-2 rounded-full text-sm hover:bg-cream/20 transition" data-day="3">Day 3</button>
+     </div><!-- Day 1 -->
+     <div id="day-1" class="day-content relative pl-14">
+      <div class="timeline-line"></div>
+      <div class="space-y-8">
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-gumbo flex items-center justify-center text-deep font-bold text-lg anim-pin">
+         ☀️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-gumbo text-xs font-bold uppercase tracking-wider">Morning</span>
+         <h3 class="font-display font-bold text-xl mt-1">Café Du Monde → Beignets &amp; Chicory Coffee</h3>
+         <p class="text-cream/50 text-sm mt-2">Start iconic. Powdered sugar everywhere. Arrive before 8AM to skip the crowd.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">French Quarter</span> <span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Must-Order: Beignets</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-teal flex items-center justify-center text-cream font-bold text-lg">
+         🍽️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-teal text-xs font-bold uppercase tracking-wider">Lunch</span>
+         <h3 class="font-display font-bold text-xl mt-1">Cochon Butcher → Cajun Pork Sandwich</h3>
+         <p class="text-cream/50 text-sm mt-2">Warehouse District gem. The muffuletta here rivals Central Grocery.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">Warehouse District</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Muffuletta</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-jazz flex items-center justify-center text-cream font-bold text-lg">
+         🌙
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-jazz text-xs font-bold uppercase tracking-wider">Dinner</span>
+         <h3 class="font-display font-bold text-xl mt-1">Commander's Palace → Jazz Brunch Dinner</h3>
+         <p class="text-cream/50 text-sm mt-2">Garden District royalty. 25¢ martinis at lunch, but dinner is the real flex.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Garden District</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Turtle Soup</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Day 2 -->
+     <div id="day-2" class="day-content hidden relative pl-14">
+      <div class="timeline-line"></div>
+      <div class="space-y-8">
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-gumbo flex items-center justify-center text-deep font-bold text-lg anim-pin">
+         ☀️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-gumbo text-xs font-bold uppercase tracking-wider">Morning</span>
+         <h3 class="font-display font-bold text-xl mt-1">Willa Jean → Cornbread &amp; Everything</h3>
+         <p class="text-cream/50 text-sm mt-2">That cornbread with fudge sauce will ruin all other cornbread for you forever.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">CBD</span> <span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Must-Order: Cornbread</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-teal flex items-center justify-center text-cream font-bold text-lg">
+         🍽️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-teal text-xs font-bold uppercase tracking-wider">Lunch</span>
+         <h3 class="font-display font-bold text-xl mt-1">Parkway Bakery → Roast Beef Po'Boy</h3>
+         <p class="text-cream/50 text-sm mt-2">Gravy-soaked perfection on French bread. Locals-only vibes on the bayou.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">Mid-City</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Roast Beef Po'Boy</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-jazz flex items-center justify-center text-cream font-bold text-lg">
+         🌙
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-jazz text-xs font-bold uppercase tracking-wider">Dinner</span>
+         <h3 class="font-display font-bold text-xl mt-1">Bacchanal Wine → Courtyard Vibes</h3>
+         <p class="text-cream/50 text-sm mt-2">Grab wine &amp; cheese inside, eat in the magical backyard with live jazz.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Bywater</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Cheese Board</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Day 3 -->
+     <div id="day-3" class="day-content hidden relative pl-14">
+      <div class="timeline-line"></div>
+      <div class="space-y-8">
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-gumbo flex items-center justify-center text-deep font-bold text-lg anim-pin">
+         ☀️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-gumbo text-xs font-bold uppercase tracking-wider">Morning</span>
+         <h3 class="font-display font-bold text-xl mt-1">Ruby Slipper Café → Bananas Foster Pain Perdu</h3>
+         <p class="text-cream/50 text-sm mt-2">Brunch done right. The Eggs Benedict with debris ham is life-changing.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">Mid-City</span> <span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Must-Order: Pain Perdu</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-teal flex items-center justify-center text-cream font-bold text-lg">
+         🍽️
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-teal text-xs font-bold uppercase tracking-wider">Lunch</span>
+         <h3 class="font-display font-bold text-xl mt-1">Dooky Chase's → Creole Gumbo</h3>
+         <p class="text-cream/50 text-sm mt-2">Leah Chase's legendary kitchen. The fried chicken buffet is a religious experience.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-jazz/30 text-jazz text-xs px-2 py-1 rounded-full">Tremé</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Gumbo Z'herbes</span>
+         </div>
+        </div>
+       </div>
+       <div class="relative scroll-reveal">
+        <div class="absolute left-[-38px] top-1 w-12 h-12 rounded-full bg-jazz flex items-center justify-center text-cream font-bold text-lg">
+         🌙
+        </div>
+        <div class="bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover"><span class="text-jazz text-xs font-bold uppercase tracking-wider">Late Night</span>
+         <h3 class="font-display font-bold text-xl mt-1">Dat Dog → Wild Game Sausages on Frenchmen</h3>
+         <p class="text-cream/50 text-sm mt-2">Crawfish sausage, duck sausage, alligator sausage — then live music next door.</p>
+         <div class="flex gap-2 mt-3"><span class="bg-teal/30 text-teal text-xs px-2 py-1 rounded-full">Marigny</span> <span class="bg-gumbo/30 text-gumbo text-xs px-2 py-1 rounded-full">Must-Order: Crawfish Sausage</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- MAP -->
+   <section id="map" class="w-full py-20 px-4 relative" style="background:linear-gradient(135deg,#1A0F2E 0%,#2A1A4E 50%,#1A3A3A 100%);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-gumbo font-semibold text-sm uppercase tracking-widest mb-2">The Map</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl">Pin-Dropped &amp; Ready</h2>
+      <p class="text-cream/50 mt-3 max-w-lg mx-auto">Every restaurant, café, and late-night spot pinned by neighborhood.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 scroll-reveal">
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gumbo/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:0s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">French Quarter</h3>
+       <p class="text-cream/40 text-xs mt-1">5 spots</p>
+      </div>
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-teal/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:0.3s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">Garden District</h3>
+       <p class="text-cream/40 text-xs mt-1">3 spots</p>
+      </div>
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-jazz/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:0.6s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">Bywater</h3>
+       <p class="text-cream/40 text-xs mt-1">3 spots</p>
+      </div>
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-gumbo/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:0.9s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">Mid-City</h3>
+       <p class="text-cream/40 text-xs mt-1">4 spots</p>
+      </div>
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-teal/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:1.2s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">Tremé</h3>
+       <p class="text-cream/40 text-xs mt-1">2 spots</p>
+      </div>
+      <div class="bg-cream/5 border border-cream/10 rounded-2xl p-5 card-hover text-center group cursor-pointer">
+       <div class="w-14 h-14 mx-auto mb-3 rounded-xl bg-jazz/20 flex items-center justify-center text-2xl anim-pin" style="animation-delay:1.5s;">
+        📍
+       </div>
+       <h3 class="font-display font-bold text-sm">Marigny</h3>
+       <p class="text-cream/40 text-xs mt-1">3 spots</p>
+      </div>
+     </div>
+     <p class="text-center text-cream/30 text-xs mt-8 scroll-reveal">🗺️ Full interactive Google Maps link included in the eBook</p>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section id="included" class="w-full py-20 px-4 bg-deep">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-jazz font-semibold text-sm uppercase tracking-widest mb-2">What You Get</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl">Everything in One Download</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 rounded-xl bg-gumbo/20 flex items-center justify-center mb-4"><i data-lucide="book-open" style="width:24px;height:24px;color:#E8A838;"></i>
+       </div>
+       <h3 class="font-display font-bold text-lg">3-Day Itinerary eBook</h3>
+       <p class="text-cream/50 text-sm mt-2">Full day-by-day guide with timing, directions, and pro tips for each stop.</p>
+       <ul class="text-cream/40 text-xs mt-3 space-y-1">
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> 18+ restaurant picks</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Timing suggestions</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Budget per meal</li>
+       </ul>
+      </div>
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover" style="transition-delay:0.1s;">
+       <div class="w-12 h-12 rounded-xl bg-teal/20 flex items-center justify-center mb-4"><i data-lucide="map" style="width:24px;height:24px;color:#1A8F8F;"></i>
+       </div>
+       <h3 class="font-display font-bold text-lg">Map Link Hub</h3>
+       <p class="text-cream/50 text-sm mt-2">Clickable Google Maps pins for every restaurant — organized by day and neighborhood.</p>
+       <ul class="text-cream/40 text-xs mt-3 space-y-1">
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> One-tap navigation</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Walking routes</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Offline-friendly</li>
+       </ul>
+      </div>
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover" style="transition-delay:0.2s;">
+       <div class="w-12 h-12 rounded-xl bg-jazz/20 flex items-center justify-center mb-4"><i data-lucide="check-square" style="width:24px;height:24px;color:#5B2D8E;"></i>
+       </div>
+       <h3 class="font-display font-bold text-lg">Printable Checklist</h3>
+       <p class="text-cream/50 text-sm mt-2">"What to order" notes for every stop — print it, fold it, bring it.</p>
+       <ul class="text-cream/40 text-xs mt-3 space-y-1">
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Dish recommendations</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Dietary notes</li>
+        <li class="flex items-center gap-1"><i data-lucide="check" style="width:12px;height:12px;color:#1A8F8F;"></i> Check-off format</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4" style="background:linear-gradient(180deg,#1A0F2E,#2A1A4E);">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal">
+      <p class="text-gumbo font-semibold text-sm uppercase tracking-widest mb-2">Proof It Works</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl">Travelers Love It</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover">
+       <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+       </div>
+       <p class="text-cream/70 text-sm italic">"We followed this to the letter and had the best food weekend of our lives. The Parkway po'boy alone was worth it."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-teal/30 flex items-center justify-center text-sm font-bold">
+         JM
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Jake M.</p>
+         <p class="text-cream/40 text-xs">Austin, TX</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover" style="transition-delay:0.1s;">
+       <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+       </div>
+       <p class="text-cream/70 text-sm italic">"As someone who usually over-plans, this was a dream. Just opened the map and walked. Every spot delivered."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gumbo/30 flex items-center justify-center text-sm font-bold">
+         SR
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Sarah R.</p>
+         <p class="text-cream/40 text-xs">Brooklyn, NY</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal bg-cream/5 border border-cream/10 rounded-2xl p-6 card-hover" style="transition-delay:0.2s;">
+       <div class="flex gap-1 mb-3"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+       </div>
+       <p class="text-cream/70 text-sm italic">"Bought this for a bachelorette trip and the whole group was obsessed. The 'what to order' notes? Chef's kiss."</p>
+       <div class="mt-4 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-jazz/30 flex items-center justify-center text-sm font-bold">
+         KL
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Kim L.</p>
+         <p class="text-cream/40 text-xs">Chicago, IL</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTING / COMMENT MODULE -->
+   <section class="w-full py-16 px-4 bg-deep border-t border-cream/5">
+    <div class="max-w-2xl mx-auto">
+     <div class="text-center mb-10 scroll-reveal">
+      <p class="text-teal font-semibold text-sm uppercase tracking-widest mb-2">Community Pick</p>
+      <h2 class="font-display font-bold text-2xl md:text-3xl">Vote: Which NOLA dish is #1?</h2>
+     </div>
+     <div id="poll-container" class="space-y-3 scroll-reveal"><!-- Poll options rendered by JS -->
+     </div>
+     <div class="mt-10 scroll-reveal">
+      <h3 class="font-display font-bold text-lg mb-4">Drop a Food Tip 🍴</h3>
+      <div id="comment-list" class="space-y-3 mb-4 max-h-64 overflow-auto"></div>
+      <form id="comment-form" class="flex gap-2"><input id="comment-input" type="text" placeholder="Share your favorite NOLA spot..." class="flex-1 bg-cream/5 border border-cream/10 rounded-xl px-4 py-3 text-sm text-cream placeholder-cream/30 focus:outline-none focus:border-gumbo transition" aria-label="Comment"> <button type="submit" class="bg-gumbo text-deep font-bold px-5 py-3 rounded-xl hover:bg-yellow-400 transition flex items-center gap-1 text-sm"> <i data-lucide="send" style="width:16px;height:16px;"></i> Post </button>
+      </form>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="download" class="gradient-bg w-full py-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 anim-shimmer"></div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="scroll-reveal">
+      <h2 id="el-bottom-cta" class="font-display font-black text-3xl md:text-5xl mb-4">Book the flight, we'll handle the plan.</h2>
+      <p class="text-cream/60 text-lg mb-8 max-w-lg mx-auto">Your 3-day New Orleans food crawl, planned by locals, ready in seconds.</p>
+      <div class="flex flex-col sm:flex-row gap-4 items-center justify-center"><button id="el-download-btn" class="bg-gumbo text-deep font-bold px-10 py-4 rounded-full text-lg hover:bg-yellow-400 transition anim-glow inline-flex items-center gap-2"> <i data-lucide="download" style="width:22px;height:22px;"></i> Get the Itinerary — $12 </button>
+      </div>
+      <p class="text-cream/30 text-xs mt-6">Instant PDF download • Lifetime access • 30-day refund</p>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-4 bg-deep border-t border-cream/5">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-cream/30 text-xs">
+     <p class="font-display"><span class="text-gumbo">Bite</span><span class="text-teal">Map</span> NOLA © 2025</p>
+     <div class="flex gap-4"><span>Made with 🫶 and too many beignets</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// -- Config & SDK --
+const defaultConfig = {
+  hero_headline: "Your next favorite meal is already on this map.",
+  hero_cta: "Get the Itinerary",
+  tagline: "Eat your way through the city, zero planning stress.",
+  price_text: "$12",
+  bottom_cta_text: "Book the flight, we'll handle the plan.",
+  background_color: "#1A0F2E",
+  surface_color: "#5B2D8E",
+  text_color: "#FFF8F0",
+  primary_action_color: "#E8A838",
+  secondary_action_color: "#1A8F8F",
+  font_family: "Playfair Display",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = {...defaultConfig, ...config};
+
+  document.getElementById('el-hero-headline').textContent = c.hero_headline;
+  document.getElementById('el-tagline').textContent = c.tagline;
+  document.getElementById('el-bottom-cta').textContent = c.bottom_cta_text;
+
+  // Hero CTA button
+  const heroCta = document.getElementById('el-hero-cta');
+  heroCta.childNodes[heroCta.childNodes.length - 1].textContent = ' ' + c.hero_cta;
+
+  // Price
+  const priceEl = document.getElementById('el-price');
+  priceEl.innerHTML = 'Only <strong class="text-gumbo text-lg">' + c.price_text + '</strong> — instant download';
+
+  // Download btn
+  const dlBtn = document.getElementById('el-download-btn');
+  dlBtn.childNodes[dlBtn.childNodes.length - 1].textContent = ' Get the Itinerary — ' + c.price_text;
+
+  // Font
+  const font = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = font + ', Georgia, serif';
+  });
+
+  // Font size
+  const base = c.font_size || defaultConfig.font_size;
+  document.body.style.fontSize = base + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({background_color:v}); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({surface_color:v}); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({text_color:v}); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({primary_action_color:v}); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({secondary_action_color:v}); }}
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({font_family:v}); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({font_size:v}); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_headline", config.hero_headline || defaultConfig.hero_headline],
+    ["hero_cta", config.hero_cta || defaultConfig.hero_cta],
+    ["tagline", config.tagline || defaultConfig.tagline],
+    ["price_text", config.price_text || defaultConfig.price_text],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// -- Mobile menu --
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// -- Day tabs --
+document.querySelectorAll('.day-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.day-tab').forEach(t => { t.classList.remove('active','bg-gumbo','text-deep'); t.classList.add('bg-cream/10','text-cream/60'); });
+    tab.classList.add('active','bg-gumbo','text-deep'); tab.classList.remove('bg-cream/10','text-cream/60');
+    document.querySelectorAll('.day-content').forEach(d => d.classList.add('hidden'));
+    document.getElementById('day-' + tab.dataset.day).classList.remove('hidden');
+    // Re-trigger scroll reveals
+    document.querySelectorAll('#day-' + tab.dataset.day + ' .scroll-reveal').forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.add('visible'), 50);
+    });
+  });
+});
+
+// -- Poll --
+const pollData = [
+  { id:'beignets', label:'Beignets', emoji:'🍩', votes:47 },
+  { id:'gumbo', label:'Gumbo', emoji:'🍲', votes:38 },
+  { id:'poboy', label:"Po'Boy", emoji:'🥖', votes:31 },
+  { id:'crawfish', label:'Crawfish Boil', emoji:'🦐', votes:25 },
+  { id:'jambalaya', label:'Jambalaya', emoji:'🍚', votes:19 }
+];
+let userVote = null;
+
+function renderPoll() {
+  const total = pollData.reduce((s,p) => s + p.votes, 0);
+  const container = document.getElementById('poll-container');
+  container.innerHTML = pollData.map(p => {
+    const pct = Math.round((p.votes / total) * 100);
+    const isVoted = userVote === p.id;
+    return `<button class="poll-opt w-full text-left bg-cream/5 border ${isVoted ? 'border-gumbo' : 'border-cream/10'} rounded-xl p-4 card-hover relative overflow-hidden transition" data-id="${p.id}">
+      <div class="absolute inset-0 bg-gumbo/10 rounded-xl transition-all" style="width:${userVote ? pct : 0}%"></div>
+      <div class="relative flex items-center justify-between">
+        <span class="font-semibold text-sm">${p.emoji} ${p.label}</span>
+        <span class="text-cream/50 text-sm font-mono">${userVote ? pct + '%' : ''}</span>
+      </div>
+    </button>`;
+  }).join('');
+  container.querySelectorAll('.poll-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (userVote) return;
+      userVote = btn.dataset.id;
+      const item = pollData.find(p => p.id === userVote);
+      if (item) item.votes++;
+      renderPoll();
+    });
+  });
+}
+renderPoll();
+
+// -- Comments --
+const comments = [
+  { name:'FoodieRay', text:'Don\'t skip Frenchmen Street for late-night eats!', time:'2h ago' },
+  { name:'NolaNative', text:'Add Mothers for the debris po\'boy 🔥', time:'5h ago' }
+];
+
+function renderComments() {
+  const list = document.getElementById('comment-list');
+  list.innerHTML = comments.map(c =>
+    `<div class="bg-cream/5 border border-cream/10 rounded-xl p-3 flex gap-3 items-start">
+      <div class="w-8 h-8 rounded-full bg-jazz/30 flex items-center justify-center text-xs font-bold flex-shrink-0">${c.name[0]}</div>
+      <div><p class="text-sm"><strong class="text-gumbo">${c.name}</strong> <span class="text-cream/30 text-xs ml-1">${c.time}</span></p><p class="text-cream/60 text-sm mt-0.5">${c.text}</p></div>
+    </div>`
+  ).join('');
+}
+renderComments();
+
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ name:'You', text, time:'Just now' });
+  renderComments();
+  input.value = '';
+});
+
+// -- Scroll reveal --
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// -- Active nav --
+const sections = ['home','itinerary','map','included','reviews','download'];
+const navLinks = document.querySelectorAll('.nav-link');
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && sec.getBoundingClientRect().top < 200) current = id;
+  });
+  navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6ead144627c5',t:'MTc3NTU3OTU4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,718 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/70167b20-887a-41f2-8b79-a0a5408a242d -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RhythmJump Collective</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Bebas Neue', 'sans-serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Rope animation */
+@keyframes ropeSwingLeft {
+  0%, 100% { transform: rotate(-35deg) scaleY(1); }
+  50% { transform: rotate(35deg) scaleY(0.95); }
+}
+@keyframes ropeSwingRight {
+  0%, 100% { transform: rotate(35deg) scaleY(1); }
+  50% { transform: rotate(-35deg) scaleY(0.95); }
+}
+@keyframes jumpPulse {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-18px); }
+  50% { transform: translateY(-22px); }
+  70% { transform: translateY(-14px); }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 56, 96, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(255, 56, 96, 0.6), 0 0 60px rgba(255, 56, 96, 0.2); }
+}
+@keyframes motionLine {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+@keyframes beatPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes ropeArc {
+  0% { d: path("M 0 80 Q 150 -20 300 80"); }
+  50% { d: path("M 0 80 Q 150 120 300 80"); }
+  100% { d: path("M 0 80 Q 150 -20 300 80"); }
+}
+
+.rope-left { animation: ropeSwingLeft 1.2s ease-in-out infinite; transform-origin: top center; }
+.rope-right { animation: ropeSwingRight 1.2s ease-in-out infinite; transform-origin: top center; }
+.jumper-anim { animation: jumpPulse 0.6s ease-in-out infinite; }
+.fade-slide-up { animation: fadeSlideUp 0.8s ease-out forwards; }
+.delay-1 { animation-delay: 0.15s; opacity: 0; }
+.delay-2 { animation-delay: 0.3s; opacity: 0; }
+.delay-3 { animation-delay: 0.45s; opacity: 0; }
+.delay-4 { animation-delay: 0.6s; opacity: 0; }
+.glow-pulse { animation: glowPulse 2s ease-in-out infinite; }
+.beat-pulse { animation: beatPulse 1.2s ease-in-out infinite; }
+
+.motion-line {
+  position: absolute;
+  height: 2px;
+  border-radius: 2px;
+  animation: motionLine 2s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+.pricing-card {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ff3860;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #ff3860; border-radius: 3px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff3860, #ff6b6b);
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ff6b6b, #ff3860);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 56, 96, 0.4);
+}
+.btn-secondary {
+  border: 2px solid #ff3860;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background: rgba(255, 56, 96, 0.15);
+  transform: scale(1.05);
+}
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 12px 24px; border-radius: 8px; z-index: 9999;
+  background: #1a1a2e; border: 1px solid #ff3860; color: #fff;
+  font-family: 'Outfit', sans-serif; font-size: 14px;
+  animation: fadeSlideUp 0.3s ease-out;
+  pointer-events: none;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background: #0a0a0f; color: #f0f0f5; font-family: 'Outfit', sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto">
+   <!-- NAV -->
+   <nav id="main-nav" style="position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,56,96,0.15);">
+    <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
+     <a href="#home" style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#ff3860;text-decoration:none;">RHYTHMJUMP</a> <button id="mobile-toggle" style="display:none;background:none;border:none;color:#f0f0f5;cursor:pointer;" onclick="document.getElementById('nav-links').classList.toggle('nav-open')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+     <div id="nav-links" style="display:flex;gap:24px;align-items:center;">
+      <a href="#home" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Home</a> <a href="#training" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Training</a> <a href="#performances" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Performances</a> <a href="#rhythm" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Rhythm</a> <a href="#pricing" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Pricing</a> <a href="#faq" class="nav-link" style="color:#a0a0b5;text-decoration:none;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">FAQ</a> <a href="#join" class="btn-primary" style="padding:8px 20px;border-radius:6px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Join Now</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;min-height:90%;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+    <!-- Motion lines background -->
+    <div style="position:absolute;inset:0;pointer-events:none;">
+     <div class="motion-line" style="top:20%;left:5%;width:120px;background:linear-gradient(90deg,transparent,#ff3860,transparent);animation-delay:0s;"></div>
+     <div class="motion-line" style="top:35%;right:10%;width:80px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);animation-delay:0.8s;"></div>
+     <div class="motion-line" style="top:60%;left:15%;width:100px;background:linear-gradient(90deg,transparent,#ffb347,transparent);animation-delay:1.4s;"></div>
+     <div class="motion-line" style="bottom:25%;right:20%;width:140px;background:linear-gradient(90deg,transparent,#ff3860,transparent);animation-delay:0.4s;"></div>
+     <div class="motion-line" style="top:75%;left:60%;width:90px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);animation-delay:1.8s;"></div>
+    </div><!-- Rope SVG animation -->
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.15;">
+     <svg width="500" height="300" viewbox="0 0 500 300" fill="none">
+      <ellipse class="rope-left" cx="100" cy="150" rx="8" ry="130" stroke="#ff3860" stroke-width="3" fill="none" style="transform-origin:100px 20px;" /> <ellipse class="rope-right" cx="400" cy="150" rx="8" ry="130" stroke="#00d4ff" stroke-width="3" fill="none" style="transform-origin:400px 20px;" /> <!-- Jumper silhouette --> <g class="jumper-anim" style="transform-origin:250px 200px;">
+       <circle cx="250" cy="120" r="16" fill="#ff3860" />
+       <line x1="250" y1="136" x2="250" y2="190" stroke="#ff3860" stroke-width="3" />
+       <line x1="250" y1="155" x2="230" y2="175" stroke="#ff3860" stroke-width="3" />
+       <line x1="250" y1="155" x2="270" y2="175" stroke="#ff3860" stroke-width="3" />
+       <line x1="250" y1="190" x2="235" y2="220" stroke="#ff3860" stroke-width="3" />
+       <line x1="250" y1="190" x2="265" y2="220" stroke="#ff3860" stroke-width="3" />
+      </g>
+     </svg>
+    </div><!-- Radial glow -->
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,56,96,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:relative;z-index:2;text-align:center;padding:40px 24px;max-width:800px;">
+     <div class="fade-slide-up" style="display:inline-block;padding:6px 16px;border-radius:20px;background:rgba(255,56,96,0.15);border:1px solid rgba(255,56,96,0.3);margin-bottom:24px;">
+      <span style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ff3860;">Precision · Rhythm · Movement</span>
+     </div>
+     <h1 id="hero-title" class="fade-slide-up delay-1" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);line-height:0.95;letter-spacing:4px;color:#f0f0f5;margin:0 0 20px;">Movement meets rhythm.</h1>
+     <p id="hero-subtitle" class="fade-slide-up delay-2" style="font-size:clamp(16px,2vw,22px);color:#a0a0b5;margin:0 0 36px;font-weight:300;line-height:1.6;">Double Dutch as performance and discipline.</p>
+     <div class="fade-slide-up delay-3" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#join" class="btn-primary glow-pulse" style="padding:14px 36px;border-radius:8px;color:#fff;text-decoration:none;font-weight:600;font-size:15px;letter-spacing:1px;">Join Now</a> <a href="#performances" class="btn-secondary" style="padding:14px 36px;border-radius:8px;color:#ff3860;text-decoration:none;font-weight:600;font-size:15px;letter-spacing:1px;">See Performances</a>
+     </div><!-- Animated rope arc below CTAs -->
+     <div class="fade-slide-up delay-4" style="margin-top:48px;">
+      <svg width="300" height="100" viewbox="0 0 300 100" fill="none" style="opacity:0.4;">
+       <path d="M 0 80 Q 150 -20 300 80" stroke="#ff3860" stroke-width="2" fill="none">
+        <animate attributename="d" values="M 0 80 Q 150 -20 300 80;M 0 80 Q 150 120 300 80;M 0 80 Q 150 -20 300 80" dur="1.2s" repeatcount="indefinite" />
+       </path> <path d="M 0 80 Q 150 120 300 80" stroke="#00d4ff" stroke-width="2" fill="none">
+        <animate attributename="d" values="M 0 80 Q 150 120 300 80;M 0 80 Q 150 -20 300 80;M 0 80 Q 150 120 300 80" dur="1.2s" repeatcount="indefinite" />
+       </path>
+      </svg>
+     </div>
+    </div>
+   </section><!-- TRAINING -->
+   <section id="training" class="scroll-reveal" style="padding:100px 24px;position:relative;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:60px;">
+      <span style="font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#ff3860;">Classes &amp; Programs</span>
+      <h2 id="training-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:3px;margin:12px 0 16px;color:#f0f0f5;">Train Your Rhythm</h2>
+      <p style="color:#a0a0b5;font-size:17px;max-width:550px;margin:0 auto;font-weight:300;">From first jump to competition stage. Every level has a path.</p>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div style="background:linear-gradient(135deg,rgba(255,56,96,0.08),rgba(255,56,96,0.02));border:1px solid rgba(255,56,96,0.15);border-radius:16px;padding:36px;transition:transform 0.3s ease,border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(255,56,96,0.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(255,56,96,0.15)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,56,96,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="footprints" style="width:24px;height:24px;color:#ff3860;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin:0 0 10px;">Foundation</h3>
+       <p style="color:#a0a0b5;font-size:14px;line-height:1.7;margin:0;">Learn rope timing, basic footwork, and entry techniques. Perfect for beginners with zero experience.</p>
+       <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="padding:4px 10px;border-radius:12px;background:rgba(255,56,96,0.1);font-size:11px;color:#ff6b6b;">Beginner</span> <span style="padding:4px 10px;border-radius:12px;background:rgba(0,212,255,0.1);font-size:11px;color:#00d4ff;">2x/week</span>
+       </div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,212,255,0.02));border:1px solid rgba(0,212,255,0.15);border-radius:16px;padding:36px;transition:transform 0.3s ease,border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(0,212,255,0.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(0,212,255,0.15)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="zap" style="width:24px;height:24px;color:#00d4ff;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin:0 0 10px;">Intermediate</h3>
+       <p style="color:#a0a0b5;font-size:14px;line-height:1.7;margin:0;">Multi-rope combos, speed drills, and partner synchronization. Build your performance toolkit.</p>
+       <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="padding:4px 10px;border-radius:12px;background:rgba(0,212,255,0.1);font-size:11px;color:#00d4ff;">Intermediate</span> <span style="padding:4px 10px;border-radius:12px;background:rgba(255,179,71,0.1);font-size:11px;color:#ffb347;">3x/week</span>
+       </div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(255,179,71,0.08),rgba(255,179,71,0.02));border:1px solid rgba(255,179,71,0.15);border-radius:16px;padding:36px;transition:transform 0.3s ease,border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(255,179,71,0.4)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(255,179,71,0.15)'">
+       <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,179,71,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <i data-lucide="flame" style="width:24px;height:24px;color:#ffb347;"></i>
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin:0 0 10px;">Elite</h3>
+       <p style="color:#a0a0b5;font-size:14px;line-height:1.7;margin:0;">Competition prep, choreography creation, and stage performance training for serious athletes.</p>
+       <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="padding:4px 10px;border-radius:12px;background:rgba(255,179,71,0.1);font-size:11px;color:#ffb347;">Advanced</span> <span style="padding:4px 10px;border-radius:12px;background:rgba(255,56,96,0.1);font-size:11px;color:#ff6b6b;">5x/week</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PERFORMANCES -->
+   <section id="performances" class="scroll-reveal" style="padding:100px 24px;position:relative;">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(255,56,96,0.03),transparent);pointer-events:none;"></div>
+    <div style="max-width:1100px;margin:0 auto;position:relative;">
+     <div style="text-align:center;margin-bottom:60px;">
+      <span style="font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#00d4ff;">Events &amp; Showcases</span>
+      <h2 id="performances-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:3px;margin:12px 0 16px;color:#f0f0f5;">See Us Move</h2>
+      <p style="color:#a0a0b5;font-size:17px;max-width:550px;margin:0 auto;font-weight:300;">Live performances that blend athleticism, artistry, and rhythm into one unforgettable experience.</p>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+      <div style="border-radius:16px;overflow:hidden;position:relative;border:1px solid rgba(255,56,96,0.15);transition:transform 0.4s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform=''"><img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=500&amp;h=300&amp;fit=crop" alt="Summer Showcase" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#1a0a12,#2a0a1a)'; this.alt='Performance event';" style="width:100%;height:200px;object-fit:cover;">
+       <div style="position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:12px;background:rgba(255,56,96,0.9);font-size:11px;font-weight:600;">
+        UPCOMING
+       </div>
+       <div style="padding:24px;background:rgba(15,15,25,0.9);">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin:0 0 8px;">Summer Showcase 2026</h3>
+        <p style="color:#a0a0b5;font-size:13px;margin:0 0 12px;line-height:1.6;">Our flagship annual event. 12 crews, live music, and crowd battles.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+         <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#a0a0b5;"><i data-lucide="calendar" style="width:14px;height:14px;color:#ff3860;"></i> Aug 15</span> <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#a0a0b5;"><i data-lucide="map-pin" style="width:14px;height:14px;color:#ff3860;"></i> Brooklyn</span>
+        </div>
+       </div>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;border:1px solid rgba(0,212,255,0.15);transition:transform 0.4s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform=''"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&amp;h=300&amp;fit=crop" alt="Open Floor Sessions" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#0a1520,#0a1a2a)'; this.alt='Community event';" style="width:100%;height:200px;object-fit:cover;">
+       <div style="position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:12px;background:rgba(0,212,255,0.9);font-size:11px;font-weight:600;color:#0a0a0f;">
+        MONTHLY
+       </div>
+       <div style="padding:24px;background:rgba(15,15,25,0.9);">
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin:0 0 8px;">Open Floor Sessions</h3>
+        <p style="color:#a0a0b5;font-size:13px;margin:0 0 12px;line-height:1.6;">Community jams. Bring your crew or come solo. All levels welcome.</p>
+        <div style="display:flex;gap:16px;align-items:center;">
+         <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#a0a0b5;"><i data-lucide="calendar" style="width:14px;height:14px;color:#00d4ff;"></i> Monthly</span> <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#a0a0b5;"><i data-lucide="users" style="width:14px;height:14px;color:#00d4ff;"></i> Open</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- RHYTHM -->
+   <section id="rhythm" class="scroll-reveal" style="padding:100px 24px;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:60px;">
+      <span style="font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#ffb347;">Technique &amp; Timing</span>
+      <h2 id="rhythm-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:3px;margin:12px 0 16px;color:#f0f0f5;">Master the Beat</h2>
+      <p style="color:#a0a0b5;font-size:17px;max-width:550px;margin:0 auto;font-weight:300;">Double Dutch is a conversation between turners and jumpers. Learn to listen with your body.</p>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+      <div style="text-align:center;padding:32px 24px;border-radius:16px;background:rgba(255,56,96,0.04);border:1px solid rgba(255,56,96,0.1);transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(255,56,96,0.3)';this.style.background='rgba(255,56,96,0.08)'" onmouseout="this.style.borderColor='rgba(255,56,96,0.1)';this.style.background='rgba(255,56,96,0.04)'">
+       <svg width="48" height="48" viewbox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block;" class="beat-pulse">
+        <circle cx="24" cy="24" r="22" stroke="#ff3860" stroke-width="2" fill="none" /><path d="M 12 24 Q 24 16 36 24" stroke="#ff3860" stroke-width="2" fill="none" /><circle cx="18" cy="24" r="3" fill="#ff3860" /><circle cx="24" cy="20" r="3" fill="#ff3860" /><circle cx="30" cy="24" r="3" fill="#ff3860" />
+       </svg>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin:0 0 8px;">Rope Cadence</h3>
+       <p style="color:#a0a0b5;font-size:13px;line-height:1.6;margin:0;">Consistent rope speed is the heartbeat. Turners set the tempo, jumpers ride it.</p>
+      </div>
+      <div style="text-align:center;padding:32px 24px;border-radius:16px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(0,212,255,0.08)'" onmouseout="this.style.borderColor='rgba(0,212,255,0.1)';this.style.background='rgba(0,212,255,0.04)'">
+       <svg width="48" height="48" viewbox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block;animation:beatPulse 1.2s ease-in-out infinite 0.3s;" class="beat-pulse">
+        <g>
+         <line x1="24" y1="4" x2="24" y2="12" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" />
+         <line x1="24" y1="36" x2="24" y2="44" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" />
+         <path d="M 24 16 L 24 32" stroke="#00d4ff" stroke-width="2" />
+         <path d="M 16 24 L 32 24" stroke="#00d4ff" stroke-width="2" />
+         <circle cx="12" cy="12" r="2" fill="#00d4ff" />
+         <circle cx="36" cy="12" r="2" fill="#00d4ff" />
+         <circle cx="12" cy="36" r="2" fill="#00d4ff" />
+         <circle cx="36" cy="36" r="2" fill="#00d4ff" />
+        </g>
+       </svg>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin:0 0 8px;">Footwork Patterns</h3>
+       <p style="color:#a0a0b5;font-size:13px;line-height:1.6;margin:0;">Criss-cross, double bounce, pop-ups. Each pattern has its own rhythmic signature.</p>
+      </div>
+      <div style="text-align:center;padding:32px 24px;border-radius:16px;background:rgba(255,179,71,0.04);border:1px solid rgba(255,179,71,0.1);transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(255,179,71,0.3)';this.style.background='rgba(255,179,71,0.08)'" onmouseout="this.style.borderColor='rgba(255,179,71,0.1)';this.style.background='rgba(255,179,71,0.04)'">
+       <svg width="48" height="48" viewbox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block;animation:beatPulse 1.2s ease-in-out infinite 0.6s;" class="beat-pulse">
+        <path d="M 24 6 L 32 18 L 20 18 Z" stroke="#ffb347" stroke-width="2" fill="none" /><circle cx="24" cy="28" r="8" stroke="#ffb347" stroke-width="2" fill="none" /><path d="M 18 36 Q 24 40 30 36" stroke="#ffb347" stroke-width="2" fill="none" />
+       </svg>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin:0 0 8px;">Entry &amp; Exit</h3>
+       <p style="color:#a0a0b5;font-size:13px;line-height:1.6;margin:0;">The hardest skill to master. Timing your entry is everything in performance.</p>
+      </div>
+      <div style="text-align:center;padding:32px 24px;border-radius:16px;background:rgba(255,56,96,0.04);border:1px solid rgba(255,56,96,0.1);transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(255,56,96,0.3)';this.style.background='rgba(255,56,96,0.08)'" onmouseout="this.style.borderColor='rgba(255,56,96,0.1)';this.style.background='rgba(255,56,96,0.04)'">
+       <svg width="48" height="48" viewbox="0 0 48 48" fill="none" style="margin:0 auto 12px;display:block;animation:beatPulse 1.2s ease-in-out infinite 0.9s;" class="beat-pulse">
+        <circle cx="18" cy="18" r="6" stroke="#ff3860" stroke-width="2" fill="none" /><circle cx="30" cy="18" r="6" stroke="#ff3860" stroke-width="2" fill="none" /><path d="M 18 24 L 30 24 M 18 32 L 30 32" stroke="#ff3860" stroke-width="2" stroke-linecap="round" /><line x1="18" y1="28" x2="18" y2="36" stroke="#ff3860" stroke-width="2" /><line x1="30" y1="28" x2="30" y2="36" stroke="#ff3860" stroke-width="2" />
+       </svg>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin:0 0 8px;">Sync &amp; Flow</h3>
+       <p style="color:#a0a0b5;font-size:13px;line-height:1.6;margin:0;">Group choreography demands trust. When the crew locks in, it's magic.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="scroll-reveal" style="padding:100px 24px;position:relative;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,56,96,0.05) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="max-width:1100px;margin:0 auto;position:relative;">
+     <div style="text-align:center;margin-bottom:60px;">
+      <span style="font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#ff3860;">Membership</span>
+      <h2 id="pricing-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:3px;margin:12px 0 16px;color:#f0f0f5;">Find Your Level</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start;">
+      <!-- Starter -->
+      <div class="pricing-card" style="border-radius:20px;border:1px solid rgba(255,56,96,0.15);background:linear-gradient(180deg,rgba(255,56,96,0.06),rgba(10,10,15,0.9));padding:40px 32px;text-align:center;">
+       <span style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#a0a0b5;">Starter</span>
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:2px;margin:12px 0 4px;color:#f0f0f5;">
+        $29<span style="font-size:20px;color:#a0a0b5;">/mo</span>
+       </div>
+       <p style="color:#a0a0b5;font-size:13px;margin:0 0 28px;">Beginner classes</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">2 classes per week</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Foundation training routines</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Community access</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Class schedule templates</span>
+        </div>
+       </div><a href="#join" class="btn-secondary" style="display:block;padding:14px;border-radius:10px;color:#ff3860;text-decoration:none;font-weight:600;font-size:14px;">Get Started</a>
+      </div><!-- Advanced (featured) -->
+      <div class="pricing-card glow-pulse" style="border-radius:20px;border:2px solid rgba(255,56,96,0.4);background:linear-gradient(180deg,rgba(255,56,96,0.12),rgba(10,10,15,0.95));padding:40px 32px;text-align:center;position:relative;">
+       <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:6px 20px;border-radius:20px;background:linear-gradient(135deg,#ff3860,#ff6b6b);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">
+        Most Popular
+       </div><span style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ff3860;">Advanced</span>
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:2px;margin:12px 0 4px;color:#f0f0f5;">
+        $59<span style="font-size:20px;color:#a0a0b5;">/mo</span>
+       </div>
+       <p style="color:#a0a0b5;font-size:13px;margin:0 0 28px;">Training programs</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Unlimited classes</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Choreography layouts</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Performance templates</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Monthly skill assessments</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ff3860;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Open floor session access</span>
+        </div>
+       </div><a href="#join" class="btn-primary" style="display:block;padding:14px;border-radius:10px;color:#fff;text-decoration:none;font-weight:600;font-size:14px;">Join Advanced</a>
+      </div><!-- Elite -->
+      <div class="pricing-card" style="border-radius:20px;border:1px solid rgba(255,179,71,0.2);background:linear-gradient(180deg,rgba(255,179,71,0.06),rgba(10,10,15,0.9));padding:40px 32px;text-align:center;">
+       <span style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ffb347;">Elite</span>
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:2px;margin:12px 0 4px;color:#f0f0f5;">
+        $99<span style="font-size:20px;color:#a0a0b5;">/mo</span>
+       </div>
+       <p style="color:#a0a0b5;font-size:13px;margin:0 0 28px;">Performance coaching</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ffb347;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Everything in Advanced</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ffb347;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">1-on-1 coaching sessions</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ffb347;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Competition preparation</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ffb347;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Custom training routines</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;"><i data-lucide="check" style="width:16px;height:16px;color:#ffb347;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c0d0;">Showcase priority placement</span>
+        </div>
+       </div><a href="#join" style="display:block;padding:14px;border-radius:10px;border:2px solid #ffb347;color:#ffb347;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,179,71,0.15)';this.style.transform='scale(1.05)'" onmouseout="this.style.background='';this.style.transform=''">Go Elite</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="scroll-reveal" style="padding:100px 24px;">
+    <div style="max-width:700px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:48px;">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:3px;margin:0 0 12px;color:#f0f0f5;">FAQ</h2>
+     </div>
+     <div id="faq-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="join" class="scroll-reveal" style="padding:80px 24px 40px;">
+    <div style="max-width:700px;margin:0 auto;text-align:center;">
+     <!-- CTA -->
+     <div style="padding:60px 32px;border-radius:24px;background:linear-gradient(135deg,rgba(255,56,96,0.12),rgba(0,212,255,0.06));border:1px solid rgba(255,56,96,0.2);margin-bottom:60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;pointer-events:none;">
+       <svg width="100%" height="100%" style="opacity:0.1;">
+        <path d="M 0 80 Q 200 -30 400 80" stroke="#ff3860" stroke-width="2" fill="none">
+         <animate attributename="d" values="M 0 80 Q 200 -30 400 80;M 0 80 Q 200 130 400 80;M 0 80 Q 200 -30 400 80" dur="1.5s" repeatcount="indefinite" />
+        </path>
+       </svg>
+      </div>
+      <h2 id="bottom-cta-text" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,64px);letter-spacing:3px;margin:0 0 16px;color:#f0f0f5;position:relative;">Jump into rhythm.</h2>
+      <p style="color:#a0a0b5;font-size:16px;margin:0 0 28px;position:relative;">Start your journey with the collective. No experience needed.</p><a href="#home" class="btn-primary glow-pulse" style="display:inline-block;padding:16px 48px;border-radius:10px;color:#fff;text-decoration:none;font-weight:600;font-size:16px;letter-spacing:1px;position:relative;">Join the Collective</a>
+     </div><!-- VOTE + COMMENT MODULE -->
+     <div style="border-radius:20px;border:1px solid rgba(255,56,96,0.15);background:rgba(15,15,25,0.8);padding:32px;text-align:left;">
+      <div style="text-align:center;margin-bottom:24px;">
+       <span style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#a0a0b5;">Embed Widget Here</span>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin:8px 0 4px;color:#f0f0f5;">Rate &amp; React</h3>
+      </div><!-- Reactions -->
+      <div style="margin-bottom:24px;">
+       <p style="font-size:12px;color:#a0a0b5;margin:0 0 10px;font-weight:500;">REACTIONS</p>
+       <div id="reaction-bar" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+      </div><!-- Price Vote -->
+      <div style="margin-bottom:24px;">
+       <p style="font-size:12px;color:#a0a0b5;margin:0 0 10px;font-weight:500;">WHAT WOULD YOU PAY?</p>
+       <div id="price-bar" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </div><!-- Comments -->
+      <div>
+       <p style="font-size:12px;color:#a0a0b5;margin:0 0 10px;font-weight:500;">COMMENTS</p>
+       <form id="comment-form" style="display:flex;gap:8px;margin-bottom:16px;">
+        <input id="comment-input" type="text" placeholder="Share your thoughts..." style="flex:1;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,56,96,0.2);background:rgba(255,56,96,0.05);color:#f0f0f5;font-family:'Outfit',sans-serif;font-size:14px;outline:none;" onfocus="this.style.borderColor='rgba(255,56,96,0.5)'" onblur="this.style.borderColor='rgba(255,56,96,0.2)'"> <button type="submit" id="comment-btn" style="padding:10px 18px;border-radius:8px;background:#ff3860;border:none;color:#fff;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.3s ease;font-family:'Outfit',sans-serif;" onmouseover="this.style.background='#ff6b6b'" onmouseout="this.style.background='#ff3860'">Post</button>
+       </form>
+       <div id="comments-list" style="display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding:40px 24px;text-align:center;border-top:1px solid rgba(255,56,96,0.1);">
+    <p style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#ff3860;margin:0 0 8px;">RHYTHMJUMP COLLECTIVE</p>
+    <p style="font-size:12px;color:#555;margin:0;">Precision · Rhythm · Movement</p>
+   </footer>
+  </div>
+  <script>
+// ============ CONFIG & SDK SETUP ============
+const defaultConfig = {
+  hero_title: 'Movement meets rhythm.',
+  hero_subtitle: 'Double Dutch as performance and discipline.',
+  training_title: 'Train Your Rhythm',
+  performances_title: 'See Us Move',
+  rhythm_title: 'Master the Beat',
+  pricing_title: 'Find Your Level',
+  bottom_cta_text: 'Jump into rhythm.',
+  background_color: '#0a0a0f',
+  surface_color: '#0f0f19',
+  text_color: '#f0f0f5',
+  primary_action_color: '#ff3860',
+  secondary_action_color: '#00d4ff',
+  font_family: 'Bebas Neue',
+  font_size: 16
+};
+
+function applyConfig(c) {
+  const g = (k) => c[k] || defaultConfig[k];
+  document.getElementById('hero-title').textContent = g('hero_title');
+  document.getElementById('hero-subtitle').textContent = g('hero_subtitle');
+  document.getElementById('training-title').textContent = g('training_title');
+  document.getElementById('performances-title').textContent = g('performances_title');
+  document.getElementById('rhythm-title').textContent = g('rhythm_title');
+  document.getElementById('pricing-title').textContent = g('pricing_title');
+  document.getElementById('bottom-cta-text').textContent = g('bottom_cta_text');
+
+  document.body.style.background = g('background_color');
+  document.body.style.color = g('text_color');
+
+  const baseSize = g('font_size');
+  const font = g('font_family');
+  document.querySelectorAll('h1,h2,h3').forEach(el => {
+    el.style.fontFamily = `${font}, Bebas Neue, sans-serif`;
+  });
+  document.body.style.fontSize = baseSize + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => {
+    const g = (k) => config[k] || defaultConfig[k];
+    const mut = (key) => ({
+      get: () => g(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_action_color'), mut('secondary_action_color')],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const g = (k) => config[k] || defaultConfig[k];
+    return new Map([
+      ['hero_title', g('hero_title')],
+      ['hero_subtitle', g('hero_subtitle')],
+      ['training_title', g('training_title')],
+      ['performances_title', g('performances_title')],
+      ['rhythm_title', g('rhythm_title')],
+      ['pricing_title', g('pricing_title')],
+      ['bottom_cta_text', g('bottom_cta_text')]
+    ]);
+  }
+});
+
+// ============ FAQ ============
+const faqs = [
+  { q: 'Do I need experience?', a: 'None at all. Our Foundation classes start from zero.' },
+  { q: 'What should I wear?', a: 'Comfortable athletic wear and supportive sneakers.' },
+  { q: 'How long are classes?', a: '60 minutes for group classes, 45 minutes for 1-on-1 coaching.' },
+  { q: 'Can I switch tiers?', a: 'Absolutely. Upgrade or downgrade anytime, no penalties.' },
+  { q: 'Is there a free trial?', a: 'Yes — your first Foundation class is always free.' }
+];
+const faqList = document.getElementById('faq-list');
+faqs.forEach((f, i) => {
+  const d = document.createElement('div');
+  d.style.cssText = 'border:1px solid rgba(255,56,96,0.12);border-radius:12px;overflow:hidden;transition:border-color 0.3s ease;';
+  d.innerHTML = `
+    <button onclick="this.parentElement.classList.toggle('open');const a=this.nextElementSibling;a.style.maxHeight=a.style.maxHeight?'':'200px';" style="width:100%;padding:16px 20px;background:none;border:none;color:#f0f0f5;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      ${f.q} <i data-lucide="chevron-down" style="width:16px;height:16px;color:#ff3860;transition:transform 0.3s ease;"></i>
+    </button>
+    <div style="max-height:0;overflow:hidden;transition:max-height 0.3s ease;padding:0 20px;">
+      <p style="color:#a0a0b5;font-size:14px;line-height:1.7;padding-bottom:16px;margin:0;">${f.a}</p>
+    </div>`;
+  faqList.appendChild(d);
+});
+
+// ============ VOTE + COMMENT (Data SDK) ============
+const REACTIONS = ['🔥','⚡','💪','🎯','❤️','👏'];
+const PRICES = ['Free','$9','$19','$29','$49','$59','$79','$99','$149','$199'];
+
+let allData = [];
+
+function renderReactions() {
+  const bar = document.getElementById('reaction-bar');
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+  if (!bar.children.length) {
+    bar.innerHTML = '';
+    REACTIONS.forEach(r => {
+      const btn = document.createElement('button');
+      btn.dataset.reaction = r;
+      btn.style.cssText = 'padding:8px 14px;border-radius:10px;border:1px solid rgba(255,56,96,0.15);background:rgba(255,56,96,0.05);cursor:pointer;font-size:16px;transition:all 0.2s ease;display:flex;align-items:center;gap:6px;color:#f0f0f5;font-family:Outfit,sans-serif;';
+      btn.innerHTML = `${r} <span class="rc" style="font-size:12px;color:#a0a0b5;">0</span>`;
+      btn.onmouseover = () => { btn.style.background = 'rgba(255,56,96,0.15)'; btn.style.borderColor = 'rgba(255,56,96,0.4)'; };
+      btn.onmouseout = () => { btn.style.background = 'rgba(255,56,96,0.05)'; btn.style.borderColor = 'rgba(255,56,96,0.15)'; };
+      btn.onclick = () => addReaction(r);
+      bar.appendChild(btn);
+    });
+  }
+  bar.querySelectorAll('button').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.rc').textContent = counts[r];
+  });
+}
+
+function renderPrices() {
+  const bar = document.getElementById('price-bar');
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price_vote').forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+  if (!bar.children.length) {
+    bar.innerHTML = '';
+    PRICES.forEach(p => {
+      const btn = document.createElement('button');
+      btn.dataset.price = p;
+      btn.style.cssText = 'padding:6px 12px;border-radius:8px;border:1px solid rgba(0,212,255,0.15);background:rgba(0,212,255,0.05);cursor:pointer;font-size:12px;color:#00d4ff;font-weight:500;transition:all 0.2s ease;font-family:Outfit,sans-serif;display:flex;align-items:center;gap:4px;';
+      btn.innerHTML = `${p} <span class="pc" style="font-size:10px;color:#a0a0b5;">0</span>`;
+      btn.onmouseover = () => { btn.style.background = 'rgba(0,212,255,0.15)'; };
+      btn.onmouseout = () => { btn.style.background = 'rgba(0,212,255,0.05)'; };
+      btn.onclick = () => addPrice(p);
+      bar.appendChild(btn);
+    });
+  }
+  bar.querySelectorAll('button').forEach(btn => {
+    const p = btn.dataset.price;
+    btn.querySelector('.pc').textContent = counts[p];
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const existingIds = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingIds.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.style.cssText = 'padding:12px 16px;border-radius:10px;background:rgba(255,56,96,0.04);border:1px solid rgba(255,56,96,0.08);';
+    const time = new Date(c.created_at);
+    const timeStr = time.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    div.innerHTML = `<p style="margin:0 0 4px;font-size:14px;color:#e0e0e8;">${escapeHtml(c.comment_text)}</p><span style="font-size:11px;color:#666;">${timeStr}</span>`;
+    list.prepend(div);
+  });
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+async function addReaction(r) {
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  const result = await window.dataSdk.create({ type: 'reaction', section_id: 'widget', reaction: r, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+async function addPrice(p) {
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  const result = await window.dataSdk.create({ type: 'price_vote', section_id: 'widget', reaction: '', comment_text: '', price_vote: p, created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  const btn = document.getElementById('comment-btn');
+  btn.disabled = true; btn.textContent = '...';
+  const result = await window.dataSdk.create({ type: 'comment', section_id: 'widget', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment.'); }
+});
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPrices();
+    renderComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// ============ SCROLL REVEAL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// ============ ACTIVE NAV ============
+const sections = ['home','training','performances','rhythm','pricing','faq','join'];
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const s = document.getElementById(id);
+    if (s && s.offsetTop - 120 <= wrapper.scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    l.style.color = l.classList.contains('active') ? '#ff3860' : '#a0a0b5';
+  });
+});
+
+// ============ MOBILE NAV ============
+const mq = window.matchMedia('(max-width:768px)');
+function handleMobile(e) {
+  const toggle = document.getElementById('mobile-toggle');
+  const links = document.getElementById('nav-links');
+  if (e.matches) {
+    toggle.style.display = 'block';
+    links.style.cssText = 'display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(10,10,15,0.98);padding:16px 24px;gap:16px;border-bottom:1px solid rgba(255,56,96,0.15);';
+    links.classList.remove('nav-open');
+  } else {
+    toggle.style.display = 'none';
+    links.style.cssText = 'display:flex;gap:24px;align-items:center;';
+  }
+}
+mq.addEventListener('change', handleMobile);
+handleMobile(mq);
+
+// Style for nav-open
+const navStyle = document.createElement('style');
+navStyle.textContent = '.nav-open{display:flex!important;}';
+document.head.appendChild(navStyle);
+
+// Close mobile nav on link click
+document.querySelectorAll('#nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    if (mq.matches) document.getElementById('nav-links').classList.remove('nav-open');
+  });
+});
+
+// ============ INIT ============
+lucide.createIcons();
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2661d34827c5',t:'MTc3NTU3NjYyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

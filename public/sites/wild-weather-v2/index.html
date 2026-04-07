@@ -1,1 +1,621 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/88229b0f-873d-4778-8979-bdf27a3deed6 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TempestScope Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Source+Sans+3:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        storm: { bg: '#0a0c14', surface: '#12152a', accent: '#4f7cff', spark: '#a78bfa', text: '#e2e8f0' },
+      },
+      fontFamily: {
+        display: ['"Bebas Neue"', 'sans-serif'],
+        body: ['"Source Sans 3"', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+@keyframes rainDrop {
+  0% { transform: translateY(-10px); opacity: 0; }
+  10% { opacity: 0.3; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+@keyframes lightningFlash {
+  0%, 94%, 100% { opacity: 0; }
+  95% { opacity: 0.06; }
+  96% { opacity: 0; }
+  97% { opacity: 0.04; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(79,124,255,0.3); }
+  50% { box-shadow: 0 0 40px rgba(79,124,255,0.6); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes statCount {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.rain-overlay { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.rain-line {
+  position: absolute; width: 1px; height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(79,124,255,0.15));
+  animation: rainDrop linear infinite;
+}
+.lightning-overlay {
+  position: absolute; inset: 0; background: white;
+  animation: lightningFlash 8s infinite; pointer-events: none; z-index: 2;
+}
+.cta-pulse { animation: pulseGlow 2.5s ease-in-out infinite; }
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.stat-chip { animation: statCount 0.6s ease-out both; }
+.checklist-card { animation: slideIn 0.5s ease-out both; }
+.nav-glass {
+  background: rgba(10,12,20,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(79,124,255,0.15);
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0c14; }
+::-webkit-scrollbar-thumb { background: #4f7cff33; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-storm-bg text-storm-text font-body overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav class="nav-glass fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between" id="main-nav"><a href="#home" class="font-display text-2xl tracking-wider text-storm-accent">TEMPEST<span class="text-storm-spark">SCOPE</span></a>
+   <div class="hidden md:flex gap-6 text-sm font-semibold tracking-wide"><a href="#home" class="hover:text-storm-accent transition-colors">Home</a> <a href="#gallery" class="hover:text-storm-accent transition-colors">Gallery</a> <a href="#wallpapers" class="hover:text-storm-accent transition-colors">Wallpapers</a> <a href="#safety-kit" class="hover:text-storm-accent transition-colors">Safety Kit</a> <a href="#reviews" class="hover:text-storm-accent transition-colors">Reviews</a> <a href="#download" class="hover:text-storm-accent transition-colors">Download</a>
+   </div><button id="mobile-menu-btn" class="md:hidden text-storm-text" aria-label="Menu"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+  </nav><!-- Mobile Nav -->
+  <div id="mobile-nav" class="fixed inset-0 z-40 bg-storm-bg/95 hidden flex-col items-center justify-center gap-6 text-xl font-display tracking-wider"><a href="#home" class="mobile-nav-link hover:text-storm-accent transition-colors">Home</a> <a href="#gallery" class="mobile-nav-link hover:text-storm-accent transition-colors">Gallery</a> <a href="#wallpapers" class="mobile-nav-link hover:text-storm-accent transition-colors">Wallpapers</a> <a href="#safety-kit" class="mobile-nav-link hover:text-storm-accent transition-colors">Safety Kit</a> <a href="#reviews" class="mobile-nav-link hover:text-storm-accent transition-colors">Reviews</a> <a href="#download" class="mobile-nav-link hover:text-storm-accent transition-colors">Download</a> <button id="mobile-close-btn" class="mt-8 text-storm-spark"><i data-lucide="x" style="width:32px;height:32px;"></i></button>
+  </div><!-- HERO -->
+  <section id="home" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden" style="min-height:100%;"><img src="https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920&amp;q=80" alt="Lightning storm sky" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-40" onerror="console.error('Image failed:',this.src);this.style.background='linear-gradient(135deg,#0a0c14,#1a1040)';this.alt='Image unavailable';">
+   <div class="absolute inset-0 bg-gradient-to-b from-storm-bg/70 via-storm-bg/40 to-storm-bg z-[1]"></div>
+   <div class="rain-overlay" id="hero-rain"></div>
+   <div class="lightning-overlay"></div>
+   <div class="relative z-10 text-center px-4 max-w-4xl mx-auto" style="animation: fadeUp 1s ease-out both;">
+    <div class="inline-flex items-center gap-2 bg-storm-accent/10 border border-storm-accent/30 rounded-full px-4 py-1.5 mb-6 text-sm text-storm-accent font-semibold">
+     <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+     </svg> Nature's power, captured.
+    </div>
+    <h1 id="hero-title" class="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-wider text-white mb-4">Weather you can feel.</h1>
+    <p id="hero-subtitle" class="text-lg md:text-xl text-storm-text/80 max-w-2xl mx-auto mb-10 font-light">Storm visuals and safety templates built from real photography.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#download" id="cta-primary-btn" class="cta-pulse bg-storm-accent hover:bg-storm-accent/80 text-white font-bold px-8 py-4 rounded-lg transition-all text-lg tracking-wide">Download Collection</a> <a href="#gallery" id="cta-secondary-btn" class="border border-storm-spark/40 hover:border-storm-spark text-storm-spark hover:bg-storm-spark/10 font-bold px-8 py-4 rounded-lg transition-all text-lg tracking-wide">Browse Gallery</a>
+    </div>
+   </div>
+  </section><!-- STATS BAR -->
+  <section class="w-full bg-storm-surface/80 border-y border-storm-accent/10 py-8 px-4">
+   <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center reveal" id="stats-bar">
+    <div class="stat-chip">
+     <span class="font-display text-4xl text-storm-accent">150</span>
+     <p class="text-sm text-storm-text/60 mt-1">Weather Wallpapers</p>
+    </div>
+    <div class="stat-chip" style="animation-delay:0.1s">
+     <span class="font-display text-4xl text-storm-spark">24</span>
+     <p class="text-sm text-storm-text/60 mt-1">Printable Posters</p>
+    </div>
+    <div class="stat-chip" style="animation-delay:0.2s">
+     <span class="font-display text-4xl text-storm-accent">20</span>
+     <p class="text-sm text-storm-text/60 mt-1">Safety Checklists</p>
+    </div>
+    <div class="stat-chip" style="animation-delay:0.3s">
+     <span class="font-display text-4xl text-storm-spark">30</span>
+     <p class="text-sm text-storm-text/60 mt-1">Fact Cards</p>
+    </div>
+   </div>
+  </section><!-- GALLERY -->
+  <section id="gallery" class="w-full py-20 px-4">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal">
+     <p class="text-storm-accent text-sm font-semibold tracking-widest uppercase mb-2">Curated Collection</p>
+     <h2 class="font-display text-5xl md:text-6xl text-white tracking-wider">The Storm Gallery</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1527482937786-6f4e4d10862b?w=600&amp;q=80" alt="Tornado clouds" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Tornado Formation</span>
+      </div>
+     </div>
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?w=600&amp;q=80" alt="Hurricane waves" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Hurricane Surge</span>
+      </div>
+     </div>
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=600&amp;q=80" alt="Heavy rain" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Monsoon Rain</span>
+      </div>
+     </div>
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1470147196456-cfdc4ef13e3c?w=600&amp;q=80" alt="Thunderclouds" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Thunder Cell</span>
+      </div>
+     </div>
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1508697014387-db70aad34f4d?w=600&amp;q=80" alt="Storm sky" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Supercell Horizon</span>
+      </div>
+     </div>
+     <div class="group relative overflow-hidden rounded-xl aspect-[4/3]"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&amp;q=80" alt="Blizzard" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#12152a';this.alt='Image unavailable';">
+      <div class="absolute inset-0 bg-gradient-to-t from-storm-bg/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+       <span class="text-sm font-semibold">Arctic Whiteout</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- WALLPAPERS -->
+  <section id="wallpapers" class="w-full py-20 px-4 bg-storm-surface/40">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal">
+     <p class="text-storm-spark text-sm font-semibold tracking-widest uppercase mb-2">High-Impact Visuals</p>
+     <h2 class="font-display text-5xl md:text-6xl text-white tracking-wider">150 Extreme Wallpapers</h2>
+     <p class="text-storm-text/60 mt-4 max-w-xl mx-auto">Desktop, mobile, and tablet. Every resolution. Every storm type. Instant attention for your screens and projects.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 reveal">
+     <div class="relative rounded-lg overflow-hidden aspect-[9/16] group"><img src="https://images.unsplash.com/photo-1461511669078-d46bf351cd6e?w=400&amp;q=80" alt="Lightning wallpaper" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.style.background='#12152a';">
+      <div class="absolute bottom-2 left-2 bg-storm-bg/70 backdrop-blur-sm rounded px-2 py-1 text-xs font-semibold">
+       Mobile
+      </div>
+     </div>
+     <div class="relative rounded-lg overflow-hidden aspect-[9/16] group"><img src="https://images.unsplash.com/photo-1429552054117-26e04475e2a0?w=400&amp;q=80" alt="Storm wallpaper" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.style.background='#12152a';">
+      <div class="absolute bottom-2 left-2 bg-storm-bg/70 backdrop-blur-sm rounded px-2 py-1 text-xs font-semibold">
+       Desktop
+      </div>
+     </div>
+     <div class="relative rounded-lg overflow-hidden aspect-[9/16] group"><img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=400&amp;q=80" alt="Blizzard wallpaper" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.style.background='#12152a';">
+      <div class="absolute bottom-2 left-2 bg-storm-bg/70 backdrop-blur-sm rounded px-2 py-1 text-xs font-semibold">
+       Tablet
+      </div>
+     </div>
+     <div class="relative rounded-lg overflow-hidden aspect-[9/16] group"><img src="https://images.unsplash.com/photo-1594156596782-656c93e4d504?w=400&amp;q=80" alt="Cloud wallpaper" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.style.background='#12152a';">
+      <div class="absolute bottom-2 left-2 bg-storm-bg/70 backdrop-blur-sm rounded px-2 py-1 text-xs font-semibold">
+       Ultra-wide
+      </div>
+     </div>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mt-10 reveal"><span class="bg-storm-accent/10 border border-storm-accent/30 text-storm-accent text-xs font-semibold rounded-full px-4 py-2">Lightning Strikes</span> <span class="bg-storm-spark/10 border border-storm-spark/30 text-storm-spark text-xs font-semibold rounded-full px-4 py-2">Tornadoes</span> <span class="bg-storm-accent/10 border border-storm-accent/30 text-storm-accent text-xs font-semibold rounded-full px-4 py-2">Hurricanes</span> <span class="bg-storm-spark/10 border border-storm-spark/30 text-storm-spark text-xs font-semibold rounded-full px-4 py-2">Blizzards</span> <span class="bg-storm-accent/10 border border-storm-accent/30 text-storm-accent text-xs font-semibold rounded-full px-4 py-2">Monsoons</span> <span class="bg-storm-spark/10 border border-storm-spark/30 text-storm-spark text-xs font-semibold rounded-full px-4 py-2">Supercells</span>
+    </div>
+   </div>
+  </section><!-- SAFETY KIT -->
+  <section id="safety-kit" class="w-full py-20 px-4">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal">
+     <p class="text-storm-accent text-sm font-semibold tracking-widest uppercase mb-2">Education &amp; Creator Use</p>
+     <h2 class="font-display text-5xl md:text-6xl text-white tracking-wider">Safety Kit</h2>
+     <p class="text-storm-text/60 mt-4 max-w-xl mx-auto">20 printable safety checklists + 30 fact cards. Ready for classrooms, content creators, and emergency prep.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal"><!-- Checklist Card 1 -->
+     <div class="checklist-card bg-storm-surface border border-storm-accent/15 rounded-2xl p-6 hover:border-storm-accent/40 transition-colors" style="animation-delay:0s">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-lg bg-storm-accent/15 flex items-center justify-center">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2">
+         <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+        </svg>
+       </div>
+       <h3 class="font-display text-2xl text-white tracking-wider">Hurricane Prep</h3>
+      </div>
+      <ul class="space-y-2.5 text-sm text-storm-text/70">
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Secure windows and doors</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Emergency water supply (3-day min)</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Charge all devices, backup power</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Document insurance details</li>
+      </ul>
+     </div><!-- Checklist Card 2 -->
+     <div class="checklist-card bg-storm-surface border border-storm-spark/15 rounded-2xl p-6 hover:border-storm-spark/40 transition-colors" style="animation-delay:0.1s">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-lg bg-storm-spark/15 flex items-center justify-center">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <h3 class="font-display text-2xl text-white tracking-wider">Tornado Response</h3>
+      </div>
+      <ul class="space-y-2.5 text-sm text-storm-text/70">
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Move to lowest interior room</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Stay away from all windows</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Cover head with heavy blankets</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>NOAA radio for live alerts</li>
+      </ul>
+     </div><!-- Checklist Card 3 -->
+     <div class="checklist-card bg-storm-surface border border-storm-accent/15 rounded-2xl p-6 hover:border-storm-accent/40 transition-colors" style="animation-delay:0.2s">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-lg bg-storm-accent/15 flex items-center justify-center">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2">
+         <path d="M17.5 19H9a7 7 0 110-14h.5" /><path d="M17 21l-2-2 2-2" /><circle cx="17" cy="7" r="4" />
+        </svg>
+       </div>
+       <h3 class="font-display text-2xl text-white tracking-wider">Blizzard Survival</h3>
+      </div>
+      <ul class="space-y-2.5 text-sm text-storm-text/70">
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Layer clothing, protect extremities</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Heat source + carbon monoxide safety</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>72-hour food &amp; medication supply</li>
+       <li class="flex items-start gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="2.5" class="mt-0.5 flex-shrink-0">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Car emergency kit if travelling</li>
+      </ul>
+     </div>
+    </div><!-- Poster preview row -->
+    <div class="mt-12 reveal">
+     <p class="text-center text-storm-text/50 text-sm mb-4 tracking-wider uppercase">24 Printable Poster Designs Included</p>
+     <div class="flex gap-3 overflow-x-auto pb-4 justify-center flex-wrap">
+      <div class="w-24 h-32 rounded-lg bg-gradient-to-b from-storm-accent/20 to-storm-surface border border-storm-accent/20 flex items-center justify-center flex-shrink-0">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="1.5">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+       </svg>
+      </div>
+      <div class="w-24 h-32 rounded-lg bg-gradient-to-b from-storm-spark/20 to-storm-surface border border-storm-spark/20 flex items-center justify-center flex-shrink-0">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+       </svg>
+      </div>
+      <div class="w-24 h-32 rounded-lg bg-gradient-to-b from-storm-accent/20 to-storm-surface border border-storm-accent/20 flex items-center justify-center flex-shrink-0">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="1.5">
+        <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z" />
+       </svg>
+      </div>
+      <div class="w-24 h-32 rounded-lg bg-gradient-to-b from-storm-spark/20 to-storm-surface border border-storm-spark/20 flex items-center justify-center flex-shrink-0">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5">
+        <path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2" />
+       </svg>
+      </div>
+      <div class="w-24 h-32 rounded-lg bg-gradient-to-b from-storm-accent/20 to-storm-surface border border-storm-accent/20 flex items-center justify-center flex-shrink-0">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20" /><path d="M2 12h20" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-20 px-4 bg-storm-surface/40">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12 reveal">
+     <p class="text-storm-spark text-sm font-semibold tracking-widest uppercase mb-2">Trusted By Creators</p>
+     <h2 class="font-display text-5xl md:text-6xl text-white tracking-wider">Reviews</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+     <div class="bg-storm-bg border border-storm-accent/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="text-storm-text/70 text-sm mb-4">"Used these for my YouTube channel intro. The wallpapers are absolutely insane quality. People think I hired a photographer."</p>
+      <p class="text-white font-semibold text-sm">Marcus T. <span class="text-storm-text/40 font-normal">- Content Creator</span></p>
+     </div>
+     <div class="bg-storm-bg border border-storm-accent/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#a78bfa" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#a78bfa" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#a78bfa" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#a78bfa" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#a78bfa" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="text-storm-text/70 text-sm mb-4">"The safety checklists are a goldmine. I printed the whole set for my classroom and parents loved them at back-to-school night."</p>
+      <p class="text-white font-semibold text-sm">Sarah K. <span class="text-storm-text/40 font-normal">- 5th Grade Teacher</span></p>
+     </div>
+     <div class="bg-storm-bg border border-storm-accent/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#4f7cff" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="text-storm-text/70 text-sm mb-4">"Fact cards are perfect for social media. I just drop them into Canva templates and they instantly look professional."</p>
+      <p class="text-white font-semibold text-sm">Dev P. <span class="text-storm-text/40 font-normal">- Weather Enthusiast</span></p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="download" class="w-full py-20 px-4 relative overflow-hidden">
+   <div class="absolute inset-0 bg-gradient-to-b from-storm-bg via-storm-surface/50 to-storm-bg"></div>
+   <div class="rain-overlay" id="cta-rain"></div>
+   <div class="relative z-10 max-w-4xl mx-auto text-center">
+    <div class="reveal">
+     <svg width="48" height="48" viewbox="0 0 24 24" fill="none" stroke="#4f7cff" stroke-width="1.5" class="mx-auto mb-6">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+     </svg>
+     <h2 id="bottom-cta-title" class="font-display text-5xl md:text-7xl text-white tracking-wider mb-4">Make your screen come alive.</h2>
+     <p class="text-storm-text/60 mb-8 max-w-lg mx-auto">150 wallpapers. 24 posters. 20 checklists. 30 fact cards. One instant download.</p><a href="#" class="cta-pulse inline-block bg-storm-accent hover:bg-storm-accent/80 text-white font-bold px-10 py-5 rounded-xl transition-all text-xl tracking-wide">Download Collection</a>
+    </div><!-- VOTE + COMMENT WIDGET -->
+    <div class="mt-16 reveal">
+     <div class="bg-storm-surface border border-storm-accent/15 rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
+      <p class="text-storm-text/50 text-xs tracking-widest uppercase mb-4">Vote + Comment</p><!-- Vote Section -->
+      <div class="flex items-center justify-center gap-6 mb-8"><button id="vote-btn" class="flex items-center gap-2 bg-storm-accent/10 hover:bg-storm-accent/20 border border-storm-accent/30 rounded-full px-6 py-3 text-storm-accent font-semibold transition-all">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" /><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" />
+        </svg><span id="vote-count">0</span> Votes </button>
+      </div><!-- Comment Form -->
+      <form id="comment-form" class="space-y-3 mb-6"><input type="text" id="comment-name" placeholder="Your name" class="w-full bg-storm-bg border border-storm-accent/15 rounded-lg px-4 py-3 text-sm text-white placeholder-storm-text/30 focus:outline-none focus:border-storm-accent/50 transition-colors" required> <textarea id="comment-text" placeholder="Leave a comment..." rows="3" class="w-full bg-storm-bg border border-storm-accent/15 rounded-lg px-4 py-3 text-sm text-white placeholder-storm-text/30 focus:outline-none focus:border-storm-accent/50 transition-colors resize-none" required></textarea> <button type="submit" id="comment-submit-btn" class="bg-storm-spark hover:bg-storm-spark/80 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-all">Post Comment</button>
+      </form><!-- Comment loading -->
+      <div id="comment-loading" class="hidden text-storm-text/40 text-sm py-4">
+       Posting...
+      </div><!-- Comments List -->
+      <div id="comments-list" class="space-y-3 text-left max-h-64 overflow-y-auto"></div>
+      <p id="no-comments" class="text-storm-text/30 text-sm py-4">No comments yet. Be the first!</p><!-- Limit Warning -->
+      <div id="limit-warning" class="hidden mt-4 bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
+       Maximum entries reached.
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full bg-storm-bg border-t border-storm-accent/10 py-8 px-4 text-center">
+   <p class="font-display text-xl tracking-wider text-storm-accent mb-2">TEMPEST<span class="text-storm-spark">SCOPE</span> STUDIO</p>
+   <p class="text-storm-text/30 text-xs">Nature's power, captured. All images sourced from Unsplash.</p>
+  </footer>
+  <script>
+// ============= RAIN EFFECT =============
+function createRain(containerId, count) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  for (let i = 0; i < count; i++) {
+    const line = document.createElement('div');
+    line.className = 'rain-line';
+    line.style.left = Math.random() * 100 + '%';
+    line.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    line.style.animationDelay = Math.random() * 3 + 's';
+    c.appendChild(line);
+  }
+}
+createRain('hero-rain', 40);
+createRain('cta-rain', 25);
+
+// ============= MOBILE NAV =============
+const mobileNav = document.getElementById('mobile-nav');
+document.getElementById('mobile-menu-btn').addEventListener('click', () => { mobileNav.classList.remove('hidden'); mobileNav.classList.add('flex'); });
+document.getElementById('mobile-close-btn').addEventListener('click', () => { mobileNav.classList.add('hidden'); mobileNav.classList.remove('flex'); });
+document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', () => { mobileNav.classList.add('hidden'); mobileNav.classList.remove('flex'); }));
+
+// ============= SCROLL REVEAL =============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ============= DATA SDK (Vote + Comments) =============
+let allData = [];
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    // Count votes
+    const votes = data.filter(d => d.type === 'vote').length;
+    document.getElementById('vote-count').textContent = votes;
+
+    // Render comments
+    const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const list = document.getElementById('comments-list');
+    const noComments = document.getElementById('no-comments');
+    const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+    const currentIds = new Set();
+    comments.forEach(c => {
+      currentIds.add(c.__backendId);
+      if (existingEls.has(c.__backendId)) {
+        existingEls.delete(c.__backendId);
+      } else {
+        const div = document.createElement('div');
+        div.dataset.id = c.__backendId;
+        div.className = 'bg-storm-bg/50 border border-storm-accent/10 rounded-lg px-4 py-3';
+        div.innerHTML = `<p class="text-white text-sm font-semibold">${escapeHtml(c.name)}</p><p class="text-storm-text/60 text-sm mt-1">${escapeHtml(c.comment)}</p><p class="text-storm-text/20 text-xs mt-2">${new Date(c.createdAt).toLocaleDateString()}</p>`;
+        list.appendChild(div);
+      }
+    });
+    existingEls.forEach(el => el.remove());
+    noComments.classList.toggle('hidden', comments.length > 0);
+  }
+};
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// Vote
+document.getElementById('vote-btn').addEventListener('click', async () => {
+  if (allData.length >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  const btn = document.getElementById('vote-btn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const r = await window.dataSdk.create({ type: 'vote', name: '', comment: '', vote: true, createdAt: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (!r.isOk) { document.getElementById('limit-warning').textContent = 'Failed to vote. Try again.'; document.getElementById('limit-warning').classList.remove('hidden'); }
+});
+
+// Comment
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (allData.length >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  const name = document.getElementById('comment-name').value.trim();
+  const comment = document.getElementById('comment-text').value.trim();
+  if (!name || !comment) return;
+
+  const btn = document.getElementById('comment-submit-btn');
+  const loading = document.getElementById('comment-loading');
+  btn.disabled = true; btn.style.opacity = '0.5'; loading.classList.remove('hidden');
+
+  const r = await window.dataSdk.create({ type: 'comment', name, comment, vote: false, createdAt: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1'; loading.classList.add('hidden');
+
+  if (r.isOk) {
+    document.getElementById('comment-name').value = '';
+    document.getElementById('comment-text').value = '';
+  } else {
+    document.getElementById('limit-warning').textContent = 'Failed to post. Try again.';
+    document.getElementById('limit-warning').classList.remove('hidden');
+  }
+});
+
+// ============= ELEMENT SDK =============
+const defaultConfig = {
+  hero_title: 'Weather you can feel.',
+  hero_subtitle: 'Storm visuals and safety templates built from real photography.',
+  cta_primary: 'Download Collection',
+  cta_secondary: 'Browse Gallery',
+  bottom_cta_title: 'Make your screen come alive.',
+  background_color: '#0a0c14',
+  surface_color: '#12152a',
+  text_color: '#e2e8f0',
+  primary_color: '#4f7cff',
+  secondary_color: '#a78bfa',
+  font_family: 'Bebas Neue',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = key => config[key] || defaultConfig[key];
+
+  document.getElementById('hero-title').textContent = c('hero_title');
+  document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+  document.getElementById('cta-primary-btn').textContent = c('cta_primary');
+  document.getElementById('cta-secondary-btn').textContent = c('cta_secondary');
+  document.getElementById('bottom-cta-title').textContent = c('bottom_cta_title');
+
+  const bg = c('background_color');
+  const sf = c('surface_color');
+  const tx = c('text_color');
+  const pr = c('primary_color');
+  const sc = c('secondary_color');
+  const ff = c('font_family');
+  const fs = c('font_size');
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = tx;
+  document.body.style.fontFamily = `"Source Sans 3", ${ff}, sans-serif`;
+
+  // Apply font to display elements
+  document.querySelectorAll('.font-display').forEach(el => { el.style.fontFamily = `${ff}, "Bebas Neue", sans-serif`; });
+
+  // Font size scaling
+  document.querySelectorAll('p, li, span, a').forEach(el => {
+    if (!el.closest('.font-display') && !el.classList.contains('font-display')) {
+      el.style.fontSize = ''; // reset to let tailwind handle, base scale applied to body
+    }
+  });
+  document.body.style.fontSize = fs + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    function mut(key) {
+      return {
+        get: () => c(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      };
+    }
+    return {
+      recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_color'), mut('secondary_color')],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a7615745d27c5',t:'MTc3NTU3OTg5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

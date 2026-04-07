@@ -1,1 +1,499 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/2781f2dd-745b-4288-a541-3c51edcb3134 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Arcana</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Quicksand:wght@300;400;600&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes cardHover {
+      0%, 100% { transform: rotateY(0deg) translateY(0); }
+      50% { transform: rotateY(8deg) translateY(-8px); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(30px, -20px); }
+      66% { transform: translate(-20px, 15px); }
+    }
+    @keyframes neonFlicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0.6; }
+    }
+
+    .spark {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: #e879f9;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #e879f9, 0 0 12px #a855f7;
+      animation: floatUp linear infinite;
+      pointer-events: none;
+    }
+
+    .neon-text {
+      text-shadow: 0 0 10px #c084fc, 0 0 40px #a855f7, 0 0 80px #7c3aed;
+    }
+    .neon-pink {
+      text-shadow: 0 0 10px #f472b6, 0 0 40px #ec4899, 0 0 80px #db2777;
+    }
+    .neon-blue {
+      text-shadow: 0 0 10px #60a5fa, 0 0 40px #3b82f6;
+    }
+    .glow-border {
+      box-shadow: 0 0 15px rgba(168,85,247,0.4), inset 0 0 15px rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.4);
+    }
+    .glow-border-pink {
+      box-shadow: 0 0 15px rgba(236,72,153,0.3), inset 0 0 15px rgba(236,72,153,0.1);
+      border: 1px solid rgba(236,72,153,0.3);
+    }
+
+    .card-tarot {
+      perspective: 800px;
+      cursor: pointer;
+    }
+    .card-tarot .card-inner {
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    .card-tarot.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    .shimmer-btn {
+      background: linear-gradient(90deg, #7c3aed, #ec4899, #3b82f6, #7c3aed);
+      background-size: 300% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: orbFloat 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .nav-link {
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: #a855f7;
+      box-shadow: 0 0 8px #a855f7;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #c084fc; }
+
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s, transform 0.8s;
+    }
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .vibe-btn {
+      transition: all 0.3s;
+      border: 1px solid rgba(168,85,247,0.3);
+    }
+    .vibe-btn:hover {
+      border-color: #a855f7;
+      box-shadow: 0 0 20px rgba(168,85,247,0.4);
+      transform: translateY(-2px);
+    }
+    .vibe-btn.voted {
+      border-color: #ec4899;
+      box-shadow: 0 0 20px rgba(236,72,153,0.5);
+      background: rgba(236,72,153,0.15);
+    }
+
+    .review-card {
+      animation: cardHover 6s ease-in-out infinite;
+    }
+    .review-card:nth-child(2) { animation-delay: 1s; }
+    .review-card:nth-child(3) { animation-delay: 2s; }
+
+    .gift-card {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .gift-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 0 30px rgba(168,85,247,0.3);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0014; }
+    ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:#07000f; color:#e2d6f5; font-family:'Quicksand',sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#07000f;"><!-- SPARKS CONTAINER -->
+   <div id="sparks" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div><!-- ORBS -->
+   <div class="orb" style="width:400px;height:400px;background:rgba(124,58,237,0.15);top:10%;left:-10%;animation-delay:0s;"></div>
+   <div class="orb" style="width:300px;height:300px;background:rgba(236,72,153,0.12);top:40%;right:-5%;animation-delay:3s;"></div>
+   <div class="orb" style="width:350px;height:350px;background:rgba(59,130,246,0.1);bottom:10%;left:30%;animation-delay:5s;"></div><!-- STICKY NAV -->
+   <nav style="position:sticky;top:0;z-index:50;background:rgba(7,0,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(168,85,247,0.15);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;"><a href="#home" style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:20px;text-decoration:none;color:#c084fc;letter-spacing:2px;" class="neon-text">✦ NEON ARCANA</a>
+     <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:13px;letter-spacing:1px;text-transform:uppercase;"><a href="#home" class="nav-link" style="color:#c4b5da;text-decoration:none;">Home</a> <a href="#ecards" class="nav-link" style="color:#c4b5da;text-decoration:none;">E-Cards</a> <a href="#preview" class="nav-link" style="color:#c4b5da;text-decoration:none;">Preview</a> <a href="#gifts" class="nav-link" style="color:#c4b5da;text-decoration:none;">Gift Ideas</a> <a href="#reviews" class="nav-link" style="color:#c4b5da;text-decoration:none;">Reviews</a> <a href="#download" class="nav-link" style="color:#c4b5da;text-decoration:none;">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;z-index:1;min-height:90%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;">
+    <div style="animation:fadeInUp 1s ease-out;">
+     <div style="font-size:14px;letter-spacing:6px;text-transform:uppercase;color:#a855f7;margin-bottom:16px;animation:neonFlicker 4s infinite;" class="neon-text">
+      ✦ Digital Tarot Magic ✦
+     </div>
+     <h1 id="hero-title" style="font-family:'Orbitron',sans-serif;font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.1;margin:0 0 8px;" class="neon-pink">Send a tarot moment.</h1>
+     <h2 id="hero-subtitle" style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,52px);font-weight:700;line-height:1.2;margin:0 0 24px;" class="neon-blue">Make their day.</h2>
+     <p style="font-size:18px;color:#b8a4d4;max-width:500px;margin:0 auto 32px;">A little magic in your inbox. Tarot e-cards, a mini guide eBook &amp; shareable spreads — giftable, viral, instant wow.</p><a href="#download" id="hero-cta" class="shimmer-btn" style="display:inline-block;padding:16px 48px;border-radius:50px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:16px;color:#fff;text-decoration:none;letter-spacing:2px;">Download the Deck</a>
+    </div><!-- VOTE THE VIBE -->
+    <div style="margin-top:60px;width:100%;max-width:700px;">
+     <h3 style="font-family:'Orbitron',sans-serif;font-size:18px;color:#c084fc;margin-bottom:20px;letter-spacing:3px;" class="neon-text">⚡ VOTE THE VIBE ⚡</h3>
+     <div id="vibe-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;"></div>
+     <p id="vibe-status" style="margin-top:12px;font-size:13px;color:#8b7aaa;"></p>
+    </div>
+   </section><!-- E-CARDS / PREVIEW -->
+   <section id="ecards" class="section-reveal" style="position:relative;z-index:1;padding:80px 24px;">
+    <div style="max-width:1100px;margin:0 auto;text-align:center;">
+     <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin-bottom:8px;" class="neon-text">The Cards Await</h2>
+     <p style="color:#a090c0;margin-bottom:48px;font-size:16px;">Tap a card to reveal its meaning</p>
+     <div id="preview" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;max-width:900px;margin:0 auto;"></div>
+    </div>
+   </section><!-- GIFT IDEAS -->
+   <section id="gifts" class="section-reveal" style="position:relative;z-index:1;padding:80px 24px;">
+    <div style="max-width:1100px;margin:0 auto;text-align:center;">
+     <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin-bottom:8px;" class="neon-pink">Gift the Cosmos</h2>
+     <p style="color:#a090c0;margin-bottom:48px;font-size:16px;">Perfect for every moment that needs a little magic</p>
+     <div id="gift-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;"></div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="section-reveal" style="position:relative;z-index:1;padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;text-align:center;">
+     <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin-bottom:48px;" class="neon-blue">What They're Saying</h2>
+     <div id="review-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;"></div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="download" class="section-reveal" style="position:relative;z-index:1;padding:100px 24px;text-align:center;">
+    <div style="max-width:600px;margin:0 auto;">
+     <div style="font-size:48px;margin-bottom:20px;animation:glowPulse 3s infinite;">
+      🔮
+     </div>
+     <h2 id="bottom-title" style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin-bottom:16px;" class="neon-pink">Choose a card. Send the vibe.</h2>
+     <p style="color:#a090c0;margin-bottom:32px;font-size:16px;">Tarot e-cards + mini guide eBook + shareable spreads. Instant download.</p><a href="#" id="bottom-cta" class="shimmer-btn" style="display:inline-block;padding:18px 56px;border-radius:50px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;color:#fff;text-decoration:none;letter-spacing:2px;" onclick="event.preventDefault();">Get Neon Arcana</a>
+     <div style="margin-top:40px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-size:13px;color:#8b7aaa;"><span>✦ Instant Download</span><span>✦ Shareable Spreads</span><span>✦ Mini Guide Included</span>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer style="position:relative;z-index:1;padding:32px 24px;text-align:center;border-top:1px solid rgba(168,85,247,0.15);">
+    <p style="font-family:'Orbitron',sans-serif;font-size:12px;color:#5a4878;letter-spacing:2px;">✦ NEON ARCANA — A little magic in your inbox ✦</p>
+   </footer>
+  </div>
+  <script>
+    // ===== DATA =====
+    const tarotCards = [
+      { id:'star', name:'The Star', numeral:'XVII', emoji:'⭐', meaning:'Hope, inspiration, and renewed faith', color:'#60a5fa' },
+      { id:'moon', name:'The Moon', numeral:'XVIII', emoji:'🌙', meaning:'Intuition, dreams, and the subconscious', color:'#a855f7' },
+      { id:'sun', name:'The Sun', numeral:'XIX', emoji:'☀️', meaning:'Joy, success, and vitality', color:'#facc15' },
+      { id:'tower', name:'The Tower', numeral:'XVI', emoji:'⚡', meaning:'Sudden change and breakthrough', color:'#f43f5e' },
+      { id:'lovers', name:'The Lovers', numeral:'VI', emoji:'💜', meaning:'Love, harmony, and deep connection', color:'#ec4899' },
+      { id:'wheel', name:'Wheel of Fortune', numeral:'X', emoji:'🎡', meaning:'Destiny, turning points, and luck', color:'#34d399' },
+    ];
+
+    const vibes = [
+      { id:'mystical', name:'✨ Mystical', emoji:'✨' },
+      { id:'chaotic', name:'🔥 Chaotic', emoji:'🔥' },
+      { id:'serene', name:'🌊 Serene', emoji:'🌊' },
+      { id:'cosmic', name:'🌌 Cosmic', emoji:'🌌' },
+      { id:'playful', name:'🎭 Playful', emoji:'🎭' },
+      { id:'dark', name:'🖤 Dark', emoji:'🖤' },
+    ];
+
+    const gifts = [
+      { emoji:'🎉', title:'New Job', desc:'Send courage & cosmic luck for their next chapter.' },
+      { emoji:'💔', title:'Breakup Recovery', desc:'A card of healing & fresh starts.' },
+      { emoji:'🎂', title:'Birthday', desc:'A mystical birthday blessing from the stars.' },
+      { emoji:'🌱', title:'New Beginnings', desc:'Perfect for moving, starting school, or any leap of faith.' },
+      { emoji:'💫', title:'Just Because', desc:'No reason needed — just send the magic.' },
+      { emoji:'🎓', title:'Graduation', desc:'Celebrate their achievement with a cosmic card.' },
+    ];
+
+    const reviews = [
+      { name:'Luna M.', text:'I sent one to my best friend and she literally cried. The neon aesthetic is EVERYTHING.', stars:5 },
+      { name:'Jax R.', text:'Finally a digital gift that doesn\'t feel generic. The tarot spreads are gorgeous.', stars:5 },
+      { name:'Aria K.', text:'Obsessed. I\'ve gifted these to four people this month. The mini guide is a bonus gem.', stars:5 },
+    ];
+
+    // ===== RENDER STATIC SECTIONS =====
+    function renderCards() {
+      const container = document.getElementById('preview');
+      container.innerHTML = tarotCards.map(c => `
+        <div class="card-tarot" onclick="this.classList.toggle('flipped')" style="height:280px;">
+          <div class="card-inner" style="width:100%;height:100%;">
+            <div class="card-front glow-border" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#12002a,#1a0040);padding:20px;">
+              <div style="font-size:48px;margin-bottom:12px;animation:glowPulse 4s infinite;">${c.emoji}</div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:${c.color};margin-bottom:6px;">${c.numeral}</div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:#e2d6f5;">${c.name}</div>
+              <div style="font-size:11px;color:#8b7aaa;margin-top:12px;">Tap to reveal</div>
+            </div>
+            <div class="card-back" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0040,#0f0025);padding:24px;border:1px solid ${c.color};box-shadow:0 0 20px ${c.color}40;">
+              <div style="font-size:32px;margin-bottom:12px;">${c.emoji}</div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:${c.color};margin-bottom:8px;">${c.name}</div>
+              <p style="font-size:14px;color:#c4b5da;line-height:1.6;text-align:center;">${c.meaning}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderGifts() {
+      document.getElementById('gift-grid').innerHTML = gifts.map(g => `
+        <div class="gift-card glow-border" style="background:linear-gradient(135deg,#10002a,#1a0040);border-radius:16px;padding:28px;text-align:center;">
+          <div style="font-size:36px;margin-bottom:12px;">${g.emoji}</div>
+          <h3 style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:#c084fc;margin-bottom:8px;">${g.title}</h3>
+          <p style="font-size:14px;color:#a090c0;line-height:1.5;">${g.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderReviews() {
+      document.getElementById('review-grid').innerHTML = reviews.map(r => `
+        <div class="review-card glow-border-pink" style="background:linear-gradient(135deg,#10002a,#1a0040);border-radius:16px;padding:28px;text-align:left;">
+          <div style="color:#facc15;margin-bottom:12px;font-size:14px;letter-spacing:2px;">${'★'.repeat(r.stars)}</div>
+          <p style="font-size:15px;color:#d4c6ef;line-height:1.7;margin-bottom:16px;">"${r.text}"</p>
+          <div style="font-family:'Orbitron',sans-serif;font-size:12px;color:#a855f7;letter-spacing:1px;">— ${r.name}</div>
+        </div>
+      `).join('');
+    }
+
+    // ===== VIBES (Data SDK) =====
+    let allVotes = [];
+    let userVoted = null;
+
+    function renderVibes() {
+      const grid = document.getElementById('vibe-grid');
+      const voteCounts = {};
+      vibes.forEach(v => voteCounts[v.id] = 0);
+      allVotes.forEach(v => { if (voteCounts[v.vibe_id] !== undefined) voteCounts[v.vibe_id]++; });
+      const total = allVotes.length;
+
+      grid.innerHTML = vibes.map(v => {
+        const count = voteCounts[v.id] || 0;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        const isVoted = userVoted === v.id;
+        return `
+          <button class="vibe-btn ${isVoted ? 'voted' : ''}" data-vibe="${v.id}"
+            style="background:rgba(168,85,247,0.08);border-radius:12px;padding:16px 8px;cursor:pointer;font-family:'Quicksand',sans-serif;color:#e2d6f5;position:relative;overflow:hidden;"
+            ${userVoted ? 'disabled' : ''}>
+            <div style="position:absolute;bottom:0;left:0;width:${pct}%;height:3px;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:2px;transition:width 0.5s;"></div>
+            <div style="font-size:22px;">${v.emoji}</div>
+            <div style="font-size:13px;font-weight:600;margin-top:4px;">${v.name.replace(v.emoji,'').trim()}</div>
+            ${total > 0 ? `<div style="font-size:11px;color:#8b7aaa;margin-top:4px;">${pct}%</div>` : ''}
+          </button>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.vibe-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleVote(btn.dataset.vibe));
+      });
+
+      const status = document.getElementById('vibe-status');
+      if (userVoted) {
+        status.textContent = `You voted ${vibes.find(v=>v.id===userVoted)?.name || ''} · ${total} total votes`;
+      } else {
+        status.textContent = total > 0 ? `${total} votes cast — pick your vibe!` : 'Be the first to vote!';
+      }
+    }
+
+    async function handleVote(vibeId) {
+      if (userVoted) return;
+      if (allVotes.length >= 999) {
+        document.getElementById('vibe-status').textContent = 'Voting limit reached!';
+        return;
+      }
+      userVoted = vibeId;
+      localStorage.setItem('neonarcana_voted', vibeId);
+      renderVibes();
+      const result = await window.dataSdk.create({
+        vibe_id: vibeId,
+        vibe_name: vibes.find(v => v.id === vibeId)?.name || vibeId,
+        voted_at: new Date().toISOString()
+      });
+      if (result.isError) {
+        userVoted = null;
+        localStorage.removeItem('neonarcana_voted');
+        renderVibes();
+        document.getElementById('vibe-status').textContent = 'Vote failed — try again!';
+      }
+    }
+
+    // ===== SPARKS =====
+    function createSpark() {
+      const s = document.createElement('div');
+      s.className = 'spark';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.bottom = '0';
+      s.style.animationDuration = (3 + Math.random() * 4) + 's';
+      s.style.animationDelay = Math.random() * 2 + 's';
+      const colors = ['#e879f9','#a855f7','#60a5fa','#ec4899'];
+      const c = colors[Math.floor(Math.random()*colors.length)];
+      s.style.background = c;
+      s.style.boxShadow = `0 0 6px ${c}, 0 0 12px ${c}`;
+      document.getElementById('sparks').appendChild(s);
+      setTimeout(() => s.remove(), 7000);
+    }
+    setInterval(createSpark, 400);
+
+    // ===== SCROLL REVEAL =====
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+
+    // ===== ELEMENT SDK =====
+    const defaultConfig = {
+      hero_title: 'Send a tarot moment.',
+      hero_subtitle: 'Make their day.',
+      hero_cta: 'Download the Deck',
+      bottom_cta_title: 'Choose a card. Send the vibe.',
+      bottom_cta_button: 'Get Neon Arcana',
+      background_color: '#07000f',
+      surface_color: '#1a0040',
+      text_color: '#e2d6f5',
+      primary_action_color: '#a855f7',
+      secondary_action_color: '#ec4899',
+      font_family: 'Orbitron',
+      font_size: 16,
+    };
+
+    async function onConfigChange(config) {
+      const c = { ...defaultConfig, ...config };
+
+      document.getElementById('hero-title').textContent = c.hero_title;
+      document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+      document.getElementById('hero-cta').textContent = c.hero_cta;
+      document.getElementById('bottom-title').textContent = c.bottom_cta_title;
+      document.getElementById('bottom-cta').textContent = c.bottom_cta_button;
+
+      // Colors
+      document.getElementById('app-wrapper').style.background = c.background_color;
+      document.body.style.background = c.background_color;
+      document.body.style.color = c.text_color;
+
+      // Fonts
+      const headings = document.querySelectorAll('[style*="font-family:\'Orbitron\'"]');
+      // Apply via the main elements directly
+      document.getElementById('hero-title').style.fontFamily = `${c.font_family}, Orbitron, sans-serif`;
+      document.getElementById('hero-subtitle').style.fontFamily = `${c.font_family}, Orbitron, sans-serif`;
+      document.getElementById('hero-cta').style.fontFamily = `${c.font_family}, Orbitron, sans-serif`;
+      document.getElementById('bottom-title').style.fontFamily = `${c.font_family}, Orbitron, sans-serif`;
+      document.getElementById('bottom-cta').style.fontFamily = `${c.font_family}, Orbitron, sans-serif`;
+
+      // Font size
+      const base = c.font_size || 16;
+      document.getElementById('hero-title').style.fontSize = `clamp(${base*2}px, 6vw, ${base*4.5}px)`;
+      document.getElementById('hero-subtitle').style.fontSize = `clamp(${base*1.5}px, 4vw, ${base*3.25}px)`;
+    }
+
+    function mapToCapabilities(config) {
+      const c = { ...defaultConfig, ...config };
+      function recolorable(key) {
+        return {
+          get: () => window.elementSdk.config[key] || defaultConfig[key],
+          set: (v) => { window.elementSdk.config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+        };
+      }
+      return {
+        recolorables: [
+          recolorable('background_color'),
+          recolorable('surface_color'),
+          recolorable('text_color'),
+          recolorable('primary_action_color'),
+          recolorable('secondary_action_color'),
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => window.elementSdk.config.font_family || defaultConfig.font_family,
+          set: (v) => { window.elementSdk.config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => window.elementSdk.config.font_size || defaultConfig.font_size,
+          set: (v) => { window.elementSdk.config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        },
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_title', c.hero_title],
+        ['hero_subtitle', c.hero_subtitle],
+        ['hero_cta', c.hero_cta],
+        ['bottom_cta_title', c.bottom_cta_title],
+        ['bottom_cta_button', c.bottom_cta_button],
+      ]);
+    }
+
+    // ===== INIT =====
+    renderCards();
+    renderGifts();
+    renderReviews();
+
+    userVoted = localStorage.getItem('neonarcana_voted');
+    renderVibes();
+
+    window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+
+    window.dataSdk.init({
+      onDataChanged(data) {
+        allVotes = data;
+        renderVibes();
+      }
+    });
+
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6a3765ae27c5',t:'MTc3NTU3OTQwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

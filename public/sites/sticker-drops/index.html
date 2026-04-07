@@ -1,1 +1,661 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7931b7bd-157e-4df6-befc-98dc8efa26b6 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SerpentGlow Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-color: #0a0a0a;
+    --surface-color: #161616;
+    --text-color: #e0e0e0;
+    --accent-green: #39ff14;
+    --accent-magenta: #ff00ff;
+  }
+  html, body { height: 100%; margin: 0; }
+
+  * { scrollbar-width: thin; scrollbar-color: var(--accent-green) var(--bg-color); }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 1; }
+    15% { opacity: 0.6; }
+    20% { opacity: 1; }
+    50% { opacity: 1; }
+    52% { opacity: 0.7; }
+    54% { opacity: 1; }
+  }
+
+  @keyframes glitch1 {
+    0% { clip-path: inset(20% 0 60% 0); transform: translateX(-3px); }
+    20% { clip-path: inset(60% 0 10% 0); transform: translateX(3px); }
+    40% { clip-path: inset(40% 0 30% 0); transform: translateX(-2px); }
+    60% { clip-path: inset(10% 0 70% 0); transform: translateX(2px); }
+    80% { clip-path: inset(80% 0 5% 0); transform: translateX(-1px); }
+    100% { clip-path: inset(20% 0 60% 0); transform: translateX(1px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px var(--accent-green), 0 0 40px rgba(57,255,20,0.3); }
+    50% { box-shadow: 0 0 30px var(--accent-green), 0 0 60px rgba(57,255,20,0.5), 0 0 80px rgba(57,255,20,0.2); }
+  }
+
+  @keyframes pulse-magenta {
+    0%, 100% { box-shadow: 0 0 15px var(--accent-magenta), 0 0 30px rgba(255,0,255,0.3); }
+    50% { box-shadow: 0 0 25px var(--accent-magenta), 0 0 50px rgba(255,0,255,0.5); }
+  }
+
+  @keyframes float-up {
+    0% { transform: translateY(40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes sticker-pop {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes carousel-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes scan-line {
+    0% { top: -10%; }
+    100% { top: 110%; }
+  }
+
+  @keyframes badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  @keyframes snake-crawl {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+  .flicker { animation: flicker 3s infinite; }
+  .glitch-text { position: relative; }
+  .glitch-text::before, .glitch-text::after {
+    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+  .glitch-text::before { color: var(--accent-green); animation: glitch1 2s infinite; opacity: 0.5; }
+  .glitch-text::after { color: var(--accent-magenta); animation: glitch1 2s infinite reverse; opacity: 0.5; }
+
+  .pulse-btn { animation: pulse-glow 2s ease-in-out infinite; }
+  .pulse-btn-mag { animation: pulse-magenta 2s ease-in-out infinite; }
+
+  .sticker-item { animation: sticker-pop 0.6s ease-out both; }
+  .float-in { animation: float-up 0.8s ease-out both; }
+
+  .carousel-track { animation: carousel-slide 20s linear infinite; }
+  .carousel-track:hover { animation-play-state: paused; }
+
+  .scan-overlay::after {
+    content: ''; position: absolute; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+    animation: scan-line 4s linear infinite; opacity: 0.3; pointer-events: none;
+  }
+
+  .scale-texture {
+    background-image: repeating-conic-gradient(rgba(57,255,20,0.03) 0% 25%, transparent 0% 50%);
+    background-size: 20px 20px;
+    animation: snake-crawl 15s linear infinite;
+  }
+
+  .chrome-border {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+  .chrome-border::before {
+    content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+    background: linear-gradient(135deg, #666, #fff, #666, #333);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .badge-core { background: linear-gradient(135deg, #39ff14, #00cc44); animation: badge-pulse 2s infinite; }
+  .badge-rare { background: linear-gradient(135deg, #00e5ff, #0077ff); animation: badge-pulse 1.8s infinite; }
+  .badge-legendary { background: linear-gradient(135deg, #ff00ff, #ff6600); animation: badge-pulse 1.5s infinite; }
+
+  .nav-link { transition: all 0.3s; }
+  .nav-link:hover { color: var(--accent-green); text-shadow: 0 0 8px rgba(57,255,20,0.5); }
+
+  .card-hover { transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .card-hover:hover { transform: translateY(-8px) scale(1.02); }
+
+  .reaction-btn { transition: all 0.2s; }
+  .reaction-btn:hover { transform: scale(1.2); }
+  .reaction-btn.active { transform: scale(1.15); }
+
+  .toast-msg {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    padding: 12px 24px; border-radius: 8px; z-index: 100;
+    background: var(--accent-green); color: #000; font-weight: 700;
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .toast-msg.show { opacity: 1; }
+
+  .review-stars { display: flex; gap: 2px; }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.5rem !important; }
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg-color); color:var(--text-color); font-family:'Outfit',sans-serif; overflow-x:hidden;">
+  <div id="app-root" class="h-full overflow-auto w-full scale-texture"><!-- STICKY NAV -->
+   <nav id="sticky-nav" style="position:sticky;top:0;z-index:50;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(57,255,20,0.15);">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;"><a href="#home" style="text-decoration:none;display:flex;align-items:center;gap:8px;"> <span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--accent-green);letter-spacing:2px;" class="flicker">SERPENTGLOW</span> <span style="font-size:0.65rem;color:var(--accent-magenta);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">studio</span> </a>
+     <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;"><a href="#home" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Home</a> <a href="#sticker-drops" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Sticker Drops</a> <a href="#wallpapers" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Wallpapers</a> <a href="#preview" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Preview</a> <a href="#reviews" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Reviews</a> <a href="#download" class="nav-link" style="text-decoration:none;color:var(--text-color);font-size:0.75rem;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1px;">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;min-height:90%;display:flex;align-items:center;justify-content:center;padding:60px 20px;overflow:hidden;" class="scan-overlay">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%, rgba(57,255,20,0.06) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(255,0,255,0.04) 0%, transparent 60%);"></div>
+    <div style="max-width:900px;text-align:center;position:relative;z-index:2;">
+     <div style="margin-bottom:16px;"><span style="font-family:'Space Mono',monospace;font-size:0.7rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent-magenta);display:inline-block;padding:4px 16px;border:1px solid var(--accent-magenta);border-radius:99px;" class="float-in">Venomous design energy, totally harmless.</span>
+     </div>
+     <h1 id="hero-title" class="glitch-text hero-title" data-text="Cold-blooded design. Hot results." style="font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:0.95;color:#fff;margin:0 0 20px;letter-spacing:3px;">Cold-blooded design. Hot results.</h1>
+     <p id="hero-subtitle" style="font-family:'Outfit',sans-serif;font-size:1.15rem;color:rgba(224,224,224,0.8);max-width:550px;margin:0 auto 36px;font-weight:300;">Stickers + wallpapers for creators who want edge.</p>
+     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#download" id="cta-primary-btn" class="pulse-btn" style="text-decoration:none;font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;padding:14px 32px;background:var(--accent-green);color:#000;border-radius:6px;text-transform:uppercase;letter-spacing:1px;display:inline-block;">Download the Drop</a> <a href="#preview" id="cta-secondary-btn" class="pulse-btn-mag" style="text-decoration:none;font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;padding:14px 32px;background:transparent;color:var(--accent-magenta);border:2px solid var(--accent-magenta);border-radius:6px;text-transform:uppercase;letter-spacing:1px;display:inline-block;">Preview Stickers</a>
+     </div><!-- Snake emoji decoration -->
+     <div style="margin-top:40px;font-size:2.5rem;opacity:0.6;display:flex;justify-content:center;gap:12px;" class="flicker">
+      🐍 🐍 🐍
+     </div>
+    </div><!-- FLOATING RATE CARD -->
+    <div id="rate-card" class="chrome-border" style="position:absolute;top:60px;right:20px;width:300px;background:rgba(22,22,22,0.95);border-radius:12px;padding:20px;z-index:10;backdrop-filter:blur(8px);">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--accent-green);">Rate This Drop</span> <span style="font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(224,224,224,0.4);">LIVE</span>
+     </div><!-- Reactions -->
+     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;" id="reactions-container"><button class="reaction-btn" onclick="submitReaction('🔥')" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;" title="Fire">🔥 <span class="rxn-count" data-rxn="🔥" style="font-size:0.7rem;color:var(--text-color);font-family:'Space Mono',monospace;">0</span></button> <button class="reaction-btn" onclick="submitReaction('🐍')" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;" title="Snake">🐍 <span class="rxn-count" data-rxn="🐍" style="font-size:0.7rem;color:var(--text-color);font-family:'Space Mono',monospace;">0</span></button> <button class="reaction-btn" onclick="submitReaction('💀')" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;" title="Skull">💀 <span class="rxn-count" data-rxn="💀" style="font-size:0.7rem;color:var(--text-color);font-family:'Space Mono',monospace;">0</span></button> <button class="reaction-btn" onclick="submitReaction('💜')" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;" title="Love">💜 <span class="rxn-count" data-rxn="💜" style="font-size:0.7rem;color:var(--text-color);font-family:'Space Mono',monospace;">0</span></button> <button class="reaction-btn" onclick="submitReaction('⚡')" style="background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1.1rem;" title="Electric">⚡ <span class="rxn-count" data-rxn="⚡" style="font-size:0.7rem;color:var(--text-color);font-family:'Space Mono',monospace;">0</span></button>
+     </div><!-- Price Vote -->
+     <div style="margin-bottom:14px;"><label style="font-size:0.65rem;font-family:'Space Mono',monospace;color:rgba(224,224,224,0.5);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;">What would you pay?</label> <select id="price-vote-select" style="width:100%;padding:8px 12px;background:rgba(10,10,10,0.8);color:var(--text-color);border:1px solid rgba(57,255,20,0.2);border-radius:6px;font-family:'Space Mono',monospace;font-size:0.8rem;outline:none;"> <option value="">Select a price...</option> <option value="$5">$5 – Steal</option> <option value="$9">$9 – Fair</option> <option value="$15">$15 – Worth it</option> <option value="$19">$19 – Premium</option> <option value="$25">$25 – Luxury</option> <option value="$29">$29 – Pro tier</option> <option value="$35">$35 – Exclusive</option> <option value="$39">$39 – Elite</option> <option value="$49">$49 – Collector</option> <option value="$59+">$59+ – Legendary</option> </select>
+     </div><!-- Comment / Name -->
+     <div style="margin-bottom:10px;"><input id="rate-name" type="text" placeholder="Your name (optional)" style="width:100%;box-sizing:border-box;padding:8px 12px;background:rgba(10,10,10,0.8);color:var(--text-color);border:1px solid rgba(57,255,20,0.15);border-radius:6px;font-family:'Space Mono',monospace;font-size:0.75rem;outline:none;margin-bottom:8px;"> <textarea id="rate-comment" placeholder="Drop a comment..." rows="2" style="width:100%;box-sizing:border-box;padding:8px 12px;background:rgba(10,10,10,0.8);color:var(--text-color);border:1px solid rgba(57,255,20,0.15);border-radius:6px;font-family:'Space Mono',monospace;font-size:0.75rem;outline:none;resize:none;"></textarea>
+     </div><button id="submit-rate-btn" onclick="submitRating()" style="width:100%;padding:10px;background:var(--accent-green);color:#000;border:none;border-radius:6px;font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;text-transform:uppercase;cursor:pointer;letter-spacing:1px;">Submit</button>
+     <div id="rate-status" style="font-size:0.65rem;font-family:'Space Mono',monospace;color:var(--accent-green);text-align:center;margin-top:8px;min-height:16px;"></div><!-- Recent comments -->
+     <div id="recent-comments" style="margin-top:12px;max-height:120px;overflow-y:auto;"></div><!-- Embed widget -->
+     <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(57,255,20,0.1);text-align:center;"><span style="font-size:0.55rem;font-family:'Space Mono',monospace;color:rgba(224,224,224,0.3);text-transform:uppercase;letter-spacing:2px;">⟡ Embed Widget Here ⟡</span>
+     </div>
+    </div>
+   </section><!-- STICKER DROPS -->
+   <section id="sticker-drops" style="padding:80px 20px;position:relative;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:50px;"><span style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent-magenta);">Collection</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;margin:8px 0 0;letter-spacing:2px;">Sticker Drops</h2>
+      <p style="color:rgba(224,224,224,0.6);font-size:0.95rem;margin-top:8px;">300 transparent PNGs — snakes, scales, skull botanicals</p>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;"><!-- CORE -->
+      <div class="card-hover chrome-border" style="background:var(--surface-color);border-radius:16px;padding:28px;text-align:center;position:relative;overflow:hidden;">
+       <div style="position:absolute;top:16px;right:16px;"><span class="badge-core" style="display:inline-block;padding:4px 12px;border-radius:99px;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;color:#000;text-transform:uppercase;letter-spacing:1px;">Core</span>
+       </div>
+       <div style="font-size:4rem;margin:20px 0;">
+        🐍
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;margin:0 0 6px;">Core Pack</h3>
+       <p style="font-size:0.8rem;color:rgba(224,224,224,0.6);margin-bottom:16px;">100 essential stickers. Coiled vipers, fang accents, minimal scales.</p>
+       <div style="font-family:'Space Mono',monospace;font-size:1.4rem;color:var(--accent-green);font-weight:700;margin-bottom:16px;">
+        $9
+       </div>
+       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"><span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(57,255,20,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">PNG</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(57,255,20,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">Transparent</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(57,255,20,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">300dpi</span>
+       </div>
+      </div><!-- RARE -->
+      <div class="card-hover chrome-border" style="background:var(--surface-color);border-radius:16px;padding:28px;text-align:center;position:relative;overflow:hidden;">
+       <div style="position:absolute;top:16px;right:16px;"><span class="badge-rare" style="display:inline-block;padding:4px 12px;border-radius:99px;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;color:#000;text-transform:uppercase;letter-spacing:1px;">Rare</span>
+       </div>
+       <div style="font-size:4rem;margin:20px 0;">
+        💀
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;margin:0 0 6px;">Rare Pack</h3>
+       <p style="font-size:0.8rem;color:rgba(224,224,224,0.6);margin-bottom:16px;">120 skull botanicals, scale textures, glitch overlays.</p>
+       <div style="font-family:'Space Mono',monospace;font-size:1.4rem;color:#00e5ff;font-weight:700;margin-bottom:16px;">
+        $19
+       </div>
+       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"><span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(0,229,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">PNG</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(0,229,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">Animated</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(0,229,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">600dpi</span>
+       </div>
+      </div><!-- LEGENDARY -->
+      <div class="card-hover chrome-border" style="background:var(--surface-color);border-radius:16px;padding:28px;text-align:center;position:relative;overflow:hidden;">
+       <div style="position:absolute;top:16px;right:16px;"><span class="badge-legendary" style="display:inline-block;padding:4px 12px;border-radius:99px;font-family:'Space Mono',monospace;font-size:0.6rem;font-weight:700;color:#000;text-transform:uppercase;letter-spacing:1px;">Legendary</span>
+       </div>
+       <div style="font-size:4rem;margin:20px 0;">
+        👑
+       </div>
+       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;margin:0 0 6px;">Legendary Bundle</h3>
+       <p style="font-size:0.8rem;color:rgba(224,224,224,0.6);margin-bottom:16px;">All 300 stickers + 60 wallpapers + 20 tattoo flash prints.</p>
+       <div style="font-family:'Space Mono',monospace;font-size:1.4rem;color:var(--accent-magenta);font-weight:700;margin-bottom:16px;">
+        $39
+       </div>
+       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"><span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(255,0,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">Everything</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(255,0,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">Lifetime</span> <span style="font-size:0.6rem;padding:3px 10px;border:1px solid rgba(255,0,255,0.2);border-radius:99px;color:rgba(224,224,224,0.5);font-family:'Space Mono',monospace;">Commercial</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS CAROUSEL -->
+   <section id="wallpapers" style="padding:80px 20px;overflow:hidden;position:relative;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:40px;"><span style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent-green);">Wallpapers</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;margin:8px 0 0;letter-spacing:2px;">60 Phone Wallpapers</h2>
+      <p style="color:rgba(224,224,224,0.6);font-size:0.95rem;margin-top:8px;">Dark moody textures, scale macros, serpent portraits</p>
+     </div>
+    </div>
+    <div style="overflow:hidden;width:100%;position:relative;">
+     <div class="carousel-track" style="display:flex;gap:16px;width:max-content;"><!-- Wallpaper cards - doubled for infinite loop -->
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a1a0a,#1a0a2a,#0a0a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🐍
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        001
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#1a0020,#0a0a1a,#001a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌿
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        002
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a0a0a,#001a1a,#0a001a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       💀
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(0,229,255,0.5);">
+        003
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#1a1a00,#0a0a0a,#001a00);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       ⚡
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        004
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#200010,#0a0a0a,#100020);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌙
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        005
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a1a10,#0a0a20,#1a0a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🔮
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(0,229,255,0.5);">
+        006
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#001010,#100a20,#0a1a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🦴
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        007
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a0020,#1a0a10,#000a1a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌑
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        008
+       </div>
+      </div><!-- Duplicated for seamless loop -->
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a1a0a,#1a0a2a,#0a0a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🐍
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        001
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#1a0020,#0a0a1a,#001a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌿
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        002
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a0a0a,#001a1a,#0a001a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       💀
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(0,229,255,0.5);">
+        003
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#1a1a00,#0a0a0a,#001a00);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       ⚡
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        004
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#200010,#0a0a0a,#100020);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌙
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        005
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a1a10,#0a0a20,#1a0a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🔮
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(0,229,255,0.5);">
+        006
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#001010,#100a20,#0a1a0a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🦴
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(57,255,20,0.5);">
+        007
+       </div>
+      </div>
+      <div style="width:180px;height:320px;border-radius:16px;background:linear-gradient(135deg,#0a0020,#1a0a10,#000a1a);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;">
+       🌑
+       <div style="position:absolute;bottom:10px;font-size:0.6rem;font-family:'Space Mono',monospace;color:rgba(255,0,255,0.5);">
+        008
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW - STICKER EXPLOSION -->
+   <section id="preview" style="padding:80px 20px;position:relative;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:40px;"><span style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent-magenta);">Preview</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;margin:8px 0 0;letter-spacing:2px;">Sticker Explosion</h2>
+     </div>
+     <div id="sticker-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;max-width:800px;margin:0 auto;">
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" style="padding:80px 20px;position:relative;">
+    <div style="max-width:900px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:50px;"><span style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:4px;color:var(--accent-green);">Testimonials</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;margin:8px 0 0;letter-spacing:2px;">What Creators Say</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+      <div class="chrome-border" style="background:var(--surface-color);border-radius:12px;padding:24px;">
+       <div class="review-stars" style="margin-bottom:10px;">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p style="font-size:0.85rem;color:rgba(224,224,224,0.8);margin:0 0 12px;font-style:italic;">"These stickers absolutely slap. My Reels have never looked this good."</p><span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--accent-green);">— @venom.visuals</span>
+      </div>
+      <div class="chrome-border" style="background:var(--surface-color);border-radius:12px;padding:24px;">
+       <div class="review-stars" style="margin-bottom:10px;">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p style="font-size:0.85rem;color:rgba(224,224,224,0.8);margin:0 0 12px;font-style:italic;">"The skull botanicals are unreal. Tattooed two of them on my arm already."</p><span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--accent-magenta);">— @dark.flora.ink</span>
+      </div>
+      <div class="chrome-border" style="background:var(--surface-color);border-radius:12px;padding:24px;">
+       <div class="review-stars" style="margin-bottom:10px;">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p style="font-size:0.85rem;color:rgba(224,224,224,0.8);margin:0 0 12px;font-style:italic;">"Best digital pack I've bought this year. The wallpapers are *chef's kiss*."</p><span style="font-family:'Space Mono',monospace;font-size:0.7rem;color:#00e5ff;">— @pixel.serpent</span>
+      </div>
+     </div><!-- Live comments from rating card -->
+     <div id="community-comments" style="margin-top:40px;">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--accent-green);margin-bottom:16px;">Community Drops</h3>
+      <div id="all-comments" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <p id="no-comments-msg" style="font-size:0.8rem;color:rgba(224,224,224,0.3);font-family:'Space Mono',monospace;">No comments yet — be the first to rate the drop above! 🐍</p>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" style="padding:100px 20px;position:relative;text-align:center;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(255,0,255,0.08) 0%, transparent 70%);"></div>
+    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
+     <div style="font-size:4rem;margin-bottom:20px;" class="flicker">
+      🐍
+     </div>
+     <h2 id="bottom-cta-heading" style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#fff;margin:0 0 16px;letter-spacing:2px;">Make your content bite.</h2>
+     <p style="font-size:1rem;color:rgba(224,224,224,0.7);margin-bottom:32px;">300 stickers • 60 wallpapers • 20 tattoo flash prints • Instant download</p>
+     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><button class="pulse-btn" style="font-family:'Space Mono',monospace;font-size:0.9rem;font-weight:700;padding:16px 40px;background:var(--accent-green);color:#000;border:none;border-radius:6px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;" onclick="showToast('Download link sent! Check your inbox 🐍')">Get the Legendary Bundle — $39</button> <button class="pulse-btn-mag" style="font-family:'Space Mono',monospace;font-size:0.9rem;font-weight:700;padding:16px 40px;background:transparent;color:var(--accent-magenta);border:2px solid var(--accent-magenta);border-radius:6px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;" onclick="showToast('Core pack link sent! 🔥')">Start with Core — $9</button>
+     </div>
+     <p style="font-size:0.65rem;color:rgba(224,224,224,0.3);margin-top:20px;font-family:'Space Mono',monospace;">Instant download • Commercial license included • No subscription</p>
+    </div>
+   </section><!-- FOOTER -->
+   <footer style="padding:30px 20px;border-top:1px solid rgba(57,255,20,0.1);text-align:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--accent-green);letter-spacing:2px;" class="flicker">SERPENTGLOW</span> <span style="font-family:'Space Mono',monospace;font-size:0.55rem;color:rgba(224,224,224,0.3);display:block;margin-top:6px;">© 2025 SerpentGlow Studio. Alt aesthetic sells.</span>
+   </footer>
+  </div><!-- end app-root --> <!-- Toast -->
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// ============ CONFIG & SDK SETUP ============
+const defaultConfig = {
+  background_color: '#0a0a0a',
+  surface_color: '#161616',
+  text_color: '#e0e0e0',
+  accent_green: '#39ff14',
+  accent_magenta: '#ff00ff',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Cold-blooded design. Hot results.',
+  hero_subtitle: 'Stickers + wallpapers for creators who want edge.',
+  cta_primary: 'Download the Drop',
+  cta_secondary: 'Preview Stickers',
+  bottom_cta_text: 'Make your content bite.'
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    // Colors
+    document.documentElement.style.setProperty('--bg-color', c.background_color);
+    document.documentElement.style.setProperty('--surface-color', c.surface_color);
+    document.documentElement.style.setProperty('--text-color', c.text_color);
+    document.documentElement.style.setProperty('--accent-green', c.accent_green);
+    document.documentElement.style.setProperty('--accent-magenta', c.accent_magenta);
+    document.body.style.background = c.background_color;
+    document.body.style.color = c.text_color;
+
+    // Font
+    const ff = c.font_family + ', Outfit, sans-serif';
+    document.body.style.fontFamily = ff;
+
+    // Font size
+    const bs = c.font_size || 16;
+    const heroEl = document.getElementById('hero-title');
+    if (heroEl) { heroEl.style.fontSize = `${bs * 3.2}px`; heroEl.textContent = c.hero_title; heroEl.setAttribute('data-text', c.hero_title); }
+    const subEl = document.getElementById('hero-subtitle');
+    if (subEl) { subEl.style.fontSize = `${bs * 1.15}px`; subEl.textContent = c.hero_subtitle; }
+    const ctaP = document.getElementById('cta-primary-btn');
+    if (ctaP) { ctaP.textContent = c.cta_primary; ctaP.style.fontSize = `${bs * 0.85}px`; }
+    const ctaS = document.getElementById('cta-secondary-btn');
+    if (ctaS) { ctaS.textContent = c.cta_secondary; ctaS.style.fontSize = `${bs * 0.85}px`; }
+    const bottomH = document.getElementById('bottom-cta-heading');
+    if (bottomH) { bottomH.textContent = c.bottom_cta_text; bottomH.style.fontSize = `${bs * 3.5 / 16}rem`; }
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    const mkColor = (key) => ({
+      get: () => c[key] || defaultConfig[key],
+      set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        mkColor('background_color'),
+        mkColor('surface_color'),
+        mkColor('text_color'),
+        mkColor('accent_green'),
+        mkColor('accent_magenta')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['cta_primary', c.cta_primary],
+      ['cta_secondary', c.cta_secondary],
+      ['bottom_cta_text', c.bottom_cta_text]
+    ]);
+  }
+});
+
+// ============ DATA SDK ============
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    updateReactionCounts(data);
+    renderComments(data);
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts(data) {
+  const reactions = data.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(d => { counts[d.reaction] = (counts[d.reaction] || 0) + 1; });
+  document.querySelectorAll('.rxn-count').forEach(el => {
+    const rxn = el.dataset.rxn;
+    el.textContent = counts[rxn] || 0;
+  });
+}
+
+function renderComments(data) {
+  const comments = data.filter(d => d.type === 'comment' && d.comment);
+  const container = document.getElementById('all-comments');
+  const recentContainer = document.getElementById('recent-comments');
+  const noMsg = document.getElementById('no-comments-msg');
+
+  if (comments.length === 0) {
+    container.innerHTML = '';
+    recentContainer.innerHTML = '';
+    if (noMsg) noMsg.style.display = 'block';
+    return;
+  }
+  if (noMsg) noMsg.style.display = 'none';
+
+  // Sort by timestamp desc
+  const sorted = [...comments].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  // Recent (rate card, max 3)
+  const existingRecent = new Map([...recentContainer.children].map(el => [el.dataset.id, el]));
+  sorted.slice(0, 3).forEach(c => {
+    if (existingRecent.has(c.__backendId)) {
+      existingRecent.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.style.cssText = 'padding:6px 8px;background:rgba(57,255,20,0.05);border-radius:6px;margin-bottom:4px;';
+      div.innerHTML = `<span style="font-size:0.65rem;color:var(--accent-green);font-family:'Space Mono',monospace;">${c.name || 'Anon'}</span><span style="font-size:0.6rem;color:rgba(224,224,224,0.5);margin-left:6px;">${c.price_vote || ''}</span><p style="font-size:0.7rem;color:rgba(224,224,224,0.7);margin:2px 0 0;">${escapeHtml(c.comment)}</p>`;
+      recentContainer.appendChild(div);
+    }
+  });
+  existingRecent.forEach(el => el.remove());
+
+  // All comments section
+  const existingAll = new Map([...container.children].map(el => [el.dataset.id, el]));
+  sorted.forEach(c => {
+    if (existingAll.has(c.__backendId)) {
+      existingAll.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'chrome-border';
+      div.style.cssText = 'background:var(--surface-color);border-radius:10px;padding:16px;';
+      div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--accent-green);">${escapeHtml(c.name || 'Anonymous')}</span><span style="font-size:0.6rem;color:rgba(224,224,224,0.3);font-family:'Space Mono',monospace;">${c.price_vote || ''}</span></div><p style="font-size:0.85rem;color:rgba(224,224,224,0.8);margin:0;">${escapeHtml(c.comment)}</p>`;
+      container.appendChild(div);
+    }
+  });
+  existingAll.forEach(el => el.remove());
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+// ============ INTERACTIONS ============
+async function submitReaction(emoji) {
+  if (currentRecordCount >= 999) { showToast('Limit reached!'); return; }
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  btn.classList.add('active');
+  const result = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', name: '', price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  setTimeout(() => btn.classList.remove('active'), 300);
+  if (!result.isOk) showToast('Error — try again');
+}
+
+async function submitRating() {
+  const comment = document.getElementById('rate-comment').value.trim();
+  const name = document.getElementById('rate-name').value.trim();
+  const price = document.getElementById('price-vote-select').value;
+
+  if (!comment && !price) { document.getElementById('rate-status').textContent = 'Add a comment or pick a price!'; return; }
+  if (currentRecordCount >= 999) { document.getElementById('rate-status').textContent = 'Limit reached!'; return; }
+
+  const btn = document.getElementById('submit-rate-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const result = await window.dataSdk.create({
+    type: 'comment',
+    reaction: '',
+    comment: comment,
+    name: name || 'Anonymous',
+    price_vote: price,
+    timestamp: new Date().toISOString()
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Submit';
+
+  if (result.isOk) {
+    document.getElementById('rate-status').textContent = '🐍 Submitted!';
+    document.getElementById('rate-comment').value = '';
+    document.getElementById('rate-name').value = '';
+    document.getElementById('price-vote-select').value = '';
+    setTimeout(() => document.getElementById('rate-status').textContent = '', 3000);
+  } else {
+    document.getElementById('rate-status').textContent = 'Error — try again';
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ STICKER EXPLOSION ============
+const stickerEmojis = ['🐍','💀','🌿','⚡','🔮','🌙','🦴','🕷️','🌑','🪨','🐉','🧿','💎','🖤','🪶','☠️','🍄','🐛','🦎','🌵','🪬','🔥','🐾','✨'];
+const grid = document.getElementById('sticker-grid');
+stickerEmojis.forEach((emoji, i) => {
+  const div = document.createElement('div');
+  div.className = 'sticker-item';
+  div.style.cssText = `display:flex;align-items:center;justify-content:center;aspect-ratio:1;background:rgba(22,22,22,0.8);border-radius:12px;font-size:2.2rem;cursor:pointer;border:1px solid rgba(57,255,20,0.08);animation-delay:${i * 0.05}s;transition:all 0.3s;`;
+  div.textContent = emoji;
+  div.addEventListener('mouseenter', () => { div.style.transform = 'scale(1.2) rotate(' + (Math.random()*20-10) + 'deg)'; div.style.borderColor = 'rgba(57,255,20,0.4)'; });
+  div.addEventListener('mouseleave', () => { div.style.transform = ''; div.style.borderColor = 'rgba(57,255,20,0.08)'; });
+  grid.appendChild(div);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a67fd978127c5',t:'MTc3NTU3OTMxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

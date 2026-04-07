@@ -1,1 +1,521 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a0596da6-9df9-48ae-88e0-dcd1d648e2e5 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreePulse Atlas</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+html{height:100%}body{height:100%;margin:0;font-family:'DM Sans',sans-serif;overflow-x:hidden}
+*{box-sizing:border-box}
+:root{--bg:#0a1a0f;--surface:rgba(16,42,24,0.65);--text:#e8f5e9;--primary:#34d399;--secondary:#065f46}
+@keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-30px) rotate(15deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(52,211,153,0.3)}50%{box-shadow:0 0 40px rgba(52,211,153,0.6)}}
+@keyframes drift{0%{transform:translate(0,0) rotate(0deg);opacity:0}10%{opacity:0.7}90%{opacity:0.5}100%{transform:translate(var(--dx),100%) rotate(var(--rot));opacity:0}}
+.anim-fade{opacity:0;animation:fadeUp .8s ease forwards}
+.anim-d1{animation-delay:.1s}.anim-d2{animation-delay:.2s}.anim-d3{animation-delay:.3s}.anim-d4{animation-delay:.4s}.anim-d5{animation-delay:.5s}.anim-d6{animation-delay:.6s}
+.glass{background:rgba(16,42,24,0.45);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(52,211,153,0.15)}
+.glass-light{background:rgba(232,245,233,0.08);backdrop-filter:blur(12px);border:1px solid rgba(52,211,153,0.1)}
+.cta-pulse{animation:pulse-glow 2.5s ease-in-out infinite}
+.hero-img{animation:slowZoom 25s ease-in-out infinite alternate}
+.leaf{position:absolute;width:12px;height:12px;background:var(--primary);border-radius:50% 0 50% 0;opacity:0;animation:drift linear infinite;pointer-events:none}
+.nav-link{position:relative}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--primary);transition:width .3s}.nav-link:hover::after{width:100%}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+.collection-card{transition:transform .4s ease,box-shadow .4s ease}.collection-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.gallery-item{cursor:pointer;transition:transform .35s ease}.gallery-item:hover{transform:scale(1.05)}
+.scroll-wrapper{overflow-y:auto;height:100%}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{forest:{50:'#e8f5e9',100:'#c8e6c9',200:'#a5d6a7',300:'#81c784',400:'#66bb6a',500:'#4caf50',600:'#43a047',700:'#388e3c',800:'#2e7d32',900:'#1b5e20'},emerald:{glow:'#34d399'}}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg);color:var(--text)">
+  <div id="app" class="scroll-wrapper h-full w-full relative"><!-- Floating Leaves Container -->
+   <div id="leaves-container" class="fixed inset-0 pointer-events-none z-50" style="overflow:hidden"></div><!-- Sticky Nav -->
+   <nav id="navbar" class="fixed top-0 left-0 w-full z-40 transition-all duration-500" style="background:transparent">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
+       <path d="M16 2C16 2 6 10 6 18c0 5.5 4.5 10 10 10s10-4.5 10-10C26 10 16 2 16 2z" fill="#34d399" opacity="0.8" /><path d="M16 8v18M12 14l4-4 4 4" stroke="#0a1a0f" stroke-width="2" stroke-linecap="round" />
+      </svg><span class="font-bold text-lg tracking-tight" style="font-family:'Playfair Display',serif">TreePulse Atlas</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Home</a> <a href="#collections" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Collections</a> <a href="#preview" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Preview</a> <a href="#print-sets" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Print Sets</a> <a href="#reviews" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Reviews</a> <a href="#download" class="nav-link text-sm font-medium opacity-80 hover:opacity-100 transition">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2"><i data-lucide="menu" style="width:24px;height:24px"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden glass mx-4 mb-2 rounded-2xl p-4 flex flex-col gap-3"><a href="#home" class="text-sm font-medium py-1">Home</a> <a href="#collections" class="text-sm font-medium py-1">Collections</a> <a href="#preview" class="text-sm font-medium py-1">Preview</a> <a href="#print-sets" class="text-sm font-medium py-1">Print Sets</a> <a href="#reviews" class="text-sm font-medium py-1">Reviews</a> <a href="#download" class="text-sm font-medium py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full" style="min-height:100%">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&amp;q=80" alt="Misty forest canopy" class="hero-img w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a1a0f,#1b5e20)';this.alt='Forest image unavailable'">
+     <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(10,26,15,0.3) 0%,rgba(10,26,15,0.7) 50%,rgba(10,26,15,0.95) 100%)"></div>
+     <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 30%,rgba(52,211,153,0.08) 0%,transparent 70%)"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-32 pb-24" style="min-height:100%">
+     <div class="anim-fade anim-d1 inline-flex items-center gap-2 glass-light rounded-full px-4 py-2 mb-8 text-xs font-medium tracking-wider uppercase" style="color:var(--primary)"><i data-lucide="trees" style="width:14px;height:14px"></i> 120 Wallpapers · 30 Print Designs · Tree ID Guide
+     </div>
+     <h1 id="hero-title" class="anim-fade anim-d2 text-5xl md:text-7xl lg:text-8xl font-black leading-none mb-6" style="font-family:'Playfair Display',serif;max-width:900px">Your daily reset starts here.</h1>
+     <p id="hero-subtitle" class="anim-fade anim-d3 text-lg md:text-xl opacity-70 mb-10 max-w-xl">Tree wallpapers + printable art, instant download.</p>
+     <div class="anim-fade anim-d4 flex flex-wrap gap-4 justify-center"><a href="#download" id="cta-primary-btn" class="cta-pulse inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base transition-all hover:scale-105" style="background:var(--primary);color:var(--bg)"> <i data-lucide="download" style="width:18px;height:18px"></i> <span>Get the Pack</span> </a> <a href="#preview" id="cta-secondary-btn" class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-base glass transition-all hover:scale-105"> <i data-lucide="eye" style="width:18px;height:18px"></i> <span>See the Preview</span> </a>
+     </div>
+     <div class="anim-fade anim-d5 mt-12 flex items-center gap-6 opacity-50 text-sm"><span class="flex items-center gap-1"><i data-lucide="zap" style="width:14px;height:14px"></i> Instant calm</span> <span class="flex items-center gap-1"><i data-lucide="gift" style="width:14px;height:14px"></i> Perfect for gifting</span> <span class="flex items-center gap-1"><i data-lucide="trending-up" style="width:14px;height:14px"></i> Nature aesthetic</span>
+     </div>
+    </div>
+   </section><!-- COLLECTIONS -->
+   <section id="collections" class="relative w-full px-6 py-24">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16"><span class="text-xs font-bold tracking-widest uppercase mb-3 block" style="color:var(--primary)">Collections</span>
+      <h2 class="text-4xl md:text-5xl font-black" style="font-family:'Playfair Display',serif">Six Worlds of Green</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=600&amp;q=75" alt="Misty pine forest" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1b5e20,#2e7d32)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Misty Pines</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">22 wallpapers capturing fog-draped pine forests at dawn</p>
+       </div>
+      </div>
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=600&amp;q=75" alt="Golden hour canopy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#f57f17,#388e3c)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Golden Hour Canopy</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">18 wallpapers of sun rays piercing through canopy leaves</p>
+       </div>
+      </div>
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1440581572325-0bea30075d9d?w=600&amp;q=75" alt="Rainforest glow" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#004d40,#1b5e20)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Rainforest Glow</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">20 wallpapers of lush tropical canopy with ethereal light</p>
+       </div>
+      </div>
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&amp;q=75" alt="Desert trees" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#bf360c,#4e342e)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Desert Trees</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">18 wallpapers of resilient trees against arid landscapes</p>
+       </div>
+      </div>
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=600&amp;q=75" alt="Snowy forest" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#b0bec5,#263238)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Snowy Forest</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">22 wallpapers of serene winter wonderland forests</p>
+       </div>
+      </div>
+      <div class="reveal collection-card glass rounded-3xl overflow-hidden group">
+       <div class="relative h-56 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1518882460567-3bf2d15a9601?w=600&amp;q=75" alt="Tree bark macro" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#3e2723,#4e342e)'">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="absolute bottom-4 left-4 text-lg font-bold">Bark Macros</span>
+       </div>
+       <div class="p-5">
+        <p class="text-sm opacity-60">20 wallpapers revealing the intimate textures of bark</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="relative w-full px-6 py-24">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16"><span class="text-xs font-bold tracking-widest uppercase mb-3 block" style="color:var(--primary)">Preview Gallery</span>
+      <h2 class="text-4xl md:text-5xl font-black" style="font-family:'Playfair Display',serif">Tap to Explore</h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="gallery-grid">
+     </div>
+    </div>
+   </section><!-- Lightbox -->
+   <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-6" style="background:rgba(0,0,0,0.9)"><button onclick="closeLightbox()" class="absolute top-6 right-6 p-2 rounded-full glass"><i data-lucide="x" style="width:24px;height:24px"></i></button> <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-full rounded-2xl object-contain" style="max-height:85%">
+   </div><!-- PRINT SETS -->
+   <section id="print-sets" class="relative w-full px-6 py-24">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16"><span class="text-xs font-bold tracking-widest uppercase mb-3 block" style="color:var(--primary)">Print Sets</span>
+      <h2 class="text-4xl md:text-5xl font-black" style="font-family:'Playfair Display',serif">Art That Lives on Your Walls</h2>
+      <p class="mt-4 opacity-60 max-w-lg mx-auto">30 printable designs, ready to frame. See how they look in real spaces.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="reveal glass rounded-3xl overflow-hidden">
+       <div class="relative h-72 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&amp;q=75" alt="Modern living room interior" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a2e'">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <div class="w-24 h-32 rounded-lg shadow-2xl overflow-hidden border-4 border-white/20" style="transform:rotate(-3deg)">
+          <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=200&amp;q=75" alt="Print preview" class="w-full h-full object-cover" loading="lazy">
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <p class="font-bold">Living Room Collection</p>
+        <p class="text-sm opacity-50 mt-1">10 prints · Warm tones</p>
+       </div>
+      </div>
+      <div class="reveal glass rounded-3xl overflow-hidden">
+       <div class="relative h-72 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&amp;q=75" alt="Minimalist interior" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a2e'">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <div class="w-24 h-32 rounded-lg shadow-2xl overflow-hidden border-4 border-white/20" style="transform:rotate(2deg)">
+          <img src="https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=200&amp;q=75" alt="Print preview" class="w-full h-full object-cover" loading="lazy">
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <p class="font-bold">Office &amp; Study</p>
+        <p class="text-sm opacity-50 mt-1">10 prints · Cool greens</p>
+       </div>
+      </div>
+      <div class="reveal glass rounded-3xl overflow-hidden">
+       <div class="relative h-72 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&amp;q=75" alt="Bedroom interior" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a2e'">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <div class="w-24 h-32 rounded-lg shadow-2xl overflow-hidden border-4 border-white/20">
+          <img src="https://images.unsplash.com/photo-1440581572325-0bea30075d9d?w=200&amp;q=75" alt="Print preview" class="w-full h-full object-cover" loading="lazy">
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <p class="font-bold">Bedroom Serenity</p>
+        <p class="text-sm opacity-50 mt-1">10 prints · Misty moods</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full px-6 py-24">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16"><span class="text-xs font-bold tracking-widest uppercase mb-3 block" style="color:var(--primary)">Reviews</span>
+      <h2 class="text-4xl md:text-5xl font-black" style="font-family:'Playfair Display',serif">What People Say</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal glass rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-4" style="color:var(--primary)">
+        <i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i>
+       </div>
+       <p class="text-sm opacity-80 mb-4 italic">"I set one as my lock screen and genuinely feel calmer every time I check my phone. The misty pines collection is unreal."</p>
+       <p class="text-xs font-bold opacity-60">— Maya T., Designer</p>
+      </div>
+      <div class="reveal glass rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-4" style="color:var(--primary)">
+        <i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i>
+       </div>
+       <p class="text-sm opacity-80 mb-4 italic">"Printed three pieces for my office wall. Clients always ask where I got them. Worth every penny."</p>
+       <p class="text-xs font-bold opacity-60">— James R., Architect</p>
+      </div>
+      <div class="reveal glass rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-4" style="color:var(--primary)">
+        <i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i><i data-lucide="star" style="width:16px;height:16px;fill:currentColor"></i>
+       </div>
+       <p class="text-sm opacity-80 mb-4 italic">"Gave this as a gift to my nature-obsessed sister. She literally cried. The Tree ID guide was a bonus gem."</p>
+       <p class="text-xs font-bold opacity-60">— Priya K., Teacher</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="relative w-full px-6 py-24">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="reveal">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8" style="background:rgba(52,211,153,0.15)"><i data-lucide="trees" style="width:40px;height:40px;color:var(--primary)"></i>
+      </div>
+      <h2 id="bottom-cta" class="text-4xl md:text-6xl font-black mb-6" style="font-family:'Playfair Display',serif">Turn your screen into a forest.</h2>
+      <p class="opacity-60 mb-10 max-w-md mx-auto">120 wallpapers · 30 printable designs · Tree ID mini-guide · Instant download</p><a href="#vote-section" class="cta-pulse inline-flex items-center gap-2 px-10 py-5 rounded-full font-bold text-lg transition-all hover:scale-105" style="background:var(--primary);color:var(--bg)"> <i data-lucide="download" style="width:20px;height:20px"></i> Get the Pack Now </a>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section id="vote-section" class="relative w-full px-6 py-24" style="background:rgba(16,42,24,0.3)">
+    <div class="max-w-3xl mx-auto">
+     <div class="reveal text-center mb-12"><span class="text-xs font-bold tracking-widest uppercase mb-3 block" style="color:var(--primary)">Community</span>
+      <h2 class="text-3xl md:text-4xl font-black" style="font-family:'Playfair Display',serif">Vote &amp; Comment</h2>
+      <p class="mt-3 opacity-50 text-sm">Sign in to share your reaction</p>
+     </div><!-- Sign In Gate -->
+     <div id="signin-gate" class="reveal glass rounded-3xl p-8 text-center">
+      <p class="mb-6 opacity-70">Enter your name to join the conversation</p>
+      <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"><input type="text" id="username-input" placeholder="Your name" class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-emerald-glow"> <button onclick="signIn()" class="px-6 py-3 rounded-xl font-bold transition hover:scale-105" style="background:var(--primary);color:var(--bg)">Sign In</button>
+      </div>
+      <p id="signin-error" class="text-red-400 text-sm mt-2 hidden">Please enter your name</p>
+     </div><!-- Signed In Content -->
+     <div id="signed-in-content" class="hidden">
+      <div class="glass rounded-3xl p-8 mb-6">
+       <p class="text-sm opacity-50 mb-1">Signed in as</p>
+       <p id="display-username" class="font-bold text-lg mb-6" style="color:var(--primary)"></p><!-- Reactions -->
+       <p class="text-sm font-bold mb-4 opacity-70">Your reaction:</p>
+       <div class="flex flex-wrap gap-2 mb-8" id="reaction-buttons"><button onclick="submitReaction('This slaps')" class="reaction-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">🔥 This slaps</button> <button onclick="submitReaction('I\'d buy it')" class="reaction-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">💰 I'd buy it</button> <button onclick="submitReaction('Needs tweaks')" class="reaction-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">🔧 Needs tweaks</button> <button onclick="submitReaction('Not for me')" class="reaction-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">🤷 Not for me</button> <button onclick="submitReaction('Take my money')" class="reaction-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">💸 Take my money</button>
+       </div><!-- Reaction Counts -->
+       <div id="reaction-counts" class="flex flex-wrap gap-3 mb-8"></div><!-- Price Intent -->
+       <p class="text-sm font-bold mb-4 opacity-70">What would you pay?</p>
+       <div class="flex flex-wrap gap-2 mb-8" id="price-buttons"><button onclick="submitPrice('$5')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$5</button> <button onclick="submitPrice('$15')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$15</button> <button onclick="submitPrice('$25')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$25</button> <button onclick="submitPrice('$35')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$35</button> <button onclick="submitPrice('$49')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$49</button> <button onclick="submitPrice('$75')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$75</button> <button onclick="submitPrice('$99')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$99</button> <button onclick="submitPrice('$149')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$149</button> <button onclick="submitPrice('$199')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$199</button> <button onclick="submitPrice('$299')" class="price-btn px-4 py-2 rounded-full text-sm font-medium glass transition hover:scale-105">$299</button>
+       </div><!-- Comment -->
+       <p class="text-sm font-bold mb-4 opacity-70">Leave a comment:</p>
+       <div class="flex gap-3"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-emerald-glow"> <button onclick="submitComment()" id="comment-submit-btn" class="px-6 py-3 rounded-xl font-bold transition hover:scale-105" style="background:var(--primary);color:var(--bg)">Post</button>
+       </div>
+       <p id="comment-status" class="text-sm mt-2 hidden"></p>
+      </div><!-- Comments List -->
+      <div id="comments-list" class="space-y-4"></div>
+     </div><!-- Embed Widget Box -->
+     <div class="reveal glass rounded-3xl p-6 mt-12 text-center border-2 border-dashed" style="border-color:rgba(52,211,153,0.3)">
+      <p class="text-sm font-bold opacity-50 tracking-wider uppercase">Embed Widget Here</p>
+      <p class="text-xs opacity-30 mt-1">Paste your embed code into this container</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full px-6 py-12 text-center opacity-40 text-sm">
+    <p>© 2024 TreePulse Atlas. Bring the forest to your screen, and your space.</p>
+   </footer>
+  </div>
+  <script>
+// ===== STATE =====
+let currentUser = null;
+let allData = [];
+
+// ===== GALLERY DATA =====
+const galleryImages = [
+  {src:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=75',alt:'Forest canopy',h:'h-48'},
+  {src:'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=400&q=75',alt:'Misty pines',h:'h-64'},
+  {src:'https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=400&q=75',alt:'Sun through trees',h:'h-56'},
+  {src:'https://images.unsplash.com/photo-1440581572325-0bea30075d9d?w=400&q=75',alt:'Rainforest',h:'h-48'},
+  {src:'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=400&q=75',alt:'Pine trees',h:'h-56'},
+  {src:'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=400&q=75',alt:'Snowy forest',h:'h-64'},
+  {src:'https://images.unsplash.com/photo-1518882460567-3bf2d15a9601?w=400&q=75',alt:'Tree bark',h:'h-48'},
+  {src:'https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=400&q=75',alt:'Forest path',h:'h-56'},
+];
+
+function buildGallery(){
+  const g=document.getElementById('gallery-grid');
+  galleryImages.forEach((img,i)=>{
+    const d=document.createElement('div');
+    d.className=`gallery-item reveal rounded-2xl overflow-hidden ${img.h}`;
+    d.style.animationDelay=`${i*0.1}s`;
+    d.innerHTML=`<img src="${img.src}" alt="${img.alt}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1b5e20'">`;
+    d.onclick=()=>openLightbox(img.src.replace('w=400','w=1200'));
+    g.appendChild(d);
+  });
+}
+
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=src;
+  lb.classList.remove('hidden');lb.classList.add('flex');
+}
+function closeLightbox(){
+  const lb=document.getElementById('lightbox');
+  lb.classList.add('hidden');lb.classList.remove('flex');
+}
+
+// ===== LEAVES =====
+function createLeaves(){
+  const c=document.getElementById('leaves-container');
+  for(let i=0;i<12;i++){
+    const l=document.createElement('div');l.className='leaf';
+    l.style.cssText=`left:${Math.random()*100}%;top:-20px;--dx:${(Math.random()-.5)*200}px;--rot:${Math.random()*360}deg;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;opacity:0;`;
+    c.appendChild(l);
+  }
+}
+
+// ===== SCROLL REVEAL =====
+function initReveal(){
+  const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+// ===== NAV =====
+function initNav(){
+  const app=document.getElementById('app');
+  const nav=document.getElementById('navbar');
+  app.addEventListener('scroll',()=>{
+    nav.style.background=app.scrollTop>80?'rgba(10,26,15,0.9)':'transparent';
+    nav.style.backdropFilter=app.scrollTop>80?'blur(12px)':'none';
+  });
+  document.getElementById('mobile-menu-btn').onclick=()=>{
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  };
+  document.querySelectorAll('#mobile-menu a').forEach(a=>{a.onclick=()=>document.getElementById('mobile-menu').classList.add('hidden')});
+}
+
+// ===== SIGN IN =====
+function signIn(){
+  const v=document.getElementById('username-input').value.trim();
+  if(!v){document.getElementById('signin-error').classList.remove('hidden');return;}
+  document.getElementById('signin-error').classList.add('hidden');
+  currentUser=v;
+  document.getElementById('display-username').textContent=v;
+  document.getElementById('signin-gate').classList.add('hidden');
+  document.getElementById('signed-in-content').classList.remove('hidden');
+}
+
+// ===== DATA SDK =====
+const dataHandler={
+  onDataChanged(data){
+    allData=data;
+    renderReactionCounts();
+    renderComments();
+  }
+};
+
+function renderReactionCounts(){
+  const reactions={};
+  allData.filter(d=>d.type==='reaction').forEach(d=>{reactions[d.reaction]=(reactions[d.reaction]||0)+1});
+  const c=document.getElementById('reaction-counts');
+  const existing=new Map([...c.children].map(el=>[el.dataset.r,el]));
+  const emojis={'This slaps':'🔥',"I'd buy it":'💰','Needs tweaks':'🔧','Not for me':'🤷','Take my money':'💸'};
+  Object.entries(reactions).forEach(([r,count])=>{
+    if(existing.has(r)){
+      existing.get(r).querySelector('span').textContent=`${emojis[r]||''} ${r}: ${count}`;
+      existing.delete(r);
+    }else{
+      const d=document.createElement('div');d.dataset.r=r;d.className='glass-light rounded-full px-3 py-1';
+      d.innerHTML=`<span class="text-xs font-medium">${emojis[r]||''} ${r}: ${count}</span>`;
+      c.appendChild(d);
+    }
+  });
+  existing.forEach(el=>el.remove());
+}
+
+function renderComments(){
+  const comments=allData.filter(d=>d.type==='comment').sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  const c=document.getElementById('comments-list');
+  const existing=new Map([...c.children].map(el=>[el.dataset.id,el]));
+  comments.forEach(d=>{
+    const id=d.__backendId;
+    if(existing.has(id)){existing.delete(id);return;}
+    const el=document.createElement('div');el.dataset.id=id;el.className='glass rounded-2xl p-5';
+    el.innerHTML=`<div class="flex items-center gap-2 mb-2"><span class="font-bold text-sm" style="color:var(--primary)">${escHtml(d.username)}</span><span class="text-xs opacity-30">${new Date(d.created_at).toLocaleDateString()}</span></div><p class="text-sm opacity-70">${escHtml(d.comment)}</p>`;
+    c.prepend(el);
+  });
+  existing.forEach(el=>el.remove());
+}
+
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+let submittingReaction=false;
+async function submitReaction(r){
+  if(submittingReaction)return;submittingReaction=true;
+  document.querySelectorAll('.reaction-btn').forEach(b=>b.style.opacity='0.5');
+  if(allData.filter(d=>d.type==='reaction').length>=999){showStatus('comment-status','Limit reached','red');submittingReaction=false;return;}
+  const res=await window.dataSdk.create({type:'reaction',reaction:r,comment:'',username:currentUser,price_intent:'',created_at:new Date().toISOString()});
+  document.querySelectorAll('.reaction-btn').forEach(b=>b.style.opacity='1');
+  submittingReaction=false;
+  if(!res.isOk)showStatus('comment-status','Error submitting reaction','red');
+}
+
+let submittingPrice=false;
+async function submitPrice(p){
+  if(submittingPrice)return;submittingPrice=true;
+  document.querySelectorAll('.price-btn').forEach(b=>b.style.opacity='0.5');
+  if(allData.filter(d=>d.type==='price').length>=999){showStatus('comment-status','Limit reached','red');submittingPrice=false;return;}
+  const res=await window.dataSdk.create({type:'price',reaction:'',comment:'',username:currentUser,price_intent:p,created_at:new Date().toISOString()});
+  document.querySelectorAll('.price-btn').forEach(b=>b.style.opacity='1');
+  submittingPrice=false;
+  if(res.isOk)showStatus('comment-status',`You chose ${p}!`,'#34d399');
+  else showStatus('comment-status','Error','red');
+}
+
+async function submitComment(){
+  const inp=document.getElementById('comment-input');
+  const v=inp.value.trim();if(!v)return;
+  const btn=document.getElementById('comment-submit-btn');btn.textContent='Posting...';btn.disabled=true;
+  if(allData.filter(d=>d.type==='comment').length>=999){showStatus('comment-status','Comment limit reached','red');btn.textContent='Post';btn.disabled=false;return;}
+  const res=await window.dataSdk.create({type:'comment',reaction:'',comment:v,username:currentUser,price_intent:'',created_at:new Date().toISOString()});
+  btn.textContent='Post';btn.disabled=false;
+  if(res.isOk){inp.value='';showStatus('comment-status','Comment posted!','#34d399');}
+  else showStatus('comment-status','Error posting comment','red');
+}
+
+function showStatus(id,msg,color){
+  const el=document.getElementById(id);el.textContent=msg;el.style.color=color;el.classList.remove('hidden');
+  setTimeout(()=>el.classList.add('hidden'),3000);
+}
+
+// ===== ELEMENT SDK =====
+const defaultConfig={
+  background_color:'#0a1a0f',
+  surface_color:'rgba(16,42,24,0.45)',
+  text_color:'#e8f5e9',
+  primary_color:'#34d399',
+  secondary_color:'#065f46',
+  font_family:'Playfair Display',
+  font_size:16,
+  hero_title:'Your daily reset starts here.',
+  hero_subtitle:'Tree wallpapers + printable art, instant download.',
+  cta_primary:'Get the Pack',
+  cta_secondary:'See the Preview',
+  bottom_cta_text:'Turn your screen into a forest.'
+};
+
+async function onConfigChange(config){
+  const c=k=>config[k]||defaultConfig[k];
+  document.body.style.background=c('background_color');
+  document.body.style.color=c('text_color');
+  document.documentElement.style.setProperty('--bg',c('background_color'));
+  document.documentElement.style.setProperty('--text',c('text_color'));
+  document.documentElement.style.setProperty('--primary',c('primary_color'));
+  document.documentElement.style.setProperty('--secondary',c('secondary_color'));
+
+  // Surface color on glass elements
+  document.querySelectorAll('.glass').forEach(el=>{el.style.background=c('surface_color');});
+
+  // Font
+  const ff=c('font_family');const bs=c('font_size');
+  document.querySelectorAll('h1,h2').forEach(el=>{el.style.fontFamily=`${ff},serif`;});
+  const h1=document.getElementById('hero-title');
+  if(h1){h1.textContent=c('hero_title');h1.style.fontSize=`${bs*3.5}px`;}
+  const sub=document.getElementById('hero-subtitle');
+  if(sub){sub.textContent=c('hero_subtitle');sub.style.fontSize=`${bs*1.25}px`;}
+  const cp=document.querySelector('#cta-primary-btn span');if(cp)cp.textContent=c('cta_primary');
+  const cs=document.querySelector('#cta-secondary-btn span');if(cs)cs.textContent=c('cta_secondary');
+  const bc=document.getElementById('bottom-cta');if(bc)bc.textContent=c('bottom_cta_text');
+
+  // CTA colors
+  document.querySelectorAll('.cta-pulse,[style*="background:var(--primary)"]').forEach(el=>{
+    if(el.style.background)el.style.background=c('primary_color');el.style.color=c('background_color');
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange,
+  mapToCapabilities:(config)=>({
+    recolorables:[
+      {get:()=>config.background_color||defaultConfig.background_color,set:v=>{config.background_color=v;window.elementSdk.setConfig({background_color:v})}},
+      {get:()=>config.surface_color||defaultConfig.surface_color,set:v=>{config.surface_color=v;window.elementSdk.setConfig({surface_color:v})}},
+      {get:()=>config.text_color||defaultConfig.text_color,set:v=>{config.text_color=v;window.elementSdk.setConfig({text_color:v})}},
+      {get:()=>config.primary_color||defaultConfig.primary_color,set:v=>{config.primary_color=v;window.elementSdk.setConfig({primary_color:v})}},
+      {get:()=>config.secondary_color||defaultConfig.secondary_color,set:v=>{config.secondary_color=v;window.elementSdk.setConfig({secondary_color:v})}},
+    ],
+    borderables:[],
+    fontEditable:{get:()=>config.font_family||defaultConfig.font_family,set:v=>{config.font_family=v;window.elementSdk.setConfig({font_family:v})}},
+    fontSizeable:{get:()=>config.font_size||defaultConfig.font_size,set:v=>{config.font_size=v;window.elementSdk.setConfig({font_size:v})}},
+  }),
+  mapToEditPanelValues:(config)=>new Map([
+    ['hero_title',config.hero_title||defaultConfig.hero_title],
+    ['hero_subtitle',config.hero_subtitle||defaultConfig.hero_subtitle],
+    ['cta_primary',config.cta_primary||defaultConfig.cta_primary],
+    ['cta_secondary',config.cta_secondary||defaultConfig.cta_secondary],
+    ['bottom_cta_text',config.bottom_cta_text||defaultConfig.bottom_cta_text],
+  ])
+});
+
+// ===== INIT =====
+buildGallery();
+createLeaves();
+initNav();
+initReveal();
+lucide.createIcons();
+
+(async()=>{
+  const r=await window.dataSdk.init(dataHandler);
+  if(!r.isOk)console.error('Data SDK init failed');
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6ef6c38927c5',t:'MTc3NTU3OTYwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

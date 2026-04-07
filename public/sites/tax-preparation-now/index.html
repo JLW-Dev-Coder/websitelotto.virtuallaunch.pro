@@ -1,1 +1,782 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/2191c552-4f02-4826-a49c-9b53b8f64c39 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileRight Tax Prep</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0B1D3A',
+        softblue: '#4A90D9',
+        mint: '#34D399',
+        ice: '#EFF6FF',
+        slate: '#1E293B'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(74,144,217,0.3); }
+  50% { box-shadow: 0 0 40px rgba(74,144,217,0.6); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes counter-tick {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.anim-fade-up { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+.anim-delay-1 { animation-delay: 0.15s; }
+.anim-delay-2 { animation-delay: 0.3s; }
+.anim-delay-3 { animation-delay: 0.45s; }
+.anim-delay-4 { animation-delay: 0.6s; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.countdown-box { animation: pulse-glow 3s ease-in-out infinite; }
+.float-icon { animation: float 4s ease-in-out infinite; }
+.float-icon-2 { animation: float 4s ease-in-out infinite; animation-delay: 1s; }
+.float-icon-3 { animation: float 4s ease-in-out infinite; animation-delay: 2s; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: #4A90D9; transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.pricing-card { transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+.pricing-card:hover { transform: translateY(-8px) scale(1.02); }
+
+.process-step { transition: all 0.3s ease; }
+.process-step:hover { transform: translateY(-4px); }
+
+.btn-primary {
+  transition: all 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 0; height: 0; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s;
+}
+.btn-primary:hover::before {
+  width: 300px; height: 300px; top: -100px; left: -100px;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(74,144,217,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,144,217,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.vote-btn { transition: all 0.25s ease; }
+.vote-btn:hover { transform: scale(1.12); }
+.vote-btn.selected { ring: 2px solid #4A90D9; transform: scale(1.08); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0B1D3A; }
+::-webkit-scrollbar-thumb { background: #4A90D9; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-navy" style="font-family: 'DM Sans', sans-serif;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(11,29,58,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(74,144,217,0.1);">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-softblue flex items-center justify-center"><i data-lucide="file-check" style="width:18px;height:18px;color:#fff;"></i>
+      </div><span class="text-white font-bold text-lg" style="font-family:'Playfair Display',serif;" id="nav-brand">FileRight</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-white/70 hover:text-white text-sm font-medium">Home</a> <a href="#services" class="nav-link text-white/70 hover:text-white text-sm font-medium">Services</a> <a href="#process" class="nav-link text-white/70 hover:text-white text-sm font-medium">Process</a> <a href="#pricing" class="nav-link text-white/70 hover:text-white text-sm font-medium">Pricing</a> <a href="#faq" class="nav-link text-white/70 hover:text-white text-sm font-medium">FAQ</a> <a href="#file-now" class="bg-softblue hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">File Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2"><a href="#home" class="block text-white/70 hover:text-white text-sm py-1">Home</a> <a href="#services" class="block text-white/70 hover:text-white text-sm py-1">Services</a> <a href="#process" class="block text-white/70 hover:text-white text-sm py-1">Process</a> <a href="#pricing" class="block text-white/70 hover:text-white text-sm py-1">Pricing</a> <a href="#faq" class="block text-white/70 hover:text-white text-sm py-1">FAQ</a> <a href="#file-now" class="block bg-softblue text-white text-sm font-medium px-4 py-2 rounded-lg text-center mt-2">File Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative hero-grid pt-24 pb-20 md:pt-32 md:pb-28 px-4 overflow-hidden">
+    <div class="absolute top-20 right-10 w-64 h-64 bg-softblue/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 left-10 w-48 h-48 bg-mint/10 rounded-full blur-3xl"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1 text-center lg:text-left">
+       <div class="anim-fade-up inline-flex items-center gap-2 bg-softblue/10 border border-softblue/20 rounded-full px-4 py-1.5 mb-6"><span class="w-2 h-2 bg-mint rounded-full"></span> <span class="text-softblue text-xs font-medium tracking-wide uppercase">Filing season is open</span>
+       </div>
+       <h1 id="hero-title" class="anim-fade-up anim-delay-1 text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight" style="font-family:'Playfair Display',serif;">Tax season doesn't have to be stressful.</h1>
+       <p id="hero-subtitle" class="anim-fade-up anim-delay-2 text-lg md:text-xl text-white/60 mt-6 max-w-lg mx-auto lg:mx-0">Fast, accurate filing for individuals and businesses.</p>
+       <div class="anim-fade-up anim-delay-3 flex flex-col sm:flex-row gap-3 mt-8 justify-center lg:justify-start"><a href="#file-now" class="btn-primary bg-softblue hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl text-center">Start Filing</a> <a href="#pricing" class="border border-white/20 hover:border-white/40 text-white font-medium px-8 py-3.5 rounded-xl text-center transition-colors">View Pricing</a>
+       </div>
+       <div class="anim-fade-up anim-delay-4 flex items-center gap-6 mt-10 justify-center lg:justify-start text-white/40 text-sm">
+        <div class="flex items-center gap-1.5">
+         <i data-lucide="shield-check" style="width:16px;height:16px;color:#34D399;"></i> IRS Authorized
+        </div>
+        <div class="flex items-center gap-1.5">
+         <i data-lucide="lock" style="width:16px;height:16px;color:#34D399;"></i> 256-bit Encrypted
+        </div>
+        <div class="flex items-center gap-1.5">
+         <i data-lucide="star" style="width:16px;height:16px;color:#34D399;"></i> 4.9★ Rated
+        </div>
+       </div>
+      </div>
+      <div class="flex-1 max-w-md w-full"><!-- Countdown Module -->
+       <div class="countdown-box bg-slate/80 border border-softblue/20 rounded-2xl p-6 backdrop-blur-sm">
+        <div class="flex items-center gap-2 mb-4"><i data-lucide="clock" style="width:18px;height:18px;color:#4A90D9;"></i> <span class="text-softblue font-semibold text-sm uppercase tracking-wider">Tax Deadline Countdown</span>
+        </div>
+        <div id="countdown" class="grid grid-cols-4 gap-3 text-center">
+         <div class="bg-navy/60 rounded-xl p-3">
+          <div id="cd-days" class="text-3xl font-bold text-white" style="font-family:'Playfair Display',serif;">
+           --
+          </div>
+          <div class="text-white/40 text-xs mt-1 uppercase">
+           Days
+          </div>
+         </div>
+         <div class="bg-navy/60 rounded-xl p-3">
+          <div id="cd-hours" class="text-3xl font-bold text-white" style="font-family:'Playfair Display',serif;">
+           --
+          </div>
+          <div class="text-white/40 text-xs mt-1 uppercase">
+           Hours
+          </div>
+         </div>
+         <div class="bg-navy/60 rounded-xl p-3">
+          <div id="cd-mins" class="text-3xl font-bold text-white" style="font-family:'Playfair Display',serif;">
+           --
+          </div>
+          <div class="text-white/40 text-xs mt-1 uppercase">
+           Mins
+          </div>
+         </div>
+         <div class="bg-navy/60 rounded-xl p-3">
+          <div id="cd-secs" class="text-3xl font-bold text-white" style="font-family:'Playfair Display',serif;">
+           --
+          </div>
+          <div class="text-white/40 text-xs mt-1 uppercase">
+           Secs
+          </div>
+         </div>
+        </div>
+        <div class="mt-4 text-center"><span class="text-white/50 text-sm" id="deadline-label">Until April 15, 2026 Deadline</span>
+        </div>
+       </div><!-- Quick Stats -->
+       <div class="grid grid-cols-3 gap-3 mt-4">
+        <div class="bg-slate/50 border border-white/5 rounded-xl p-3 text-center float-icon">
+         <div class="text-2xl font-bold text-mint">
+          12k+
+         </div>
+         <div class="text-white/40 text-xs">
+          Returns Filed
+         </div>
+        </div>
+        <div class="bg-slate/50 border border-white/5 rounded-xl p-3 text-center float-icon-2">
+         <div class="text-2xl font-bold text-softblue">
+          99.8%
+         </div>
+         <div class="text-white/40 text-xs">
+          Accuracy
+         </div>
+        </div>
+        <div class="bg-slate/50 border border-white/5 rounded-xl p-3 text-center float-icon-3">
+         <div class="text-2xl font-bold text-white">
+          48hr
+         </div>
+         <div class="text-white/40 text-xs">
+          Turnaround
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Services -->
+   <section id="services" class="py-20 px-4 bg-slate/30">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal"><span class="text-softblue text-sm font-medium uppercase tracking-wider">What We Offer</span>
+      <h2 id="services-title" class="text-3xl md:text-4xl font-bold text-white mt-3" style="font-family:'Playfair Display',serif;">Comprehensive Tax Services</h2>
+      <p class="text-white/50 mt-3 max-w-xl mx-auto">From simple W-2 filings to complex business returns, we handle it all with precision.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal bg-navy/60 border border-white/5 rounded-2xl p-8 hover:border-softblue/30 transition-all group">
+       <div class="w-14 h-14 bg-softblue/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-softblue/20 transition-colors"><i data-lucide="user" style="width:26px;height:26px;color:#4A90D9;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Individual Filing</h3>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">W-2, 1099, freelance income, investments, rental properties, and all standard deductions.</p>
+       <ul class="space-y-2">
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Federal + State Returns</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Deduction Maximization</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> E-file with Direct Deposit</li>
+       </ul>
+      </div>
+      <div class="reveal bg-navy/60 border border-softblue/30 rounded-2xl p-8 relative group">
+       <div class="absolute top-4 right-4 bg-mint/10 text-mint text-xs font-semibold px-3 py-1 rounded-full">
+        Popular
+       </div>
+       <div class="w-14 h-14 bg-softblue/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-softblue/20 transition-colors"><i data-lucide="building" style="width:26px;height:26px;color:#4A90D9;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Business Filing</h3>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">LLC, S-Corp, partnerships, and sole proprietorships. Quarterly estimates included.</p>
+       <ul class="space-y-2">
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> All Entity Types</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Payroll Tax Support</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Year-Round Advisory</li>
+       </ul>
+      </div>
+      <div class="reveal bg-navy/60 border border-white/5 rounded-2xl p-8 hover:border-softblue/30 transition-all group">
+       <div class="w-14 h-14 bg-softblue/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-softblue/20 transition-colors"><i data-lucide="file-edit" style="width:26px;height:26px;color:#4A90D9;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Amended Returns</h3>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">Made a mistake or missed deductions? We'll fix it. Prior-year corrections handled with care.</p>
+       <ul class="space-y-2">
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Up to 3 Years Back</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> IRS Correspondence</li>
+        <li class="flex items-center gap-2 text-white/40 text-sm"><i data-lucide="check" style="width:14px;height:14px;color:#34D399;"></i> Audit Protection Add-on</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- Process -->
+   <section id="process" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal"><span class="text-softblue text-sm font-medium uppercase tracking-wider">How It Works</span>
+      <h2 id="process-title" class="text-3xl md:text-4xl font-bold text-white mt-3" style="font-family:'Playfair Display',serif;">Three Steps to Done</h2>
+      <p class="text-white/50 mt-3 max-w-xl mx-auto">No office visits. No confusing software. Just upload, review, and file.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="reveal process-step text-center">
+       <div class="w-20 h-20 bg-softblue/10 border-2 border-softblue/30 rounded-2xl flex items-center justify-center mx-auto mb-6 relative"><i data-lucide="upload" style="width:32px;height:32px;color:#4A90D9;"></i> <span class="absolute -top-3 -right-3 w-8 h-8 bg-softblue text-white text-sm font-bold rounded-full flex items-center justify-center">1</span>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">Upload Documents</h3>
+       <p class="text-white/50 text-sm leading-relaxed">Securely upload your W-2s, 1099s, and receipts through our encrypted portal. We'll tell you exactly what we need.</p>
+      </div>
+      <div class="reveal process-step text-center">
+       <div class="w-20 h-20 bg-mint/10 border-2 border-mint/30 rounded-2xl flex items-center justify-center mx-auto mb-6 relative"><i data-lucide="search" style="width:32px;height:32px;color:#34D399;"></i> <span class="absolute -top-3 -right-3 w-8 h-8 bg-mint text-white text-sm font-bold rounded-full flex items-center justify-center">2</span>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">Expert Review</h3>
+       <p class="text-white/50 text-sm leading-relaxed">Our CPAs review every line. We maximize deductions and flag any issues before filing.</p>
+      </div>
+      <div class="reveal process-step text-center">
+       <div class="w-20 h-20 bg-softblue/10 border-2 border-softblue/30 rounded-2xl flex items-center justify-center mx-auto mb-6 relative"><i data-lucide="send" style="width:32px;height:32px;color:#4A90D9;"></i> <span class="absolute -top-3 -right-3 w-8 h-8 bg-softblue text-white text-sm font-bold rounded-full flex items-center justify-center">3</span>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">File &amp; Relax</h3>
+       <p class="text-white/50 text-sm leading-relaxed">We e-file with the IRS and your state. Track your refund status right from your dashboard.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 px-4 bg-slate/30">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal"><span class="text-softblue text-sm font-medium uppercase tracking-wider">Transparent Pricing</span>
+      <h2 id="pricing-title" class="text-3xl md:text-4xl font-bold text-white mt-3" style="font-family:'Playfair Display',serif;">Flat-Rate. No Surprises.</h2>
+      <p class="text-white/50 mt-3 max-w-xl mx-auto">Know your cost upfront. Every tier includes federal and one state return.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal pricing-card bg-navy/60 border border-white/5 rounded-2xl p-8">
+       <div class="text-white/40 text-sm font-medium uppercase tracking-wider mb-2">
+        Simple
+       </div>
+       <div class="flex items-end gap-1 mb-1"><span class="text-4xl font-bold text-white" style="font-family:'Playfair Display',serif;">$99</span> <span class="text-white/40 text-sm mb-1">/return</span>
+       </div>
+       <p class="text-white/40 text-sm mb-6">W-2 income, standard deduction</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Federal + 1 State</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> E-file Included</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> 48-Hour Turnaround</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Document Checklist</li>
+       </ul><a href="#file-now" class="block text-center border border-softblue/40 hover:bg-softblue/10 text-softblue font-medium py-3 rounded-xl transition-colors">Get Started</a>
+      </div>
+      <div class="reveal pricing-card bg-navy/60 border-2 border-softblue rounded-2xl p-8 relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-softblue text-white text-xs font-bold px-4 py-1 rounded-full">
+        Best Value
+       </div>
+       <div class="text-softblue text-sm font-medium uppercase tracking-wider mb-2">
+        Standard
+       </div>
+       <div class="flex items-end gap-1 mb-1"><span class="text-4xl font-bold text-white" style="font-family:'Playfair Display',serif;">$199</span> <span class="text-white/40 text-sm mb-1">/return</span>
+       </div>
+       <p class="text-white/40 text-sm mb-6">Freelance, investments, itemized</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Everything in Simple</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Schedule C / D / E</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Itemized Deductions</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> CPA Review Call</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Audit Protection</li>
+       </ul><a href="#file-now" class="btn-primary block text-center bg-softblue hover:bg-blue-500 text-white font-semibold py-3 rounded-xl">Get Started</a>
+      </div>
+      <div class="reveal pricing-card bg-navy/60 border border-white/5 rounded-2xl p-8">
+       <div class="text-white/40 text-sm font-medium uppercase tracking-wider mb-2">
+        Business
+       </div>
+       <div class="flex items-end gap-1 mb-1"><span class="text-4xl font-bold text-white" style="font-family:'Playfair Display',serif;">$399</span> <span class="text-white/40 text-sm mb-1">/return</span>
+       </div>
+       <p class="text-white/40 text-sm mb-6">LLC, S-Corp, Partnership</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Everything in Standard</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Business Entity Filing</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Quarterly Estimates</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Year-Round Support</li>
+        <li class="flex items-center gap-2 text-white/60 text-sm"><i data-lucide="check-circle" style="width:16px;height:16px;color:#34D399;"></i> Payroll Tax Filing</li>
+       </ul><a href="#file-now" class="block text-center border border-softblue/40 hover:bg-softblue/10 text-softblue font-medium py-3 rounded-xl transition-colors">Get Started</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14 reveal"><span class="text-softblue text-sm font-medium uppercase tracking-wider">Questions?</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mt-3" style="font-family:'Playfair Display',serif;">Frequently Asked</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="reveal faq-item bg-slate/50 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white font-medium text-sm">What documents do I need to provide?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#4A90D9;" class="transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300">
+        <p class="text-white/50 text-sm pb-4">Typically W-2s, 1099s, investment statements, and receipts for deductions. After signing up, we'll send you a personalized document checklist based on your situation.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-slate/50 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white font-medium text-sm">How long does the filing process take?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#4A90D9;" class="transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300">
+        <p class="text-white/50 text-sm pb-4">Most individual returns are completed within 48 hours of receiving all documents. Business returns typically take 3–5 business days.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-slate/50 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white font-medium text-sm">Is my data secure?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#4A90D9;" class="transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300">
+        <p class="text-white/50 text-sm pb-4">Absolutely. We use 256-bit SSL encryption, the same standard used by major banks. Your documents are stored on encrypted servers and automatically deleted after filing.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-slate/50 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white font-medium text-sm">Can I file an amended return for previous years?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#4A90D9;" class="transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300">
+        <p class="text-white/50 text-sm pb-4">Yes, we can amend returns for up to 3 prior years. If you missed deductions or received corrected forms, we'll handle the paperwork and IRS correspondence.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-slate/50 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white font-medium text-sm">Do you handle state taxes for all 50 states?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#4A90D9;" class="transition-transform duration-300"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300">
+        <p class="text-white/50 text-sm pb-4">Yes. Every tier includes one state return. Additional states are $49 each. We handle multi-state filings for remote workers and those who relocated mid-year.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Vote + Comment Module & Bottom CTA -->
+   <section id="file-now" class="py-20 px-4 bg-slate/30">
+    <div class="max-w-4xl mx-auto"><!-- Bottom CTA -->
+     <div class="text-center mb-16 reveal">
+      <h2 id="bottom-cta-text" class="text-3xl md:text-4xl font-bold text-white mb-4" style="font-family:'Playfair Display',serif;">File with confidence this season.</h2>
+      <p class="text-white/50 mb-8 max-w-lg mx-auto">Join thousands who trust FileRight for accurate, stress-free tax preparation.</p><a href="#home" class="btn-primary inline-block bg-mint hover:bg-emerald-400 text-navy font-bold px-10 py-4 rounded-xl text-lg transition-colors">Start Filing Now</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="reveal bg-navy/60 border border-white/10 rounded-2xl p-6 md:p-8">
+      <div class="text-center mb-6">
+       <div class="inline-flex items-center gap-2 bg-softblue/10 border border-softblue/20 rounded-full px-4 py-1.5 mb-3"><i data-lucide="message-circle" style="width:14px;height:14px;color:#4A90D9;"></i> <span class="text-softblue text-xs font-medium uppercase tracking-wider">Community Feedback</span>
+       </div>
+       <h3 class="text-xl font-bold text-white" style="font-family:'Playfair Display',serif;">What's this service worth to you?</h3>
+       <p class="text-white/40 text-sm mt-1">Vote on a fair price and leave your thoughts below.</p>
+      </div><!-- Price Vote -->
+      <div class="mb-6">
+       <div class="text-white/50 text-xs uppercase tracking-wider mb-3 text-center">
+        Select a price point
+       </div>
+       <div id="price-votes" class="flex flex-wrap justify-center gap-2"><!-- Rendered by JS -->
+       </div>
+       <div id="vote-totals" class="mt-4 hidden">
+        <div class="bg-navy/50 rounded-xl p-4">
+         <div id="vote-bars"></div>
+         <div class="text-center mt-3"><span class="text-white/40 text-xs" id="total-votes-label">0 votes</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Reaction Emojis -->
+      <div class="mb-6">
+       <div class="text-white/50 text-xs uppercase tracking-wider mb-3 text-center">
+        Quick Reaction
+       </div>
+       <div id="reaction-bar" class="flex justify-center gap-3"><!-- Rendered by JS -->
+       </div>
+      </div><!-- Comment Section -->
+      <div>
+       <div class="text-white/50 text-xs uppercase tracking-wider mb-3">
+        Comments
+       </div>
+       <form id="comment-form" class="flex gap-2 mb-4"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-navy/60 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/30 focus:outline-none focus:border-softblue/50 transition-colors"> <button type="submit" id="comment-submit-btn" class="bg-softblue hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1.5 text-sm font-medium"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post </button>
+       </form>
+       <div id="comments-list" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+       <div id="no-comments" class="text-center py-6 text-white/30 text-sm">
+        No comments yet. Be the first!
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 border-t border-white/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-softblue flex items-center justify-center">
+       <i data-lucide="file-check" style="width:12px;height:12px;color:#fff;"></i>
+      </div><span class="text-white/60 text-sm font-medium">FileRight Tax Prep</span>
+     </div>
+     <p class="text-white/30 text-xs">Accurate. On time. Stress-free. © 2025 FileRight Tax Prep. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// === CONFIG & SDK ===
+const PRICES = ['$49','$79','$99','$129','$149','$199','$249','$299','$399','$499'];
+const REACTIONS = [
+  { emoji: '🔥', label: 'Hot Deal' },
+  { emoji: '💰', label: 'Worth It' },
+  { emoji: '👍', label: 'Solid' },
+  { emoji: '🤔', label: 'Hmm' },
+  { emoji: '❤️', label: 'Love It' }
+];
+
+const defaultConfig = {
+  background_color: '#0B1D3A',
+  surface_color: '#1E293B',
+  text_color: '#FFFFFF',
+  primary_action_color: '#4A90D9',
+  secondary_action_color: '#34D399',
+  font_family: 'Playfair Display',
+  font_size: 16,
+  hero_title: "Tax season doesn't have to be stressful.",
+  hero_subtitle: 'Fast, accurate filing for individuals and businesses.',
+  services_title: 'Comprehensive Tax Services',
+  process_title: 'Three Steps to Done',
+  pricing_title: 'Flat-Rate. No Surprises.',
+  bottom_cta_text: 'File with confidence this season.'
+};
+
+let allData = [];
+let userVotedPrice = null;
+let userReaction = null;
+
+// Data SDK handler
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderVoteBars();
+    renderReactions();
+    renderComments();
+  }
+};
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    const font = c.font_family || defaultConfig.font_family;
+    const base = c.font_size || defaultConfig.font_size;
+
+    // Colors
+    document.getElementById('app-wrapper').style.backgroundColor = c.background_color;
+    document.querySelectorAll('[style*="font-family:\'Playfair Display\'"]').forEach(el => {
+      el.style.fontFamily = `${font}, serif`;
+    });
+
+    // Text content
+    document.getElementById('hero-title').textContent = c.hero_title;
+    document.getElementById('hero-title').style.fontFamily = `${font}, serif`;
+    document.getElementById('hero-title').style.fontSize = `${base * 3}px`;
+
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('hero-subtitle').style.fontSize = `${base * 1.25}px`;
+
+    document.getElementById('services-title').textContent = c.services_title;
+    document.getElementById('services-title').style.fontFamily = `${font}, serif`;
+    document.getElementById('services-title').style.fontSize = `${base * 2.25}px`;
+
+    document.getElementById('process-title').textContent = c.process_title;
+    document.getElementById('process-title').style.fontFamily = `${font}, serif`;
+    document.getElementById('process-title').style.fontSize = `${base * 2.25}px`;
+
+    document.getElementById('pricing-title').textContent = c.pricing_title;
+    document.getElementById('pricing-title').style.fontFamily = `${font}, serif`;
+    document.getElementById('pricing-title').style.fontSize = `${base * 2.25}px`;
+
+    document.getElementById('bottom-cta-text').textContent = c.bottom_cta_text;
+    document.getElementById('bottom-cta-text').style.fontFamily = `${font}, serif`;
+    document.getElementById('bottom-cta-text').style.fontSize = `${base * 2.25}px`;
+
+    // Apply colors to key elements
+    document.querySelectorAll('.btn-primary').forEach(el => {
+      if (!el.classList.contains('bg-mint')) el.style.backgroundColor = c.primary_action_color;
+    });
+    document.querySelectorAll('.bg-mint, .hover\\:bg-emerald-400').forEach(el => {
+      el.style.backgroundColor = c.secondary_action_color;
+    });
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return {
+      recolorables: [
+        { get: () => c.background_color || defaultConfig.background_color, set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => c.surface_color || defaultConfig.surface_color, set: (v) => { c.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => c.text_color || defaultConfig.text_color, set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => c.primary_action_color || defaultConfig.primary_action_color, set: (v) => { c.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => c.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { c.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['services_title', c.services_title],
+      ['process_title', c.process_title],
+      ['pricing_title', c.pricing_title],
+      ['bottom_cta_text', c.bottom_cta_text]
+    ]);
+  }
+});
+
+// Init Data SDK
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// === COUNTDOWN ===
+function updateCountdown() {
+  const now = new Date();
+  let targetYear = now.getFullYear();
+  let deadline = new Date(targetYear, 3, 15, 23, 59, 59);
+  if (now > deadline) {
+    targetYear++;
+    deadline = new Date(targetYear, 3, 15, 23, 59, 59);
+  }
+  document.getElementById('deadline-label').textContent = `Until April 15, ${targetYear} Deadline`;
+  const diff = deadline - now;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// === VOTE MODULE ===
+function buildPriceButtons() {
+  const container = document.getElementById('price-votes');
+  PRICES.forEach(price => {
+    const btn = document.createElement('button');
+    btn.className = 'vote-btn bg-navy/60 border border-white/10 hover:border-softblue/50 text-white text-sm font-medium px-4 py-2 rounded-lg';
+    btn.textContent = price;
+    btn.dataset.price = price;
+    btn.addEventListener('click', () => handleVote(price));
+    container.appendChild(btn);
+  });
+}
+
+async function handleVote(price) {
+  if (userVotedPrice) return;
+  userVotedPrice = price;
+  if (allData.length >= 999) { showToast('Vote limit reached'); return; }
+  document.querySelectorAll('#price-votes .vote-btn').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.price === price) {
+      b.classList.add('ring-2','ring-softblue','bg-softblue/20');
+    }
+  });
+  const result = await window.dataSdk.create({ type: 'vote', emoji: '', price, comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) { userVotedPrice = null; showToast('Vote failed, try again'); }
+}
+
+function renderVoteBars() {
+  const votes = allData.filter(d => d.type === 'vote');
+  const totals = {};
+  PRICES.forEach(p => totals[p] = 0);
+  votes.forEach(v => { if (totals[v.price] !== undefined) totals[v.price]++; });
+  const max = Math.max(...Object.values(totals), 1);
+  const container = document.getElementById('vote-bars');
+  const totalEl = document.getElementById('total-votes-label');
+  const wrapper = document.getElementById('vote-totals');
+
+  if (votes.length > 0) {
+    wrapper.classList.remove('hidden');
+    totalEl.textContent = `${votes.length} vote${votes.length !== 1 ? 's' : ''}`;
+    container.innerHTML = PRICES.map(p => `
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="text-white/50 text-xs w-12 text-right">${p}</span>
+        <div class="flex-1 h-4 bg-navy/60 rounded-full overflow-hidden">
+          <div class="h-full bg-softblue/60 rounded-full transition-all duration-500" style="width:${(totals[p]/max)*100}%"></div>
+        </div>
+        <span class="text-white/40 text-xs w-6">${totals[p]}</span>
+      </div>
+    `).join('');
+  }
+}
+
+// === REACTIONS ===
+function buildReactions() {
+  const container = document.getElementById('reaction-bar');
+  REACTIONS.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'vote-btn flex flex-col items-center gap-1 bg-navy/60 border border-white/10 hover:border-softblue/30 rounded-xl px-4 py-2.5 transition-all';
+    btn.dataset.emoji = r.emoji;
+    btn.innerHTML = `<span class="text-xl">${r.emoji}</span><span class="text-white/40 text-xs reaction-count" data-emoji="${r.emoji}">0</span>`;
+    btn.addEventListener('click', () => handleReaction(r.emoji));
+    container.appendChild(btn);
+  });
+}
+
+async function handleReaction(emoji) {
+  if (userReaction) return;
+  userReaction = emoji;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  document.querySelectorAll('#reaction-bar .vote-btn').forEach(b => {
+    b.disabled = true;
+    if (b.dataset.emoji === emoji) b.classList.add('ring-2','ring-softblue','bg-softblue/20','scale-110');
+  });
+  const result = await window.dataSdk.create({ type: 'reaction', emoji, price: '', comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) { userReaction = null; showToast('Failed, try again'); }
+}
+
+function renderReactions() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  REACTIONS.forEach(r => {
+    const count = reactions.filter(d => d.emoji === r.emoji).length;
+    const el = document.querySelector(`.reaction-count[data-emoji="${r.emoji}"]`);
+    if (el) el.textContent = count;
+  });
+}
+
+// === COMMENTS ===
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Comment limit reached'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.textContent = '...';
+  const result = await window.dataSdk.create({ type: 'comment', emoji: '', price: '', comment: text, timestamp: new Date().toISOString() });
+  btn.disabled = false; btn.innerHTML = '<i data-lucide="send" style="width:14px;height:14px;"></i> Post';
+  lucide.createIcons();
+  if (result.isOk) { input.value = ''; } else { showToast('Failed to post'); }
+});
+
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const container = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  noComments.style.display = comments.length ? 'none' : 'block';
+
+  const existing = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const fragment = document.createDocumentFragment();
+
+  comments.forEach(c => {
+    const id = c.__backendId;
+    if (existing.has(id)) {
+      fragment.appendChild(existing.get(id));
+      existing.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'bg-navy/40 border border-white/5 rounded-xl px-4 py-3 anim-fade-up';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      div.innerHTML = `<p class="text-white/80 text-sm">${escapeHtml(c.comment)}</p><span class="text-white/30 text-xs mt-1 block">${timeStr}</span>`;
+      fragment.appendChild(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+  container.innerHTML = '';
+  container.appendChild(fragment);
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// === TOAST ===
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 bg-red-500/90 text-white text-sm px-5 py-2.5 rounded-xl z-50 anim-fade-up';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// === FAQ ===
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+  document.querySelectorAll('.faq-answer').forEach(a => { a.style.maxHeight = '0px'; a.style.paddingBottom = '0'; });
+  document.querySelectorAll('.faq-toggle [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    answer.style.paddingBottom = '0';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// === MOBILE MENU ===
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// === SCROLL REVEALS ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// === SMOOTH SCROLL ===
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// === INIT ===
+buildPriceButtons();
+buildReactions();
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6be2a11727c5',t:'MTc3NTU3OTQ3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,565 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/b7b383d9-6e2d-4c3f-828c-c2416721fb01 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZooQuest Planner</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { font-family: 'Nunito', sans-serif; }
+h1, h2, h3, .font-display { font-family: 'Fredoka', sans-serif; }
+
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes popIn { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.1) rotate(2deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+@keyframes slideUp { 0% { transform: translateY(40px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes wiggle { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+@keyframes badgeSpin { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes pawPrint { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.3; } 100% { opacity: 0; transform: scale(1.5); } }
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pop { animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; opacity: 0; }
+.animate-slide-up { animation: slideUp 0.7s ease-out forwards; opacity: 0; }
+.animate-pulse-cta { animation: pulse 2s ease-in-out infinite; }
+.animate-wiggle { animation: wiggle 2s ease-in-out infinite; }
+.animate-badge { animation: badgeSpin 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; opacity: 0; }
+.hero-bg { background: linear-gradient(135deg, #FF6B35, #FFC53A, #2EC4B6, #FF6B35); background-size: 300% 300%; animation: gradientShift 8s ease infinite; }
+
+.paw-bg { position: relative; overflow: hidden; }
+.paw-bg::before { content: '🐾'; position: absolute; font-size: 120px; opacity: 0.04; top: 10%; left: -5%; animation: pawPrint 6s ease-in-out infinite; }
+.paw-bg::after { content: '🐾'; position: absolute; font-size: 80px; opacity: 0.04; bottom: 15%; right: -3%; animation: pawPrint 6s ease-in-out infinite 3s; }
+
+.nav-active { background: #FF6B35; color: white !important; }
+.card-hover { transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.card-hover:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+
+.animal-card { cursor: pointer; }
+.animal-card .animal-emoji { transition: transform 0.3s; }
+.animal-card:hover .animal-emoji { transform: scale(1.3) rotate(10deg); }
+
+.scroll-hidden { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+.scroll-visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #FFF8F0; }
+::-webkit-scrollbar-thumb { background: #FFC53A; border-radius: 99px; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        safari: { orange: '#FF6B35', yellow: '#FFC53A', teal: '#2EC4B6', cream: '#FFF8F0', bark: '#2D2418' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto" style="background:#FFF8F0;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="sticky top-0 z-50 backdrop-blur-md border-b" style="background:rgba(255,248,240,0.92);border-color:#FFC53A;">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-display font-bold text-xl flex items-center gap-2" style="color:#FF6B35;"> <span class="text-2xl">🦁</span> ZooQuest </a>
+     <div class="hidden md:flex items-center gap-1"><a href="#home" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Home</a> <a href="#planner" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Planner</a> <a href="#scavenger" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Scavenger Hunt</a> <a href="#preview" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Preview</a> <a href="#reviews" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Reviews</a> <a href="#download" class="nav-link px-3 py-1.5 rounded-full text-sm font-semibold transition-all" style="color:#2D2418;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg" style="color:#FF6B35;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-3 flex-col gap-1"><a href="#home" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Home</a> <a href="#planner" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Planner</a> <a href="#scavenger" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Scavenger Hunt</a> <a href="#preview" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Preview</a> <a href="#reviews" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Reviews</a> <a href="#download" class="nav-link block px-3 py-2 rounded-lg text-sm font-semibold" style="color:#2D2418;">Download</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="hero-bg relative overflow-hidden" style="min-height:85%;">
+    <div class="absolute inset-0" style="background:rgba(0,0,0,0.3);"></div><!-- Floating animal images -->
+    <div class="absolute top-8 left-8 w-20 h-20 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:0s;">
+     <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=80&amp;h=80&amp;fit=crop" alt="Giraffe" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#FF6B35';this.alt='';">
+    </div>
+    <div class="absolute top-16 right-12 w-16 h-16 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:1s;">
+     <img src="https://images.unsplash.com/photo-1564349457901-10a7d4f30e65?w=80&amp;h=80&amp;fit=crop" alt="Elephant" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#2EC4B6';this.alt='';">
+    </div>
+    <div class="absolute bottom-20 left-16 w-16 h-16 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:0.5s;">
+     <img src="https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=80&amp;h=80&amp;fit=crop" alt="Penguin" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#FFC53A';this.alt='';">
+    </div>
+    <div class="absolute bottom-12 right-8 w-20 h-20 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:1.5s;">
+     <img src="https://images.unsplash.com/photo-1539573049228-eb7e3f1dd92f?w=80&amp;h=80&amp;fit=crop" alt="Lion" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#FF6B35';this.alt='';">
+    </div>
+    <div class="absolute top-1/3 left-1/4 w-14 h-14 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:2s;">
+     <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=80&amp;h=80&amp;fit=crop" alt="Parrot" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#FFC53A';this.alt='';">
+    </div>
+    <div class="absolute top-1/2 right-1/4 w-14 h-14 rounded-full overflow-hidden animate-float shadow-lg" style="animation-delay:0.8s;">
+     <img src="https://images.unsplash.com/photo-1551516674-5f8fa003cda7?w=80&amp;h=80&amp;fit=crop" alt="Monkey" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#2EC4B6';this.alt='';">
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 py-20" style="min-height:85%;">
+     <div class="animate-badge mb-4" style="animation-delay:0.2s;"><span class="inline-block px-4 py-1.5 rounded-full text-sm font-bold" style="background:#FFC53A;color:#2D2418;">🎟️ Instant Digital Download</span>
+     </div>
+     <h1 id="hero-title" class="font-display text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg animate-slide-up">Make the zoo trip legendary.</h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl text-white/90 max-w-xl mb-8 animate-slide-up" style="animation-delay:0.2s;">Planner + scavenger hunt + photo checklist, instant download.</p>
+     <div class="flex flex-col sm:flex-row gap-3 animate-slide-up" style="animation-delay:0.4s;"><a href="#download" id="cta-primary-btn" class="animate-pulse-cta inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg shadow-lg transition-all hover:shadow-xl" style="background:#FF6B35;color:white;"> <i data-lucide="download" style="width:20px;height:20px;"></i> <span id="cta-primary-text">Get the Pack</span> </a> <a href="#preview" id="cta-secondary-btn" class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg border-2 border-white/80 text-white hover:bg-white/20 transition-all"> <i data-lucide="eye" style="width:20px;height:20px;"></i> <span id="cta-secondary-text">See Preview</span> </a>
+     </div>
+     <div class="flex items-center gap-6 mt-10 text-white/80 text-sm animate-slide-up" style="animation-delay:0.6s;"><span class="flex items-center gap-1">⭐⭐⭐⭐⭐ 4.9/5</span> <span>|</span> <span>2,400+ families</span> <span>|</span> <span>Printable PDF</span>
+     </div>
+    </div>
+   </section><!-- What's Inside -->
+   <section id="planner" class="py-20 px-4 paw-bg" style="background:#FFF8F0;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-hidden"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3" style="background:#2EC4B6;color:white;">📦 WHAT'S INSIDE</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold mb-3" style="color:#2D2418;">Your ZooQuest Adventure Pack</h2>
+      <p class="text-lg max-w-lg mx-auto" style="color:#2D2418;opacity:0.7;">Everything you need for the ultimate zoo day — all in one printable download.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#FFC53A;">
+       <div class="text-4xl mb-3">
+        📋
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Zoo Day Planner</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Schedule exhibits, meals, shows, and rest stops. Customizable for any zoo.</p>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#2EC4B6;animation-delay:0.1s;">
+       <div class="text-4xl mb-3">
+        🔍
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Scavenger Hunt Cards</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">12 printable mission cards with animal facts and checkpoints.</p>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#FF6B35;animation-delay:0.2s;">
+       <div class="text-4xl mb-3">
+        🗺️
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Printable Map Markers</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Cut-out markers to stick on any zoo map. Track where you've been!</p>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#FFC53A;animation-delay:0.3s;">
+       <div class="text-4xl mb-3">
+        📸
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Photo Checklist</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Capture 15 must-have photos. Selfie with a flamingo? Check!</p>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#2EC4B6;animation-delay:0.4s;">
+       <div class="text-4xl mb-3">
+        🏅
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Kid Badge Stickers</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Printable reward badges: "Lion Spotter," "Penguin Pro," and more.</p>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 border-2 shadow-sm" style="background:white;border-color:#FF6B35;animation-delay:0.5s;">
+       <div class="text-4xl mb-3">
+        🎨
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color:#2D2418;">Coloring Pages</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Bonus coloring sheets to keep little ones busy on the ride home.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Scavenger Hunt -->
+   <section id="scavenger" class="py-20 px-4" style="background:#2D2418;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-hidden"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3" style="background:#FF6B35;color:white;">🔍 SCAVENGER HUNT</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-3">12 Animal Mission Cards</h2>
+      <p class="text-lg max-w-lg mx-auto" style="color:rgba(255,255,255,0.6);">Each card has a mission, a fun fact, and a spot to check off. Click to reveal!</p>
+     </div>
+     <div id="animal-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+     </div>
+    </div>
+   </section><!-- Preview -->
+   <section id="preview" class="py-20 px-4" style="background:linear-gradient(180deg,#FFF8F0 0%,#FFC53A22 100%);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-hidden"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3" style="background:#FFC53A;color:#2D2418;">👀 SNEAK PEEK</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold mb-3" style="color:#2D2418;">Preview the Pack</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="scroll-hidden card-hover rounded-2xl overflow-hidden shadow-lg border-2" style="border-color:#FFC53A;background:white;">
+       <div class="p-4 flex items-center gap-2" style="background:#FFC53A;"><span class="text-xl">📋</span> <span class="font-display font-bold" style="color:#2D2418;">Day Planner Page</span>
+       </div>
+       <div class="p-6">
+        <div class="space-y-3">
+         <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#FFF8F0;"><span>⏰</span>
+          <div>
+           <div class="font-bold text-sm" style="color:#2D2418;">
+            9:00 AM — Arrive &amp; Get Map
+           </div>
+           <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+            Grab maps at the entrance booth
+           </div>
+          </div>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#FFF8F0;"><span>🦁</span>
+          <div>
+           <div class="font-bold text-sm" style="color:#2D2418;">
+            9:30 AM — African Savanna
+           </div>
+           <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+            Lions, zebras, and giraffes
+           </div>
+          </div>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#FFF8F0;"><span>🍕</span>
+          <div>
+           <div class="font-bold text-sm" style="color:#2D2418;">
+            12:00 PM — Lunch Break
+           </div>
+           <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+            Safari Café near the monkey house
+           </div>
+          </div>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-xl" style="background:#FFF8F0;"><span>🐧</span>
+          <div>
+           <div class="font-bold text-sm" style="color:#2D2418;">
+            1:30 PM — Penguin Feeding Show
+           </div>
+           <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+            Don't miss the 2pm splash!
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl overflow-hidden shadow-lg border-2" style="border-color:#2EC4B6;background:white;">
+       <div class="p-4 flex items-center gap-2" style="background:#2EC4B6;"><span class="text-xl">🏅</span> <span class="font-display font-bold text-white">Badge Stickers</span>
+       </div>
+       <div class="p-6">
+        <div class="grid grid-cols-3 gap-3">
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🦁</span> <span class="text-xs font-bold" style="color:#2D2418;">Lion Spotter</span>
+         </div>
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🐧</span> <span class="text-xs font-bold" style="color:#2D2418;">Penguin Pro</span>
+         </div>
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🦒</span> <span class="text-xs font-bold" style="color:#2D2418;">Tall Tracker</span>
+         </div>
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🐘</span> <span class="text-xs font-bold" style="color:#2D2418;">Gentle Giant</span>
+         </div>
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🐒</span> <span class="text-xs font-bold" style="color:#2D2418;">Monkey Master</span>
+         </div>
+         <div class="flex flex-col items-center p-3 rounded-xl text-center" style="background:#FFF8F0;"><span class="text-3xl mb-1">🦜</span> <span class="text-xs font-bold" style="color:#2D2418;">Bird Watcher</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="py-20 px-4" style="background:#2EC4B6;">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-hidden"><span class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3" style="background:white;color:#2D2418;">💬 REVIEWS</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-3">Families Love It</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-hidden card-hover rounded-2xl p-6 shadow-lg" style="background:white;">
+       <div class="flex gap-1 mb-3 text-lg">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm mb-4" style="color:#2D2418;">"My kids were SO engaged. They ran around the zoo completing missions instead of whining about being tired. Best $10 ever!"</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:#FFC53A;color:#2D2418;">
+         J
+        </div>
+        <div>
+         <div class="text-sm font-bold" style="color:#2D2418;">
+          Jessica M.
+         </div>
+         <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+          Mom of 3
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 shadow-lg" style="background:white;animation-delay:0.1s;">
+       <div class="flex gap-1 mb-3 text-lg">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm mb-4" style="color:#2D2418;">"Used it for our school field trip. Teachers loved the structure and kids loved the badges. Buying again for next year!"</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:#2EC4B6;color:white;">
+         T
+        </div>
+        <div>
+         <div class="text-sm font-bold" style="color:#2D2418;">
+          Mr. Thompson
+         </div>
+         <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+          2nd Grade Teacher
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-hidden card-hover rounded-2xl p-6 shadow-lg" style="background:white;animation-delay:0.2s;">
+       <div class="flex gap-1 mb-3 text-lg">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm mb-4" style="color:#2D2418;">"Gifted this to my niece for her birthday zoo trip. She's still talking about the scavenger hunt. Such a thoughtful find!"</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:#FF6B35;color:white;">
+         R
+        </div>
+        <div>
+         <div class="text-sm font-bold" style="color:#2D2418;">
+          Rachel K.
+         </div>
+         <div class="text-xs" style="color:#2D2418;opacity:0.5;">
+          Best Aunt Ever
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing / Download -->
+   <section id="download" class="py-20 px-4" style="background:#FFF8F0;">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="scroll-hidden">
+      <h2 id="bottom-cta-heading" class="font-display text-4xl md:text-5xl font-bold mb-4" style="color:#2D2418;">More fun, less wandering.</h2>
+      <p class="text-lg mb-8" style="color:#2D2418;opacity:0.7;">Get the complete ZooQuest Planner pack — everything your family needs for the perfect zoo day.</p>
+     </div>
+     <div class="scroll-hidden rounded-3xl p-8 md:p-12 shadow-xl border-2 relative overflow-hidden" style="background:white;border-color:#FF6B35;">
+      <div class="absolute top-0 right-0 px-4 py-2 rounded-bl-2xl font-bold text-sm" style="background:#FF6B35;color:white;">
+       🔥 BEST SELLER
+      </div>
+      <div class="flex flex-col items-center">
+       <div class="flex items-center gap-4 mb-6"><span class="text-5xl animate-wiggle">🎒</span>
+        <div class="text-left">
+         <h3 class="font-display text-2xl font-bold" style="color:#2D2418;">ZooQuest Adventure Pack</h3>
+         <p class="text-sm" style="color:#2D2418;opacity:0.6;">6 printable PDFs • Instant download • Works for any zoo</p>
+        </div>
+       </div>
+       <div class="mb-6"><span class="text-sm line-through" style="color:#2D2418;opacity:0.4;">$19.99</span> <span id="price-display" class="font-display text-5xl font-bold ml-2" style="color:#FF6B35;">$9.99</span>
+       </div>
+       <div class="flex flex-wrap justify-center gap-3 mb-6 text-sm"><span class="flex items-center gap-1 px-3 py-1 rounded-full" style="background:#2EC4B622;color:#2D2418;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#2EC4B6;"></i> Printable PDF</span> <span class="flex items-center gap-1 px-3 py-1 rounded-full" style="background:#2EC4B622;color:#2D2418;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#2EC4B6;"></i> Instant Download</span> <span class="flex items-center gap-1 px-3 py-1 rounded-full" style="background:#2EC4B622;color:#2D2418;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#2EC4B6;"></i> Family &amp; Classroom Use</span> <span class="flex items-center gap-1 px-3 py-1 rounded-full" style="background:#2EC4B622;color:#2D2418;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#2EC4B6;"></i> Giftable</span>
+       </div><button id="download-btn" class="animate-pulse-cta inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-lg shadow-lg transition-all hover:shadow-xl" style="background:#FF6B35;color:white;"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Pack — <span id="price-cta">$9.99</span> </button>
+       <p class="text-xs mt-4" style="color:#2D2418;opacity:0.4;">Secure checkout • 30-day money back guarantee</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing Angles -->
+   <section class="py-12 px-4" style="background:#FFC53A;">
+    <div class="max-w-5xl mx-auto">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+      <div class="scroll-hidden"><span class="text-3xl mb-2 block">👨‍👩‍👧‍👦</span>
+       <h3 class="font-display text-lg font-bold mb-1" style="color:#2D2418;">Families Buy Fast</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Parents grab this the night before zoo day. Instant value, zero prep stress.</p>
+      </div>
+      <div class="scroll-hidden"><span class="text-3xl mb-2 block">🎁</span>
+       <h3 class="font-display text-lg font-bold mb-1" style="color:#2D2418;">Perfectly Giftable</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Birthday gift + zoo trip = unforgettable combo. Print and tuck in a card.</p>
+      </div>
+      <div class="scroll-hidden"><span class="text-3xl mb-2 block">🏫</span>
+       <h3 class="font-display text-lg font-bold mb-1" style="color:#2D2418;">Perfect for Field Days</h3>
+       <p class="text-sm" style="color:#2D2418;opacity:0.7;">Teachers use this for school field trips. Structured fun that keeps kids learning.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Vote + Comment -->
+   <section class="py-16 px-4" style="background:#2D2418;">
+    <div class="max-w-2xl mx-auto text-center">
+     <div class="scroll-hidden">
+      <h2 class="font-display text-3xl font-bold text-white mb-2">Vote + Comment</h2>
+      <p class="mb-8" style="color:rgba(255,255,255,0.5);">Love ZooQuest? Let us know! Drop a reaction or leave a comment.</p>
+     </div>
+     <div class="scroll-hidden rounded-2xl p-6" style="background:rgba(255,255,255,0.08);">
+      <div class="flex justify-center gap-4 mb-6"><button onclick="voteAnimal(this,'🦁')" class="vote-btn text-4xl p-3 rounded-xl transition-all hover:scale-110" style="background:rgba(255,255,255,0.05);">🦁</button> <button onclick="voteAnimal(this,'🐘')" class="vote-btn text-4xl p-3 rounded-xl transition-all hover:scale-110" style="background:rgba(255,255,255,0.05);">🐘</button> <button onclick="voteAnimal(this,'🦒')" class="vote-btn text-4xl p-3 rounded-xl transition-all hover:scale-110" style="background:rgba(255,255,255,0.05);">🦒</button> <button onclick="voteAnimal(this,'🐧')" class="vote-btn text-4xl p-3 rounded-xl transition-all hover:scale-110" style="background:rgba(255,255,255,0.05);">🐧</button> <button onclick="voteAnimal(this,'🐒')" class="vote-btn text-4xl p-3 rounded-xl transition-all hover:scale-110" style="background:rgba(255,255,255,0.05);">🐒</button>
+      </div>
+      <p id="vote-msg" class="text-sm mb-6" style="color:rgba(255,255,255,0.4);">Tap your favorite zoo animal!</p>
+      <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 px-4 py-3 rounded-xl text-sm outline-none" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.1);"> <button onclick="addComment()" class="px-5 py-3 rounded-xl font-bold text-sm transition-all" style="background:#FF6B35;color:white;"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+      </div>
+      <div id="comments-list" class="mt-4 space-y-2 text-left"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 text-center" style="background:#1a150e;">
+    <p class="font-display font-bold text-lg mb-1" style="color:#FFC53A;">🦁 ZooQuest Planner</p>
+    <p class="text-xs" style="color:rgba(255,255,255,0.3);">Turn a zoo trip into a memory mission. © 2025</p>
+   </footer>
+  </div>
+  <script>
+// Animal data for scavenger hunt
+const animals = [
+  { name: 'Lion', mission: 'Spot the king! Watch for 30 seconds.', fact: 'Lions sleep up to 20 hours a day.', image: 'https://images.unsplash.com/photo-1539573049228-eb7e3f1dd92f?w=200&h=160&fit=crop' },
+  { name: 'Elephant', mission: 'Count the elephants in the enclosure.', fact: 'Elephants can recognize themselves in mirrors.', image: 'https://images.unsplash.com/photo-1564349457901-10a7d4f30e65?w=200&h=160&fit=crop' },
+  { name: 'Giraffe', mission: 'Find a giraffe eating from a tree.', fact: 'Giraffe tongues are 18 inches long!', image: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=200&h=160&fit=crop' },
+  { name: 'Penguin', mission: 'Watch a penguin dive into the water.', fact: 'Penguins can drink salt water.', image: 'https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=200&h=160&fit=crop' },
+  { name: 'Monkey', mission: 'Spot a monkey swinging from a branch.', fact: 'Some monkeys use tools to get food.', image: 'https://images.unsplash.com/photo-1551516674-5f8fa003cda7?w=200&h=160&fit=crop' },
+  { name: 'Parrot', mission: 'Listen for a parrot mimicking sounds.', fact: 'Parrots can learn over 100 words.', image: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=200&h=160&fit=crop' },
+  { name: 'Bear', mission: 'Find a bear taking a nap.', fact: 'Bears can run up to 35 mph.', image: 'https://images.unsplash.com/photo-1591527527202-5c47ea3f7e17?w=200&h=160&fit=crop' },
+  { name: 'Zebra', mission: 'Try to count a zebra\'s stripes!', fact: 'Every zebra has unique stripes.', image: 'https://images.unsplash.com/photo-1570384344809-dd5e5e2ef41e?w=200&h=160&fit=crop' },
+  { name: 'Crocodile', mission: 'Spot a croc with its mouth open.', fact: 'Crocs can live to be 100 years old.', image: 'https://images.unsplash.com/photo-1581391453033-b94b0e1d6e34?w=200&h=160&fit=crop' },
+  { name: 'Flamingo', mission: 'Take a selfie standing on one leg!', fact: 'Flamingos are born white, not pink.', image: 'https://images.unsplash.com/photo-1534031263814-03cf0d30e48a?w=200&h=160&fit=crop' },
+  { name: 'Tortoise', mission: 'Watch a tortoise eat its lunch.', fact: 'Some tortoises live over 150 years.', image: 'https://images.unsplash.com/photo-1599849222396-9eb2b0d3ecec?w=200&h=160&fit=crop' },
+  { name: 'Owl', mission: 'Find the owl hiding in the dark.', fact: 'Owls can rotate their heads 270°.', image: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=200&h=160&fit=crop' },
+];
+
+function renderAnimalCards() {
+  const grid = document.getElementById('animal-grid');
+  grid.innerHTML = '';
+  animals.forEach((a, i) => {
+    const card = document.createElement('div');
+    card.className = 'animal-card rounded-2xl overflow-hidden transition-all';
+    card.style.cssText = 'background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.1);';
+    card.dataset.revealed = 'false';
+    card.innerHTML = `
+      <div class="w-full h-32 overflow-hidden bg-gray-600">
+        <img src="${a.image}" alt="${a.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='rgba(255,255,255,0.1)';"/>
+      </div>
+      <div class="p-4 text-center">
+        <h4 class="font-display font-bold text-white text-lg">${a.name}</h4>
+        <div class="mission-content" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
+          <p class="text-xs mt-2" style="color:#FFC53A;">Mission: ${a.mission}</p>
+          <p class="text-xs mt-1" style="color:rgba(255,255,255,0.4);">Fun fact: ${a.fact}</p>
+        </div>
+        <div class="mt-2 text-xs" style="color:rgba(255,255,255,0.3);">Tap to reveal</div>
+      </div>
+    `;
+    card.style.animationDelay = `${i * 0.08}s`;
+    card.addEventListener('click', function() {
+      const content = this.querySelector('.mission-content');
+      const isRevealed = this.dataset.revealed === 'true';
+      if (isRevealed) {
+        content.style.maxHeight = '0';
+        this.style.borderColor = 'rgba(255,255,255,0.1)';
+        this.dataset.revealed = 'false';
+      } else {
+        content.style.maxHeight = '120px';
+        this.style.borderColor = '#FFC53A';
+        this.dataset.revealed = 'true';
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+// Vote
+function voteAnimal(btn, emoji) {
+  document.querySelectorAll('.vote-btn').forEach(b => b.style.background = 'rgba(255,255,255,0.05)');
+  btn.style.background = 'rgba(255,107,53,0.3)';
+  document.getElementById('vote-msg').textContent = `You voted for ${emoji}! Great choice!`;
+  document.getElementById('vote-msg').style.color = '#FFC53A';
+}
+
+// Comment
+function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'p-3 rounded-xl text-sm animate-slide-up';
+  div.style.cssText = 'background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);';
+  div.innerHTML = `<span style="color:#FFC53A;font-weight:700;">Guest:</span> ${text.replace(/</g,'&lt;')}`;
+  list.prepend(div);
+  input.value = '';
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('scroll-visible'); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-hidden').forEach(el => observer.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Active nav on scroll
+const appEl = document.getElementById('app');
+const sections = document.querySelectorAll('section[id]');
+appEl.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (appEl.scrollTop >= s.offsetTop - 100) current = s.getAttribute('id');
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.remove('nav-active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('nav-active');
+  });
+});
+
+renderAnimalCards();
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Make the zoo trip legendary.',
+  hero_subtitle: 'Planner + scavenger hunt + photo checklist, instant download.',
+  price_text: '$9.99',
+  cta_primary: 'Get the Pack',
+  cta_secondary: 'See Preview',
+  bottom_cta_text: 'More fun, less wandering.',
+  background_color: '#FFF8F0',
+  surface_color: '#FFFFFF',
+  text_color: '#2D2418',
+  primary_action_color: '#FF6B35',
+  secondary_action_color: '#2EC4B6',
+  font_family: 'Fredoka',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.getElementById('hero-title').textContent = c.hero_title;
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.getElementById('cta-primary-text').textContent = c.cta_primary;
+  document.getElementById('cta-secondary-text').textContent = c.cta_secondary;
+  document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+  document.getElementById('price-display').textContent = c.price_text;
+  document.getElementById('price-cta').textContent = c.price_text;
+
+  // Colors
+  document.getElementById('app').style.background = c.background_color;
+  document.getElementById('price-display').style.color = c.primary_action_color;
+
+  // Font
+  const ff = c.font_family + ', Nunito, sans-serif';
+  document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => el.style.fontFamily = ff);
+
+  // Font size
+  const base = c.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = (base * 3) + 'px');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = (base * 2.5) + 'px');
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = (base * 1.25) + 'px');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['price_text', config.price_text || defaultConfig.price_text],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5fc597c327c5',t:'MTc3NTU3ODk3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

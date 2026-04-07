@@ -1,1 +1,691 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/68c087c2-ebb5-4ad4-bc37-553d98c35a41 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClearLine Relief</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        base: '#0f1419',
+        surface: '#1a2028',
+        warm: '#c8956c',
+        cream: '#f0e6d8',
+        muted: '#8a9bae'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+.font-serif { font-family: 'DM Serif Display', serif; }
+.app-root { height: 100%; overflow-y: auto; overflow-x: hidden; }
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.glow-line { background: linear-gradient(90deg, transparent, rgba(200,149,108,0.4), transparent); height: 1px; }
+.nav-link { position: relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#c8956c; transition: width 0.3s ease; }
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+.hero-glow { background: radial-gradient(ellipse at 50% 20%, rgba(200,149,108,0.08) 0%, transparent 60%); }
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(200,149,108,0.1); }
+.pulse-warm { animation: pulseWarm 3s ease-in-out infinite; }
+@keyframes pulseWarm { 0%,100%{ box-shadow: 0 0 0 0 rgba(200,149,108,0.3); } 50%{ box-shadow: 0 0 30px 8px rgba(200,149,108,0.08); } }
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+@keyframes slideIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.slide-in { animation: slideIn 0.5s ease forwards; }
+.reaction-btn { transition: all 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { transform: scale(1.2); box-shadow: 0 0 16px rgba(200,149,108,0.3); }
+.toast-msg { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); opacity:0; transition: all 0.4s ease; z-index:9999; pointer-events:none; }
+.toast-msg.show { transform:translateX(-50%) translateY(0); opacity:1; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f1419; }
+::-webkit-scrollbar-thumb { background: #2a3540; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="bg-base text-cream">
+  <div class="app-root" id="appRoot">
+   <!-- Toast -->
+   <div id="toast" class="toast-msg bg-surface border border-warm/30 text-cream px-6 py-3 rounded-xl text-sm font-medium shadow-lg"></div><!-- Sticky Nav -->
+   <nav id="stickyNav" class="fixed top-0 left-0 w-full z-50 bg-base/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+     <a href="#home" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-warm to-amber-700 flex items-center justify-center">
+       <i data-lucide="shield-check" class="w-4 h-4 text-base"></i>
+      </div><span id="navBrand" class="font-serif text-lg text-cream group-hover:text-warm transition-colors">ClearLine Relief</span> </a>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link text-sm text-muted hover:text-cream transition-colors">Home</a> <a href="#situations" class="nav-link text-sm text-muted hover:text-cream transition-colors">Situations</a> <a href="#qualification" class="nav-link text-sm text-muted hover:text-cream transition-colors">Qualification</a> <a href="#process" class="nav-link text-sm text-muted hover:text-cream transition-colors">Process</a> <a href="#pricing" class="nav-link text-sm text-muted hover:text-cream transition-colors">Pricing</a> <a href="#faq" class="nav-link text-sm text-muted hover:text-cream transition-colors">FAQ</a> <a href="#gethelp" class="bg-warm/10 border border-warm/30 text-warm hover:bg-warm hover:text-base px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300">Get Help</a>
+     </div><button id="mobileToggle" class="md:hidden text-muted hover:text-cream" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3">
+     <a href="#home" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#situations" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">Situations</a> <a href="#qualification" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">Qualification</a> <a href="#process" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">Process</a> <a href="#pricing" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">Pricing</a> <a href="#faq" class="text-sm text-muted hover:text-cream py-1" onclick="this.parentElement.classList.add('hidden')">FAQ</a> <a href="#gethelp" class="text-sm text-warm font-semibold py-1" onclick="this.parentElement.classList.add('hidden')">Get Help</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative min-h-[90%] flex items-center hero-glow pt-20">
+    <div class="absolute inset-0 overflow-hidden">
+     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-warm/5 rounded-full blur-3xl"></div>
+     <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-warm/3 rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative max-w-5xl mx-auto px-6 text-center">
+     <div class="fade-up">
+      <div class="inline-flex items-center gap-2 bg-warm/10 border border-warm/20 rounded-full px-4 py-2 mb-8">
+       <i data-lucide="shield" class="w-4 h-4 text-warm"></i> <span class="text-warm text-sm font-medium">IRS Innocent Spouse Relief</span>
+      </div>
+     </div>
+     <h1 id="heroTitle" class="fade-up font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6">You shouldn't be responsible for someone else's mistakes.</h1>
+     <p id="heroSubtitle" class="fade-up text-muted text-lg sm:text-xl max-w-2xl mx-auto mb-10 font-light">Innocent spouse relief handled with care. We help you separate your financial future from a partner's tax liability — with empathy, expertise, and discretion.</p>
+     <div class="fade-up flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#gethelp" class="pulse-warm bg-gradient-to-r from-warm to-amber-700 text-base px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-warm/20 transition-all duration-300 inline-flex items-center gap-2 justify-center"> <i data-lucide="phone" class="w-5 h-5"></i> Get Help </a> <a href="#qualification" class="border border-warm/30 text-warm px-8 py-4 rounded-full font-semibold text-lg hover:bg-warm/10 transition-all duration-300 inline-flex items-center gap-2 justify-center"> <i data-lucide="check-circle" class="w-5 h-5"></i> See If You Qualify </a>
+     </div>
+     <div class="fade-up mt-16 flex flex-wrap justify-center gap-8 text-muted text-sm">
+      <div class="flex items-center gap-2"><i data-lucide="lock" class="w-4 h-4 text-warm"></i> 100% Confidential
+      </div>
+      <div class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-warm"></i> Free Consultation
+      </div>
+      <div class="flex items-center gap-2"><i data-lucide="award" class="w-4 h-4 text-warm"></i> Experienced Tax Advocates
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto my-4"></div><!-- Situations -->
+   <section id="situations" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <span class="text-warm text-sm font-semibold tracking-widest uppercase">Common Scenarios</span>
+      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mt-3 mb-4">Situations We Understand</h2>
+      <p class="text-muted max-w-2xl mx-auto">You may qualify for innocent spouse relief if any of these situations sound familiar. You are not alone.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="fade-up stagger-1 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="eye-off" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Hidden Income</h3>
+       <p class="text-muted text-sm leading-relaxed">Your spouse or ex-spouse earned income you never knew about and didn't report it on your joint return.</p>
+      </div>
+      <div class="fade-up stagger-2 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="file-minus" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">False Deductions</h3>
+       <p class="text-muted text-sm leading-relaxed">Your partner claimed deductions or credits you had no knowledge of, resulting in an understated tax bill.</p>
+      </div>
+      <div class="fade-up stagger-3 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="heart-crack" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Divorce or Separation</h3>
+       <p class="text-muted text-sm leading-relaxed">You're now divorced or separated, but the IRS is still holding you liable for a joint return you filed together.</p>
+      </div>
+      <div class="fade-up stagger-4 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="alert-triangle" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Coerced Signing</h3>
+       <p class="text-muted text-sm leading-relaxed">You were pressured or forced to sign a joint return without understanding what was on it.</p>
+      </div>
+      <div class="fade-up stagger-5 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="building" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Business Fraud</h3>
+       <p class="text-muted text-sm leading-relaxed">Your spouse ran a business and understated income or inflated expenses — and you had no involvement.</p>
+      </div>
+      <div class="fade-up stagger-6 card-hover bg-surface border border-white/5 rounded-2xl p-7">
+       <div class="w-12 h-12 rounded-xl bg-warm/10 flex items-center justify-center mb-5"><i data-lucide="wallet" class="w-6 h-6 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Unfair Tax Burden</h3>
+       <p class="text-muted text-sm leading-relaxed">Holding you responsible for the full tax debt would be unfair given your circumstances and financial situation.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto"></div><!-- Qualification -->
+   <section id="qualification" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <span class="text-warm text-sm font-semibold tracking-widest uppercase">Eligibility</span>
+      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mt-3 mb-4">Do You Qualify?</h2>
+      <p class="text-muted max-w-2xl mx-auto">The IRS offers three forms of relief. Understanding which applies to you is the first step toward protection.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="fade-up stagger-1 card-hover bg-surface border border-white/5 rounded-2xl p-8 text-center">
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-warm/20 to-warm/5 flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="shield-check" class="w-8 h-8 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Innocent Spouse Relief</h3>
+       <p class="text-muted text-sm leading-relaxed mb-4">For when your spouse understated tax on a joint return and you had no knowledge or reason to know.</p>
+       <ul class="text-left text-sm text-muted space-y-2">
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Filed a joint return</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Understated tax due to spouse</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> No knowledge of the error</li>
+       </ul>
+      </div>
+      <div class="fade-up stagger-2 card-hover bg-surface border border-warm/20 rounded-2xl p-8 text-center relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-warm text-base text-xs font-bold px-3 py-1 rounded-full">
+        Most Common
+       </div>
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-warm/30 to-warm/10 flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="split" class="w-8 h-8 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Separation of Liability</h3>
+       <p class="text-muted text-sm leading-relaxed mb-4">Divides the understated tax between you and your spouse. Ideal for divorced or separated individuals.</p>
+       <ul class="text-left text-sm text-muted space-y-2">
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Divorced or legally separated</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Lived apart for 12+ months</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> No actual knowledge of errors</li>
+       </ul>
+      </div>
+      <div class="fade-up stagger-3 card-hover bg-surface border border-white/5 rounded-2xl p-8 text-center">
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-warm/20 to-warm/5 flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="scale" class="w-8 h-8 text-warm"></i>
+       </div>
+       <h3 class="font-serif text-xl text-cream mb-3">Equitable Relief</h3>
+       <p class="text-muted text-sm leading-relaxed mb-4">When you don't qualify for the other two but it would be unfair to hold you liable for the tax.</p>
+       <ul class="text-left text-sm text-muted space-y-2">
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Don't qualify for other relief</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> Unfair to hold you liable</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> IRS considers all factors</li>
+       </ul>
+      </div>
+     </div>
+     <div class="fade-up text-center mt-12">
+      <a href="#gethelp" class="inline-flex items-center gap-2 bg-warm/10 border border-warm/30 text-warm px-8 py-4 rounded-full font-semibold hover:bg-warm hover:text-base transition-all duration-300"> <i data-lucide="message-circle" class="w-5 h-5"></i> Talk to Us — Free Consultation </a>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto"></div><!-- Process -->
+   <section id="process" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <span class="text-warm text-sm font-semibold tracking-widest uppercase">How It Works</span>
+      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mt-3 mb-4">Your Path to Relief</h2>
+      <p class="text-muted max-w-2xl mx-auto">A clear, supportive process from first conversation to resolution. You'll never feel alone.</p>
+     </div>
+     <div class="relative">
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-warm/30 via-warm/10 to-transparent"></div>
+      <div class="space-y-12 md:space-y-16">
+       <div class="fade-up flex flex-col md:flex-row items-center gap-8">
+        <div class="md:w-1/2 md:text-right md:pr-12">
+         <div class="inline-flex items-center gap-2 text-warm text-sm font-semibold mb-2"><span class="bg-warm/10 w-8 h-8 rounded-full inline-flex items-center justify-center text-warm font-bold">1</span> Free Consultation
+         </div>
+         <h3 class="font-serif text-2xl text-cream mb-2">Tell Us Your Story</h3>
+         <p class="text-muted text-sm leading-relaxed">In a confidential call, share what happened. We listen without judgment and assess your situation with compassion.</p>
+        </div>
+        <div class="hidden md:flex w-4 h-4 rounded-full bg-warm border-4 border-base z-10 flex-shrink-0"></div>
+        <div class="md:w-1/2 md:pl-12">
+         <div class="bg-surface border border-white/5 rounded-xl p-5 inline-flex items-center gap-3">
+          <i data-lucide="phone-call" class="w-8 h-8 text-warm"></i> <span class="text-cream text-sm">15-minute confidential call</span>
+         </div>
+        </div>
+       </div>
+       <div class="fade-up flex flex-col md:flex-row-reverse items-center gap-8">
+        <div class="md:w-1/2 md:text-left md:pl-12">
+         <div class="inline-flex items-center gap-2 text-warm text-sm font-semibold mb-2"><span class="bg-warm/10 w-8 h-8 rounded-full inline-flex items-center justify-center text-warm font-bold">2</span> Case Review
+         </div>
+         <h3 class="font-serif text-2xl text-cream mb-2">We Analyze Your Case</h3>
+         <p class="text-muted text-sm leading-relaxed">Our team reviews your tax history, documents, and circumstances to determine the strongest path to relief.</p>
+        </div>
+        <div class="hidden md:flex w-4 h-4 rounded-full bg-warm border-4 border-base z-10 flex-shrink-0"></div>
+        <div class="md:w-1/2 md:pr-12 md:text-right">
+         <div class="bg-surface border border-white/5 rounded-xl p-5 inline-flex items-center gap-3">
+          <i data-lucide="search" class="w-8 h-8 text-warm"></i> <span class="text-cream text-sm">Thorough documentation review</span>
+         </div>
+        </div>
+       </div>
+       <div class="fade-up flex flex-col md:flex-row items-center gap-8">
+        <div class="md:w-1/2 md:text-right md:pr-12">
+         <div class="inline-flex items-center gap-2 text-warm text-sm font-semibold mb-2"><span class="bg-warm/10 w-8 h-8 rounded-full inline-flex items-center justify-center text-warm font-bold">3</span> File Your Claim
+         </div>
+         <h3 class="font-serif text-2xl text-cream mb-2">We Prepare &amp; Submit</h3>
+         <p class="text-muted text-sm leading-relaxed">We prepare IRS Form 8857 and all supporting documentation, building the strongest possible case for your relief.</p>
+        </div>
+        <div class="hidden md:flex w-4 h-4 rounded-full bg-warm border-4 border-base z-10 flex-shrink-0"></div>
+        <div class="md:w-1/2 md:pl-12">
+         <div class="bg-surface border border-white/5 rounded-xl p-5 inline-flex items-center gap-3">
+          <i data-lucide="file-check" class="w-8 h-8 text-warm"></i> <span class="text-cream text-sm">Form 8857 preparation &amp; filing</span>
+         </div>
+        </div>
+       </div>
+       <div class="fade-up flex flex-col md:flex-row-reverse items-center gap-8">
+        <div class="md:w-1/2 md:text-left md:pl-12">
+         <div class="inline-flex items-center gap-2 text-warm text-sm font-semibold mb-2"><span class="bg-warm/10 w-8 h-8 rounded-full inline-flex items-center justify-center text-warm font-bold">4</span> Resolution
+         </div>
+         <h3 class="font-serif text-2xl text-cream mb-2">Your Fresh Start</h3>
+         <p class="text-muted text-sm leading-relaxed">We advocate on your behalf through the entire IRS process until you receive the relief and peace of mind you deserve.</p>
+        </div>
+        <div class="hidden md:flex w-4 h-4 rounded-full bg-warm border-4 border-base z-10 flex-shrink-0"></div>
+        <div class="md:w-1/2 md:pr-12 md:text-right">
+         <div class="bg-surface border border-white/5 rounded-xl p-5 inline-flex items-center gap-3">
+          <i data-lucide="check-circle-2" class="w-8 h-8 text-warm"></i> <span class="text-cream text-sm">Full IRS representation</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto"></div><!-- Pricing -->
+   <section id="pricing" class="py-24 px-6 bg-gradient-to-b from-base via-surface/30 to-base">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <span class="text-warm text-sm font-semibold tracking-widest uppercase">Investment</span>
+      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mt-3 mb-4">Transparent Pricing</h2>
+      <p class="text-muted max-w-2xl mx-auto">Choose the level of support that fits your situation. All tiers include a free initial consultation.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 lg:gap-8"><!-- Tier 1 -->
+      <div class="fade-up stagger-1 card-hover bg-surface border border-white/5 rounded-2xl p-8 flex flex-col">
+       <div class="mb-6">
+        <h3 class="font-serif text-2xl text-cream mb-2">Self-Guided</h3>
+        <p class="text-muted text-sm">For those who want to go it alone with resources.</p>
+       </div>
+       <div class="mb-8"><span class="font-serif text-4xl text-warm">$199</span> <span class="text-muted text-sm">/one-time</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Form 8857 preparation guide</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Document checklist &amp; templates</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Case storytelling frameworks</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Legal explanation layouts</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="x" class="w-4 h-4 text-muted/40 mt-0.5 flex-shrink-0"></i> <span class="text-muted/60">Direct tax advocate support</span></li>
+       </ul><button onclick="showToast('Self-Guided tier selected.')" class="w-full bg-base border border-warm/20 text-warm px-6 py-3 rounded-lg font-semibold text-sm hover:bg-warm/10 transition-all duration-300"> Choose Plan </button>
+      </div><!-- Tier 2 - Featured -->
+      <div class="fade-up stagger-2 card-hover bg-gradient-to-br from-surface to-base border border-warm/30 rounded-2xl p-8 flex flex-col relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-warm to-amber-700 text-base text-xs font-bold px-4 py-1 rounded-full">
+        Most Popular
+       </div>
+       <div class="mb-6">
+        <h3 class="font-serif text-2xl text-cream mb-2">Guided Support</h3>
+        <p class="text-muted text-sm">Our recommended option — professional guidance every step.</p>
+       </div>
+       <div class="mb-8"><span class="font-serif text-4xl text-warm">$799</span> <span class="text-muted text-sm">/flat fee</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-cream"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Everything in Self-Guided</span></li>
+        <li class="flex items-start gap-2 text-sm text-cream"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Initial 45-minute case consultation</span></li>
+        <li class="flex items-start gap-2 text-sm text-cream"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Personalized qualification assessment</span></li>
+        <li class="flex items-start gap-2 text-sm text-cream"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Form 8857 review &amp; editing</span></li>
+        <li class="flex items-start gap-2 text-sm text-cream"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Email support during filing</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="x" class="w-4 h-4 text-muted/40 mt-0.5 flex-shrink-0"></i> <span class="text-muted/60">Full IRS representation</span></li>
+       </ul><button onclick="showToast('Guided Support tier selected.')" class="w-full bg-gradient-to-r from-warm to-amber-700 text-base px-6 py-3 rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-warm/20 transition-all duration-300"> Choose Plan </button>
+      </div><!-- Tier 3 -->
+      <div class="fade-up stagger-3 card-hover bg-surface border border-white/5 rounded-2xl p-8 flex flex-col">
+       <div class="mb-6">
+        <h3 class="font-serif text-2xl text-cream mb-2">Full Advocacy</h3>
+        <p class="text-muted text-sm">Complete representation from start to IRS resolution.</p>
+       </div>
+       <div class="mb-8"><span class="font-serif text-4xl text-warm">$1,499</span> <span class="text-muted text-sm">/flat fee</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Everything in Guided Support</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Unlimited case consultations</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Full document preparation</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Complete IRS representation</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Response handling &amp; advocacy</span></li>
+        <li class="flex items-start gap-2 text-sm text-muted"><i data-lucide="check" class="w-4 h-4 text-warm mt-0.5 flex-shrink-0"></i> <span>Appeals support if needed</span></li>
+       </ul><button onclick="showToast('Full Advocacy tier selected.')" class="w-full bg-base border border-warm/20 text-warm px-6 py-3 rounded-lg font-semibold text-sm hover:bg-warm/10 transition-all duration-300"> Choose Plan </button>
+      </div>
+     </div><!-- Comparison Note -->
+     <div class="fade-up mt-16 bg-warm/5 border border-warm/20 rounded-2xl p-8 text-center">
+      <p class="text-muted text-sm">All plans include a free 15-minute qualification call. <span class="text-warm font-semibold">No hidden fees.</span> Pay once, get results.</p>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto"></div><!-- FAQ -->
+   <section id="faq" class="py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16 fade-up">
+      <span class="text-warm text-sm font-semibold tracking-widest uppercase">Questions</span>
+      <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mt-3 mb-4">Frequently Asked</h2>
+     </div>
+     <div class="space-y-3" id="faqContainer">
+     </div>
+    </div>
+   </section>
+   <div class="glow-line max-w-4xl mx-auto"></div><!-- Bottom CTA + Vote & Comment -->
+   <section id="gethelp" class="py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <!-- CTA -->
+     <div class="fade-up text-center mb-20">
+      <div class="bg-gradient-to-br from-surface to-base border border-warm/20 rounded-3xl p-12 md:p-16 relative overflow-hidden">
+       <div class="absolute inset-0 bg-gradient-to-br from-warm/5 to-transparent"></div>
+       <div class="relative">
+        <i data-lucide="shield-check" class="w-12 h-12 text-warm mx-auto mb-6"></i>
+        <h2 id="bottomCtaTitle" class="font-serif text-3xl sm:text-4xl md:text-5xl text-cream mb-4">Protect your financial future.</h2>
+        <p id="bottomCtaSubtitle" class="text-muted text-lg max-w-xl mx-auto mb-8">Take the first step. A confidential conversation costs nothing — but could change everything.</p><a href="#home" class="pulse-warm inline-flex items-center gap-2 bg-gradient-to-r from-warm to-amber-700 text-base px-10 py-4 rounded-full font-semibold text-lg hover:shadow-lg hover:shadow-warm/20 transition-all duration-300"> <i data-lucide="phone" class="w-5 h-5"></i> Request Free Consultation </a>
+       </div>
+      </div>
+     </div><!-- Vote + Comment Widget -->
+     <div class="fade-up">
+      <div class="bg-surface border border-white/5 rounded-3xl p-8 md:p-10">
+       <div class="text-center mb-8">
+        <span class="text-warm text-xs font-semibold tracking-widest uppercase">Community</span>
+        <h3 class="font-serif text-2xl text-cream mt-2">Vote &amp; Share Your Thoughts</h3>
+        <p class="text-muted text-sm mt-1">How much would professional innocent spouse relief be worth to you?</p>
+       </div><!-- Reactions -->
+       <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactionsBar">
+        <button class="reaction-btn bg-base border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 text-sm" data-reaction="shield" onclick="selectReaction(this)"> 🛡️ <span class="text-muted reaction-count" data-r="shield">0</span> </button> <button class="reaction-btn bg-base border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 text-sm" data-reaction="heart" onclick="selectReaction(this)"> ❤️ <span class="text-muted reaction-count" data-r="heart">0</span> </button> <button class="reaction-btn bg-base border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 text-sm" data-reaction="pray" onclick="selectReaction(this)"> 🙏 <span class="text-muted reaction-count" data-r="pray">0</span> </button> <button class="reaction-btn bg-base border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 text-sm" data-reaction="fire" onclick="selectReaction(this)"> 🔥 <span class="text-muted reaction-count" data-r="fire">0</span> </button> <button class="reaction-btn bg-base border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 text-sm" data-reaction="star" onclick="selectReaction(this)"> ⭐ <span class="text-muted reaction-count" data-r="star">0</span> </button>
+       </div><!-- Price Vote -->
+       <div class="mb-8">
+        <p class="text-center text-muted text-sm mb-4">What would you pay for this service?</p>
+        <div class="flex flex-wrap justify-center gap-2" id="priceVotes">
+         <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$49" onclick="selectPrice(this)">$49</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$99" onclick="selectPrice(this)">$99</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$149" onclick="selectPrice(this)">$149</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$199" onclick="selectPrice(this)">$199</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$299" onclick="selectPrice(this)">$299</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$499" onclick="selectPrice(this)">$499</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$749" onclick="selectPrice(this)">$749</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$999" onclick="selectPrice(this)">$999</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$1,499" onclick="selectPrice(this)">$1,499</button> <button class="reaction-btn bg-base border border-white/10 rounded-lg px-3 py-1.5 text-sm text-muted hover:border-warm/40 hover:text-warm" data-price="$2,000+" onclick="selectPrice(this)">$2,000+</button>
+        </div>
+       </div>
+       <div class="glow-line mb-8"></div><!-- Comment Form -->
+       <form id="commentForm" class="mb-8" onsubmit="return false;">
+        <div class="flex flex-col sm:flex-row gap-3 mb-3">
+         <input id="commentName" type="text" placeholder="Your name (optional)" class="bg-base border border-white/10 rounded-xl px-4 py-3 text-cream text-sm placeholder-muted/50 focus:outline-none focus:border-warm/40 flex-1">
+         <div id="selectedTags" class="flex items-center gap-2 text-sm text-muted">
+          <span id="selectedReactionTag" class="hidden bg-warm/10 text-warm px-2 py-1 rounded-lg text-xs"></span> <span id="selectedPriceTag" class="hidden bg-warm/10 text-warm px-2 py-1 rounded-lg text-xs"></span>
+         </div>
+        </div>
+        <div class="flex gap-3">
+         <textarea id="commentText" placeholder="Share your thoughts..." rows="2" class="bg-base border border-white/10 rounded-xl px-4 py-3 text-cream text-sm placeholder-muted/50 focus:outline-none focus:border-warm/40 flex-1 resize-none"></textarea> <button id="submitBtn" type="button" onclick="submitComment()" class="bg-warm/10 border border-warm/30 text-warm px-5 rounded-xl font-semibold text-sm hover:bg-warm hover:text-base transition-all duration-300 self-end"> <i data-lucide="send" class="w-4 h-4"></i> </button>
+        </div>
+       </form><!-- Comments List -->
+       <div id="commentsList" class="space-y-4"></div>
+       <p id="emptyComments" class="text-center text-muted/50 text-sm py-8">No comments yet. Be the first to share.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-white/5 py-12 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+     <div class="flex items-center justify-center gap-2 mb-4">
+      <div class="w-6 h-6 rounded-md bg-gradient-to-br from-warm to-amber-700 flex items-center justify-center">
+       <i data-lucide="shield-check" class="w-3 h-3 text-base"></i>
+      </div><span id="footerBrand" class="font-serif text-cream">ClearLine Relief</span>
+     </div>
+     <p class="text-muted text-xs mb-2">Separate your future from past liability.</p>
+     <p class="text-muted/40 text-xs">This is a demo site. Not actual legal or tax advice.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- State ---
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+// --- FAQ ---
+const faqs = [
+  { q: "What is innocent spouse relief?", a: "It's an IRS provision that relieves you from paying additional tax owed by your spouse or former spouse who improperly reported items or omitted items on your joint tax return." },
+  { q: "How long does the process take?", a: "Typically 6 to 12 months, depending on the complexity of your case. We keep you informed at every stage." },
+  { q: "Do I need to be divorced to qualify?", a: "No. You can apply whether you're married, separated, divorced, or widowed. Different types of relief have different requirements." },
+  { q: "Is there a deadline to file?", a: "For innocent spouse relief and separation of liability, you generally must file within 2 years of IRS collection activity. Equitable relief has no strict deadline. Act sooner rather than later." },
+  { q: "Will my spouse be notified?", a: "Yes — the IRS is required to contact your spouse or former spouse. However, your personal information and contact details are kept confidential." },
+  { q: "What does a consultation cost?", a: "Nothing. Our initial consultation is completely free and confidential. We'll assess your situation and explain your options with no obligation." }
+];
+
+function buildFAQ() {
+  const c = document.getElementById('faqContainer');
+  faqs.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'fade-up bg-surface border border-white/5 rounded-xl overflow-hidden';
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+        <span class="text-cream font-medium text-sm pr-4">${f.q}</span>
+        <i data-lucide="chevron-down" class="w-5 h-5 text-muted flex-shrink-0 transition-transform duration-300"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-muted text-sm leading-relaxed">${f.a}</p>
+      </div>`;
+    c.appendChild(div);
+  });
+}
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  answer.classList.toggle('hidden');
+  icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// --- Reactions & Votes ---
+function selectReaction(btn) {
+  const r = btn.dataset.reaction;
+  document.querySelectorAll('#reactionsBar .reaction-btn').forEach(b => b.classList.remove('selected', 'border-warm/40'));
+  if (selectedReaction === r) { selectedReaction = null; }
+  else { selectedReaction = r; btn.classList.add('selected', 'border-warm/40'); }
+  updateTags();
+}
+
+function selectPrice(btn) {
+  const p = btn.dataset.price;
+  document.querySelectorAll('#priceVotes .reaction-btn').forEach(b => b.classList.remove('selected', 'border-warm/40', 'text-warm'));
+  if (selectedPrice === p) { selectedPrice = null; }
+  else { selectedPrice = p; btn.classList.add('selected', 'border-warm/40', 'text-warm'); }
+  updateTags();
+}
+
+function updateTags() {
+  const rt = document.getElementById('selectedReactionTag');
+  const pt = document.getElementById('selectedPriceTag');
+  if (selectedReaction) { rt.textContent = { shield:'🛡️', heart:'❤️', pray:'🙏', fire:'🔥', star:'⭐' }[selectedReaction]; rt.classList.remove('hidden'); }
+  else { rt.classList.add('hidden'); }
+  if (selectedPrice) { pt.textContent = selectedPrice; pt.classList.remove('hidden'); }
+  else { pt.classList.add('hidden'); }
+}
+
+// --- Comments ---
+function updateReactionCounts() {
+  const counts = { shield:0, heart:0, pray:0, fire:0, star:0 };
+  allData.forEach(d => { if (d.reaction && counts.hasOwnProperty(d.reaction)) counts[d.reaction]++; });
+  document.querySelectorAll('.reaction-count').forEach(el => { el.textContent = counts[el.dataset.r] || 0; });
+}
+
+function renderComments(data) {
+  const list = document.getElementById('commentsList');
+  const empty = document.getElementById('emptyComments');
+  const comments = data.filter(d => d.type === 'comment');
+  empty.style.display = comments.length ? 'none' : 'block';
+
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existing.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  comments.forEach((c, i) => {
+    if (existing.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.className = 'slide-in bg-base/50 border border-white/5 rounded-xl p-4';
+    const tags = [];
+    if (c.reaction) tags.push({ shield:'🛡️', heart:'❤️', pray:'🙏', fire:'🔥', star:'⭐' }[c.reaction] || '');
+    if (c.price) tags.push(c.price);
+    const tagHTML = tags.length ? `<div class="flex gap-1.5 mt-2">${tags.map(t => `<span class="bg-warm/10 text-warm text-xs px-2 py-0.5 rounded-md">${t}</span>`).join('')}</div>` : '';
+    const timeAgo = getTimeAgo(c.created_at);
+    div.innerHTML = `
+      <div class="flex items-start justify-between mb-1">
+        <span class="text-cream text-sm font-medium">${c.name || 'Anonymous'}</span>
+        <span class="text-muted/40 text-xs">${timeAgo}</span>
+      </div>
+      <p class="text-muted text-sm leading-relaxed">${escapeHTML(c.message)}</p>
+      ${tagHTML}`;
+    if (list.children.length > i) list.insertBefore(div, list.children[i]);
+    else list.appendChild(div);
+  });
+}
+
+function getTimeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff/60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  return Math.floor(hrs / 24) + 'd ago';
+}
+
+function escapeHTML(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function submitComment() {
+  const msg = document.getElementById('commentText').value.trim();
+  if (!msg && !selectedReaction && !selectedPrice) { showToast('Please add a comment, reaction, or vote.'); return; }
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+
+  const record = {
+    type: 'comment',
+    name: document.getElementById('commentName').value.trim(),
+    message: msg,
+    reaction: selectedReaction || '',
+    price: selectedPrice || '',
+    created_at: new Date().toISOString()
+  };
+
+  const result = await window.dataSdk.create(record);
+  btn.disabled = false;
+  btn.style.opacity = '1';
+
+  if (result.isOk) {
+    document.getElementById('commentText').value = '';
+    document.getElementById('commentName').value = '';
+    selectedReaction = null;
+    selectedPrice = null;
+    document.querySelectorAll('#reactionsBar .reaction-btn, #priceVotes .reaction-btn').forEach(b => b.classList.remove('selected', 'border-warm/40', 'text-warm'));
+    updateTags();
+    showToast('Thanks for sharing!');
+  } else {
+    showToast('Something went wrong. Please try again.');
+  }
+}
+
+// --- Data SDK ---
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    renderComments(data);
+  }
+};
+
+// --- Element SDK ---
+const defaultConfig = {
+  background_color: '#0f1419',
+  surface_color: '#1a2028',
+  text_color: '#f0e6d8',
+  warm_color: '#c8956c',
+  muted_color: '#8a9bae',
+  font_family: 'DM Serif Display',
+  font_size: 16,
+  hero_title: "You shouldn't be responsible for someone else's mistakes.",
+  hero_subtitle: "Innocent spouse relief handled with care. We help you separate your financial future from a partner's tax liability — with empathy, expertise, and discretion.",
+  brand_name: "ClearLine Relief",
+  bottom_cta_title: "Protect your financial future.",
+  bottom_cta_subtitle: "Take the first step. A confidential conversation costs nothing — but could change everything."
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const sf = config.surface_color || defaultConfig.surface_color;
+  const tx = config.text_color || defaultConfig.text_color;
+  const wm = config.warm_color || defaultConfig.warm_color;
+  const mt = config.muted_color || defaultConfig.muted_color;
+  const ff = config.font_family || defaultConfig.font_family;
+  const fs = config.font_size || defaultConfig.font_size;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = tx;
+
+  // Apply colors to elements
+  document.querySelectorAll('.bg-base').forEach(el => el.style.backgroundColor = bg);
+  document.querySelectorAll('.bg-surface').forEach(el => el.style.backgroundColor = sf);
+  document.querySelectorAll('.text-cream').forEach(el => el.style.color = tx);
+  document.querySelectorAll('.text-warm').forEach(el => el.style.color = wm);
+  document.querySelectorAll('.text-muted').forEach(el => el.style.color = mt);
+
+  // Font
+  const bodyStack = `Plus Jakarta Sans, sans-serif`;
+  const serifStack = `${ff}, Georgia, serif`;
+  document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = serifStack);
+  document.body.style.fontFamily = `${ff}, ${bodyStack}`;
+
+  // Font size scaling
+  document.getElementById('heroTitle').style.fontSize = '';
+  document.body.style.fontSize = fs + 'px';
+
+  // Text content
+  document.getElementById('heroTitle').textContent = config.hero_title || defaultConfig.hero_title;
+  document.getElementById('heroSubtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('navBrand').textContent = config.brand_name || defaultConfig.brand_name;
+  document.getElementById('footerBrand').textContent = config.brand_name || defaultConfig.brand_name;
+  document.getElementById('bottomCtaTitle').textContent = config.bottom_cta_title || defaultConfig.bottom_cta_title;
+  document.getElementById('bottomCtaSubtitle').textContent = config.bottom_cta_subtitle || defaultConfig.bottom_cta_subtitle;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.warm_color || defaultConfig.warm_color, set: (v) => { config.warm_color = v; window.elementSdk.setConfig({ warm_color: v }); } },
+      { get: () => config.muted_color || defaultConfig.muted_color, set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["brand_name", config.brand_name || defaultConfig.brand_name],
+    ["bottom_cta_title", config.bottom_cta_title || defaultConfig.bottom_cta_title],
+    ["bottom_cta_subtitle", config.bottom_cta_subtitle || defaultConfig.bottom_cta_subtitle]
+  ])
+});
+
+// --- Scroll Animations ---
+function initScrollObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+}
+
+// --- Init ---
+async function init() {
+  buildFAQ();
+  lucide.createIcons();
+  initScrollObserver();
+
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) { showToast('Could not load community data.'); }
+}
+
+init();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a49e054a327c5',t:'MTc3NTU3ODA4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

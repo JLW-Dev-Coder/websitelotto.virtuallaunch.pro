@@ -1,1 +1,746 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/0787edc2-f1de-474a-b82a-41c304045dbb -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CleanSlate Digital</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html { height: 100%; }
+  body { height: 100%; margin: 0; }
+
+  * { box-sizing: border-box; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(100, 160, 210, 0.08); }
+    50% { box-shadow: 0 0 35px rgba(100, 160, 210, 0.18); }
+  }
+  @keyframes grid-drift {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+  @keyframes scanline {
+    0% { top: -2px; }
+    100% { top: 100%; }
+  }
+
+  .anim-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .anim-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pricing-card {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+  .pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 45px rgba(100, 160, 210, 0.22);
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.25s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(100,160,210,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100,160,210,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-drift 20s linear infinite;
+  }
+
+  .system-card {
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .system-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .step-line {
+    position: relative;
+  }
+  .step-line::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 44px;
+    width: 1.5px;
+    height: calc(100% - 44px);
+  }
+  .step-line:last-child::before {
+    display: none;
+  }
+
+  .cta-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .cta-btn:hover::before {
+    opacity: 1;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .vote-btn {
+    transition: all 0.25s ease;
+  }
+  .vote-btn:hover {
+    transform: scale(1.08);
+  }
+  .vote-btn.active {
+    transform: scale(1.12);
+  }
+
+  .comment-item {
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { border-radius: 3px; }
+
+  .scanline-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .scanline-overlay::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    animation: scanline 6s linear infinite;
+    opacity: 0.03;
+  }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['DM Sans', 'sans-serif'],
+        mono: ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto" style="background-color: #0e1117; color: #c8d1dc;"><!-- NAV -->
+   <nav id="main-nav" style="background: rgba(14,17,23,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(100,160,210,0.08);" class="fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2 font-mono font-bold text-sm tracking-wider" style="color: #64a0d2;">
+      <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+       <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /><path d="M9 21V9" />
+      </svg> CLEANSLATE </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">Home<span style="background: #64a0d2;" class="block"></span></a> <a href="#systems" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">Systems<span style="background: #64a0d2;" class="block"></span></a> <a href="#cleanup" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">Cleanup<span style="background: #64a0d2;" class="block"></span></a> <a href="#workflow" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">Workflow<span style="background: #64a0d2;" class="block"></span></a> <a href="#pricing" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">Pricing<span style="background: #64a0d2;" class="block"></span></a> <a href="#faq" class="nav-link text-xs tracking-wide" style="color: #8a95a5;">FAQ<span style="background: #64a0d2;" class="block"></span></a> <a href="#reset-now" class="cta-btn text-xs font-semibold px-4 py-2 rounded-md" style="background: #64a0d2; color: #0e1117;">Reset Now</a>
+     </div><button id="mobile-toggle" class="md:hidden" style="color: #8a95a5;"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="text-xs tracking-wide py-1" style="color: #8a95a5;">Home</a> <a href="#systems" class="text-xs tracking-wide py-1" style="color: #8a95a5;">Systems</a> <a href="#cleanup" class="text-xs tracking-wide py-1" style="color: #8a95a5;">Cleanup</a> <a href="#workflow" class="text-xs tracking-wide py-1" style="color: #8a95a5;">Workflow</a> <a href="#pricing" class="text-xs tracking-wide py-1" style="color: #8a95a5;">Pricing</a> <a href="#faq" class="text-xs tracking-wide py-1" style="color: #8a95a5;">FAQ</a> <a href="#reset-now" class="cta-btn text-xs font-semibold px-4 py-2 rounded-md text-center" style="background: #64a0d2; color: #0e1117;">Reset Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full grid-bg" style="min-height: 100%; padding-top: 100px;">
+    <div class="scanline-overlay"></div>
+    <div class="max-w-5xl mx-auto px-6 flex flex-col items-center justify-center text-center" style="padding-top: 12%; padding-bottom: 12%;">
+     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8" style="background: rgba(100,160,210,0.08); border: 1px solid rgba(100,160,210,0.15); animation: fadeIn 0.8s ease forwards;"><span class="w-1.5 h-1.5 rounded-full" style="background: #64a0d2;"></span> <span class="text-xs font-mono tracking-wide" style="color: #64a0d2;">System Reset Engine</span>
+     </div>
+     <h1 id="hero-title" class="font-bold leading-tight mb-6" style="font-size: clamp(2.2rem, 5.5vw, 4.2rem); color: #edf1f7; animation: fadeUp 0.8s ease 0.2s both;">Clutter slows everything.</h1>
+     <p id="hero-subtitle" class="text-lg max-w-xl mb-10" style="color: #6b7a8d; animation: fadeUp 0.8s ease 0.4s both;">Organize your digital life for clarity and speed.</p>
+     <div class="flex flex-wrap items-center justify-center gap-4" style="animation: fadeUp 0.8s ease 0.6s both;"><a href="#reset-now" class="cta-btn font-semibold px-8 py-3 rounded-lg text-sm" style="background: #64a0d2; color: #0e1117;"> <span class="relative z-10 flex items-center gap-2"><i data-lucide="zap" style="width:16px;height:16px;"></i> Reset Now</span> </a> <a href="#systems" class="cta-btn font-medium px-8 py-3 rounded-lg text-sm" style="border: 1px solid rgba(100,160,210,0.25); color: #64a0d2;"> <span class="relative z-10 flex items-center gap-2"><i data-lucide="layers" style="width:16px;height:16px;"></i> View Systems</span> </a>
+     </div><!-- Stats -->
+     <div class="grid grid-cols-3 gap-8 mt-16 pt-8" style="border-top: 1px solid rgba(100,160,210,0.08); animation: fadeUp 0.8s ease 0.8s both;">
+      <div class="text-center">
+       <div class="font-mono font-bold text-2xl" style="color: #64a0d2;">
+        2,400+
+       </div>
+       <div class="text-xs mt-1" style="color: #556170;">
+        Systems Reset
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-mono font-bold text-2xl" style="color: #64a0d2;">
+        98%
+       </div>
+       <div class="text-xs mt-1" style="color: #556170;">
+        Satisfaction
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-mono font-bold text-2xl" style="color: #64a0d2;">
+        4.2h
+       </div>
+       <div class="text-xs mt-1" style="color: #556170;">
+        Avg. Saved / Week
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SYSTEMS -->
+   <section id="systems" class="w-full py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="font-mono text-xs tracking-widest uppercase" style="color: #64a0d2;">01 — Systems</span>
+      <h2 id="systems-title" class="font-bold text-3xl md:text-4xl mt-3" style="color: #edf1f7;">Structured Systems</h2>
+      <p class="mt-3 max-w-lg mx-auto text-sm" style="color: #6b7a8d;">Folder architectures and file structures built for how your brain actually works.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <div class="system-card anim-fade-up p-6 rounded-xl" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1);">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background: rgba(100,160,210,0.1);"><i data-lucide="folder-tree" style="width:20px;height:20px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Folder Architecture</h3>
+       <p class="text-sm leading-relaxed" style="color: #6b7a8d;">Hierarchical folder systems designed for quick retrieval. Every file has a home.</p>
+       <div class="mt-4 pt-4 flex flex-wrap gap-2" style="border-top: 1px solid rgba(100,160,210,0.06);"><span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Desktop</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Cloud</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">NAS</span>
+       </div>
+      </div>
+      <div class="system-card anim-fade-up p-6 rounded-xl" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1); transition-delay: 0.1s;">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background: rgba(100,160,210,0.1);"><i data-lucide="file-text" style="width:20px;height:20px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Naming Conventions</h3>
+       <p class="text-sm leading-relaxed" style="color: #6b7a8d;">Consistent naming schemas that make search instant and browsing intuitive.</p>
+       <div class="mt-4 pt-4 flex flex-wrap gap-2" style="border-top: 1px solid rgba(100,160,210,0.06);"><span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Docs</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Media</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Projects</span>
+       </div>
+      </div>
+      <div class="system-card anim-fade-up p-6 rounded-xl" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1); transition-delay: 0.2s;">
+       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background: rgba(100,160,210,0.1);"><i data-lucide="hard-drive" style="width:20px;height:20px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Backup Protocols</h3>
+       <p class="text-sm leading-relaxed" style="color: #6b7a8d;">Automated backup flows so nothing is ever truly lost. Peace of mind, built in.</p>
+       <div class="mt-4 pt-4 flex flex-wrap gap-2" style="border-top: 1px solid rgba(100,160,210,0.06);"><span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">3-2-1</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Auto</span> <span class="px-2 py-0.5 rounded text-xs font-mono" style="background: rgba(100,160,210,0.08); color: #64a0d2;">Versioned</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CLEANUP -->
+   <section id="cleanup" class="w-full py-24 px-6" style="background: rgba(100,160,210,0.02);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="font-mono text-xs tracking-widest uppercase" style="color: #64a0d2;">02 — Cleanup</span>
+      <h2 id="cleanup-title" class="font-bold text-3xl md:text-4xl mt-3" style="color: #edf1f7;">Digital Declutter Process</h2>
+      <p class="mt-3 max-w-lg mx-auto text-sm" style="color: #6b7a8d;">A methodical, four-phase approach to eliminating digital noise.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 items-start">
+      <div class="space-y-0">
+       <div class="step-line anim-fade-up flex gap-5 pb-8">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-sm" style="background: rgba(100,160,210,0.12); color: #64a0d2; border: 1px solid rgba(100,160,210,0.2);">
+         01
+        </div>
+        <div class="pt-1">
+         <h3 class="font-semibold mb-1" style="color: #edf1f7;">Audit</h3>
+         <p class="text-sm" style="color: #6b7a8d;">Map every file, app, and subscription. Surface hidden bloat and redundancy.</p>
+        </div>
+        <style>.step-line::before { background: rgba(100,160,210,0.12); }</style>
+       </div>
+       <div class="step-line anim-fade-up flex gap-5 pb-8">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-sm" style="background: rgba(100,160,210,0.12); color: #64a0d2; border: 1px solid rgba(100,160,210,0.2);">
+         02
+        </div>
+        <div class="pt-1">
+         <h3 class="font-semibold mb-1" style="color: #edf1f7;">Purge</h3>
+         <p class="text-sm" style="color: #6b7a8d;">Remove duplicates, outdated files, and unused apps. Reclaim storage and focus.</p>
+        </div>
+       </div>
+       <div class="step-line anim-fade-up flex gap-5 pb-8">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-sm" style="background: rgba(100,160,210,0.12); color: #64a0d2; border: 1px solid rgba(100,160,210,0.2);">
+         03
+        </div>
+        <div class="pt-1">
+         <h3 class="font-semibold mb-1" style="color: #edf1f7;">Organize</h3>
+         <p class="text-sm" style="color: #6b7a8d;">Apply folder systems, naming conventions, and tagging structures.</p>
+        </div>
+       </div>
+       <div class="step-line anim-fade-up flex gap-5">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-mono font-bold text-sm" style="background: rgba(100,160,210,0.12); color: #64a0d2; border: 1px solid rgba(100,160,210,0.2);">
+         04
+        </div>
+        <div class="pt-1">
+         <h3 class="font-semibold mb-1" style="color: #edf1f7;">Maintain</h3>
+         <p class="text-sm" style="color: #6b7a8d;">Weekly routines and automated rules to keep systems clean permanently.</p>
+        </div>
+       </div>
+      </div><!-- Cleanup visual -->
+      <div class="anim-fade-up rounded-xl p-6 relative overflow-hidden" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1);">
+       <div class="font-mono text-xs mb-4" style="color: #64a0d2;">
+        // cleanup_results.log
+       </div>
+       <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(14,17,23,0.6);">
+         <div class="flex items-center gap-3"><i data-lucide="trash-2" style="width:16px;height:16px;color:#e06060;"></i> <span class="text-sm" style="color: #c8d1dc;">Duplicate files</span>
+         </div><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(224,96,96,0.1); color: #e06060;">-12.4 GB</span>
+        </div>
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(14,17,23,0.6);">
+         <div class="flex items-center gap-3"><i data-lucide="x-circle" style="width:16px;height:16px;color:#e0a040;"></i> <span class="text-sm" style="color: #c8d1dc;">Unused apps</span>
+         </div><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(224,160,64,0.1); color: #e0a040;">23 removed</span>
+        </div>
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(14,17,23,0.6);">
+         <div class="flex items-center gap-3"><i data-lucide="mail" style="width:16px;height:16px;color:#e0a040;"></i> <span class="text-sm" style="color: #c8d1dc;">Inbox zero</span>
+         </div><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(224,160,64,0.1); color: #e0a040;">1,847 archived</span>
+        </div>
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background: rgba(14,17,23,0.6);">
+         <div class="flex items-center gap-3"><i data-lucide="check-circle" style="width:16px;height:16px;color:#50b87a;"></i> <span class="text-sm" style="color: #c8d1dc;">Files organized</span>
+         </div><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(80,184,122,0.1); color: #50b87a;">100%</span>
+        </div>
+       </div>
+       <div class="mt-5 pt-4" style="border-top: 1px solid rgba(100,160,210,0.08);">
+        <div class="flex items-center justify-between"><span class="text-xs" style="color: #6b7a8d;">Total reclaimed</span> <span class="font-mono font-bold" style="color: #64a0d2;">38.7 GB</span>
+        </div>
+        <div class="w-full h-1.5 rounded-full mt-2" style="background: rgba(100,160,210,0.1);">
+         <div class="h-full rounded-full" style="width: 87%; background: linear-gradient(90deg, #64a0d2, #50b87a);"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WORKFLOW -->
+   <section id="workflow" class="w-full py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="font-mono text-xs tracking-widest uppercase" style="color: #64a0d2;">03 — Workflow</span>
+      <h2 id="workflow-title" class="font-bold text-3xl md:text-4xl mt-3" style="color: #edf1f7;">Optimized Workflows</h2>
+      <p class="mt-3 max-w-lg mx-auto text-sm" style="color: #6b7a8d;">Streamlined processes that eliminate friction from your daily digital routines.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <div class="system-card anim-fade-up p-6 rounded-xl text-center" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1);">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-5" style="background: rgba(100,160,210,0.08);"><i data-lucide="inbox" style="width:26px;height:26px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Email Workflows</h3>
+       <p class="text-sm" style="color: #6b7a8d;">Filters, labels, and templates that keep your inbox at zero.</p>
+       <div class="mt-4 font-mono text-2xl font-bold" style="color: #64a0d2;">
+        -72%
+       </div>
+       <div class="text-xs" style="color: #556170;">
+        email processing time
+       </div>
+      </div>
+      <div class="system-card anim-fade-up p-6 rounded-xl text-center" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1); transition-delay: 0.1s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-5" style="background: rgba(100,160,210,0.08);"><i data-lucide="git-merge" style="width:26px;height:26px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Task Automation</h3>
+       <p class="text-sm" style="color: #6b7a8d;">Automated triggers that move, rename, and sort files for you.</p>
+       <div class="mt-4 font-mono text-2xl font-bold" style="color: #64a0d2;">
+        4.2h
+       </div>
+       <div class="text-xs" style="color: #556170;">
+        saved per week
+       </div>
+      </div>
+      <div class="system-card anim-fade-up p-6 rounded-xl text-center" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1); transition-delay: 0.2s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-5" style="background: rgba(100,160,210,0.08);"><i data-lucide="layout-dashboard" style="width:26px;height:26px;color:#64a0d2;"></i>
+       </div>
+       <h3 class="font-semibold mb-2" style="color: #edf1f7;">Dashboard Setup</h3>
+       <p class="text-sm" style="color: #6b7a8d;">One-view command centers for all your projects and priorities.</p>
+       <div class="mt-4 font-mono text-2xl font-bold" style="color: #64a0d2;">
+        1
+       </div>
+       <div class="text-xs" style="color: #556170;">
+        screen to rule them all
+       </div>
+      </div>
+     </div><!-- Included templates -->
+     <div class="anim-fade-up mt-14 p-6 rounded-xl" style="background: rgba(100,160,210,0.03); border: 1px solid rgba(100,160,210,0.08);">
+      <div class="flex items-center gap-2 mb-4"><i data-lucide="package" style="width:18px;height:18px;color:#64a0d2;"></i> <span class="font-mono text-xs tracking-wide" style="color: #64a0d2;">INCLUDED DIGITAL PRODUCT</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+       <div class="flex items-center gap-2 p-3 rounded-lg" style="background: rgba(14,17,23,0.5);"><i data-lucide="folder" style="width:14px;height:14px;color:#64a0d2;"></i> <span class="text-xs" style="color: #c8d1dc;">Organization Templates</span>
+       </div>
+       <div class="flex items-center gap-2 p-3 rounded-lg" style="background: rgba(14,17,23,0.5);"><i data-lucide="database" style="width:14px;height:14px;color:#64a0d2;"></i> <span class="text-xs" style="color: #c8d1dc;">Folder Systems</span>
+       </div>
+       <div class="flex items-center gap-2 p-3 rounded-lg" style="background: rgba(14,17,23,0.5);"><i data-lucide="git-branch" style="width:14px;height:14px;color:#64a0d2;"></i> <span class="text-xs" style="color: #c8d1dc;">Workflow Maps</span>
+       </div>
+       <div class="flex items-center gap-2 p-3 rounded-lg" style="background: rgba(14,17,23,0.5);"><i data-lucide="check-square" style="width:14px;height:14px;color:#64a0d2;"></i> <span class="text-xs" style="color: #c8d1dc;">Cleanup Checklists</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="w-full py-24 px-6" style="background: rgba(100,160,210,0.02);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="font-mono text-xs tracking-widest uppercase" style="color: #64a0d2;">04 — Pricing</span>
+      <h2 id="pricing-title" class="font-bold text-3xl md:text-4xl mt-3" style="color: #edf1f7;">Choose Your Reset</h2>
+      <p class="mt-3 max-w-lg mx-auto text-sm" style="color: #6b7a8d;">Every tier includes access to our digital product bundle.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5"><!-- Basic -->
+      <div class="pricing-card anim-fade-up rounded-xl p-7" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1);">
+       <div class="font-mono text-xs tracking-wide mb-1" style="color: #64a0d2;">
+        BASIC
+       </div>
+       <h3 class="font-bold text-xl mb-1" style="color: #edf1f7;">System Cleanup</h3>
+       <p class="text-sm mb-5" style="color: #6b7a8d;">Essential decluttering for one system.</p>
+       <div class="flex items-baseline gap-1 mb-6"><span class="font-bold text-3xl" style="color: #edf1f7;">$149</span> <span class="text-xs" style="color: #6b7a8d;">one-time</span>
+       </div>
+       <ul class="space-y-2.5 mb-7">
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> File audit &amp; purge</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Folder structure setup</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Naming conventions</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Digital product bundle</li>
+       </ul><a href="#reset-now" class="cta-btn block text-center font-semibold py-3 rounded-lg text-sm" style="border: 1px solid rgba(100,160,210,0.25); color: #64a0d2;">Get Started</a>
+      </div><!-- Pro -->
+      <div class="pricing-card anim-fade-up rounded-xl p-7 relative" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.2); transition-delay: 0.1s;">
+       <div class="absolute top-0 right-6 px-3 py-1 rounded-b-md font-mono text-xs" style="background: #64a0d2; color: #0e1117;">
+        POPULAR
+       </div>
+       <div class="font-mono text-xs tracking-wide mb-1" style="color: #64a0d2;">
+        PRO
+       </div>
+       <h3 class="font-bold text-xl mb-1" style="color: #edf1f7;">Workflow Optimization</h3>
+       <p class="text-sm mb-5" style="color: #6b7a8d;">Cleanup + workflow automation.</p>
+       <div class="flex items-baseline gap-1 mb-6"><span class="font-bold text-3xl" style="color: #edf1f7;">$349</span> <span class="text-xs" style="color: #6b7a8d;">one-time</span>
+       </div>
+       <ul class="space-y-2.5 mb-7">
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Everything in Basic</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Email workflow setup</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Task automation rules</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Dashboard configuration</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> 30-day support</li>
+       </ul><a href="#reset-now" class="cta-btn block text-center font-semibold py-3 rounded-lg text-sm" style="background: #64a0d2; color: #0e1117;">Get Started</a>
+      </div><!-- Elite -->
+      <div class="pricing-card anim-fade-up rounded-xl p-7" style="background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1); transition-delay: 0.2s;">
+       <div class="font-mono text-xs tracking-wide mb-1" style="color: #64a0d2;">
+        ELITE
+       </div>
+       <h3 class="font-bold text-xl mb-1" style="color: #edf1f7;">Full Digital Reset</h3>
+       <p class="text-sm mb-5" style="color: #6b7a8d;">Complete overhaul across all systems.</p>
+       <div class="flex items-baseline gap-1 mb-6"><span class="font-bold text-3xl" style="color: #edf1f7;">$699</span> <span class="text-xs" style="color: #6b7a8d;">one-time</span>
+       </div>
+       <ul class="space-y-2.5 mb-7">
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Everything in Pro</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Multi-device cleanup</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Cloud migration</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Custom workflow maps</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> 90-day maintenance</li>
+        <li class="flex items-center gap-2 text-sm" style="color: #c8d1dc;"><i data-lucide="check" style="width:14px;height:14px;color:#50b87a;flex-shrink:0;"></i> Priority support</li>
+       </ul><a href="#reset-now" class="cta-btn block text-center font-semibold py-3 rounded-lg text-sm" style="border: 1px solid rgba(100,160,210,0.25); color: #64a0d2;">Get Started</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14 anim-fade-up"><span class="font-mono text-xs tracking-widest uppercase" style="color: #64a0d2;">05 — FAQ</span>
+      <h2 class="font-bold text-3xl md:text-4xl mt-3" style="color: #edf1f7;">Questions &amp; Answers</h2>
+     </div>
+     <div id="faq-list" class="space-y-3">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="reset-now" class="w-full py-24 px-6" style="background: rgba(100,160,210,0.02);">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="anim-fade-up">
+      <h2 id="bottom-cta" class="font-bold text-3xl md:text-4xl mb-4" style="color: #edf1f7;">Work without friction.</h2>
+      <p class="text-sm mb-8 max-w-md mx-auto" style="color: #6b7a8d;">Start your digital reset today. Clear systems, clear mind.</p><a href="#" onclick="event.preventDefault(); document.getElementById('pricing').scrollIntoView({behavior:'smooth'});" class="cta-btn inline-flex items-center gap-2 font-semibold px-10 py-4 rounded-lg" style="background: #64a0d2; color: #0e1117;"> <i data-lucide="refresh-cw" style="width:18px;height:18px;"></i> Reset Now </a>
+     </div><!-- Vote + Comment Module -->
+     <div class="anim-fade-up mt-20 pt-14" style="border-top: 1px solid rgba(100,160,210,0.08);">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6" style="background: rgba(100,160,210,0.08); border: 1px solid rgba(100,160,210,0.12);"><span class="text-xs font-mono" style="color: #64a0d2;">Embed Widget Here</span>
+      </div>
+      <h3 class="font-semibold text-xl mb-2" style="color: #edf1f7;">What would you pay for this?</h3>
+      <p class="text-sm mb-8" style="color: #6b7a8d;">Vote on your ideal price point.</p><!-- Vote buttons -->
+      <div id="vote-grid" class="grid grid-cols-5 gap-2 max-w-lg mx-auto mb-4">
+      </div>
+      <div id="vote-status" class="text-xs mb-10" style="color: #556170;"></div><!-- Reactions -->
+      <div class="flex items-center justify-center gap-3 mb-10"><button onclick="toggleReaction(this)" class="vote-btn px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;">🔥 <span class="count">0</span></button> <button onclick="toggleReaction(this)" class="vote-btn px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;">💡 <span class="count">0</span></button> <button onclick="toggleReaction(this)" class="vote-btn px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;">🚀 <span class="count">0</span></button> <button onclick="toggleReaction(this)" class="vote-btn px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;">✨ <span class="count">0</span></button> <button onclick="toggleReaction(this)" class="vote-btn px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;">👏 <span class="count">0</span></button>
+      </div><!-- Comments -->
+      <div class="text-left max-w-lg mx-auto">
+       <h4 class="font-semibold text-sm mb-4" style="color: #edf1f7;">Leave a comment</h4>
+       <form id="comment-form" class="flex gap-2 mb-6"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-2.5 rounded-lg text-sm" style="background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.12); color: #edf1f7; outline: none;" onfocus="this.style.borderColor='rgba(100,160,210,0.3)'" onblur="this.style.borderColor='rgba(100,160,210,0.12)'"> <button type="submit" class="cta-btn px-5 py-2.5 rounded-lg text-sm font-semibold" style="background: #64a0d2; color: #0e1117;">Post</button>
+       </form>
+       <div id="comments-list" class="space-y-3"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-6" style="border-top: 1px solid rgba(100,160,210,0.06);">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2 font-mono text-xs" style="color: #556170;">
+      <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+       <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 9h18" /><path d="M9 21V9" />
+      </svg> © 2025 CleanSlate Digital
+     </div>
+     <div class="flex items-center gap-4 text-xs" style="color: #556170;"><span>Clear your systems. Clear your focus.</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+  // Config & SDK
+  const defaultConfig = {
+    background_color: '#0e1117',
+    surface_color: '#151922',
+    text_color: '#c8d1dc',
+    primary_action: '#64a0d2',
+    secondary_action: '#50b87a',
+    font_family: 'DM Sans',
+    font_size: 16,
+    hero_title: 'Clutter slows everything.',
+    hero_subtitle: 'Organize your digital life for clarity and speed.',
+    systems_title: 'Structured Systems',
+    cleanup_title: 'Digital Declutter Process',
+    workflow_title: 'Optimized Workflows',
+    pricing_title: 'Choose Your Reset',
+    bottom_cta_text: 'Work without friction.'
+  };
+
+  function applyConfig(cfg) {
+    const c = {...defaultConfig, ...cfg};
+    const root = document.getElementById('app-root');
+    root.style.backgroundColor = c.background_color;
+    root.style.color = c.text_color;
+    root.style.fontFamily = `${c.font_family}, DM Sans, sans-serif`;
+
+    // Text content
+    document.getElementById('hero-title').textContent = c.hero_title;
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('systems-title').textContent = c.systems_title;
+    document.getElementById('cleanup-title').textContent = c.cleanup_title;
+    document.getElementById('workflow-title').textContent = c.workflow_title;
+    document.getElementById('pricing-title').textContent = c.pricing_title;
+    document.getElementById('bottom-cta').textContent = c.bottom_cta_text;
+
+    // Colors
+    const base = c.font_size || 16;
+    document.querySelectorAll('h1').forEach(el => el.style.color = '#edf1f7');
+    document.querySelectorAll('h2').forEach(el => { el.style.color = '#edf1f7'; });
+    document.querySelectorAll('h3').forEach(el => el.style.color = '#edf1f7');
+
+    // Accent color updates
+    document.querySelectorAll('[style*="color: #64a0d2"], [style*="color:#64a0d2"]').forEach(el => {
+      if (el.tagName !== 'I') el.style.color = c.primary_action;
+    });
+
+    // Font sizing
+    document.querySelectorAll('p').forEach(el => {
+      if (el.classList.contains('text-lg')) el.style.fontSize = `${base * 1.125}px`;
+      else if (el.classList.contains('text-sm')) el.style.fontSize = `${base * 0.875}px`;
+      else el.style.fontSize = `${base}px`;
+    });
+  }
+
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+          { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['systems_title', config.systems_title || defaultConfig.systems_title],
+        ['cleanup_title', config.cleanup_title || defaultConfig.cleanup_title],
+        ['workflow_title', config.workflow_title || defaultConfig.workflow_title],
+        ['pricing_title', config.pricing_title || defaultConfig.pricing_title],
+        ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+      ])
+    });
+  }
+
+  // FAQ
+  const faqs = [
+    { q: 'How long does a full digital reset take?', a: 'Most resets complete within 3–5 business days, depending on the scope. Elite plans with multi-device coverage may take up to 2 weeks.' },
+    { q: 'Do you access my files directly?', a: 'We work via screen-sharing sessions and guided walkthroughs. You maintain full control of your data at all times.' },
+    { q: 'What if my systems get messy again?', a: 'Every plan includes maintenance checklists and workflows. Elite includes 90 days of active maintenance support.' },
+    { q: 'Can I upgrade my plan later?', a: 'Absolutely. You only pay the difference between tiers. Upgrades can happen anytime during or after your initial reset.' },
+    { q: 'What platforms do you support?', a: 'We work with macOS, Windows, Google Workspace, Microsoft 365, Dropbox, iCloud, and most major cloud platforms.' }
+  ];
+  const faqList = document.getElementById('faq-list');
+  faqs.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'anim-fade-up rounded-xl overflow-hidden';
+    div.style.cssText = 'background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.1);';
+    div.innerHTML = `
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left" style="color: #edf1f7;">
+        <span class="font-medium text-sm pr-4">${f.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;color:#64a0d2;flex-shrink:0;transition:transform 0.3s ease;"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm" style="color: #6b7a8d;">${f.a}</p>
+      </div>`;
+    faqList.appendChild(div);
+  });
+
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('i');
+    const isOpen = !answer.classList.contains('hidden');
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+    document.querySelectorAll('#faq-list i[data-lucide="chevron-down"]').forEach(ic => ic.style.transform = 'rotate(0deg)');
+    if (!isOpen) {
+      answer.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  // Vote
+  const prices = ['$49', '$99', '$149', '$249', '$349', '$499', '$699', '$999', '$1,499', '$2,499'];
+  const voteGrid = document.getElementById('vote-grid');
+  let selectedVote = null;
+  const voteCounts = {};
+  prices.forEach(p => { voteCounts[p] = 0; });
+
+  prices.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'vote-btn px-2 py-2 rounded-lg font-mono text-xs';
+    btn.style.cssText = 'background: rgba(100,160,210,0.06); border: 1px solid rgba(100,160,210,0.1); color: #c8d1dc;';
+    btn.textContent = p;
+    btn.onclick = () => {
+      if (selectedVote) {
+        voteCounts[selectedVote]--;
+        voteGrid.querySelectorAll('button').forEach(b => {
+          b.style.background = 'rgba(100,160,210,0.06)';
+          b.style.borderColor = 'rgba(100,160,210,0.1)';
+          b.style.color = '#c8d1dc';
+        });
+      }
+      selectedVote = p;
+      voteCounts[p]++;
+      btn.style.background = 'rgba(100,160,210,0.15)';
+      btn.style.borderColor = '#64a0d2';
+      btn.style.color = '#64a0d2';
+      document.getElementById('vote-status').textContent = `You voted ${p} · ${Object.values(voteCounts).reduce((a,b)=>a+b,0)} total votes`;
+    };
+    voteGrid.appendChild(btn);
+  });
+
+  // Reactions
+  function toggleReaction(btn) {
+    const count = btn.querySelector('.count');
+    const isActive = btn.classList.contains('active');
+    if (isActive) {
+      btn.classList.remove('active');
+      count.textContent = parseInt(count.textContent) - 1;
+      btn.style.background = 'rgba(100,160,210,0.06)';
+      btn.style.borderColor = 'rgba(100,160,210,0.1)';
+    } else {
+      btn.classList.add('active');
+      count.textContent = parseInt(count.textContent) + 1;
+      btn.style.background = 'rgba(100,160,210,0.15)';
+      btn.style.borderColor = '#64a0d2';
+    }
+  }
+
+  // Comments
+  const commentForm = document.getElementById('comment-form');
+  const commentInput = document.getElementById('comment-input');
+  const commentsList = document.getElementById('comments-list');
+
+  commentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = commentInput.value.trim();
+    if (!text) return;
+    const div = document.createElement('div');
+    div.className = 'comment-item p-4 rounded-lg';
+    div.style.cssText = 'background: rgba(100,160,210,0.04); border: 1px solid rgba(100,160,210,0.08);';
+    const now = new Date();
+    div.innerHTML = `
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style="background: rgba(100,160,210,0.15); color: #64a0d2;">A</div>
+        <span class="text-xs font-medium" style="color: #c8d1dc;">Anonymous</span>
+        <span class="text-xs" style="color: #556170;">· just now</span>
+      </div>
+      <p class="text-sm" style="color: #8a95a5;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`;
+    commentsList.prepend(div);
+    commentInput.value = '';
+  });
+
+  // Mobile nav
+  document.getElementById('mobile-toggle').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.anim-fade-up').forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const appRoot = document.getElementById('app-root');
+  appRoot.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (appRoot.scrollTop >= s.offsetTop - 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(l => {
+      l.style.color = l.getAttribute('href') === `#${current}` ? '#64a0d2' : '#8a95a5';
+    });
+    // Nav background
+    const nav = document.getElementById('main-nav');
+    nav.style.background = appRoot.scrollTop > 50 ? 'rgba(14,17,23,0.96)' : 'rgba(14,17,23,0.92)';
+  });
+
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a0ee1405227c5',t:'MTc3NTU3NTY2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,638 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/1d305d05-8d9d-4fd9-873d-f36507950049 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeSync Systems</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        outfit: ['Outfit', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+/* Animated connection lines */
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+@keyframes dash-flow {
+  to { stroke-dashoffset: -20; }
+}
+@keyframes float-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-border {
+  0%, 100% { box-shadow: 0 0 15px rgba(56,189,248,0.15); }
+  50% { box-shadow: 0 0 30px rgba(56,189,248,0.35); }
+}
+@keyframes hero-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes node-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(400%); }
+}
+
+.animate-float { animation: float-up 0.6s ease-out both; }
+.animate-glow { animation: glow-border 3s ease-in-out infinite; }
+.dash-animate { animation: dash-flow 1s linear infinite; }
+.hero-bg { background-size: 200% 200%; animation: hero-gradient 8s ease infinite; }
+
+.pricing-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(56,189,248,0.3), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.pricing-card:hover::before { opacity: 1; }
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 40px rgba(56,189,248,0.15);
+}
+.pricing-card.featured::before { opacity: 1; animation: glow-border 3s ease-in-out infinite; }
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #38bdf8;
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.device-card {
+  transition: all 0.3s;
+  border: 1px solid rgba(56,189,248,0.1);
+}
+.device-card:hover {
+  border-color: rgba(56,189,248,0.4);
+  box-shadow: 0 0 20px rgba(56,189,248,0.1);
+  transform: translateY(-4px);
+}
+
+.scan-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.3), transparent);
+  animation: scan-line 4s linear infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0f1a; }
+::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+
+.section-reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+.section-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reaction-btn {
+  transition: all 0.2s;
+  border: 1px solid rgba(56,189,248,0.15);
+}
+.reaction-btn:hover { border-color: rgba(56,189,248,0.5); transform: scale(1.1); }
+.reaction-btn.selected { border-color: #38bdf8; background: rgba(56,189,248,0.15); }
+
+.faq-item { border: 1px solid rgba(56,189,248,0.1); transition: all 0.3s; }
+.faq-item:hover { border-color: rgba(56,189,248,0.3); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.open .faq-answer { max-height: 200px; padding-top: 12px; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-chevron { transition: transform 0.3s; }
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 12px 24px; border-radius: 8px; z-index: 1000;
+  background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3);
+  color: #38bdf8; font-family: 'Outfit', sans-serif; font-size: 14px;
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast-msg.show { opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="h-full w-full overflow-auto" style="background: #080c16; color: #e2e8f0; font-family: 'Outfit', sans-serif;"><!-- Sticky Nav -->
+   <nav id="main-nav" style="position: sticky; top: 0; z-index: 50; background: rgba(8,12,22,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(56,189,248,0.08);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+     <div style="display: flex; align-items: center; gap: 10px;">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#38bdf8" stroke-width="1.5" fill="none" /> <circle cx="14" cy="14" r="4" fill="#38bdf8" /> <line x1="14" y1="2" x2="14" y2="8" stroke="#38bdf8" stroke-width="1.5" /> <line x1="14" y1="20" x2="14" y2="26" stroke="#38bdf8" stroke-width="1.5" /> <line x1="2" y1="14" x2="8" y2="14" stroke="#38bdf8" stroke-width="1.5" /> <line x1="20" y1="14" x2="26" y2="14" stroke="#38bdf8" stroke-width="1.5" />
+      </svg><span style="font-weight: 600; font-size: 18px; letter-spacing: -0.5px;">HomeSync</span>
+     </div>
+     <div id="nav-links" style="display: flex; gap: 28px; font-size: 14px; font-weight: 400;"><a href="#hero" class="nav-link" style="color: #94a3b8; text-decoration: none;">Home</a> <a href="#systems" class="nav-link" style="color: #94a3b8; text-decoration: none;">Systems</a> <a href="#automation" class="nav-link" style="color: #94a3b8; text-decoration: none;">Automation</a> <a href="#devices" class="nav-link" style="color: #94a3b8; text-decoration: none;">Devices</a> <a href="#pricing" class="nav-link" style="color: #94a3b8; text-decoration: none;">Pricing</a> <a href="#faq" class="nav-link" style="color: #94a3b8; text-decoration: none;">FAQ</a>
+     </div><a href="#get-started" style="background: #38bdf8; color: #080c16; padding: 8px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.3s;">Get Started</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="hero" style="position: relative; min-height: 90%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+    <div class="hero-bg" style="position: absolute; inset: 0; background: linear-gradient(135deg, #080c16, #0c1a2e, #0f1b33, #080c16); opacity: 1;"></div><!-- Animated grid -->
+    <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.15;" xmlns="http://www.w3.org/2000/svg"><defs>
+      <pattern id="grid" width="60" height="60" patternunits="userSpaceOnUse">
+       <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#38bdf8" stroke-width="0.5" />
+      </pattern>
+     </defs> <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg><!-- Animated connection nodes -->
+    <svg style="position: absolute; inset: 0; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg"><line x1="20%" y1="30%" x2="50%" y2="50%" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="5,5" class="dash-animate" style="opacity:0.4" /> <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="5,5" class="dash-animate" style="opacity:0.4" /> <line x1="30%" y1="75%" x2="50%" y2="50%" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="5,5" class="dash-animate" style="opacity:0.4" /> <line x1="75%" y1="70%" x2="50%" y2="50%" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="5,5" class="dash-animate" style="opacity:0.4" /> <circle cx="20%" cy="30%" r="3" fill="#38bdf8" style="animation: pulse-line 2s ease infinite;" /> <circle cx="80%" cy="25%" r="3" fill="#38bdf8" style="animation: pulse-line 2s ease infinite 0.5s;" /> <circle cx="30%" cy="75%" r="3" fill="#38bdf8" style="animation: pulse-line 2s ease infinite 1s;" /> <circle cx="75%" cy="70%" r="3" fill="#38bdf8" style="animation: pulse-line 2s ease infinite 1.5s;" /> <circle cx="50%" cy="50%" r="5" fill="#38bdf8" style="animation: pulse-line 3s ease infinite;" />
+    </svg>
+    <div class="scan-line"></div>
+    <div style="position: relative; z-index: 10; text-align: center; padding: 40px 24px; max-width: 700px;">
+     <p id="hero-tagline" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 24px;">Your home, intelligently connected.</p>
+     <h1 id="hero-title" style="font-size: clamp(36px, 5.5vw, 64px); font-weight: 700; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px;">Your home should think with you.</h1>
+     <p id="hero-subtitle" style="font-size: 18px; color: #94a3b8; max-width: 500px; margin: 0 auto 36px; line-height: 1.6;">Smart systems that simplify everyday life.</p>
+     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;"><a href="#get-started" style="background: #38bdf8; color: #080c16; padding: 14px 32px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s; font-size: 15px;">Get Started</a> <a href="#systems" style="border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; padding: 14px 32px; border-radius: 8px; font-weight: 500; text-decoration: none; transition: all 0.3s; font-size: 15px;">View Systems</a>
+     </div>
+    </div>
+   </section><!-- Systems -->
+   <section id="systems" class="section-reveal" style="padding: 100px 24px; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px;">Core Systems</p>
+     <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px;">Intelligent infrastructure</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;"><!-- Lighting -->
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 16px; padding: 36px;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: rgba(56,189,248,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="sun" style="color: #38bdf8; width: 28px; height: 28px;"></i>
+      </div>
+      <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 10px;">Smart Lighting</h3>
+      <p style="color: #64748b; line-height: 1.6; font-size: 15px;">Adaptive illumination that responds to time of day, occupancy, and your preferences. Scene-based control across every room.</p>
+      <div style="margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Circadian</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Motion-aware</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Scene Control</span>
+      </div>
+     </div><!-- Security -->
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 16px; padding: 36px;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: rgba(56,189,248,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="shield" style="color: #38bdf8; width: 28px; height: 28px;"></i>
+      </div>
+      <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 10px;">Security &amp; Access</h3>
+      <p style="color: #64748b; line-height: 1.6; font-size: 15px;">Always-on monitoring with smart locks, cameras, and perimeter alerts. Get real-time notifications and remote access control.</p>
+      <div style="margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">24/7 Monitoring</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Smart Locks</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Alerts</span>
+      </div>
+     </div><!-- Climate -->
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 16px; padding: 36px;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: rgba(56,189,248,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="thermometer" style="color: #38bdf8; width: 28px; height: 28px;"></i>
+      </div>
+      <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 10px;">Climate Control</h3>
+      <p style="color: #64748b; line-height: 1.6; font-size: 15px;">Zone-based temperature management that learns your habits. Energy-efficient scheduling that keeps comfort levels perfect.</p>
+      <div style="margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Zoned</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Learning AI</span> <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; background: rgba(56,189,248,0.08); border-radius: 4px; color: #38bdf8;">Eco Mode</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- Automation -->
+   <section id="automation" class="section-reveal" style="padding: 100px 24px; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 60px;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px;">Automation Flows</p>
+      <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px;">How systems connect</h2>
+     </div><!-- Connection diagram -->
+     <div style="position: relative; background: rgba(14,20,36,0.6); border: 1px solid rgba(56,189,248,0.1); border-radius: 20px; padding: 48px 32px; max-width: 800px; margin: 0 auto;">
+      <svg style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;" xmlns="http://www.w3.org/2000/svg"><line x1="50%" y1="15%" x2="20%" y2="50%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" /> <line x1="50%" y1="15%" x2="80%" y2="50%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" /> <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" /> <line x1="20%" y1="50%" x2="35%" y2="85%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" /> <line x1="80%" y1="50%" x2="65%" y2="85%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" /> <line x1="50%" y1="50%" x2="50%" y2="85%" stroke="#38bdf8" stroke-width="0.8" stroke-dasharray="4,4" class="dash-animate" style="opacity:0.5" />
+      </svg><!-- Central hub -->
+      <div style="text-align: center; margin-bottom: 48px;">
+       <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(56,189,248,0.15); border: 2px solid #38bdf8; display: inline-flex; align-items: center; justify-content: center; position: relative;"><i data-lucide="cpu" style="color: #38bdf8; width: 32px; height: 32px;"></i>
+        <div style="position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(56,189,248,0.2); animation: node-pulse 2s ease infinite;"></div>
+       </div>
+       <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #38bdf8; margin-top: 10px;">HomeSync Hub</p>
+      </div><!-- Trigger layer -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px;">
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="clock" style="color: #38bdf8; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">Time Triggers</p>
+        <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Sunrise, schedule, routines</p>
+       </div>
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="radio" style="color: #38bdf8; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">Sensor Data</p>
+        <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Motion, temp, humidity</p>
+       </div>
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="smartphone" style="color: #38bdf8; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">User Input</p>
+        <p style="font-size: 11px; color: #64748b; margin-top: 4px;">App, voice, geofence</p>
+       </div>
+      </div><!-- Action layer -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="lightbulb" style="color: #fbbf24; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">Lights Adjust</p>
+       </div>
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="lock" style="color: #34d399; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">Locks Engage</p>
+       </div>
+       <div style="text-align: center; padding: 20px; background: rgba(56,189,248,0.05); border-radius: 12px; border: 1px solid rgba(56,189,248,0.1);"><i data-lucide="wind" style="color: #818cf8; width: 22px; height: 22px; margin-bottom: 8px;"></i>
+        <p style="font-size: 13px; font-weight: 500;">Climate Adapts</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Devices -->
+   <section id="devices" class="section-reveal" style="padding: 100px 24px; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px;">Device Ecosystem</p>
+     <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px;">Supported integrations</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;">
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="speaker" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Sonos</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="camera" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Ring</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="thermometer" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Nest</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="lightbulb" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Philips Hue</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="lock" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">August</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="wifi" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Eero</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="monitor" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Apple TV</p>
+     </div>
+     <div class="device-card" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 24px; text-align: center;"><i data-lucide="mic" style="color: #38bdf8; width: 28px; height: 28px; margin-bottom: 10px;"></i>
+      <p style="font-size: 13px; font-weight: 500;">Alexa</p>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="section-reveal" style="padding: 100px 24px; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px;">Pricing</p>
+     <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px;">Choose your system</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;"><!-- Basic -->
+     <div class="pricing-card" style="background: rgba(14,20,36,0.8); border-radius: 16px; padding: 36px; border: 1px solid rgba(56,189,248,0.1);">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;">Basic</p>
+      <p id="basic-price-el" style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">$2,499</p>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 28px;">Starter system</p>
+      <ul style="list-style: none; padding: 0; margin: 0 0 28px;">
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Smart lighting (up to 10 zones)</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Basic climate control</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Mobile app access</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Setup guide included</li>
+      </ul><a href="#get-started" style="display: block; text-align: center; border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: all 0.3s;">Get Started</a>
+     </div><!-- Advanced (featured) -->
+     <div class="pricing-card featured" style="background: rgba(14,20,36,0.9); border-radius: 16px; padding: 36px; border: 1px solid rgba(56,189,248,0.3); position: relative;">
+      <div style="position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: #38bdf8; color: #080c16; font-size: 11px; font-weight: 600; padding: 4px 16px; border-radius: 0 0 8px 8px; letter-spacing: 1px;">
+       POPULAR
+      </div>
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;">Advanced</p>
+      <p id="advanced-price-el" style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">$6,999</p>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 28px;">Full home automation</p>
+      <ul style="list-style: none; padding: 0; margin: 0 0 28px;">
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Everything in Basic</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Security &amp; smart locks</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Automation flows</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Device integration maps</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Priority support</li>
+      </ul><a href="#get-started" style="display: block; text-align: center; background: #38bdf8; color: #080c16; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Get Started</a>
+     </div><!-- Elite -->
+     <div class="pricing-card" style="background: rgba(14,20,36,0.8); border-radius: 16px; padding: 36px; border: 1px solid rgba(56,189,248,0.1);">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;">Elite</p>
+      <p id="elite-price-el" style="font-size: 36px; font-weight: 700; margin-bottom: 8px;">$14,999+</p>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 28px;">Custom integrated system</p>
+      <ul style="list-style: none; padding: 0; margin: 0 0 28px;">
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Everything in Advanced</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Custom system layout</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>White-glove installation</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Lifetime support &amp; updates</li>
+       <li style="display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: #94a3b8;"><i data-lucide="check" style="color: #38bdf8; width: 16px; height: 16px;"></i>Dedicated account manager</li>
+      </ul><a href="#get-started" style="display: block; text-align: center; border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: all 0.3s;">Contact Us</a>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="section-reveal" style="padding: 100px 24px; max-width: 700px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px;">FAQ</p>
+     <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px;">Common questions</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+     <div class="faq-item" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 20px; cursor: pointer;" onclick="this.classList.toggle('open')">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+       <p style="font-weight: 500; font-size: 15px;">How long does installation take?</p><i data-lucide="chevron-down" class="faq-chevron" style="color: #38bdf8; width: 18px; height: 18px; flex-shrink: 0;"></i>
+      </div>
+      <div class="faq-answer">
+       <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Basic installs take 1–2 days. Advanced systems typically require 3–5 days. Elite custom installations are scoped individually based on your home's needs.</p>
+      </div>
+     </div>
+     <div class="faq-item" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 20px; cursor: pointer;" onclick="this.classList.toggle('open')">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+       <p style="font-weight: 500; font-size: 15px;">Do you work with existing devices?</p><i data-lucide="chevron-down" class="faq-chevron" style="color: #38bdf8; width: 18px; height: 18px; flex-shrink: 0;"></i>
+      </div>
+      <div class="faq-answer">
+       <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Yes — we integrate with most major smart home brands including Sonos, Ring, Nest, Philips Hue, August, and many more.</p>
+      </div>
+     </div>
+     <div class="faq-item" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 20px; cursor: pointer;" onclick="this.classList.toggle('open')">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+       <p style="font-weight: 500; font-size: 15px;">What's included in the digital product?</p><i data-lucide="chevron-down" class="faq-chevron" style="color: #38bdf8; width: 18px; height: 18px; flex-shrink: 0;"></i>
+      </div>
+      <div class="faq-answer">
+       <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Every tier includes system layout plans, automation flow diagrams, device integration maps, and comprehensive setup guides — delivered digitally upon purchase.</p>
+      </div>
+     </div>
+     <div class="faq-item" style="background: rgba(14,20,36,0.8); border-radius: 12px; padding: 20px; cursor: pointer;" onclick="this.classList.toggle('open')">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+       <p style="font-weight: 500; font-size: 15px;">Can I upgrade my plan later?</p><i data-lucide="chevron-down" class="faq-chevron" style="color: #38bdf8; width: 18px; height: 18px; flex-shrink: 0;"></i>
+      </div>
+      <div class="faq-answer">
+       <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Absolutely. We design systems to be modular, so upgrading from Basic to Advanced or Elite is seamless with no equipment waste.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment -->
+   <section id="get-started" class="section-reveal" style="padding: 100px 24px;">
+    <div style="max-width: 800px; margin: 0 auto;"><!-- CTA -->
+     <div style="text-align: center; margin-bottom: 80px;">
+      <h2 id="bottom-cta-el" style="font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -1.5px; margin-bottom: 20px;">Upgrade how you live.</h2>
+      <p style="color: #64748b; font-size: 16px; margin-bottom: 36px; max-width: 460px; margin-left: auto; margin-right: auto;">Start your smart home journey today. Our team designs, installs, and supports your connected living system.</p><a href="#" onclick="event.preventDefault(); document.getElementById('contact-name').focus();" style="background: #38bdf8; color: #080c16; padding: 16px 40px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 16px; display: inline-block; transition: all 0.3s;">Get Started Now</a>
+     </div><!-- Vote + Comment Module -->
+     <div style="background: rgba(14,20,36,0.8); border: 1px solid rgba(56,189,248,0.15); border-radius: 20px; padding: 36px;">
+      <p style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #38bdf8; margin-bottom: 8px;">Embed Widget Here</p>
+      <h3 style="font-size: 22px; font-weight: 600; margin-bottom: 24px;">What would you pay for a smart home system?</h3><!-- Reactions -->
+      <div style="margin-bottom: 24px;">
+       <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">React:</p>
+       <div id="reactions-container" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+      </div><!-- Price Vote -->
+      <div style="margin-bottom: 24px;">
+       <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">Vote on price:</p>
+       <div id="price-vote-container" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+      </div><!-- Comment Form -->
+      <div style="margin-bottom: 24px;">
+       <div style="display: flex; gap: 12px; margin-bottom: 12px;"><input id="contact-name" type="text" placeholder="Your name" style="flex: 1; background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.15); border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none;">
+       </div><textarea id="comment-input" rows="3" placeholder="Share your thoughts..." style="width: 100%; box-sizing: border-box; background: rgba(56,189,248,0.05); border: 1px solid rgba(56,189,248,0.15); border-radius: 8px; padding: 10px 14px; color: #e2e8f0; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; resize: vertical;"></textarea> <button id="submit-comment-btn" onclick="submitComment()" style="margin-top: 10px; background: #38bdf8; color: #080c16; padding: 10px 24px; border-radius: 8px; border: none; font-weight: 600; font-family: 'Outfit', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.3s;">Post Comment</button>
+      </div><!-- Comments list -->
+      <div id="comments-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding: 40px 24px; border-top: 1px solid rgba(56,189,248,0.08); text-align: center;">
+    <p style="color: #475569; font-size: 13px;">© 2025 HomeSync Systems. All rights reserved.</p>
+   </footer>
+  </div>
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// ========== CONFIG & SDK ==========
+const defaultConfig = {
+  hero_title: 'Your home should think with you.',
+  hero_subtitle: 'Smart systems that simplify everyday life.',
+  tagline: 'Your home, intelligently connected.',
+  bottom_cta_text: 'Upgrade how you live.',
+  basic_price: '$2,499',
+  advanced_price: '$6,999',
+  elite_price: '$14,999+',
+  background_color: '#080c16',
+  surface_color: '#0e1424',
+  text_color: '#e2e8f0',
+  accent_color: '#38bdf8',
+  muted_color: '#64748b',
+  font_family: 'Outfit',
+  font_size: 16
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  const el = (id) => document.getElementById(id);
+  if (el('hero-title')) el('hero-title').textContent = c.hero_title;
+  if (el('hero-subtitle')) el('hero-subtitle').textContent = c.hero_subtitle;
+  if (el('hero-tagline')) el('hero-tagline').textContent = c.tagline;
+  if (el('bottom-cta-el')) el('bottom-cta-el').textContent = c.bottom_cta_text;
+  if (el('basic-price-el')) el('basic-price-el').textContent = c.basic_price;
+  if (el('advanced-price-el')) el('advanced-price-el').textContent = c.advanced_price;
+  if (el('elite-price-el')) el('elite-price-el').textContent = c.elite_price;
+
+  // Colors
+  const root = document.getElementById('app-root');
+  if (root) root.style.background = c.background_color;
+
+  document.querySelectorAll('.device-card, .faq-item, .pricing-card').forEach(el => {
+    el.style.background = c.surface_color + 'cc';
+  });
+
+  // Font
+  const fontStack = `${c.font_family}, Outfit, sans-serif`;
+  document.body.style.fontFamily = fontStack;
+  const baseSize = c.font_size;
+  document.querySelectorAll('h1').forEach(e => e.style.fontSize = `${baseSize * 3}px`);
+  document.querySelectorAll('h2').forEach(e => e.style.fontSize = `${baseSize * 2.2}px`);
+  document.querySelectorAll('h3').forEach(e => e.style.fontSize = `${baseSize * 1.4}px`);
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => cfg.accent_color || defaultConfig.accent_color, set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }},
+      { get: () => cfg.muted_color || defaultConfig.muted_color, set: (v) => { cfg.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); }}
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => cfg.font_family || defaultConfig.font_family,
+      set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => cfg.font_size || defaultConfig.font_size,
+      set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+    ['tagline', cfg.tagline || defaultConfig.tagline],
+    ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ['basic_price', cfg.basic_price || defaultConfig.basic_price],
+    ['advanced_price', cfg.advanced_price || defaultConfig.advanced_price],
+    ['elite_price', cfg.elite_price || defaultConfig.elite_price]
+  ])
+});
+
+// ========== DATA SDK ==========
+const REACTIONS = ['🔥', '💡', '🏠', '⚡', '🤖', '👏'];
+const PRICE_OPTIONS = ['$500', '$1,000', '$2,500', '$5,000', '$7,500', '$10,000', '$15,000', '$20,000', '$30,000', '$50,000'];
+
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Build reaction buttons
+function buildReactions() {
+  const container = document.getElementById('reactions-container');
+  container.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const counts = allData.filter(d => d.type === 'reaction' && d.reaction === r).length;
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (selectedReaction === r ? ' selected' : '');
+    btn.style.cssText = 'background: rgba(56,189,248,0.05); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 18px; display: flex; align-items: center; gap: 6px;';
+    btn.innerHTML = `${r}<span style="font-size:12px;color:#94a3b8;font-family:'JetBrains Mono',monospace;">${counts}</span>`;
+    btn.onclick = () => submitReaction(r);
+    container.appendChild(btn);
+  });
+}
+
+function buildPriceVotes() {
+  const container = document.getElementById('price-vote-container');
+  container.innerHTML = '';
+  PRICE_OPTIONS.forEach(p => {
+    const counts = allData.filter(d => d.type === 'price_vote' && d.price_vote === p).length;
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (selectedPrice === p ? ' selected' : '');
+    btn.style.cssText = "background: rgba(56,189,248,0.05); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94a3b8;";
+    btn.innerHTML = `${p} <span style="color:#38bdf8;">${counts ? counts : ''}</span>`;
+    btn.onclick = () => submitPriceVote(p);
+    container.appendChild(btn);
+  });
+}
+
+function renderComments() {
+  const container = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment');
+  const existingMap = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingMap.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.style.cssText = 'background: rgba(56,189,248,0.05); border-radius: 10px; padding: 14px 18px; border: 1px solid rgba(56,189,248,0.08);';
+    const date = new Date(c.created_at);
+    const timeStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="font-weight:500;font-size:14px;">${escapeHtml(c.author || 'Anonymous')}</span>
+      <span style="font-size:11px;color:#475569;font-family:'JetBrains Mono',monospace;">${timeStr}</span>
+    </div><p style="color:#94a3b8;font-size:14px;line-height:1.5;margin:0;">${escapeHtml(c.comment)}</p>`;
+    container.appendChild(div);
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+async function submitReaction(r) {
+  if (allData.length >= 999) { showToast('Limit reached — please remove some entries first.'); return; }
+  selectedReaction = r;
+  buildReactions();
+  const result = await window.dataSdk.create({ type: 'reaction', reaction: r, comment: '', author: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+async function submitPriceVote(p) {
+  if (allData.length >= 999) { showToast('Limit reached.'); return; }
+  selectedPrice = p;
+  buildPriceVotes();
+  const result = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', author: '', price_vote: p, created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+async function submitComment() {
+  const nameEl = document.getElementById('contact-name');
+  const commentEl = document.getElementById('comment-input');
+  const btn = document.getElementById('submit-comment-btn');
+  const text = commentEl.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Posting...';
+  const result = await window.dataSdk.create({
+    type: 'comment', reaction: '', comment: text, author: nameEl.value.trim() || 'Anonymous', price_vote: '', created_at: new Date().toISOString()
+  });
+  btn.disabled = false; btn.textContent = 'Post Comment';
+  if (result.isOk) { commentEl.value = ''; showToast('Comment posted!'); }
+  else showToast('Could not post comment.');
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    buildReactions();
+    buildPriceVotes();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ========== SCROLL REVEAL ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+
+// ========== NAV ACTIVE STATE ==========
+const sections = ['hero','systems','automation','devices','pricing','faq','get-started'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const s = document.getElementById(id);
+    if (s && s.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    l.style.color = l.classList.contains('active') ? '#38bdf8' : '#94a3b8';
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+
+// Build initial widget state
+buildReactions();
+buildPriceVotes();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a36afd36127c5',t:'MTc3NTU3NzI5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

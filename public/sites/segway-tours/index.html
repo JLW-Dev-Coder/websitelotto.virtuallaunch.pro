@@ -1,1 +1,948 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/18980d0f-4fe4-4ecf-a4ce-5beb9c2e296b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlideCity Tours</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --text: #e2e8f0;
+  --primary: #3b82f6;
+  --accent: #22c55e;
+}
+
+body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); }
+
+.neon-blue { color: var(--primary); text-shadow: 0 0 20px rgba(59,130,246,0.5); }
+.neon-green { color: var(--accent); text-shadow: 0 0 20px rgba(34,197,94,0.5); }
+
+.glow-blue { box-shadow: 0 0 30px rgba(59,130,246,0.3), inset 0 1px 0 rgba(59,130,246,0.2); }
+.glow-green { box-shadow: 0 0 30px rgba(34,197,94,0.3), inset 0 1px 0 rgba(34,197,94,0.2); }
+
+.hero-bg {
+  background: radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(34,197,94,0.1) 0%, transparent 60%),
+              linear-gradient(180deg, #0a0e1a 0%, #0f172a 100%);
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.motion-blur {
+  position: relative;
+}
+.motion-blur::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.05), transparent);
+  animation: blurSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes blurSweep {
+  0%, 100% { transform: translateX(-50%); opacity: 0; }
+  50% { transform: translateX(100%); opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.2); }
+  50% { box-shadow: 0 0 40px rgba(59,130,246,0.5); }
+}
+
+@keyframes routeDash {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-on-scroll { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+
+.pricing-card {
+  background: linear-gradient(135deg, rgba(17,24,39,0.9), rgba(17,24,39,0.7));
+  border: 1px solid rgba(59,130,246,0.15);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.pricing-card:hover::before { opacity: 1; }
+.pricing-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 20px 60px rgba(59,130,246,0.15), 0 0 40px rgba(59,130,246,0.1);
+}
+.pricing-card.featured {
+  border-color: rgba(34,197,94,0.3);
+}
+.pricing-card.featured::before {
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 1;
+}
+.pricing-card.featured:hover {
+  border-color: rgba(34,197,94,0.5);
+  box-shadow: 0 20px 60px rgba(34,197,94,0.15), 0 0 40px rgba(34,197,94,0.1);
+}
+
+.tour-card {
+  background: rgba(17,24,39,0.6);
+  border: 1px solid rgba(59,130,246,0.1);
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+.tour-card:hover {
+  border-color: rgba(59,130,246,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s;
+  box-shadow: 0 0 8px rgba(59,130,246,0.5);
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition: left 0.5s;
+}
+.btn-primary:hover::after { left: 100%; }
+.btn-primary:hover { box-shadow: 0 0 30px rgba(59,130,246,0.4); transform: translateY(-2px); }
+
+.btn-outline {
+  border: 1px solid rgba(59,130,246,0.4);
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  background: rgba(59,130,246,0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px rgba(59,130,246,0.2);
+}
+
+.faq-item {
+  border: 1px solid rgba(59,130,246,0.1);
+  background: rgba(17,24,39,0.5);
+  transition: all 0.3s;
+}
+.faq-item:hover { border-color: rgba(59,130,246,0.25); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.open .faq-answer { max-height: 200px; }
+.faq-chevron { transition: transform 0.3s; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+.route-marker {
+  animation: float 3s ease-in-out infinite;
+}
+.route-marker:nth-child(2) { animation-delay: 0.5s; }
+.route-marker:nth-child(3) { animation-delay: 1s; }
+
+.experience-icon {
+  transition: all 0.3s;
+}
+.experience-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(59,130,246,0.3);
+}
+
+.widget-section {
+  background: linear-gradient(135deg, rgba(17,24,39,0.8), rgba(17,24,39,0.6));
+  border: 1px solid rgba(59,130,246,0.15);
+}
+
+.reaction-btn {
+  transition: all 0.25s;
+  border: 1px solid rgba(59,130,246,0.15);
+  background: rgba(17,24,39,0.6);
+}
+.reaction-btn:hover { border-color: rgba(59,130,246,0.4); transform: scale(1.1); }
+.reaction-btn.selected { border-color: var(--primary); background: rgba(59,130,246,0.15); }
+
+.price-vote-btn {
+  transition: all 0.25s;
+  border: 1px solid rgba(59,130,246,0.1);
+  background: rgba(17,24,39,0.5);
+}
+.price-vote-btn:hover { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.05); }
+.price-vote-btn.selected { border-color: var(--accent); background: rgba(34,197,94,0.15); color: var(--accent); }
+
+.comment-input {
+  background: rgba(10,14,26,0.8);
+  border: 1px solid rgba(59,130,246,0.15);
+  transition: border-color 0.3s;
+  color: var(--text);
+}
+.comment-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(59,130,246,0.15); }
+
+.comment-card {
+  background: rgba(17,24,39,0.5);
+  border: 1px solid rgba(59,130,246,0.08);
+}
+
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  padding: 12px 24px; border-radius: 12px;
+  background: rgba(17,24,39,0.95); border: 1px solid rgba(59,130,246,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+.booking-modal {
+  display: none;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 9998; background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+}
+.booking-modal.open { display: flex; align-items: center; justify-content: center; }
+.booking-modal-content {
+  background: linear-gradient(135deg, #111827, #0f172a);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 20px; padding: 40px; max-width: 500px; width: 90%;
+  animation: fadeSlideUp 0.4s ease;
+}
+
+.nav-sticky {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,14,26,0.9); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(59,130,246,0.1);
+  transition: all 0.3s;
+}
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 101;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.1s;
+}
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        dark: { bg: '#0a0e1a', surface: '#111827' },
+        neon: { blue: '#3b82f6', green: '#22c55e' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: #0a0e1a;"><!-- Scroll Progress -->
+   <div class="scroll-progress" id="scrollProgress" style="width:0%"></div><!-- Sticky Nav -->
+   <nav class="nav-sticky" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+     <div class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2" fill="none" /> <circle cx="14" cy="14" r="4" fill="#22c55e" /> <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" />
+      </svg><span class="font-bold text-lg tracking-tight" id="navBrand">Glide<span class="neon-blue">City</span></span>
+     </div>
+     <div class="hidden md:flex items-center gap-6 text-sm"><a href="#home" class="nav-link text-gray-300 hover:text-white">Home</a> <a href="#tours" class="nav-link text-gray-300 hover:text-white">Tours</a> <a href="#routes" class="nav-link text-gray-300 hover:text-white">Routes</a> <a href="#experience" class="nav-link text-gray-300 hover:text-white">Experience</a> <a href="#pricing" class="nav-link text-gray-300 hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-gray-300 hover:text-white">FAQ</a> <a href="#book" class="btn-primary px-5 py-2 rounded-full text-white text-sm font-medium" id="navBookBtn">Book Tour</a>
+     </div><button class="md:hidden text-gray-300" id="mobileMenuBtn"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div><!-- Mobile menu -->
+    <div class="md:hidden hidden px-4 pb-4 space-y-2" id="mobileMenu"><a href="#home" class="block py-2 text-gray-300 hover:text-white text-sm">Home</a> <a href="#tours" class="block py-2 text-gray-300 hover:text-white text-sm">Tours</a> <a href="#routes" class="block py-2 text-gray-300 hover:text-white text-sm">Routes</a> <a href="#experience" class="block py-2 text-gray-300 hover:text-white text-sm">Experience</a> <a href="#pricing" class="block py-2 text-gray-300 hover:text-white text-sm">Pricing</a> <a href="#faq" class="block py-2 text-gray-300 hover:text-white text-sm">FAQ</a> <a href="#book" class="block py-2 text-white font-medium text-sm neon-blue">Book Tour</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="hero-bg grid-overlay motion-blur relative" style="min-height: 100%; padding-top: 80px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col justify-center" style="min-height: calc(100% - 80px); padding: 60px 0;">
+     <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-neon-blue/20 bg-neon-blue/5 text-sm text-blue-300 mb-8" style="animation: fadeSlideUp 0.6s ease both;"><span class="w-2 h-2 rounded-full bg-green-400" style="animation: pulseGlow 2s infinite;"></span> See more. Move differently.
+      </div>
+      <h1 id="heroTitle" class="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-6" style="animation: fadeSlideUp 0.8s ease both 0.1s;">Explore the city<br><span class="neon-blue">without slowing down.</span></h1>
+      <p id="heroSubtitle" class="text-lg sm:text-xl text-gray-400 max-w-xl mb-10 font-light" style="animation: fadeSlideUp 0.8s ease both 0.25s;">Guided Segway tours designed for discovery.</p>
+      <div class="flex flex-wrap gap-4" style="animation: fadeSlideUp 0.8s ease both 0.4s;"><button class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-base" id="heroBookBtn" data-text-key="cta_primary">Book Tour</button> <a href="#routes" class="btn-outline px-8 py-3.5 rounded-full text-gray-300 font-medium text-base" id="heroRoutesBtn" data-text-key="cta_secondary">View Routes</a>
+      </div>
+     </div><!-- Floating city SVG decoration -->
+     <div class="absolute right-8 bottom-12 hidden lg:block opacity-30">
+      <svg width="300" height="200" viewbox="0 0 300 200" fill="none"><rect x="20" y="60" width="40" height="140" rx="4" fill="#1e293b" stroke="#3b82f6" stroke-width="0.5" /> <rect x="80" y="30" width="50" height="170" rx="4" fill="#1e293b" stroke="#3b82f6" stroke-width="0.5" /> <rect x="150" y="80" width="35" height="120" rx="4" fill="#1e293b" stroke="#3b82f6" stroke-width="0.5" /> <rect x="200" y="50" width="45" height="150" rx="4" fill="#1e293b" stroke="#3b82f6" stroke-width="0.5" /> <rect x="260" y="90" width="30" height="110" rx="4" fill="#1e293b" stroke="#3b82f6" stroke-width="0.5" /> <rect x="90" y="45" width="8" height="8" rx="1" fill="#3b82f6" opacity="0.6" /> <rect x="100" y="60" width="8" height="8" rx="1" fill="#22c55e" opacity="0.4" /> <rect x="210" y="70" width="8" height="8" rx="1" fill="#3b82f6" opacity="0.5" /> <rect x="220" y="90" width="8" height="8" rx="1" fill="#22c55e" opacity="0.3" /> <line x1="0" y1="200" x2="300" y2="200" stroke="#3b82f6" stroke-width="1" opacity="0.3" />
+      </svg>
+     </div>
+    </div>
+   </section><!-- TOURS -->
+   <section id="tours" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 animate-on-scroll"><span class="text-xs font-semibold tracking-[0.25em] uppercase text-blue-400 mb-3 block font-mono" style="font-family:'Space Mono',monospace;">Our Tours</span>
+      <h2 id="toursHeading" class="text-3xl sm:text-5xl font-extrabold tracking-tight">Available <span class="neon-green">Experiences</span></h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Tour 1 -->
+      <div class="tour-card rounded-2xl animate-on-scroll stagger-1">
+       <div class="h-48 bg-gradient-to-br from-blue-900/40 to-blue-800/20 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="30" stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-dasharray="4 4" /> <path d="M25 55 Q40 25 55 55" stroke="#22c55e" stroke-width="2" fill="none" /> <circle cx="40" cy="38" r="6" fill="#3b82f6" opacity="0.6" />
+        </svg>
+        <div class="absolute top-4 right-4 bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full">
+         Popular
+        </div>
+       </div>
+       <div class="p-6">
+        <h3 class="text-xl font-bold mb-2">Downtown Discovery</h3>
+        <p class="text-gray-400 text-sm mb-4">Glide through the historic heart of the city. Iconic landmarks, hidden alleys, and street art murals.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500"><span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 90 min</span> <span class="flex items-center gap-1"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 8 stops</span> <span class="flex items-center gap-1"><i data-lucide="users" style="width:14px;height:14px;"></i> Max 12</span>
+        </div>
+       </div>
+      </div><!-- Tour 2 -->
+      <div class="tour-card rounded-2xl animate-on-scroll stagger-2">
+       <div class="h-48 bg-gradient-to-br from-green-900/40 to-green-800/20 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none"><path d="M15 65 L35 25 L55 45 L75 15" stroke="#22c55e" stroke-width="2" fill="none" stroke-linecap="round" /> <circle cx="35" cy="25" r="4" fill="#22c55e" opacity="0.6" /> <circle cx="55" cy="45" r="4" fill="#3b82f6" opacity="0.6" />
+        </svg>
+        <div class="absolute top-4 right-4 bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1 rounded-full">
+         Scenic
+        </div>
+       </div>
+       <div class="p-6">
+        <h3 class="text-xl font-bold mb-2">Waterfront Cruise</h3>
+        <p class="text-gray-400 text-sm mb-4">Follow the river path with panoramic skyline views. Bridges, boat docks, and sunset lookouts.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500"><span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 2 hrs</span> <span class="flex items-center gap-1"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 12 stops</span> <span class="flex items-center gap-1"><i data-lucide="users" style="width:14px;height:14px;"></i> Max 10</span>
+        </div>
+       </div>
+      </div><!-- Tour 3 -->
+      <div class="tour-card rounded-2xl animate-on-scroll stagger-3">
+       <div class="h-48 bg-gradient-to-br from-purple-900/40 to-purple-800/20 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none"><rect x="20" y="20" width="40" height="40" rx="8" stroke="#3b82f6" stroke-width="1.5" fill="none" /> <circle cx="40" cy="40" r="10" fill="#3b82f6" opacity="0.3" /> <path d="M30 50 L40 30 L50 50" stroke="#22c55e" stroke-width="2" fill="none" />
+        </svg>
+        <div class="absolute top-4 right-4 bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1 rounded-full">
+         Night
+        </div>
+       </div>
+       <div class="p-6">
+        <h3 class="text-xl font-bold mb-2">Neon Night Ride</h3>
+        <p class="text-gray-400 text-sm mb-4">Experience the city under neon lights. Entertainment districts, rooftop views, and nightlife hotspots.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500"><span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 2.5 hrs</span> <span class="flex items-center gap-1"><i data-lucide="map-pin" style="width:14px;height:14px;"></i> 10 stops</span> <span class="flex items-center gap-1"><i data-lucide="users" style="width:14px;height:14px;"></i> Max 8</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ROUTES -->
+   <section id="routes" class="py-24 relative" style="background: linear-gradient(180deg, rgba(17,24,39,0.3) 0%, rgba(10,14,26,1) 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 animate-on-scroll"><span class="text-xs font-semibold tracking-[0.25em] uppercase text-green-400 mb-3 block" style="font-family:'Space Mono',monospace;">Explore Routes</span>
+      <h2 id="routesHeading" class="text-3xl sm:text-5xl font-extrabold tracking-tight">City Routes &amp; <span class="neon-blue">Highlights</span></h2>
+     </div><!-- SVG Route Map -->
+     <div class="animate-on-scroll mb-12 flex justify-center">
+      <svg viewbox="0 0 800 300" class="w-full max-w-4xl" fill="none"><!-- Route line --> <path d="M50 250 C150 250 150 100 250 100 S400 200 450 150 S550 50 650 100 S750 200 750 150" stroke="#3b82f6" stroke-width="3" fill="none" stroke-dasharray="1200" stroke-dashoffset="1200" stroke-linecap="round" class="route-path" style="animation: routeDash 3s ease forwards 0.5s;" /> <!-- Markers --> <g class="route-marker">
+        <circle cx="50" cy="250" r="12" fill="#0a0e1a" stroke="#22c55e" stroke-width="2" />
+        <circle cx="50" cy="250" r="5" fill="#22c55e" />
+        <text x="50" y="280" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Outfit">
+         Start
+        </text>
+       </g> <g class="route-marker">
+        <circle cx="250" cy="100" r="10" fill="#0a0e1a" stroke="#3b82f6" stroke-width="2" />
+        <circle cx="250" cy="100" r="4" fill="#3b82f6" />
+        <text x="250" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Outfit">
+         Old Town
+        </text>
+       </g> <g class="route-marker">
+        <circle cx="450" cy="150" r="10" fill="#0a0e1a" stroke="#3b82f6" stroke-width="2" />
+        <circle cx="450" cy="150" r="4" fill="#3b82f6" />
+        <text x="450" y="135" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Outfit">
+         River Walk
+        </text>
+       </g> <g class="route-marker">
+        <circle cx="650" cy="100" r="10" fill="#0a0e1a" stroke="#3b82f6" stroke-width="2" />
+        <circle cx="650" cy="100" r="4" fill="#3b82f6" />
+        <text x="650" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Outfit">
+         Sky Deck
+        </text>
+       </g> <g class="route-marker">
+        <circle cx="750" cy="150" r="12" fill="#0a0e1a" stroke="#22c55e" stroke-width="2" />
+        <circle cx="750" cy="150" r="5" fill="#22c55e" />
+        <text x="750" y="175" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Outfit">
+         Finish
+        </text>
+       </g>
+      </svg>
+     </div><!-- Route highlights -->
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="animate-on-scroll stagger-1 p-5 rounded-xl bg-surface/30 border border-blue-500/10 hover:border-blue-500/25 transition-all" style="background:rgba(17,24,39,0.4);">
+       <div class="text-2xl mb-2">
+        🏛️
+       </div>
+       <h4 class="font-bold text-sm mb-1">Historic Quarter</h4>
+       <p class="text-gray-500 text-xs">Cobblestone streets and century-old architecture</p>
+      </div>
+      <div class="animate-on-scroll stagger-2 p-5 rounded-xl border border-green-500/10 hover:border-green-500/25 transition-all" style="background:rgba(17,24,39,0.4);">
+       <div class="text-2xl mb-2">
+        🌊
+       </div>
+       <h4 class="font-bold text-sm mb-1">Waterfront Path</h4>
+       <p class="text-gray-500 text-xs">Scenic riverside with bridge crossings</p>
+      </div>
+      <div class="animate-on-scroll stagger-3 p-5 rounded-xl border border-blue-500/10 hover:border-blue-500/25 transition-all" style="background:rgba(17,24,39,0.4);">
+       <div class="text-2xl mb-2">
+        🎨
+       </div>
+       <h4 class="font-bold text-sm mb-1">Arts District</h4>
+       <p class="text-gray-500 text-xs">Murals, galleries, and creative spaces</p>
+      </div>
+      <div class="animate-on-scroll stagger-4 p-5 rounded-xl border border-green-500/10 hover:border-green-500/25 transition-all" style="background:rgba(17,24,39,0.4);">
+       <div class="text-2xl mb-2">
+        🌃
+       </div>
+       <h4 class="font-bold text-sm mb-1">Skyline View</h4>
+       <p class="text-gray-500 text-xs">Panoramic lookouts and observation points</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- EXPERIENCE -->
+   <section id="experience" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 animate-on-scroll"><span class="text-xs font-semibold tracking-[0.25em] uppercase text-blue-400 mb-3 block" style="font-family:'Space Mono',monospace;">The Ride</span>
+      <h2 id="experienceHeading" class="text-3xl sm:text-5xl font-extrabold tracking-tight">What Riders <span class="neon-green">Can Expect</span></h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center animate-on-scroll stagger-1">
+       <div class="experience-icon w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center glow-blue" style="background: rgba(59,130,246,0.1);"><i data-lucide="shield-check" style="width:32px;height:32px;color:#3b82f6;"></i>
+       </div>
+       <h4 class="font-bold mb-2">Safety First</h4>
+       <p class="text-gray-500 text-sm">Full training, helmets provided, and certified guides on every ride.</p>
+      </div>
+      <div class="text-center animate-on-scroll stagger-2">
+       <div class="experience-icon w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center glow-green" style="background: rgba(34,197,94,0.1);"><i data-lucide="headphones" style="width:32px;height:32px;color:#22c55e;"></i>
+       </div>
+       <h4 class="font-bold mb-2">Audio Guide</h4>
+       <p class="text-gray-500 text-sm">Wireless earpieces with live narration at every landmark.</p>
+      </div>
+      <div class="text-center animate-on-scroll stagger-3">
+       <div class="experience-icon w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center glow-blue" style="background: rgba(59,130,246,0.1);"><i data-lucide="camera" style="width:32px;height:32px;color:#3b82f6;"></i>
+       </div>
+       <h4 class="font-bold mb-2">Photo Stops</h4>
+       <p class="text-gray-500 text-sm">Curated photo opportunities at the best vantage points.</p>
+      </div>
+      <div class="text-center animate-on-scroll stagger-4">
+       <div class="experience-icon w-20 h-20 rounded-2xl mx-auto mb-5 flex items-center justify-center glow-green" style="background: rgba(34,197,94,0.1);"><i data-lucide="coffee" style="width:32px;height:32px;color:#22c55e;"></i>
+       </div>
+       <h4 class="font-bold mb-2">Local Stops</h4>
+       <p class="text-gray-500 text-sm">Complimentary snack breaks at curated local spots.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-24" style="background: linear-gradient(180deg, rgba(10,14,26,1) 0%, rgba(17,24,39,0.3) 50%, rgba(10,14,26,1) 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 animate-on-scroll"><span class="text-xs font-semibold tracking-[0.25em] uppercase text-green-400 mb-3 block" style="font-family:'Space Mono',monospace;">Pricing</span>
+      <h2 id="pricingHeading" class="text-3xl sm:text-5xl font-extrabold tracking-tight">Choose Your <span class="neon-blue">Adventure</span></h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto"><!-- Basic -->
+      <div class="pricing-card rounded-2xl p-8 animate-on-scroll stagger-1">
+       <div class="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-2" style="font-family:'Space Mono',monospace;">
+        Basic
+       </div>
+       <div class="text-4xl font-black mb-1">
+        $49
+       </div>
+       <div class="text-gray-500 text-sm mb-6">
+        per person
+       </div>
+       <ul class="space-y-3 mb-8 text-sm text-gray-400">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> 60-minute city loop</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Safety training included</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Helmet &amp; gear provided</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Group tour (up to 12)</li>
+       </ul><button class="w-full btn-outline py-3 rounded-xl text-gray-300 font-semibold text-sm book-btn" data-tier="Basic">Select Basic</button>
+      </div><!-- Explorer (Featured) -->
+      <div class="pricing-card featured rounded-2xl p-8 animate-on-scroll stagger-2 relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-black text-xs font-bold px-4 py-1 rounded-full">
+        Most Popular
+       </div>
+       <div class="text-sm text-green-400 uppercase tracking-wider font-semibold mb-2" style="font-family:'Space Mono',monospace;">
+        Explorer
+       </div>
+       <div class="text-4xl font-black mb-1">
+        $89
+       </div>
+       <div class="text-gray-500 text-sm mb-6">
+        per person
+       </div>
+       <ul class="space-y-3 mb-8 text-sm text-gray-400">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;"></i> 2-hour extended route</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;"></i> Audio guide narration</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;"></i> Photo stop opportunities</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;"></i> Snack break at local café</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;"></i> Digital route map</li>
+       </ul><button class="w-full py-3 rounded-xl text-white font-semibold text-sm book-btn" data-tier="Explorer" style="background:linear-gradient(135deg,#22c55e,#16a34a);">Select Explorer</button>
+      </div><!-- Premium -->
+      <div class="pricing-card rounded-2xl p-8 animate-on-scroll stagger-3">
+       <div class="text-sm text-blue-400 uppercase tracking-wider font-semibold mb-2" style="font-family:'Space Mono',monospace;">
+        Premium
+       </div>
+       <div class="text-4xl font-black mb-1">
+        $159
+       </div>
+       <div class="text-gray-500 text-sm mb-6">
+        per person
+       </div>
+       <ul class="space-y-3 mb-8 text-sm text-gray-400">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> 3-hour private guided tour</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Custom route planning</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Professional photo package</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> VIP access to landmarks</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Complimentary refreshments</li>
+       </ul><button class="w-full btn-primary py-3 rounded-xl text-white font-semibold text-sm book-btn" data-tier="Premium">Select Premium</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 animate-on-scroll"><span class="text-xs font-semibold tracking-[0.25em] uppercase text-blue-400 mb-3 block" style="font-family:'Space Mono',monospace;">FAQ</span>
+      <h2 id="faqHeading" class="text-3xl sm:text-5xl font-extrabold tracking-tight">Frequently Asked <span class="neon-green">Questions</span></h2>
+     </div>
+     <div class="space-y-3 animate-on-scroll" id="faqContainer">
+      <div class="faq-item rounded-xl px-6 py-4 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center"><span class="font-semibold text-sm">Do I need prior Segway experience?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:#3b82f6;"></i>
+       </div>
+       <div class="faq-answer text-gray-400 text-sm pt-3">
+        No experience needed! Every tour begins with a comprehensive training session. Most riders feel confident within 5 minutes.
+       </div>
+      </div>
+      <div class="faq-item rounded-xl px-6 py-4 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center"><span class="font-semibold text-sm">What's the age and weight limit?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:#3b82f6;"></i>
+       </div>
+       <div class="faq-answer text-gray-400 text-sm pt-3">
+        Riders must be at least 12 years old, weigh between 100–260 lbs, and be able to stand unassisted for the tour duration.
+       </div>
+      </div>
+      <div class="faq-item rounded-xl px-6 py-4 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center"><span class="font-semibold text-sm">What happens if it rains?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:#3b82f6;"></i>
+       </div>
+       <div class="faq-answer text-gray-400 text-sm pt-3">
+        Light rain? We ride on! Heavy storms may result in rescheduling at no extra cost. We'll notify you at least 2 hours before your tour.
+       </div>
+      </div>
+      <div class="faq-item rounded-xl px-6 py-4 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center"><span class="font-semibold text-sm">Can I cancel or reschedule?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:#3b82f6;"></i>
+       </div>
+       <div class="faq-answer text-gray-400 text-sm pt-3">
+        Free cancellation up to 24 hours before your tour. Rescheduling is always free and can be done up to 2 hours prior.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT WIDGET -->
+   <section id="book" class="py-24" style="background: linear-gradient(180deg, rgba(10,14,26,1) 0%, rgba(17,24,39,0.5) 50%, rgba(10,14,26,1) 100%);">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6"><!-- Bottom CTA -->
+     <div class="text-center mb-20 animate-on-scroll">
+      <h2 id="bottomCtaText" class="text-3xl sm:text-5xl font-black tracking-tight mb-6">Glide through the <span class="neon-blue">city.</span></h2>
+      <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto">Ready to see your city from a whole new perspective? Book your Segway tour today.</p><button class="btn-primary px-10 py-4 rounded-full text-white font-bold text-lg" id="bottomBookBtn">Book Your Tour</button>
+     </div><!-- Vote + Comment Widget -->
+     <div class="widget-section rounded-2xl p-8 animate-on-scroll">
+      <div class="text-center mb-8">
+       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border border-blue-500/20 bg-blue-500/5 text-blue-300 mb-4"><i data-lucide="message-circle" style="width:12px;height:12px;"></i> Embed Widget Here
+       </div>
+       <h3 class="text-2xl font-bold mb-2">What do you think?</h3>
+       <p class="text-gray-500 text-sm">React, vote on pricing, and share your thoughts</p>
+      </div><!-- Reactions -->
+      <div class="mb-8">
+       <p class="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold" style="font-family:'Space Mono',monospace;">Reactions</p>
+       <div class="flex flex-wrap gap-2" id="reactionsContainer"><button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="🔥" onclick="handleReaction(this)"><span>🔥</span><span class="count">0</span></button> <button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="❤️" onclick="handleReaction(this)"><span>❤️</span><span class="count">0</span></button> <button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="🚀" onclick="handleReaction(this)"><span>🚀</span><span class="count">0</span></button> <button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="👏" onclick="handleReaction(this)"><span>👏</span><span class="count">0</span></button> <button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="😍" onclick="handleReaction(this)"><span>😍</span><span class="count">0</span></button> <button class="reaction-btn rounded-xl px-4 py-2 text-sm flex items-center gap-2" data-reaction="💯" onclick="handleReaction(this)"><span>💯</span><span class="count">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold" style="font-family:'Space Mono',monospace;">What would you pay for the Explorer tour?</p>
+       <div class="flex flex-wrap gap-2" id="priceVoteContainer"><button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$39" onclick="handlePriceVote(this)">$39</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$49" onclick="handlePriceVote(this)">$49</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$59" onclick="handlePriceVote(this)">$59</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$69" onclick="handlePriceVote(this)">$69</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$79" onclick="handlePriceVote(this)">$79</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$89" onclick="handlePriceVote(this)">$89</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$99" onclick="handlePriceVote(this)">$99</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$109" onclick="handlePriceVote(this)">$109</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$119" onclick="handlePriceVote(this)">$119</button> <button class="price-vote-btn rounded-lg px-4 py-2 text-sm font-medium" data-price="$129" onclick="handlePriceVote(this)">$129</button>
+       </div>
+       <div id="priceResults" class="mt-4 hidden">
+        <div class="flex flex-wrap gap-2 text-xs text-gray-500" id="priceResultsInner"></div>
+       </div>
+      </div><!-- Comments -->
+      <div>
+       <p class="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold" style="font-family:'Space Mono',monospace;">Comments</p>
+       <form id="commentForm" onsubmit="handleComment(event)" class="flex gap-2 mb-4"><input type="text" id="commentInput" class="comment-input flex-1 rounded-xl px-4 py-3 text-sm" placeholder="Share your thoughts..." maxlength="280" aria-label="Comment"> <button type="submit" class="btn-primary px-5 py-3 rounded-xl text-white text-sm font-medium" id="commentSubmitBtn"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+       </form>
+       <div id="commentsContainer" class="space-y-2 max-h-64 overflow-auto"></div>
+       <div id="commentCount" class="text-xs text-gray-600 mt-2"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2"><span class="font-bold tracking-tight">Glide<span class="neon-blue">City</span> Tours</span>
+     </div>
+     <p class="text-gray-600 text-sm">© 2025 GlideCity Tours. See more. Move differently.</p>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper --> <!-- Booking Modal -->
+  <div class="booking-modal" id="bookingModal">
+   <div class="booking-modal-content">
+    <div class="flex justify-between items-center mb-6">
+     <h3 class="text-xl font-bold">Book Your Tour</h3><button onclick="closeBookingModal()" class="text-gray-400 hover:text-white transition"><i data-lucide="x" style="width:24px;height:24px;"></i></button>
+    </div>
+    <p class="text-sm text-gray-400 mb-1">Selected tier:</p>
+    <p class="text-lg font-bold neon-blue mb-6" id="modalTier">Explorer</p>
+    <div class="space-y-4">
+     <div><label for="bookName" class="text-xs text-gray-400 block mb-1">Full Name</label> <input type="text" id="bookName" class="comment-input w-full rounded-xl px-4 py-3 text-sm" placeholder="Jane Doe">
+     </div>
+     <div><label for="bookEmail" class="text-xs text-gray-400 block mb-1">Email</label> <input type="email" id="bookEmail" class="comment-input w-full rounded-xl px-4 py-3 text-sm" placeholder="jane@example.com">
+     </div>
+     <div><label for="bookDate" class="text-xs text-gray-400 block mb-1">Preferred Date</label> <input type="date" id="bookDate" class="comment-input w-full rounded-xl px-4 py-3 text-sm">
+     </div>
+     <div><label for="bookGuests" class="text-xs text-gray-400 block mb-1">Number of Riders</label> <select id="bookGuests" class="comment-input w-full rounded-xl px-4 py-3 text-sm" style="background:rgba(10,14,26,0.8);color:#e2e8f0;"> <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6+</option> </select>
+     </div>
+    </div><button class="btn-primary w-full py-3.5 rounded-xl text-white font-semibold mt-6" id="submitBookingBtn" onclick="submitBooking()">Confirm Booking</button>
+    <p class="text-center text-xs text-gray-600 mt-3">Demo only — no payment will be processed</p>
+   </div>
+  </div><!-- Toast -->
+  <div class="toast" id="toast"></div>
+  <script>
+// =========================================
+// Config & Element SDK
+// =========================================
+const defaultConfig = {
+  background_color: '#0a0e1a',
+  surface_color: '#111827',
+  text_color: '#e2e8f0',
+  primary_color: '#3b82f6',
+  accent_color: '#22c55e',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Explore the city without slowing down.',
+  hero_subtitle: 'Guided Segway tours designed for discovery.',
+  cta_primary: 'Book Tour',
+  cta_secondary: 'View Routes',
+  tours_heading: 'Available Experiences',
+  routes_heading: 'City Routes & Highlights',
+  experience_heading: 'What Riders Can Expect',
+  pricing_heading: 'Choose Your Adventure',
+  bottom_cta_text: 'Glide through the city.',
+  faq_heading: 'Frequently Asked Questions'
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  const r = document.documentElement;
+  r.style.setProperty('--bg', c.background_color);
+  r.style.setProperty('--surface', c.surface_color);
+  r.style.setProperty('--text', c.text_color);
+  r.style.setProperty('--primary', c.primary_color);
+  r.style.setProperty('--accent', c.accent_color);
+
+  document.body.style.fontFamily = `${c.font_family}, Outfit, sans-serif`;
+  document.body.style.color = c.text_color;
+  document.getElementById('app-wrapper').style.background = c.background_color;
+
+  const bs = c.font_size;
+  // Hero
+  const heroT = document.getElementById('heroTitle');
+  if (heroT) {
+    heroT.innerHTML = c.hero_title.replace(/(without slowing down\.|$)/, `<br><span class="neon-blue">without slowing down.</span>`);
+    if (!c.hero_title.includes('without slowing down')) {
+      heroT.innerHTML = c.hero_title;
+    }
+  }
+  const heroS = document.getElementById('heroSubtitle');
+  if (heroS) heroS.textContent = c.hero_subtitle;
+
+  const ctaP = document.querySelector('[data-text-key="cta_primary"]');
+  if (ctaP) ctaP.textContent = c.cta_primary;
+  const ctaS = document.querySelector('[data-text-key="cta_secondary"]');
+  if (ctaS) ctaS.textContent = c.cta_secondary;
+
+  const nbb = document.getElementById('navBookBtn');
+  if (nbb) nbb.textContent = c.cta_primary;
+
+  const th = document.getElementById('toursHeading');
+  if (th) th.innerHTML = c.tours_heading;
+  const rh = document.getElementById('routesHeading');
+  if (rh) rh.innerHTML = c.routes_heading;
+  const eh = document.getElementById('experienceHeading');
+  if (eh) eh.innerHTML = c.experience_heading;
+  const ph = document.getElementById('pricingHeading');
+  if (ph) ph.innerHTML = c.pricing_heading;
+  const bc = document.getElementById('bottomCtaText');
+  if (bc) bc.innerHTML = c.bottom_cta_text;
+  const fh = document.getElementById('faqHeading');
+  if (fh) fh.innerHTML = c.faq_heading;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (cfg) => applyConfig(cfg),
+    mapToCapabilities: (cfg) => ({
+      recolorables: [
+        { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+        { get: () => cfg.accent_color || defaultConfig.accent_color, set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => cfg.font_family || defaultConfig.font_family,
+        set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => cfg.font_size || defaultConfig.font_size,
+        set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (cfg) => new Map([
+      ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', cfg.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', cfg.cta_secondary || defaultConfig.cta_secondary],
+      ['tours_heading', cfg.tours_heading || defaultConfig.tours_heading],
+      ['routes_heading', cfg.routes_heading || defaultConfig.routes_heading],
+      ['experience_heading', cfg.experience_heading || defaultConfig.experience_heading],
+      ['pricing_heading', cfg.pricing_heading || defaultConfig.pricing_heading],
+      ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text],
+      ['faq_heading', cfg.faq_heading || defaultConfig.faq_heading]
+    ])
+  });
+}
+
+// =========================================
+// Data SDK — Vote + Comment
+// =========================================
+let allData = [];
+let myReactions = new Set();
+let myPriceVote = null;
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactionCounts();
+    renderPriceResults();
+    renderComments();
+  }
+};
+
+async function initData() {
+  if (window.dataSdk) {
+    const r = await window.dataSdk.init(dataHandler);
+    if (!r.isOk) console.error('Data SDK init failed');
+  }
+}
+initData();
+
+function renderReactionCounts() {
+  const counts = {};
+  allData.filter(d => d.type === 'reaction').forEach(d => {
+    counts[d.reaction] = (counts[d.reaction] || 0) + 1;
+  });
+  document.querySelectorAll('#reactionsContainer .reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.count').textContent = counts[r] || 0;
+  });
+}
+
+function renderPriceResults() {
+  const votes = allData.filter(d => d.type === 'price_vote');
+  if (votes.length === 0) { document.getElementById('priceResults').classList.add('hidden'); return; }
+  document.getElementById('priceResults').classList.remove('hidden');
+  const counts = {};
+  votes.forEach(d => { counts[d.price_vote] = (counts[d.price_vote] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const total = votes.length;
+  document.getElementById('priceResultsInner').innerHTML = sorted.map(([p, c]) =>
+    `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg" style="background:rgba(34,197,94,${0.05 + (c/total)*0.2});">${p} <span class="text-green-400">${c}</span></span>`
+  ).join('');
+}
+
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const container = document.getElementById('commentsContainer');
+  const existingMap = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  comments.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      existingMap.delete(c.__backendId);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'comment-card rounded-xl px-4 py-3';
+      el.dataset.id = c.__backendId;
+      const time = new Date(c.created_at);
+      const ago = getTimeAgo(time);
+      el.innerHTML = `<p class="text-sm">${escapeHtml(c.comment_text)}</p><p class="text-xs text-gray-600 mt-1">${ago}</p>`;
+      container.prepend(el);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+
+  const cnt = document.getElementById('commentCount');
+  cnt.textContent = comments.length > 0 ? `${comments.length} comment${comments.length !== 1 ? 's' : ''}` : '';
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div'); d.textContent = t; return d.innerHTML;
+}
+
+function getTimeAgo(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+async function handleReaction(btn) {
+  const reaction = btn.dataset.reaction;
+  if (myReactions.has(reaction)) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  btn.classList.add('selected');
+  myReactions.add(reaction);
+  const result = await window.dataSdk.create({ type: 'reaction', target_id: 'main', reaction, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!result.isOk) { showToast('Could not save reaction'); btn.classList.remove('selected'); myReactions.delete(reaction); }
+}
+
+async function handlePriceVote(btn) {
+  if (myPriceVote) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const price = btn.dataset.price;
+  myPriceVote = price;
+  btn.classList.add('selected');
+  const result = await window.dataSdk.create({ type: 'price_vote', target_id: 'main', reaction: '', comment_text: '', price_vote: price, created_at: new Date().toISOString() });
+  if (!result.isOk) { showToast('Could not save vote'); myPriceVote = null; btn.classList.remove('selected'); }
+}
+
+async function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'comment', target_id: 'main', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment'); }
+}
+
+// =========================================
+// UI Interactions
+// =========================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// Booking modal
+function openBookingModal(tier) {
+  document.getElementById('modalTier').textContent = tier || 'Explorer';
+  document.getElementById('bookingModal').classList.add('open');
+}
+function closeBookingModal() {
+  document.getElementById('bookingModal').classList.remove('open');
+}
+function submitBooking() {
+  const name = document.getElementById('bookName').value.trim();
+  const email = document.getElementById('bookEmail').value.trim();
+  if (!name || !email) { showToast('Please fill in name and email'); return; }
+  closeBookingModal();
+  showToast('🎉 Demo booking confirmed! Check your email.');
+}
+
+document.querySelectorAll('.book-btn').forEach(b => b.addEventListener('click', () => openBookingModal(b.dataset.tier)));
+document.getElementById('heroBookBtn').addEventListener('click', () => openBookingModal('Explorer'));
+document.getElementById('navBookBtn').addEventListener('click', (e) => { e.preventDefault(); openBookingModal('Explorer'); });
+document.getElementById('bottomBookBtn').addEventListener('click', () => openBookingModal('Explorer'));
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('hidden');
+}));
+
+// Scroll progress
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  const pct = (wrapper.scrollTop / (wrapper.scrollHeight - wrapper.clientHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = pct + '%';
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, root: wrapper });
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+// Active nav link
+const sections = ['home','tours','routes','experience','pricing','faq','book'];
+wrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 100 <= wrapper.scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6403076c27c5',t:'MTc3NTU3OTE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

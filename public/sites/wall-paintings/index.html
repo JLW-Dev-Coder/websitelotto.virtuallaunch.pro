@@ -1,1 +1,696 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/4226b807-67c0-4cdf-9446-c8db00cff5d5 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CanvasCurrent Gallery</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ultramarine: '#1B3A8C',
+        terra: '#C4572A',
+        gallery: {
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#E8E8E8',
+          800: '#1A1A1A',
+          900: '#0D0D0D'
+        }
+      }
+    }
+  }
+}
+</script>
+  <style>
+  @keyframes spotlightSweep {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slowPan {
+    0% { transform: scale(1.05) translateX(-1%); }
+    50% { transform: scale(1.05) translateX(1%); }
+    100% { transform: scale(1.05) translateX(-1%); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(27,58,140,0.3); }
+    50% { box-shadow: 0 0 20px 4px rgba(27,58,140,0.15); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .anim-fade-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  .anim-delay-1 { animation-delay: 0.15s; }
+  .anim-delay-2 { animation-delay: 0.3s; }
+  .anim-delay-3 { animation-delay: 0.45s; }
+  .anim-delay-4 { animation-delay: 0.6s; }
+  .spotlight-sweep {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 55%, transparent 100%);
+    background-size: 200% 100%;
+    animation: spotlightSweep 6s ease-in-out infinite;
+  }
+  .slow-pan { animation: slowPan 20s ease-in-out infinite; }
+  .pulse-btn { animation: pulseGlow 3s ease-in-out infinite; }
+  .gallery-img-wrap {
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.25) 100%);
+    pointer-events: none;
+  }
+  .gallery-img-wrap img {
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .gallery-img-wrap:hover img {
+    transform: scale(1.04);
+  }
+  .nav-link {
+    position: relative;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .section-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+  }
+  .font-editorial {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  * { scrollbar-width: thin; scrollbar-color: #ccc transparent; }
+  .vote-btn-active { background-color: #1B3A8C !important; color: #fff !important; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-gallery-50 text-gallery-800">
+  <div id="app-root" class="w-full h-full overflow-auto"><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(250,250,250,0.92);backdrop-filter:blur(12px);">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4"><a href="#home" class="font-editorial text-xl font-bold tracking-wide text-gallery-900">Canvas<span class="text-ultramarine">Current</span></a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-gallery-800 font-medium">Home</a> <a href="#collections" class="nav-link text-gallery-800 font-medium">Collections</a> <a href="#in-rooms" class="nav-link text-gallery-800 font-medium">In Rooms</a> <a href="#about" class="nav-link text-gallery-800 font-medium">About</a> <a href="#reviews" class="nav-link text-gallery-800 font-medium">Reviews</a> <a href="#buy" class="nav-link text-gallery-800 font-medium">Buy</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Menu"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="nav-link text-gallery-800 font-medium py-1">Home</a> <a href="#collections" class="nav-link text-gallery-800 font-medium py-1">Collections</a> <a href="#in-rooms" class="nav-link text-gallery-800 font-medium py-1">In Rooms</a> <a href="#about" class="nav-link text-gallery-800 font-medium py-1">About</a> <a href="#reviews" class="nav-link text-gallery-800 font-medium py-1">Reviews</a> <a href="#buy" class="nav-link text-gallery-800 font-medium py-1">Buy</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:90%;">
+    <div class="absolute inset-0 spotlight-sweep pointer-events-none"></div>
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1577720643272-265f09367456?w=1600&amp;q=80" alt="Gallery wall" class="w-full h-full object-cover slow-pan opacity-15" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 py-32 md:py-44">
+     <p class="anim-fade-up text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-6">Est. 2021 — Curated Art Drops</p>
+     <h1 id="hero-title" class="anim-fade-up anim-delay-1 font-editorial text-5xl md:text-7xl lg:text-8xl font-bold text-gallery-900 leading-[1.05] max-w-4xl">Walls with a point of view.</h1>
+     <p id="hero-subtitle" class="anim-fade-up anim-delay-2 mt-6 text-lg md:text-xl text-gallery-800 max-w-xl" style="opacity:0.75;">Curated art drops designed to stop the scroll.</p>
+     <div class="anim-fade-up anim-delay-3 flex flex-wrap gap-4 mt-10 justify-center"><a href="#buy" class="pulse-btn inline-flex items-center gap-2 bg-ultramarine text-white px-7 py-3.5 text-sm font-semibold tracking-wider uppercase transition hover:bg-gallery-900">
+       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+        <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+       </svg> Shop the Drop </a> <a href="#collections" class="inline-flex items-center gap-2 border border-gallery-800 text-gallery-800 px-7 py-3.5 text-sm font-semibold tracking-wider uppercase transition hover:bg-gallery-900 hover:text-white">
+       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+       </svg> View Collections </a>
+     </div>
+    </div>
+   </section><!-- COLLECTIONS -->
+   <section id="collections" class="w-full px-6 py-24 md:py-32 bg-white">
+    <div class="max-w-7xl mx-auto">
+     <div class="section-reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-3">The Curation</p>
+      <h2 class="font-editorial text-4xl md:text-5xl font-bold text-gallery-900">Collections</h2>
+      <div class="w-16 h-px bg-ultramarine mx-auto mt-6"></div>
+     </div>
+     <div class="section-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"><!-- Collection 1 -->
+      <div class="group cursor-pointer">
+       <div class="gallery-img-wrap aspect-[3/4] bg-gallery-100"><img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=600&amp;q=80" alt="Minimal Lines collection" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+       </div>
+       <div class="mt-4">
+        <h3 class="font-editorial text-xl font-semibold text-gallery-900 group-hover:text-ultramarine transition-colors">Minimal Lines</h3>
+        <p class="text-sm text-gallery-800 mt-1" style="opacity:0.6;">Reductive elegance in every stroke</p>
+        <p class="text-xs font-semibold text-ultramarine mt-2 tracking-wider uppercase">12 Prints</p>
+       </div>
+      </div><!-- Collection 2 -->
+      <div class="group cursor-pointer">
+       <div class="gallery-img-wrap aspect-[3/4] bg-gallery-100"><img src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=600&amp;q=80" alt="Color Blocks collection" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+       </div>
+       <div class="mt-4">
+        <h3 class="font-editorial text-xl font-semibold text-gallery-900 group-hover:text-ultramarine transition-colors">Color Blocks</h3>
+        <p class="text-sm text-gallery-800 mt-1" style="opacity:0.6;">Bold fields of saturated emotion</p>
+        <p class="text-xs font-semibold text-ultramarine mt-2 tracking-wider uppercase">10 Prints</p>
+       </div>
+      </div><!-- Collection 3 -->
+      <div class="group cursor-pointer">
+       <div class="gallery-img-wrap aspect-[3/4] bg-gallery-100"><img src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=600&amp;q=80" alt="Nature Abstract collection" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+       </div>
+       <div class="mt-4">
+        <h3 class="font-editorial text-xl font-semibold text-gallery-900 group-hover:text-ultramarine transition-colors">Nature Abstract</h3>
+        <p class="text-sm text-gallery-800 mt-1" style="opacity:0.6;">Organic forms, distilled</p>
+        <p class="text-xs font-semibold text-ultramarine mt-2 tracking-wider uppercase">9 Prints</p>
+       </div>
+      </div><!-- Collection 4 -->
+      <div class="group cursor-pointer">
+       <div class="gallery-img-wrap aspect-[3/4] bg-gallery-100"><img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=600&amp;q=80" alt="Monochrome collection" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+       </div>
+       <div class="mt-4">
+        <h3 class="font-editorial text-xl font-semibold text-gallery-900 group-hover:text-ultramarine transition-colors">Monochrome</h3>
+        <p class="text-sm text-gallery-800 mt-1" style="opacity:0.6;">The poetry of absence</p>
+        <p class="text-xs font-semibold text-ultramarine mt-2 tracking-wider uppercase">9 Prints</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- IN ROOMS -->
+   <section id="in-rooms" class="w-full px-6 py-24 md:py-32 bg-gallery-50">
+    <div class="max-w-7xl mx-auto">
+     <div class="section-reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-3">Visualize It</p>
+      <h2 class="font-editorial text-4xl md:text-5xl font-bold text-gallery-900">In Rooms</h2>
+      <div class="w-16 h-px bg-ultramarine mx-auto mt-6"></div>
+     </div>
+     <div class="section-reveal grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="gallery-img-wrap md:col-span-2 aspect-[16/9] bg-gallery-200"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&amp;q=80" alt="Art in modern living room" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-img-wrap aspect-[9/16] md:aspect-auto bg-gallery-200"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&amp;q=80" alt="Framed art in hallway" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-img-wrap aspect-[4/3] bg-gallery-200"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&amp;q=80" alt="Art above modern sofa" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-img-wrap md:col-span-2 aspect-[21/9] bg-gallery-200"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&amp;q=80" alt="Gallery wall in modern interior" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+      </div>
+     </div>
+     <p class="section-reveal text-center text-sm mt-8" style="opacity:0.5;">Mockups sell faster. See every piece in context before you buy.</p>
+    </div>
+   </section><!-- ABOUT -->
+   <section id="about" class="w-full px-6 py-24 md:py-32 bg-white">
+    <div class="max-w-5xl mx-auto">
+     <div class="section-reveal grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div class="gallery-img-wrap aspect-[4/5] bg-gallery-100"><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&amp;q=80" alt="Artist in studio" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#e8e8e8';this.alt='Image unavailable';">
+      </div>
+      <div>
+       <p class="text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-3">Our Story</p>
+       <h2 id="about-title" class="font-editorial text-3xl md:text-4xl font-bold text-gallery-900 mb-6">The Gallery Story</h2>
+       <p id="about-text" class="text-base leading-relaxed text-gallery-800 mb-8" style="opacity:0.75;">Founded in 2021, CanvasCurrent bridges the gap between emerging artists and collectors who believe walls deserve intention. Every drop is limited, every print is gallery-grade, and every frame ships museum-ready.</p>
+       <div class="space-y-5">
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 flex items-center justify-center bg-gallery-100 flex-shrink-0">
+          <svg width="18" height="18" fill="none" stroke="#1B3A8C" stroke-width="1.5" viewbox="0 0 24 24">
+           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+         </div>
+         <div>
+          <p class="font-semibold text-sm text-gallery-900">Gallery-Grade Materials</p>
+          <p class="text-sm mt-0.5" style="opacity:0.6;">Archival inks on 310gsm cotton rag</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 flex items-center justify-center bg-gallery-100 flex-shrink-0">
+          <svg width="18" height="18" fill="none" stroke="#1B3A8C" stroke-width="1.5" viewbox="0 0 24 24">
+           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+          </svg>
+         </div>
+         <div>
+          <p class="font-semibold text-sm text-gallery-900">Artist-First Commissions</p>
+          <p class="text-sm mt-0.5" style="opacity:0.6;">60% revenue goes directly to artists</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="w-10 h-10 flex items-center justify-center bg-gallery-100 flex-shrink-0">
+          <svg width="18" height="18" fill="none" stroke="#1B3A8C" stroke-width="1.5" viewbox="0 0 24 24">
+           <rect x="1" y="3" width="15" height="13" /><polygon points="23 7 16 12 16 2 23 7" />
+          </svg>
+         </div>
+         <div>
+          <p class="font-semibold text-sm text-gallery-900">Limited Drop Culture</p>
+          <p class="text-sm mt-0.5" style="opacity:0.6;">Each collection runs once, then it's gone</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full px-6 py-24 md:py-32 bg-gallery-50">
+    <div class="max-w-6xl mx-auto">
+     <div class="section-reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-3">Collectors Speak</p>
+      <h2 class="font-editorial text-4xl md:text-5xl font-bold text-gallery-900">Reviews</h2>
+      <div class="w-16 h-px bg-ultramarine mx-auto mt-6"></div>
+     </div>
+     <div class="section-reveal grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white p-8 border border-gallery-200">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="font-editorial text-lg italic text-gallery-900 leading-relaxed">"The Minimal Lines series transformed my hallway into something people actually stop and stare at."</p>
+       <div class="mt-6 pt-4 border-t border-gallery-200">
+        <p class="font-semibold text-sm text-gallery-900">Elise Marchetti</p>
+        <p class="text-xs mt-0.5" style="opacity:0.5;">Interior Stylist, Milan</p>
+       </div>
+      </div>
+      <div class="bg-white p-8 border border-gallery-200">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="font-editorial text-lg italic text-gallery-900 leading-relaxed">"Gallery-level presentation at a fraction of the price. The packaging alone felt like unwrapping a gift."</p>
+       <div class="mt-6 pt-4 border-t border-gallery-200">
+        <p class="font-semibold text-sm text-gallery-900">James Okoro</p>
+        <p class="text-xs mt-0.5" style="opacity:0.5;">Architect, Lagos</p>
+       </div>
+      </div>
+      <div class="bg-white p-8 border border-gallery-200">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="14" height="14" fill="#1B3A8C" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="font-editorial text-lg italic text-gallery-900 leading-relaxed">"I bought three from the Monochrome drop. They sold out in hours. Smart collectors move fast here."</p>
+       <div class="mt-6 pt-4 border-t border-gallery-200">
+        <p class="font-semibold text-sm text-gallery-900">Anika Bergstrom</p>
+        <p class="text-xs mt-0.5" style="opacity:0.5;">Collector, Stockholm</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BUY / PRICING -->
+   <section id="buy" class="w-full px-6 py-24 md:py-32 bg-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="section-reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase text-ultramarine font-semibold mb-3">Pricing Tiers</p>
+      <h2 class="font-editorial text-4xl md:text-5xl font-bold text-gallery-900">Collect Original Prints</h2>
+      <div class="w-16 h-px bg-ultramarine mx-auto mt-6"></div>
+     </div>
+     <div class="section-reveal grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Tier 1 -->
+      <div class="border border-gallery-200 p-8 flex flex-col">
+       <p class="text-xs tracking-[0.2em] uppercase font-semibold text-gallery-800 mb-2">Digital Download</p>
+       <p class="font-editorial text-4xl font-bold text-gallery-900">$29</p>
+       <p class="text-sm mt-1 mb-6" style="opacity:0.5;">Per print, instant delivery</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> High-res 300 DPI file</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Print-ready PDF + PNG</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Personal use license</li>
+       </ul><button class="w-full border border-gallery-800 text-gallery-800 py-3 text-sm font-semibold tracking-wider uppercase transition hover:bg-gallery-900 hover:text-white">Select</button>
+      </div><!-- Tier 2 -->
+      <div class="border-2 border-ultramarine p-8 flex flex-col relative">
+       <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-ultramarine text-white text-[10px] tracking-[0.2em] uppercase font-semibold px-4 py-1">
+        Most Popular
+       </div>
+       <p class="text-xs tracking-[0.2em] uppercase font-semibold text-ultramarine mb-2">Framed Print</p>
+       <p class="font-editorial text-4xl font-bold text-gallery-900">$89</p>
+       <p class="text-sm mt-1 mb-6" style="opacity:0.5;">Museum-quality, shipped free</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Archival giclée print</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Solid wood frame</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Ready to hang</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Free worldwide shipping</li>
+       </ul><button class="w-full bg-ultramarine text-white py-3 text-sm font-semibold tracking-wider uppercase transition hover:bg-gallery-900 pulse-btn">Select</button>
+      </div><!-- Tier 3 -->
+      <div class="border border-gallery-200 p-8 flex flex-col">
+       <p class="text-xs tracking-[0.2em] uppercase font-semibold text-gallery-800 mb-2">Collector's Edition</p>
+       <p class="font-editorial text-4xl font-bold text-gallery-900">$249</p>
+       <p class="text-sm mt-1 mb-6" style="opacity:0.5;">Signed, numbered, framed</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Hand-signed by artist</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Numbered edition of 50</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Certificate of authenticity</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Premium packaging insert</li>
+        <li class="flex items-center gap-3 text-sm">
+         <svg width="14" height="14" fill="none" stroke="#1B3A8C" stroke-width="2" viewbox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+         </svg> Artist statement card</li>
+       </ul><button class="w-full border border-gallery-800 text-gallery-800 py-3 text-sm font-semibold tracking-wider uppercase transition hover:bg-gallery-900 hover:text-white">Select</button>
+      </div>
+     </div>
+     <p class="section-reveal text-center text-xs mt-8" style="opacity:0.4;">All pricing in USD. Drop culture for art: once it's gone, it's gone.</p>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="bottom-cta" class="w-full px-6 py-24 md:py-32 bg-gallery-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 spotlight-sweep" style="opacity:0.4;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+     <div class="section-reveal">
+      <h2 id="cta-title" class="font-editorial text-4xl md:text-6xl font-bold leading-tight">Make your space feel curated.</h2>
+      <p class="mt-4 text-base" style="opacity:0.5;">Join 4,200+ collectors. Next drop launches in 12 days.</p><a href="#buy" class="inline-block mt-8 bg-white text-gallery-900 px-8 py-4 text-sm font-semibold tracking-wider uppercase transition hover:bg-ultramarine hover:text-white pulse-btn">Shop the Current Drop</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="section-reveal mt-20 max-w-2xl mx-auto text-left">
+      <div class="border-t border-white/20 pt-10">
+       <p class="text-xs tracking-[0.3em] uppercase font-semibold mb-6" style="opacity:0.5;">Vote + Comment</p><!-- Vote Buttons -->
+       <div class="flex gap-3 mb-8"><button id="vote-love" class="vote-btn flex items-center gap-2 border border-white/30 px-5 py-2.5 text-sm transition hover:bg-white/10 rounded-none">
+         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+         </svg> Love it <span id="vote-love-count" class="font-semibold">0</span> </button> <button id="vote-fire" class="vote-btn flex items-center gap-2 border border-white/30 px-5 py-2.5 text-sm transition hover:bg-white/10 rounded-none">
+         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+         </svg> Fire <span id="vote-fire-count" class="font-semibold">0</span> </button> <button id="vote-want" class="vote-btn flex items-center gap-2 border border-white/30 px-5 py-2.5 text-sm transition hover:bg-white/10 rounded-none">
+         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+         </svg> Want <span id="vote-want-count" class="font-semibold">0</span> </button>
+       </div><!-- Comment Form -->
+       <form id="comment-form" class="flex gap-3 mb-6"><input id="comment-name" type="text" placeholder="Your name" class="bg-transparent border border-white/30 px-4 py-2.5 text-sm text-white placeholder-white/40 flex-shrink-0 w-32 focus:outline-none focus:border-ultramarine" required> <input id="comment-text" type="text" placeholder="Leave a comment..." class="bg-transparent border border-white/30 px-4 py-2.5 text-sm text-white placeholder-white/40 flex-1 focus:outline-none focus:border-ultramarine" required> <button type="submit" id="comment-submit-btn" class="bg-ultramarine text-white px-5 py-2.5 text-sm font-semibold tracking-wider uppercase transition hover:bg-white hover:text-gallery-900 flex-shrink-0">Post</button>
+       </form>
+       <div id="comment-limit-warning" class="hidden text-sm text-terra mb-4">
+        Maximum comments reached. Please wait for moderation.
+       </div>
+       <div id="comments-list" class="space-y-4 max-h-64 overflow-y-auto"></div>
+       <p id="no-comments" class="text-sm" style="opacity:0.3;">No comments yet. Be the first.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full px-6 py-10 bg-gallery-900 border-t border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-editorial text-sm text-white/50">CanvasCurrent Gallery © 2025</p>
+     <div class="flex gap-6"><a href="#" class="text-white/40 hover:text-white transition">
+       <svg width="16" height="16" fill="currentColor" viewbox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+       </svg></a> <a href="#" class="text-white/40 hover:text-white transition">
+       <svg width="16" height="16" fill="currentColor" viewbox="0 0 24 24">
+        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+       </svg></a> <a href="#" class="text-white/40 hover:text-white transition">
+       <svg width="16" height="16" fill="currentColor" viewbox="0 0 24 24">
+        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" /><circle cx="4" cy="4" r="2" />
+       </svg></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ===== CONFIG & DEFAULTS =====
+const defaultConfig = {
+  background_color: '#FAFAFA',
+  surface_color: '#FFFFFF',
+  text_color: '#1A1A1A',
+  primary_action_color: '#1B3A8C',
+  secondary_action_color: '#0D0D0D',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_title: 'Walls with a point of view.',
+  hero_subtitle: 'Curated art drops designed to stop the scroll.',
+  about_title: 'The Gallery Story',
+  about_text: 'Founded in 2021, CanvasCurrent bridges the gap between emerging artists and collectors who believe walls deserve intention. Every drop is limited, every print is gallery-grade, and every frame ships museum-ready.',
+  cta_title: 'Make your space feel curated.'
+};
+
+// ===== DATA STATE =====
+let allData = [];
+let voteCounts = { love: 0, fire: 0, want: 0 };
+
+// ===== ELEMENT SDK =====
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseStack = 'DM Sans, sans-serif';
+  const editorialStack = `${font}, Georgia, serif`;
+  const sz = c.font_size || defaultConfig.font_size;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.bg-white').forEach(el => el.style.backgroundColor = c.surface_color);
+  document.body.style.color = c.text_color;
+
+  // Ultramarine elements
+  document.querySelectorAll('.bg-ultramarine, .pulse-btn.bg-ultramarine, .border-ultramarine').forEach(el => {
+    if (el.classList.contains('bg-ultramarine')) el.style.backgroundColor = c.primary_action_color;
+    if (el.classList.contains('border-ultramarine') || el.classList.contains('border-2')) el.style.borderColor = c.primary_action_color;
+  });
+  document.querySelectorAll('.text-ultramarine').forEach(el => el.style.color = c.primary_action_color);
+
+  // Dark sections
+  document.querySelectorAll('.bg-gallery-900').forEach(el => el.style.backgroundColor = c.secondary_action_color);
+
+  // Fonts
+  document.querySelectorAll('.font-editorial').forEach(el => el.style.fontFamily = editorialStack);
+
+  // Font sizes
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) heroTitle.style.fontSize = `${sz * 3.5}px`;
+
+  // Text content
+  const ht = document.getElementById('hero-title');
+  if (ht) ht.textContent = c.hero_title || defaultConfig.hero_title;
+  const hs = document.getElementById('hero-subtitle');
+  if (hs) hs.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  const at = document.getElementById('about-title');
+  if (at) at.textContent = c.about_title || defaultConfig.about_title;
+  const atx = document.getElementById('about-text');
+  if (atx) atx.textContent = c.about_text || defaultConfig.about_text;
+  const ct = document.getElementById('cta-title');
+  if (ct) ct.textContent = c.cta_title || defaultConfig.cta_title;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['about_title', config.about_title || defaultConfig.about_title],
+    ['about_text', config.about_text || defaultConfig.about_text],
+    ['cta_title', config.cta_title || defaultConfig.cta_title],
+  ])
+});
+
+// ===== DATA SDK =====
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  const comments = allData.filter(d => d.type === 'comment');
+
+  // Count votes
+  voteCounts = { love: 0, fire: 0, want: 0 };
+  allData.filter(d => d.type === 'vote').forEach(d => {
+    if (d.vote === 'love') voteCounts.love++;
+    if (d.vote === 'fire') voteCounts.fire++;
+    if (d.vote === 'want') voteCounts.want++;
+  });
+  document.getElementById('vote-love-count').textContent = voteCounts.love;
+  document.getElementById('vote-fire-count').textContent = voteCounts.fire;
+  document.getElementById('vote-want-count').textContent = voteCounts.want;
+
+  if (comments.length === 0) {
+    noComments.classList.remove('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  noComments.classList.add('hidden');
+
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const sorted = [...comments].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  sorted.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'flex items-start gap-3 border-b border-white/10 pb-3';
+      div.style.animation = 'fadeIn 0.4s ease';
+      const initials = (c.name || 'A').charAt(0).toUpperCase();
+      div.innerHTML = `
+        <div class="w-8 h-8 bg-ultramarine/30 flex items-center justify-center text-xs font-bold flex-shrink-0">${initials}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold" style="opacity:0.8;">${escapeHtml(c.name)}</p>
+          <p class="text-sm mt-0.5" style="opacity:0.55;">${escapeHtml(c.comment)}</p>
+        </div>
+      `;
+      list.appendChild(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== VOTE HANDLERS =====
+['love', 'fire', 'want'].forEach(type => {
+  document.getElementById(`vote-${type}`).addEventListener('click', async function() {
+    if (allData.length >= 999) {
+      document.getElementById('comment-limit-warning').classList.remove('hidden');
+      return;
+    }
+    this.classList.add('vote-btn-active');
+    this.disabled = true;
+    const res = await window.dataSdk.create({ type: 'vote', vote: type, name: '', comment: '', created_at: new Date().toISOString() });
+    this.disabled = false;
+    if (!res.isOk) this.classList.remove('vote-btn-active');
+    setTimeout(() => this.classList.remove('vote-btn-active'), 600);
+  });
+});
+
+// ===== COMMENT FORM =====
+document.getElementById('comment-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (allData.length >= 999) {
+    document.getElementById('comment-limit-warning').classList.remove('hidden');
+    return;
+  }
+  const name = document.getElementById('comment-name').value.trim();
+  const comment = document.getElementById('comment-text').value.trim();
+  if (!name || !comment) return;
+
+  const btn = document.getElementById('comment-submit-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  const res = await window.dataSdk.create({ type: 'comment', name, comment, vote: '', created_at: new Date().toISOString() });
+  btn.textContent = 'Post';
+  btn.disabled = false;
+
+  if (res.isOk) {
+    document.getElementById('comment-name').value = '';
+    document.getElementById('comment-text').value = '';
+  }
+});
+
+// ===== MOBILE MENU =====
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ===== SCROLL REVEAL =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+
+// ===== ICONS =====
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a717186c827c5',t:'MTc3NTU3OTcwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

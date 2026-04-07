@@ -1,1 +1,861 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/4c39ee8a-9008-48e5-bb38-c7bddc987d6c -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PersonaForge AI</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #030303;
+    --surface: #0a0a12;
+    --text: #e0e0f0;
+    --primary: #c026d3;
+    --secondary: #06b6d4;
+  }
+
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); }
+
+  @keyframes glitchShift {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 1px); }
+    40% { transform: translate(2px, -1px); }
+    60% { transform: translate(-1px, -2px); }
+    80% { transform: translate(1px, 2px); }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes scanline {
+    0% { top: -10%; }
+    100% { top: 110%; }
+  }
+
+  @keyframes borderGlow {
+    0%, 100% { border-color: rgba(192,38,211,0.3); }
+    50% { border-color: rgba(6,182,212,0.6); }
+  }
+
+  @keyframes waveformPulse {
+    0%, 100% { height: 8px; }
+    50% { height: 28px; }
+  }
+
+  .glitch-text { animation: glitchShift 3s infinite; }
+  .glow-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .glass {
+    background: rgba(10, 10, 18, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(192, 38, 211, 0.15);
+  }
+
+  .holo-panel {
+    background: linear-gradient(135deg, rgba(192,38,211,0.08), rgba(6,182,212,0.08));
+    border: 1px solid rgba(192,38,211,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .holo-panel::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(6,182,212,0.4), transparent);
+    animation: scanline 4s linear infinite;
+  }
+
+  .pricing-card {
+    border: 1px solid rgba(192,38,211,0.25);
+    animation: borderGlow 4s ease-in-out infinite;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pricing-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(6,182,212,0.6);
+    box-shadow: 0 0 40px rgba(192,38,211,0.15), 0 0 80px rgba(6,182,212,0.08);
+  }
+
+  .neon-btn {
+    background: linear-gradient(135deg, var(--primary), #7c3aed);
+    box-shadow: 0 0 20px rgba(192,38,211,0.3);
+    transition: all 0.3s;
+  }
+  .neon-btn:hover {
+    box-shadow: 0 0 40px rgba(192,38,211,0.5), 0 0 80px rgba(124,58,237,0.2);
+    transform: translateY(-2px);
+  }
+
+  .outline-btn {
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    transition: all 0.3s;
+  }
+  .outline-btn:hover {
+    background: rgba(6,182,212,0.1);
+    box-shadow: 0 0 30px rgba(6,182,212,0.2);
+  }
+
+  .nav-link { position: relative; transition: color 0.3s; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--secondary);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  .nav-link:hover { color: var(--secondary); }
+
+  .waveform-bar {
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(to top, var(--primary), var(--secondary));
+    animation: waveformPulse 1.2s ease-in-out infinite;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(192,38,211,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(192,38,211,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .emoji-btn { transition: all 0.15s; cursor: pointer; user-select: none; }
+  .emoji-btn:hover { transform: scale(1.2); }
+  .emoji-btn.selected { transform: scale(1.3); filter: drop-shadow(0 0 6px rgba(192,38,211,0.6)); }
+
+  .comment-input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 15px rgba(6,182,212,0.15); }
+
+  .toast-msg {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+    opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; pointer-events: none;
+  }
+  .toast-msg.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .persona-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 2px solid rgba(192,38,211,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    background: linear-gradient(135deg, rgba(192,38,211,0.15), rgba(6,182,212,0.15));
+  }
+
+  .face-outline {
+    stroke: url(#neonGrad);
+    stroke-width: 1.5;
+    fill: none;
+    opacity: 0.3;
+  }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '#030303',
+        surface: '#0a0a12',
+        neon: { pink: '#c026d3', violet: '#7c3aed', cyan: '#06b6d4' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto grid-bg" style="background-color: var(--bg);">
+   <!-- SVG defs -->
+   <svg width="0" height="0" style="position:absolute;">
+    <defs>
+     <lineargradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c026d3" />
+      <stop offset="100%" stop-color="#06b6d4" />
+     </lineargradient>
+     <g id="icon-robot">
+      <path d="M10 8c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2h-1v3h-2v-3h-6v3h-2v-3h-1c-1.1 0-2-.9-2-2V8zm6 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+     <g id="icon-diamond">
+      <path d="M12 2l8 6v8l-8 6-8-6V8l8-6z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12 10v8M12 10l6-4M12 10l-6-4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5" />
+     </g>
+     <g id="icon-sound">
+      <path d="M11 5L6 9H2v6h4l5 4V5z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M15.5 8.5c1 1 1.5 2.3 1.5 3.5s-.5 2.5-1.5 3.5M17.5 6.5c1.5 1.5 2.5 3.5 2.5 5.5s-1 4-2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+     <g id="icon-chart">
+      <path d="M3 14v-2h2v2M7 14v-6h2v6M11 14V7h2v7M15 14v-4h2v4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M3 16h16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+     </g>
+     <g id="icon-gift">
+      <path d="M9 2h6v3h-6V2zm7 5H2v11c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V7h-2zm-6 0v-1h2v1M8 12h8v-3H8v3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+     <g id="icon-users">
+      <path d="M16 21v-2a4 4 0 0 0-4-4h-5a4 4 0 0 0-4 4v2M12.5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM20 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+     <g id="icon-arrow-up">
+      <path d="M12 5v14M19 12l-7-7-7 7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+     </g>
+    </defs>
+   </svg><!-- STICKY NAV -->
+   <nav class="glass fixed top-0 left-0 w-full z-50" style="border-bottom: 1px solid rgba(192,38,211,0.1);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+     <a href="#home" class="flex items-center gap-2 text-lg font-bold tracking-tight" style="font-family:'Space Mono',monospace;"> <span style="color:var(--primary);">◈</span> <span id="nav-logo">PersonaForge</span> <span style="color:var(--secondary);">AI</span> </a> <button id="mobile-toggle" class="sm:hidden p-2 rounded" style="color:var(--text);"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+     <div id="nav-links" class="hidden sm:flex items-center gap-6 text-sm" style="color: rgba(224,224,240,0.6);">
+      <a href="#home" class="nav-link">Home</a> <a href="#personas" class="nav-link">Personas</a> <a href="#content" class="nav-link">Content</a> <a href="#growth" class="nav-link">Growth</a> <a href="#pricing" class="nav-link">Pricing</a> <a href="#faq" class="nav-link">FAQ</a> <a href="#create" class="neon-btn px-4 py-2 rounded-lg text-white text-xs font-semibold tracking-wide">Create Persona</a>
+     </div>
+    </div>
+    <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4 flex flex-col gap-3 text-sm" style="color:rgba(224,224,240,0.6);">
+     <a href="#home" class="nav-link py-1">Home</a> <a href="#personas" class="nav-link py-1">Personas</a> <a href="#content" class="nav-link py-1">Content</a> <a href="#growth" class="nav-link py-1">Growth</a> <a href="#pricing" class="nav-link py-1">Pricing</a> <a href="#faq" class="nav-link py-1">FAQ</a> <a href="#create" class="neon-btn px-4 py-2 rounded-lg text-white text-xs font-semibold text-center">Create Persona</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="min-height: 100%; padding-top: 80px;">
+    <!-- Decorative face SVG -->
+    <svg class="absolute" style="top:12%;right:8%;width:200px;height:240px;opacity:0.08;" viewbox="0 0 200 240">
+     <ellipse cx="100" cy="110" rx="75" ry="95" class="face-outline" /> <circle cx="72" cy="95" r="8" class="face-outline" /> <circle cx="128" cy="95" r="8" class="face-outline" /> <path d="M80 140 Q100 158 120 140" class="face-outline" />
+    </svg><!-- Waveform decoration -->
+    <div class="absolute flex items-end gap-1" style="bottom:15%;left:6%;opacity:0.15;">
+     <div class="waveform-bar" style="animation-delay:0s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.15s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.3s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.45s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.6s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.75s;"></div>
+     <div class="waveform-bar" style="animation-delay:0.9s;"></div>
+     <div class="waveform-bar" style="animation-delay:1.05s;"></div>
+    </div>
+    <div class="relative z-10 text-center px-6 max-w-4xl">
+     <div class="inline-block mb-6 px-4 py-1.5 rounded-full text-xs font-mono tracking-widest" style="border:1px solid rgba(6,182,212,0.3);color:var(--secondary);background:rgba(6,182,212,0.05);">
+      SYNTHETIC CREATOR ENGINE
+     </div>
+     <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-900 leading-tight mb-6 glitch-text" style="background:linear-gradient(135deg,#e0e0f0,#c026d3,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Your next influencer doesn't need a body.</h1>
+     <p id="hero-subtitle" class="text-lg sm:text-xl max-w-2xl mx-auto mb-10" style="color:rgba(224,224,240,0.55);line-height:1.7;">AI personas built to attract, engage, and monetize.</p>
+     <div class="flex flex-wrap justify-center gap-4">
+      <a href="#create" id="hero-cta-primary" class="neon-btn px-8 py-3.5 rounded-xl text-white font-semibold tracking-wide">Create Persona</a> <a href="#personas" id="hero-cta-secondary" class="outline-btn px-8 py-3.5 rounded-xl font-semibold tracking-wide">See Examples</a>
+     </div>
+    </div><!-- Gradient orbs -->
+    <div class="absolute rounded-full" style="width:400px;height:400px;top:-10%;left:-10%;background:radial-gradient(circle,rgba(192,38,211,0.12),transparent 70%);filter:blur(60px);"></div>
+    <div class="absolute rounded-full" style="width:350px;height:350px;bottom:-5%;right:-5%;background:radial-gradient(circle,rgba(6,182,212,0.1),transparent 70%);filter:blur(60px);"></div>
+   </section><!-- PERSONAS -->
+   <section id="personas" class="w-full py-24 px-6 reveal">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--secondary);">DIGITAL IDENTITIES</p>
+      <h2 class="text-3xl sm:text-5xl font-800 mb-4">Meet the Personas</h2>
+      <p class="max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">Each identity is crafted with unique voice, aesthetic, and audience strategy.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="holo-panel rounded-2xl p-6">
+       <div class="persona-avatar mb-4">
+        <svg width="40" height="40" viewbox="0 0 24 24" style="color: var(--secondary);">
+         <use href="#icon-robot" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-1">NOVA.ai</h3>
+       <p class="text-xs font-mono mb-3" style="color:var(--secondary);">Tech • Futurism • Reviews</p>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">A sleek tech commentator generating daily insights on AI breakthroughs, product reviews, and future predictions. 340K followers.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(192,38,211,0.15);color:var(--primary);">YouTube</span> <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(6,182,212,0.15);color:var(--secondary);">Twitter</span>
+       </div>
+      </div>
+      <div class="holo-panel rounded-2xl p-6">
+       <div class="persona-avatar mb-4">
+        <svg width="40" height="40" viewbox="0 0 24 24" style="color: var(--primary);">
+         <use href="#icon-diamond" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-1">LYRA</h3>
+       <p class="text-xs font-mono mb-3" style="color:var(--secondary);">Fashion • Lifestyle • Luxury</p>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">A virtual fashion influencer curating haute couture lookbooks, brand collaborations, and style forecasts. 520K followers.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(192,38,211,0.15);color:var(--primary);">Instagram</span> <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(6,182,212,0.15);color:var(--secondary);">TikTok</span>
+       </div>
+      </div>
+      <div class="holo-panel rounded-2xl p-6">
+       <div class="persona-avatar mb-4">
+        <svg width="40" height="40" viewbox="0 0 24 24" style="color: var(--secondary);">
+         <use href="#icon-sound" />
+        </svg>
+       </div>
+       <h3 class="text-xl font-bold mb-1">ECHO.SYN</h3>
+       <p class="text-xs font-mono mb-3" style="color:var(--secondary);">Music • Culture • Nightlife</p>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">An AI DJ and cultural curator blending playlists, event coverage, and underground music discovery. 180K followers.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(192,38,211,0.15);color:var(--primary);">Spotify</span> <span class="px-2 py-0.5 rounded text-xs" style="background:rgba(6,182,212,0.15);color:var(--secondary);">YouTube</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CONTENT -->
+   <section id="content" class="w-full py-24 px-6 reveal">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--primary);">CONTENT ENGINE</p>
+      <h2 class="text-3xl sm:text-5xl font-800 mb-4">Automated Posting Systems</h2>
+      <p class="max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">Your persona creates, schedules, and publishes — 24/7, across every platform.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 gap-6">
+      <div class="glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(192,38,211,0.15);">
+         <svg width="20" height="20" viewbox="0 0 24 24" style="color: var(--primary);">
+          <use href="#icon-gift" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold">AI Content Generation</h3>
+       </div>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">Blog posts, captions, threads, scripts — generated in your persona's unique voice and style with full brand consistency.</p>
+      </div>
+      <div class="glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(6,182,212,0.15);">
+         <svg width="20" height="20" viewbox="0 0 24 24" style="color: var(--secondary);">
+          <use href="#icon-chart" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold">Smart Scheduling</h3>
+       </div>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">Optimal posting times analyzed per platform. Content queued weeks in advance with adaptive timing based on engagement data.</p>
+      </div>
+      <div class="glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(192,38,211,0.15);">
+         <svg width="20" height="20" viewbox="0 0 24 24" style="color: var(--primary);">
+          <use href="#icon-users" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold">Cross-Platform Sync</h3>
+       </div>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">One piece of content, reformatted for every platform. Threads for Twitter, Reels for Instagram, Shorts for YouTube — automatically.</p>
+      </div>
+      <div class="glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(6,182,212,0.15);">
+         <svg width="20" height="20" viewbox="0 0 24 24" style="color: var(--secondary);">
+          <use href="#icon-sound" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-bold">Engagement Autopilot</h3>
+       </div>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">Automated replies, comment interactions, and DM sequences that maintain your persona's voice around the clock.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- GROWTH -->
+   <section id="growth" class="w-full py-24 px-6 reveal">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--secondary);">SCALE &amp; MONETIZE</p>
+      <h2 class="text-3xl sm:text-5xl font-800 mb-4">Growth &amp; Monetization</h2>
+      <p class="max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">Turn synthetic influence into real revenue with built-in monetization frameworks.</p>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-6">
+      <div class="holo-panel rounded-2xl p-6 text-center">
+       <div class="text-4xl mb-4">
+        <svg width="48" height="48" viewbox="0 0 24 24" style="color: var(--secondary); margin: 0 auto;">
+         <use href="#icon-chart" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Brand Deals</h3>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">AI-matched sponsorships and brand partnerships tailored to your persona's niche and audience demographics.</p>
+      </div>
+      <div class="holo-panel rounded-2xl p-6 text-center">
+       <div class="text-4xl mb-4">
+        <svg width="48" height="48" viewbox="0 0 24 24" style="color: var(--primary); margin: 0 auto;">
+         <use href="#icon-gift" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Digital Products</h3>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">Auto-generated courses, ebooks, templates, and merch sold through your persona's storefront.</p>
+      </div>
+      <div class="holo-panel rounded-2xl p-6 text-center">
+       <div class="text-4xl mb-4">
+        <svg width="48" height="48" viewbox="0 0 24 24" style="color: var(--secondary); margin: 0 auto;">
+         <use href="#icon-arrow-up" />
+        </svg>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Audience Scaling</h3>
+       <p class="text-sm" style="color:rgba(224,224,240,0.45);">Algorithmic growth strategies, viral content loops, and cross-promotion networks that compound followers.</p>
+      </div>
+     </div><!-- Included digital product -->
+     <div class="mt-16 holo-panel rounded-2xl p-8 text-center">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--primary);">INCLUDED WITH EVERY PLAN</p>
+      <h3 class="text-2xl font-bold mb-3">Complete Digital Product Bundle</h3>
+      <div class="flex flex-wrap justify-center gap-4 mt-6">
+       <div class="glass rounded-xl px-5 py-3 text-sm flex items-center gap-2">
+        <svg width="16" height="16" viewbox="0 0 24 24" style="color: var(--primary);">
+         <use href="#icon-diamond" />
+        </svg>Avatar Identity Systems
+       </div>
+       <div class="glass rounded-xl px-5 py-3 text-sm flex items-center gap-2">
+        <svg width="16" height="16" viewbox="0 0 24 24" style="color: var(--secondary);">
+         <use href="#icon-arrow-up" />
+        </svg>Content Pipelines
+       </div>
+       <div class="glass rounded-xl px-5 py-3 text-sm flex items-center gap-2">
+        <svg width="16" height="16" viewbox="0 0 24 24" style="color: var(--primary);">
+         <use href="#icon-chart" />
+        </svg>Monetization Frameworks
+       </div>
+       <div class="glass rounded-xl px-5 py-3 text-sm flex items-center gap-2">
+        <svg width="16" height="16" viewbox="0 0 24 24" style="color: var(--secondary);">
+         <use href="#icon-robot" />
+        </svg>Brand Kits
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="w-full py-24 px-6 reveal">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--primary);">PRICING</p>
+      <h2 class="text-3xl sm:text-5xl font-800 mb-4">Choose Your Engine</h2>
+      <p class="max-w-xl mx-auto" style="color:rgba(224,224,240,0.5);">Every plan includes the full digital product bundle.</p>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-6">
+      <!-- Starter -->
+      <div class="pricing-card rounded-2xl p-8" style="background:rgba(10,10,18,0.8);">
+       <p class="text-xs font-mono tracking-widest mb-2" style="color:var(--secondary);">STARTER</p>
+       <h3 class="text-2xl font-bold mb-1">Single Persona</h3>
+       <div class="text-4xl font-900 my-6" style="color:var(--text);">
+        $47<span class="text-base font-normal" style="color:rgba(224,224,240,0.4);">/mo</span>
+       </div>
+       <ul class="space-y-3 mb-8 text-sm" style="color:rgba(224,224,240,0.5);">
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>1 AI persona</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>2 platforms</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>30 posts/month</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Basic analytics</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Brand kit included</li>
+       </ul><button class="outline-btn w-full py-3 rounded-xl font-semibold text-sm">Get Started</button>
+      </div><!-- Creator -->
+      <div class="pricing-card rounded-2xl p-8 relative" style="background:rgba(10,10,18,0.8);border-color:rgba(6,182,212,0.4);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;">
+        POPULAR
+       </div>
+       <p class="text-xs font-mono tracking-widest mb-2" style="color:var(--primary);">CREATOR</p>
+       <h3 class="text-2xl font-bold mb-1">Multi-Platform</h3>
+       <div class="text-4xl font-900 my-6" style="color:var(--text);">
+        $127<span class="text-base font-normal" style="color:rgba(224,224,240,0.4);">/mo</span>
+       </div>
+       <ul class="space-y-3 mb-8 text-sm" style="color:rgba(224,224,240,0.5);">
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>3 AI personas</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>All platforms</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Unlimited posts</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Advanced analytics</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Monetization tools</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--primary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Priority support</li>
+       </ul><button class="neon-btn w-full py-3 rounded-xl text-white font-semibold text-sm">Get Creator</button>
+      </div><!-- Agency -->
+      <div class="pricing-card rounded-2xl p-8" style="background:rgba(10,10,18,0.8);">
+       <p class="text-xs font-mono tracking-widest mb-2" style="color:var(--secondary);">AGENCY</p>
+       <h3 class="text-2xl font-bold mb-1">Full Automation</h3>
+       <div class="text-4xl font-900 my-6" style="color:var(--text);">
+        $347<span class="text-base font-normal" style="color:rgba(224,224,240,0.4);">/mo</span>
+       </div>
+       <ul class="space-y-3 mb-8 text-sm" style="color:rgba(224,224,240,0.5);">
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Unlimited personas</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>All platforms + API</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Unlimited everything</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>White-label option</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Dedicated manager</li>
+        <li class="flex items-center gap-2">
+         <svg width="16" height="16" viewbox="0 0 24 24" style="color:var(--secondary);flex-shrink:0;">
+          <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+         </svg>Custom integrations</li>
+       </ul><button class="outline-btn w-full py-3 rounded-xl font-semibold text-sm">Contact Sales</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full py-24 px-6 reveal">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--secondary);">FAQ</p>
+      <h2 class="text-3xl sm:text-5xl font-800 mb-4">Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-list"></div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="create" class="w-full py-24 px-6 reveal">
+    <div class="max-w-4xl mx-auto text-center">
+     <!-- CTA -->
+     <div class="holo-panel rounded-3xl p-12 sm:p-16 mb-16">
+      <h2 id="bottom-cta-heading" class="text-3xl sm:text-5xl font-900 mb-6" style="background:linear-gradient(135deg,#e0e0f0,#c026d3,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Own attention at scale.</h2>
+      <p class="mb-8 max-w-lg mx-auto" style="color:rgba(224,224,240,0.5);">Build a creator that never sleeps. Start forging your AI persona today.</p><button class="neon-btn px-10 py-4 rounded-xl text-white font-bold text-lg tracking-wide">Create Persona →</button>
+     </div><!-- VOTE + COMMENT MODULE -->
+     <div class="glass rounded-2xl p-8 text-left">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+       <div>
+        <h3 class="text-xl font-bold">React &amp; Comment</h3>
+        <p class="text-xs mt-1" style="color:rgba(224,224,240,0.4);">Embed Widget Here</p>
+       </div>
+       <div class="flex items-center gap-1" id="waveform-widget">
+        <div class="waveform-bar" style="animation-delay:0s;"></div>
+        <div class="waveform-bar" style="animation-delay:0.1s;"></div>
+        <div class="waveform-bar" style="animation-delay:0.2s;"></div>
+        <div class="waveform-bar" style="animation-delay:0.3s;"></div>
+        <div class="waveform-bar" style="animation-delay:0.4s;"></div>
+       </div>
+      </div><!-- Reactions -->
+      <div class="mb-6">
+       <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--secondary);">REACTIONS</p>
+       <div class="flex flex-wrap gap-3" id="reaction-container"></div>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--primary);">WHAT WOULD YOU PAY?</p>
+       <div class="flex flex-wrap gap-2" id="price-container"></div>
+      </div><!-- Comments -->
+      <div>
+       <p class="text-xs font-mono tracking-widest mb-3" style="color:var(--secondary);">COMMENTS</p>
+       <form id="comment-form" class="flex gap-3 mb-4">
+        <input type="text" id="comment-input" class="comment-input flex-1 px-4 py-3 rounded-xl text-sm" style="background:rgba(10,10,18,0.8);border:1px solid rgba(192,38,211,0.2);color:var(--text);" placeholder="Share your thoughts..." maxlength="280" aria-label="Comment"> <button type="submit" id="comment-submit" class="neon-btn px-6 py-3 rounded-xl text-white text-sm font-semibold flex items-center gap-2"> <i data-lucide="send" style="width:14px;height:14px;"></i>Send </button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
+       <p id="comment-count" class="text-xs mt-3" style="color:rgba(224,224,240,0.3);"></p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 text-center" style="border-top:1px solid rgba(192,38,211,0.08);">
+    <p class="text-xs" style="color:rgba(224,224,240,0.25);font-family:'Space Mono',monospace;">◈ PersonaForge AI — Build a creator that never sleeps.</p>
+   </footer>
+  </div><!-- Toast -->
+  <div id="toast" class="toast-msg glass px-6 py-3 rounded-xl text-sm font-medium"></div>
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  background_color: '#030303',
+  surface_color: '#0a0a12',
+  text_color: '#e0e0f0',
+  primary_color: '#c026d3',
+  secondary_color: '#06b6d4',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: "Your next influencer doesn't need a body.",
+  hero_subtitle: 'AI personas built to attract, engage, and monetize.',
+  cta_primary: 'Create Persona',
+  cta_secondary: 'See Examples',
+  bottom_cta_text: 'Own attention at scale.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--primary', c.primary_color);
+  document.documentElement.style.setProperty('--secondary', c.secondary_color);
+
+  const root = document.getElementById('app-root');
+  if (root) root.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  const font = c.font_family || 'Outfit';
+  const size = c.font_size || 16;
+  document.body.style.fontFamily = `${font}, sans-serif`;
+
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) { heroTitle.textContent = c.hero_title; heroTitle.style.fontSize = `${size * 3.5}px`; }
+
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) { heroSub.textContent = c.hero_subtitle; heroSub.style.fontSize = `${size * 1.2}px`; }
+
+  const ctaPrimary = document.getElementById('hero-cta-primary');
+  if (ctaPrimary) ctaPrimary.textContent = c.cta_primary;
+
+  const ctaSecondary = document.getElementById('hero-cta-secondary');
+  if (ctaSecondary) ctaSecondary.textContent = c.cta_secondary;
+
+  const bottomCta = document.getElementById('bottom-cta-heading');
+  if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ===== DATA SDK =====
+const REACTIONS = ['🔥','💎','🚀','⚡','🤖','💜','👏','🎯','✨','💰'];
+const PRICES = ['$9','$19','$29','$47','$79','$127','$199','$249','$347','$497'];
+let allData = [];
+
+function getCount(type, val) {
+  return allData.filter(d => d.type === type && (val === undefined || d.emoji === val || d.price_option === val)).length;
+}
+
+function renderReactions() {
+  const container = document.getElementById('reaction-container');
+  REACTIONS.forEach(emoji => {
+    let btn = container.querySelector(`[data-emoji="${emoji}"]`);
+    const count = getCount('reaction', emoji);
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'emoji-btn glass px-3 py-2 rounded-xl flex items-center gap-2 text-sm';
+      btn.dataset.emoji = emoji;
+      btn.onclick = () => handleReaction(emoji);
+      container.appendChild(btn);
+    }
+    btn.innerHTML = `${emoji} <span style="color:rgba(224,224,240,0.5);">${count}</span>`;
+  });
+}
+
+function renderPrices() {
+  const container = document.getElementById('price-container');
+  PRICES.forEach(price => {
+    let btn = container.querySelector(`[data-price="${price}"]`);
+    const count = getCount('price', price);
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'emoji-btn glass px-3 py-2 rounded-lg text-xs font-mono';
+      btn.dataset.price = price;
+      btn.onclick = () => handlePrice(price);
+      container.appendChild(btn);
+    }
+    btn.innerHTML = `${price} <span style="color:rgba(224,224,240,0.4);margin-left:4px;">${count || ''}</span>`;
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const seen = new Set();
+
+  comments.forEach(c => {
+    seen.add(c.__backendId);
+    let el = existingMap.get(c.__backendId);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'glass rounded-xl px-4 py-3 text-sm';
+      el.dataset.id = c.__backendId;
+      list.appendChild(el);
+    }
+    const time = new Date(c.created_at);
+    const timeStr = time.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    el.innerHTML = `<p style="color:var(--text);">${escapeHTML(c.comment_text)}</p><p class="text-xs mt-1" style="color:rgba(224,224,240,0.25);">${timeStr}</p>`;
+  });
+
+  existingMap.forEach((el, id) => { if (!seen.has(id)) el.remove(); });
+
+  const countEl = document.getElementById('comment-count');
+  countEl.textContent = comments.length ? `${comments.length} comment${comments.length > 1 ? 's' : ''}` : '';
+}
+
+function escapeHTML(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.color = isError ? '#f87171' : 'var(--secondary)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached — delete some items first.', true); return; }
+  const result = await window.dataSdk.create({ id: crypto.randomUUID(), type: 'reaction', emoji, section_id: 'bottom', price_option: '', comment_text: '', created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Failed to save reaction.', true);
+}
+
+async function handlePrice(price) {
+  if (allData.length >= 999) { showToast('Limit reached.', true); return; }
+  const result = await window.dataSdk.create({ id: crypto.randomUUID(), type: 'price', emoji: '', section_id: 'bottom', price_option: price, comment_text: '', created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Failed to save vote.', true);
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached.', true); return; }
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ id: crypto.randomUUID(), type: 'comment', emoji: '', section_id: 'bottom', price_option: '', comment_text: text, created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (result.isOk) { input.value = ''; showToast('Comment posted!', false); }
+  else showToast('Failed to post comment.', true);
+});
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPrices();
+    renderComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== FAQ =====
+const faqs = [
+  { q: 'Is this legal?', a: 'Yes. AI-generated personas are legal to operate. We include disclosure guidelines and compliance frameworks with every plan.' },
+  { q: 'Do I need design skills?', a: 'No. PersonaForge generates complete identity systems — visual assets, voice profiles, and content strategies — automatically.' },
+  { q: 'Can I monetize immediately?', a: 'Creator and Agency plans include monetization frameworks. Most personas begin generating revenue within 30 days of consistent posting.' },
+  { q: 'What platforms are supported?', a: 'Instagram, TikTok, YouTube, Twitter/X, LinkedIn, Threads, and Spotify. More platforms added quarterly.' },
+  { q: 'Can I cancel anytime?', a: 'Yes. All plans are month-to-month with no long-term commitment. Your persona assets remain yours.' }
+];
+
+const faqList = document.getElementById('faq-list');
+faqs.forEach((f, i) => {
+  const item = document.createElement('div');
+  item.className = 'glass rounded-xl overflow-hidden';
+  item.innerHTML = `
+    <button class="w-full text-left px-6 py-4 flex items-center justify-between text-sm font-semibold" onclick="this.parentElement.classList.toggle('open');this.querySelector('i').style.transform=this.parentElement.classList.contains('open')?'rotate(180deg)':''">
+      <span>${f.q}</span>
+      <i data-lucide="chevron-down" style="width:16px;height:16px;transition:transform 0.3s;color:var(--secondary);"></i>
+    </button>
+    <div style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
+      <p class="px-6 pb-4 text-sm" style="color:rgba(224,224,240,0.45);">${f.a}</p>
+    </div>`;
+  item.querySelector('button').addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (this.parentElement.classList.contains('open')) content.style.maxHeight = content.scrollHeight + 'px';
+    else content.style.maxHeight = '0';
+  });
+  faqList.appendChild(item);
+});
+
+// ===== SCROLL REVEALS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ===== MOBILE NAV =====
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ===== ACTIVE NAV =====
+const sections = ['home','personas','content','growth','pricing','faq','create'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('#nav-links .nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a705e907227c5',t:'MTc3NTU3OTY1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

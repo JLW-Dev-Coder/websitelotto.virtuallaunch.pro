@@ -1,1 +1,705 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/0c4db87a-a311-4786-b687-f31c61737e9f -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breakline Surf Co.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        aqua: '#0ABAB5',
+        sunset: '#F97316',
+        sand: '#FAF3E0',
+        deep: '#0C2340',
+        foam: '#E0F7FA'
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['DM Sans', 'Helvetica', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+@keyframes waveFloat {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-15px) translateY(-5px); }
+  50% { transform: translateX(0) translateY(-10px); }
+  75% { transform: translateX(15px) translateY(-5px); }
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flare {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10,186,181,0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(10,186,181,0); }
+}
+
+@keyframes stampRotate {
+  from { opacity: 0; transform: rotate(-12deg) scale(0.8); }
+  to { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+@keyframes waveOverlay {
+  0% { d: path("M0,60 Q120,20 240,60 T480,60 T720,60 T960,60 L960,120 L0,120 Z"); }
+  50% { d: path("M0,50 Q120,80 240,50 T480,50 T720,50 T960,50 L960,120 L0,120 Z"); }
+  100% { d: path("M0,60 Q120,20 240,60 T480,60 T720,60 T960,60 L960,120 L0,120 Z"); }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #0ABAB5;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.postcard-frame {
+  border: 1px solid #d4c5a9;
+  box-shadow: 4px 4px 0 rgba(12,35,64,0.06);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+.postcard-frame:hover {
+  transform: translateY(-6px);
+  box-shadow: 6px 10px 20px rgba(12,35,64,0.1);
+}
+
+.stamp-badge {
+  border: 2px solid #0C2340;
+  border-radius: 4px;
+  padding: 6px 14px;
+  transform: rotate(-6deg);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #0C2340;
+  animation: stampRotate 0.6s ease forwards;
+}
+
+.hero-img-container {
+  overflow: hidden;
+  border-radius: 8px;
+}
+.hero-img-container img {
+  animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+.cta-pulse {
+  animation: pulse 2.5s ease infinite;
+}
+
+.flare-overlay {
+  pointer-events: none;
+  animation: flare 6s ease-in-out infinite;
+}
+
+.scroll-smooth { scroll-behavior: smooth; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto scroll-smooth bg-sand font-body text-deep"><!-- SVG Icon Definitions -->
+  <svg style="display:none"><symbol id="icon-wave" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0" />
+    <path d="M2 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0" opacity="0.5" />
+   </symbol> <symbol id="icon-sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07-7.07-1.41 1.41M8.34 15.66l-1.41 1.41m12.14 0-1.41-1.41M8.34 8.34 6.93 6.93" />
+   </symbol> <symbol id="icon-board" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="12" cy="12" rx="4" ry="10" />
+    <line x1="12" y1="2" x2="12" y2="22" />
+   </symbol> <symbol id="icon-pin" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+    <circle cx="12" cy="9" r="2.5" />
+   </symbol> <symbol id="icon-wind" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.7 7.7A2.5 2.5 0 1 1 19 12H2m7.6-7.4A2 2 0 1 1 11 7H2m10.7 11.3A2.5 2.5 0 1 0 14 17H2" />
+   </symbol> <symbol id="icon-calendar" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <line x1="16" y1="2" x2="16" y2="6" />
+    <line x1="8" y1="2" x2="8" y2="6" />
+    <line x1="3" y1="10" x2="21" y2="10" />
+   </symbol>
+  </svg><!-- Sticky Nav -->
+  <nav id="main-nav" style="position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(250,243,224,0.9);border-bottom:1px solid rgba(12,35,64,0.06);">
+   <div class="max-w-6xl mx-auto px-6 flex items-center justify-between" style="height:60px;"><a href="#home" class="font-display text-xl font-bold tracking-tight" style="color:#0C2340;">Breakline<span style="color:#0ABAB5;">.</span></a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide"><a href="#home" class="nav-link" style="color:#0C2340;">Home</a> <a href="#lookbook" class="nav-link" style="color:#0C2340;">Lookbook</a> <a href="#trips" class="nav-link" style="color:#0C2340;">Trips</a> <a href="#templates" class="nav-link" style="color:#0C2340;">Templates</a> <a href="#reviews" class="nav-link" style="color:#0C2340;">Reviews</a> <a href="#download" class="nav-link" style="color:#0ABAB5;font-weight:600;">Download</a>
+    </div><button id="mobile-menu-btn" class="md:hidden" style="color:#0C2340;"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm font-medium"><a href="#home" style="color:#0C2340;">Home</a> <a href="#lookbook" style="color:#0C2340;">Lookbook</a> <a href="#trips" style="color:#0C2340;">Trips</a> <a href="#templates" style="color:#0C2340;">Templates</a> <a href="#reviews" style="color:#0C2340;">Reviews</a> <a href="#download" style="color:#0ABAB5;">Download</a>
+   </div>
+  </nav><!-- Hero Section -->
+  <section id="home" class="relative overflow-hidden" style="min-height:600px;">
+   <div class="max-w-6xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center relative z-10">
+    <div>
+     <div class="stamp-badge inline-block mb-6" style="opacity:0;animation-delay:0.2s;animation-fill-mode:forwards;">
+      Surf Season 2025
+     </div>
+     <h1 id="hero-title" class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6" style="color:#0C2340;animation:fadeInUp 1s ease forwards;">Your next wave<br>
+      is waiting.</h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl leading-relaxed mb-8 max-w-md" style="color:rgba(12,35,64,0.65);animation:fadeInUp 1s 0.2s ease both;">Surf visuals and travel templates for creators and brands.</p>
+     <p id="hero-tagline" class="font-display italic text-sm mb-8" style="color:#0ABAB5;animation:fadeInUp 1s 0.3s ease both;">"Chase waves, not stress."</p>
+     <div class="flex flex-wrap gap-4" style="animation:fadeInUp 1s 0.4s ease both;"><a href="#download" id="cta-primary-btn" class="cta-pulse inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-white transition-all" style="background:#0ABAB5;">
+       <svg width="16" height="16">
+        <use href="#icon-wave" />
+       </svg><span>Get the Pack</span> </a> <a href="#lookbook" id="cta-secondary-btn" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold border transition-all hover:bg-deep hover:text-white" style="color:#0C2340;border-color:#0C2340;"> <span>View Lookbook</span>
+       <svg style="width:14px;height:14px;">
+        <use href="#icon-sun" />
+       </svg></a>
+     </div>
+    </div>
+    <div class="relative">
+     <div class="hero-img-container postcard-frame bg-white p-2" style="animation:fadeInUp 1s 0.3s ease both;"><img src="https://images.unsplash.com/photo-1502680390548-bdbac40e4a9f?w=800&amp;h=600&amp;fit=crop" alt="Surfer riding a golden wave at sunset" loading="lazy" class="w-full rounded" style="aspect-ratio:4/3;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#0ABAB5,#F97316)';this.alt='Image unavailable';">
+     </div><!-- Light flare overlay -->
+     <div class="flare-overlay absolute -top-10 -right-10 rounded-full" style="width:200px;height:200px;background:radial-gradient(circle,rgba(249,115,22,0.3),transparent 70%);"></div>
+     <div class="stamp-badge absolute -bottom-3 -left-3 bg-sand" style="opacity:0;animation-delay:0.8s;animation-fill-mode:forwards;">
+      Est. 2025
+     </div>
+    </div>
+   </div><!-- Wave overlay at bottom -->
+   <div class="absolute bottom-0 left-0 w-full" style="z-index:5;">
+    <svg viewbox="0 0 960 120" preserveaspectratio="none" style="width:100%;height:60px;display:block;"><path fill="rgba(10,186,181,0.08)" d="M0,60 Q120,20 240,60 T480,60 T720,60 T960,60 L960,120 L0,120 Z" style="animation:waveFloat 8s ease-in-out infinite;" />
+    </svg>
+   </div>
+  </section><!-- Stats Bar -->
+  <section class="border-y" style="border-color:rgba(12,35,64,0.08);">
+   <div class="max-w-6xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="animate-on-scroll">
+     <p class="font-display text-3xl font-bold" style="color:#0ABAB5;">90+</p>
+     <p class="text-xs tracking-widest uppercase mt-1" style="color:rgba(12,35,64,0.5);">Surf Wallpapers</p>
+    </div>
+    <div class="animate-on-scroll" style="transition-delay:0.1s;">
+     <p class="font-display text-3xl font-bold" style="color:#F97316;">40+</p>
+     <p class="text-xs tracking-widest uppercase mt-1" style="color:rgba(12,35,64,0.5);">Story Templates</p>
+    </div>
+    <div class="animate-on-scroll" style="transition-delay:0.2s;">
+     <p class="font-display text-3xl font-bold" style="color:#0ABAB5;">1</p>
+     <p class="text-xs tracking-widest uppercase mt-1" style="color:rgba(12,35,64,0.5);">Surf Trip Checklist</p>
+    </div>
+    <div class="animate-on-scroll" style="transition-delay:0.3s;">
+     <p class="font-display text-3xl font-bold" style="color:#F97316;">50+</p>
+     <p class="text-xs tracking-widest uppercase mt-1" style="color:rgba(12,35,64,0.5);">Captions Included</p>
+    </div>
+   </div>
+  </section><!-- Lookbook Section -->
+  <section id="lookbook" class="py-20 md:py-28">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 animate-on-scroll">
+     <div class="inline-flex items-center gap-2 mb-4" style="color:#0ABAB5;">
+      <svg width="20" height="20">
+       <use href="#icon-sun" />
+      </svg><span class="text-xs tracking-widest uppercase font-semibold">Lookbook</span>
+     </div>
+     <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#0C2340;">The Breakline Collection</h2>
+     <p class="mt-4 max-w-lg mx-auto" style="color:rgba(12,35,64,0.6);">Editorial surf photography meets creator-ready templates. Every frame tells a story.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+     <div class="animate-on-scroll postcard-frame bg-white p-2 rounded-lg">
+      <div class="overflow-hidden rounded" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1455729552457-5c322b5bc1a5?w=600&amp;h=800&amp;fit=crop" alt="Surfboard resting on golden sand beach" loading="lazy" class="w-full h-full object-cover" style="transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#E0F7FA,#0ABAB5)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-3 flex justify-between items-center"><span class="font-display italic text-sm" style="color:rgba(12,35,64,0.5);">Golden Hour</span>
+       <div class="stamp-badge" style="transform:rotate(-4deg);font-size:8px;padding:3px 8px;">
+        Wallpaper
+       </div>
+      </div>
+     </div>
+     <div class="animate-on-scroll postcard-frame bg-white p-2 rounded-lg md:mt-8" style="transition-delay:0.15s;">
+      <div class="overflow-hidden rounded" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&amp;h=800&amp;fit=crop" alt="Crystal clear ocean waves breaking on shore" loading="lazy" class="w-full h-full object-cover" style="transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#E0F7FA,#0ABAB5)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-3 flex justify-between items-center"><span class="font-display italic text-sm" style="color:rgba(12,35,64,0.5);">Crystal Breaks</span>
+       <div class="stamp-badge" style="transform:rotate(3deg);font-size:8px;padding:3px 8px;">
+        Template
+       </div>
+      </div>
+     </div>
+     <div class="animate-on-scroll postcard-frame bg-white p-2 rounded-lg" style="transition-delay:0.3s;">
+      <div class="overflow-hidden rounded" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&amp;h=800&amp;fit=crop" alt="Beach lifestyle with palm trees and ocean view" loading="lazy" class="w-full h-full object-cover" style="transition:transform 6s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.background='linear-gradient(135deg,#E0F7FA,#0ABAB5)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-3 flex justify-between items-center"><span class="font-display italic text-sm" style="color:rgba(12,35,64,0.5);">Beach Life</span>
+       <div class="stamp-badge" style="transform:rotate(-2deg);font-size:8px;padding:3px 8px;">
+        Caption Pack
+       </div>
+      </div>
+     </div>
+    </div><!-- Pricing angle callout -->
+    <div class="animate-on-scroll mt-12 text-center p-8 rounded-2xl" style="background:rgba(10,186,181,0.06);border:1px solid rgba(10,186,181,0.15);">
+     <svg class="mx-auto mb-3" width="28" height="28" style="color:#0ABAB5;">
+      <use href="#icon-board" />
+     </svg>
+     <p class="font-display text-xl font-bold" style="color:#0C2340;">Lookbook drives conversion</p>
+     <p class="text-sm mt-2 max-w-md mx-auto" style="color:rgba(12,35,64,0.55);">Professional surf visuals help brands and creators build trust, attract followers, and close sales faster.</p>
+    </div>
+   </div>
+  </section><!-- Trips Section -->
+  <section id="trips" class="py-20 md:py-28" style="background:linear-gradient(180deg,rgba(224,247,250,0.4),rgba(250,243,224,1));">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 animate-on-scroll">
+     <div class="inline-flex items-center gap-2 mb-4" style="color:#F97316;">
+      <svg width="20" height="20">
+       <use href="#icon-pin" />
+      </svg><span class="text-xs tracking-widest uppercase font-semibold">Trips</span>
+     </div>
+     <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#0C2340;">Plan Your Next Session</h2>
+     <p class="mt-4 max-w-lg mx-auto" style="color:rgba(12,35,64,0.6);">Checklist templates and spot maps designed for the surf traveler.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8"><!-- Checklist Preview -->
+     <div class="animate-on-scroll postcard-frame bg-white rounded-xl p-6">
+      <div class="flex items-center gap-3 mb-6">
+       <svg width="24" height="24" style="color:#0ABAB5;">
+        <use href="#icon-calendar" />
+       </svg>
+       <h3 class="font-display text-xl font-bold" style="color:#0C2340;">Surf Trip Checklist</h3>
+      </div>
+      <div class="space-y-3"><label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-foam" style="border:1px solid rgba(12,35,64,0.08);"> <input type="checkbox" class="w-4 h-4 rounded accent-aqua" checked> <span class="text-sm" style="color:#0C2340;">Board &amp; leash packed</span>
+        <svg class="ml-auto" width="16" height="16" style="color:rgba(12,35,64,0.25);">
+         <use href="#icon-board" />
+        </svg></label> <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-foam" style="border:1px solid rgba(12,35,64,0.08);"> <input type="checkbox" class="w-4 h-4 rounded accent-aqua" checked> <span class="text-sm" style="color:#0C2340;">Wax + fins + repair kit</span>
+        <svg class="ml-auto" width="16" height="16" style="color:rgba(12,35,64,0.25);">
+         <use href="#icon-wave" />
+        </svg></label> <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-foam" style="border:1px solid rgba(12,35,64,0.08);"> <input type="checkbox" class="w-4 h-4 rounded accent-aqua"> <span class="text-sm" style="color:#0C2340;">Check tide &amp; swell forecast</span>
+        <svg class="ml-auto" width="16" height="16" style="color:rgba(12,35,64,0.25);">
+         <use href="#icon-wind" />
+        </svg></label> <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-foam" style="border:1px solid rgba(12,35,64,0.08);"> <input type="checkbox" class="w-4 h-4 rounded accent-aqua"> <span class="text-sm" style="color:#0C2340;">Sunscreen + rashguard</span>
+        <svg class="ml-auto" width="16" height="16" style="color:rgba(12,35,64,0.25);">
+         <use href="#icon-sun" />
+        </svg></label> <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:bg-foam" style="border:1px solid rgba(12,35,64,0.08);"> <input type="checkbox" class="w-4 h-4 rounded accent-aqua"> <span class="text-sm" style="color:#0C2340;">Camera gear waterproofed</span>
+        <svg class="ml-auto" width="16" height="16" style="color:rgba(12,35,64,0.25);">
+         <use href="#icon-sun" />
+        </svg></label>
+      </div>
+      <p class="text-xs mt-4 italic" style="color:rgba(12,35,64,0.35);">Full editable checklist included in the pack</p>
+     </div><!-- Spot Map Preview -->
+     <div class="animate-on-scroll postcard-frame bg-white rounded-xl p-6" style="transition-delay:0.15s;">
+      <div class="flex items-center gap-3 mb-6">
+       <svg width="24" height="24" style="color:#F97316;">
+        <use href="#icon-pin" />
+       </svg>
+       <h3 class="font-display text-xl font-bold" style="color:#0C2340;">Spot Map Template</h3>
+      </div><!-- Visual map illustration -->
+      <div class="relative rounded-xl overflow-hidden" style="aspect-ratio:4/3;background:linear-gradient(180deg,#b3e5fc 0%,#e0f7fa 40%,#f5deb3 42%,#faf3e0 100%);"><!-- Water pattern -->
+       <svg class="absolute inset-0 w-full h-full" style="opacity:0.15;"><pattern id="waves" x="0" y="0" width="60" height="20" patternunits="userSpaceOnUse">
+         <path d="M0,10 Q15,0 30,10 T60,10" fill="none" stroke="#0ABAB5" stroke-width="1" />
+        </pattern> <rect x="0" y="0" width="100%" height="40%" fill="url(#waves)" />
+       </svg><!-- Pins -->
+       <div class="absolute flex flex-col items-center" style="top:20%;left:25%;animation:waveFloat 4s ease-in-out infinite;">
+        <svg width="28" height="28" style="color:#F97316;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+         <use href="#icon-pin" />
+        </svg><span class="text-xs font-semibold mt-1 px-2 py-0.5 rounded-full bg-white shadow-sm" style="color:#0C2340;">Pipeline</span>
+       </div>
+       <div class="absolute flex flex-col items-center" style="top:35%;left:55%;animation:waveFloat 5s 0.5s ease-in-out infinite;">
+        <svg width="28" height="28" style="color:#0ABAB5;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+         <use href="#icon-pin" />
+        </svg><span class="text-xs font-semibold mt-1 px-2 py-0.5 rounded-full bg-white shadow-sm" style="color:#0C2340;">Uluwatu</span>
+       </div>
+       <div class="absolute flex flex-col items-center" style="top:15%;left:78%;animation:waveFloat 4.5s 1s ease-in-out infinite;">
+        <svg width="28" height="28" style="color:#F97316;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+         <use href="#icon-pin" />
+        </svg><span class="text-xs font-semibold mt-1 px-2 py-0.5 rounded-full bg-white shadow-sm" style="color:#0C2340;">J-Bay</span>
+       </div>
+       <div class="absolute flex flex-col items-center" style="top:55%;left:40%;animation:waveFloat 5.5s 0.3s ease-in-out infinite;">
+        <svg width="24" height="24" style="color:#0ABAB5;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
+         <use href="#icon-pin" />
+        </svg><span class="text-xs font-semibold mt-1 px-2 py-0.5 rounded-full bg-white shadow-sm" style="color:#0C2340;">Hossegor</span>
+       </div>
+      </div>
+      <p class="text-xs mt-4 italic" style="color:rgba(12,35,64,0.35);">Customizable spot map included in the pack</p>
+     </div>
+    </div><!-- Pricing angle -->
+    <div class="animate-on-scroll mt-12 text-center p-8 rounded-2xl" style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.15);">
+     <svg class="mx-auto mb-3" width="28" height="28" style="color:#F97316;">
+      <use href="#icon-pin" />
+     </svg>
+     <p class="font-display text-xl font-bold" style="color:#0C2340;">Travel kits are evergreen</p>
+     <p class="text-sm mt-2 max-w-md mx-auto" style="color:rgba(12,35,64,0.55);">Surf travel never goes out of style. Build once, sell year-round to adventurers worldwide.</p>
+    </div>
+   </div>
+  </section><!-- Templates Section -->
+  <section id="templates" class="py-20 md:py-28">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 animate-on-scroll">
+     <div class="inline-flex items-center gap-2 mb-4" style="color:#0ABAB5;">
+      <svg width="20" height="20">
+       <use href="#icon-wave" />
+      </svg><span class="text-xs tracking-widest uppercase font-semibold">Templates</span>
+     </div>
+     <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#0C2340;">What's Inside the Pack</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="animate-on-scroll p-6 rounded-xl transition-all" style="background:white;border:1px solid rgba(12,35,64,0.06);">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(10,186,181,0.1);">
+       <svg width="24" height="24" style="color:#0ABAB5;">
+        <use href="#icon-sun" />
+       </svg>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2" style="color:#0C2340;">90 Surf Wallpapers</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(12,35,64,0.55);">Golden hour, barrel shots, coastal roads, and ocean sunrises. Curated for feed aesthetics.</p>
+     </div>
+     <div class="animate-on-scroll p-6 rounded-xl transition-all" style="background:white;border:1px solid rgba(12,35,64,0.06);transition-delay:0.1s;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(249,115,22,0.1);">
+       <svg width="24" height="24" style="color:#F97316;">
+        <use href="#icon-board" />
+       </svg>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2" style="color:#0C2340;">40 Story Templates</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(12,35,64,0.55);">Drag-and-drop surf stories. Polls, quotes, countdowns, and reels covers ready to post.</p>
+     </div>
+     <div class="animate-on-scroll p-6 rounded-xl transition-all" style="background:white;border:1px solid rgba(12,35,64,0.06);transition-delay:0.2s;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(10,186,181,0.1);">
+       <svg width="24" height="24" style="color:#0ABAB5;">
+        <use href="#icon-calendar" />
+       </svg>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2" style="color:#0C2340;">Surf Trip Checklist</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(12,35,64,0.55);">Never forget your wax again. A printable packing list for every surf adventure.</p>
+     </div>
+     <div class="animate-on-scroll p-6 rounded-xl transition-all" style="background:white;border:1px solid rgba(12,35,64,0.06);transition-delay:0.3s;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(249,115,22,0.1);">
+       <svg width="24" height="24" style="color:#F97316;">
+        <use href="#icon-pin" />
+       </svg>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2" style="color:#0C2340;">Spot Map Template</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(12,35,64,0.55);">Pin your favorite breaks on a beautiful visual map. Share your surf atlas with your audience.</p>
+     </div>
+     <div class="animate-on-scroll p-6 rounded-xl transition-all" style="background:white;border:1px solid rgba(12,35,64,0.06);transition-delay:0.4s;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(10,186,181,0.1);">
+       <svg width="24" height="24" style="color:#0ABAB5;">
+        <use href="#icon-wind" />
+       </svg>
+      </div>
+      <h3 class="font-display text-lg font-bold mb-2" style="color:#0C2340;">Caption Pack (50+)</h3>
+      <p class="text-sm leading-relaxed" style="color:rgba(12,35,64,0.55);">Coastal captions, surf quotes, and travel one-liners. Copy, paste, and post.</p>
+     </div>
+     <div class="animate-on-scroll p-6 rounded-xl flex flex-col items-center justify-center text-center" style="background:linear-gradient(135deg,rgba(10,186,181,0.08),rgba(249,115,22,0.08));border:1px dashed rgba(12,35,64,0.15);transition-delay:0.5s;">
+      <p class="font-display text-2xl font-bold" style="color:#0C2340;">$29</p>
+      <p class="text-xs tracking-widest uppercase mt-1 mb-4" style="color:rgba(12,35,64,0.45);">Full Pack</p><a href="#download" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white" style="background:#0ABAB5;">
+       <svg width="14" height="14">
+        <use href="#icon-wave" />
+       </svg> Get It Now </a>
+     </div>
+    </div><!-- Pricing angle -->
+    <div class="animate-on-scroll mt-12 text-center p-8 rounded-2xl" style="background:rgba(10,186,181,0.06);border:1px solid rgba(10,186,181,0.15);">
+     <svg class="mx-auto mb-3" width="28" height="28" style="color:#0ABAB5;">
+      <use href="#icon-wave" />
+     </svg>
+     <p class="font-display text-xl font-bold" style="color:#0C2340;">Lifestyle content sells</p>
+     <p class="text-sm mt-2 max-w-md mx-auto" style="color:rgba(12,35,64,0.55);">Creators who post consistent lifestyle visuals see 3x more engagement. This pack makes it effortless.</p>
+    </div>
+   </div>
+  </section><!-- Reviews Section -->
+  <section id="reviews" class="py-20 md:py-28" style="background:linear-gradient(180deg,rgba(250,243,224,1),rgba(224,247,250,0.3));">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 animate-on-scroll">
+     <div class="inline-flex items-center gap-2 mb-4" style="color:#F97316;">
+      <svg width="20" height="20">
+       <use href="#icon-sun" />
+      </svg><span class="text-xs tracking-widest uppercase font-semibold">Reviews</span>
+     </div>
+     <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#0C2340;">From the Lineup</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+     <div class="animate-on-scroll postcard-frame bg-white rounded-xl p-6">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+      </div>
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(12,35,64,0.7);">"My Instagram went from flat to coastal overnight. The wallpapers alone are worth 10x the price."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background:#0ABAB5;">
+        KL
+       </div>
+       <div>
+        <p class="text-sm font-semibold" style="color:#0C2340;">Kai L.</p>
+        <p class="text-xs" style="color:rgba(12,35,64,0.4);">Surf photographer</p>
+       </div>
+      </div>
+     </div>
+     <div class="animate-on-scroll postcard-frame bg-white rounded-xl p-6" style="transition-delay:0.15s;">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+      </div>
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(12,35,64,0.7);">"Used the spot map for my Bali trip content series. Followers loved the visual storytelling."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background:#F97316;">
+        MR
+       </div>
+       <div>
+        <p class="text-sm font-semibold" style="color:#0C2340;">Maya R.</p>
+        <p class="text-xs" style="color:rgba(12,35,64,0.4);">Travel creator</p>
+       </div>
+      </div>
+     </div>
+     <div class="animate-on-scroll postcard-frame bg-white rounded-xl p-6" style="transition-delay:0.3s;">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+       <svg width="16" height="16" style="color:#F97316;fill:#F97316;">
+        <use href="#icon-sun" />
+       </svg>
+      </div>
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(12,35,64,0.7);">"The caption pack saved me hours. Now I batch-create a whole month of surf content in one sitting."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background:#0ABAB5;">
+        JT
+       </div>
+       <div>
+        <p class="text-sm font-semibold" style="color:#0C2340;">Jake T.</p>
+        <p class="text-xs" style="color:rgba(12,35,64,0.4);">Surf brand owner</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Bottom CTA / Download -->
+  <section id="download" class="py-20 md:py-28 relative overflow-hidden">
+   <div class="absolute inset-0" style="background:linear-gradient(135deg,#0C2340 0%,#164060 50%,#0C2340 100%);"></div><!-- Wave overlay -->
+   <div class="absolute top-0 left-0 w-full" style="opacity:0.08;">
+    <svg viewbox="0 0 960 120" preserveaspectratio="none" style="width:100%;height:80px;display:block;"><path fill="white" d="M0,40 Q160,80 320,40 T640,40 T960,40 L960,0 L0,0 Z" style="animation:waveFloat 10s ease-in-out infinite;" />
+    </svg>
+   </div><!-- Flare -->
+   <div class="flare-overlay absolute rounded-full" style="width:400px;height:400px;top:-100px;right:-100px;background:radial-gradient(circle,rgba(249,115,22,0.2),transparent 70%);"></div>
+   <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <div class="animate-on-scroll">
+     <svg class="mx-auto mb-6" width="40" height="40" style="color:#0ABAB5;animation:waveFloat 4s ease-in-out infinite;">
+      <use href="#icon-wave" />
+     </svg>
+     <h2 id="bottom-cta-title" class="font-display text-4xl md:text-5xl font-bold text-white mb-6">Make your feed<br>
+      feel coastal.</h2>
+     <p class="text-lg mb-10" style="color:rgba(255,255,255,0.6);">90 wallpapers. 40 templates. Trip checklist. Spot map. Caption pack. One download.</p><a href="#" id="download-cta" class="cta-pulse inline-flex items-center gap-3 px-10 py-4 rounded-full text-lg font-semibold text-white transition-all" style="background:#0ABAB5;" onclick="event.preventDefault();document.getElementById('download-toast').classList.remove('hidden');setTimeout(()=>document.getElementById('download-toast').classList.add('hidden'),4000);">
+      <svg width="20" height="20">
+       <use href="#icon-wave" />
+      </svg> Get the Full Pack — $29 </a>
+     <p class="text-xs mt-4" style="color:rgba(255,255,255,0.35);">Instant download. Lifetime access. No subscription.</p><!-- Toast -->
+     <div id="download-toast" class="hidden mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white" style="background:rgba(10,186,181,0.25);border:1px solid rgba(10,186,181,0.4);"><i data-lucide="check" style="width:16px;height:16px;color:#0ABAB5;"></i> <span>Sample — link your checkout here</span>
+     </div>
+    </div><!-- Vote + Comment Widget -->
+    <div class="animate-on-scroll mt-16 p-8 rounded-2xl text-left" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);transition-delay:0.2s;">
+     <h3 class="font-display text-xl font-bold text-white mb-6 text-center">Vote + Comment</h3>
+     <div class="flex flex-wrap gap-4 justify-center mb-8"><button id="vote-up" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all" style="background:rgba(10,186,181,0.15);color:#0ABAB5;border:1px solid rgba(10,186,181,0.3);"> <i data-lucide="thumbs-up" style="width:16px;height:16px;"></i> <span id="vote-up-count">0</span> </button> <button id="vote-down" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all" style="background:rgba(249,115,22,0.15);color:#F97316;border:1px solid rgba(249,115,22,0.3);"> <i data-lucide="thumbs-down" style="width:16px;height:16px;"></i> <span id="vote-down-count">0</span> </button>
+     </div>
+     <form id="comment-form" class="space-y-3"><textarea id="comment-input" rows="3" placeholder="Drop a comment..." class="w-full rounded-xl px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-aqua" style="background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.12);"></textarea> <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all" style="background:#F97316;"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post Comment </button>
+     </form>
+     <div id="comments-list" class="mt-6 space-y-3"></div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="py-10" style="background:#0C2340;">
+   <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+     <svg width="20" height="20" style="color:#0ABAB5;">
+      <use href="#icon-wave" />
+     </svg><span class="font-display text-lg font-bold text-white">Breakline<span style="color:#0ABAB5;">.</span></span>
+    </div>
+    <p class="text-xs" style="color:rgba(255,255,255,0.35);">2025 Breakline Surf Co. All rights reserved. Chase waves, not stress.</p>
+    <div class="flex gap-4"><a href="#" onclick="event.preventDefault();" style="color:rgba(255,255,255,0.4);" class="hover:text-white transition-colors"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" onclick="event.preventDefault();" style="color:rgba(255,255,255,0.4);" class="hover:text-white transition-colors"><i data-lucide="twitter" style="width:18px;height:18px;"></i></a> <a href="#" onclick="event.preventDefault();" style="color:rgba(255,255,255,0.4);" class="hover:text-white transition-colors"><i data-lucide="youtube" style="width:18px;height:18px;"></i></a>
+    </div>
+   </div>
+  </footer>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Your next wave is waiting.',
+  hero_subtitle: 'Surf visuals and travel templates for creators and brands.',
+  tagline: 'Chase waves, not stress.',
+  cta_primary: 'Get the Pack',
+  cta_secondary: 'View Lookbook',
+  bottom_cta_title: 'Make your feed feel coastal.',
+  background_color: '#FAF3E0',
+  surface_color: '#FFFFFF',
+  text_color: '#0C2340',
+  primary_action_color: '#0ABAB5',
+  secondary_action_color: '#F97316',
+  font_family: 'Playfair Display',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseSize = c.font_size || defaultConfig.font_size;
+
+  document.getElementById('hero-title').innerHTML = c.hero_title.replace(/(waiting)/, '<br>is $1');
+  if (!c.hero_title.includes('waiting')) document.getElementById('hero-title').textContent = c.hero_title;
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.getElementById('hero-tagline').textContent = '"' + c.tagline.replace(/^"|"$/g,'') + '"';
+  document.getElementById('cta-primary-btn').querySelector('span').textContent = c.cta_primary;
+  document.getElementById('cta-secondary-btn').querySelector('span').textContent = c.cta_secondary;
+  document.getElementById('bottom-cta-title').innerHTML = c.bottom_cta_title;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.postcard-frame').forEach(el => el.style.backgroundColor = c.surface_color);
+  document.getElementById('hero-title').style.color = c.text_color;
+  document.getElementById('cta-primary-btn').style.backgroundColor = c.primary_action_color;
+  document.getElementById('download-cta').style.backgroundColor = c.primary_action_color;
+
+  // Fonts
+  const displayStack = font + ', Georgia, serif';
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = displayStack);
+  document.getElementById('hero-title').style.fontSize = (baseSize * 3.5) + 'px';
+  document.getElementById('hero-subtitle').style.fontSize = (baseSize * 1.15) + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }}
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['tagline', config.tagline || defaultConfig.tagline],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Vote + Comment
+let upVotes = 0, downVotes = 0;
+document.getElementById('vote-up').addEventListener('click', () => {
+  upVotes++;
+  document.getElementById('vote-up-count').textContent = upVotes;
+});
+document.getElementById('vote-down').addEventListener('click', () => {
+  downVotes++;
+  document.getElementById('vote-down-count').textContent = downVotes;
+});
+
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const comment = document.createElement('div');
+  comment.className = 'flex items-start gap-3 p-3 rounded-xl';
+  comment.style.cssText = 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);animation:fadeInUp 0.4s ease;';
+  comment.innerHTML = `<div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:rgba(10,186,181,0.2);color:#0ABAB5;">G</div><div><p class="text-sm" style="color:rgba(255,255,255,0.8);">${text.replace(/</g,'&lt;')}</p><p class="text-xs mt-1" style="color:rgba(255,255,255,0.3);">Just now</p></div>`;
+  list.prepend(comment);
+  input.value = '';
+  lucide.createIcons();
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a69ec518027c5',t:'MTc3NTU3OTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

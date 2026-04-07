@@ -1,1 +1,607 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7be3a22a-74b3-4a2b-ab73-4a8966321aec -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VowVenue Print Suite</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Sora:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #FFFCF7;
+  --surface: #FFF8F0;
+  --text: #2D2226;
+  --primary: #C4917B;
+  --secondary: #9B8AA6;
+}
+
+body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); }
+.font-serif { font-family: 'Playfair Display', serif; }
+
+/* Shimmer overlay */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmerSlide 3s infinite;
+}
+@keyframes shimmerSlide {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mockup pan/zoom */
+@keyframes panZoom {
+  0%, 100% { transform: scale(1) translateX(0); }
+  50% { transform: scale(1.05) translateX(-2%); }
+}
+.mockup-animate { animation: panZoom 8s ease-in-out infinite; }
+
+/* Check animation */
+@keyframes checkPop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.check-anim { animation: checkPop 0.5s ease-out forwards; opacity: 0; }
+
+/* Float */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float { animation: gentleFloat 4s ease-in-out infinite; }
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), #D4A574, var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sticky nav */
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Theme chip */
+.theme-chip {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.theme-chip:hover { transform: translateY(-4px); }
+.theme-chip.selected { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+/* Mockup frame */
+.mockup-frame {
+  background: linear-gradient(135deg, var(--surface), #F5EDE6);
+  border: 1px solid rgba(196,145,123,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(45,34,38,0.08);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+.vote-bar-fill { transition: width 0.6s cubic-bezier(0.16,1,0.3,1); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+  padding: 12px 24px; border-radius: 999px; z-index: 100;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  background: var(--text); color: var(--bg);
+  font-size: 14px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ivory: '#FFFCF7',
+        cream: '#FFF8F0',
+        rosegold: '#C4917B',
+        champagne: '#D4A574',
+        lavender: '#9B8AA6',
+        moody: '#2D2226'
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:var(--bg);"><!-- Toast -->
+   <div id="toast" class="toast"></div><!-- Sticky Nav -->
+   <nav id="navbar" class="sticky top-0 z-50 w-full backdrop-blur-md border-b" style="background:rgba(255,252,247,0.92);border-color:rgba(196,145,123,0.15);">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-serif text-lg font-bold tracking-tight" style="color:var(--text);">Vow<span class="gradient-text">Venue</span></a>
+     <div class="hidden md:flex items-center gap-6 text-xs tracking-widest uppercase" style="color:var(--text);font-weight:500;"><a href="#home" class="nav-link">Home</a> <a href="#included" class="nav-link">What's Included</a> <a href="#preview" class="nav-link">Preview</a> <a href="#themes" class="nav-link">Themes</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Menu"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 flex flex-col gap-3 text-xs tracking-widest uppercase" style="font-weight:500;"><a href="#home" class="nav-link py-1">Home</a> <a href="#included" class="nav-link py-1">What's Included</a> <a href="#preview" class="nav-link py-1">Preview</a> <a href="#themes" class="nav-link py-1">Themes</a> <a href="#reviews" class="nav-link py-1">Reviews</a> <a href="#download" class="nav-link py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:85%;"><!-- BG orbs -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+     <div class="absolute rounded-full float" style="width:400px;height:400px;top:-10%;right:-5%;background:radial-gradient(circle,rgba(196,145,123,0.12),transparent 70%);"></div>
+     <div class="absolute rounded-full float" style="width:300px;height:300px;bottom:5%;left:-8%;background:radial-gradient(circle,rgba(155,138,166,0.1),transparent 70%);animation-delay:1.5s;"></div>
+     <div class="absolute rounded-full float" style="width:200px;height:200px;top:30%;left:40%;background:radial-gradient(circle,rgba(212,165,116,0.08),transparent 70%);animation-delay:3s;"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center" style="padding-top:12%;padding-bottom:10%;">
+     <p class="reveal text-xs tracking-[0.35em] uppercase mb-6" style="color:var(--primary);font-weight:500;">VowVenue Print Suite</p>
+     <h1 id="hero-title" class="reveal font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6" style="color:var(--text);">Make your wedding<br><span class="gradient-text">look expensive.</span></h1>
+     <p id="hero-subtitle" class="reveal text-base sm:text-lg max-w-xl mx-auto mb-10" style="color:rgba(45,34,38,0.65);line-height:1.7;">Editable signage and seating charts that photograph beautifully.</p><a href="#download" id="hero-cta" class="reveal shimmer inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold tracking-wider uppercase transition-transform hover:scale-105" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 12px 40px rgba(196,145,123,0.3);"> <span>Get the Bundle</span> <i data-lucide="arrow-right" style="width:16px;height:16px;"></i> </a>
+     <div class="reveal flex items-center gap-6 mt-10 text-xs" style="color:rgba(45,34,38,0.45);"><span class="flex items-center gap-1"><i data-lucide="printer" style="width:14px;height:14px;"></i> Print-Ready</span> <span class="flex items-center gap-1"><i data-lucide="edit-3" style="width:14px;height:14px;"></i> Fully Editable</span> <span class="flex items-center gap-1"><i data-lucide="palette" style="width:14px;height:14px;"></i> 4 Themes</span>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section id="included" class="w-full py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <p class="reveal text-xs tracking-[0.3em] uppercase text-center mb-3" style="color:var(--primary);font-weight:500;">Everything You Need</p>
+     <h2 class="reveal font-serif text-3xl sm:text-4xl font-bold text-center mb-16" style="color:var(--text);">What's Included</h2>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="included-grid">
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-6xl mx-auto">
+     <p class="reveal text-xs tracking-[0.3em] uppercase text-center mb-3" style="color:var(--primary);font-weight:500;">See It In Action</p>
+     <h2 class="reveal font-serif text-3xl sm:text-4xl font-bold text-center mb-16" style="color:var(--text);">Preview the Suite</h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="preview-grid">
+     </div>
+    </div>
+   </section><!-- THEMES -->
+   <section id="themes" class="w-full py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <p class="reveal text-xs tracking-[0.3em] uppercase mb-3" style="color:var(--primary);font-weight:500;">Choose Your Vibe</p>
+     <h2 class="reveal font-serif text-3xl sm:text-4xl font-bold mb-4" style="color:var(--text);">4 Curated Themes</h2>
+     <p class="reveal text-sm mb-12" style="color:rgba(45,34,38,0.55);">Every template adapts to your style.</p>
+     <div class="flex flex-wrap justify-center gap-5" id="theme-chips">
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-5xl mx-auto">
+     <p class="reveal text-xs tracking-[0.3em] uppercase text-center mb-3" style="color:var(--primary);font-weight:500;">Real Love Stories</p>
+     <h2 class="reveal font-serif text-3xl sm:text-4xl font-bold text-center mb-16" style="color:var(--text);">What Brides Are Saying</h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="download" class="w-full py-20 px-4">
+    <div class="max-w-4xl mx-auto"><!-- CTA -->
+     <div class="reveal text-center mb-20">
+      <h2 id="bottom-cta-title" class="font-serif text-3xl sm:text-5xl font-bold mb-6" style="color:var(--text);">Print-ready in <span class="gradient-text">minutes.</span></h2>
+      <p class="text-sm mb-8" style="color:rgba(45,34,38,0.55);max-width:420px;margin:0 auto;">Stop overpaying for wedding signage. Get the full bundle and start customizing today.</p><a href="#" id="bottom-cta-btn" class="shimmer inline-flex items-center gap-2 px-10 py-4 rounded-full text-sm font-semibold tracking-wider uppercase transition-transform hover:scale-105" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 12px 40px rgba(196,145,123,0.3);"> <span>Get the Bundle — $29</span> <i data-lucide="download" style="width:16px;height:16px;"></i> </a>
+      <div class="flex items-center justify-center gap-6 mt-6 text-xs" style="color:rgba(45,34,38,0.4);"><span>✨ Instant Download</span> <span>💌 Lifetime Access</span> <span>🖨️ Print at Home</span>
+      </div>
+     </div><!-- Vote + Comment Module -->
+     <div class="reveal mockup-frame p-6 sm:p-8">
+      <h3 class="font-serif text-xl font-bold mb-1" style="color:var(--text);">Which theme is your favorite?</h3>
+      <p class="text-xs mb-6" style="color:rgba(45,34,38,0.5);">Vote and share your thoughts below.</p><!-- Vote Bars -->
+      <div class="space-y-3 mb-8" id="vote-bars"></div><!-- Comment Form -->
+      <div class="border-t pt-6" style="border-color:rgba(196,145,123,0.15);">
+       <h4 class="text-sm font-semibold mb-4" style="color:var(--text);">Leave a Comment</h4>
+       <form id="comment-form" class="space-y-3"><input type="text" id="comment-author" placeholder="Your name" class="w-full px-4 py-3 rounded-lg text-sm outline-none transition-shadow focus:shadow-md" style="background:var(--bg);border:1px solid rgba(196,145,123,0.2);color:var(--text);" aria-label="Your name"> <textarea id="comment-text" rows="3" placeholder="Share your thoughts..." class="w-full px-4 py-3 rounded-lg text-sm outline-none resize-none transition-shadow focus:shadow-md" style="background:var(--bg);border:1px solid rgba(196,145,123,0.2);color:var(--text);" aria-label="Your comment"></textarea> <button type="submit" id="comment-submit" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold tracking-wide transition-transform hover:scale-105" style="background:var(--primary);color:#fff;"> <i data-lucide="send" style="width:14px;height:14px;"></i> <span>Post Comment</span> </button>
+       </form>
+      </div><!-- Comments List -->
+      <div id="comments-list" class="mt-6 space-y-4"></div>
+      <p id="no-comments" class="text-xs text-center py-4" style="color:rgba(45,34,38,0.35);">No comments yet. Be the first!</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-4 text-center text-xs" style="color:rgba(45,34,38,0.35);border-top:1px solid rgba(196,145,123,0.1);">
+    <p class="font-serif text-sm mb-1" style="color:var(--text);">Vow<span class="gradient-text">Venue</span></p>
+    <p>Make your wedding look expensive. © 2024</p>
+   </footer>
+  </div>
+  <script>
+// ── Static Data ──
+const includedItems = [
+  { icon: 'layout-grid', title: 'Seating Chart Templates', desc: 'Drag-and-drop editable layouts for up to 200 guests.' },
+  { icon: 'hash', title: 'Table Number Cards', desc: 'Matching numbered cards in all four themes.' },
+  { icon: 'door-open', title: 'Welcome Sign', desc: 'Large-format printable welcome sign for your venue entrance.' },
+  { icon: 'wine', title: 'Bar Menu Sign', desc: 'Signature cocktails & drink menu beautifully formatted.' },
+  { icon: 'book-open', title: 'Printable Guide', desc: 'Step-by-step PDF guide for printing & assembling.' },
+  { icon: 'sparkles', title: 'Bonus: Place Cards', desc: 'Individual guest name cards that match every template.' }
+];
+
+const previewMockups = [
+  { label: 'Welcome Sign', emoji: '🪧', desc: 'Grand entrance display' },
+  { label: 'Seating Chart', emoji: '💒', desc: 'Full guest layout' },
+  { label: 'Bar Menu', emoji: '🥂', desc: 'Signature cocktails' }
+];
+
+const themes = [
+  { id: 'modern', label: 'Modern', colors: ['#2D2226','#C4917B','#F5F0EB'], desc: 'Clean lines, bold contrast' },
+  { id: 'romantic', label: 'Romantic', colors: ['#D4A574','#E8C4B8','#FFF5EE'], desc: 'Soft blush, flowing script' },
+  { id: 'minimal', label: 'Minimal', colors: ['#333','#999','#FAFAFA'], desc: 'Understated elegance' },
+  { id: 'moody', label: 'Moody', colors: ['#1a1520','#9B8AA6','#2D2226'], desc: 'Dark romance, deep tones' }
+];
+
+const reviews = [
+  { name: 'Sarah M.', role: 'Bride, Oct 2024', text: 'Our photographer literally asked where we got the signage. Guests thought we hired a designer!', stars: 5 },
+  { name: 'Jess & Tom', role: 'Couple, Aug 2024', text: 'Edited everything in one evening. The seating chart alone saved us $300 vs. a custom order.', stars: 5 },
+  { name: 'Lauren K.', role: 'Wedding Planner', text: 'I recommend VowVenue to all my clients. The quality is unmatched for digital templates.', stars: 5 }
+];
+
+// ── Render Static Sections ──
+function renderIncluded() {
+  const grid = document.getElementById('included-grid');
+  grid.innerHTML = includedItems.map((item, i) => `
+    <div class="reveal mockup-frame p-6 flex flex-col gap-3" style="animation-delay:${i * 0.1}s;">
+      <div class="flex items-center gap-3">
+        <div class="check-anim flex items-center justify-center w-8 h-8 rounded-full" style="background:linear-gradient(135deg,var(--primary),var(--secondary));animation-delay:${0.3 + i * 0.15}s;">
+          <i data-lucide="check" style="width:16px;height:16px;color:#fff;"></i>
+        </div>
+        <i data-lucide="${item.icon}" style="width:20px;height:20px;color:var(--primary);"></i>
+      </div>
+      <h3 class="font-serif text-base font-bold" style="color:var(--text);">${item.title}</h3>
+      <p class="text-xs leading-relaxed" style="color:rgba(45,34,38,0.55);">${item.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderPreviews() {
+  const grid = document.getElementById('preview-grid');
+  grid.innerHTML = previewMockups.map((m, i) => `
+    <div class="reveal mockup-frame" style="animation-delay:${i * 0.15}s;">
+      <div class="mockup-animate flex items-center justify-center" style="height:240px;background:linear-gradient(135deg,rgba(196,145,123,0.08),rgba(155,138,166,0.08));">
+        <div class="text-center">
+          <div class="text-5xl mb-3">${m.emoji}</div>
+          <p class="font-serif text-sm font-bold" style="color:var(--text);">${m.label}</p>
+          <p class="text-xs mt-1" style="color:rgba(45,34,38,0.4);">${m.desc}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderThemes() {
+  const container = document.getElementById('theme-chips');
+  container.innerHTML = themes.map(t => `
+    <button class="reveal theme-chip rounded-2xl p-5 text-center" data-theme="${t.id}" style="background:var(--surface);min-width:140px;border:1px solid rgba(196,145,123,0.12);" onclick="voteTheme('${t.id}')">
+      <div class="flex justify-center gap-1 mb-3">
+        ${t.colors.map(c => `<span class="block w-5 h-5 rounded-full" style="background:${c};border:1px solid rgba(0,0,0,0.05);"></span>`).join('')}
+      </div>
+      <p class="font-serif text-sm font-bold" style="color:var(--text);">${t.label}</p>
+      <p class="text-xs mt-1" style="color:rgba(45,34,38,0.4);">${t.desc}</p>
+    </button>
+  `).join('');
+}
+
+function renderReviews() {
+  const grid = document.getElementById('reviews-grid');
+  grid.innerHTML = reviews.map((r, i) => `
+    <div class="reveal mockup-frame p-6" style="animation-delay:${i * 0.12}s;">
+      <div class="flex gap-0.5 mb-3">${'★'.repeat(r.stars).split('').map(s => `<span style="color:var(--primary);font-size:14px;">${s}</span>`).join('')}</div>
+      <p class="text-sm leading-relaxed mb-4" style="color:rgba(45,34,38,0.7);">"${r.text}"</p>
+      <div>
+        <p class="text-sm font-semibold" style="color:var(--text);">${r.name}</p>
+        <p class="text-xs" style="color:rgba(45,34,38,0.4);">${r.role}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Vote & Comments ──
+let allData = [];
+let voteCounts = { modern: 0, romantic: 0, minimal: 0, moody: 0 };
+let isSubmitting = false;
+
+function calcVotes(data) {
+  const counts = { modern: 0, romantic: 0, minimal: 0, moody: 0 };
+  data.filter(d => d.type === 'vote').forEach(d => { if (counts[d.theme_vote] !== undefined) counts[d.theme_vote]++; });
+  return counts;
+}
+
+function renderVoteBars() {
+  const total = Object.values(voteCounts).reduce((a, b) => a + b, 0) || 1;
+  const container = document.getElementById('vote-bars');
+  const themeLabels = { modern: 'Modern', romantic: 'Romantic', minimal: 'Minimal', moody: 'Moody' };
+
+  if (!container.children.length) {
+    container.innerHTML = themes.map(t => `
+      <button class="w-full text-left rounded-lg p-3 transition-all hover:shadow-sm" style="background:var(--bg);border:1px solid rgba(196,145,123,0.12);" data-vote-btn="${t.id}" onclick="voteTheme('${t.id}')">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-xs font-semibold" style="color:var(--text);">${t.label}</span>
+          <span class="text-xs" style="color:rgba(45,34,38,0.4);" data-vote-count="${t.id}">0 votes</span>
+        </div>
+        <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(196,145,123,0.1);">
+          <div class="vote-bar-fill rounded-full" style="width:0%;height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));" data-vote-bar="${t.id}"></div>
+        </div>
+      </button>
+    `).join('');
+  }
+
+  themes.forEach(t => {
+    const pct = Math.round((voteCounts[t.id] / total) * 100);
+    const bar = container.querySelector(`[data-vote-bar="${t.id}"]`);
+    const count = container.querySelector(`[data-vote-count="${t.id}"]`);
+    if (bar) bar.style.width = pct + '%';
+    if (count) count.textContent = voteCounts[t.id] + ' vote' + (voteCounts[t.id] !== 1 ? 's' : '');
+  });
+}
+
+function renderComments(data) {
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  noComments.style.display = comments.length ? 'none' : 'block';
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      const el = existingMap.get(c.__backendId);
+      el.querySelector('.c-author').textContent = c.author || 'Anonymous';
+      el.querySelector('.c-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'p-4 rounded-lg';
+      div.style.cssText = 'background:var(--bg);border:1px solid rgba(196,145,123,0.1);';
+      const ago = timeAgo(c.created_at);
+      div.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <span class="c-author text-sm font-semibold" style="color:var(--text);">${c.author || 'Anonymous'}</span>
+          <span class="text-xs" style="color:rgba(45,34,38,0.35);">${ago}</span>
+        </div>
+        <p class="c-text text-sm" style="color:rgba(45,34,38,0.65);">${c.comment}</p>
+      `;
+      list.prepend(div);
+    }
+  });
+}
+
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  return Math.floor(hrs / 24) + 'd ago';
+}
+
+async function voteTheme(themeId) {
+  if (isSubmitting) return;
+  isSubmitting = true;
+  if (allData.filter(d => d.type === 'vote').length >= 999) { showToast('Vote limit reached!'); isSubmitting = false; return; }
+  const result = await window.dataSdk.create({ type: 'vote', theme_vote: themeId, comment: '', author: '', created_at: new Date().toISOString() });
+  if (result.isOk) showToast('Vote recorded! ✨');
+  else showToast('Could not save vote.');
+  isSubmitting = false;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (isSubmitting) return;
+  const author = document.getElementById('comment-author').value.trim();
+  const text = document.getElementById('comment-text').value.trim();
+  if (!text) return;
+  if (allData.filter(d => d.type === 'comment').length >= 999) { showToast('Comment limit reached!'); return; }
+  isSubmitting = true;
+  const btn = document.getElementById('comment-submit');
+  btn.innerHTML = '<span>Posting...</span>';
+  btn.style.opacity = '0.6';
+  const result = await window.dataSdk.create({ type: 'comment', theme_vote: '', comment: text, author: author || 'Anonymous', created_at: new Date().toISOString() });
+  if (result.isOk) {
+    document.getElementById('comment-author').value = '';
+    document.getElementById('comment-text').value = '';
+    showToast('Comment posted! 💬');
+  } else showToast('Could not post comment.');
+  btn.innerHTML = '<i data-lucide="send" style="width:14px;height:14px;"></i><span>Post Comment</span>';
+  btn.style.opacity = '1';
+  lucide.createIcons();
+  isSubmitting = false;
+});
+
+// ── Data SDK ──
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    voteCounts = calcVotes(data);
+    renderVoteBars();
+    renderComments(data);
+  }
+};
+
+// ── Element SDK ──
+const defaultConfig = {
+  background_color: '#FFFCF7',
+  surface_color: '#FFF8F0',
+  text_color: '#2D2226',
+  primary_color: '#C4917B',
+  secondary_color: '#9B8AA6',
+  font_family: 'Sora',
+  font_size: 16,
+  hero_title: 'Make your wedding look expensive.',
+  hero_subtitle: 'Editable signage and seating charts that photograph beautifully.',
+  cta_text: 'Get the Bundle',
+  bottom_cta_title: 'Print-ready in minutes.'
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_color || defaultConfig.primary_color;
+  const secondary = config.secondary_color || defaultConfig.secondary_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--text', text);
+  document.documentElement.style.setProperty('--primary', primary);
+  document.documentElement.style.setProperty('--secondary', secondary);
+
+  document.body.style.fontFamily = `${font}, Sora, sans-serif`;
+  document.body.style.fontSize = size + 'px';
+
+  // Update gradient text elements
+  document.querySelectorAll('.gradient-text').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${primary}, #D4A574, ${secondary})`;
+    el.style.webkitBackgroundClip = 'text';
+    el.style.webkitTextFillColor = 'transparent';
+    el.style.backgroundClip = 'text';
+  });
+
+  // CTA buttons gradient
+  document.querySelectorAll('.shimmer').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${primary}, ${secondary})`;
+  });
+
+  // Text content
+  const heroEl = document.getElementById('hero-title');
+  const ht = config.hero_title || defaultConfig.hero_title;
+  const parts = ht.split(/(?<=\.) |$/);
+  heroEl.innerHTML = ht.includes('expensive') ? `Make your wedding<br><span class="gradient-text">look expensive.</span>` : `<span class="gradient-text">${ht}</span>`;
+  // re-apply gradient
+  heroEl.querySelectorAll('.gradient-text').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${primary}, #D4A574, ${secondary})`;
+    el.style.webkitBackgroundClip = 'text';
+    el.style.webkitTextFillColor = 'transparent';
+    el.style.backgroundClip = 'text';
+  });
+
+  document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  const ctaSpan = document.getElementById('hero-cta').querySelector('span');
+  if (ctaSpan) ctaSpan.textContent = config.cta_text || defaultConfig.cta_text;
+
+  const bct = config.bottom_cta_title || defaultConfig.bottom_cta_title;
+  document.getElementById('bottom-cta-title').innerHTML = bct.includes('minutes') ? `Print-ready in <span class="gradient-text">minutes.</span>` : `<span class="gradient-text">${bct}</span>`;
+  document.getElementById('bottom-cta-title').querySelectorAll('.gradient-text').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${primary}, #D4A574, ${secondary})`;
+    el.style.webkitBackgroundClip = 'text';
+    el.style.webkitTextFillColor = 'transparent';
+    el.style.backgroundClip = 'text';
+  });
+
+  // Font sizing
+  document.querySelectorAll('.font-serif').forEach(el => {
+    el.style.fontFamily = `Playfair Display, ${font}, serif`;
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_text', config.cta_text || defaultConfig.cta_text],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+
+// ── Init Data SDK ──
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// ── Render static sections ──
+renderIncluded();
+renderPreviews();
+renderThemes();
+renderReviews();
+renderVoteBars();
+
+// ── Scroll reveals ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Mobile menu ──
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// ── Active nav link ──
+const sections = document.querySelectorAll('section[id]');
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (appWrapper.scrollTop >= s.offsetTop - 80) current = s.id; });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a74e0124e27c5',t:'MTc3NTU3OTg0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

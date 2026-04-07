@@ -1,1 +1,892 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/524026e7-ab8f-427a-bbac-a3e2a83cdd69 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClipScale Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        syne: ['Syne', 'sans-serif'],
+        mono: ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideLeft { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 40px rgba(239,68,68,0.6); } }
+@keyframes frameDrift { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(-3deg) translateY(-8px); } }
+@keyframes frameDrift2 { 0%, 100% { transform: rotate(2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-12px); } }
+@keyframes frameDrift3 { 0%, 100% { transform: rotate(-1deg) translateY(0); } 50% { transform: rotate(-1deg) translateY(-6px); } }
+@keyframes timelineScan { from { left: 0%; } to { left: 100%; } }
+@keyframes counterUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes borderGlow { 0%, 100% { border-color: rgba(239,68,68,0.3); } 50% { border-color: rgba(239,68,68,0.8); } }
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.anim-fade-up { animation: fadeUp 0.8s ease both; }
+.anim-fade-in { animation: fadeIn 0.6s ease both; }
+.anim-slide-left { animation: slideLeft 0.8s ease both; }
+.anim-slide-right { animation: slideRight 0.8s ease both; }
+.anim-scale-in { animation: scaleIn 0.7s ease both; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+.anim-delay-4 { animation-delay: 0.4s; }
+.anim-delay-5 { animation-delay: 0.5s; }
+.anim-delay-6 { animation-delay: 0.6s; }
+
+.reveal-hidden { opacity: 0; transform: translateY(40px); transition: none; }
+
+.glow-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.glow-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 0 50px rgba(239,68,68,0.25), 0 20px 60px rgba(0,0,0,0.5); }
+
+.pricing-popular { animation: borderGlow 3s ease-in-out infinite; }
+
+.clip-frame { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.clip-frame:hover { transform: scale(1.08) !important; z-index: 10; }
+
+.timeline-bar { position: relative; overflow: hidden; }
+.timeline-bar::after { content: ''; position: absolute; top: 0; width: 3px; height: 100%; background: #ef4444; animation: timelineScan 3s linear infinite; box-shadow: 0 0 10px #ef4444; }
+
+.ticker-track { animation: tickerScroll 25s linear infinite; }
+
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #ef4444; transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transform: translateX(-100%); transition: transform 0.6s ease; }
+.btn-primary:hover::before { transform: translateX(100%); }
+
+.reaction-btn { transition: all 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { transform: scale(1.2); box-shadow: 0 0 15px rgba(239,68,68,0.5); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto" style="background: #0a0a0f; color: #ffffff; font-family: 'Syne', sans-serif;"><!-- Sticky Nav -->
+  <nav id="mainNav" style="position: sticky; top: 0; z-index: 50; background: rgba(10,10,15,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.06);">
+   <div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;"><a href="#home" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff;">
+     <div style="width: 36px; height: 36px; background: #ef4444; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i data-lucide="play" style="width: 18px; height: 18px; color: #fff;"></i>
+     </div><span style="font-weight: 800; font-size: 18px; letter-spacing: -0.5px;" id="navBrand">ClipScale</span> </a>
+    <div style="display: flex; gap: 28px; align-items: center;" class="hidden md:flex"><a href="#home" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Home</a> <a href="#clips" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Clips</a> <a href="#process" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Process</a> <a href="#results" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Results</a> <a href="#pricing" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">Pricing</a> <a href="#faq" class="nav-link" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">FAQ</a> <a href="#cta-bottom" class="btn-primary" style="background: #ef4444; color: #fff; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">START SCALING</a>
+    </div><button id="mobileMenuBtn" class="md:hidden" style="background: none; border: none; color: #fff; cursor: pointer;"> <i data-lucide="menu" style="width: 24px; height: 24px;"></i> </button>
+   </div>
+   <div id="mobileMenu" style="display: none; padding: 0 24px 16px; flex-direction: column; gap: 12px;"><a href="#home" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">Home</a> <a href="#clips" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">Clips</a> <a href="#process" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">Process</a> <a href="#results" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">Results</a> <a href="#pricing" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">Pricing</a> <a href="#faq" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; font-weight: 600;">FAQ</a> <a href="#cta-bottom" style="background: #ef4444; color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 700; text-align: center;">START SCALING</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" style="min-height: 90%; display: flex; align-items: center; position: relative; overflow: hidden;"><!-- Background grid -->
+   <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px;"></div><!-- Red glow -->
+   <div style="position: absolute; top: -200px; right: -100px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%); pointer-events: none;"></div>
+   <div style="position: absolute; bottom: -200px; left: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); pointer-events: none;"></div>
+   <div style="max-width: 1200px; margin: 0 auto; padding: 80px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1;" class="hero-grid">
+    <div>
+     <div class="anim-fade-up" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 50px; padding: 6px 16px; margin-bottom: 24px;">
+      <div style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: glowPulse 2s infinite;"></div><span style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #ef4444; font-family: 'Space Mono', monospace;">Content Engine Live</span>
+     </div>
+     <h1 id="heroTitle" class="anim-fade-up anim-delay-1" style="font-size: clamp(36px, 5vw, 68px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin: 0 0 20px;">Your content should work harder.</h1>
+     <p id="heroSubtitle" class="anim-fade-up anim-delay-2" style="font-size: clamp(16px, 1.8vw, 20px); color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0 0 36px; max-width: 480px;">Turn one video into a content machine.</p>
+     <div class="anim-fade-up anim-delay-3" style="display: flex; gap: 14px; flex-wrap: wrap;"><a href="#cta-bottom" id="ctaPrimary" class="btn-primary" style="background: #ef4444; color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 8px;"> <span>Start Scaling</span> <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i> </a> <a href="#clips" id="ctaSecondary" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease;"> <i data-lucide="play" style="width: 16px; height: 16px;"></i> <span>View Clips</span> </a>
+     </div><!-- Stats row -->
+     <div class="anim-fade-up anim-delay-4" style="display: flex; gap: 40px; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08);">
+      <div>
+       <div style="font-size: 28px; font-weight: 800; color: #ef4444; font-family: 'Space Mono', monospace;">
+        20x
+       </div>
+       <div style="font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">
+        Content Output
+       </div>
+      </div>
+      <div>
+       <div style="font-size: 28px; font-weight: 800; color: #3b82f6; font-family: 'Space Mono', monospace;">
+        5+
+       </div>
+       <div style="font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">
+        Platforms
+       </div>
+      </div>
+      <div>
+       <div style="font-size: 28px; font-weight: 800; color: #fff; font-family: 'Space Mono', monospace;">
+        48h
+       </div>
+       <div style="font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">
+        Turnaround
+       </div>
+      </div>
+     </div>
+    </div><!-- Stacked frames -->
+    <div class="anim-scale-in anim-delay-2" style="position: relative; height: 480px; display: flex; align-items: center; justify-content: center;">
+     <div class="clip-frame" style="position: absolute; width: 180px; height: 320px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; border: 2px solid rgba(239,68,68,0.4); animation: frameDrift 4s ease-in-out infinite; left: 10%; top: 15%; z-index: 1; overflow: hidden;">
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
+       <div style="width: 50px; height: 50px; background: rgba(239,68,68,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i data-lucide="play" style="width: 24px; height: 24px; color: #ef4444;"></i>
+       </div>
+       <div style="font-size: 10px; color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;">
+        TikTok
+       </div>
+      </div>
+      <div class="timeline-bar" style="position: absolute; bottom: 12px; left: 12px; right: 12px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+     </div>
+     <div class="clip-frame" style="position: absolute; width: 180px; height: 320px; background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); border-radius: 16px; border: 2px solid rgba(59,130,246,0.4); animation: frameDrift2 5s ease-in-out infinite; left: 35%; top: 5%; z-index: 2; overflow: hidden;">
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
+       <div style="width: 50px; height: 50px; background: rgba(59,130,246,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i data-lucide="play" style="width: 24px; height: 24px; color: #3b82f6;"></i>
+       </div>
+       <div style="font-size: 10px; color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;">
+        Reels
+       </div>
+      </div>
+      <div class="timeline-bar" style="position: absolute; bottom: 12px; left: 12px; right: 12px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+     </div>
+     <div class="clip-frame" style="position: absolute; width: 180px; height: 320px; background: linear-gradient(135deg, #1a1a2e 0%, #1e1e3f 100%); border-radius: 16px; border: 2px solid rgba(239,68,68,0.3); animation: frameDrift3 4.5s ease-in-out infinite; right: 10%; top: 12%; z-index: 3; overflow: hidden;">
+      <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
+       <div style="width: 50px; height: 50px; background: rgba(239,68,68,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i data-lucide="play" style="width: 24px; height: 24px; color: #ef4444;"></i>
+       </div>
+       <div style="font-size: 10px; color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;">
+        Shorts
+       </div>
+      </div>
+      <div class="timeline-bar" style="position: absolute; bottom: 12px; left: 12px; right: 12px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px;"></div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Ticker -->
+  <div style="overflow: hidden; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 0; background: rgba(239,68,68,0.03);">
+   <div class="ticker-track" style="display: flex; gap: 48px; white-space: nowrap; width: max-content;"><span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ TikTok</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Instagram Reels</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ YouTube Shorts</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ LinkedIn</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Twitter/X</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Facebook</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Pinterest</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Threads</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ TikTok</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Instagram Reels</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ YouTube Shorts</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ LinkedIn</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Twitter/X</span> <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 2px; text-transform: uppercase;">✦ Facebook</span>
+   </div>
+  </div><!-- CLIPS -->
+  <section id="clips" style="padding: 100px 24px; max-width: 1200px; margin: 0 auto;">
+   <div class="reveal-hidden" style="text-align: center; margin-bottom: 64px;">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #ef4444; margin-bottom: 12px; font-family: 'Space Mono', monospace;">
+     Before → After
+    </div>
+    <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; margin: 0;">Content Breakdown</h2>
+    <p style="color: rgba(255,255,255,0.5); font-size: 16px; margin-top: 12px;">See how one video becomes a full content ecosystem.</p>
+   </div>
+   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;"><!-- Clip Card 1 -->
+    <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;">
+     <div style="padding: 28px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+       <div style="width: 36px; height: 36px; background: rgba(239,68,68,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i data-lucide="video" style="width: 18px; height: 18px; color: #ef4444;"></i>
+       </div>
+       <div>
+        <div style="font-size: 14px; font-weight: 700;">
+         Podcast Episode
+        </div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'Space Mono', monospace;">
+         45 min → 20 clips
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+       <div style="flex: 1; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         Before
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: rgba(255,255,255,0.3);">
+         1
+        </div>
+       </div><i data-lucide="arrow-right" style="width: 20px; height: 20px; color: #ef4444;"></i>
+       <div style="flex: 1; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: #ef4444; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         After
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: #ef4444;">
+         20
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size: 11px; padding: 4px 10px; background: rgba(239,68,68,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">TikTok</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(59,130,246,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">Reels</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.06); border-radius: 50px; color: rgba(255,255,255,0.6);">Shorts</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.06); border-radius: 50px; color: rgba(255,255,255,0.6);">Audiograms</span>
+      </div>
+     </div>
+    </div><!-- Clip Card 2 -->
+    <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;">
+     <div style="padding: 28px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+       <div style="width: 36px; height: 36px; background: rgba(59,130,246,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i data-lucide="mic" style="width: 18px; height: 18px; color: #3b82f6;"></i>
+       </div>
+       <div>
+        <div style="font-size: 14px; font-weight: 700;">
+         Keynote Talk
+        </div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'Space Mono', monospace;">
+         20 min → 15 clips
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+       <div style="flex: 1; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         Before
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: rgba(255,255,255,0.3);">
+         1
+        </div>
+       </div><i data-lucide="arrow-right" style="width: 20px; height: 20px; color: #3b82f6;"></i>
+       <div style="flex: 1; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: #3b82f6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         After
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: #3b82f6;">
+         15
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size: 11px; padding: 4px 10px; background: rgba(59,130,246,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">Carousel</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(239,68,68,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">Quotes</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.06); border-radius: 50px; color: rgba(255,255,255,0.6);">Threads</span>
+      </div>
+     </div>
+    </div><!-- Clip Card 3 -->
+    <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;">
+     <div style="padding: 28px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+       <div style="width: 36px; height: 36px; background: rgba(239,68,68,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i data-lucide="tv" style="width: 18px; height: 18px; color: #ef4444;"></i>
+       </div>
+       <div>
+        <div style="font-size: 14px; font-weight: 700;">
+         Webinar Recording
+        </div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'Space Mono', monospace;">
+         60 min → 25 clips
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+       <div style="flex: 1; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         Before
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: rgba(255,255,255,0.3);">
+         1
+        </div>
+       </div><i data-lucide="arrow-right" style="width: 20px; height: 20px; color: #ef4444;"></i>
+       <div style="flex: 1; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 16px; text-align: center;">
+        <div style="font-size: 11px; color: #ef4444; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+         After
+        </div>
+        <div style="font-size: 24px; font-weight: 800; color: #ef4444;">
+         25
+        </div>
+       </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px;"><span style="font-size: 11px; padding: 4px 10px; background: rgba(239,68,68,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">TikTok</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(59,130,246,0.1); border-radius: 50px; color: rgba(255,255,255,0.6);">LinkedIn</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.06); border-radius: 50px; color: rgba(255,255,255,0.6);">Blog</span> <span style="font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.06); border-radius: 50px; color: rgba(255,255,255,0.6);">Email</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PROCESS -->
+  <section id="process" style="padding: 100px 24px; background: rgba(255,255,255,0.01);">
+   <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="reveal-hidden" style="text-align: center; margin-bottom: 64px;">
+     <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #3b82f6; margin-bottom: 12px; font-family: 'Space Mono', monospace;">
+      How It Works
+     </div>
+     <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; margin: 0;">The Repurposing Workflow</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 16px; right: 16px; font-size: 48px; font-weight: 800; color: rgba(239,68,68,0.08); font-family: 'Space Mono', monospace;">
+       01
+      </div>
+      <div style="width: 48px; height: 48px; background: rgba(239,68,68,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="upload" style="width: 24px; height: 24px; color: #ef4444;"></i>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; margin: 0 0 8px;">Upload</h3>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.6;">Drop your long-form video. Podcast, webinar, keynote — any format works.</p>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 16px; right: 16px; font-size: 48px; font-weight: 800; color: rgba(59,130,246,0.08); font-family: 'Space Mono', monospace;">
+       02
+      </div>
+      <div style="width: 48px; height: 48px; background: rgba(59,130,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="scissors" style="width: 24px; height: 24px; color: #3b82f6;"></i>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; margin: 0 0 8px;">Clip &amp; Caption</h3>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.6;">We extract viral-worthy moments, add captions, hooks, and platform-native formatting.</p>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 16px; right: 16px; font-size: 48px; font-weight: 800; color: rgba(239,68,68,0.08); font-family: 'Space Mono', monospace;">
+       03
+      </div>
+      <div style="width: 48px; height: 48px; background: rgba(239,68,68,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="layout-grid" style="width: 24px; height: 24px; color: #ef4444;"></i>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; margin: 0 0 8px;">Format</h3>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.6;">Every clip is resized for TikTok, Reels, Shorts, LinkedIn, X, and more.</p>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 16px; right: 16px; font-size: 48px; font-weight: 800; color: rgba(59,130,246,0.08); font-family: 'Space Mono', monospace;">
+       04
+      </div>
+      <div style="width: 48px; height: 48px; background: rgba(59,130,246,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;"><i data-lucide="send" style="width: 24px; height: 24px; color: #3b82f6;"></i>
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; margin: 0 0 8px;">Distribute</h3>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.6;">Scheduled posting across all platforms. Content calendar included.</p>
+     </div>
+    </div><!-- Included assets -->
+    <div class="reveal-hidden" style="margin-top: 48px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px;">
+     <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 20px; text-align: center;">🎁 Included Digital Product</h3>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(239,68,68,0.05); border-radius: 10px;"><i data-lucide="file-text" style="width: 18px; height: 18px; color: #ef4444;"></i> <span style="font-size: 13px; color: rgba(255,255,255,0.7);">Clipping Frameworks</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(59,130,246,0.05); border-radius: 10px;"><i data-lucide="type" style="width: 18px; height: 18px; color: #3b82f6;"></i> <span style="font-size: 13px; color: rgba(255,255,255,0.7);">Caption Templates</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(239,68,68,0.05); border-radius: 10px;"><i data-lucide="zap" style="width: 18px; height: 18px; color: #ef4444;"></i> <span style="font-size: 13px; color: rgba(255,255,255,0.7);">Viral Hook Library</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(59,130,246,0.05); border-radius: 10px;"><i data-lucide="git-branch" style="width: 18px; height: 18px; color: #3b82f6;"></i> <span style="font-size: 13px; color: rgba(255,255,255,0.7);">Distribution Workflows</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- RESULTS -->
+  <section id="results" style="padding: 100px 24px;">
+   <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="reveal-hidden" style="text-align: center; margin-bottom: 64px;">
+     <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #ef4444; margin-bottom: 12px; font-family: 'Space Mono', monospace;">
+      Real Results
+     </div>
+     <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; margin: 0;">Growth That Compounds</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 48px;">
+     <div class="reveal-hidden glow-card" style="background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); border-radius: 16px; padding: 32px; text-align: center;">
+      <div style="font-size: 48px; font-weight: 800; color: #ef4444; font-family: 'Space Mono', monospace; margin-bottom: 8px;">
+       847%
+      </div>
+      <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">
+       Avg Reach Increase
+      </div>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.15); border-radius: 16px; padding: 32px; text-align: center;">
+      <div style="font-size: 48px; font-weight: 800; color: #3b82f6; font-family: 'Space Mono', monospace; margin-bottom: 8px;">
+       3.2M
+      </div>
+      <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">
+       Views Generated
+      </div>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); border-radius: 16px; padding: 32px; text-align: center;">
+      <div style="font-size: 48px; font-weight: 800; color: #ef4444; font-family: 'Space Mono', monospace; margin-bottom: 8px;">
+       20x
+      </div>
+      <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">
+       Content Output
+      </div>
+     </div>
+     <div class="reveal-hidden glow-card" style="background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.15); border-radius: 16px; padding: 32px; text-align: center;">
+      <div style="font-size: 48px; font-weight: 800; color: #3b82f6; font-family: 'Space Mono', monospace; margin-bottom: 8px;">
+       92%
+      </div>
+      <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px;">
+       Client Retention
+      </div>
+     </div>
+    </div><!-- Testimonials -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+     <div class="reveal-hidden" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px;">
+      <div style="display: flex; gap: 4px; margin-bottom: 16px;"><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span>
+      </div>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; margin: 0 0 16px;">"We went from posting once a week to dominating every platform. ClipScale literally changed our content strategy overnight."</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+       <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #ef4444, #3b82f6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">
+        M
+       </div>
+       <div>
+        <div style="font-size: 13px; font-weight: 700;">
+         Marcus T.
+        </div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4);">
+         Podcast Host, 120K followers
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="reveal-hidden" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px;">
+      <div style="display: flex; gap: 4px; margin-bottom: 16px;"><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span><span style="color: #ef4444;">★</span>
+      </div>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; margin: 0 0 16px;">"The ROI is unreal. One webinar turned into 3 months of content. My team can finally focus on what they do best."</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+       <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #ef4444); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">
+        S
+       </div>
+       <div>
+        <div style="font-size: 13px; font-weight: 700;">
+         Sarah K.
+        </div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4);">
+         SaaS Founder
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRICING -->
+  <section id="pricing" style="padding: 100px 24px; background: rgba(255,255,255,0.01);">
+   <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="reveal-hidden" style="text-align: center; margin-bottom: 64px;">
+     <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #3b82f6; margin-bottom: 12px; font-family: 'Space Mono', monospace;">
+      Pricing
+     </div>
+     <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1.5px; margin: 0;">Scale Your Way</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;"><!-- Starter -->
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 36px; display: flex; flex-direction: column;">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; font-family: 'Space Mono', monospace;">
+       Starter
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px;"><span id="starterPrice" style="font-size: 40px; font-weight: 800;">$297</span> <span style="font-size: 14px; color: rgba(255,255,255,0.4);">/mo</span>
+      </div>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0 0 24px; line-height: 1.5;">Basic clipping for creators starting out.</p>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">5 clips per video</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Auto captions</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">2 platform formats</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Hook templates</span>
+       </div>
+      </div><a href="#cta-bottom" style="display: block; text-align: center; padding: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; text-decoration: none; color: #fff; font-weight: 700; font-size: 14px; transition: all 0.3s ease;">Get Started</a>
+     </div><!-- Growth (Popular) -->
+     <div class="reveal-hidden glow-card pricing-popular" style="background: rgba(239,68,68,0.05); border: 2px solid rgba(239,68,68,0.4); border-radius: 20px; padding: 36px; display: flex; flex-direction: column; position: relative;">
+      <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 50px; letter-spacing: 1px; text-transform: uppercase;">
+       Most Popular
+      </div>
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #ef4444; margin-bottom: 8px; font-family: 'Space Mono', monospace;">
+       Growth
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px;"><span id="growthPrice" style="font-size: 40px; font-weight: 800;">$597</span> <span style="font-size: 14px; color: rgba(255,255,255,0.4);">/mo</span>
+      </div>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0 0 24px; line-height: 1.5;">Multi-platform distribution engine.</p>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">15 clips per video</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Animated captions</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">5+ platform formats</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Content calendar</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #ef4444;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Viral hook library</span>
+       </div>
+      </div><a href="#cta-bottom" class="btn-primary" style="display: block; text-align: center; padding: 14px; background: #ef4444; border-radius: 10px; text-decoration: none; color: #fff; font-weight: 700; font-size: 14px;">Start Growing</a>
+     </div><!-- Scale -->
+     <div class="reveal-hidden glow-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 36px; display: flex; flex-direction: column;">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #3b82f6; margin-bottom: 8px; font-family: 'Space Mono', monospace;">
+       Scale
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px;"><span id="scalePrice" style="font-size: 40px; font-weight: 800;">$997</span> <span style="font-size: 14px; color: rgba(255,255,255,0.4);">/mo</span>
+      </div>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.5); margin: 0 0 24px; line-height: 1.5;">Full content system. Done for you.</p>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px;">
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Unlimited clips</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Premium editing</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">All platforms</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Distribution workflows</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Dedicated strategist</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+        <i data-lucide="check" style="width: 16px; height: 16px; color: #3b82f6;"></i><span style="font-size: 13px; color: rgba(255,255,255,0.7);">Analytics dashboard</span>
+       </div>
+      </div><a href="#cta-bottom" style="display: block; text-align: center; padding: 14px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 10px; text-decoration: none; color: #3b82f6; font-weight: 700; font-size: 14px; transition: all 0.3s ease;">Go Scale</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" style="padding: 100px 24px;">
+   <div style="max-width: 720px; margin: 0 auto;">
+    <div class="reveal-hidden" style="text-align: center; margin-bottom: 48px;">
+     <h2 style="font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -1px; margin: 0;">Frequently Asked</h2>
+    </div>
+    <div id="faqList" style="display: flex; flex-direction: column; gap: 12px;">
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="cta-bottom" style="padding: 80px 24px;">
+   <div style="max-width: 800px; margin: 0 auto;">
+    <div class="reveal-hidden" style="text-align: center; margin-bottom: 64px;">
+     <h2 id="bottomCtaText" style="font-size: clamp(32px, 5vw, 56px); font-weight: 800; letter-spacing: -2px; margin: 0 0 20px; background: linear-gradient(135deg, #ef4444, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Multiply your reach instantly.</h2>
+     <p style="font-size: 16px; color: rgba(255,255,255,0.5); margin: 0 0 32px;">One video becomes twenty. Start today.</p><a href="#pricing" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; background: #ef4444; color: #fff; padding: 16px 40px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px;"> <i data-lucide="zap" style="width: 20px; height: 20px;"></i> Start Scaling Now </a>
+    </div><!-- Embed Widget: Vote + Comment -->
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 36px; position: relative;">
+     <div style="position: absolute; top: -10px; left: 24px; background: #0a0a0f; padding: 0 12px; font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; font-family: 'Space Mono', monospace;">
+      Embed Widget Here
+     </div><!-- Reactions -->
+     <div style="margin-bottom: 28px;">
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; color: rgba(255,255,255,0.6);">
+       React to ClipScale
+      </div>
+      <div id="reactionsBar" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+     </div><!-- Price Vote -->
+     <div style="margin-bottom: 28px;">
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; color: rgba(255,255,255,0.6);">
+       What would you pay?
+      </div>
+      <div id="priceVoteBar" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+     </div><!-- Comment Form -->
+     <div style="margin-bottom: 24px;">
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; color: rgba(255,255,255,0.6);">
+       Leave a comment
+      </div>
+      <form id="commentForm" style="display: flex; flex-direction: column; gap: 12px;"><label for="commentName" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);">Your name</label> <input id="commentName" type="text" placeholder="Your name" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; font-family: 'Syne', sans-serif; outline: none;" required> <label for="commentMessage" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0);">Your comment</label> <textarea id="commentMessage" placeholder="What do you think?" rows="3" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; font-family: 'Syne', sans-serif; outline: none; resize: vertical;" required></textarea> <button type="submit" id="commentSubmitBtn" class="btn-primary" style="background: #ef4444; color: #fff; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Syne', sans-serif; align-self: flex-start; display: flex; align-items: center; gap: 8px;"> <i data-lucide="send" style="width: 16px; height: 16px;"></i> Post Comment </button>
+      </form>
+      <div id="commentStatus" style="margin-top: 8px; font-size: 13px; display: none;"></div>
+     </div><!-- Comments list -->
+     <div id="commentsList" style="display: flex; flex-direction: column; gap: 12px;"></div>
+     <div id="limitWarning" style="display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 14px; text-align: center; color: #ef4444; font-size: 13px; margin-top: 12px;">
+      Maximum entries reached (999). Please wait for space.
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer style="border-top: 1px solid rgba(255,255,255,0.06); padding: 40px 24px; text-align: center;">
+   <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px;">
+    <div style="width: 28px; height: 28px; background: #ef4444; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i data-lucide="play" style="width: 14px; height: 14px; color: #fff;"></i>
+    </div><span style="font-weight: 800; font-size: 16px;">ClipScale Studio</span>
+   </div>
+   <p style="font-size: 12px; color: rgba(255,255,255,0.3); margin: 0;">One video becomes twenty. © 2025 ClipScale Studio.</p>
+  </footer>
+  <style>
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr !important; }
+  .hero-grid > div:last-child { display: none; }
+}
+</style>
+  <script>
+// ===== DATA =====
+const REACTIONS = ['🔥','🚀','💰','🎬','⚡','❤️'];
+const PRICES = ['$0','$29','$49','$97','$197','$297','$497','$597','$797','$997'];
+const FAQS = [
+  { q: 'What types of videos can I submit?', a: 'Podcasts, webinars, keynotes, interviews, tutorials — any long-form video works. We handle all formats.' },
+  { q: 'How fast is the turnaround?', a: 'Standard turnaround is 48 hours. Scale tier clients get priority 24-hour delivery.' },
+  { q: 'Do you handle posting too?', a: 'Growth and Scale tiers include scheduled distribution across all platforms with a full content calendar.' },
+  { q: 'What if I don\'t have long-form content yet?', a: 'We can work with content as short as 5 minutes. Our frameworks also help you plan future recordings.' },
+  { q: 'Can I cancel anytime?', a: 'Absolutely. No contracts, no lock-ins. Cancel anytime with 30-day notice.' }
+];
+
+let allData = [];
+let currentRecordCount = 0;
+
+// ===== ELEMENT SDK =====
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#141420',
+  text_color: '#ffffff',
+  primary_action_color: '#ef4444',
+  secondary_action_color: '#3b82f6',
+  font_family: 'Syne',
+  font_size: 16,
+  hero_title: 'Your content should work harder.',
+  hero_subtitle: 'Turn one video into a content machine.',
+  cta_primary: 'Start Scaling',
+  cta_secondary: 'View Clips',
+  starter_price: '$297/mo',
+  growth_price: '$597/mo',
+  scale_price: '$997/mo',
+  bottom_cta_text: 'Multiply your reach instantly.'
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+
+  document.body.style.background = bg;
+  document.body.style.color = text;
+  document.body.style.fontFamily = `${font}, Syne, sans-serif`;
+
+  // Text content
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+  const heroSub = document.getElementById('heroSubtitle');
+  if (heroSub) heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  const ctaP = document.getElementById('ctaPrimary');
+  if (ctaP) ctaP.querySelector('span').textContent = config.cta_primary || defaultConfig.cta_primary;
+  const ctaS = document.getElementById('ctaSecondary');
+  if (ctaS) ctaS.querySelector('span').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+  const bottomCta = document.getElementById('bottomCtaText');
+  if (bottomCta) bottomCta.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  // Prices
+  const sp = config.starter_price || defaultConfig.starter_price;
+  const gp = config.growth_price || defaultConfig.growth_price;
+  const scp = config.scale_price || defaultConfig.scale_price;
+  const starterEl = document.getElementById('starterPrice');
+  if (starterEl) starterEl.textContent = sp.replace('/mo','');
+  const growthEl = document.getElementById('growthPrice');
+  if (growthEl) growthEl.textContent = gp.replace('/mo','');
+  const scaleEl = document.getElementById('scalePrice');
+  if (scaleEl) scaleEl.textContent = scp.replace('/mo','');
+
+  // Colors on key elements
+  document.querySelectorAll('.btn-primary').forEach(el => { el.style.background = primary; });
+  document.querySelectorAll('.pricing-popular').forEach(el => { el.style.borderColor = primary; });
+
+  // Font sizes
+  if (heroTitle) heroTitle.style.fontSize = `clamp(${baseSize * 2.2}px, 5vw, ${baseSize * 4.2}px)`;
+  if (heroSub) heroSub.style.fontSize = `${baseSize * 1.2}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['starter_price', config.starter_price || defaultConfig.starter_price],
+    ['growth_price', config.growth_price || defaultConfig.growth_price],
+    ['scale_price', config.scale_price || defaultConfig.scale_price],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    renderComments();
+    updateReactionCounts();
+    updatePriceVoteCounts();
+    if (currentRecordCount >= 999) {
+      document.getElementById('limitWarning').style.display = 'block';
+    } else {
+      document.getElementById('limitWarning').style.display = 'none';
+    }
+  }
+};
+
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== REACTIONS =====
+function buildReactions() {
+  const bar = document.getElementById('reactionsBar');
+  REACTIONS.forEach(emoji => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn';
+    btn.dataset.emoji = emoji;
+    btn.style.cssText = 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 8px 16px; cursor: pointer; font-size: 18px; display: flex; align-items: center; gap: 6px; color: #fff;';
+    btn.innerHTML = `${emoji} <span class="count" style="font-size: 12px; font-family: 'Space Mono', monospace; color: rgba(255,255,255,0.5);">0</span>`;
+    btn.addEventListener('click', async () => {
+      if (currentRecordCount >= 999) { document.getElementById('limitWarning').style.display = 'block'; return; }
+      btn.disabled = true; btn.style.opacity = '0.5';
+      const res = await window.dataSdk.create({ type: 'reaction', name: '', message: '', reaction: emoji, price: '', created_at: new Date().toISOString() });
+      btn.disabled = false; btn.style.opacity = '1';
+      if (!res.isOk) showStatus('commentStatus', 'Failed to react.', '#ef4444');
+    });
+    bar.appendChild(btn);
+  });
+}
+
+function updateReactionCounts() {
+  const counts = {};
+  REACTIONS.forEach(e => counts[e] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+  document.querySelectorAll('#reactionsBar .reaction-btn').forEach(btn => {
+    const emoji = btn.dataset.emoji;
+    btn.querySelector('.count').textContent = counts[emoji] || 0;
+  });
+}
+
+// ===== PRICE VOTES =====
+function buildPriceVotes() {
+  const bar = document.getElementById('priceVoteBar');
+  PRICES.forEach(price => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn';
+    btn.dataset.price = price;
+    btn.style.cssText = 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; padding: 6px 14px; cursor: pointer; font-size: 13px; font-family: "Space Mono", monospace; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 6px;';
+    btn.innerHTML = `${price} <span class="pcount" style="font-size: 11px; color: rgba(255,255,255,0.3);">0</span>`;
+    btn.addEventListener('click', async () => {
+      if (currentRecordCount >= 999) { document.getElementById('limitWarning').style.display = 'block'; return; }
+      btn.disabled = true; btn.style.opacity = '0.5';
+      const res = await window.dataSdk.create({ type: 'price_vote', name: '', message: '', reaction: '', price: price, created_at: new Date().toISOString() });
+      btn.disabled = false; btn.style.opacity = '1';
+      if (!res.isOk) showStatus('commentStatus', 'Failed to vote.', '#ef4444');
+    });
+    bar.appendChild(btn);
+  });
+}
+
+function updatePriceVoteCounts() {
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price_vote').forEach(d => { if (counts[d.price] !== undefined) counts[d.price]++; });
+  document.querySelectorAll('#priceVoteBar .reaction-btn').forEach(btn => {
+    const price = btn.dataset.price;
+    btn.querySelector('.pcount').textContent = counts[price] || 0;
+  });
+}
+
+// ===== COMMENTS =====
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (currentRecordCount >= 999) { document.getElementById('limitWarning').style.display = 'block'; return; }
+  const name = document.getElementById('commentName').value.trim();
+  const msg = document.getElementById('commentMessage').value.trim();
+  if (!name || !msg) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true; btn.innerHTML = '<span>Posting...</span>';
+  const res = await window.dataSdk.create({ type: 'comment', name, message: msg, reaction: '', price: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.innerHTML = '<i data-lucide="send" style="width:16px;height:16px;"></i> Post Comment';
+  lucide.createIcons();
+  if (res.isOk) {
+    document.getElementById('commentName').value = '';
+    document.getElementById('commentMessage').value = '';
+    showStatus('commentStatus', 'Comment posted!', '#22c55e');
+  } else {
+    showStatus('commentStatus', 'Failed to post.', '#ef4444');
+  }
+});
+
+function renderComments() {
+  const list = document.getElementById('commentsList');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach((c, i) => {
+    let el = existingMap.get(c.__backendId);
+    if (!el) {
+      el = document.createElement('div');
+      el.dataset.id = c.__backendId;
+      el.style.cssText = 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px;';
+      el.innerHTML = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div class="avatar" style="width:28px;height:28px;background:linear-gradient(135deg,#ef4444,#3b82f6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;"></div><span class="cname" style="font-size:13px;font-weight:700;"></span><span class="ctime" style="font-size:11px;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;"></span></div><p class="cmsg" style="font-size:14px;color:rgba(255,255,255,0.6);margin:0;line-height:1.5;"></p>`;
+      list.appendChild(el);
+    }
+    el.querySelector('.avatar').textContent = (c.name || '?')[0].toUpperCase();
+    el.querySelector('.cname').textContent = c.name;
+    el.querySelector('.ctime').textContent = timeAgo(c.created_at);
+    el.querySelector('.cmsg').textContent = c.message;
+  });
+}
+
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+function showStatus(id, text, color) {
+  const el = document.getElementById(id);
+  el.textContent = text; el.style.color = color; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3000);
+}
+
+// ===== FAQ =====
+function buildFAQ() {
+  const list = document.getElementById('faqList');
+  FAQS.forEach((faq, i) => {
+    const item = document.createElement('div');
+    item.className = 'reveal-hidden';
+    item.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden;';
+    item.innerHTML = `
+      <button style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; color: #fff; cursor: pointer; font-size: 15px; font-weight: 700; text-align: left; font-family: 'Syne', sans-serif;" onclick="this.parentElement.classList.toggle('faq-open'); this.querySelector('i').style.transform = this.parentElement.classList.contains('faq-open') ? 'rotate(180deg)' : '';">
+        <span>${faq.q}</span>
+        <i data-lucide="chevron-down" style="width: 18px; height: 18px; transition: transform 0.3s ease; flex-shrink: 0;"></i>
+      </button>
+      <div style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+        <div style="padding: 0 20px 18px; font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7;">${faq.a}</div>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+// FAQ toggle via CSS-like approach
+const faqStyle = document.createElement('style');
+faqStyle.textContent = '.faq-open > div:last-child { max-height: 200px !important; }';
+document.head.appendChild(faqStyle);
+
+// ===== SCROLL REVEAL =====
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove('reveal-hidden');
+        entry.target.classList.add('anim-fade-up');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal-hidden').forEach(el => observer.observe(el));
+}
+
+// ===== MOBILE MENU =====
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  const menu = document.getElementById('mobileMenu');
+  menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => { document.getElementById('mobileMenu').style.display = 'none'; });
+});
+
+// ===== INIT =====
+buildReactions();
+buildPriceVotes();
+buildFAQ();
+lucide.createIcons();
+initScrollReveal();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a10ee542927c5',t:'MTc3NTU3NTc0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

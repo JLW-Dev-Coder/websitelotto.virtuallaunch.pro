@@ -1,1 +1,543 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/1b3b5b90-2aa4-448c-aece-2d00419e4139 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImmersiLab Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Syne',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:#ff3c00;border-radius:3px}
+
+.glow-orange{box-shadow:0 0 30px rgba(255,60,0,.3),0 0 60px rgba(255,60,0,.1)}
+.glow-orange-hover:hover{box-shadow:0 0 40px rgba(255,60,0,.5),0 0 80px rgba(255,60,0,.2)}
+.card-shine{position:relative;overflow:hidden}
+.card-shine::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(255,60,0,.1),transparent 30%);animation:rotateBorder 6s linear infinite;z-index:0}
+@keyframes rotateBorder{to{transform:rotate(360deg)}}
+.card-inner{position:relative;z-index:1;background:#0f0f0f;border-radius:inherit;height:100%}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseGlow{0%,100%{opacity:.4}50%{opacity:1}}
+.anim-fade-up{animation:fadeUp .8s ease both}
+.anim-d1{animation-delay:.1s}.anim-d2{animation-delay:.2s}.anim-d3{animation-delay:.3s}.anim-d4{animation-delay:.4s}
+.parallax-slow{will-change:transform}
+.nav-glass{background:rgba(10,10,10,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.price-card{transition:transform .4s ease,box-shadow .4s ease;border:1px solid rgba(255,60,0,.15);border-radius:16px}
+.price-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 0 50px rgba(255,60,0,.3)}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.15;pointer-events:none}
+.section-reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.section-reveal.visible{opacity:1;transform:translateY(0)}
+.reaction-btn{transition:all .2s ease;cursor:pointer;user-select:none}
+.reaction-btn:hover{transform:scale(1.2)}
+.reaction-btn.active{transform:scale(1.15)}
+.toast-msg{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;z-index:9999;animation:fadeUp .3s ease both;pointer-events:none}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{brand:'#ff3c00',surface:'#141414',dark:'#0a0a0a',lite:'#e8e8e8',muted:'#888'}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-dark text-lite">
+  <div id="app-wrapper" class="w-full h-full overflow-auto relative"><!-- Ambient Blobs -->
+   <div class="blob" style="width:500px;height:500px;background:#ff3c00;top:10%;left:-10%"></div>
+   <div class="blob" style="width:400px;height:400px;background:#ff6a00;top:50%;right:-8%"></div>
+   <div class="blob" style="width:300px;height:300px;background:#ff3c00;bottom:10%;left:30%"></div><!-- SVG Spatial Overlays -->
+   <svg class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index:0;opacity:.04"><pattern id="grid" width="60" height="60" patternunits="userSpaceOnUse">
+     <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ff3c00" stroke-width=".5" />
+    </pattern> <rect width="100%" height="100%" fill="url(#grid)" />
+   </svg><!-- Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between"><a href="#home" class="text-xl font-extrabold tracking-tight" id="nav-logo" style="font-family:'Syne',sans-serif">Immersi<span class="text-brand">Lab</span></a>
+     <div class="hidden md:flex gap-6 text-sm font-semibold tracking-wide"><a href="#home" class="hover:text-brand transition">Home</a> <a href="#experiences" class="hover:text-brand transition">Experiences</a> <a href="#concepts" class="hover:text-brand transition">Concepts</a> <a href="#impact" class="hover:text-brand transition">Impact</a> <a href="#pricing" class="hover:text-brand transition">Pricing</a> <a href="#faq" class="hover:text-brand transition">FAQ</a> <a href="#start" class="bg-brand text-dark px-4 py-1.5 rounded-full hover:bg-orange-500 transition font-bold">Start Project</a>
+     </div><button id="mobile-toggle" class="md:hidden text-lite"><i data-lucide="menu" style="width:24px;height:24px"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden flex-col gap-3 px-6 pb-4 text-sm font-semibold"><a href="#home" class="hover:text-brand transition py-1">Home</a> <a href="#experiences" class="hover:text-brand transition py-1">Experiences</a> <a href="#concepts" class="hover:text-brand transition py-1">Concepts</a> <a href="#impact" class="hover:text-brand transition py-1">Impact</a> <a href="#pricing" class="hover:text-brand transition py-1">Pricing</a> <a href="#faq" class="hover:text-brand transition py-1">FAQ</a> <a href="#start" class="bg-brand text-dark px-4 py-1.5 rounded-full text-center font-bold">Start Project</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-20" style="min-height:100%">
+    <div class="max-w-4xl mx-auto text-center relative z-10"><!-- Abstract SVG shape -->
+     <svg class="mx-auto mb-8 parallax-slow" width="120" height="120" viewbox="0 0 120 120" style="opacity:.7"><circle cx="60" cy="60" r="55" fill="none" stroke="#ff3c00" stroke-width="1" stroke-dasharray="8 4" /> <circle cx="60" cy="60" r="35" fill="none" stroke="#ff3c00" stroke-width=".5" stroke-dasharray="4 8" /> <circle cx="60" cy="60" r="8" fill="#ff3c00" opacity=".6" />
+     </svg>
+     <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight anim-fade-up">Brands should be<br><span class="text-brand">experienced</span>, not seen.</h1>
+     <p id="hero-subtitle" class="mt-6 text-lg sm:text-xl text-muted max-w-2xl mx-auto anim-fade-up anim-d2">Immersive environments that capture attention.</p>
+     <div class="mt-10 flex flex-wrap gap-4 justify-center anim-fade-up anim-d3"><a href="#start" id="hero-cta-primary" class="bg-brand text-dark px-8 py-3 rounded-full font-bold text-lg hover:bg-orange-500 transition glow-orange">Start Project</a> <a href="#experiences" id="hero-cta-secondary" class="border border-brand/40 text-lite px-8 py-3 rounded-full font-bold text-lg hover:bg-brand/10 transition">View Experiences</a>
+     </div>
+    </div>
+   </section><!-- Experiences -->
+   <section id="experiences" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-brand font-bold tracking-widest text-sm uppercase mb-2">Portfolio</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-16">Past Installations</h2>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="group relative rounded-2xl overflow-hidden bg-surface aspect-[4/5] cursor-pointer">
+       <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent z-10"></div>
+       <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/15 transition-all duration-500 z-10"></div>
+       <svg class="absolute inset-0 w-full h-full" style="z-index:0">
+        <rect width="100%" height="100%" fill="#181818" /><circle cx="50%" cy="40%" r="80" fill="none" stroke="#ff3c00" stroke-width=".5" opacity=".3" /><circle cx="50%" cy="40%" r="120" fill="none" stroke="#ff3c00" stroke-width=".3" opacity=".15" /><line x1="10%" y1="80%" x2="90%" y2="20%" stroke="#ff3c00" stroke-width=".3" opacity=".1" />
+       </svg>
+       <div class="absolute bottom-0 left-0 right-0 p-6 z-20"><span class="text-brand text-xs font-bold tracking-widest uppercase">Nike</span>
+        <h3 class="text-xl font-bold mt-1">Air Max Infinity Room</h3>
+        <p class="text-muted text-sm mt-1 opacity-0 group-hover:opacity-100 transition-all duration-500">360° mirrored infinity installation with motion-reactive lighting.</p>
+       </div>
+      </div>
+      <div class="group relative rounded-2xl overflow-hidden bg-surface aspect-[4/5] cursor-pointer">
+       <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent z-10"></div>
+       <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/15 transition-all duration-500 z-10"></div>
+       <svg class="absolute inset-0 w-full h-full" style="z-index:0">
+        <rect width="100%" height="100%" fill="#181818" /><rect x="20%" y="20%" width="60%" height="60%" fill="none" stroke="#ff3c00" stroke-width=".5" opacity=".2" rx="8" /><rect x="30%" y="30%" width="40%" height="40%" fill="none" stroke="#ff3c00" stroke-width=".3" opacity=".15" rx="4" />
+       </svg>
+       <div class="absolute bottom-0 left-0 right-0 p-6 z-20"><span class="text-brand text-xs font-bold tracking-widest uppercase">Spotify</span>
+        <h3 class="text-xl font-bold mt-1">Sound Capsule</h3>
+        <p class="text-muted text-sm mt-1 opacity-0 group-hover:opacity-100 transition-all duration-500">Spatial audio pods where visitors stepped inside album artwork.</p>
+       </div>
+      </div>
+      <div class="group relative rounded-2xl overflow-hidden bg-surface aspect-[4/5] cursor-pointer">
+       <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent z-10"></div>
+       <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/15 transition-all duration-500 z-10"></div>
+       <svg class="absolute inset-0 w-full h-full" style="z-index:0">
+        <rect width="100%" height="100%" fill="#181818" /><polygon points="50,15 85,75 15,75" fill="none" stroke="#ff3c00" stroke-width=".5" opacity=".25" transform="translate(60,30)" /><polygon points="50,15 85,75 15,75" fill="none" stroke="#ff3c00" stroke-width=".3" opacity=".12" transform="translate(60,30) scale(.6) translate(33,25)" />
+       </svg>
+       <div class="absolute bottom-0 left-0 right-0 p-6 z-20"><span class="text-brand text-xs font-bold tracking-widest uppercase">Tesla</span>
+        <h3 class="text-xl font-bold mt-1">Future Forward Pavilion</h3>
+        <p class="text-muted text-sm mt-1 opacity-0 group-hover:opacity-100 transition-all duration-500">Kinetic sculpture garden with autonomous lighting systems.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Concepts -->
+   <section id="concepts" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-brand font-bold tracking-widest text-sm uppercase mb-2">Creative Direction</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-16">Our Concepts</h2>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-surface rounded-2xl p-6 border border-white/5 hover:border-brand/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand/20 transition">
+        <i data-lucide="eye" class="text-brand" style="width:24px;height:24px"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Sensory Spaces</h3>
+       <p class="text-muted text-sm leading-relaxed">Multi-sensory environments that engage sight, sound, touch, and scent.</p>
+      </div>
+      <div class="bg-surface rounded-2xl p-6 border border-white/5 hover:border-brand/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand/20 transition">
+        <i data-lucide="move" class="text-brand" style="width:24px;height:24px"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Reactive Installations</h3>
+       <p class="text-muted text-sm leading-relaxed">Motion-triggered environments that respond to visitor movement and presence.</p>
+      </div>
+      <div class="bg-surface rounded-2xl p-6 border border-white/5 hover:border-brand/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand/20 transition">
+        <i data-lucide="box" class="text-brand" style="width:24px;height:24px"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Spatial Narratives</h3>
+       <p class="text-muted text-sm leading-relaxed">Story-driven environments that guide visitors through a brand journey.</p>
+      </div>
+      <div class="bg-surface rounded-2xl p-6 border border-white/5 hover:border-brand/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center mb-4 group-hover:bg-brand/20 transition">
+        <i data-lucide="zap" class="text-brand" style="width:24px;height:24px"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Digital-Physical Fusion</h3>
+       <p class="text-muted text-sm leading-relaxed">Blending AR, projection mapping, and physical materials into one experience.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Impact -->
+   <section id="impact" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-5xl mx-auto text-center">
+     <p class="text-brand font-bold tracking-widest text-sm uppercase mb-2">Results</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-16">Measured Impact</h2>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+       <p class="text-5xl font-extrabold text-brand">2.4M+</p>
+       <p class="text-muted mt-2 text-sm">Social Impressions</p>
+      </div>
+      <div>
+       <p class="text-5xl font-extrabold text-brand">340%</p>
+       <p class="text-muted mt-2 text-sm">Avg. Engagement Lift</p>
+      </div>
+      <div>
+       <p class="text-5xl font-extrabold text-brand">96%</p>
+       <p class="text-muted mt-2 text-sm">Visitor Satisfaction</p>
+      </div>
+      <div>
+       <p class="text-5xl font-extrabold text-brand">48</p>
+       <p class="text-muted mt-2 text-sm">Activations Delivered</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-brand font-bold tracking-widest text-sm uppercase mb-2 text-center">Investment</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-16 text-center">Pricing</h2>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Concept -->
+      <div class="price-card card-shine p-[2px]">
+       <div class="card-inner rounded-2xl p-8 flex flex-col h-full">
+        <h3 class="text-brand font-bold tracking-widest text-xs uppercase">Concept</h3>
+        <p class="text-3xl font-extrabold mt-3">$15,000</p>
+        <p class="text-muted text-sm mt-1">Initial design phase</p>
+        <ul class="mt-6 space-y-3 text-sm flex-1">
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Brand immersion workshop</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>3D concept renders</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Spatial layout design</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Material mood boards</li>
+        </ul><a href="#start" class="mt-8 block text-center border border-brand/40 text-brand py-3 rounded-full font-bold hover:bg-brand hover:text-dark transition">Choose Concept</a>
+       </div>
+      </div><!-- Build -->
+      <div class="price-card card-shine p-[2px] scale-105 glow-orange">
+       <div class="card-inner rounded-2xl p-8 flex flex-col h-full">
+        <div class="flex items-center gap-2">
+         <h3 class="text-brand font-bold tracking-widest text-xs uppercase">Build</h3><span class="text-[10px] bg-brand text-dark px-2 py-0.5 rounded-full font-bold">POPULAR</span>
+        </div>
+        <p class="text-3xl font-extrabold mt-3">$45,000</p>
+        <p class="text-muted text-sm mt-1">Full installation</p>
+        <ul class="mt-6 space-y-3 text-sm flex-1">
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Everything in Concept</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Full build &amp; fabrication</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Tech integration</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>On-site installation</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>2 revision rounds</li>
+        </ul><a href="#start" class="mt-8 block text-center bg-brand text-dark py-3 rounded-full font-bold hover:bg-orange-500 transition">Choose Build</a>
+       </div>
+      </div><!-- Signature -->
+      <div class="price-card card-shine p-[2px]">
+       <div class="card-inner rounded-2xl p-8 flex flex-col h-full">
+        <h3 class="text-brand font-bold tracking-widest text-xs uppercase">Signature</h3>
+        <p class="text-3xl font-extrabold mt-3">$90,000+</p>
+        <p class="text-muted text-sm mt-1">End-to-end experience</p>
+        <ul class="mt-6 space-y-3 text-sm flex-1">
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Everything in Build</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Campaign strategy</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Content production</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Social amplification</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Post-event analytics</li>
+         <li class="flex items-start gap-2"><i data-lucide="check" class="text-brand flex-shrink-0" style="width:16px;height:16px;margin-top:2px"></i>Unlimited revisions</li>
+        </ul><a href="#start" class="mt-8 block text-center border border-brand/40 text-brand py-3 rounded-full font-bold hover:bg-brand hover:text-dark transition">Choose Signature</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Vote + Comment Module -->
+   <section id="vote-comment" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 id="bottom-cta-text" class="text-3xl sm:text-5xl font-extrabold">Create something unforgettable.</h2>
+      <p class="text-muted mt-4">React, vote on pricing, or leave a comment below.</p>
+     </div><!-- Reactions -->
+     <div class="bg-surface rounded-2xl p-6 border border-white/5 mb-6">
+      <p class="text-sm font-bold text-muted mb-4 uppercase tracking-widest">React</p>
+      <div id="reactions-container" class="flex flex-wrap gap-3 justify-center"><button class="reaction-btn text-2xl bg-dark px-4 py-2 rounded-xl border border-white/5" data-reaction="🔥" onclick="handleReaction('🔥')">🔥 <span class="text-sm text-muted" id="count-🔥">0</span></button> <button class="reaction-btn text-2xl bg-dark px-4 py-2 rounded-xl border border-white/5" data-reaction="💡" onclick="handleReaction('💡')">💡 <span class="text-sm text-muted" id="count-💡">0</span></button> <button class="reaction-btn text-2xl bg-dark px-4 py-2 rounded-xl border border-white/5" data-reaction="🎨" onclick="handleReaction('🎨')">🎨 <span class="text-sm text-muted" id="count-🎨">0</span></button> <button class="reaction-btn text-2xl bg-dark px-4 py-2 rounded-xl border border-white/5" data-reaction="🚀" onclick="handleReaction('🚀')">🚀 <span class="text-sm text-muted" id="count-🚀">0</span></button> <button class="reaction-btn text-2xl bg-dark px-4 py-2 rounded-xl border border-white/5" data-reaction="✨" onclick="handleReaction('✨')">✨ <span class="text-sm text-muted" id="count-✨">0</span></button>
+      </div>
+     </div><!-- Price Vote -->
+     <div class="bg-surface rounded-2xl p-6 border border-white/5 mb-6">
+      <p class="text-sm font-bold text-muted mb-4 uppercase tracking-widest">What would you pay for a pop-up experience?</p>
+      <div id="price-vote-container" class="grid grid-cols-2 sm:grid-cols-5 gap-2"><button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$5K')">$5K <span class="block text-xs text-muted" id="pvote-$5K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$10K')">$10K <span class="block text-xs text-muted" id="pvote-$10K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$25K')">$25K <span class="block text-xs text-muted" id="pvote-$25K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$50K')">$50K <span class="block text-xs text-muted" id="pvote-$50K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$75K')">$75K <span class="block text-xs text-muted" id="pvote-$75K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$100K')">$100K <span class="block text-xs text-muted" id="pvote-$100K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$150K')">$150K <span class="block text-xs text-muted" id="pvote-$150K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$200K')">$200K <span class="block text-xs text-muted" id="pvote-$200K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$300K')">$300K <span class="block text-xs text-muted" id="pvote-$300K">0</span></button> <button class="price-vote-btn bg-dark border border-white/5 rounded-xl py-3 text-sm font-bold hover:border-brand/50 hover:bg-brand/10 transition" onclick="handlePriceVote('$500K+')">$500K+ <span class="block text-xs text-muted" id="pvote-$500K+">0</span></button>
+      </div>
+     </div><!-- Comments -->
+     <div class="bg-surface rounded-2xl p-6 border border-white/5">
+      <p class="text-sm font-bold text-muted mb-4 uppercase tracking-widest">Comments</p>
+      <form id="comment-form" class="flex gap-3 mb-6"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-dark border border-white/10 rounded-xl px-4 py-3 text-sm text-lite placeholder-muted focus:outline-none focus:border-brand/50 transition" maxlength="300" aria-label="Comment"> <button type="submit" id="comment-submit-btn" class="bg-brand text-dark px-6 py-3 rounded-xl font-bold text-sm hover:bg-orange-500 transition flex items-center gap-2"><i data-lucide="send" style="width:16px;height:16px"></i> Send</button>
+      </form>
+      <div id="comments-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
+      <p id="no-comments" class="text-muted text-sm text-center py-4">No comments yet. Be the first!</p>
+     </div><!-- Embed placeholder -->
+     <div class="mt-8 border border-dashed border-white/10 rounded-2xl p-8 text-center">
+      <p class="text-muted text-sm font-mono">Embed Widget Here</p>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-3xl mx-auto">
+     <p class="text-brand font-bold tracking-widest text-sm uppercase mb-2 text-center">Questions</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-12 text-center">FAQ</h2>
+     <div class="space-y-3" id="faq-list">
+      <div class="faq-item bg-surface rounded-xl border border-white/5 overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left font-bold" onclick="toggleFaq(this)">How long does a typical project take?<i data-lucide="chevron-down" style="width:20px;height:20px" class="transition-transform"></i></button>
+       <div class="faq-answer hidden px-5 pb-5 text-muted text-sm leading-relaxed">
+        Most projects run 6–12 weeks from concept to installation, depending on complexity. Rush timelines available for an additional fee.
+       </div>
+      </div>
+      <div class="faq-item bg-surface rounded-xl border border-white/5 overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left font-bold" onclick="toggleFaq(this)">Do you work internationally?<i data-lucide="chevron-down" style="width:20px;height:20px" class="transition-transform"></i></button>
+       <div class="faq-answer hidden px-5 pb-5 text-muted text-sm leading-relaxed">
+        Yes. We've delivered activations across North America, Europe, and Asia. Travel and logistics are included in Build and Signature tiers.
+       </div>
+      </div>
+      <div class="faq-item bg-surface rounded-xl border border-white/5 overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left font-bold" onclick="toggleFaq(this)">What's included in the digital deliverables?<i data-lucide="chevron-down" style="width:20px;height:20px" class="transition-transform"></i></button>
+       <div class="faq-answer hidden px-5 pb-5 text-muted text-sm leading-relaxed">
+        Activation layouts, spatial concepts, engagement flow maps, and full experience blueprints in editable formats.
+       </div>
+      </div>
+      <div class="faq-item bg-surface rounded-xl border border-white/5 overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left font-bold" onclick="toggleFaq(this)">Can you integrate with our existing marketing?<i data-lucide="chevron-down" style="width:20px;height:20px" class="transition-transform"></i></button>
+       <div class="faq-answer hidden px-5 pb-5 text-muted text-sm leading-relaxed">
+        Absolutely. Our Signature tier includes full campaign integration with social, digital, and PR touchpoints.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Start Project CTA -->
+   <section id="start" class="py-24 px-6 relative z-10 section-reveal">
+    <div class="max-w-2xl mx-auto text-center">
+     <svg class="mx-auto mb-6" width="80" height="80" viewbox="0 0 80 80">
+      <circle cx="40" cy="40" r="38" fill="none" stroke="#ff3c00" stroke-width="1" /><circle cx="40" cy="40" r="6" fill="#ff3c00" />
+     </svg>
+     <h2 class="text-3xl sm:text-5xl font-extrabold mb-4">Ready to build something<br><span class="text-brand">people remember?</span></h2>
+     <p class="text-muted mb-8">Let's talk about your next brand experience.</p><a href="mailto:hello@immersilab.studio" class="inline-block bg-brand text-dark px-10 py-4 rounded-full font-bold text-lg hover:bg-orange-500 transition glow-orange">Start Your Project</a>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 px-6 border-t border-white/5 relative z-10">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <p class="text-muted text-sm">© 2025 ImmersiLab Studio. All rights reserved.</p>
+     <div class="flex gap-4"><a href="#" class="text-muted hover:text-brand transition"><i data-lucide="instagram" style="width:20px;height:20px"></i></a> <a href="#" class="text-muted hover:text-brand transition"><i data-lucide="twitter" style="width:20px;height:20px"></i></a> <a href="#" class="text-muted hover:text-brand transition"><i data-lucide="linkedin" style="width:20px;height:20px"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <div id="toast-container"></div>
+  <script>
+// --- Config & SDK ---
+const defaultConfig = {
+  hero_title: 'Brands should be experienced, not seen.',
+  hero_subtitle: 'Immersive environments that capture attention.',
+  cta_primary: 'Start Project',
+  cta_secondary: 'View Experiences',
+  bottom_cta_text: 'Create something unforgettable.',
+  background_color: '#0a0a0a',
+  surface_color: '#141414',
+  text_color: '#e8e8e8',
+  accent_color: '#ff3c00',
+  muted_color: '#888888',
+  font_family: 'Syne',
+  font_size: 16
+};
+
+let allData = [];
+
+function applyConfig(config) {
+  const t = (k) => config[k] || defaultConfig[k];
+  const el = (id) => document.getElementById(id);
+
+  // Text
+  const heroEl = el('hero-title');
+  if (heroEl) {
+    const parts = t('hero_title').split(',');
+    if (parts.length > 1) {
+      heroEl.innerHTML = parts[0] + ',<br><span class="text-brand">' + parts[1].trim() + '</span>';
+    } else {
+      heroEl.innerHTML = t('hero_title').replace(/(experienced)/i, '<span class="text-brand">$1</span>');
+    }
+  }
+  const subEl = el('hero-subtitle');
+  if (subEl) subEl.textContent = t('hero_subtitle');
+  const ctaP = el('hero-cta-primary');
+  if (ctaP) ctaP.textContent = t('cta_primary');
+  const ctaS = el('hero-cta-secondary');
+  if (ctaS) ctaS.textContent = t('cta_secondary');
+  const btm = el('bottom-cta-text');
+  if (btm) btm.textContent = t('bottom_cta_text');
+
+  // Colors
+  const bg = t('background_color');
+  const surf = t('surface_color');
+  const txt = t('text_color');
+  const accent = t('accent_color');
+  const muted = t('muted_color');
+
+  document.body.style.background = bg;
+  document.body.style.color = txt;
+  document.querySelectorAll('.bg-surface, .card-inner').forEach(e => e.style.background = surf);
+  document.querySelectorAll('.bg-dark').forEach(e => e.style.background = bg);
+  document.querySelectorAll('.text-brand').forEach(e => e.style.color = accent);
+  document.querySelectorAll('.text-muted').forEach(e => e.style.color = muted);
+  document.querySelectorAll('.bg-brand').forEach(e => { e.style.background = accent; });
+  document.querySelectorAll('.border-brand\\/40, .border-brand\\/30, .border-brand\\/50').forEach(e => e.style.borderColor = accent + '66');
+
+  // Font
+  const ff = t('font_family');
+  const fs = t('font_size');
+  document.body.style.fontFamily = `${ff}, Syne, sans-serif`;
+  document.body.style.fontSize = fs + 'px';
+  document.querySelectorAll('h1').forEach(e => e.style.fontFamily = `${ff}, Syne, sans-serif`);
+  document.querySelectorAll('h2').forEach(e => e.style.fontFamily = `${ff}, Syne, sans-serif`);
+  document.querySelectorAll('h3').forEach(e => e.style.fontFamily = `${ff}, Syne, sans-serif`);
+}
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => {
+    const c = (key) => ({
+      get: () => config[key] || defaultConfig[key],
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [c('background_color'), c('surface_color'), c('text_color'), c('accent_color'), c('muted_color')],
+      borderables: [],
+      fontEditable: c('font_family'),
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    };
+  },
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Data SDK
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    updatePriceVotes();
+    updateComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(d => { counts[d.reaction] = (counts[d.reaction] || 0) + 1; });
+  ['🔥','💡','🎨','🚀','✨'].forEach(r => {
+    const el = document.getElementById('count-' + r);
+    if (el) el.textContent = counts[r] || 0;
+  });
+}
+
+function updatePriceVotes() {
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const counts = {};
+  votes.forEach(d => { counts[d.price_vote] = (counts[d.price_vote] || 0) + 1; });
+  ['$5K','$10K','$25K','$50K','$75K','$100K','$150K','$200K','$300K','$500K+'].forEach(p => {
+    const el = document.getElementById('pvote-' + p);
+    if (el) el.textContent = counts[p] || 0;
+  });
+}
+
+function updateComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'bg-dark rounded-xl p-4 border border-white/5';
+      div.innerHTML = `<p class="text-sm">${escapeHtml(c.comment_text)}</p><p class="text-xs text-muted mt-2">${new Date(c.created_at).toLocaleString()}</p>`;
+      list.prepend(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+  noComments.style.display = comments.length ? 'none' : 'block';
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg text-sm font-bold ' + (type === 'error' ? 'bg-red-600 text-white' : 'bg-brand text-dark');
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached', 'error'); return; }
+  const btn = document.querySelector(`[data-reaction="${emoji}"]`);
+  if (btn) { btn.classList.add('active'); setTimeout(() => btn.classList.remove('active'), 200); }
+  const r = await window.dataSdk.create({ type: 'reaction', target_id: '', reaction: emoji, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!r.isOk) showToast('Failed to save', 'error');
+}
+
+async function handlePriceVote(price) {
+  if (allData.length >= 999) { showToast('Limit reached', 'error'); return; }
+  const r = await window.dataSdk.create({ type: 'price_vote', target_id: '', reaction: '', comment_text: '', price_vote: price, created_at: new Date().toISOString() });
+  if (!r.isOk) showToast('Failed to save', 'error');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached', 'error'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.style.opacity = '.5';
+  const r = await window.dataSdk.create({ type: 'comment', target_id: '', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (r.isOk) { input.value = ''; } else { showToast('Failed to save comment', 'error'); }
+});
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-item [data-lucide]').forEach(i => i.style.transform = '');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    if (icon) icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const m = document.getElementById('mobile-menu');
+  m.classList.toggle('hidden');
+  m.classList.toggle('flex');
+});
+
+// Close mobile on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.add('hidden');
+  document.getElementById('mobile-menu').classList.remove('flex');
+}));
+
+// Section reveal on scroll
+const wrapper = document.getElementById('app-wrapper');
+function checkReveal() {
+  document.querySelectorAll('.section-reveal').forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) s.classList.add('visible');
+  });
+}
+wrapper.addEventListener('scroll', checkReveal);
+window.addEventListener('load', () => { checkReveal(); lucide.createIcons(); });
+
+// Parallax on mouse
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  document.querySelectorAll('.parallax-slow').forEach(el => {
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  document.querySelectorAll('.blob').forEach((b, i) => {
+    const f = (i + 1) * 0.3;
+    b.style.transform = `translate(${x * f}px, ${y * f}px)`;
+  });
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3993603527c5',t:'MTc3NTU3NzQxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

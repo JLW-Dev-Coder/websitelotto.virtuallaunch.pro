@@ -1,1 +1,654 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7c9a91c5-8b19-4f07-bb37-98d0005f7509 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayrollFlow Compliance</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        slate900: '#0f1724',
+        slate800: '#1a2332',
+        slate700: '#243044',
+        accentBlue: '#3b82f6',
+        accentCyan: '#22d3ee',
+        surfaceCard: '#1e293b',
+        textPrimary: '#f1f5f9'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; }
+.mono { font-family: 'Space Mono', monospace; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.3); }
+  50% { box-shadow: 0 0 40px rgba(59,130,246,0.6); }
+}
+@keyframes dash {
+  to { stroke-dashoffset: 0; }
+}
+.anim-fade-up { animation: fadeUp 0.7s ease both; }
+.anim-slide-right { animation: slideRight 0.6s ease both; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+.anim-delay-4 { animation-delay: 0.4s; }
+.anim-delay-5 { animation-delay: 0.5s; }
+.pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+.observe-anim { opacity: 0; }
+.observe-anim.visible { opacity: 1; }
+
+.timeline-line {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+.timeline-line.visible {
+  animation: dash 1.5s ease forwards;
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: #3b82f6;
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.card-hover {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(59,130,246,0.15);
+}
+
+.step-connector { transition: background 0.6s; }
+
+.deadline-bar {
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 0;
+}
+.deadline-bar.visible { width: var(--bar-w); }
+
+.vote-btn {
+  transition: all 0.2s;
+}
+.vote-btn:hover {
+  transform: scale(1.05);
+}
+.vote-btn.selected {
+  ring: 2px solid #3b82f6;
+  transform: scale(1.08);
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-slate900 text-textPrimary overflow-auto">
+  <div id="app-wrapper" class="w-full h-full"><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(15,23,36,0.85);backdrop-filter:blur(12px);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-accentBlue flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+      </div><span class="font-bold text-lg">PayrollFlow</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-slate-300 hover:text-white">Home</a> <a href="#services" class="nav-link text-sm text-slate-300 hover:text-white">Services</a> <a href="#workflow" class="nav-link text-sm text-slate-300 hover:text-white">Workflow</a> <a href="#compliance" class="nav-link text-sm text-slate-300 hover:text-white">Compliance</a> <a href="#faq" class="nav-link text-sm text-slate-300 hover:text-white">FAQ</a> <a href="#cta" class="bg-accentBlue hover:bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition">Get Started</a>
+     </div><button id="mobile-toggle" class="md:hidden text-slate-300"><i data-lucide="menu" class="w-6 h-6"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-3"><a href="#home" class="block text-sm text-slate-300 py-2">Home</a> <a href="#services" class="block text-sm text-slate-300 py-2">Services</a> <a href="#workflow" class="block text-sm text-slate-300 py-2">Workflow</a> <a href="#compliance" class="block text-sm text-slate-300 py-2">Compliance</a> <a href="#faq" class="block text-sm text-slate-300 py-2">FAQ</a> <a href="#cta" class="block bg-accentBlue text-white text-sm font-semibold px-5 py-2 rounded-lg text-center">Get Started</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="w-full pt-32 pb-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 20%, rgba(59,130,246,0.12) 0%, transparent 60%),radial-gradient(ellipse at 80% 80%, rgba(34,211,238,0.06) 0%, transparent 50%);"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="inline-flex items-center gap-2 bg-slate800 border border-slate700 rounded-full px-4 py-1.5 mb-6 observe-anim anim-fade-up"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span class="text-xs text-slate-400 mono">100% Compliance Rate</span>
+     </div>
+     <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 observe-anim anim-fade-up anim-delay-1">Payroll taxes done right<br><span class="text-accentBlue">every time.</span></h1>
+     <p id="hero-subtitle" class="text-lg sm:text-xl text-slate-400 mb-10 max-w-2xl mx-auto observe-anim anim-fade-up anim-delay-2">Stay compliant without the stress.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center observe-anim anim-fade-up anim-delay-3"><a href="#cta" id="btn-cta-primary" class="bg-accentBlue hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl transition pulse-glow text-center">Get Started</a> <a href="#workflow" id="btn-cta-secondary" class="border border-slate700 hover:border-accentBlue text-slate-300 hover:text-white font-semibold px-8 py-3.5 rounded-xl transition text-center">See Workflow</a>
+     </div><!-- Mini dashboard preview -->
+     <div class="mt-16 bg-slate800 border border-slate700 rounded-2xl p-6 max-w-3xl mx-auto observe-anim anim-fade-up anim-delay-4">
+      <div class="flex items-center justify-between mb-4"><span class="text-sm text-slate-400">Compliance Dashboard</span> <span class="text-xs mono text-green-400 bg-green-400/10 px-3 py-1 rounded-full">● All Clear</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+       <div class="bg-slate900 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-accentBlue" id="stat-filed">
+         0
+        </div>
+        <div class="text-xs text-slate-500 mt-1">
+         Filed This Quarter
+        </div>
+       </div>
+       <div class="bg-slate900 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-green-400">
+         0%
+        </div>
+        <div class="text-xs text-slate-500 mt-1">
+         Error Rate
+        </div>
+       </div>
+       <div class="bg-slate900 rounded-xl p-4 text-center">
+        <div class="text-2xl font-bold text-accentCyan" id="stat-saved">
+         $0
+        </div>
+        <div class="text-xs text-slate-500 mt-1">
+         Penalties Avoided
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SERVICES -->
+   <section id="services" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 observe-anim anim-fade-up"><span class="mono text-xs text-accentBlue uppercase tracking-widest">What We Do</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3">End-to-End Payroll Tax Services</h2>
+      <p class="text-slate-400 mt-4 max-w-xl mx-auto">From filing to reporting to compliance checks — we automate the entire process so you never miss a deadline.</p>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-6">
+      <div class="bg-slate800 border border-slate700 rounded-2xl p-8 card-hover observe-anim anim-fade-up anim-delay-1">
+       <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-5"><i data-lucide="file-text" class="w-6 h-6 text-accentBlue"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-3">Tax Filing</h3>
+       <p class="text-slate-400 text-sm leading-relaxed">Automated federal, state, and local payroll tax filings with real-time validation and error prevention.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>941, 940, W-2 filing</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Multi-state support</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>e-File integration</li>
+       </ul>
+      </div>
+      <div class="bg-slate800 border border-slate700 rounded-2xl p-8 card-hover observe-anim anim-fade-up anim-delay-2">
+       <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-5"><i data-lucide="bar-chart-3" class="w-6 h-6 text-accentCyan"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-3">Reporting</h3>
+       <p class="text-slate-400 text-sm leading-relaxed">Comprehensive dashboards and exportable reports that give you full visibility into your payroll tax obligations.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Real-time dashboards</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Audit-ready exports</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>YTD liability tracking</li>
+       </ul>
+      </div>
+      <div class="bg-slate800 border border-slate700 rounded-2xl p-8 card-hover observe-anim anim-fade-up anim-delay-3">
+       <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-5"><i data-lucide="shield" class="w-6 h-6 text-green-400"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-3">Compliance Checks</h3>
+       <p class="text-slate-400 text-sm leading-relaxed">Proactive compliance monitoring that identifies risks before they become penalties.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Regulation tracking</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Penalty risk alerts</li>
+        <li class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="check" class="w-4 h-4 text-green-400"></i>Auto-remediation</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- WORKFLOW -->
+   <section id="workflow" class="w-full py-20 px-4 sm:px-6 bg-slate800/40">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 observe-anim anim-fade-up"><span class="mono text-xs text-accentCyan uppercase tracking-widest">How It Works</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3">Your Payroll Workflow, Simplified</h2>
+     </div>
+     <div class="relative"><!-- Vertical timeline line -->
+      <div class="absolute left-6 sm:left-1/2 top-0 bottom-0 w-px bg-slate700 sm:-translate-x-px hidden sm:block"></div>
+      <div class="space-y-12"><!-- Step 1 -->
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 observe-anim anim-slide-right anim-delay-1">
+        <div class="sm:w-1/2 sm:text-right sm:pr-12">
+         <h3 class="text-lg font-bold">1. Data Collection</h3>
+         <p class="text-slate-400 text-sm mt-2">Employee hours, wages, and deductions are automatically pulled from your payroll system.</p>
+        </div>
+        <div class="hidden sm:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-accentBlue items-center justify-center z-10"><i data-lucide="database" class="w-5 h-5 text-white"></i>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12"></div>
+       </div><!-- Step 2 -->
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 observe-anim anim-slide-right anim-delay-2">
+        <div class="sm:w-1/2 sm:pr-12"></div>
+        <div class="hidden sm:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-accentCyan items-center justify-center z-10"><i data-lucide="calculator" class="w-5 h-5 text-slate900"></i>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12">
+         <h3 class="text-lg font-bold">2. Tax Calculation</h3>
+         <p class="text-slate-400 text-sm mt-2">Federal, state, and local taxes are calculated with real-time rate updates and jurisdiction rules.</p>
+        </div>
+       </div><!-- Step 3 -->
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 observe-anim anim-slide-right anim-delay-3">
+        <div class="sm:w-1/2 sm:text-right sm:pr-12">
+         <h3 class="text-lg font-bold">3. Review &amp; Validate</h3>
+         <p class="text-slate-400 text-sm mt-2">Automated compliance checks flag discrepancies before anything is filed.</p>
+        </div>
+        <div class="hidden sm:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-green-500 items-center justify-center z-10"><i data-lucide="search" class="w-5 h-5 text-white"></i>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12"></div>
+       </div><!-- Step 4 -->
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 observe-anim anim-slide-right anim-delay-4">
+        <div class="sm:w-1/2 sm:pr-12"></div>
+        <div class="hidden sm:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-purple-500 items-center justify-center z-10"><i data-lucide="send" class="w-5 h-5 text-white"></i>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12">
+         <h3 class="text-lg font-bold">4. File &amp; Report</h3>
+         <p class="text-slate-400 text-sm mt-2">One-click e-filing with instant confirmation and audit-ready documentation.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- COMPLIANCE -->
+   <section id="compliance" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 observe-anim anim-fade-up"><span class="mono text-xs text-green-400 uppercase tracking-widest">Stay Protected</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3">Compliance Deadlines &amp; Risk Prevention</h2>
+      <p class="text-slate-400 mt-4 max-w-xl mx-auto">Never miss a deadline. Our system tracks every obligation and alerts you proactively.</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-8"><!-- Calendar -->
+      <div class="bg-slate800 border border-slate700 rounded-2xl p-6 observe-anim anim-fade-up anim-delay-1">
+       <h3 class="text-lg font-bold mb-5 flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5 text-accentBlue"></i> Upcoming Deadlines</h3>
+       <div class="space-y-4">
+        <div class="flex items-center justify-between bg-slate900 rounded-xl p-4">
+         <div>
+          <div class="font-semibold text-sm">
+           Form 941 — Q2
+          </div>
+          <div class="text-xs text-slate-500 mt-1">
+           Federal quarterly filing
+          </div>
+         </div><span class="mono text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full">Jul 31</span>
+        </div>
+        <div class="flex items-center justify-between bg-slate900 rounded-xl p-4">
+         <div>
+          <div class="font-semibold text-sm">
+           State SUI Payment
+          </div>
+          <div class="text-xs text-slate-500 mt-1">
+           State unemployment insurance
+          </div>
+         </div><span class="mono text-xs bg-blue-500/10 text-accentBlue px-3 py-1 rounded-full">Aug 15</span>
+        </div>
+        <div class="flex items-center justify-between bg-slate900 rounded-xl p-4">
+         <div>
+          <div class="font-semibold text-sm">
+           Form 940 — Annual
+          </div>
+          <div class="text-xs text-slate-500 mt-1">
+           Federal unemployment tax
+          </div>
+         </div><span class="mono text-xs bg-green-500/10 text-green-400 px-3 py-1 rounded-full">Jan 31</span>
+        </div>
+       </div>
+      </div><!-- Risk meters -->
+      <div class="bg-slate800 border border-slate700 rounded-2xl p-6 observe-anim anim-fade-up anim-delay-2">
+       <h3 class="text-lg font-bold mb-5 flex items-center gap-2"><i data-lucide="activity" class="w-5 h-5 text-green-400"></i> Risk Prevention</h3>
+       <div class="space-y-5">
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-slate-400">Filing Accuracy</span><span class="font-bold text-green-400">99.8%</span>
+         </div>
+         <div class="w-full h-2 bg-slate900 rounded-full overflow-hidden">
+          <div class="deadline-bar h-full bg-green-400 rounded-full" style="--bar-w:99.8%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-slate-400">On-Time Rate</span><span class="font-bold text-accentBlue">100%</span>
+         </div>
+         <div class="w-full h-2 bg-slate900 rounded-full overflow-hidden">
+          <div class="deadline-bar h-full bg-accentBlue rounded-full" style="--bar-w:100%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-slate-400">Penalty Exposure</span><span class="font-bold text-accentCyan">0%</span>
+         </div>
+         <div class="w-full h-2 bg-slate900 rounded-full overflow-hidden">
+          <div class="deadline-bar h-full bg-accentCyan rounded-full" style="--bar-w:2%"></div>
+         </div>
+        </div>
+        <div class="mt-4 bg-green-500/5 border border-green-500/20 rounded-xl p-4 flex items-start gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0"></i>
+         <div>
+          <div class="text-sm font-semibold text-green-400">
+           All Systems Compliant
+          </div>
+          <div class="text-xs text-slate-500 mt-1">
+           No outstanding risks or pending actions detected.
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full py-20 px-4 sm:px-6 bg-slate800/40">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14 observe-anim anim-fade-up"><span class="mono text-xs text-accentBlue uppercase tracking-widest">FAQ</span>
+      <h2 class="text-3xl sm:text-4xl font-bold mt-3">Common Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden observe-anim anim-fade-up anim-delay-1"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">What payroll taxes do you handle?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500 transition-transform flex-shrink-0"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400">We handle all federal (941, 940, W-2/W-3), state income and unemployment taxes, and local payroll taxes across all 50 states.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden observe-anim anim-fade-up anim-delay-2"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">How does the compliance monitoring work?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500 transition-transform flex-shrink-0"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400">Our system continuously tracks regulatory changes and deadlines, automatically adjusting your filing schedule and alerting you to any compliance risks.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden observe-anim anim-fade-up anim-delay-3"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">Can I integrate with my existing payroll software?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500 transition-transform flex-shrink-0"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400">Yes. We integrate with major payroll providers including ADP, Gusto, Paychex, and QuickBooks. Custom API integrations are also available.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden observe-anim anim-fade-up anim-delay-4"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">What happens if a penalty is issued?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500 transition-transform flex-shrink-0"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400">Our compliance guarantee covers penalty abatement assistance. We work directly with tax agencies to resolve issues and prevent future occurrences.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT + BOTTOM CTA -->
+   <section id="cta" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto"><!-- Bottom CTA -->
+     <div class="text-center mb-16 observe-anim anim-fade-up">
+      <h2 id="bottom-cta-heading" class="text-3xl sm:text-4xl font-bold mb-4">Eliminate payroll tax errors.</h2>
+      <p class="text-slate-400 mb-8 max-w-lg mx-auto">Join hundreds of businesses that trust PayrollFlow for stress-free payroll tax compliance.</p><a href="#cta" class="inline-block bg-accentBlue hover:bg-blue-600 text-white font-semibold px-10 py-4 rounded-xl transition pulse-glow">Get Started Now</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="bg-slate800 border border-slate700 rounded-2xl p-6 sm:p-8 observe-anim anim-fade-up anim-delay-2">
+      <div class="text-center mb-6"><span class="mono text-xs text-accentCyan uppercase tracking-widest">Embed Widget Here</span>
+       <h3 class="text-xl font-bold mt-2">What Would You Pay?</h3>
+       <p class="text-slate-400 text-sm mt-1">Vote on your preferred monthly price point</p>
+      </div><!-- Price vote buttons -->
+      <div class="grid grid-cols-5 sm:grid-cols-10 gap-2 mb-6" id="vote-grid"><!-- Generated by JS -->
+      </div>
+      <div id="vote-results" class="hidden mb-6">
+       <div class="text-sm text-slate-400 mb-3">
+        Results <span id="total-votes" class="mono text-accentBlue"></span>
+       </div>
+       <div id="vote-bars" class="space-y-2"></div>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap gap-2 mb-6 justify-center" id="reactions"><button onclick="react('🔥')" class="vote-btn bg-slate900 border border-slate700 rounded-full px-4 py-2 text-sm hover:border-accentBlue"><span>🔥</span> <span class="reaction-count" data-emoji="🔥">0</span></button> <button onclick="react('👍')" class="vote-btn bg-slate900 border border-slate700 rounded-full px-4 py-2 text-sm hover:border-accentBlue"><span>👍</span> <span class="reaction-count" data-emoji="👍">0</span></button> <button onclick="react('💡')" class="vote-btn bg-slate900 border border-slate700 rounded-full px-4 py-2 text-sm hover:border-accentBlue"><span>💡</span> <span class="reaction-count" data-emoji="💡">0</span></button> <button onclick="react('🎯')" class="vote-btn bg-slate900 border border-slate700 rounded-full px-4 py-2 text-sm hover:border-accentBlue"><span>🎯</span> <span class="reaction-count" data-emoji="🎯">0</span></button> <button onclick="react('💰')" class="vote-btn bg-slate900 border border-slate700 rounded-full px-4 py-2 text-sm hover:border-accentBlue"><span>💰</span> <span class="reaction-count" data-emoji="💰">0</span></button>
+      </div><!-- Comments -->
+      <div class="border-t border-slate700 pt-6">
+       <h4 class="font-semibold text-sm mb-4">Comments</h4>
+       <form id="comment-form" class="flex gap-2 mb-4"><label for="comment-input" class="sr-only">Add a comment</label> <input id="comment-input" type="text" placeholder="Share your thoughts..." class="flex-1 bg-slate900 border border-slate700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-accentBlue transition"> <button type="submit" class="bg-accentBlue hover:bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition">Post</button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-4 sm:px-6 border-t border-slate700">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-accentBlue flex items-center justify-center">
+       <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+      </div><span class="text-sm font-semibold">PayrollFlow Compliance</span>
+     </div>
+     <p class="text-xs text-slate-500">Payroll taxes handled without errors.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- Config & SDK ---
+const defaultConfig = {
+  background_color: '#0f1724',
+  surface_color: '#1e293b',
+  text_color: '#f1f5f9',
+  primary_action: '#3b82f6',
+  secondary_action: '#22d3ee',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: 'Payroll taxes done right every time.',
+  hero_subtitle: 'Stay compliant without the stress.',
+  cta_primary: 'Get Started',
+  cta_secondary: 'See Workflow',
+  bottom_cta_text: 'Eliminate payroll tax errors.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const root = document.documentElement;
+  root.style.setProperty('--bg', c.background_color);
+  root.style.setProperty('--surface', c.surface_color);
+  root.style.setProperty('--text', c.text_color);
+  root.style.setProperty('--primary', c.primary_action);
+  root.style.setProperty('--secondary', c.secondary_action);
+
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  // Colors
+  document.querySelectorAll('.bg-slate900').forEach(el => el.style.backgroundColor = c.background_color);
+  document.querySelectorAll('.bg-slate800, .bg-slate800\\/40').forEach(el => el.style.backgroundColor = c.surface_color);
+  document.querySelectorAll('.bg-accentBlue, .pulse-glow').forEach(el => { el.style.backgroundColor = c.primary_action; });
+  document.querySelectorAll('.text-accentBlue').forEach(el => el.style.color = c.primary_action);
+  document.querySelectorAll('.text-accentCyan').forEach(el => el.style.color = c.secondary_action);
+
+  // Font
+  const fontStack = `${c.font_family}, 'DM Sans', sans-serif`;
+  document.body.style.fontFamily = fontStack;
+  const baseSize = c.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 2.8}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+  document.querySelectorAll('p, li, span, button, a, input').forEach(el => {
+    if (!el.closest('.mono') && !el.classList.contains('mono')) {
+      // leave small text alone
+    }
+  });
+
+  // Text
+  const titleEl = document.getElementById('hero-title');
+  if (titleEl) {
+    const parts = c.hero_title.split(' ');
+    const last2 = parts.slice(-2).join(' ');
+    const rest = parts.slice(0, -2).join(' ');
+    titleEl.innerHTML = `${rest}<br><span style="color:${c.primary_action}">${last2}</span>`;
+  }
+  const subEl = document.getElementById('hero-subtitle');
+  if (subEl) subEl.textContent = c.hero_subtitle;
+  const btnP = document.getElementById('btn-cta-primary');
+  if (btnP) btnP.textContent = c.cta_primary;
+  const btnS = document.getElementById('btn-cta-secondary');
+  if (btnS) btnS.textContent = c.cta_secondary;
+  const btmCta = document.getElementById('bottom-cta-heading');
+  if (btmCta) btmCta.textContent = c.bottom_cta_text;
+}
+
+function makeMutable(key) {
+  return {
+    get: () => (window.elementSdk?.config?.[key] ?? defaultConfig[key]),
+    set: (v) => { window.elementSdk.setConfig({ [key]: v }); }
+  };
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      makeMutable('background_color'),
+      makeMutable('surface_color'),
+      makeMutable('text_color'),
+      makeMutable('primary_action'),
+      makeMutable('secondary_action')
+    ],
+    borderables: [],
+    fontEditable: makeMutable('font_family'),
+    fontSizeable: makeMutable('font_size')
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// --- Intersection Observer for animations ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Trigger progress bars
+      e.target.querySelectorAll('.deadline-bar').forEach(bar => bar.classList.add('visible'));
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.observe-anim').forEach(el => observer.observe(el));
+
+// --- Animated counters ---
+function animateCounter(id, target, prefix = '', suffix = '') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let current = 0;
+  const step = Math.ceil(target / 40);
+  const interval = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = prefix + current.toLocaleString() + suffix;
+    if (current >= target) clearInterval(interval);
+  }, 30);
+}
+setTimeout(() => {
+  animateCounter('stat-filed', 247);
+  animateCounter('stat-saved', 84500, '$');
+}, 800);
+
+// --- Mobile menu ---
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// --- FAQ ---
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-toggle i').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// --- Vote Module ---
+const prices = [29, 49, 79, 99, 149, 199, 249, 349, 499, 799];
+const votes = {};
+prices.forEach(p => votes[p] = 0);
+let userVote = null;
+
+function renderVoteGrid() {
+  const grid = document.getElementById('vote-grid');
+  grid.innerHTML = '';
+  prices.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = `vote-btn bg-slate900 border rounded-lg py-3 text-sm font-semibold mono transition ${userVote === p ? 'border-accentBlue text-accentBlue scale-105' : 'border-slate700 text-slate-300 hover:border-accentBlue hover:text-white'}`;
+    btn.textContent = `$${p}`;
+    btn.onclick = () => castVote(p);
+    grid.appendChild(btn);
+  });
+}
+
+function castVote(price) {
+  if (userVote !== null) votes[userVote] = Math.max(0, votes[userVote] - 1);
+  userVote = price;
+  votes[price]++;
+  renderVoteGrid();
+  showResults();
+}
+
+function showResults() {
+  const container = document.getElementById('vote-results');
+  const barsDiv = document.getElementById('vote-bars');
+  const total = Object.values(votes).reduce((a, b) => a + b, 0);
+  document.getElementById('total-votes').textContent = `(${total} vote${total !== 1 ? 's' : ''})`;
+  container.classList.remove('hidden');
+  barsDiv.innerHTML = '';
+  const max = Math.max(...Object.values(votes), 1);
+  prices.forEach(p => {
+    if (votes[p] === 0) return;
+    const pct = (votes[p] / max * 100).toFixed(0);
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-3';
+    row.innerHTML = `<span class="mono text-xs text-slate-400 w-12">$${p}</span><div class="flex-1 h-5 bg-slate900 rounded-full overflow-hidden"><div class="h-full bg-accentBlue rounded-full transition-all duration-500" style="width:${pct}%"></div></div><span class="mono text-xs text-slate-500 w-8">${votes[p]}</span>`;
+    barsDiv.appendChild(row);
+  });
+}
+
+renderVoteGrid();
+
+// --- Reactions ---
+const reactions = { '🔥': 0, '👍': 0, '💡': 0, '🎯': 0, '💰': 0 };
+function react(emoji) {
+  reactions[emoji]++;
+  document.querySelector(`.reaction-count[data-emoji="${emoji}"]`).textContent = reactions[emoji];
+}
+
+// --- Comments ---
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date() });
+  input.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = '';
+  comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'bg-slate900 rounded-xl p-4';
+    const ago = timeAgo(c.time);
+    div.innerHTML = `<p class="text-sm text-slate-300">${escapeHtml(c.text)}</p><span class="text-xs text-slate-600 mt-2 block">${ago}</span>`;
+    list.appendChild(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function timeAgo(date) {
+  const s = Math.floor((new Date() - date) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  return Math.floor(s / 3600) + 'h ago';
+}
+
+// Init lucide icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5a6b150827c5',t:'MTc3NTU3ODc1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,611 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/e4f29bfe-85e1-4aed-95ce-10962aa77a01 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SealReady Notary</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0B1D3A',
+        navyLight: '#132B52',
+        charcoal: '#2C2C2C',
+        gold: '#C9A84C',
+        goldLight: '#E2C97E',
+        cream: '#FAF8F5'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; }
+.font-display { font-family: 'DM Serif Display', serif; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.3), 0 0 40px rgba(201,168,76,0.1); } 50% { box-shadow: 0 0 30px rgba(201,168,76,0.5), 0 0 60px rgba(201,168,76,0.2); } }
+@keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes bounce-in { 0% { opacity: 0; transform: scale(0.3) translateY(40px); } 50% { opacity: 1; } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+.anim-fade-up { animation: fadeUp 0.7s ease-out forwards; opacity: 0; }
+.anim-slide-left { animation: slideInLeft 0.8s ease-out forwards; opacity: 0; }
+.anim-slide-right { animation: slideInRight 0.8s ease-out forwards; opacity: 0; }
+.anim-scale { animation: scaleIn 0.6s ease-out forwards; opacity: 0; }
+.anim-bounce { animation: bounce-in 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; opacity: 0; }
+.anim-d1 { animation-delay: 0.1s; }
+.anim-d2 { animation-delay: 0.25s; }
+.anim-d3 { animation-delay: 0.4s; }
+.anim-d4 { animation-delay: 0.55s; }
+.anim-d5 { animation-delay: 0.7s; }
+.anim-d6 { animation-delay: 0.85s; }
+.gold-line { width: 48px; height: 3px; background: #C9A84C; animation: slideInLeft 0.8s ease-out; }
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #C9A84C; transition: width 0.3s; }
+.nav-link:hover::after { width: 100%; }
+.service-card { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s, background 0.3s; position: relative; overflow: hidden; }
+.service-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.1), transparent); transition: left 0.5s; }
+.service-card:hover::before { left: 100%; }
+.service-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 48px rgba(201,168,76,0.15); }
+.step-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #C9A84C, #E2C97E); color: #0B1D3A; font-weight: 700; font-size: 1.25rem; animation: glow 3s ease-in-out infinite; }
+.map-dot { width: 10px; height: 10px; border-radius: 50%; background: #C9A84C; position: absolute; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); } 50% { box-shadow: 0 0 0 10px rgba(201,168,76,0); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes orbitalRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes particleFall { 0% { opacity: 1; transform: translateY(-100vh) translateX(0) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(100vh) translateX(var(--tx)) scale(0); } }
+@keyframes heroTitleReveal { 0% { opacity: 0; transform: translateY(40px) scaleY(0.8); } 50% { opacity: 1; } 100% { opacity: 1; transform: translateY(0) scaleY(1); } }
+@keyframes badgeFloat { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-8px) scale(1.05); } }
+@keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.4), 0 0 40px rgba(201,168,76,0.1), inset 0 0 20px rgba(201,168,76,0.05); } 50% { box-shadow: 0 0 40px rgba(201,168,76,0.7), 0 0 80px rgba(201,168,76,0.3), inset 0 0 30px rgba(201,168,76,0.1); } }
+@keyframes slideRoll { 0% { opacity: 0; transform: translateX(-100px) rotateZ(-10deg); } 100% { opacity: 1; transform: translateX(0) rotateZ(0deg); } }
+@keyframes slideRollRight { 0% { opacity: 0; transform: translateX(100px) rotateZ(10deg); } 100% { opacity: 1; transform: translateX(0) rotateZ(0deg); } }
+.hero-gradient { background: linear-gradient(135deg, #0B1D3A 0%, #1a3f5c 25%, #132B52 50%, #0f2847 75%, #0B1D3A 100%); background-size: 300% 300%; animation: gradientShift 8s ease infinite; }
+.reaction-btn { transition: all 0.2s; }
+.reaction-btn:hover { transform: scale(1.15) rotate(10deg); }
+.reaction-btn.active { ring: 2px solid #C9A84C; }
+.vote-toast { animation: fadeUp 0.4s ease-out; }
+.service-icon { animation: float 3s ease-in-out infinite; }
+.service-card:nth-child(1) .service-icon { animation-delay: 0s; }
+.service-card:nth-child(2) .service-icon { animation-delay: 0.2s; }
+.service-card:nth-child(3) .service-icon { animation-delay: 0.4s; }
+.service-card:nth-child(4) .service-icon { animation-delay: 0.6s; }
+.hero-badge { animation: badgeFloat 3s ease-in-out infinite; }
+.hero-title { animation: heroTitleReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards; opacity: 0; }
+.hero-subtitle { animation: slideRoll 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards; opacity: 0; }
+.hero-buttons { animation: slideRollRight 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s forwards; opacity: 0; }
+.hero-features { animation: fadeUp 0.8s ease-out 0.8s forwards; opacity: 0; }
+.particle { position: fixed; pointer-events: none; will-change: transform, opacity; }
+.orbital { animation: orbitalRotate 20s linear infinite; transform-origin: center; }
+.glow-badge { animation: glowPulse 4s ease-in-out infinite; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto bg-cream"><!-- Sticky Nav -->
+   <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(11,29,58,0.95);backdrop-filter:blur(8px);">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-gold flex items-center justify-center"><i data-lucide="stamp" style="width:18px;height:18px;color:#0B1D3A;"></i>
+      </div><span class="text-white font-display text-lg">SealReady</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm text-gray-300 hover:text-white">Home</a> <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white">Services</a> <a href="#process" class="nav-link text-sm text-gray-300 hover:text-white">Process</a> <a href="#coverage" class="nav-link text-sm text-gray-300 hover:text-white">Coverage</a> <a href="#faq" class="nav-link text-sm text-gray-300 hover:text-white">FAQ</a> <a href="#book" class="bg-gold hover:bg-goldLight text-navy text-sm font-semibold px-5 py-2 rounded transition-colors">Book Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3"><a href="#home" class="text-gray-300 hover:text-white text-sm py-1">Home</a> <a href="#services" class="text-gray-300 hover:text-white text-sm py-1">Services</a> <a href="#process" class="text-gray-300 hover:text-white text-sm py-1">Process</a> <a href="#coverage" class="text-gray-300 hover:text-white text-sm py-1">Coverage</a> <a href="#faq" class="text-gray-300 hover:text-white text-sm py-1">FAQ</a> <a href="#book" class="bg-gold text-navy text-sm font-semibold px-5 py-2 rounded text-center">Book Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="w-full relative overflow-hidden" style="background:linear-gradient(135deg,#0B1D3A 0%,#132B52 60%,#1a3766 100%);padding-top:80px;">
+    <div class="absolute inset-0 opacity-30 pointer-events-none" style="background:radial-gradient(ellipse 800px 500px at 50% 0%, rgba(201,168,76,0.3) 0%, transparent 60%);"></div>
+    <div class="absolute inset-0 opacity-20 pointer-events-none" style="background:radial-gradient(ellipse 600px 400px at 50% 100%, rgba(201,168,76,0.15) 0%, transparent 70%);"></div>
+    <div class="max-w-6xl mx-auto px-4 py-20 md:py-32 flex flex-col items-center text-center relative z-20"><!-- Badge with glow -->
+     <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 mb-8 hero-badge glow-badge border border-gold/30 shadow-lg"><i data-lucide="shield-check" style="width:14px;height:14px;color:#C9A84C;"></i> <span id="tagline-el" class="text-gold text-xs font-medium tracking-wide uppercase">Fast, verified, done right.</span>
+     </div><!-- Main title with dramatic reveal -->
+     <h1 id="hero-title-el" class="hero-title font-display text-5xl md:text-7xl text-white leading-tight mb-6" style="transform-origin:center bottom;">Need it notarized today?</h1><!-- Subtitle with slide animation -->
+     <p id="hero-subtitle-el" class="hero-subtitle text-gray-200 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">Certified, fast, and reliable notary services. Get your documents sealed and verified without the wait.</p><!-- CTA buttons with dramatic entrance -->
+     <div class="hero-buttons flex flex-col sm:flex-row gap-4 mb-12"><a href="#book" class="bg-gold hover:bg-goldLight text-navy font-semibold px-8 py-4 rounded-lg transition-all flex items-center gap-2 justify-center shadow-xl hover:shadow-2xl transform hover:scale-110 hover:-translate-y-1 duration-300 text-lg glow-badge" style="box-shadow:0 10px 40px rgba(201,168,76,0.3);"> <i data-lucide="calendar-check" style="width:20px;height:20px;"></i> Book Now </a> <a href="#coverage" class="border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all flex items-center gap-2 justify-center backdrop-blur-md hover:bg-white/10 hover:scale-110 hover:-translate-y-1 duration-300 text-lg shadow-lg hover:shadow-xl" style="box-shadow:0 10px 30px rgba(201,168,76,0.2);"> <i data-lucide="map-pin" style="width:20px;height:20px;"></i> Check Availability </a>
+     </div><!-- Feature highlights with stagger -->
+     <div class="hero-features flex flex-wrap justify-center gap-8 md:gap-12">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center border border-gold/50">
+        <i data-lucide="zap" style="width:16px;height:16px;color:#C9A84C;"></i>
+       </div>
+       <div class="text-left">
+        <p class="text-gray-300 text-sm font-medium">Same-day service</p>
+        <p class="text-gray-500 text-xs">Ready when you are</p>
+       </div>
+      </div>
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center border border-gold/50">
+        <i data-lucide="shield-check" style="width:16px;height:16px;color:#C9A84C;"></i>
+       </div>
+       <div class="text-left">
+        <p class="text-gray-300 text-sm font-medium">State certified</p>
+        <p class="text-gray-500 text-xs">Legally verified</p>
+       </div>
+      </div>
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center border border-gold/50">
+        <i data-lucide="car" style="width:16px;height:16px;color:#C9A84C;"></i>
+       </div>
+       <div class="text-left">
+        <p class="text-gray-300 text-sm font-medium">Mobile available</p>
+        <p class="text-gray-500 text-xs">We come to you</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- decorative -->
+    <div class="absolute bottom-0 left-0 w-full" style="height:80px;background:linear-gradient(to top,#FAF8F5,transparent);"></div>
+   </section><!-- Services -->
+   <section id="services" class="w-full py-20">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-14">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 id="services-title-el" class="font-display text-3xl md:text-4xl text-navy mb-3">Our Notary Services</h2>
+      <p class="text-gray-500 max-w-lg mx-auto">Professional notarization for every document type, available when and where you need it.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="service-card bg-white rounded-xl p-6 border border-gray-100 anim-bounce anim-d1">
+       <div class="w-12 h-12 rounded-lg bg-navy/5 flex items-center justify-center mb-4 service-icon">
+        <i data-lucide="file-check" style="width:22px;height:22px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Acknowledgments</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Verify signer identity and confirm voluntary signing of documents like deeds and powers of attorney.</p>
+      </div>
+      <div class="service-card bg-white rounded-xl p-6 border border-gray-100 anim-bounce anim-d2">
+       <div class="w-12 h-12 rounded-lg bg-navy/5 flex items-center justify-center mb-4 service-icon">
+        <i data-lucide="scale" style="width:22px;height:22px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Jurats</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Administer oaths and affirmations for affidavits, depositions, and sworn statements.</p>
+      </div>
+      <div class="service-card bg-white rounded-xl p-6 border border-gray-100 anim-bounce anim-d3">
+       <div class="w-12 h-12 rounded-lg bg-navy/5 flex items-center justify-center mb-4 service-icon">
+        <i data-lucide="home" style="width:22px;height:22px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Loan Signings</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Specialized closing services for mortgage and refinance documents with precision and care.</p>
+      </div>
+      <div class="service-card bg-white rounded-xl p-6 border border-gray-100 anim-bounce anim-d4">
+       <div class="w-12 h-12 rounded-lg bg-navy/5 flex items-center justify-center mb-4 service-icon">
+        <i data-lucide="car" style="width:22px;height:22px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Mobile Notary</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">We come to you — home, office, hospital, or any location within our coverage area.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Process -->
+   <section id="process" class="w-full py-20" style="background:linear-gradient(180deg,#f3f1ed 0%,#FAF8F5 100%);">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-14">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 id="process-title-el" class="font-display text-3xl md:text-4xl text-navy mb-3">How It Works</h2>
+      <p class="text-gray-500 max-w-lg mx-auto">Three simple steps from request to sealed document.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="flex flex-col items-center text-center anim-slide-left anim-d1">
+       <div class="step-circle mb-5">
+        1
+       </div>
+       <div class="w-12 h-12 mb-3 flex items-center justify-center">
+        <i data-lucide="calendar" style="width:28px;height:28px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Schedule</h3>
+       <p class="text-gray-500 text-sm">Pick a time online or call us for same-day availability. We'll confirm within minutes.</p>
+      </div>
+      <div class="flex flex-col items-center text-center anim-scale anim-d2">
+       <div class="step-circle mb-5">
+        2
+       </div>
+       <div class="w-12 h-12 mb-3 flex items-center justify-center">
+        <i data-lucide="user-check" style="width:28px;height:28px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Verify</h3>
+       <p class="text-gray-500 text-sm">Bring valid government-issued ID. We verify identity and review your documents.</p>
+      </div>
+      <div class="flex flex-col items-center text-center anim-slide-right anim-d3">
+       <div class="step-circle mb-5">
+        3
+       </div>
+       <div class="w-12 h-12 mb-3 flex items-center justify-center">
+        <i data-lucide="pen-tool" style="width:28px;height:28px;color:#0B1D3A;"></i>
+       </div>
+       <h3 class="font-semibold text-navy text-lg mb-2">Sign &amp; Seal</h3>
+       <p class="text-gray-500 text-sm">Sign in our presence, we apply our official seal, and you're done. Fast and legally binding.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Coverage -->
+   <section id="coverage" class="w-full py-20">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-14">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="font-display text-3xl md:text-4xl text-navy mb-3">Service Coverage</h2>
+      <p class="text-gray-500 max-w-lg mx-auto">We serve the greater metro area and surrounding communities.</p>
+     </div>
+     <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-10 shadow-lg hover:shadow-2xl transition-shadow duration-500">
+      <div class="relative w-full" style="padding-bottom:50%;background:linear-gradient(135deg,#e8e4dd,#d9d3c7);border-radius:12px;overflow:hidden;"><!-- Stylized map SVG -->
+       <svg class="absolute inset-0 w-full h-full anim-fade-up" viewbox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="400" fill="#e8e4dd" /> <!-- Roads --> <line x1="100" y1="200" x2="700" y2="200" stroke="#ccc5b8" stroke-width="3" /> <line x1="400" y1="50" x2="400" y2="350" stroke="#ccc5b8" stroke-width="3" /> <line x1="200" y1="100" x2="600" y2="300" stroke="#ccc5b8" stroke-width="2" stroke-dasharray="8 4" /> <line x1="600" y1="100" x2="200" y2="300" stroke="#ccc5b8" stroke-width="2" stroke-dasharray="8 4" /> <!-- Coverage circle --> <circle cx="400" cy="200" r="140" fill="#C9A84C" fill-opacity="0.08" stroke="#C9A84C" stroke-width="2" stroke-dasharray="6 4" /> <circle cx="400" cy="200" r="80" fill="#C9A84C" fill-opacity="0.12" stroke="#C9A84C" stroke-width="1.5" /> <!-- Center --> <circle cx="400" cy="200" r="8" fill="#0B1D3A" /> <circle cx="400" cy="200" r="14" fill="none" stroke="#C9A84C" stroke-width="2" /> <!-- Area labels --> <text x="400" y="185" text-anchor="middle" fill="#0B1D3A" font-size="11" font-weight="600" font-family="Outfit,sans-serif">
+         DOWNTOWN
+        </text> <text x="400" y="215" text-anchor="middle" fill="#0B1D3A" font-size="9" font-family="Outfit,sans-serif">
+         HQ Office
+        </text> <text x="280" y="140" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Northside
+        </text> <text x="520" y="140" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Eastview
+        </text> <text x="280" y="280" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Westpark
+        </text> <text x="520" y="280" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Southgate
+        </text> <text x="180" y="200" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Riverside
+        </text> <text x="620" y="200" text-anchor="middle" fill="#555" font-size="10" font-family="Outfit,sans-serif">
+         Lakeshore
+        </text>
+       </svg>
+       <div class="map-dot anim-bounce" style="top:32%;left:34%;"></div>
+       <div class="map-dot anim-bounce" style="top:32%;left:64%;animation-delay:0.1s;"></div>
+       <div class="map-dot anim-bounce" style="top:65%;left:34%;animation-delay:0.2s;"></div>
+       <div class="map-dot anim-bounce" style="top:65%;left:64%;animation-delay:0.3s;"></div>
+       <div class="map-dot anim-bounce" style="top:48%;left:22%;animation-delay:0.4s;"></div>
+       <div class="map-dot anim-bounce" style="top:48%;left:76%;animation-delay:0.5s;"></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Downtown
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Northside
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Eastview
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Westpark
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Southgate
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Riverside
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> Lakeshore
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-600">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#C9A84C;"></i> +15 mile radius
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full py-20" style="background:#f3f1ed;">
+    <div class="max-w-3xl mx-auto px-4">
+     <div class="text-center mb-14">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="font-display text-3xl md:text-4xl text-navy mb-3">Frequently Asked Questions</h2>
+     </div>
+     <div id="faq-container" class="space-y-3 anim-fade-up"></div>
+    </div>
+   </section><!-- Vote + Comment Widget -->
+   <section id="vote-widget" class="w-full py-16 bg-cream">
+    <div class="max-w-2xl mx-auto px-4">
+     <div class="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-500">
+      <div class="text-center mb-6 anim-fade-up">
+       <p class="text-xs uppercase tracking-widest text-gold font-semibold mb-2 anim-slide-left">Embed Widget Here</p>
+       <h3 class="font-display text-2xl text-navy mb-1 anim-bounce anim-d1">Rate Our Service</h3>
+       <p class="text-gray-500 text-sm anim-slide-right">What would you pay for mobile notary?</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-2 mb-6" id="reactions-bar"></div><!-- Price Vote -->
+      <div class="mb-6">
+       <p class="text-sm font-medium text-navy mb-3 text-center">Suggested price point:</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-options"></div>
+      </div><!-- Comment -->
+      <form id="comment-form" class="flex gap-2 shadow-md rounded-lg overflow-hidden"><input type="text" id="comment-input" placeholder="Leave a comment..." class="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-gold transition-all focus:ring-2 focus:ring-gold/20" maxlength="200"> <button type="submit" class="bg-navy hover:bg-navyLight text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all transform hover:scale-105 flex items-center gap-1"> <i data-lucide="send" style="width:14px;height:14px;"></i> Send </button>
+      </form><!-- Comments list -->
+      <div id="comments-list" class="mt-5 space-y-3 max-h-64 overflow-y-auto"></div><!-- Toast -->
+      <div id="vote-toast" class="hidden fixed bottom-6 right-6 bg-navy text-white px-5 py-3 rounded-lg text-sm shadow-lg z-50 vote-toast"></div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA -->
+   <section id="book" class="w-full py-20" style="background:linear-gradient(135deg,#0B1D3A,#132B52);">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+     <div class="w-16 h-16 rounded-full bg-gold/20 flex items-center justify-center mx-auto mb-6 anim-scale">
+      <i data-lucide="stamp" style="width:28px;height:28px;color:#C9A84C;animation:spin-slow 4s linear infinite;"></i>
+     </div>
+     <h2 id="bottom-cta-el" class="font-display text-3xl md:text-4xl text-white mb-4 anim-fade-up">Your documents, verified without delay.</h2>
+     <p class="text-gray-400 mb-8 max-w-md mx-auto anim-fade-up anim-d2">Schedule your appointment today and experience the fastest, most reliable notary service in your area.</p><a href="#home" class="inline-flex items-center gap-2 bg-gold hover:bg-goldLight text-navy font-semibold px-10 py-4 rounded transition-all transform hover:scale-110 text-lg shadow-lg hover:shadow-2xl anim-bounce anim-d3"> <i data-lucide="calendar-check" style="width:20px;height:20px;"></i> Book Your Appointment </a>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full bg-navy py-8">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-full bg-gold flex items-center justify-center">
+       <i data-lucide="stamp" style="width:14px;height:14px;color:#0B1D3A;"></i>
+      </div><span class="text-white font-display text-sm">SealReady Notary</span>
+     </div>
+     <p class="text-gray-500 text-xs">© 2024 SealReady Notary. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// FAQ data
+const faqs = [
+  { q: "What ID do I need to bring?", a: "A current, government-issued photo ID such as a driver's license, passport, or state ID card." },
+  { q: "Do you offer same-day appointments?", a: "Yes! We offer same-day service for most document types. Call or book online for immediate availability." },
+  { q: "How much does mobile notary cost?", a: "Mobile notary fees vary by location and document type. Standard signings start at $25, with travel fees for mobile service." },
+  { q: "Can you notarize documents at a hospital?", a: "Absolutely. We regularly visit hospitals, care facilities, and private residences for clients who cannot travel." },
+  { q: "What documents can you notarize?", a: "We handle acknowledgments, jurats, oaths, affirmations, loan documents, powers of attorney, and more." }
+];
+
+const faqContainer = document.getElementById('faq-container');
+faqs.forEach((faq, i) => {
+  const div = document.createElement('div');
+  div.className = 'bg-white rounded-xl border border-gray-100 overflow-hidden';
+  div.innerHTML = `
+    <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(${i})">
+      <span class="font-medium text-navy pr-4">${faq.q}</span>
+      <i data-lucide="chevron-down" id="faq-icon-${i}" style="width:18px;height:18px;color:#C9A84C;transition:transform 0.3s;flex-shrink:0;"></i>
+    </button>
+    <div id="faq-answer-${i}" class="px-5 pb-0 overflow-hidden transition-all duration-300" style="max-height:0;">
+      <p class="text-gray-500 text-sm pb-5">${faq.a}</p>
+    </div>`;
+  faqContainer.appendChild(div);
+});
+
+function toggleFaq(i) {
+  const ans = document.getElementById('faq-answer-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  const isOpen = ans.style.maxHeight !== '0px' && ans.style.maxHeight !== '';
+  // close all
+  faqs.forEach((_, j) => {
+    document.getElementById('faq-answer-' + j).style.maxHeight = '0px';
+    document.getElementById('faq-icon-' + j).style.transform = 'rotate(0deg)';
+  });
+  if (!isOpen) {
+    ans.style.maxHeight = ans.scrollHeight + 'px';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Reactions & Prices
+const reactions = ['👍','👎','🔥','💯','⭐','❤️'];
+const prices = ['$10','$15','$20','$25','$30','$35','$50','$75','$100','$150'];
+
+const reactionsBar = document.getElementById('reactions-bar');
+reactions.forEach(emoji => {
+  const btn = document.createElement('button');
+  btn.className = 'reaction-btn w-11 h-11 rounded-full bg-gray-50 hover:bg-gold/10 flex items-center justify-center text-xl border border-gray-200';
+  btn.textContent = emoji;
+  btn.dataset.emoji = emoji;
+  btn.addEventListener('click', () => submitReaction(emoji, btn));
+  reactionsBar.appendChild(btn);
+});
+
+const priceContainer = document.getElementById('price-options');
+prices.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'px-3.5 py-1.5 rounded-full text-sm font-medium border border-gray-200 bg-gray-50 hover:bg-gold/10 hover:border-gold transition-all';
+  btn.textContent = p;
+  btn.addEventListener('click', () => submitVote(p, btn));
+  priceContainer.appendChild(btn);
+});
+
+// Data
+let allData = [];
+let isSubmitting = false;
+
+function showToast(msg) {
+  const t = document.getElementById('vote-toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 2500);
+}
+
+async function submitReaction(emoji, btn) {
+  if (isSubmitting) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+  isSubmitting = true;
+  btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'reaction', value: '', emoji: emoji, comment: '', timestamp: new Date().toISOString(), reference_id: 'vote_widget' });
+  if (result.isOk) {
+    showToast('Reaction recorded! ' + emoji);
+  } else {
+    showToast('Something went wrong');
+  }
+  btn.style.opacity = '1';
+  isSubmitting = false;
+}
+
+async function submitVote(price, btn) {
+  if (isSubmitting) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+  isSubmitting = true;
+  btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'vote', value: price, emoji: '', comment: '', timestamp: new Date().toISOString(), reference_id: 'vote_widget' });
+  if (result.isOk) {
+    showToast('Vote recorded: ' + price);
+  } else {
+    showToast('Something went wrong');
+  }
+  btn.style.opacity = '1';
+  isSubmitting = false;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || isSubmitting) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+  isSubmitting = true;
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'comment', value: '', emoji: '', comment: text, timestamp: new Date().toISOString(), reference_id: 'vote_widget' });
+  if (result.isOk) {
+    input.value = '';
+    showToast('Comment posted!');
+  } else {
+    showToast('Something went wrong');
+  }
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  isSubmitting = false;
+});
+
+function renderComments(data) {
+  const list = document.getElementById('comments-list');
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  // Remove old
+  existingEls.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingEls.has(c.__backendId)) {
+      const el = existingEls.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.className = 'bg-gray-50 rounded-lg p-3 border border-gray-100';
+      div.dataset.id = c.__backendId;
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p class="comment-text text-sm text-charcoal">${escapeHtml(c.comment)}</p><p class="text-xs text-gray-400 mt-1">${timeStr}</p>`;
+      list.prepend(div);
+    }
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// Data SDK
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderComments(data);
+  }
+};
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#FAF8F5',
+  surface_color: '#FFFFFF',
+  text_color: '#0B1D3A',
+  primary_action_color: '#C9A84C',
+  secondary_action_color: '#132B52',
+  font_family: 'DM Serif Display',
+  font_size: 16,
+  hero_title: 'Need it notarized today?',
+  hero_subtitle: 'Certified, fast, and reliable notary services.',
+  services_title: 'Our Notary Services',
+  process_title: 'How It Works',
+  bottom_cta_text: 'Your documents, verified without delay.',
+  tagline: 'Fast, verified, done right.'
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+
+  // Background
+  document.getElementById('app-wrapper').style.backgroundColor = bg;
+
+  // Text updates
+  document.getElementById('hero-title-el').textContent = config.hero_title || defaultConfig.hero_title;
+  document.getElementById('hero-subtitle-el').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('services-title-el').textContent = config.services_title || defaultConfig.services_title;
+  document.getElementById('process-title-el').textContent = config.process_title || defaultConfig.process_title;
+  document.getElementById('bottom-cta-el').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  document.getElementById('tagline-el').textContent = config.tagline || defaultConfig.tagline;
+
+  // Font
+  const fontStack = `${font}, Georgia, serif`;
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = fontStack);
+  document.querySelectorAll('h1,h2,h3').forEach(el => el.style.fontFamily = fontStack);
+
+  // Font size scaling
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 2.5}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.2}px`);
+  document.querySelectorAll('p').forEach(el => { if (!el.classList.contains('comment-text')) el.style.fontSize = `${baseSize}px`; });
+
+  // Colors on surfaces
+  document.querySelectorAll('.service-card, .bg-white').forEach(el => el.style.backgroundColor = surface);
+  document.querySelectorAll('.gold-line').forEach(el => el.style.background = primary);
+  document.querySelectorAll('.step-circle').forEach(el => el.style.background = `linear-gradient(135deg, ${primary}, ${primary}cc)`);
+
+  // Nav
+  document.getElementById('navbar').style.background = `rgba(${hexToRgb(secondary)},0.95)`;
+
+  // Primary action buttons
+  document.querySelectorAll('.bg-gold').forEach(el => { el.style.backgroundColor = primary; });
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['services_title', config.services_title || defaultConfig.services_title],
+    ['process_title', config.process_title || defaultConfig.process_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ['tagline', config.tagline || defaultConfig.tagline]
+  ])
+});
+
+// Init Data SDK
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5895b51027c5',t:'MTc3NTU3ODY4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

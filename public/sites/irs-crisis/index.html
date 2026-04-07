@@ -1,1 +1,715 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/830c1801-eb6b-47de-9ebd-76de2fea130c -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRS Rapid Response</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        crisis: '#ff3b30',
+        dark: '#0a0a0f',
+        darkCard: '#12121a',
+        darkBorder: '#1e1e2a',
+        lightText: '#e8e8ed'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,59,48,0.4); }
+  50% { box-shadow: 0 0 24px rgba(255,59,48,0.8); }
+}
+@keyframes urgent-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+@keyframes count-fade {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-up {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes bar-fill {
+  0% { width: 0%; }
+  100% { width: var(--bar-width); }
+}
+
+.pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.urgent-pulse { animation: urgent-pulse 1.2s ease-in-out infinite; }
+.scan-line { animation: scan-line 3s linear infinite; }
+.slide-up { animation: slide-up 0.6s ease-out both; }
+.bar-fill { animation: bar-fill 1.5s ease-out both; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0;
+  height: 2px; background: #ff3b30; transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.cta-primary {
+  background: #ff3b30; color: white; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.cta-primary:hover { background: #e6342b; transform: translateY(-1px); }
+.cta-primary:active { transform: translateY(0); }
+
+.cta-secondary {
+  border: 1px solid #ff3b30; color: #ff3b30; transition: all 0.2s;
+}
+.cta-secondary:hover { background: rgba(255,59,48,0.1); }
+
+.situation-card {
+  background: #12121a; border: 1px solid #1e1e2a; transition: all 0.3s;
+}
+.situation-card:hover { border-color: #ff3b30; transform: translateY(-2px); }
+
+.step-connector { position: relative; }
+.step-connector::before {
+  content: ''; position: absolute; left: 19px; top: 48px; bottom: -16px;
+  width: 2px; background: linear-gradient(to bottom, #ff3b30, #1e1e2a);
+}
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #12121a; border: 1px solid #ff3b30; color: #e8e8ed;
+  padding: 12px 24px; border-radius: 8px; z-index: 9999;
+  animation: count-fade 0.3s ease-out;
+}
+
+.reaction-btn { transition: all 0.15s; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { background: rgba(255,59,48,0.15); border-color: #ff3b30; }
+
+body::-webkit-scrollbar { width: 6px; }
+body::-webkit-scrollbar-track { background: #0a0a0f; }
+body::-webkit-scrollbar-thumb { background: #1e1e2a; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-dark text-lightText overflow-auto" style="font-family: 'Outfit', sans-serif;">
+  <div id="app-wrapper" class="w-full" style="min-height: 100%;">
+   <!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-dark/90 backdrop-blur-sm border-b border-darkBorder">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
+     <div class="flex items-center gap-2">
+      <div class="w-2 h-2 rounded-full bg-crisis urgent-pulse"></div><span class="font-bold text-sm tracking-wider" style="font-family:'Space Mono',monospace; color:#ff3b30;">IRS RAPID RESPONSE</span>
+     </div>
+     <div class="hidden md:flex items-center gap-6 text-xs tracking-wider uppercase">
+      <a href="#hero" class="nav-link text-lightText hover:text-white">Home</a> <a href="#situations" class="nav-link text-lightText hover:text-white">Situations</a> <a href="#response" class="nav-link text-lightText hover:text-white">Response</a> <a href="#timeline" class="nav-link text-lightText hover:text-white">Timeline</a> <a href="#pricing" class="nav-link text-lightText hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-lightText hover:text-white">FAQ</a> <a href="#get-help" class="cta-primary px-4 py-2 rounded text-xs font-bold pulse-glow">GET HELP NOW</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-lightText"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-darkBorder px-4 pb-4 pt-2 flex flex-col gap-3 text-xs tracking-wider uppercase">
+     <a href="#hero" class="text-lightText py-1">Home</a> <a href="#situations" class="text-lightText py-1">Situations</a> <a href="#response" class="text-lightText py-1">Response</a> <a href="#timeline" class="text-lightText py-1">Timeline</a> <a href="#pricing" class="text-lightText py-1">Pricing</a> <a href="#faq" class="text-lightText py-1">FAQ</a> <a href="#get-help" class="cta-primary px-4 py-2 rounded text-xs font-bold text-center">GET HELP NOW</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="hero" class="relative pt-14 overflow-hidden" style="min-height:90%;">
+    <div class="absolute inset-0 bg-gradient-to-b from-crisis/5 to-transparent pointer-events-none"></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="absolute inset-0 opacity-[0.03]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 49px, #ff3b30 49px, #ff3b30 50px), repeating-linear-gradient(90deg, transparent, transparent 49px, #ff3b30 49px, #ff3b30 50px);"></div>
+     <div class="absolute left-0 right-0 h-px bg-crisis/20 scan-line"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-4 flex flex-col items-center justify-center text-center" style="min-height: calc(90% - 56px); padding-top: 10%; padding-bottom: 10%;">
+     <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-crisis/30 bg-crisis/5">
+      <div class="w-2 h-2 rounded-full bg-crisis urgent-pulse"></div><span id="tagline-el" class="text-xs tracking-wider uppercase" style="font-family:'Space Mono',monospace; color:#ff3b30;">When the IRS moves, you move faster.</span>
+     </div>
+     <h1 id="hero-headline-el" class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-6 text-white">IRS action doesn't wait.<br>
+       Neither should you.</h1>
+     <p id="hero-subhead-el" class="text-lg md:text-xl text-lightText/70 max-w-2xl mb-10">Immediate intervention for levies, liens, and enforcement.</p>
+     <div class="flex flex-col sm:flex-row gap-4">
+      <a href="#get-help" id="cta-primary-el" class="cta-primary px-8 py-4 rounded-lg font-bold text-base tracking-wide pulse-glow">Get Immediate Help</a> <a href="#response" id="cta-secondary-el" class="cta-secondary px-8 py-4 rounded-lg font-bold text-base tracking-wide">See What Happens Next</a>
+     </div>
+     <div class="mt-16 flex items-center gap-8 text-xs text-lightText/40" style="font-family:'Space Mono',monospace;">
+      <div class="flex items-center gap-2"><i data-lucide="shield-check" style="width:14px;height:14px;color:#ff3b30;"></i> Confidential
+      </div>
+      <div class="flex items-center gap-2"><i data-lucide="clock" style="width:14px;height:14px;color:#ff3b30;"></i> 24hr Response
+      </div>
+      <div class="flex items-center gap-2"><i data-lucide="lock" style="width:14px;height:14px;color:#ff3b30;"></i> Secure
+      </div>
+     </div>
+    </div>
+   </section><!-- Situations -->
+   <section id="situations" class="py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <span class="text-xs tracking-widest uppercase text-crisis mb-2 block" style="font-family:'Space Mono',monospace;">Identify Your Crisis</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">What are you facing?</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="situation-card rounded-xl p-6">
+       <div class="w-12 h-12 rounded-lg bg-crisis/10 flex items-center justify-center mb-4">
+        <i data-lucide="alert-triangle" style="width:24px;height:24px;color:#ff3b30;"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">Wage Garnishment</h3>
+       <p class="text-sm text-lightText/60 mb-4">The IRS is taking money directly from your paycheck. This can drain your income and leave you unable to pay bills.</p>
+       <div class="flex items-center gap-2 text-crisis text-xs font-bold">
+        <div class="w-1.5 h-1.5 rounded-full bg-crisis urgent-pulse"></div> SEVERITY: CRITICAL
+       </div>
+      </div>
+      <div class="situation-card rounded-xl p-6">
+       <div class="w-12 h-12 rounded-lg bg-crisis/10 flex items-center justify-center mb-4">
+        <i data-lucide="landmark" style="width:24px;height:24px;color:#ff3b30;"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">Bank Levy</h3>
+       <p class="text-sm text-lightText/60 mb-4">The IRS has frozen or seized funds from your bank account. You may have a 21-day window to act before funds are taken.</p>
+       <div class="flex items-center gap-2 text-crisis text-xs font-bold">
+        <div class="w-1.5 h-1.5 rounded-full bg-crisis urgent-pulse"></div> SEVERITY: CRITICAL
+       </div>
+      </div>
+      <div class="situation-card rounded-xl p-6">
+       <div class="w-12 h-12 rounded-lg bg-crisis/10 flex items-center justify-center mb-4">
+        <i data-lucide="file-warning" style="width:24px;height:24px;color:#ff3b30;"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">IRS Notices</h3>
+       <p class="text-sm text-lightText/60 mb-4">CP504, LT11, or final notice of intent to levy. Each notice is a countdown—ignoring them triggers enforcement.</p>
+       <div class="flex items-center gap-2 text-crisis text-xs font-bold">
+        <div class="w-1.5 h-1.5 rounded-full bg-crisis urgent-pulse"></div> SEVERITY: HIGH
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Response -->
+   <section id="response" class="py-20 px-4 border-t border-darkBorder">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14">
+      <span class="text-xs tracking-widest uppercase text-crisis mb-2 block" style="font-family:'Space Mono',monospace;">Immediate Intervention</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Your Response Plan</h2>
+     </div>
+     <div class="space-y-8">
+      <div class="step-connector flex gap-5">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full bg-crisis flex items-center justify-center text-white font-bold text-sm">
+        1
+       </div>
+       <div class="pt-1">
+        <h3 class="text-lg font-bold text-white mb-1">Emergency Case Review</h3>
+        <p class="text-sm text-lightText/60">We assess your notice, determine the IRS action type, and identify your deadline. Time-critical—this happens within hours.</p>
+       </div>
+      </div>
+      <div class="step-connector flex gap-5">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full bg-crisis flex items-center justify-center text-white font-bold text-sm">
+        2
+       </div>
+       <div class="pt-1">
+        <h3 class="text-lg font-bold text-white mb-1">Halt Enforcement Action</h3>
+        <p class="text-sm text-lightText/60">We file the appropriate IRS forms (CDP hearing, installment request, CNC status) to pause or stop the levy, lien, or garnishment.</p>
+       </div>
+      </div>
+      <div class="step-connector flex gap-5">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full bg-crisis flex items-center justify-center text-white font-bold text-sm">
+        3
+       </div>
+       <div class="pt-1">
+        <h3 class="text-lg font-bold text-white mb-1">Build Your Defense</h3>
+        <p class="text-sm text-lightText/60">Negotiate an Offer in Compromise, set up an installment agreement, or apply for Currently Not Collectible status based on your situation.</p>
+       </div>
+      </div>
+      <div class="flex gap-5">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full bg-crisis flex items-center justify-center text-white font-bold text-sm">
+        4
+       </div>
+       <div class="pt-1">
+        <h3 class="text-lg font-bold text-white mb-1">Ongoing Protection</h3>
+        <p class="text-sm text-lightText/60">We monitor your account, ensure IRS compliance, and protect you from future enforcement. You're never left undefended.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Timeline -->
+   <section id="timeline" class="py-20 px-4 border-t border-darkBorder">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <span class="text-xs tracking-widest uppercase text-crisis mb-2 block" style="font-family:'Space Mono',monospace;">The Clock Is Ticking</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">What Happens Next</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="relative rounded-xl p-6 bg-darkCard border border-crisis/40">
+       <div class="absolute top-0 left-0 right-0 h-1 bg-crisis rounded-t-xl"></div>
+       <div class="text-3xl font-black text-crisis mb-1" style="font-family:'Space Mono',monospace;">
+        0–4 hrs
+       </div>
+       <h3 class="font-bold text-white mb-2">Intake &amp; Analysis</h3>
+       <ul class="space-y-2 text-sm text-lightText/60">
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Emergency call with specialist</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Notice &amp; document review</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Deadline identification</li>
+       </ul>
+      </div>
+      <div class="relative rounded-xl p-6 bg-darkCard border border-darkBorder">
+       <div class="absolute top-0 left-0 right-0 h-1 bg-crisis/50 rounded-t-xl"></div>
+       <div class="text-3xl font-black text-crisis/70 mb-1" style="font-family:'Space Mono',monospace;">
+        24 hrs
+       </div>
+       <h3 class="font-bold text-white mb-2">Enforcement Pause</h3>
+       <ul class="space-y-2 text-sm text-lightText/60">
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> IRS contacted on your behalf</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Hold or release requested</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Power of Attorney filed</li>
+       </ul>
+      </div>
+      <div class="relative rounded-xl p-6 bg-darkCard border border-darkBorder">
+       <div class="absolute top-0 left-0 right-0 h-1 bg-crisis/30 rounded-t-xl"></div>
+       <div class="text-3xl font-black text-crisis/50 mb-1" style="font-family:'Space Mono',monospace;">
+        72 hrs
+       </div>
+       <h3 class="font-bold text-white mb-2">Resolution Path</h3>
+       <ul class="space-y-2 text-sm text-lightText/60">
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Strategy presentation</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Payment plan or settlement</li>
+        <li class="flex items-start gap-2"><i data-lucide="chevron-right" style="width:14px;height:14px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> Full case roadmap delivered</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 px-4 border-t border-darkBorder">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <span class="text-xs tracking-widest uppercase text-crisis mb-2 block" style="font-family:'Space Mono',monospace;">Investment Options</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Choose Your Defense Level</h2>
+      <p class="text-lightText/60 mt-3 max-w-2xl mx-auto">Every plan includes immediate IRS intervention. Scale up for ongoing protection.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Tier 1 -->
+      <div class="rounded-xl border border-darkBorder bg-darkCard p-6 md:p-8 flex flex-col hover:border-crisis/40 transition-colors">
+       <div class="flex items-start justify-between mb-4">
+        <div>
+         <h3 class="text-lg font-bold text-white mb-1">Emergency Strike</h3>
+         <p class="text-xs text-lightText/50">Crisis response</p>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-crisis/30"></div>
+       </div>
+       <div class="mb-6">
+        <div class="text-3xl font-black text-crisis mb-1" style="font-family:'Space Mono',monospace;">
+         $497
+        </div>
+        <p class="text-xs text-lightText/40">One-time</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-grow">
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Emergency case review (0–4 hrs)</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>IRS contact &amp; initial hold</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Power of Attorney filed</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>24-hour follow-up call</span></li>
+       </ul><button class="w-full cta-secondary px-4 py-3 rounded-lg font-bold text-sm tracking-wide">Get Started</button>
+      </div><!-- Tier 2 (Featured) -->
+      <div class="rounded-xl border-2 border-crisis bg-darkCard p-6 md:p-8 relative md:scale-105 md:z-10 shadow-lg shadow-crisis/20">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-crisis px-4 py-1 rounded-full"><span class="text-xs font-bold text-white tracking-widest uppercase" style="font-family:'Space Mono',monospace;">Most Protection</span>
+       </div>
+       <div class="flex items-start justify-between mb-4">
+        <div>
+         <h3 class="text-lg font-bold text-white mb-1">Full Defense</h3>
+         <p class="text-xs text-lightText/50">Complete intervention</p>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-crisis urgent-pulse"></div>
+       </div>
+       <div class="mb-6">
+        <div class="text-3xl font-black text-crisis mb-1" style="font-family:'Space Mono',monospace;">
+         $1,297
+        </div>
+        <p class="text-xs text-lightText/40">One-time + 6 months support</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-grow">
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Everything in Emergency Strike</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Full negotiation strategy (OIC, installment, CNC)</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Monthly check-ins &amp; updates</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Direct specialist access</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>6 months of compliance monitoring</span></li>
+       </ul><button class="w-full cta-primary px-4 py-3 rounded-lg font-bold text-sm tracking-wide pulse-glow">Activate Now</button>
+      </div><!-- Tier 3 -->
+      <div class="rounded-xl border border-darkBorder bg-darkCard p-6 md:p-8 flex flex-col hover:border-crisis/40 transition-colors">
+       <div class="flex items-start justify-between mb-4">
+        <div>
+         <h3 class="text-lg font-bold text-white mb-1">Fortress Protection</h3>
+         <p class="text-xs text-lightText/50">Maximum coverage</p>
+        </div>
+        <div class="w-2 h-2 rounded-full bg-crisis/30"></div>
+       </div>
+       <div class="mb-6">
+        <div class="text-3xl font-black text-crisis mb-1" style="font-family:'Space Mono',monospace;">
+         $2,497
+        </div>
+        <p class="text-xs text-lightText/40">One-time + 12 months support</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-grow">
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Everything in Full Defense</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>12 months ongoing protection</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Quarterly strategy reviews</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Priority phone support (24/7)</span></li>
+        <li class="flex items-start gap-3 text-sm text-lightText/70"><i data-lucide="check" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;margin-top:2px;"></i> <span>Future IRS action shield</span></li>
+       </ul><button class="w-full cta-secondary px-4 py-3 rounded-lg font-bold text-sm tracking-wide">Fortify</button>
+      </div>
+     </div>
+     <div class="mt-12 p-6 rounded-lg bg-darkCard border border-darkBorder text-center">
+      <p class="text-sm text-lightText/60 mb-2">All tiers include <span class="text-crisis font-bold">24-hour response guarantee</span> and <span class="text-crisis font-bold">confidential handling</span></p>
+      <p class="text-xs text-lightText/40" style="font-family:'Space Mono',monospace;">No setup fees • Money-back guarantee if no contact within 24 hours</p>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 border-t border-darkBorder">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14">
+      <span class="text-xs tracking-widest uppercase text-crisis mb-2 block" style="font-family:'Space Mono',monospace;">Intel Briefing</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white">Frequently Asked</h2>
+     </div>
+     <div id="faq-list" class="space-y-3"></div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment -->
+   <section id="get-help" class="py-20 px-4 border-t border-darkBorder relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-crisis/5 to-transparent pointer-events-none"></div>
+    <div class="relative max-w-3xl mx-auto text-center">
+     <div class="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-crisis/30 bg-crisis/5">
+      <div class="w-2 h-2 rounded-full bg-crisis urgent-pulse"></div><span class="text-xs tracking-wider uppercase" style="font-family:'Space Mono',monospace; color:#ff3b30;">Time-Sensitive</span>
+     </div>
+     <h2 id="bottom-cta-el" class="text-3xl md:text-4xl font-extrabold text-white mb-4">Act now before it escalates.</h2>
+     <p class="text-lightText/60 mb-8 max-w-xl mx-auto">Every hour of delay gives the IRS more power over your finances. One call can change the trajectory.</p><a href="#get-help" class="cta-primary inline-block px-10 py-4 rounded-lg font-bold text-lg tracking-wide pulse-glow">Get Immediate Help Now</a> <!-- Vote + Comment Module -->
+     <div class="mt-20 text-left">
+      <div class="rounded-xl bg-darkCard border border-darkBorder p-6 md:p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <i data-lucide="message-circle" style="width:20px;height:20px;color:#ff3b30;"></i>
+        <h3 class="text-lg font-bold text-white">Community Feedback</h3>
+       </div><!-- Reactions -->
+       <div class="mb-6">
+        <p class="text-xs text-lightText/40 uppercase tracking-wider mb-3" style="font-family:'Space Mono',monospace;">React</p>
+        <div id="reactions-bar" class="flex flex-wrap gap-2"></div>
+       </div><!-- Price Vote -->
+       <div class="mb-6">
+        <p class="text-xs text-lightText/40 uppercase tracking-wider mb-3" style="font-family:'Space Mono',monospace;">What would you pay for this template?</p>
+        <div id="price-options" class="flex flex-wrap gap-2"></div>
+        <div id="price-results" class="mt-4 hidden space-y-2"></div>
+       </div><!-- Comments -->
+       <div>
+        <p class="text-xs text-lightText/40 uppercase tracking-wider mb-3" style="font-family:'Space Mono',monospace;">Comments</p>
+        <form id="comment-form" class="flex gap-3 mb-4">
+         <label for="comment-input" class="sr-only">Your comment</label> <input id="comment-input" type="text" placeholder="Share your thoughts..." class="flex-1 bg-dark border border-darkBorder rounded-lg px-4 py-3 text-sm text-lightText placeholder:text-lightText/30 focus:outline-none focus:border-crisis/50"> <button type="submit" class="cta-primary px-5 py-3 rounded-lg font-bold text-sm flex items-center gap-2"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post </button>
+        </form>
+        <div id="comments-list" class="space-y-3 max-h-80 overflow-y-auto"></div>
+       </div><!-- Embed Notice -->
+       <div class="mt-6 pt-4 border-t border-darkBorder text-center">
+        <span class="text-xs text-lightText/20" style="font-family:'Space Mono',monospace;">[ Embed Widget Here ]</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 border-t border-darkBorder text-center">
+    <div class="text-xs text-lightText/30" style="font-family:'Space Mono',monospace;">
+     IRS RAPID RESPONSE — CRISIS INTERVENTION — CONFIDENTIAL
+    </div>
+   </footer>
+  </div>
+  <div id="toast-container"></div>
+  <script>
+// ---- State ----
+let allData = [];
+let userReaction = null;
+let userPriceVote = null;
+const REACTIONS = ['🔥','💯','⚡','🚨','✅','🛡️'];
+const PRICES = ['$0','$9','$19','$29','$39','$49','$79','$99','$149','$199'];
+const FAQS = [
+  { q: 'Can the IRS really take money from my paycheck?', a: 'Yes. A wage garnishment (or levy) allows the IRS to direct your employer to withhold a portion of your pay until the debt is satisfied. Intervention can stop or reduce this.' },
+  { q: 'How fast can you stop a bank levy?', a: 'In many cases, we can initiate contact with the IRS within 24 hours. Bank levies have a 21-day hold period, giving us a window to negotiate a release.' },
+  { q: 'What if I can\'t afford to pay what I owe?', a: 'Options like Offer in Compromise, Currently Not Collectible status, or installment agreements can dramatically reduce or defer what you owe.' },
+  { q: 'Is this consultation confidential?', a: 'Absolutely. All communications are protected. Your information is never shared.' }
+];
+
+// ---- Default Config ----
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#12121a',
+  text_color: '#e8e8ed',
+  primary_action_color: '#ff3b30',
+  secondary_action_color: '#ff3b30',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_headline: "IRS action doesn't wait.\nNeither should you.",
+  hero_subhead: 'Immediate intervention for levies, liens, and enforcement.',
+  cta_primary: 'Get Immediate Help',
+  cta_secondary: 'See What Happens Next',
+  bottom_cta_text: 'Act now before it escalates.',
+  tagline: 'When the IRS moves, you move faster.'
+};
+
+// ---- Element SDK ----
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const body = document.body;
+  const wrapper = document.getElementById('app-wrapper');
+  body.style.backgroundColor = c.background_color;
+  body.style.color = c.text_color;
+  body.style.fontFamily = `${c.font_family}, Outfit, sans-serif`;
+
+  const baseSize = c.font_size || 16;
+
+  document.getElementById('hero-headline-el').innerHTML = (c.hero_headline || defaultConfig.hero_headline).replace('\n','<br>');
+  document.getElementById('hero-headline-el').style.fontSize = `${baseSize * 3}px`;
+  document.getElementById('hero-subhead-el').textContent = c.hero_subhead || defaultConfig.hero_subhead;
+  document.getElementById('hero-subhead-el').style.fontSize = `${baseSize * 1.2}px`;
+  document.getElementById('cta-primary-el').textContent = c.cta_primary || defaultConfig.cta_primary;
+  document.getElementById('cta-secondary-el').textContent = c.cta_secondary || defaultConfig.cta_secondary;
+  document.getElementById('bottom-cta-el').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+  document.getElementById('tagline-el').textContent = c.tagline || defaultConfig.tagline;
+
+  // Colors
+  document.querySelectorAll('.cta-primary').forEach(el => { el.style.backgroundColor = c.primary_action_color; el.style.color = '#fff'; });
+  document.querySelectorAll('.cta-secondary').forEach(el => { el.style.borderColor = c.primary_action_color; el.style.color = c.primary_action_color; });
+  document.querySelectorAll('.situation-card').forEach(el => { el.style.backgroundColor = c.surface_color; });
+  document.getElementById('sticky-nav').style.backgroundColor = c.background_color + 'e6';
+
+  // Update heading colors
+  document.querySelectorAll('h1, h2, h3').forEach(el => { el.style.color = '#fff'; });
+}
+
+function makeRecolorable(key) {
+  return {
+    get: () => (window.elementSdk.config && window.elementSdk.config[key]) || defaultConfig[key],
+    set: (v) => { window.elementSdk.setConfig({ [key]: v }); }
+  };
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      makeRecolorable('background_color'),
+      makeRecolorable('surface_color'),
+      makeRecolorable('text_color'),
+      makeRecolorable('primary_action_color'),
+      makeRecolorable('secondary_action_color')
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => (config && config.font_family) || defaultConfig.font_family,
+      set: (v) => { window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => (config && config.font_size) || defaultConfig.font_size,
+      set: (v) => { window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_headline', c.hero_headline],
+      ['hero_subhead', c.hero_subhead],
+      ['cta_primary', c.cta_primary],
+      ['cta_secondary', c.cta_secondary],
+      ['bottom_cta_text', c.bottom_cta_text],
+      ['tagline', c.tagline]
+    ]);
+  }
+});
+
+// ---- Data SDK ----
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPriceResults();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ---- Toast ----
+function showToast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast-msg';
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ---- FAQ ----
+function renderFAQs() {
+  const container = document.getElementById('faq-list');
+  container.innerHTML = '';
+  FAQS.forEach((faq, i) => {
+    const div = document.createElement('div');
+    div.className = 'rounded-lg border border-darkBorder overflow-hidden';
+    div.innerHTML = `
+      <button class="w-full text-left px-5 py-4 flex items-center justify-between bg-darkCard hover:bg-darkCard/80 transition-colors" onclick="toggleFAQ(${i})">
+        <span class="font-semibold text-white text-sm pr-4">${faq.q}</span>
+        <i data-lucide="chevron-down" id="faq-icon-${i}" style="width:16px;height:16px;color:#ff3b30;flex-shrink:0;transition:transform 0.3s;"></i>
+      </button>
+      <div id="faq-answer-${i}" class="hidden px-5 pb-4 pt-1 text-sm text-lightText/60 bg-darkCard">${faq.a}</div>
+    `;
+    container.appendChild(div);
+  });
+  lucide.createIcons();
+}
+window.toggleFAQ = function(i) {
+  const ans = document.getElementById(`faq-answer-${i}`);
+  const icon = document.getElementById(`faq-icon-${i}`);
+  const isOpen = !ans.classList.contains('hidden');
+  ans.classList.toggle('hidden');
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+};
+
+// ---- Reactions ----
+function renderReactionsBar() {
+  const bar = document.getElementById('reactions-bar');
+  bar.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const count = allData.filter(d => d.type === 'reaction' && d.reaction === r).length;
+    const isSelected = userReaction === r;
+    const btn = document.createElement('button');
+    btn.className = `reaction-btn px-3 py-1.5 rounded-lg border text-sm flex items-center gap-1.5 ${isSelected ? 'selected border-crisis bg-crisis/15' : 'border-darkBorder bg-dark'}`;
+    btn.innerHTML = `${r} <span class="text-xs text-lightText/50">${count}</span>`;
+    btn.onclick = () => handleReaction(r);
+    bar.appendChild(btn);
+  });
+}
+function renderReactions() { renderReactionsBar(); }
+
+async function handleReaction(r) {
+  if (userReaction) { showToast('You already reacted!'); return; }
+  userReaction = r;
+  renderReactionsBar();
+  const res = await window.dataSdk.create({ type: 'reaction', section: 'bottom', reaction: r, comment: '', author: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!res.isOk) { userReaction = null; showToast('Error saving reaction'); renderReactionsBar(); }
+}
+
+// ---- Price Vote ----
+function renderPriceOptions() {
+  const container = document.getElementById('price-options');
+  container.innerHTML = '';
+  PRICES.forEach(p => {
+    const isSelected = userPriceVote === p;
+    const btn = document.createElement('button');
+    btn.className = `px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${isSelected ? 'border-crisis bg-crisis text-white' : 'border-darkBorder bg-dark text-lightText/60 hover:border-crisis/50'}`;
+    btn.style.fontFamily = "'Space Mono', monospace";
+    btn.textContent = p;
+    btn.onclick = () => handlePriceVote(p);
+    container.appendChild(btn);
+  });
+}
+
+function renderPriceResults() {
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const resultsEl = document.getElementById('price-results');
+  renderPriceOptions();
+  if (votes.length === 0) { resultsEl.classList.add('hidden'); return; }
+  resultsEl.classList.remove('hidden');
+  resultsEl.innerHTML = '';
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  votes.forEach(v => { if (counts[v.price_vote] !== undefined) counts[v.price_vote]++; });
+  const max = Math.max(...Object.values(counts), 1);
+  PRICES.forEach(p => {
+    if (counts[p] === 0) return;
+    const pct = Math.round((counts[p] / votes.length) * 100);
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-3';
+    div.innerHTML = `
+      <span class="w-12 text-xs text-lightText/50 text-right" style="font-family:'Space Mono',monospace;">${p}</span>
+      <div class="flex-1 h-3 bg-dark rounded-full overflow-hidden">
+        <div class="h-full bg-crisis/60 rounded-full bar-fill" style="--bar-width:${pct}%;width:${pct}%;"></div>
+      </div>
+      <span class="text-xs text-lightText/40 w-8">${counts[p]}</span>
+    `;
+    resultsEl.appendChild(div);
+  });
+}
+
+async function handlePriceVote(p) {
+  if (userPriceVote) { showToast('You already voted!'); return; }
+  if (allData.filter(d => d.type === 'price_vote').length >= 999) { showToast('Vote limit reached'); return; }
+  userPriceVote = p;
+  renderPriceOptions();
+  const res = await window.dataSdk.create({ type: 'price_vote', section: 'bottom', reaction: '', comment: '', author: '', price_vote: p, created_at: new Date().toISOString() });
+  if (!res.isOk) { userPriceVote = null; showToast('Error saving vote'); renderPriceOptions(); }
+}
+
+// ---- Comments ----
+function renderComments() {
+  const container = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const existingIds = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingIds.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.className = 'bg-dark border border-darkBorder rounded-lg px-4 py-3';
+    const time = new Date(c.created_at);
+    const timeStr = time.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' + time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    div.innerHTML = `
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-xs font-bold text-white">${escapeHtml(c.author || 'Anonymous')}</span>
+        <span class="text-xs text-lightText/30" style="font-family:'Space Mono',monospace;">${timeStr}</span>
+      </div>
+      <p class="text-sm text-lightText/70">${escapeHtml(c.comment)}</p>
+    `;
+    container.prepend(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Comment limit reached'); return; }
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const res = await window.dataSdk.create({ type: 'comment', section: 'bottom', reaction: '', comment: text, author: 'Visitor', price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (res.isOk) { input.value = ''; } else { showToast('Error posting comment'); }
+});
+
+// ---- Mobile Menu ----
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ---- Init ----
+renderFAQs();
+renderReactionsBar();
+renderPriceOptions();
+applyConfig(defaultConfig);
+lucide.createIcons();
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4adb152f27c5',t:'MTc3NTU3ODEyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

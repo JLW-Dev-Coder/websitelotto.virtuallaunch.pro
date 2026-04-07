@@ -1,1 +1,816 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/3f0c1508-d05e-46a8-97fa-55cbc0dec01e -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlobalTax Navigator</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+html,body{margin:0;padding:0;height:100%;overflow-x:hidden}
+*{box-sizing:border-box}
+:root{--bg:#050505;--cyan:#06b6d4;--cyan2:#0891b2;--cyan3:#22d3ee;--surface:#0a0f14;--surface2:#0f1922;--text:#e2e8f0;--text2:#94a3b8;--border:#1e293b}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Animated grid bg */
+.grid-bg{position:fixed;inset:0;background-image:
+  linear-gradient(rgba(6,182,212,0.03) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(6,182,212,0.03) 1px,transparent 1px);
+background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* Glow effects */
+.glow-cyan{box-shadow:0 0 20px rgba(6,182,212,0.15),0 0 60px rgba(6,182,212,0.05)}
+.glow-cyan-strong{box-shadow:0 0 30px rgba(6,182,212,0.3),0 0 80px rgba(6,182,212,0.1)}
+.glow-text{text-shadow:0 0 30px rgba(6,182,212,0.4)}
+
+/* Connection line animation */
+@keyframes pulse-line{0%,100%{opacity:0.3}50%{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+@keyframes rotate-slow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes fade-up{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(6,182,212,0.15)}50%{box-shadow:0 0 40px rgba(6,182,212,0.35)}}
+@keyframes border-glow{0%,100%{border-color:rgba(6,182,212,0.2)}50%{border-color:rgba(6,182,212,0.6)}}
+@keyframes dash-move{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-20}}
+
+.animate-float{animation:float 6s ease-in-out infinite}
+.animate-glow-pulse{animation:glow-pulse 3s ease-in-out infinite}
+.animate-border-glow{animation:border-glow 3s ease-in-out infinite}
+.fade-up{animation:fade-up 0.8s ease forwards}
+.fade-up-d1{animation:fade-up 0.8s ease 0.1s forwards;opacity:0}
+.fade-up-d2{animation:fade-up 0.8s ease 0.2s forwards;opacity:0}
+.fade-up-d3{animation:fade-up 0.8s ease 0.3s forwards;opacity:0}
+.fade-up-d4{animation:fade-up 0.8s ease 0.4s forwards;opacity:0}
+
+/* Pricing card hover */
+.pricing-card{transition:all 0.4s cubic-bezier(0.4,0,0.2,1);border:1px solid var(--border)}
+.pricing-card:hover{transform:translateY(-8px) scale(1.02);border-color:var(--cyan)}
+.pricing-card.featured{border-color:var(--cyan);position:relative}
+.pricing-card.featured::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,var(--cyan),transparent,var(--cyan3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+/* Nav */
+.nav-link{position:relative;color:var(--text2);transition:color 0.3s}
+.nav-link:hover,.nav-link.active{color:var(--cyan)}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--cyan);transition:width 0.3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+
+/* Jurisdiction card */
+.jurisdiction-card{transition:all 0.3s;border:1px solid var(--border);position:relative;overflow:hidden}
+.jurisdiction-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity 0.3s}
+.jurisdiction-card:hover{border-color:rgba(6,182,212,0.4);transform:translateY(-4px)}
+.jurisdiction-card:hover::before{opacity:1}
+
+/* Compliance bar */
+.compliance-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;position:relative}
+.compliance-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--cyan3));position:relative}
+.compliance-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:30px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3));animation:scan 2s ease-in-out infinite}
+
+/* Map SVG */
+.map-dot{fill:var(--cyan);opacity:0.6;transition:all 0.3s}
+.map-dot:hover{opacity:1;r:5}
+.map-line{stroke:var(--cyan);stroke-width:0.5;stroke-dasharray:4 4;animation:dash-move 2s linear infinite;opacity:0.4}
+
+/* Reaction buttons */
+.reaction-btn{transition:all 0.2s;border:1px solid var(--border);cursor:pointer}
+.reaction-btn:hover{border-color:var(--cyan);background:rgba(6,182,212,0.1)}
+.reaction-btn.selected{border-color:var(--cyan);background:rgba(6,182,212,0.15)}
+
+/* Smooth scroll */
+html{scroll-behavior:smooth}
+
+/* Section visibility */
+.section-hidden{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.4,0,0.2,1)}
+.section-visible{opacity:1;transform:translateY(0)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;background:var(--surface2);border:1px solid var(--cyan);color:var(--text);font-size:14px;z-index:9999;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="grid-bg"></div>
+  <div id="app-wrapper" style="position:relative;z-index:1;width:100%;height:100%;overflow-y:auto;overflow-x:hidden">
+   <!-- Sticky Nav -->
+   <nav id="main-nav" style="position:sticky;top:0;z-index:50;background:rgba(5,5,5,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+     <div style="display:flex;align-items:center;gap:10px">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#06b6d4" stroke-width="1.5" opacity="0.6" /><circle cx="14" cy="14" r="6" stroke="#06b6d4" stroke-width="1" /><ellipse cx="14" cy="14" rx="12" ry="6" stroke="#06b6d4" stroke-width="0.8" opacity="0.4" /><circle cx="14" cy="14" r="2" fill="#06b6d4" />
+      </svg><span style="font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:var(--cyan)" id="nav-brand">GlobalTax</span>
+     </div>
+     <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center" id="nav-links">
+      <a href="#home" class="nav-link active" style="font-size:13px;text-decoration:none">Home</a> <a href="#strategy" class="nav-link" style="font-size:13px;text-decoration:none">Strategy</a> <a href="#jurisdictions" class="nav-link" style="font-size:13px;text-decoration:none">Jurisdictions</a> <a href="#compliance" class="nav-link" style="font-size:13px;text-decoration:none">Compliance</a> <a href="#pricing" class="nav-link" style="font-size:13px;text-decoration:none">Pricing</a> <a href="#faq" class="nav-link" style="font-size:13px;text-decoration:none">FAQ</a> <a href="#bottom-cta" style="font-size:13px;padding:6px 16px;background:var(--cyan);color:#050505;border-radius:6px;text-decoration:none;font-weight:600;transition:all 0.3s" onmouseover="this.style.background='#22d3ee'" onmouseout="this.style.background='var(--cyan)'">Start Global Plan</a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" style="min-height:90%;display:flex;align-items:center;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;opacity:0.08">
+     <svg width="100%" height="100%" viewbox="0 0 800 400" preserveaspectratio="xMidYMid slice">
+      <circle cx="200" cy="150" r="3" class="map-dot" /><circle cx="350" cy="120" r="3" class="map-dot" /> <circle cx="500" cy="180" r="3" class="map-dot" /><circle cx="620" cy="140" r="3" class="map-dot" /> <circle cx="150" cy="250" r="3" class="map-dot" /><circle cx="450" cy="220" r="3" class="map-dot" /> <circle cx="700" cy="200" r="3" class="map-dot" /><circle cx="300" cy="300" r="3" class="map-dot" /> <line x1="200" y1="150" x2="350" y2="120" class="map-line" /> <line x1="350" y1="120" x2="500" y2="180" class="map-line" /> <line x1="500" y1="180" x2="620" y2="140" class="map-line" /> <line x1="620" y1="140" x2="700" y2="200" class="map-line" /> <line x1="150" y1="250" x2="300" y2="300" class="map-line" /> <line x1="300" y1="300" x2="450" y2="220" class="map-line" /> <line x1="200" y1="150" x2="150" y2="250" class="map-line" /> <line x1="450" y1="220" x2="500" y2="180" class="map-line" />
+     </svg>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:80px 24px;width:100%;position:relative">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px" class="fade-up">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:glow-pulse 2s infinite"></div><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">International Tax Strategy Platform</span>
+     </div>
+     <h1 id="hero-title" style="font-size:clamp(36px,6vw,72px);font-weight:800;line-height:1.05;margin:0 0 24px;max-width:800px" class="fade-up-d1">Where you operate determines <span style="color:var(--cyan);position:relative">what you keep 
+       <svg style="position:absolute;bottom:-4px;left:0;width:100%;height:8px" viewbox="0 0 200 8"><path d="M0 6 Q50 0 100 4 Q150 8 200 2" stroke="#06b6d4" stroke-width="2" fill="none" opacity="0.5" />
+       </svg></span>.</h1>
+     <p id="hero-subtitle" style="font-size:clamp(16px,2vw,22px);color:var(--text2);margin:0 0 40px;max-width:600px;line-height:1.6;font-weight:300" class="fade-up-d2">International tax strategy for global income.</p>
+     <div style="display:flex;gap:16px;flex-wrap:wrap" class="fade-up-d3">
+      <a href="#bottom-cta" style="padding:14px 32px;background:var(--cyan);color:#050505;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px" onmouseover="this.style.background='#22d3ee';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--cyan)';this.style.transform='translateY(0)'"> Start Global Plan <i data-lucide="arrow-right" style="width:18px;height:18px"></i> </a> <a href="#strategy" style="padding:14px 32px;border:1px solid var(--border);color:var(--text);border-radius:8px;text-decoration:none;font-weight:500;font-size:15px;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px" onmouseover="this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text)'"> View Structures <i data-lucide="layers" style="width:18px;height:18px"></i> </a>
+     </div>
+     <div style="display:flex;gap:48px;margin-top:64px;flex-wrap:wrap" class="fade-up-d4">
+      <div><span style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan)">40+</span>
+       <p style="font-size:13px;color:var(--text2);margin:4px 0 0">Jurisdictions</p>
+      </div>
+      <div><span style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan)">$2.1B+</span>
+       <p style="font-size:13px;color:var(--text2);margin:4px 0 0">Client Assets Structured</p>
+      </div>
+      <div><span style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan)">98%</span>
+       <p style="font-size:13px;color:var(--text2);margin:4px 0 0">Compliance Rate</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Strategy Section -->
+   <section id="strategy" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:1200px;margin:0 auto">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <div style="width:32px;height:1px;background:var(--cyan)"></div><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">Strategy</span>
+     </div>
+     <h2 id="strategy-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 16px">Cross-Border Structuring Frameworks</h2>
+     <p style="font-size:17px;color:var(--text2);margin:0 0 56px;max-width:640px;line-height:1.7">Architect tax-efficient structures across multiple jurisdictions with our proven strategic frameworks.</p>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:40px">
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column">
+       <div style="width:48px;height:48px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <i data-lucide="building-2" style="width:24px;height:24px;color:var(--cyan)"></i>
+       </div>
+       <h3 style="font-size:18px;font-weight:600;margin:0 0 12px">Holding Company Architecture</h3>
+       <p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0 0 20px;flex-grow:1">Optimize your corporate structure with strategically placed holding entities for IP, royalties, and dividend flows.</p>
+       <div style="display:flex;gap:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Entities</span><br><span style="font-size:18px;font-weight:700;color:var(--cyan)">8+</span>
+        </div>
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Tax Savings</span><br><span style="font-size:18px;font-weight:700;color:var(--cyan)">35%</span>
+        </div>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column">
+       <div style="width:48px;height:48px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <i data-lucide="git-branch" style="width:24px;height:24px;color:var(--cyan)"></i>
+       </div>
+       <h3 style="font-size:18px;font-weight:600;margin:0 0 12px">Treaty Network Mapping</h3>
+       <p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0 0 20px;flex-grow:1">Leverage bilateral tax treaties to minimize withholding taxes and avoid double taxation on cross-border income.</p>
+       <div style="display:flex;gap:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Treaties</span><br><span style="font-size:18px;font-weight:700;color:var(--cyan)">190+</span>
+        </div>
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Coverage</span><br><span style="font-size:18px;font-weight:700;color:var(--cyan)">98%</span>
+        </div>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column">
+       <div style="width:48px;height:48px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <i data-lucide="shield-check" style="width:24px;height:24px;color:var(--cyan)"></i>
+       </div>
+       <h3 style="font-size:18px;font-weight:600;margin:0 0 12px">Substance &amp; Compliance Design</h3>
+       <p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0 0 20px;flex-grow:1">Build genuine economic substance in each jurisdiction to withstand regulatory scrutiny and ensure long-term viability.</p>
+       <div style="display:flex;gap:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Audits Passed</span><br><span style="font-size:18px;font-weight:700;color:#22c55e">100%</span>
+        </div>
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Time to Deploy</span><br><span style="font-size:18px;font-weight:700;color:var(--cyan)">4-8w</span>
+        </div>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:32px;display:flex;flex-direction:column">
+       <div style="width:48px;height:48px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <i data-lucide="repeat" style="width:24px;height:24px;color:var(--cyan)"></i>
+       </div>
+       <h3 style="font-size:18px;font-weight:600;margin:0 0 12px">Transfer Pricing Strategy</h3>
+       <p style="font-size:14px;color:var(--text2);line-height:1.7;margin:0 0 20px;flex-grow:1">Establish defensible intercompany pricing that aligns with OECD guidelines while optimizing your global tax position.</p>
+       <div style="display:flex;gap:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div>
+         <span style="font-size:11px;color:var(--text2)">Exposure Reduced</span><br><span style="font-size:18px;font-weight:700;color:#22c55e">92%</span>
+        </div>
+        <div>
+         <span style="font-size:11px;color:var(--text2)">OECD Aligned</span><br><span style="font-size:18px;font-weight:700;color:#22c55e">✓</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Jurisdictions Section -->
+   <section id="jurisdictions" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:1200px;margin:0 auto">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <div style="width:32px;height:1px;background:var(--cyan)"></div><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">Jurisdictions</span>
+     </div>
+     <h2 id="jurisdictions-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 16px">Jurisdiction Intelligence</h2>
+     <p style="font-size:17px;color:var(--text2);margin:0 0 56px;max-width:640px;line-height:1.7">Compare tax regimes, treaty networks, and compliance requirements across key global jurisdictions.</p><!-- World Map SVG -->
+     <div style="background:var(--surface);border-radius:16px;border:1px solid var(--border);padding:32px;margin-bottom:40px;overflow:hidden">
+      <svg viewbox="0 0 900 360" style="width:100%;height:auto" fill="none">
+       <!-- Simplified world outline paths --> <path d="M180 120 Q200 100 240 110 Q260 105 280 115 L290 130 Q270 145 250 140 Q230 150 210 140 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <path d="M300 80 Q340 60 400 70 Q440 65 480 80 Q500 95 490 120 Q470 140 440 135 Q400 150 360 140 Q320 135 300 115 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <path d="M500 75 Q560 55 640 70 Q700 80 740 100 Q760 120 740 145 Q700 160 660 150 Q600 155 540 140 Q510 125 500 100 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <path d="M340 160 Q370 155 400 165 Q420 180 410 210 Q390 240 360 230 Q330 220 330 190 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <path d="M600 150 Q640 145 680 160 Q700 180 690 210 Q660 230 630 220 Q600 200 595 175 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <path d="M720 200 Q760 190 790 210 Q800 240 780 260 Q750 270 730 250 Q710 230 720 200 Z" fill="rgba(6,182,212,0.06)" stroke="rgba(6,182,212,0.15)" stroke-width="0.5" /> <!-- Connection lines --> <line x1="240" y1="125" x2="400" y2="90" class="map-line" style="animation-delay:0s" /> <line x1="400" y1="90" x2="620" y2="100" class="map-line" style="animation-delay:0.5s" /> <line x1="620" y1="100" x2="750" y2="210" class="map-line" style="animation-delay:1s" /> <line x1="400" y1="90" x2="380" y2="180" class="map-line" style="animation-delay:1.5s" /> <line x1="620" y1="100" x2="650" y2="170" class="map-line" style="animation-delay:2s" /> <!-- Glowing dots for key jurisdictions --> <circle cx="350" cy="85" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" repeatcount="indefinite" />
+       </circle> <circle cx="420" cy="80" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" begin="0.5s" repeatcount="indefinite" />
+       </circle> <circle cx="640" cy="100" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" begin="1s" repeatcount="indefinite" />
+       </circle> <circle cx="750" cy="210" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" begin="1.5s" repeatcount="indefinite" />
+       </circle> <circle cx="240" cy="125" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" begin="2s" repeatcount="indefinite" />
+       </circle> <circle cx="380" cy="180" r="4" fill="#06b6d4" opacity="0.8">
+        <animate attributename="opacity" values="0.4;1;0.4" dur="3s" begin="2.5s" repeatcount="indefinite" />
+       </circle> <!-- Labels --> <text x="220" y="118" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        US
+       </text> <text x="340" y="78" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        IRL
+       </text> <text x="430" y="75" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        NL
+       </text> <text x="650" y="93" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        SG
+       </text> <text x="755" y="205" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        AU
+       </text> <text x="365" y="195" fill="#06b6d4" font-size="9" font-family="Space Mono,monospace" opacity="0.7">
+        UAE
+       </text>
+      </svg>
+     </div><!-- Jurisdiction comparison cards -->
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:28px">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="font-size:28px">🇮🇪</span>
+        <div>
+         <h3 style="font-size:16px;font-weight:600;margin:0">Ireland</h3><span style="font-size:12px;color:var(--text2)">EU Hub</span>
+        </div>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Corporate Rate</span><span style="font-size:13px;font-weight:600;color:var(--cyan)">12.5%</span>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Treaty Network</span><span style="font-size:13px;font-weight:600">76 countries</span>
+       </div>
+       <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">IP Regime</span><span style="font-size:13px;font-weight:600;color:#22c55e">Knowledge Box</span>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:28px">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="font-size:28px">🇸🇬</span>
+        <div>
+         <h3 style="font-size:16px;font-weight:600;margin:0">Singapore</h3><span style="font-size:12px;color:var(--text2)">Asia-Pacific Hub</span>
+        </div>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Corporate Rate</span><span style="font-size:13px;font-weight:600;color:var(--cyan)">17%</span>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Treaty Network</span><span style="font-size:13px;font-weight:600">90+ countries</span>
+       </div>
+       <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">IP Regime</span><span style="font-size:13px;font-weight:600;color:#22c55e">Pioneer Status</span>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:28px">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="font-size:28px">🇦🇪</span>
+        <div>
+         <h3 style="font-size:16px;font-weight:600;margin:0">UAE</h3><span style="font-size:12px;color:var(--text2)">MENA Hub</span>
+        </div>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Corporate Rate</span><span style="font-size:13px;font-weight:600;color:var(--cyan)">9%</span>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Treaty Network</span><span style="font-size:13px;font-weight:600">100+ countries</span>
+       </div>
+       <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Free Zones</span><span style="font-size:13px;font-weight:600;color:#22c55e">40+ Zones</span>
+       </div>
+      </div>
+      <div class="jurisdiction-card" style="background:var(--surface);border-radius:12px;padding:28px">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="font-size:28px">🇳🇱</span>
+        <div>
+         <h3 style="font-size:16px;font-weight:600;margin:0">Netherlands</h3><span style="font-size:12px;color:var(--text2)">EU Treaty Hub</span>
+        </div>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Corporate Rate</span><span style="font-size:13px;font-weight:600;color:var(--cyan)">25.8%</span>
+       </div>
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--text2)">Treaty Network</span><span style="font-size:13px;font-weight:600">95+ countries</span>
+       </div>
+       <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">IP Regime</span><span style="font-size:13px;font-weight:600;color:#22c55e">Innovation Box</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Compliance Section -->
+   <section id="compliance" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:1200px;margin:0 auto">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <div style="width:32px;height:1px;background:var(--cyan)"></div><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">Compliance</span>
+     </div>
+     <h2 id="compliance-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 16px">Compliance Command Center</h2>
+     <p style="font-size:17px;color:var(--text2);margin:0 0 56px;max-width:640px;line-height:1.7">Stay ahead of global reporting requirements with real-time compliance tracking and automated alerts.</p>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:24px">
+      <!-- CRS -->
+      <div style="background:var(--surface);border-radius:12px;padding:32px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:24px">
+       <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+         <i data-lucide="file-text" style="width:20px;height:20px;color:var(--cyan)"></i>
+         <h3 style="font-size:16px;font-weight:600;margin:0">CRS Reporting</h3>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin:0 0 16px;line-height:1.6">Common Reporting Standard — automatic exchange of financial account information across 100+ jurisdictions.</p><span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(34,197,94,0.15);color:#22c55e">Active</span>
+       </div>
+       <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:4px">
+          100+
+         </div><span style="font-size:11px;color:var(--text2)">jurisdictions</span>
+        </div>
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:#22c55e;margin-bottom:4px">
+          92%
+         </div><span style="font-size:11px;color:var(--text2)">compliance</span>
+        </div>
+       </div>
+      </div><!-- FATCA -->
+      <div style="background:var(--surface);border-radius:12px;padding:32px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:24px">
+       <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+         <i data-lucide="shield" style="width:20px;height:20px;color:var(--cyan)"></i>
+         <h3 style="font-size:16px;font-weight:600;margin:0">FATCA Compliance</h3>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin:0 0 16px;line-height:1.6">Foreign Account Tax Compliance Act — US person reporting obligations for foreign financial institutions.</p><span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(34,197,94,0.15);color:#22c55e">Active</span>
+       </div>
+       <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:4px">
+          98%
+         </div><span style="font-size:11px;color:var(--text2)">score</span>
+        </div>
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:#22c55e;margin-bottom:4px">
+          0
+         </div><span style="font-size:11px;color:var(--text2)">penalties</span>
+        </div>
+       </div>
+      </div><!-- BEPS -->
+      <div style="background:var(--surface);border-radius:12px;padding:32px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:24px">
+       <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+         <i data-lucide="globe" style="width:20px;height:20px;color:var(--cyan)"></i>
+         <h3 style="font-size:16px;font-weight:600;margin:0">BEPS 2.0 / Pillar Two</h3>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin:0 0 16px;line-height:1.6">Global minimum tax of 15% — impact assessment and structural optimization for multinational groups.</p><span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(234,179,8,0.15);color:#eab308">Monitoring</span>
+       </div>
+       <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:4px">
+          78%
+         </div><span style="font-size:11px;color:var(--text2)">ready</span>
+        </div>
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:#eab308;margin-bottom:4px">
+          140+
+         </div><span style="font-size:11px;color:var(--text2)">countries</span>
+        </div>
+       </div>
+      </div><!-- UBO -->
+      <div style="background:var(--surface);border-radius:12px;padding:32px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:24px">
+       <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+         <i data-lucide="users" style="width:20px;height:20px;color:var(--cyan)"></i>
+         <h3 style="font-size:16px;font-weight:600;margin:0">UBO Registers</h3>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin:0 0 16px;line-height:1.6">Ultimate Beneficial Ownership disclosures — maintain transparency across all entities in your structure.</p><span style="font-size:11px;padding:4px 10px;border-radius:20px;background:rgba(34,197,94,0.15);color:#22c55e">Active</span>
+       </div>
+       <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:#22c55e;margin-bottom:4px">
+          100%
+         </div><span style="font-size:11px;color:var(--text2)">filed</span>
+        </div>
+        <div style="text-align:right">
+         <div style="font-size:28px;font-weight:700;color:var(--cyan);margin-bottom:4px">
+          55+
+         </div><span style="font-size:11px;color:var(--text2)">entities</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing Section -->
+   <section id="pricing" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:1200px;margin:0 auto">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <div style="width:32px;height:1px;background:var(--cyan)"></div><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">Pricing</span>
+     </div>
+     <h2 id="pricing-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 16px">Select Your Global Strategy Tier</h2>
+     <p style="font-size:17px;color:var(--text2);margin:0 0 56px;max-width:640px;line-height:1.7">Scalable advisory packages designed for every stage of your international expansion.</p>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start">
+      <!-- Explorer -->
+      <div class="pricing-card animate-glow-pulse" style="background:var(--surface);border-radius:16px;padding:36px;animation-delay:0s">
+       <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center">
+         <i data-lucide="compass" style="width:20px;height:20px;color:var(--cyan)"></i>
+        </div>
+        <h3 style="font-size:20px;font-weight:700;margin:0">Explorer</h3>
+       </div>
+       <div style="margin-bottom:24px">
+        <span style="font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--cyan)">$2,500</span> <span style="font-size:14px;color:var(--text2)">/engagement</span>
+       </div>
+       <p style="font-size:14px;color:var(--text2);margin:0 0 28px;line-height:1.7">Basic international guidance for entrepreneurs beginning their global journey.</p>
+       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:12px">
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Single jurisdiction analysis</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Tax residency assessment</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Basic treaty overview</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Digital strategy framework</li>
+       </ul><a href="#bottom-cta" style="display:block;text-align:center;padding:14px;border:1px solid var(--cyan);color:var(--cyan);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.3s" onmouseover="this.style.background='rgba(6,182,212,0.1)'" onmouseout="this.style.background='transparent'">Get Started</a>
+      </div><!-- Strategist (Featured) -->
+      <div class="pricing-card featured animate-glow-pulse" style="background:var(--surface);border-radius:16px;padding:36px;animation-delay:0.5s">
+       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:10px">
+         <div style="width:40px;height:40px;border-radius:10px;background:rgba(6,182,212,0.15);display:flex;align-items:center;justify-content:center">
+          <i data-lucide="target" style="width:20px;height:20px;color:var(--cyan)"></i>
+         </div>
+         <h3 style="font-size:20px;font-weight:700;margin:0">Strategist</h3>
+        </div><span style="font-size:11px;padding:4px 12px;border-radius:20px;background:var(--cyan);color:#050505;font-weight:700">Popular</span>
+       </div>
+       <div style="margin-bottom:24px">
+        <span style="font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--cyan)">$7,500</span> <span style="font-size:14px;color:var(--text2)">/engagement</span>
+       </div>
+       <p style="font-size:14px;color:var(--text2);margin:0 0 28px;line-height:1.7">Multi-country structuring for established global operators.</p>
+       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:12px">
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Multi-jurisdiction analysis (3+)</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Holding structure design</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Treaty optimization plan</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Transfer pricing framework</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Compliance roadmap</li>
+       </ul><a href="#bottom-cta" style="display:block;text-align:center;padding:14px;background:var(--cyan);color:#050505;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;transition:all 0.3s" onmouseover="this.style.background='#22d3ee'" onmouseout="this.style.background='var(--cyan)'">Get Started</a>
+      </div><!-- Global Elite -->
+      <div class="pricing-card animate-glow-pulse" style="background:var(--surface);border-radius:16px;padding:36px;animation-delay:1s">
+       <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center">
+         <i data-lucide="crown" style="width:20px;height:20px;color:var(--cyan)"></i>
+        </div>
+        <h3 style="font-size:20px;font-weight:700;margin:0">Global Elite</h3>
+       </div>
+       <div style="margin-bottom:24px">
+        <span style="font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--cyan)">$25,000</span> <span style="font-size:14px;color:var(--text2)">/year</span>
+       </div>
+       <p style="font-size:14px;color:var(--text2);margin:0 0 28px;line-height:1.7">Full advisory + ongoing compliance for complex global structures.</p>
+       <ul style="list-style:none;padding:0;margin:0 0 32px;display:flex;flex-direction:column;gap:12px">
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Unlimited jurisdiction coverage</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Full structure implementation</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Ongoing compliance management</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Quarterly strategy reviews</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Dedicated advisory team</li>
+        <li style="display:flex;align-items:center;gap:10px;font-size:14px"><i data-lucide="check" style="width:16px;height:16px;color:var(--cyan);flex-shrink:0"></i>Priority regulatory alerts</li>
+       </ul><a href="#bottom-cta" style="display:block;text-align:center;padding:14px;border:1px solid var(--cyan);color:var(--cyan);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.3s" onmouseover="this.style.background='rgba(6,182,212,0.1)'" onmouseout="this.style.background='transparent'">Contact Us</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:800px;margin:0 auto">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <div style="width:32px;height:1px;background:var(--cyan)"></div><span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase">FAQ</span>
+     </div>
+     <h2 style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 48px">Frequently Asked Questions</h2>
+     <div id="faq-container" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+   </section><!-- Vote + Comment Module -->
+   <section id="bottom-cta" class="section-hidden" style="padding:100px 24px">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+     <h2 id="bottom-cta-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin:0 0 16px">Design your <span style="color:var(--cyan)">global advantage</span>.</h2>
+     <p style="font-size:17px;color:var(--text2);margin:0 0 40px;line-height:1.7">Operate globally. Structure intelligently. Start your international tax strategy today.</p><a href="#pricing" style="display:inline-flex;align-items:center;gap:8px;padding:16px 40px;background:var(--cyan);color:#050505;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;transition:all 0.3s" onmouseover="this.style.background='#22d3ee';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--cyan)';this.style.transform='translateY(0)'"> Start Global Plan <i data-lucide="arrow-right" style="width:20px;height:20px"></i> </a> <!-- Embed Widget: Vote + Comment Module -->
+     <div style="margin-top:80px;background:var(--surface);border-radius:16px;border:1px solid var(--border);padding:36px;text-align:left">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px">
+       <i data-lucide="message-circle" style="width:20px;height:20px;color:var(--cyan)"></i>
+       <h3 style="font-size:18px;font-weight:600;margin:0">Community Feedback</h3>
+      </div><!-- Reactions -->
+      <div style="margin-bottom:28px">
+       <p style="font-size:13px;color:var(--text2);margin:0 0 12px">React to this service:</p>
+       <div id="reactions-container" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div><!-- Price Vote -->
+      <div style="margin-bottom:28px">
+       <p style="font-size:13px;color:var(--text2);margin:0 0 12px">What would you pay for the Explorer tier?</p>
+       <div id="price-votes" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div><!-- Comments -->
+      <div>
+       <p style="font-size:13px;color:var(--text2);margin:0 0 12px">Leave a comment:</p>
+       <form id="comment-form" style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="text" id="comment-input" placeholder="Share your thoughts..." style="flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border 0.3s" onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'"> <label for="comment-input" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Comment</label> <button type="submit" id="comment-submit" style="padding:10px 20px;background:var(--cyan);color:#050505;border:none;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:all 0.3s;font-family:inherit" onmouseover="this.style.background='#22d3ee'" onmouseout="this.style.background='var(--cyan)'">Post</button>
+       </form>
+       <div id="comments-list" style="display:flex;flex-direction:column;gap:12px"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding:40px 24px;border-top:1px solid var(--border);text-align:center">
+    <p style="font-size:13px;color:var(--text2);margin:0">© 2025 GlobalTax Navigator. Operate globally. Structure intelligently.</p>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <div id="toast" class="toast"></div>
+  <script>
+// ============ CONFIG & SDK SETUP ============
+const defaultConfig = {
+  background_color: '#050505',
+  surface_color: '#0a0f14',
+  text_color: '#e2e8f0',
+  accent_color: '#06b6d4',
+  secondary_action_color: '#1e293b',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Where you operate determines what you keep.',
+  hero_subtitle: 'International tax strategy for global income.',
+  strategy_title: 'Cross-Border Structuring Frameworks',
+  jurisdictions_title: 'Jurisdiction Intelligence',
+  compliance_title: 'Compliance Command Center',
+  pricing_title: 'Select Your Global Strategy Tier',
+  bottom_cta_text: 'Design your global advantage.'
+};
+
+let allData = [];
+const REACTIONS = ['👍','👎','🔥','💡','🌍','❤️'];
+const PRICE_OPTIONS = ['$500','$1,000','$1,500','$2,000','$2,500','$3,000','$4,000','$5,000','$7,500','$10,000'];
+
+// FAQ data
+const FAQ_DATA = [
+  {q:'What jurisdictions do you cover?', a:'We analyze and structure across 40+ jurisdictions worldwide, including major hubs like Ireland, Singapore, UAE, Netherlands, Hong Kong, Luxembourg, and more.'},
+  {q:'How long does a typical engagement take?', a:'Explorer engagements typically complete in 2-3 weeks. Strategist packages run 4-8 weeks. Global Elite is an ongoing annual relationship.'},
+  {q:'Is this tax evasion?', a:'Absolutely not. All our strategies are fully compliant with local and international tax laws, including BEPS guidelines and substance requirements.'},
+  {q:'Do I need to relocate?', a:'Not necessarily. Many structures can be implemented without personal relocation, though some jurisdictions offer benefits for tax residents.'},
+  {q:'What if regulations change?', a:'Our Global Elite tier includes ongoing monitoring and quarterly reviews to adapt your structure to regulatory changes in real-time.'}
+];
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ ELEMENT SDK ============
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+  const border = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--text', text);
+  document.documentElement.style.setProperty('--cyan', accent);
+  document.documentElement.style.setProperty('--border', border);
+  document.body.style.background = bg;
+  document.body.style.color = text;
+  document.body.style.fontFamily = `${font}, Outfit, sans-serif`;
+  document.body.style.fontSize = `${size}px`;
+
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    const t = config.hero_title || defaultConfig.hero_title;
+    const words = t.split(' ');
+    const last2 = words.slice(-2).join(' ');
+    const rest = words.slice(0, -2).join(' ');
+    heroTitle.innerHTML = rest + ' <span style="color:' + accent + ';position:relative">' + last2 + '</span>.';
+    heroTitle.style.fontSize = `${size * 3.5}px`;
+    heroTitle.style.fontFamily = `${font}, Outfit, sans-serif`;
+  }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) { heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle; heroSub.style.fontSize = `${size * 1.2}px`; }
+
+  const ids = [
+    ['strategy-heading', 'strategy_title'],
+    ['jurisdictions-heading', 'jurisdictions_title'],
+    ['compliance-heading', 'compliance_title'],
+    ['pricing-heading', 'pricing_title']
+  ];
+  ids.forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = config[key] || defaultConfig[key]; el.style.fontFamily = `${font}, Outfit, sans-serif`; }
+  });
+
+  const bottomCta = document.getElementById('bottom-cta-heading');
+  if (bottomCta) {
+    const ct = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+    const w = ct.split(' ');
+    const lastW = w.slice(-2).join(' ');
+    const restW = w.slice(0, -2).join(' ');
+    bottomCta.innerHTML = restW + ' <span style="color:' + accent + '">' + lastW + '</span>.';
+  }
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['strategy_title', config.strategy_title || defaultConfig.strategy_title],
+      ['jurisdictions_title', config.jurisdictions_title || defaultConfig.jurisdictions_title],
+      ['compliance_title', config.compliance_title || defaultConfig.compliance_title],
+      ['pricing_title', config.pricing_title || defaultConfig.pricing_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+// ============ DATA SDK ============
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPriceVotes();
+    renderComments();
+  }
+};
+
+async function initData() {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+}
+initData();
+
+// ============ REACTIONS ============
+function renderReactions() {
+  const container = document.getElementById('reactions-container');
+  const reactionData = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  REACTIONS.forEach(e => counts[e] = 0);
+  reactionData.forEach(d => { if (counts[d.emoji] !== undefined) counts[d.emoji]++; });
+
+  REACTIONS.forEach(emoji => {
+    let btn = container.querySelector(`[data-emoji="${emoji}"]`);
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'reaction-btn';
+      btn.dataset.emoji = emoji;
+      btn.style.cssText = 'padding:6px 14px;border-radius:20px;background:transparent;font-size:14px;display:flex;align-items:center;gap:6px;color:var(--text)';
+      btn.onclick = () => addReaction(emoji);
+      container.appendChild(btn);
+    }
+    btn.innerHTML = `${emoji} <span style="font-family:'Space Mono',monospace;font-size:12px">${counts[emoji]}</span>`;
+  });
+}
+
+async function addReaction(emoji) {
+  if (allData.length >= 999) { showToast('Maximum data limit reached'); return; }
+  const r = await window.dataSdk.create({ type: 'reaction', section: 'bottom_cta', emoji, price_vote: '', comment_text: '', timestamp: new Date().toISOString() });
+  if (!r.isOk) showToast('Failed to save reaction');
+}
+
+// ============ PRICE VOTES ============
+function renderPriceVotes() {
+  const container = document.getElementById('price-votes');
+  const voteData = allData.filter(d => d.type === 'price_vote');
+  const counts = {};
+  PRICE_OPTIONS.forEach(p => counts[p] = 0);
+  voteData.forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+
+  PRICE_OPTIONS.forEach(price => {
+    let btn = container.querySelector(`[data-price="${price}"]`);
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'reaction-btn';
+      btn.dataset.price = price;
+      btn.style.cssText = 'padding:6px 14px;border-radius:20px;background:transparent;font-size:13px;display:flex;align-items:center;gap:6px;color:var(--text);font-family:Space Mono,monospace';
+      btn.onclick = () => addPriceVote(price);
+      container.appendChild(btn);
+    }
+    btn.innerHTML = `${price} <span style="font-size:11px;color:var(--text2)">(${counts[price]})</span>`;
+  });
+}
+
+async function addPriceVote(price) {
+  if (allData.length >= 999) { showToast('Maximum data limit reached'); return; }
+  const r = await window.dataSdk.create({ type: 'price_vote', section: 'bottom_cta', emoji: '', price_vote: price, comment_text: '', timestamp: new Date().toISOString() });
+  if (!r.isOk) showToast('Failed to save vote');
+}
+
+// ============ COMMENTS ============
+function renderComments() {
+  const container = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existing = new Map([...container.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(c => {
+    const id = c.__backendId;
+    if (existing.has(id)) {
+      existing.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.style.cssText = 'padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px';
+      div.innerHTML = `<p style="font-size:14px;margin:0 0 4px;line-height:1.6">${escapeHtml(c.comment_text)}</p><span style="font-size:11px;color:var(--text2)">${new Date(c.timestamp).toLocaleString()}</span>`;
+      container.appendChild(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Maximum data limit reached'); return; }
+
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.textContent = '...';
+  const r = await window.dataSdk.create({ type: 'comment', section: 'bottom_cta', emoji: '', price_vote: '', comment_text: text, timestamp: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (r.isOk) { input.value = ''; } else { showToast('Failed to post comment'); }
+});
+
+// ============ FAQ ============
+function buildFAQ() {
+  const container = document.getElementById('faq-container');
+  FAQ_DATA.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden';
+    div.innerHTML = `
+      <button onclick="toggleFaq(this)" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:none;border:none;color:var(--text);font-size:15px;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;gap:12px">
+        <span>${item.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;flex-shrink:0;transition:transform 0.3s;color:var(--cyan)"></i>
+      </button>
+      <div style="max-height:0;overflow:hidden;transition:max-height 0.4s ease">
+        <p style="padding:0 24px 20px;font-size:14px;color:var(--text2);line-height:1.7;margin:0">${item.a}</p>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleFaq(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+  content.style.maxHeight = isOpen ? '0px' : content.scrollHeight + 'px';
+  if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
+// ============ SCROLL ANIMATIONS ============
+function setupScrollObserver() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('section-visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section-hidden').forEach(s => observer.observe(s));
+}
+
+// ============ ACTIVE NAV ============
+function setupActiveNav() {
+  const sections = ['home','strategy','jurisdictions','compliance','pricing','faq','bottom-cta'];
+  const wrapper = document.getElementById('app-wrapper');
+  wrapper.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 200) current = id;
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  });
+}
+
+// ============ INIT ============
+buildFAQ();
+applyConfig(defaultConfig);
+lucide.createIcons();
+setupScrollObserver();
+setupActiveNav();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3244847a27c5',t:'MTc3NTU3NzExNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

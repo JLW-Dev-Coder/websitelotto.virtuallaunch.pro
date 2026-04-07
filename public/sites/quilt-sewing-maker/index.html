@@ -1,1 +1,642 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/17e0fd21-017f-43e3-ba1d-c06050a59d6f -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuzzStitch Patterns</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { font-family: 'Nunito', sans-serif; }
+    .font-display { font-family: 'Baloo 2', cursive; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+    @keyframes floatAlt {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(-4deg); }
+    }
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    @keyframes bee-fly {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(8px, -6px) rotate(5deg); }
+      50% { transform: translate(0, -10px) rotate(0deg); }
+      75% { transform: translate(-8px, -4px) rotate(-5deg); }
+    }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-float-alt { animation: floatAlt 3.5s ease-in-out infinite; }
+    .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+    .animate-wiggle { animation: wiggle 2s ease-in-out infinite; }
+    .animate-bee { animation: bee-fly 4s ease-in-out infinite; }
+    .animate-fadeUp { animation: fadeUp 0.6s ease-out forwards; }
+    .animate-fadeUp-d1 { animation: fadeUp 0.6s ease-out 0.1s forwards; opacity: 0; }
+    .animate-fadeUp-d2 { animation: fadeUp 0.6s ease-out 0.2s forwards; opacity: 0; }
+    .animate-fadeUp-d3 { animation: fadeUp 0.6s ease-out 0.3s forwards; opacity: 0; }
+    .animate-fadeUp-d4 { animation: fadeUp 0.6s ease-out 0.4s forwards; opacity: 0; }
+
+    .stitch-line {
+      stroke-dasharray: 8 6;
+      stroke-dashoffset: 100;
+      animation: dash 3s linear forwards;
+    }
+
+    .card-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .vote-btn { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .vote-btn:hover { transform: scale(1.08); }
+    .vote-btn:active { transform: scale(0.95); }
+    .vote-btn.voted { animation: wiggle 0.3s ease-in-out; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    .pattern-page {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .review-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .review-card:hover { transform: translateY(-4px); }
+
+    .skill-chip { transition: all 0.3s ease; }
+    .skill-chip:hover { transform: scale(1.05); }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #FFD166; border-radius: 4px; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: '#FFD166',
+            beeBlack: '#2D2A32',
+            cream: '#FFF8E7',
+            coral: '#FF6B6B',
+            mint: '#88D9A8'
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: #FFF8E7;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="sticky top-0 z-50 backdrop-blur-md border-b" style="background: rgba(255,248,231,0.92); border-color: #FFD166;">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+     <div class="flex items-center gap-2"><span class="text-2xl">🐝</span> <span id="nav-brand" class="font-display text-xl font-bold" style="color: #2D2A32;">BuzzStitch</span>
+     </div>
+     <div class="hidden md:flex items-center gap-6 text-sm font-semibold" style="color: #2D2A32;"><a href="#home" class="nav-link" style="--ul-color: #FFD166;">Home</a> <a href="#pattern" class="nav-link">Pattern</a> <a href="#preview" class="nav-link">Preview</a> <a href="#skill" class="nav-link">Skill Level</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link px-4 py-2 rounded-full text-white" style="background: #FF6B6B;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg" style="color: #2D2A32;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-semibold" style="color: #2D2A32;"><a href="#home" class="py-2">Home</a> <a href="#pattern" class="py-2">Pattern</a> <a href="#preview" class="py-2">Preview</a> <a href="#skill" class="py-2">Skill Level</a> <a href="#reviews" class="py-2">Reviews</a> <a href="#download" class="py-2 text-center rounded-full text-white" style="background: #FF6B6B;">Download</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative overflow-hidden py-20 md:py-28 px-4"><!-- Doodles -->
+    <div class="absolute top-10 left-8 animate-float opacity-60" style="font-size:40px;">
+     🧶
+    </div>
+    <div class="absolute top-20 right-12 animate-float-alt opacity-50" style="font-size:32px;">
+     ✨
+    </div>
+    <div class="absolute bottom-16 left-16 animate-bounce-slow opacity-40" style="font-size:36px;">
+     🪡
+    </div>
+    <div class="absolute top-32 right-1/4 animate-bee" style="font-size:28px;">
+     🐝
+    </div><!-- Stitch SVG -->
+    <svg class="absolute top-1/3 left-0 w-full opacity-20 pointer-events-none" height="40"><line x1="0" y1="20" x2="100%" y2="20" stroke="#FFD166" stroke-width="3" class="stitch-line" />
+    </svg>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="animate-fadeUp"><span class="inline-block px-4 py-1.5 rounded-full text-sm font-bold mb-6" style="background: #FFD166; color: #2D2A32;">🐝 New Pattern Drop</span>
+     </div>
+     <h1 id="hero-title" class="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight animate-fadeUp-d1" style="color: #2D2A32;">Make a plush that people <span style="color: #FF6B6B;">beg</span> you to sell.</h1>
+     <p id="hero-subtitle" class="mt-6 text-lg md:text-xl max-w-2xl mx-auto animate-fadeUp-d2" style="color: #2D2A32; opacity: 0.75;">Our chunky bee plush pattern is beginner-friendly, Etsy-seller ready, and finishable in one weekend. No stress, just stitches.</p>
+     <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fadeUp-d3"><a href="#download" id="hero-cta-btn" class="px-8 py-4 rounded-full text-lg font-bold text-white shadow-lg hover:shadow-xl transition-all hover:scale-105" style="background: #FF6B6B;"> Download Pattern 🪡 </a> <a href="#preview" class="px-6 py-4 rounded-full text-lg font-bold border-2 hover:scale-105 transition-all" style="color: #2D2A32; border-color: #2D2A32;"> Peek Inside 👀 </a>
+     </div><!-- Vote Module -->
+     <div class="mt-14 animate-fadeUp-d4">
+      <div class="inline-flex flex-col items-center gap-3 px-8 py-6 rounded-3xl shadow-lg" style="background: white; border: 2px solid #FFD166;">
+       <p class="font-bold text-sm" style="color: #2D2A32;">Vote: Would you make this? 🐝</p>
+       <div class="flex gap-3"><button id="vote-yes" class="vote-btn flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm" style="background: #88D9A8; color: #2D2A32;"> 🧶 Yes! <span id="vote-yes-count" class="font-extrabold">0</span> </button> <button id="vote-maybe" class="vote-btn flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm" style="background: #FFD166; color: #2D2A32;"> 🤔 Maybe <span id="vote-maybe-count" class="font-extrabold">0</span> </button>
+       </div>
+       <p id="vote-status" class="text-xs font-semibold" style="color: #FF6B6B; display: none;"></p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pattern Section -->
+   <section id="pattern" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14"><span class="text-3xl animate-wiggle inline-block">🐝</span>
+      <h2 id="pattern-title" class="font-display text-3xl md:text-5xl font-extrabold mt-3" style="color: #2D2A32;">What You'll Get</h2>
+      <p class="mt-3 text-lg" style="color: #2D2A32; opacity: 0.65;">Everything you need to create your chunky bee plush</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Card 1: Pattern PDF -->
+      <div class="card-reveal rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow" style="background: white; border: 2px solid #FFD166;">
+       <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: #FFF8E7;">
+        📄
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color: #2D2A32;">Pattern PDF</h3>
+       <p class="text-sm leading-relaxed" style="color: #2D2A32; opacity: 0.7;">Full 18-page illustrated pattern with row-by-row instructions. Includes 3 sizes: mini (4"), standard (8"), and jumbo (12").</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #FFF8E7; color: #2D2A32;">US Terms</span> <span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #FFF8E7; color: #2D2A32;">UK Terms</span> <span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #FFF8E7; color: #2D2A32;">Charts</span>
+       </div>
+      </div><!-- Card 2: Stitch Guide -->
+      <div class="card-reveal rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow" style="background: white; border: 2px solid #88D9A8;">
+       <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: #E8F8EE;">
+        🪡
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color: #2D2A32;">Stitch Guide</h3>
+       <p class="text-sm leading-relaxed" style="color: #2D2A32; opacity: 0.7;">Photo tutorials for every stitch used. Magic ring, single crochet, invisible decrease — all covered with close-up shots.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #E8F8EE; color: #2D2A32;">Step Photos</span> <span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #E8F8EE; color: #2D2A32;">Video Links</span>
+       </div>
+      </div><!-- Card 3: Seller Kit -->
+      <div class="card-reveal rounded-3xl p-8 shadow-md hover:shadow-xl transition-shadow" style="background: white; border: 2px solid #FF6B6B;">
+       <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: #FFE8E8;">
+        📸
+       </div>
+       <h3 class="font-display text-xl font-bold mb-2" style="color: #2D2A32;">Seller Photo Kit</h3>
+       <p class="text-sm leading-relaxed" style="color: #2D2A32; opacity: 0.7;">5 Canva templates for Etsy listings, Instagram posts, and product tags. Customize with your own photos and brand colors.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #FFE8E8; color: #2D2A32;">Etsy Ready</span> <span class="px-3 py-1 rounded-full text-xs font-bold" style="background: #FFE8E8; color: #2D2A32;">Canva Files</span>
+       </div>
+      </div>
+     </div><!-- Yarn Recs -->
+     <div class="card-reveal mt-10 rounded-3xl p-8 shadow-md" style="background: white; border: 2px solid #FFD166;">
+      <h3 class="font-display text-xl font-bold mb-4 flex items-center gap-2" style="color: #2D2A32;">🧶 Recommended Yarn</h3>
+      <div class="grid sm:grid-cols-3 gap-4">
+       <div class="rounded-2xl p-4" style="background: #FFF8E7;">
+        <p class="font-bold text-sm" style="color: #2D2A32;">Bernat Blanket</p>
+        <p class="text-xs mt-1" style="color: #2D2A32; opacity: 0.6;">Super bulky #6 · Gold, Black, White</p>
+       </div>
+       <div class="rounded-2xl p-4" style="background: #FFF8E7;">
+        <p class="font-bold text-sm" style="color: #2D2A32;">Loops &amp; Threads Chunky</p>
+        <p class="text-xs mt-1" style="color: #2D2A32; opacity: 0.6;">Bulky #5 · Budget-friendly pick</p>
+       </div>
+       <div class="rounded-2xl p-4" style="background: #FFF8E7;">
+        <p class="font-bold text-sm" style="color: #2D2A32;">Big Twist Value</p>
+        <p class="text-xs mt-1" style="color: #2D2A32; opacity: 0.6;">Worsted #4 · For mini size only</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Preview Section -->
+   <section id="preview" class="py-20 px-4" style="background: linear-gradient(180deg, #FFF8E7 0%, #FFF1CC 100%);">
+    <div class="max-w-5xl mx-auto text-center"><span class="text-3xl animate-bounce-slow inline-block">👀</span>
+     <h2 class="font-display text-3xl md:text-5xl font-extrabold mt-3" style="color: #2D2A32;">Peek Inside the Pattern</h2>
+     <p class="mt-3 text-lg mb-12" style="color: #2D2A32; opacity: 0.65;">Flip through actual pages from the pattern</p>
+     <div class="relative flex justify-center items-center" style="min-height: 340px;"><!-- Stacked pattern pages -->
+      <div id="page-stack" class="relative" style="width: 280px; height: 340px;">
+       <div class="pattern-page absolute rounded-2xl shadow-lg p-6 flex flex-col items-start text-left cursor-pointer" style="width:280px; height:340px; background: white; border: 2px solid #FFD166; top: 0; left: 0; z-index: 3; transform: rotate(-2deg);" data-page="0"><span class="text-xs font-bold px-3 py-1 rounded-full mb-3" style="background: #FFD166; color: #2D2A32;">Page 1</span>
+        <p class="font-display text-lg font-bold" style="color: #2D2A32;">Chunky Bee Plush</p>
+        <p class="text-xs mt-2" style="color: #2D2A32; opacity: 0.6;">Pattern by BuzzStitch</p>
+        <div class="mt-4 flex gap-2"><span class="w-8 h-8 rounded-full" style="background: #FFD166;"></span> <span class="w-8 h-8 rounded-full" style="background: #2D2A32;"></span> <span class="w-8 h-8 rounded-full" style="background: white; border: 2px solid #ddd;"></span>
+        </div>
+        <div class="mt-auto w-full">
+         <div class="flex flex-col gap-2">
+          <div class="h-2 rounded-full" style="background: #F0F0F0; width: 100%;"></div>
+          <div class="h-2 rounded-full" style="background: #F0F0F0; width: 80%;"></div>
+          <div class="h-2 rounded-full" style="background: #F0F0F0; width: 60%;"></div>
+         </div>
+         <p class="text-center text-4xl mt-4">🐝</p>
+        </div>
+       </div>
+       <div class="pattern-page absolute rounded-2xl shadow-md p-6 flex flex-col items-start text-left cursor-pointer" style="width:280px; height:340px; background: #FFFDF5; border: 2px solid #88D9A8; top: 8px; left: 12px; z-index: 2; transform: rotate(1deg);" data-page="1"><span class="text-xs font-bold px-3 py-1 rounded-full mb-3" style="background: #88D9A8; color: #2D2A32;">Page 4</span>
+        <p class="font-display text-lg font-bold" style="color: #2D2A32;">Body — Rounds 1-12</p>
+        <div class="mt-3 flex flex-col gap-1.5 text-xs" style="color: #2D2A32; opacity: 0.7;">
+         <p>R1: Magic ring, 6sc (6)</p>
+         <p>R2: inc x6 (12)</p>
+         <p>R3: [sc, inc] x6 (18)</p>
+         <p>R4: [2sc, inc] x6 (24)</p>
+         <p>R5-8: sc around (24)</p>
+        </div>
+        <div class="mt-auto w-full text-center text-3xl">
+         🧵
+        </div>
+       </div>
+       <div class="pattern-page absolute rounded-2xl shadow-sm p-6 flex flex-col items-start text-left cursor-pointer" style="width:280px; height:340px; background: #F9F9F5; border: 2px solid #FF6B6B; top: 16px; left: 24px; z-index: 1; transform: rotate(3deg);" data-page="2"><span class="text-xs font-bold px-3 py-1 rounded-full mb-3" style="background: #FF6B6B; color: white;">Page 9</span>
+        <p class="font-display text-lg font-bold" style="color: #2D2A32;">Wings &amp; Assembly</p>
+        <div class="mt-3 flex flex-col gap-1.5 text-xs" style="color: #2D2A32; opacity: 0.7;">
+         <p>Wings (make 2):</p>
+         <p>Ch 6, sc in 2nd ch...</p>
+         <p>Sew to body at R8</p>
+        </div>
+        <div class="mt-auto w-full text-center text-3xl">
+         🪽
+        </div>
+       </div>
+      </div>
+     </div>
+     <p class="mt-8 text-sm font-semibold animate-bounce-slow" style="color: #FF6B6B;">Click pages to shuffle ↑</p>
+    </div>
+   </section><!-- Skill Level -->
+   <section id="skill" class="py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center"><span class="text-3xl animate-wiggle inline-block">🌟</span>
+     <h2 class="font-display text-3xl md:text-5xl font-extrabold mt-3" style="color: #2D2A32;">Beginner Friendly</h2>
+     <p class="mt-3 text-lg mb-12" style="color: #2D2A32; opacity: 0.65;">If you can single crochet, you can make this bee</p>
+     <div class="grid sm:grid-cols-2 gap-6 mb-10">
+      <div class="card-reveal rounded-3xl p-8 text-left" style="background: white; border: 2px solid #88D9A8;">
+       <h3 class="font-display text-xl font-bold mb-4" style="color: #2D2A32;">Stitches You'll Use</h3>
+       <div class="flex flex-col gap-3">
+        <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style="background: #E8F8EE;">✅</span>
+         <div>
+          <p class="font-bold text-sm" style="color: #2D2A32;">Single Crochet (sc)</p>
+          <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">The only stitch you really need</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style="background: #E8F8EE;">✅</span>
+         <div>
+          <p class="font-bold text-sm" style="color: #2D2A32;">Increase &amp; Decrease</p>
+          <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">Shape the body naturally</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style="background: #E8F8EE;">✅</span>
+         <div>
+          <p class="font-bold text-sm" style="color: #2D2A32;">Magic Ring</p>
+          <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">Photo tutorial included</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="card-reveal rounded-3xl p-8 text-left" style="background: white; border: 2px solid #FFD166;">
+       <h3 class="font-display text-xl font-bold mb-4" style="color: #2D2A32;">Time Estimates</h3>
+       <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between"><span class="font-bold text-sm" style="color: #2D2A32;">Mini (4")</span> <span class="skill-chip px-4 py-1.5 rounded-full text-xs font-bold" style="background: #E8F8EE; color: #2D2A32;">⏱ 2-3 hrs</span>
+        </div>
+        <div class="flex items-center justify-between"><span class="font-bold text-sm" style="color: #2D2A32;">Standard (8")</span> <span class="skill-chip px-4 py-1.5 rounded-full text-xs font-bold" style="background: #FFF8E7; color: #2D2A32;">⏱ 5-7 hrs</span>
+        </div>
+        <div class="flex items-center justify-between"><span class="font-bold text-sm" style="color: #2D2A32;">Jumbo (12")</span> <span class="skill-chip px-4 py-1.5 rounded-full text-xs font-bold" style="background: #FFE8E8; color: #2D2A32;">⏱ 10-12 hrs</span>
+        </div>
+        <div class="mt-2 rounded-2xl p-4" style="background: #FFF8E7;">
+         <p class="text-xs font-bold" style="color: #FF6B6B;">🔥 Weekend Project</p>
+         <p class="text-xs mt-1" style="color: #2D2A32; opacity: 0.6;">Most makers finish the standard size in a Saturday afternoon + Sunday morning</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="py-20 px-4" style="background: linear-gradient(180deg, #FFF8E7 0%, #FFE8E8 100%);">
+    <div class="max-w-5xl mx-auto text-center"><span class="text-3xl animate-float inline-block">💬</span>
+     <h2 class="font-display text-3xl md:text-5xl font-extrabold mt-3" style="color: #2D2A32;">Maker Love</h2>
+     <p class="mt-3 text-lg mb-12" style="color: #2D2A32; opacity: 0.65;">From our buzzing community</p>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="review-card card-reveal rounded-3xl p-6 text-left shadow-md" style="background: white;">
+       <div class="flex items-center gap-1 mb-3" style="color: #FFD166;">
+        ★★★★★
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #2D2A32; opacity: 0.8;">"I've never crocheted amigurumi before and my bee turned out ADORABLE. The photo guide saved my life with the magic ring."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background: #FFD166; color: #2D2A32;">
+         S
+        </div>
+        <div>
+         <p class="text-sm font-bold" style="color: #2D2A32;">Sarah M.</p>
+         <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">First amigurumi ever!</p>
+        </div>
+       </div>
+      </div>
+      <div class="review-card card-reveal rounded-3xl p-6 text-left shadow-md" style="background: white;">
+       <div class="flex items-center gap-1 mb-3" style="color: #FFD166;">
+        ★★★★★
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #2D2A32; opacity: 0.8;">"Made 6 bees for a craft fair and sold out in 2 hours. The seller photo templates are *chef's kiss*. Already have repeat customers!"</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background: #88D9A8; color: #2D2A32;">
+         J
+        </div>
+        <div>
+         <p class="text-sm font-bold" style="color: #2D2A32;">Jenna K.</p>
+         <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">Etsy seller · 47 sales</p>
+        </div>
+       </div>
+      </div>
+      <div class="review-card card-reveal rounded-3xl p-6 text-left shadow-md" style="background: white;">
+       <div class="flex items-center gap-1 mb-3" style="color: #FFD166;">
+        ★★★★★
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #2D2A32; opacity: 0.8;">"My 10-year-old daughter and I made matching bees together. The mini size is perfect for keychain charms. So. Cute."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background: #FF6B6B; color: white;">
+         R
+        </div>
+        <div>
+         <p class="text-sm font-bold" style="color: #2D2A32;">Rachel T.</p>
+         <p class="text-xs" style="color: #2D2A32; opacity: 0.5;">Made it with her daughter 💛</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA / Download -->
+   <section id="download" class="py-24 px-4 text-center relative overflow-hidden">
+    <div class="absolute top-6 right-10 animate-float text-4xl opacity-40">
+     🐝
+    </div>
+    <div class="absolute bottom-10 left-8 animate-float-alt text-3xl opacity-30">
+     🧶
+    </div>
+    <div class="absolute top-1/2 right-1/4 animate-bee text-2xl opacity-30">
+     🐝
+    </div>
+    <div class="max-w-3xl mx-auto relative z-10">
+     <h2 id="bottom-cta-title" class="font-display text-3xl md:text-5xl font-extrabold" style="color: #2D2A32;">Finish it this weekend.</h2>
+     <p class="mt-4 text-lg" style="color: #2D2A32; opacity: 0.65;">Pattern PDF + Stitch Guide + Seller Photo Kit</p>
+     <div class="mt-8 inline-flex flex-col items-center gap-2"><a href="#" id="bottom-cta-btn" onclick="event.preventDefault(); showDownloadToast();" class="px-10 py-5 rounded-full text-xl font-bold text-white shadow-xl hover:shadow-2xl transition-all hover:scale-105" style="background: #FF6B6B;"> Download Pattern — $8.99 </a>
+      <p class="text-xs font-semibold" style="color: #2D2A32; opacity: 0.5;">Instant PDF download · Lifetime updates</p>
+     </div><!-- Pricing badges -->
+     <div class="mt-10 flex flex-wrap justify-center gap-3"><span class="px-4 py-2 rounded-full text-sm font-bold" style="background: #E8F8EE; color: #2D2A32;">🌱 Beginner-Friendly</span> <span class="px-4 py-2 rounded-full text-sm font-bold" style="background: #FFF8E7; color: #2D2A32;">⚡ Weekend Project</span> <span class="px-4 py-2 rounded-full text-sm font-bold" style="background: #FFE8E8; color: #2D2A32;">🏪 Etsy-Seller Ready</span>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 text-center" style="border-top: 2px solid #FFD166;">
+    <p class="text-sm font-semibold" style="color: #2D2A32; opacity: 0.5;">🐝 BuzzStitch Patterns · Made with love &amp; yarn</p>
+   </footer><!-- Download Toast -->
+   <div id="download-toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-2xl shadow-2xl text-sm font-bold z-50 transition-all duration-500 opacity-0 translate-y-4 pointer-events-none" style="background: #2D2A32; color: white;">
+    🐝 Demo mode — this is a sample page!
+   </div>
+  </div>
+  <script>
+  // Config + Element SDK
+  const defaultConfig = {
+    background_color: '#FFF8E7',
+    surface_color: '#FFFFFF',
+    text_color: '#2D2A32',
+    primary_action_color: '#FF6B6B',
+    secondary_action_color: '#FFD166',
+    font_family: 'Baloo 2',
+    font_size: 16,
+    hero_title: 'Make a plush that people beg you to sell.',
+    hero_subtitle: 'Our chunky bee plush pattern is beginner-friendly, Etsy-seller ready, and finishable in one weekend. No stress, just stitches.',
+    hero_cta: 'Download Pattern 🪡',
+    pattern_title: "What You'll Get",
+    bottom_cta_title: 'Finish it this weekend.',
+    bottom_cta_button: 'Download Pattern — $8.99'
+  };
+
+  function applyConfig(config) {
+    const c = key => config[key] || defaultConfig[key];
+    const bg = c('background_color');
+    const surface = c('surface_color');
+    const text = c('text_color');
+    const primary = c('primary_action_color');
+    const secondary = c('secondary_action_color');
+    const font = c('font_family');
+    const size = c('font_size');
+
+    // Background
+    document.getElementById('app-wrapper').style.background = bg;
+    document.getElementById('sticky-nav').style.background = bg + 'EA';
+    document.getElementById('sticky-nav').style.borderColor = secondary;
+
+    // Text colors
+    document.querySelectorAll('[style*="color: #2D2A32"]').forEach(el => {
+      // Only update direct color, not bg
+    });
+    document.getElementById('nav-brand').style.color = text;
+
+    // Primary action buttons
+    document.getElementById('hero-cta-btn').style.background = primary;
+    document.getElementById('bottom-cta-btn').style.background = primary;
+    document.querySelectorAll('.nav-link').forEach(el => {
+      if (el.classList.contains('rounded-full')) el.style.background = primary;
+    });
+
+    // Surface colors on cards
+    document.querySelectorAll('.card-reveal, .review-card').forEach(el => {
+      if (el.closest('#pattern') || el.closest('#skill') || el.closest('#reviews')) {
+        el.style.background = surface;
+      }
+    });
+
+    // Secondary accent
+    document.getElementById('sticky-nav').style.borderColor = secondary;
+    document.querySelector('#vote-yes').style.background = '#88D9A8';
+    document.querySelector('#vote-maybe').style.background = secondary;
+
+    // Font
+    const baseFontStack = 'Nunito, sans-serif';
+    const displayStack = `${font}, cursive`;
+    document.querySelectorAll('.font-display').forEach(el => {
+      el.style.fontFamily = displayStack;
+    });
+
+    // Font size
+    const bodyEls = document.querySelectorAll('p:not(.font-display)');
+    bodyEls.forEach(el => {
+      if (!el.closest('nav') && el.textContent.length > 20) {
+        // Scale body text
+      }
+    });
+
+    // Text content
+    const heroTitle = c('hero_title');
+    document.getElementById('hero-title').innerHTML = heroTitle.replace(/(beg)/i, `<span style="color: ${primary};">$1</span>`);
+    document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+    document.getElementById('hero-cta-btn').textContent = c('hero_cta');
+    document.getElementById('pattern-title').textContent = c('pattern_title');
+    document.getElementById('bottom-cta-title').textContent = c('bottom_cta_title');
+    document.getElementById('bottom-cta-btn').textContent = c('bottom_cta_button');
+    // Re-attach download handler
+    document.getElementById('bottom-cta-btn').onclick = (e) => { e.preventDefault(); showDownloadToast(); };
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['hero_cta', config.hero_cta || defaultConfig.hero_cta],
+      ['pattern_title', config.pattern_title || defaultConfig.pattern_title],
+      ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+      ['bottom_cta_button', config.bottom_cta_button || defaultConfig.bottom_cta_button],
+    ])
+  });
+
+  // Data SDK for votes
+  let allVotes = [];
+  let userVoted = false;
+
+  const dataHandler = {
+    onDataChanged(data) {
+      allVotes = data;
+      const yesCount = data.filter(d => d.type === 'yes').length;
+      const maybeCount = data.filter(d => d.type === 'maybe').length;
+      document.getElementById('vote-yes-count').textContent = yesCount;
+      document.getElementById('vote-maybe-count').textContent = maybeCount;
+    }
+  };
+
+  (async () => {
+    const r = await window.dataSdk.init(dataHandler);
+    if (!r.isOk) console.error('Data SDK init failed');
+  })();
+
+  // Vote handlers
+  async function castVote(type) {
+    if (userVoted) {
+      const status = document.getElementById('vote-status');
+      status.textContent = "You've already voted! 🐝";
+      status.style.display = 'block';
+      return;
+    }
+    if (allVotes.length >= 999) {
+      const status = document.getElementById('vote-status');
+      status.textContent = 'Vote limit reached!';
+      status.style.display = 'block';
+      return;
+    }
+    const btn = document.getElementById(type === 'yes' ? 'vote-yes' : 'vote-maybe');
+    btn.style.opacity = '0.6';
+    btn.disabled = true;
+
+    const result = await window.dataSdk.create({ type, timestamp: new Date().toISOString() });
+
+    btn.style.opacity = '1';
+    btn.disabled = false;
+
+    if (result.isOk) {
+      userVoted = true;
+      btn.classList.add('voted');
+      const status = document.getElementById('vote-status');
+      status.textContent = type === 'yes' ? "You're making this bee! 🧶" : "We'll convince you yet! 😉";
+      status.style.display = 'block';
+    } else {
+      const status = document.getElementById('vote-status');
+      status.textContent = 'Oops, try again!';
+      status.style.display = 'block';
+    }
+  }
+
+  document.getElementById('vote-yes').addEventListener('click', () => castVote('yes'));
+  document.getElementById('vote-maybe').addEventListener('click', () => castVote('maybe'));
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  // Pattern page shuffle
+  let pageOrder = [0, 1, 2];
+  document.querySelectorAll('.pattern-page').forEach(page => {
+    page.addEventListener('click', () => {
+      const first = pageOrder.shift();
+      pageOrder.push(first);
+      const rotations = [-2, 1, 3];
+      const offsets = [[0, 0], [12, 8], [24, 16]];
+      const zIndexes = [3, 2, 1];
+      document.querySelectorAll('.pattern-page').forEach(p => {
+        const idx = pageOrder.indexOf(parseInt(p.dataset.page));
+        p.style.zIndex = zIndexes[idx];
+        p.style.transform = `rotate(${rotations[idx]}deg)`;
+        p.style.left = offsets[idx][0] + 'px';
+        p.style.top = offsets[idx][1] + 'px';
+      });
+    });
+  });
+
+  // Scroll reveal for cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.card-reveal').forEach(el => observer.observe(el));
+
+  // Download toast
+  function showDownloadToast() {
+    const toast = document.getElementById('download-toast');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translate(-50%, 0)';
+    toast.classList.remove('pointer-events-none');
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translate(-50%, 1rem)';
+      toast.classList.add('pointer-events-none');
+    }, 3000);
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('mobile-menu').classList.add('hidden');
+      }
+    });
+  });
+
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6140661927c5',t:'MTc3NTU3OTAzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

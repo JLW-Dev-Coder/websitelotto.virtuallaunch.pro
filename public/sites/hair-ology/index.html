@@ -1,1 +1,503 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/ab5bc055-8b04-404d-823e-61d91342c1d6 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaceLux Hair Gallery</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Playfair Display', 'serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Gold shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-shimmer {
+  background: linear-gradient(90deg, #c9a84c, #f5dfa0, #c9a84c, #f5dfa0, #c9a84c);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Cinematic zoom on images */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
+}
+.cinematic-zoom img {
+  animation: slowZoom 12s ease-in-out infinite alternate;
+}
+
+/* Fade-in-up for scroll reveals */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; }
+.reveal.visible {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Stagger children */
+.stagger-children.visible > *:nth-child(1) { animation-delay: 0s; }
+.stagger-children.visible > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children.visible > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children.visible > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children.visible > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children.visible > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children.visible > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Pulse CTA */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+  50% { box-shadow: 0 0 20px 6px rgba(201,168,76,0.25); }
+}
+.pulse-cta { animation: pulse-gold 2.5s ease infinite; }
+
+/* Float animation */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float-card { animation: floatCard 3.5s ease-in-out infinite; }
+
+/* Category chip hover */
+.chip-active {
+  background: #c9a84c !important;
+  color: #0a0a0a !important;
+}
+
+/* Navbar glass */
+.nav-glass {
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Star rating */
+.star-filled { color: #c9a84c; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 3px; }
+
+/* Hero parallax-like gradient overlay */
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.85) 70%, #0a0a0a 100%);
+}
+
+/* Card hover lift */
+.look-card {
+  transition: transform 0.4s cubic-bezier(.25,.8,.25,1), box-shadow 0.4s ease;
+}
+.look-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(201,168,76,0.15);
+}
+
+/* Toast */
+@keyframes slideInRight {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(120%); opacity: 0; }
+}
+.toast-in { animation: slideInRight 0.4s ease forwards; }
+.toast-out { animation: slideOutRight 0.4s ease forwards; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-[#0a0a0a] text-white font-body overflow-auto">
+  <div id="app-wrapper" class="w-full" style="min-height:100%;"><!-- Toast Container -->
+   <div id="toast-container" class="fixed top-24 right-4 z-[100] flex flex-col gap-2"></div><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="font-display text-xl font-bold tracking-wider"> <span class="text-[#c9a84c]">Lace</span><span class="text-white">Lux</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium tracking-wide"><a href="#home" class="text-[#c9a84c] hover:text-[#f5dfa0] transition">Home</a> <a href="#looks" class="text-white/70 hover:text-[#c9a84c] transition">Looks</a> <a href="#shop" class="text-white/70 hover:text-[#c9a84c] transition">Shop</a> <a href="#care" class="text-white/70 hover:text-[#c9a84c] transition">Care Guide</a> <a href="#reviews" class="text-white/70 hover:text-[#c9a84c] transition">Reviews</a> <a href="#buy" class="bg-[#c9a84c] text-[#0a0a0a] px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[#f5dfa0] transition">Buy Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white/80"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0a]/95 border-t border-white/5 pb-4">
+     <div class="flex flex-col items-center gap-3 pt-3 text-sm font-medium"><a href="#home" class="text-[#c9a84c]">Home</a> <a href="#looks" class="text-white/70">Looks</a> <a href="#shop" class="text-white/70">Shop</a> <a href="#care" class="text-white/70">Care Guide</a> <a href="#reviews" class="text-white/70">Reviews</a> <a href="#buy" class="bg-[#c9a84c] text-[#0a0a0a] px-5 py-1.5 rounded-full text-xs font-bold mt-1">Buy Now</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full" style="min-height:90%;">
+    <div class="absolute inset-0 cinematic-zoom overflow-hidden"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1400&amp;q=80" alt="Luxury hair model" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a1a1a,#2a1a0a)';this.alt='Image unavailable';">
+    </div>
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-4" style="min-height:90%;padding-top:20%;">
+     <p id="el-tagline" class="text-[#c9a84c] text-xs sm:text-sm tracking-[0.3em] uppercase font-medium mb-4 reveal">Find your next look in seconds.</p>
+     <h1 id="el-hero-title" class="font-display text-5xl sm:text-7xl md:text-8xl font-black leading-[0.95] mb-4 reveal" style="animation-delay:0.15s;"><span class="gold-shimmer">New hair.</span><br><span class="text-white">New energy.</span></h1>
+     <p id="el-hero-subtitle" class="text-white/60 text-base sm:text-lg max-w-md mb-8 reveal" style="animation-delay:0.3s;">Luxury looks, beginner-friendly guidance.</p>
+     <div class="flex flex-wrap gap-3 justify-center reveal" style="animation-delay:0.45s;"><a href="#looks" class="pulse-cta bg-[#c9a84c] text-[#0a0a0a] font-bold text-sm px-7 py-3 rounded-full hover:bg-[#f5dfa0] transition">Shop Looks</a> <a href="#shop" class="border border-white/20 text-white font-medium text-sm px-7 py-3 rounded-full hover:border-[#c9a84c] hover:text-[#c9a84c] transition">Find Your Match</a>
+     </div><!-- Floating Vote/Comment Card -->
+     <div class="float-card mt-10 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-4 max-w-xs reveal" style="animation-delay:0.6s;">
+      <div class="flex items-center gap-2 mb-2"><i data-lucide="message-circle" style="width:16px;height:16px;color:#c9a84c;"></i> <span class="text-xs text-white/50 font-medium tracking-wide uppercase">Vote + Comment</span>
+      </div>
+      <p class="text-white/40 text-xs">Embed Widget Here</p>
+      <div class="flex gap-2 mt-3"><button onclick="showToast('🔥 Voted!')" class="flex items-center gap-1 bg-[#c9a84c]/15 border border-[#c9a84c]/30 text-[#c9a84c] text-xs px-3 py-1.5 rounded-full hover:bg-[#c9a84c]/25 transition"><i data-lucide="heart" style="width:12px;height:12px;"></i> Vote</button> <button onclick="showToast('💬 Comments coming soon!')" class="flex items-center gap-1 bg-white/5 border border-white/10 text-white/50 text-xs px-3 py-1.5 rounded-full hover:bg-white/10 transition"><i data-lucide="message-circle" style="width:12px;height:12px;"></i> Comment</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- LOOKS -->
+   <section id="looks" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-2">Curated Collection</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold">The Looks</h2>
+      <p class="text-white/40 mt-2 text-sm">8 editorial styles. Tap to explore.</p>
+     </div><!-- Category Chips -->
+     <div class="flex flex-wrap justify-center gap-2 mb-10 reveal"><button onclick="filterLooks('all')" class="chip-active text-xs px-4 py-1.5 rounded-full border border-[#c9a84c]/30 bg-transparent text-white/60 font-medium transition" data-cat="all">All</button> <button onclick="filterLooks('straight')" class="text-xs px-4 py-1.5 rounded-full border border-white/10 bg-transparent text-white/40 font-medium hover:border-[#c9a84c]/40 transition" data-cat="straight">Straight</button> <button onclick="filterLooks('curly')" class="text-xs px-4 py-1.5 rounded-full border border-white/10 bg-transparent text-white/40 font-medium hover:border-[#c9a84c]/40 transition" data-cat="curly">Curly</button> <button onclick="filterLooks('color')" class="text-xs px-4 py-1.5 rounded-full border border-white/10 bg-transparent text-white/40 font-medium hover:border-[#c9a84c]/40 transition" data-cat="color">Color</button> <button onclick="filterLooks('bob')" class="text-xs px-4 py-1.5 rounded-full border border-white/10 bg-transparent text-white/40 font-medium hover:border-[#c9a84c]/40 transition" data-cat="bob">Bob</button>
+     </div><!-- Look Cards Grid -->
+     <div id="looks-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 stagger-children">
+     </div>
+    </div>
+   </section><!-- SHOP -->
+   <section id="shop" class="w-full py-20 px-4 sm:px-6 bg-[#0f0f0f]">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-2">Premium Selection</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold">Shop By Style</h2>
+      <p class="text-white/40 mt-2 text-sm">High-AOV positioning. Lookbook increases clicks.</p>
+     </div>
+     <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+     </div>
+    </div>
+   </section><!-- CARE GUIDE -->
+   <section id="care" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-2">Trust-Building Education</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold">Care Guide</h2>
+      <p class="text-white/40 mt-2 text-sm max-w-lg mx-auto">Keep your wig looking fresh. Quick tips + downloadable guide.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 stagger-children reveal">
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-[#c9a84c]/20 transition">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#c9a84c]/15 flex items-center justify-center">
+         <i data-lucide="droplets" style="width:18px;height:18px;color:#c9a84c;"></i>
+        </div>
+        <h3 class="font-display text-lg font-bold">Wash Gently</h3>
+       </div>
+       <p class="text-white/40 text-sm leading-relaxed">Use sulfate-free shampoo. Lukewarm water only. Pat dry — never wring.</p>
+      </div>
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-[#c9a84c]/20 transition">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#c9a84c]/15 flex items-center justify-center">
+         <i data-lucide="wind" style="width:18px;height:18px;color:#c9a84c;"></i>
+        </div>
+        <h3 class="font-display text-lg font-bold">Detangle Smart</h3>
+       </div>
+       <p class="text-white/40 text-sm leading-relaxed">Wide-tooth comb from tips to roots. Never brush when wet.</p>
+      </div>
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-[#c9a84c]/20 transition">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#c9a84c]/15 flex items-center justify-center">
+         <i data-lucide="moon" style="width:18px;height:18px;color:#c9a84c;"></i>
+        </div>
+        <h3 class="font-display text-lg font-bold">Store Overnight</h3>
+       </div>
+       <p class="text-white/40 text-sm leading-relaxed">Use a silk bonnet or wig stand. Keeps shape and prevents tangling.</p>
+      </div>
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-[#c9a84c]/20 transition">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-[#c9a84c]/15 flex items-center justify-center">
+         <i data-lucide="shield" style="width:18px;height:18px;color:#c9a84c;"></i>
+        </div>
+        <h3 class="font-display text-lg font-bold">Heat Protect</h3>
+       </div>
+       <p class="text-white/40 text-sm leading-relaxed">Always use heat protectant spray. Keep tools below 350°F for longevity.</p>
+      </div>
+     </div>
+     <div class="text-center reveal"><button onclick="showToast('📄 Wig Care Guide PDF downloading...')" class="inline-flex items-center gap-2 bg-[#c9a84c] text-[#0a0a0a] font-bold text-sm px-7 py-3 rounded-full hover:bg-[#f5dfa0] transition"> <i data-lucide="download" style="width:16px;height:16px;"></i> Download Full Care Guide </button>
+      <p class="text-white/30 text-xs mt-3">Includes measurement guide + styling tips</p>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4 sm:px-6 bg-[#0f0f0f]">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="text-[#c9a84c] text-xs tracking-[0.3em] uppercase mb-2">Real Results</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-bold">Client Love</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 stagger-children reveal">
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i>
+       </div>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">"The Honey Blonde unit is UNREAL. I literally got stopped three times on my first day wearing it. Best purchase of the year."</p>
+       <p class="text-white/70 text-xs font-bold">— Jasmine R.</p>
+      </div>
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i>
+       </div>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">"The care guide saved my wig. I had no idea about heat settings. Now my Big Curls unit looks brand new after 3 months."</p>
+       <p class="text-white/70 text-xs font-bold">— Tasha M.</p>
+      </div>
+      <div class="bg-white/5 border border-white/5 rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i> <i data-lucide="star" class="star-filled" style="width:14px;height:14px;fill:#c9a84c;"></i>
+       </div>
+       <p class="text-white/50 text-sm leading-relaxed mb-4">"Sleek Bob arrived in 2 days. The lace is invisible. I'm ordering the Jet Black next. Obsessed with this brand."</p>
+       <p class="text-white/70 text-xs font-bold">— Dominique L.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="buy" class="w-full py-24 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 cinematic-zoom"><img src="https://images.unsplash.com/photo-1595959183082-7b570b7e1e6b?w=1400&amp;q=80" alt="Beauty portrait" class="w-full h-full object-cover opacity-30" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a1a1a,#2a1a0a)';this.alt='Image unavailable';">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent"></div>
+    <div class="relative z-10 text-center max-w-2xl mx-auto reveal">
+     <h2 id="el-bottom-cta" class="font-display text-5xl sm:text-6xl md:text-7xl font-black gold-shimmer mb-4">Wear the vibe.</h2>
+     <p class="text-white/40 text-sm mb-8 max-w-md mx-auto">Premium wigs. Unmatched confidence. Your next look is one click away.</p><a href="#looks" class="pulse-cta inline-flex items-center gap-2 bg-[#c9a84c] text-[#0a0a0a] font-bold text-sm px-8 py-3.5 rounded-full hover:bg-[#f5dfa0] transition"> <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i> Shop the Collection </a>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-4 sm:px-6 border-t border-white/5 bg-[#060606]">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="font-display text-lg font-bold"><span class="text-[#c9a84c]">Lace</span><span class="text-white">Lux</span> <span class="text-white/20 text-xs ml-2">Hair Gallery</span>
+     </div>
+     <div class="flex items-center gap-4"><span class="text-white/20 text-xs">Social Promo Kit Ready</span> <button onclick="showToast('📱 Social kit details coming soon!')" class="text-white/30 hover:text-[#c9a84c] transition"><i data-lucide="instagram" style="width:18px;height:18px;"></i></button> <button onclick="showToast('📱 Social kit details coming soon!')" class="text-white/30 hover:text-[#c9a84c] transition"><i data-lucide="twitter" style="width:18px;height:18px;"></i></button>
+     </div>
+     <p class="text-white/15 text-xs">© 2025 LaceLux. Affiliate-ready product cards.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Data
+const looks = [
+  { name: 'Sleek Bob', cat: 'bob', price: '$189', img: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80', tag: 'Bestseller' },
+  { name: 'Big Curls', cat: 'curly', price: '$229', img: 'https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=600&q=80', tag: 'Trending' },
+  { name: 'Honey Blonde', cat: 'color', price: '$259', img: 'https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&q=80', tag: 'New' },
+  { name: 'Jet Black', cat: 'straight', price: '$199', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80', tag: '' },
+  { name: 'Red Layers', cat: 'color', price: '$279', img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80', tag: 'Bold' },
+  { name: 'Silk Straight', cat: 'straight', price: '$209', img: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&q=80', tag: '' },
+  { name: 'Beach Waves', cat: 'curly', price: '$239', img: 'https://images.unsplash.com/photo-1549236177-97e8de0e2b28?w=600&q=80', tag: 'Summer' },
+  { name: 'Pixie Cut', cat: 'bob', price: '$169', img: 'https://images.unsplash.com/photo-1504703395950-b89145a5425b?w=600&q=80', tag: 'Chic' },
+];
+
+const shopItems = [
+  { name: 'The Starter Bundle', desc: 'Wig + care kit + bonnet', price: '$299', badge: 'Best Value', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80' },
+  { name: 'Product Listing Templates', desc: '12 Canva templates for your store', price: '$49', badge: 'Digital', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80' },
+  { name: 'Social Promo Kit', desc: 'Story + reel + carousel templates', price: '$39', badge: 'Digital', img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80' },
+];
+
+// Render look cards
+function renderLooks(filter = 'all') {
+  const grid = document.getElementById('looks-grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? looks : looks.filter(l => l.cat === filter);
+  filtered.forEach((look, i) => {
+    const card = document.createElement('div');
+    card.className = 'look-card relative rounded-2xl overflow-hidden cursor-pointer group reveal';
+    card.style.animationDelay = `${i * 0.08}s`;
+    card.innerHTML = `
+      <div class="aspect-[3/4] cinematic-zoom overflow-hidden">
+        <img src="${look.img}" alt="${look.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a1a';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+      ${look.tag ? `<span class="absolute top-3 left-3 bg-[#c9a84c] text-[#0a0a0a] text-[10px] font-bold px-2.5 py-0.5 rounded-full">${look.tag}</span>` : ''}
+      <div class="absolute bottom-0 left-0 right-0 p-4">
+        <h3 class="font-display text-base font-bold">${look.name}</h3>
+        <p class="text-[#c9a84c] text-sm font-semibold">${look.price}</p>
+      </div>
+      <div class="absolute inset-0 bg-[#c9a84c]/0 group-hover:bg-[#c9a84c]/10 transition duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <span class="bg-white/90 text-[#0a0a0a] text-xs font-bold px-4 py-2 rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition">Shop This Look</span>
+      </div>
+    `;
+    card.onclick = () => showToast(`👀 "${look.name}" — ${look.price}`);
+    grid.appendChild(card);
+  });
+  // Trigger reveal
+  setTimeout(() => {
+    grid.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    grid.classList.add('visible');
+  }, 50);
+}
+
+// Render shop items
+function renderShop() {
+  const grid = document.getElementById('shop-grid');
+  shopItems.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'look-card bg-white/5 border border-white/5 rounded-2xl overflow-hidden reveal';
+    card.style.animationDelay = `${i * 0.12}s`;
+    card.innerHTML = `
+      <div class="aspect-[4/3] cinematic-zoom overflow-hidden relative">
+        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a1a';this.alt='Image unavailable';">
+        <span class="absolute top-3 right-3 bg-[#c9a84c] text-[#0a0a0a] text-[10px] font-bold px-2.5 py-0.5 rounded-full">${item.badge}</span>
+      </div>
+      <div class="p-5">
+        <h3 class="font-display text-lg font-bold mb-1">${item.name}</h3>
+        <p class="text-white/40 text-sm mb-3">${item.desc}</p>
+        <div class="flex items-center justify-between">
+          <span class="text-[#c9a84c] font-bold text-lg">${item.price}</span>
+          <button class="bg-[#c9a84c] text-[#0a0a0a] text-xs font-bold px-4 py-2 rounded-full hover:bg-[#f5dfa0] transition" onclick="event.stopPropagation();showToast('🛒 Added to cart!')">Add to Cart</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// Filter looks
+function filterLooks(cat) {
+  document.querySelectorAll('[data-cat]').forEach(btn => {
+    btn.classList.remove('chip-active');
+    btn.classList.add('text-white/40', 'border-white/10');
+  });
+  const active = document.querySelector(`[data-cat="${cat}"]`);
+  if (active) {
+    active.classList.add('chip-active');
+    active.classList.remove('text-white/40', 'border-white/10');
+  }
+  renderLooks(cat);
+}
+
+// Toast
+function showToast(msg) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast-in bg-[#1a1a1a] border border-[#c9a84c]/20 text-white text-sm px-5 py-3 rounded-xl shadow-2xl flex items-center gap-2';
+  toast.innerHTML = `<span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.remove('toast-in');
+    toast.classList.add('toast-out');
+    setTimeout(() => toast.remove(), 400);
+  }, 2500);
+}
+
+// Scroll reveal observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').onclick = () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+};
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.onclick = () => document.getElementById('mobile-menu').classList.add('hidden');
+});
+
+// Init
+renderLooks();
+renderShop();
+
+// Observe all reveal elements
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}, 100);
+
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'New hair. New energy.',
+  hero_subtitle: 'Luxury looks, beginner-friendly guidance.',
+  tagline: 'Find your next look in seconds.',
+  bottom_cta_text: 'Wear the vibe.',
+  background_color: '#0a0a0a',
+  surface_color: '#0f0f0f',
+  text_color: '#ffffff',
+  accent_color: '#c9a84c',
+  secondary_action_color: '#f5dfa0',
+  font_family: 'Playfair Display',
+  font_size: 16
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+
+    // Text
+    const heroTitleEl = document.getElementById('el-hero-title');
+    const parts = (c.hero_title || defaultConfig.hero_title).split('.');
+    if (parts.length >= 2) {
+      heroTitleEl.innerHTML = `<span class="gold-shimmer">${parts[0].trim()}.</span><br><span style="color:${c.text_color}">${parts.slice(1).join('.').trim()}</span>`;
+    } else {
+      heroTitleEl.innerHTML = `<span class="gold-shimmer">${c.hero_title}</span>`;
+    }
+    document.getElementById('el-hero-subtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+    document.getElementById('el-tagline').textContent = c.tagline || defaultConfig.tagline;
+    document.getElementById('el-bottom-cta').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+    // Colors
+    const root = document.getElementById('app-wrapper');
+    root.style.backgroundColor = c.background_color;
+    document.querySelectorAll('.bg-\\[\\#0f0f0f\\]').forEach(el => el.style.backgroundColor = c.surface_color);
+
+    // Font
+    const font = c.font_family || defaultConfig.font_family;
+    document.querySelectorAll('.font-display').forEach(el => {
+      el.style.fontFamily = `${font}, Playfair Display, serif`;
+    });
+
+    // Font size
+    const base = c.font_size || defaultConfig.font_size;
+    document.body.style.fontSize = `${base}px`;
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return {
+      recolorables: [
+        { get: () => c.background_color || defaultConfig.background_color, set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => c.surface_color || defaultConfig.surface_color, set: (v) => { c.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => c.text_color || defaultConfig.text_color, set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => c.accent_color || defaultConfig.accent_color, set: (v) => { c.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => c.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { c.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', c.hero_subtitle || defaultConfig.hero_subtitle],
+      ['tagline', c.tagline || defaultConfig.tagline],
+      ['bottom_cta_text', c.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ]);
+  }
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a339b764b27c5',t:'MTc3NTU3NzE2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,645 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/9d23104b-f233-4ae6-8972-d76dad703e4b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StuntCore Studios</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'Barlow', sans-serif; background: #000; color: #fff; }
+.app-root { height: 100%; overflow-y: auto; overflow-x: hidden; width: 100%; }
+.font-display { font-family: 'Bebas Neue', cursive; }
+
+/* Animations */
+@keyframes slashIn { 0% { transform: scaleX(0) skewX(-20deg); opacity: 0; } 100% { transform: scaleX(1) skewX(-20deg); opacity: 1; } }
+@keyframes fadeUp { 0% { opacity: 0; transform: translateY(60px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 40px rgba(239,68,68,0.7); } }
+@keyframes impactShake { 0%, 100% { transform: translate(0); } 10% { transform: translate(-3px, -2px); } 20% { transform: translate(3px, 2px); } 30% { transform: translate(-2px, 1px); } 40% { transform: translate(2px, -1px); } 50% { transform: translate(0); } }
+@keyframes lineShoot { 0% { width: 0; opacity: 1; } 100% { width: 100%; opacity: 0; } }
+@keyframes revealClip { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0 0 0); } }
+@keyframes countUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
+.anim-fade-up { opacity: 0; transform: translateY(60px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.anim-fade-up.visible { opacity: 1; transform: translateY(0); }
+.anim-slash { animation: slashIn 0.6s ease forwards; }
+.anim-glow { animation: pulseGlow 2s infinite; }
+.anim-shake:hover { animation: impactShake 0.4s ease; }
+
+/* Motion lines SVG */
+.motion-line { position: absolute; height: 2px; background: linear-gradient(90deg, #ef4444, transparent); animation: lineShoot 1.5s ease forwards; }
+
+/* Card hover */
+.stunt-card { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.stunt-card:hover { transform: scale(1.05) translateY(-8px); box-shadow: 0 0 30px rgba(239,68,68,0.4); }
+.scene-frame { transition: transform 0.5s ease; overflow: hidden; }
+.scene-frame:hover { transform: scale(1.08); }
+.scene-frame img, .scene-frame .scene-placeholder { transition: transform 0.5s ease; }
+.scene-frame:hover img, .scene-frame:hover .scene-placeholder { transform: scale(1.15); }
+
+/* Pricing */
+.price-card { transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease; border: 1px solid rgba(255,255,255,0.1); }
+.price-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 0 50px rgba(239,68,68,0.3); border-color: #ef4444; }
+.price-card.featured { border-color: #ef4444; }
+.price-card.featured:hover { box-shadow: 0 0 60px rgba(239,68,68,0.5); }
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #ef4444; transition: width 0.3s ease; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Scroll bar */
+.app-root::-webkit-scrollbar { width: 6px; }
+.app-root::-webkit-scrollbar-track { background: #000; }
+.app-root::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 3px; }
+
+/* Impact burst SVG */
+.impact-burst { position: absolute; pointer-events: none; }
+
+/* Diagonal cut */
+.diagonal-cut { clip-path: polygon(0 0, 100% 8%, 100% 100%, 0 92%); }
+
+/* Red line accent */
+.red-accent-line { width: 80px; height: 3px; background: #ef4444; }
+
+/* Reaction buttons */
+.reaction-btn { transition: transform 0.2s ease, background 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { background: rgba(239,68,68,0.3); border-color: #ef4444; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        stunt: { red: '#ef4444', dark: '#0a0a0a', darker: '#050505' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-root" id="appRoot"><!-- Sticky Nav -->
+   <nav id="stickyNav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16"><a href="#home" class="font-display text-xl sm:text-2xl tracking-wider" style="color: #ef4444;">STUNTCORE</a> <!-- Mobile menu button --> <button id="mobileMenuBtn" class="sm:hidden p-2" onclick="toggleMobileMenu()"> <i data-lucide="menu" style="width:24px;height:24px;color:#fff;"></i> </button>
+     <div class="hidden sm:flex items-center gap-6 text-sm font-medium tracking-wide uppercase"><a href="#home" class="nav-link">Home</a> <a href="#stunts" class="nav-link">Stunts</a> <a href="#scenes" class="nav-link">Scenes</a> <a href="#process" class="nav-link">Process</a> <a href="#pricing" class="nav-link">Pricing</a> <a href="#faq" class="nav-link">FAQ</a> <a href="#book" class="px-4 py-2 text-sm font-bold uppercase tracking-wider" style="background:#ef4444;color:#fff;">Book Production</a>
+     </div>
+    </div><!-- Mobile menu -->
+    <div id="mobileMenu" class="sm:hidden hidden flex-col gap-3 px-6 pb-4 text-sm font-medium tracking-wide uppercase"><a href="#home" class="nav-link py-1" onclick="closeMobileMenu()">Home</a> <a href="#stunts" class="nav-link py-1" onclick="closeMobileMenu()">Stunts</a> <a href="#scenes" class="nav-link py-1" onclick="closeMobileMenu()">Scenes</a> <a href="#process" class="nav-link py-1" onclick="closeMobileMenu()">Process</a> <a href="#pricing" class="nav-link py-1" onclick="closeMobileMenu()">Pricing</a> <a href="#faq" class="nav-link py-1" onclick="closeMobileMenu()">FAQ</a> <a href="#book" class="px-4 py-2 text-sm font-bold uppercase tracking-wider text-center" style="background:#ef4444;color:#fff;" onclick="closeMobileMenu()">Book Production</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:600px; padding-top:80px; padding-bottom:80px;"><!-- Background effect -->
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 30%, rgba(239,68,68,0.12) 0%, transparent 60%);"></div><!-- Motion lines -->
+    <div class="motion-line" style="top:25%; left:0; animation-delay:0.2s;"></div>
+    <div class="motion-line" style="top:55%; right:0; left:auto; animation-delay:0.7s;"></div>
+    <div class="motion-line" style="top:75%; left:0; animation-delay:1.2s;"></div><!-- Impact burst SVG -->
+    <svg class="impact-burst" style="top:10%;right:5%;width:120px;height:120px;opacity:0.15;" viewbox="0 0 100 100"><polygon points="50,0 61,35 100,35 68,57 79,91 50,70 21,91 32,57 0,35 39,35" fill="#ef4444" />
+    </svg>
+    <svg class="impact-burst" style="bottom:15%;left:8%;width:80px;height:80px;opacity:0.1;" viewbox="0 0 100 100"><polygon points="50,0 61,35 100,35 68,57 79,91 50,70 21,91 32,57 0,35 39,35" fill="#ef4444" />
+    </svg>
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center" style="padding-top:60px;"><!-- Diagonal red slash -->
+     <div class="anim-slash mb-6" style="width:120px; height:4px; background:#ef4444; transform:skewX(-20deg);"></div>
+     <h1 id="heroTitle" class="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wide leading-none mb-6" style="color:#fff;">IF IT LOOKS REAL,<br><span style="color:#ef4444;">IT'S BECAUSE IT IS.</span></h1>
+     <p id="heroSubtitle" class="text-lg sm:text-xl md:text-2xl font-medium mb-10 max-w-2xl" style="color:rgba(255,255,255,0.7);">Professional stunt coordination for film and content.</p>
+     <div class="flex flex-col sm:flex-row gap-4"><a href="#book" id="ctaPrimary" class="anim-glow px-8 py-4 font-bold text-lg uppercase tracking-widest" style="background:#ef4444;color:#fff;">Book Production</a> <a href="#scenes" id="ctaSecondary" class="px-8 py-4 font-bold text-lg uppercase tracking-widest border-2 hover:bg-white hover:text-black transition-all duration-300" style="border-color:rgba(255,255,255,0.4);color:#fff;">View Scenes</a>
+     </div><!-- Stats bar -->
+     <div class="mt-16 flex flex-wrap justify-center gap-8 sm:gap-16">
+      <div class="text-center anim-fade-up">
+       <span class="font-display text-4xl sm:text-5xl" style="color:#ef4444;">200+</span>
+       <p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,0.5);">Stunts Executed</p>
+      </div>
+      <div class="text-center anim-fade-up" style="transition-delay:0.1s;">
+       <span class="font-display text-4xl sm:text-5xl" style="color:#ef4444;">50+</span>
+       <p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,0.5);">Films &amp; Shows</p>
+      </div>
+      <div class="text-center anim-fade-up" style="transition-delay:0.2s;">
+       <span class="font-display text-4xl sm:text-5xl" style="color:#ef4444;">0</span>
+       <p class="text-xs uppercase tracking-widest mt-1" style="color:rgba(255,255,255,0.5);">Safety Incidents</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- STUNTS -->
+   <section id="stunts" class="relative w-full py-20 sm:py-28">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 anim-fade-up">
+      <div class="red-accent-line mx-auto mb-4"></div>
+      <h2 id="stuntsTitle" class="font-display text-4xl sm:text-6xl tracking-wide" style="color:#fff;">STUNT DISCIPLINES</h2>
+      <p class="mt-3 text-base" style="color:rgba(255,255,255,0.5);">Every impact. Every fall. Every explosion. Controlled precision.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Stunt cards -->
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="zap" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">HIGH FALLS</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Multi-story descents, building jumps, and aerial drops with precision airbag and wire rigging systems.</p>
+      </div>
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:0.1s;">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="flame" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">FIRE BURNS</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Full and partial body burns with certified safety protocols, fire-resistant gear, and controlled environments.</p>
+      </div>
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:0.2s;">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="swords" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">FIGHT CHOREOGRAPHY</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Hand-to-hand combat, weapon work, martial arts sequences designed for camera angles and dramatic impact.</p>
+      </div>
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="car" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">VEHICLE STUNTS</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">High-speed chases, drifts, rollovers, and precision driving with custom rigs and reinforced vehicles.</p>
+      </div>
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:0.1s;">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="wind" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">WIRE WORK</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Flying rigs, wall runs, superhero landings, and zero-gravity simulations using professional wire systems.</p>
+      </div>
+      <div class="stunt-card anim-fade-up p-6 rounded-sm relative overflow-hidden" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:0.2s;">
+       <div class="absolute top-0 left-0 w-1 h-full" style="background:#ef4444;"></div>
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded" style="background:rgba(239,68,68,0.15);">
+         <i data-lucide="bomb" style="width:20px;height:20px;color:#ef4444;"></i>
+        </div>
+        <h3 class="font-display text-2xl tracking-wide">EXPLOSIONS &amp; SFX</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Controlled pyrotechnics, mortar hits, debris effects, and atmospheric detonations for maximum cinematic drama.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- SCENES -->
+   <section id="scenes" class="relative w-full py-20 sm:py-28" style="background:rgba(255,255,255,0.02);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 anim-fade-up">
+      <div class="red-accent-line mx-auto mb-4"></div>
+      <h2 class="font-display text-4xl sm:text-6xl tracking-wide">FEATURED SCENES</h2>
+      <p class="mt-3 text-base" style="color:rgba(255,255,255,0.5);">Signature action sequences from our production reel.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="scene-frame anim-fade-up rounded-sm relative" style="aspect-ratio:16/9;">
+       <div class="scene-placeholder w-full h-full flex flex-col items-center justify-center" style="background:linear-gradient(135deg, #1a0000, #0a0a0a); border:1px solid rgba(239,68,68,0.2);">
+        <svg width="64" height="64" viewbox="0 0 64 64" style="opacity:0.6;">
+         <rect x="4" y="12" width="56" height="40" rx="3" fill="none" stroke="#ef4444" stroke-width="2" /><polygon points="26,24 26,40 42,32" fill="#ef4444" opacity="0.8" /><rect x="4" y="8" width="56" height="8" rx="2" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.4" /><line x1="20" y1="8" x2="20" y2="16" stroke="#ef4444" stroke-width="1" opacity="0.4" /><line x1="36" y1="8" x2="36" y2="16" stroke="#ef4444" stroke-width="1" opacity="0.4" />
+        </svg>
+        <p class="font-display text-xl tracking-wider mt-3" style="color:#ef4444;">ROOFTOP PURSUIT</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,0.4);">3-building parkour chase sequence</p>
+       </div>
+      </div>
+      <div class="scene-frame anim-fade-up rounded-sm relative" style="aspect-ratio:16/9; transition-delay:0.1s;">
+       <div class="scene-placeholder w-full h-full flex flex-col items-center justify-center" style="background:linear-gradient(135deg, #0a0000, #0a0a0a); border:1px solid rgba(239,68,68,0.2);">
+        <svg width="64" height="64" viewbox="0 0 64 64" style="opacity:0.6;">
+         <circle cx="32" cy="32" r="20" fill="none" stroke="#ef4444" stroke-width="2" /><polygon points="32,16 36,28 48,28 38,36 42,48 32,40 22,48 26,36 16,28 28,28" fill="#ef4444" opacity="0.5" />
+        </svg>
+        <p class="font-display text-xl tracking-wider mt-3" style="color:#ef4444;">WAREHOUSE EXPLOSION</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,0.4);">Controlled pyro + stunt fall combo</p>
+       </div>
+      </div>
+      <div class="scene-frame anim-fade-up rounded-sm relative" style="aspect-ratio:16/9;">
+       <div class="scene-placeholder w-full h-full flex flex-col items-center justify-center" style="background:linear-gradient(135deg, #0a0505, #0a0a0a); border:1px solid rgba(239,68,68,0.2);">
+        <svg width="64" height="64" viewbox="0 0 64 64" style="opacity:0.6;">
+         <path d="M10,50 L20,30 L30,40 L40,20 L50,35 L54,50 Z" fill="none" stroke="#ef4444" stroke-width="2" /><circle cx="32" cy="18" r="6" fill="none" stroke="#ef4444" stroke-width="1.5" /><line x1="32" y1="24" x2="32" y2="38" stroke="#ef4444" stroke-width="1.5" />
+        </svg>
+        <p class="font-display text-xl tracking-wider mt-3" style="color:#ef4444;">HIGHWAY INTERCEPTION</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,0.4);">Multi-vehicle stunt at 80mph</p>
+       </div>
+      </div>
+      <div class="scene-frame anim-fade-up rounded-sm relative" style="aspect-ratio:16/9; transition-delay:0.1s;">
+       <div class="scene-placeholder w-full h-full flex flex-col items-center justify-center" style="background:linear-gradient(135deg, #050005, #0a0a0a); border:1px solid rgba(239,68,68,0.2);">
+        <svg width="64" height="64" viewbox="0 0 64 64" style="opacity:0.6;">
+         <line x1="32" y1="8" x2="32" y2="56" stroke="#ef4444" stroke-width="2" /><line x1="20" y1="20" x2="44" y2="20" stroke="#ef4444" stroke-width="1.5" /><line x1="24" y1="32" x2="40" y2="32" stroke="#ef4444" stroke-width="1.5" /><circle cx="32" cy="48" r="4" fill="#ef4444" opacity="0.6" />
+        </svg>
+        <p class="font-display text-xl tracking-wider mt-3" style="color:#ef4444;">ELEVATOR SHAFT DROP</p>
+        <p class="text-xs mt-1" style="color:rgba(255,255,255,0.4);">60ft free fall with wire arrest</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROCESS -->
+   <section id="process" class="relative w-full py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 anim-fade-up">
+      <div class="red-accent-line mx-auto mb-4"></div>
+      <h2 class="font-display text-4xl sm:text-6xl tracking-wide">THE PROCESS</h2>
+      <p class="mt-3 text-base" style="color:rgba(255,255,255,0.5);">From script to screen. Every stunt is engineered.</p>
+     </div>
+     <div class="relative"><!-- Vertical line -->
+      <div class="absolute left-6 sm:left-1/2 top-0 bottom-0 w-px" style="background:rgba(239,68,68,0.3);"></div><!-- Steps -->
+      <div class="space-y-12 sm:space-y-16">
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center anim-fade-up">
+        <div class="sm:w-1/2 sm:pr-12 sm:text-right pl-16 sm:pl-0">
+         <h3 class="font-display text-2xl sm:text-3xl tracking-wide" style="color:#ef4444;">01 — SCRIPT BREAKDOWN</h3>
+         <p class="text-sm mt-2 leading-relaxed" style="color:rgba(255,255,255,0.6);">We analyze every action beat, identify stunt requirements, and assess risk factors before anything moves.</p>
+        </div>
+        <div class="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center" style="background:#ef4444;">
+         <span class="font-display text-sm">1</span>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12"></div>
+       </div>
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center anim-fade-up">
+        <div class="sm:w-1/2 sm:pr-12"></div>
+        <div class="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center" style="background:#ef4444;">
+         <span class="font-display text-sm">2</span>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12 pl-16">
+         <h3 class="font-display text-2xl sm:text-3xl tracking-wide" style="color:#ef4444;">02 — PREVIZ &amp; PLANNING</h3>
+         <p class="text-sm mt-2 leading-relaxed" style="color:rgba(255,255,255,0.6);">Storyboards, shot lists, rigging plans, and safety protocols are built for every sequence frame by frame.</p>
+        </div>
+       </div>
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center anim-fade-up">
+        <div class="sm:w-1/2 sm:pr-12 sm:text-right pl-16 sm:pl-0">
+         <h3 class="font-display text-2xl sm:text-3xl tracking-wide" style="color:#ef4444;">03 — REHEARSAL</h3>
+         <p class="text-sm mt-2 leading-relaxed" style="color:rgba(255,255,255,0.6);">Full run-throughs at controlled speed with safety checks at every stage. Nothing is left to chance.</p>
+        </div>
+        <div class="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center" style="background:#ef4444;">
+         <span class="font-display text-sm">3</span>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12"></div>
+       </div>
+       <div class="relative flex flex-col sm:flex-row items-start sm:items-center anim-fade-up">
+        <div class="sm:w-1/2 sm:pr-12"></div>
+        <div class="absolute left-3 sm:left-1/2 sm:-translate-x-1/2 w-7 h-7 rounded-full flex items-center justify-center" style="background:#ef4444;">
+         <span class="font-display text-sm">4</span>
+        </div>
+        <div class="sm:w-1/2 sm:pl-12 pl-16">
+         <h3 class="font-display text-2xl sm:text-3xl tracking-wide" style="color:#ef4444;">04 — EXECUTE &amp; CAPTURE</h3>
+         <p class="text-sm mt-2 leading-relaxed" style="color:rgba(255,255,255,0.6);">Action rolls. Every angle covered. Multiple cameras, safety teams on standby, and pure cinematic adrenaline.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="relative w-full py-20 sm:py-28" style="background:rgba(255,255,255,0.02);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 anim-fade-up">
+      <div class="red-accent-line mx-auto mb-4"></div>
+      <h2 id="pricingTitle" class="font-display text-4xl sm:text-6xl tracking-wide">PRODUCTION TIERS</h2>
+      <p class="mt-3 text-base" style="color:rgba(255,255,255,0.5);">Scale your action. Every tier includes safety frameworks + shot breakdowns.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Basic -->
+      <div class="price-card anim-fade-up rounded-sm p-8 flex flex-col" style="background:rgba(255,255,255,0.03);">
+       <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:rgba(255,255,255,0.4);">Basic</p>
+       <h3 class="font-display text-5xl tracking-wide" style="color:#fff;">$2,500</h3>
+       <p class="text-xs mt-1 mb-6" style="color:rgba(255,255,255,0.4);">Per stunt setup</p>
+       <div class="red-accent-line mb-6"></div>
+       <ul class="space-y-3 text-sm flex-1" style="color:rgba(255,255,255,0.7);">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Single stunt coordination</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Safety assessment &amp; protocol</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>1 stunt performer included</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Planning templates pack</li>
+       </ul><a href="#book" class="mt-8 block text-center py-3 font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-white hover:text-black" style="border:1px solid rgba(255,255,255,0.2);color:#fff;">Get Started</a>
+      </div><!-- Production (featured) -->
+      <div class="price-card featured anim-fade-up rounded-sm p-8 flex flex-col relative overflow-hidden" style="background:rgba(239,68,68,0.06); transition-delay:0.1s;">
+       <div class="absolute top-0 left-0 w-full h-1" style="background:#ef4444;"></div>
+       <div class="absolute top-4 right-4 px-3 py-1 text-xs font-bold uppercase tracking-wider" style="background:#ef4444;color:#fff;">
+        Popular
+       </div>
+       <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#ef4444;">Production</p>
+       <h3 class="font-display text-5xl tracking-wide" style="color:#fff;">$8,000</h3>
+       <p class="text-xs mt-1 mb-6" style="color:rgba(255,255,255,0.4);">Multi-scene package</p>
+       <div class="red-accent-line mb-6"></div>
+       <ul class="space-y-3 text-sm flex-1" style="color:rgba(255,255,255,0.7);">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Up to 5 stunt sequences</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Full safety team on set</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>3 stunt performers</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Shot breakdowns + workflows</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Rehearsal days included</li>
+       </ul><a href="#book" class="anim-glow mt-8 block text-center py-3 font-bold uppercase tracking-widest text-sm" style="background:#ef4444;color:#fff;">Book Production</a>
+      </div><!-- Elite -->
+      <div class="price-card anim-fade-up rounded-sm p-8 flex flex-col" style="background:rgba(255,255,255,0.03); transition-delay:0.2s;">
+       <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:rgba(255,255,255,0.4);">Elite</p>
+       <h3 class="font-display text-5xl tracking-wide" style="color:#fff;">$20,000+</h3>
+       <p class="text-xs mt-1 mb-6" style="color:rgba(255,255,255,0.4);">Full stunt direction</p>
+       <div class="red-accent-line mb-6"></div>
+       <ul class="space-y-3 text-sm flex-1" style="color:rgba(255,255,255,0.7);">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Unlimited stunt sequences</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Dedicated stunt director</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Full performer team (5+)</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Complete production package</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>On-set supervision all days</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#ef4444;flex-shrink:0;"></i>Post-production VFX consult</li>
+       </ul><a href="#book" class="mt-8 block text-center py-3 font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-white hover:text-black" style="border:1px solid rgba(255,255,255,0.2);color:#fff;">Contact Us</a>
+      </div>
+     </div><!-- Digital product callout -->
+     <div class="mt-12 text-center anim-fade-up p-6 rounded-sm" style="background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.15);">
+      <p class="font-display text-xl tracking-wide" style="color:#ef4444;">INCLUDED WITH EVERY TIER</p>
+      <p class="text-sm mt-2" style="color:rgba(255,255,255,0.6);">Stunt planning templates • Shot breakdowns • Safety frameworks • Production workflows</p>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="relative w-full py-20 sm:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16 anim-fade-up">
+      <div class="red-accent-line mx-auto mb-4"></div>
+      <h2 class="font-display text-4xl sm:text-6xl tracking-wide">FAQ</h2>
+     </div>
+     <div class="space-y-3" id="faqContainer">
+      <div class="faq-item anim-fade-up"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between py-4 px-5 text-left font-semibold text-sm tracking-wide rounded-sm transition-all duration-300" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);"> <span>How far in advance should we book?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#ef4444;transition:transform 0.3s ease;flex-shrink:0;"></i> </button>
+       <div class="faq-answer overflow-hidden transition-all duration-300" style="max-height:0;">
+        <p class="px-5 py-4 text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">We recommend booking 4–8 weeks before your shoot date. For complex sequences requiring custom rigs, 12 weeks gives us the best results.</p>
+       </div>
+      </div>
+      <div class="faq-item anim-fade-up" style="transition-delay:0.05s;"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between py-4 px-5 text-left font-semibold text-sm tracking-wide rounded-sm transition-all duration-300" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);"> <span>Do you provide insurance?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#ef4444;transition:transform 0.3s ease;flex-shrink:0;"></i> </button>
+       <div class="faq-answer overflow-hidden transition-all duration-300" style="max-height:0;">
+        <p class="px-5 py-4 text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Yes. All productions include comprehensive liability coverage. Our safety record is spotless — zero incidents across 200+ coordinated stunts.</p>
+       </div>
+      </div>
+      <div class="faq-item anim-fade-up" style="transition-delay:0.1s;"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between py-4 px-5 text-left font-semibold text-sm tracking-wide rounded-sm transition-all duration-300" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);"> <span>Can you work with our existing crew?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#ef4444;transition:transform 0.3s ease;flex-shrink:0;"></i> </button>
+       <div class="faq-answer overflow-hidden transition-all duration-300" style="max-height:0;">
+        <p class="px-5 py-4 text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Absolutely. We integrate with your director, DP, and AD team. We handle stunt coordination while your crew handles their craft.</p>
+       </div>
+      </div>
+      <div class="faq-item anim-fade-up" style="transition-delay:0.15s;"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between py-4 px-5 text-left font-semibold text-sm tracking-wide rounded-sm transition-all duration-300" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);"> <span>What's included in the digital package?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#ef4444;transition:transform 0.3s ease;flex-shrink:0;"></i> </button>
+       <div class="faq-answer overflow-hidden transition-all duration-300" style="max-height:0;">
+        <p class="px-5 py-4 text-sm leading-relaxed" style="color:rgba(255,255,255,0.6);">Every tier includes stunt planning templates, detailed shot breakdowns, safety frameworks, and production workflows — everything you need to run a safe, efficient action shoot.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE & COMMENT -->
+   <section id="book" class="relative w-full py-20 sm:py-28" style="background: linear-gradient(180deg, rgba(239,68,68,0.08) 0%, transparent 100%);">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6"><!-- Bottom CTA -->
+     <div class="text-center mb-20 anim-fade-up">
+      <h2 id="bottomCtaText" class="font-display text-4xl sm:text-6xl md:text-7xl tracking-wide mb-6">CREATE SCENES THAT<br><span style="color:#ef4444;">HIT HARDER.</span></h2>
+      <p class="text-base mb-8" style="color:rgba(255,255,255,0.5);">Your next production deserves action that stops people mid-scroll.</p><a href="mailto:book@stuntcore.studio" class="anim-glow inline-block px-10 py-5 font-bold text-lg uppercase tracking-widest" style="background:#ef4444;color:#fff;">Book Your Production</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="anim-fade-up rounded-sm p-6 sm:p-8" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+      <div class="text-center mb-6">
+       <p class="font-display text-2xl tracking-wide" style="color:#ef4444;">EMBED WIDGET HERE</p>
+       <p class="text-sm mt-1" style="color:rgba(255,255,255,0.5);">Vote, react, and leave your mark.</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-6" id="reactionsContainer"><button onclick="submitReaction('🔥')" class="reaction-btn px-4 py-2 rounded-sm text-sm font-semibold flex items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);" data-reaction="🔥"><span>🔥</span><span class="count" data-r="🔥">0</span></button> <button onclick="submitReaction('💥')" class="reaction-btn px-4 py-2 rounded-sm text-sm font-semibold flex items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);" data-reaction="💥"><span>💥</span><span class="count" data-r="💥">0</span></button> <button onclick="submitReaction('🎬')" class="reaction-btn px-4 py-2 rounded-sm text-sm font-semibold flex items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);" data-reaction="🎬"><span>🎬</span><span class="count" data-r="🎬">0</span></button> <button onclick="submitReaction('⚡')" class="reaction-btn px-4 py-2 rounded-sm text-sm font-semibold flex items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);" data-reaction="⚡"><span>⚡</span><span class="count" data-r="⚡">0</span></button> <button onclick="submitReaction('🎯')" class="reaction-btn px-4 py-2 rounded-sm text-sm font-semibold flex items-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);" data-reaction="🎯"><span>🎯</span><span class="count" data-r="🎯">0</span></button>
+      </div><!-- Price Vote -->
+      <div class="mb-6">
+       <p class="text-xs uppercase tracking-widest text-center mb-3" style="color:rgba(255,255,255,0.4);">What would you pay for this service?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="priceVoteContainer"><button onclick="submitPrice('$500')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$500 <span class="count" data-p="$500">0</span></button> <button onclick="submitPrice('$1K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$1K <span class="count" data-p="$1K">0</span></button> <button onclick="submitPrice('$2.5K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$2.5K <span class="count" data-p="$2.5K">0</span></button> <button onclick="submitPrice('$5K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$5K <span class="count" data-p="$5K">0</span></button> <button onclick="submitPrice('$8K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$8K <span class="count" data-p="$8K">0</span></button> <button onclick="submitPrice('$10K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$10K <span class="count" data-p="$10K">0</span></button> <button onclick="submitPrice('$15K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$15K <span class="count" data-p="$15K">0</span></button> <button onclick="submitPrice('$20K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$20K <span class="count" data-p="$20K">0</span></button> <button onclick="submitPrice('$30K')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$30K <span class="count" data-p="$30K">0</span></button> <button onclick="submitPrice('$50K+')" class="reaction-btn px-3 py-1.5 rounded-sm text-xs font-semibold" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">$50K+ <span class="count" data-p="$50K+">0</span></button>
+       </div>
+      </div><!-- Comment Form -->
+      <form id="commentForm" onsubmit="submitComment(event)" class="mb-6">
+       <div class="flex gap-3"><input id="commentInput" type="text" placeholder="Drop a comment..." class="flex-1 px-4 py-3 rounded-sm text-sm outline-none" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#fff;" aria-label="Comment"> <button type="submit" id="commentBtn" class="px-5 py-3 font-bold text-sm uppercase tracking-wider" style="background:#ef4444;color:#fff;">Send</button>
+       </div>
+      </form><!-- Comments List -->
+      <div id="commentsList" class="space-y-2 max-h-64 overflow-y-auto"></div><!-- Status -->
+      <div id="widgetStatus" class="text-center mt-3 text-xs" style="color:rgba(255,255,255,0.4); min-height:16px;"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 text-center" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <p class="font-display text-lg tracking-widest" style="color:#ef4444;">STUNTCORE STUDIOS</p>
+    <p class="text-xs mt-2" style="color:rgba(255,255,255,0.3);">Action designed to look impossible.</p>
+   </footer>
+  </div>
+  <script>
+// ========== CONFIG & SDK ==========
+const defaultConfig = {
+  background_color: '#000000',
+  surface_color: '#0a0a0a',
+  text_color: '#ffffff',
+  primary_action_color: '#ef4444',
+  secondary_action_color: 'rgba(255,255,255,0.4)',
+  font_family: 'Barlow',
+  font_size: 16,
+  hero_title: 'IF IT LOOKS REAL, IT\'S BECAUSE IT IS.',
+  hero_subtitle: 'Professional stunt coordination for film and content.',
+  cta_primary: 'Book Production',
+  cta_secondary: 'View Scenes',
+  stunts_title: 'STUNT DISCIPLINES',
+  pricing_title: 'PRODUCTION TIERS',
+  bottom_cta_text: 'CREATE SCENES THAT HIT HARDER.'
+};
+
+let allData = [];
+let recordCount = 0;
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  document.body.style.background = c.background_color;
+  document.body.style.color = c.text_color;
+  document.body.style.fontFamily = `${c.font_family}, Barlow, sans-serif`;
+
+  const heroTitleEl = document.getElementById('heroTitle');
+  if (heroTitleEl) {
+    const parts = c.hero_title.split(',');
+    if (parts.length > 1) {
+      heroTitleEl.innerHTML = parts[0] + ',<br><span style="color:' + c.primary_action_color + ';">' + parts[1].trim() + '</span>';
+    } else {
+      heroTitleEl.innerHTML = c.hero_title;
+    }
+    heroTitleEl.style.fontSize = `${c.font_size * 4}px`;
+  }
+  const heroSub = document.getElementById('heroSubtitle');
+  if (heroSub) { heroSub.textContent = c.hero_subtitle; heroSub.style.fontSize = `${c.font_size * 1.25}px`; }
+  const ctaP = document.getElementById('ctaPrimary');
+  if (ctaP) { ctaP.textContent = c.cta_primary; ctaP.style.background = c.primary_action_color; }
+  const ctaS = document.getElementById('ctaSecondary');
+  if (ctaS) { ctaS.textContent = c.cta_secondary; ctaS.style.borderColor = c.secondary_action_color; }
+  const st = document.getElementById('stuntsTitle');
+  if (st) st.textContent = c.stunts_title;
+  const pt = document.getElementById('pricingTitle');
+  if (pt) pt.textContent = c.pricing_title;
+  const bct = document.getElementById('bottomCtaText');
+  if (bct) {
+    const words = c.bottom_cta_text.split(' ');
+    const lastTwo = words.slice(-2).join(' ');
+    const first = words.slice(0, -2).join(' ');
+    bct.innerHTML = first + '<br><span style="color:' + c.primary_action_color + ';">' + lastTwo + '</span>';
+  }
+
+  // Recolor accent elements
+  document.querySelectorAll('.red-accent-line').forEach(el => el.style.background = c.primary_action_color);
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => cfg.primary_action_color || defaultConfig.primary_action_color, set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => cfg.font_family || defaultConfig.font_family, set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => cfg.font_size || defaultConfig.font_size, set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', cfg.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', cfg.cta_secondary || defaultConfig.cta_secondary],
+    ['stunts_title', cfg.stunts_title || defaultConfig.stunts_title],
+    ['pricing_title', cfg.pricing_title || defaultConfig.pricing_title],
+    ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// ========== DATA SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    recordCount = data.length;
+    updateReactionCounts(data);
+    updatePriceCounts(data);
+    renderComments(data);
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts(data) {
+  const counts = {};
+  data.filter(d => d.type === 'reaction').forEach(d => { counts[d.reaction] = (counts[d.reaction] || 0) + 1; });
+  document.querySelectorAll('[data-r]').forEach(el => { el.textContent = counts[el.dataset.r] || 0; });
+}
+function updatePriceCounts(data) {
+  const counts = {};
+  data.filter(d => d.type === 'price').forEach(d => { counts[d.price] = (counts[d.price] || 0) + 1; });
+  document.querySelectorAll('[data-p]').forEach(el => { el.textContent = counts[el.dataset.p] || 0; });
+}
+function renderComments(data) {
+  const list = document.getElementById('commentsList');
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+  existing.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      const el = existing.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'px-4 py-3 rounded-sm text-sm';
+      div.style.cssText = 'background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06);';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      div.innerHTML = `<span class="comment-text" style="color:rgba(255,255,255,0.8);">${escapeHtml(c.comment)}</span><span class="ml-3 text-xs" style="color:rgba(255,255,255,0.3);">${timeStr}</span>`;
+      list.prepend(div);
+    }
+  });
+}
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+function showStatus(msg) {
+  const s = document.getElementById('widgetStatus');
+  s.textContent = msg;
+  setTimeout(() => { if (s.textContent === msg) s.textContent = ''; }, 2000);
+}
+
+async function submitReaction(emoji) {
+  if (recordCount >= 999) { showStatus('Limit reached. Thanks for participating!'); return; }
+  const btn = document.querySelector(`[data-reaction="${emoji}"]`);
+  if (btn) btn.style.opacity = '0.5';
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price: '', timestamp: new Date().toISOString() });
+  if (btn) btn.style.opacity = '1';
+  if (!r.isOk) showStatus('Could not save reaction.');
+}
+async function submitPrice(price) {
+  if (recordCount >= 999) { showStatus('Limit reached.'); return; }
+  const btns = document.querySelectorAll('#priceVoteContainer button');
+  btns.forEach(b => b.disabled = true);
+  const r = await window.dataSdk.create({ type: 'price', reaction: '', comment: '', price, timestamp: new Date().toISOString() });
+  btns.forEach(b => b.disabled = false);
+  if (!r.isOk) showStatus('Could not save vote.');
+}
+async function submitComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (recordCount >= 999) { showStatus('Limit reached.'); return; }
+  const btn = document.getElementById('commentBtn');
+  btn.textContent = '...'; btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price: '', timestamp: new Date().toISOString() });
+  btn.textContent = 'Send'; btn.disabled = false;
+  if (r.isOk) { input.value = ''; } else { showStatus('Could not save comment.'); }
+}
+
+// ========== SCROLL ANIMATIONS ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim-fade-up').forEach(el => observer.observe(el));
+
+// ========== FAQ ==========
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = '0px');
+  document.querySelectorAll('.faq-item button [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    if (icon) icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// ========== MOBILE MENU ==========
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('hidden');
+  menu.classList.toggle('flex');
+}
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.add('hidden');
+  menu.classList.remove('flex');
+}
+
+// ========== NAV ACTIVE STATE ==========
+const sections = ['home','stunts','scenes','process','pricing','faq','book'];
+const appRoot = document.getElementById('appRoot');
+appRoot.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 100) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+
+// Apply initial config
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a68d6f49327c5',t:'MTc3NTU3OTM0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

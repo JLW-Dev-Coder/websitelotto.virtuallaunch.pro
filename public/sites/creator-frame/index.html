@@ -1,1 +1,863 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/0a877a54-a2b2-404a-859f-be25c694eea4 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreatorFrame Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        syne: ['Syne', 'sans-serif'],
+        mono: ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Film grain overlay */
+.film-grain {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 3px; }
+
+/* Glow effects */
+.glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.15), 0 0 60px rgba(139, 92, 246, 0.05); }
+.glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), 0 0 60px rgba(59, 130, 246, 0.05); }
+
+.pricing-card {
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(139,92,246,0.3), transparent, rgba(59,130,246,0.3), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.pricing-card:hover::before { opacity: 1; }
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 0 80px rgba(59, 130, 246, 0.1);
+}
+.pricing-card.featured {
+  border-color: rgba(139,92,246,0.3);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+}
+.pricing-card.featured::before { opacity: 0.6; }
+
+/* Video frame hover */
+.video-frame {
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-frame:hover { transform: scale(1.02); }
+.video-frame .frame-inner {
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-frame:hover .frame-inner { transform: scale(1.08); }
+
+/* Reveal animations */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger delays */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+
+/* Timeline */
+.timeline-line {
+  width: 2px;
+  background: linear-gradient(to bottom, #8b5cf6, #3b82f6, transparent);
+}
+.timeline-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  border: 2px solid #000;
+  box-shadow: 0 0 12px rgba(139,92,246,0.5);
+}
+
+/* Play button */
+.play-btn {
+  transition: all 0.4s ease;
+}
+.play-btn:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 20px rgba(139,92,246,0.6));
+}
+
+/* Nav */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* FAQ */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+}
+.faq-answer.open {
+  max-height: 300px;
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+/* Reaction button */
+.reaction-btn {
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+.reaction-btn:hover { transform: scale(1.2); }
+.reaction-btn.selected {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 6px rgba(139,92,246,0.5));
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  z-index: 10000;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Mobile nav */
+.mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.mobile-menu.open { max-height: 400px; }
+
+/* Price vote pill */
+.price-pill {
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 13px;
+}
+.price-pill:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.1); }
+.price-pill.selected { border-color: #8b5cf6; background: rgba(139,92,246,0.2); color: #c4b5fd; }
+
+/* Inline confirm */
+.inline-confirm {
+  display: none;
+  gap: 8px;
+  align-items: center;
+}
+.inline-confirm.show { display: flex; }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Scanline effect on hero */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-black text-white font-syne overflow-auto" style="overflow-x:hidden;">
+  <div class="film-grain"></div><!-- Toast -->
+  <div id="toast" class="toast"></div><!-- Nav -->
+  <nav id="mainNav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(0,0,0,0.7);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.05);">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+     <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+      <rect x="2" y="6" width="24" height="16" rx="3" stroke="#8b5cf6" stroke-width="2" /><polygon points="11,10 11,18 19,14" fill="#8b5cf6" /><rect x="6" y="2" width="16" height="2" rx="1" fill="#3b82f6" opacity="0.5" /><rect x="6" y="24" width="16" height="2" rx="1" fill="#3b82f6" opacity="0.5" />
+     </svg><span class="font-bold text-lg tracking-tight" id="nav-brand">CreatorFrame</span> </a>
+    <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-gray-300 hover:text-white">Home</a> <a href="#work" class="nav-link text-sm text-gray-300 hover:text-white">Work</a> <a href="#process" class="nav-link text-sm text-gray-300 hover:text-white">Process</a> <a href="#packages" class="nav-link text-sm text-gray-300 hover:text-white">Packages</a> <a href="#pricing" class="nav-link text-sm text-gray-300 hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-sm text-gray-300 hover:text-white">FAQ</a> <a href="#book" class="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Book Shoot</a>
+    </div><button id="mobileToggle" class="md:hidden text-white" aria-label="Toggle menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div>
+   <div id="mobileMenu" class="mobile-menu md:hidden px-6">
+    <div class="flex flex-col gap-4 py-4 border-t border-white/5"><a href="#home" class="text-sm text-gray-300 hover:text-white mobile-nav-link">Home</a> <a href="#work" class="text-sm text-gray-300 hover:text-white mobile-nav-link">Work</a> <a href="#process" class="text-sm text-gray-300 hover:text-white mobile-nav-link">Process</a> <a href="#packages" class="text-sm text-gray-300 hover:text-white mobile-nav-link">Packages</a> <a href="#pricing" class="text-sm text-gray-300 hover:text-white mobile-nav-link">Pricing</a> <a href="#faq" class="text-sm text-gray-300 hover:text-white mobile-nav-link">FAQ</a> <a href="#book" class="px-5 py-2 rounded-full text-sm font-semibold text-center" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Book Shoot</a>
+    </div>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full flex items-center justify-center overflow-hidden" style="min-height:100%;">
+   <div class="scanlines"></div><!-- Background elements -->
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.06) 0%, transparent 50%);"></div><!-- Grid lines -->
+   <div class="absolute inset-0 opacity-[0.03]" style="background-image:linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);background-size:60px 60px;"></div>
+   <div class="relative z-10 max-w-5xl mx-auto px-6 text-center py-32">
+    <div class="reveal-up">
+     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 mb-8" style="background:rgba(139,92,246,0.08);"><span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span> <span class="text-xs font-mono text-gray-400 tracking-wider uppercase">Now Booking Q1 2025</span>
+     </div>
+    </div>
+    <h1 id="heroTitle" class="reveal-up delay-1 text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6">Your content deserves<br><span style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">better production.</span></h1>
+    <p id="heroSubtitle" class="reveal-up delay-2 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">Filming designed for creators and brands.</p>
+    <div class="reveal-up delay-3 flex flex-col sm:flex-row gap-4 justify-center"><a href="#book" class="px-8 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Book Shoot</a> <a href="#work" class="px-8 py-4 rounded-full font-semibold text-base border border-white/15 text-gray-300 hover:text-white hover:border-white/30 transition-all duration-300 hover:scale-105">View Work</a>
+    </div><!-- Filmstrip decorations -->
+    <div class="reveal-up delay-4 mt-16 flex justify-center gap-3 opacity-30">
+     <div class="w-16 h-10 rounded border border-white/20"></div>
+     <div class="w-16 h-10 rounded border border-purple-500/30 bg-purple-500/5"></div>
+     <div class="w-16 h-10 rounded border border-white/20"></div>
+     <div class="w-16 h-10 rounded border border-blue-500/30 bg-blue-500/5"></div>
+     <div class="w-16 h-10 rounded border border-white/20"></div>
+    </div>
+   </div>
+  </section><!-- WORK -->
+  <section id="work" class="w-full py-24 relative">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal-up mb-16 text-center"><span class="font-mono text-xs text-purple-400 tracking-widest uppercase">Portfolio</span>
+     <h2 id="workTitle" class="text-3xl sm:text-4xl md:text-5xl font-bold mt-3">Featured Work</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Video frame 1 -->
+     <div class="video-frame rounded-2xl reveal-up delay-1" style="aspect-ratio:16/9;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+      <div class="frame-inner w-full h-full rounded-2xl flex items-center justify-center relative" style="background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.08));">
+       <div class="absolute top-4 left-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> <span class="font-mono text-[10px] text-gray-500 tracking-wider">REC</span>
+       </div>
+       <svg class="play-btn" width="64" height="64" viewbox="0 0 64 64">
+        <circle cx="32" cy="32" r="30" fill="none" stroke="#8b5cf6" stroke-width="2" opacity="0.5" /><polygon points="26,18 26,46 48,32" fill="#8b5cf6" />
+       </svg>
+       <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center"><span class="font-mono text-[10px] text-gray-500">Brand Campaign — Lifestyle</span> <span class="font-mono text-[10px] text-gray-600">00:02:34</span>
+       </div>
+      </div>
+     </div><!-- Video frame 2 -->
+     <div class="video-frame rounded-2xl reveal-up delay-2" style="aspect-ratio:16/9;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+      <div class="frame-inner w-full h-full rounded-2xl flex items-center justify-center relative" style="background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(139,92,246,0.08));">
+       <div class="absolute top-4 left-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> <span class="font-mono text-[10px] text-gray-500 tracking-wider">REC</span>
+       </div>
+       <svg class="play-btn" width="64" height="64" viewbox="0 0 64 64">
+        <circle cx="32" cy="32" r="30" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.5" /><polygon points="26,18 26,46 48,32" fill="#3b82f6" />
+       </svg>
+       <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center"><span class="font-mono text-[10px] text-gray-500">Creator Series — YouTube</span> <span class="font-mono text-[10px] text-gray-600">00:08:12</span>
+       </div>
+      </div>
+     </div><!-- Video frame 3 -->
+     <div class="video-frame rounded-2xl reveal-up delay-3" style="aspect-ratio:16/9;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+      <div class="frame-inner w-full h-full rounded-2xl flex items-center justify-center relative" style="background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.15));">
+       <div class="absolute top-4 left-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> <span class="font-mono text-[10px] text-gray-500 tracking-wider">REC</span>
+       </div>
+       <svg class="play-btn" width="64" height="64" viewbox="0 0 64 64">
+        <circle cx="32" cy="32" r="30" fill="none" stroke="#8b5cf6" stroke-width="2" opacity="0.5" /><polygon points="26,18 26,46 48,32" fill="#8b5cf6" />
+       </svg>
+       <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center"><span class="font-mono text-[10px] text-gray-500">Product Launch — Tech</span> <span class="font-mono text-[10px] text-gray-600">00:01:45</span>
+       </div>
+      </div>
+     </div><!-- Video frame 4 -->
+     <div class="video-frame rounded-2xl reveal-up delay-4" style="aspect-ratio:16/9;background:#0a0a0a;border:1px solid rgba(255,255,255,0.06);">
+      <div class="frame-inner w-full h-full rounded-2xl flex items-center justify-center relative" style="background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(139,92,246,0.15));">
+       <div class="absolute top-4 left-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span> <span class="font-mono text-[10px] text-gray-500 tracking-wider">REC</span>
+       </div>
+       <svg class="play-btn" width="64" height="64" viewbox="0 0 64 64">
+        <circle cx="32" cy="32" r="30" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.5" /><polygon points="26,18 26,46 48,32" fill="#3b82f6" />
+       </svg>
+       <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center"><span class="font-mono text-[10px] text-gray-500">Music Video — Indie</span> <span class="font-mono text-[10px] text-gray-600">00:03:58</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PROCESS -->
+  <section id="process" class="w-full py-24 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.05) 0%, transparent 50%);"></div>
+   <div class="max-w-5xl mx-auto px-6 relative z-10">
+    <div class="reveal-up mb-16 text-center"><span class="font-mono text-xs text-blue-400 tracking-widest uppercase">Workflow</span>
+     <h2 id="processTitle" class="text-3xl sm:text-4xl md:text-5xl font-bold mt-3">Our Process</h2>
+    </div>
+    <div class="relative flex flex-col gap-16 ml-6 sm:ml-0"><!-- Timeline line (visible on sm+) -->
+     <div class="hidden sm:block absolute left-[28px] top-0 bottom-0 timeline-line"></div>
+     <div class="reveal-up delay-1 flex gap-6 items-start">
+      <div class="hidden sm:flex flex-shrink-0 flex-col items-center" style="width:58px;">
+       <div class="timeline-dot"></div>
+      </div>
+      <div class="flex-1 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.15);">
+         <i data-lucide="message-circle" style="width:20px;height:20px;color:#8b5cf6;"></i>
+        </div>
+        <div><span class="font-mono text-[10px] text-gray-500 block">STEP 01</span> <span class="font-semibold text-lg">Discovery Call</span>
+        </div>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed">We learn your brand, audience, and content goals. A tailored brief is built from this conversation.</p>
+      </div>
+     </div>
+     <div class="reveal-up delay-2 flex gap-6 items-start">
+      <div class="hidden sm:flex flex-shrink-0 flex-col items-center" style="width:58px;">
+       <div class="timeline-dot" style="background:#6366f1;box-shadow:0 0 12px rgba(99,102,241,0.5);"></div>
+      </div>
+      <div class="flex-1 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(99,102,241,0.15);">
+         <i data-lucide="clipboard-list" style="width:20px;height:20px;color:#6366f1;"></i>
+        </div>
+        <div><span class="font-mono text-[10px] text-gray-500 block">STEP 02</span> <span class="font-semibold text-lg">Pre-Production</span>
+        </div>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed">Shot lists, location scouting, wardrobe guidance, and scheduling — all handled before cameras roll.</p>
+      </div>
+     </div>
+     <div class="reveal-up delay-3 flex gap-6 items-start">
+      <div class="hidden sm:flex flex-shrink-0 flex-col items-center" style="width:58px;">
+       <div class="timeline-dot" style="background:#3b82f6;box-shadow:0 0 12px rgba(59,130,246,0.5);"></div>
+      </div>
+      <div class="flex-1 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.15);">
+         <i data-lucide="video" style="width:20px;height:20px;color:#3b82f6;"></i>
+        </div>
+        <div><span class="font-mono text-[10px] text-gray-500 block">STEP 03</span> <span class="font-semibold text-lg">Shoot Day</span>
+        </div>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed">Professional cinematography, lighting, and direction. We film efficiently to maximize every minute.</p>
+      </div>
+     </div>
+     <div class="reveal-up delay-4 flex gap-6 items-start">
+      <div class="hidden sm:flex flex-shrink-0 flex-col items-center" style="width:58px;">
+       <div class="timeline-dot" style="background:#2563eb;box-shadow:0 0 12px rgba(37,99,235,0.5);"></div>
+      </div>
+      <div class="flex-1 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(37,99,235,0.15);">
+         <i data-lucide="film" style="width:20px;height:20px;color:#2563eb;"></i>
+        </div>
+        <div><span class="font-mono text-[10px] text-gray-500 block">STEP 04</span> <span class="font-semibold text-lg">Edit &amp; Deliver</span>
+        </div>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed">Color grading, sound design, motion graphics, and final delivery in all required formats.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PACKAGES -->
+  <section id="packages" class="w-full py-24 relative">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal-up mb-16 text-center"><span class="font-mono text-xs text-purple-400 tracking-widest uppercase">Services</span>
+     <h2 id="packagesTitle" class="text-3xl sm:text-4xl md:text-5xl font-bold mt-3">Production Packages</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+     <div class="reveal-up delay-1 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(139,92,246,0.12);">
+       <i data-lucide="camera" style="width:24px;height:24px;color:#8b5cf6;"></i>
+      </div>
+      <h3 class="font-bold text-xl mb-2">YouTube Content</h3>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Long-form video built for retention. Multi-cam setups, B-roll packages, and optimized edits for the algorithm.</p>
+      <div class="flex flex-wrap gap-2"><span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">Multi-Cam</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">B-Roll</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">Thumbnails</span>
+      </div>
+     </div>
+     <div class="reveal-up delay-2 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,0.12);">
+       <i data-lucide="smartphone" style="width:24px;height:24px;color:#3b82f6;"></i>
+      </div>
+      <h3 class="font-bold text-xl mb-2">Short-Form &amp; Reels</h3>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Vertical content engineered for virality. Quick cuts, trending formats, and scroll-stopping hooks.</p>
+      <div class="flex flex-wrap gap-2"><span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">9:16</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">Captions</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">Hooks</span>
+      </div>
+     </div>
+     <div class="reveal-up delay-3 p-6 rounded-2xl border border-white/5" style="background:rgba(255,255,255,0.02);">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(139,92,246,0.12);">
+       <i data-lucide="building-2" style="width:24px;height:24px;color:#a78bfa;"></i>
+      </div>
+      <h3 class="font-bold text-xl mb-2">Brand Production</h3>
+      <p class="text-gray-400 text-sm leading-relaxed mb-4">Commercial-grade video for launches, campaigns, and corporate storytelling. Full crew and post-production.</p>
+      <div class="flex flex-wrap gap-2"><span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">4K Cinema</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">Color Grade</span> <span class="text-[11px] font-mono px-2.5 py-1 rounded-full border border-white/10 text-gray-400">SFX</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRICING -->
+  <section id="pricing" class="w-full py-24 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.04) 0%, transparent 60%);"></div>
+   <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="reveal-up mb-16 text-center"><span class="font-mono text-xs text-blue-400 tracking-widest uppercase">Investment</span>
+     <h2 id="pricingTitle" class="text-3xl sm:text-4xl md:text-5xl font-bold mt-3">Transparent Pricing</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Starter -->
+     <div class="pricing-card reveal-up delay-1 rounded-2xl p-8 flex flex-col" style="background:rgba(255,255,255,0.02);"><span class="font-mono text-xs text-gray-500 tracking-wider uppercase">Starter</span>
+      <h3 class="text-2xl font-bold mt-2 mb-1">Single Shoot</h3>
+      <p class="text-gray-400 text-sm mb-6">One session, full delivery.</p>
+      <div class="mb-6"><span class="text-4xl font-extrabold">$1,500</span> <span class="text-gray-500 text-sm ml-1">/shoot</span>
+      </div>
+      <ul class="flex-1 space-y-3 mb-8">
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Half-day shoot (4 hours)</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>1 edited deliverable</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Color grading included</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Shot list &amp; brief</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full border border-white/15 text-sm font-semibold hover:bg-white/5 transition-all">Get Started</a>
+     </div><!-- Growth (featured) -->
+     <div class="pricing-card featured reveal-up delay-2 rounded-2xl p-8 flex flex-col" style="background:rgba(139,92,246,0.04);">
+      <div class="flex items-center justify-between"><span class="font-mono text-xs text-purple-400 tracking-wider uppercase">Growth</span> <span class="text-[10px] font-mono px-3 py-1 rounded-full" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;">POPULAR</span>
+      </div>
+      <h3 class="text-2xl font-bold mt-2 mb-1">Recurring Content</h3>
+      <p class="text-gray-400 text-sm mb-6">Monthly filming &amp; editing.</p>
+      <div class="mb-6"><span class="text-4xl font-extrabold">$3,800</span> <span class="text-gray-500 text-sm ml-1">/month</span>
+      </div>
+      <ul class="flex-1 space-y-3 mb-8">
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>2 full-day shoots/month</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>4 edited videos</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Short-form repurposing</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Content strategy session</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#8b5cf6;flex-shrink:0;"></i>Priority scheduling</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full text-sm font-semibold transition-all hover:shadow-lg hover:shadow-purple-500/25" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Start Growing</a>
+     </div><!-- Studio -->
+     <div class="pricing-card reveal-up delay-3 rounded-2xl p-8 flex flex-col" style="background:rgba(255,255,255,0.02);"><span class="font-mono text-xs text-gray-500 tracking-wider uppercase">Studio</span>
+      <h3 class="text-2xl font-bold mt-2 mb-1">Full Production</h3>
+      <p class="text-gray-400 text-sm mb-6">Complete content system.</p>
+      <div class="mb-6"><span class="text-4xl font-extrabold">$8,500</span> <span class="text-gray-500 text-sm ml-1">/month</span>
+      </div>
+      <ul class="flex-1 space-y-3 mb-8">
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>Unlimited shoot days</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>8+ deliverables/month</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>Full post-production suite</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>Dedicated producer</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>Motion graphics &amp; VFX</li>
+       <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;"></i>Content calendar management</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full border border-white/15 text-sm font-semibold hover:bg-white/5 transition-all">Go Studio</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" class="w-full py-24 relative">
+   <div class="max-w-3xl mx-auto px-6">
+    <div class="reveal-up mb-16 text-center"><span class="font-mono text-xs text-purple-400 tracking-widest uppercase">Support</span>
+     <h2 id="faqTitle" class="text-3xl sm:text-4xl md:text-5xl font-bold mt-3">Frequently Asked Questions</h2>
+    </div>
+    <div class="space-y-3" id="faqContainer">
+     <div class="faq-item reveal-up delay-1 rounded-xl border border-white/5 overflow-hidden" style="background:rgba(255,255,255,0.02);"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" aria-expanded="false"> <span class="text-sm font-semibold pr-4">How far in advance should I book?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#8b5cf6;flex-shrink:0;transition:transform 0.3s ease;"></i> </button>
+      <div class="faq-answer px-6 text-sm text-gray-400 leading-relaxed">
+       We recommend booking 2–4 weeks ahead. Rush bookings may be available depending on crew availability.
+      </div>
+     </div>
+     <div class="faq-item reveal-up delay-2 rounded-xl border border-white/5 overflow-hidden" style="background:rgba(255,255,255,0.02);"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" aria-expanded="false"> <span class="text-sm font-semibold pr-4">What's your turnaround time for edits?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#8b5cf6;flex-shrink:0;transition:transform 0.3s ease;"></i> </button>
+      <div class="faq-answer px-6 text-sm text-gray-400 leading-relaxed">
+       Standard turnaround is 5–7 business days. Growth and Studio clients receive expedited 48-hour delivery.
+      </div>
+     </div>
+     <div class="faq-item reveal-up delay-3 rounded-xl border border-white/5 overflow-hidden" style="background:rgba(255,255,255,0.02);"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" aria-expanded="false"> <span class="text-sm font-semibold pr-4">Do you provide equipment or should I bring my own?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#8b5cf6;flex-shrink:0;transition:transform 0.3s ease;"></i> </button>
+      <div class="faq-answer px-6 text-sm text-gray-400 leading-relaxed">
+       We bring everything — cameras, lenses, lighting, audio, and grip. You just show up ready to create.
+      </div>
+     </div>
+     <div class="faq-item reveal-up delay-4 rounded-xl border border-white/5 overflow-hidden" style="background:rgba(255,255,255,0.02);"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" aria-expanded="false"> <span class="text-sm font-semibold pr-4">Can I get content for multiple platforms from one shoot?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#8b5cf6;flex-shrink:0;transition:transform 0.3s ease;"></i> </button>
+      <div class="faq-answer px-6 text-sm text-gray-400 leading-relaxed">
+       Absolutely. We shoot with repurposing in mind — one session can yield YouTube, TikTok, Instagram, and podcast content.
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="book" class="w-full py-24 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 30%, rgba(139,92,246,0.08) 0%, transparent 50%);"></div>
+   <div class="max-w-4xl mx-auto px-6 relative z-10">
+    <div class="reveal-up text-center mb-16">
+     <h2 id="bottomCtaText" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Create content that<br><span style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">stands out.</span></h2>
+     <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto">Let's build your content production engine. Book a free discovery call today.</p><a href="#book" class="inline-block px-10 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25 hover:scale-105" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Book Your Shoot →</a>
+    </div><!-- Vote + Comment Widget -->
+    <div class="reveal-up delay-2 rounded-2xl border border-white/5 p-6 sm:p-8" style="background:rgba(255,255,255,0.02);">
+     <div class="text-center mb-6"><span class="font-mono text-[10px] text-gray-500 tracking-widest uppercase block mb-2">Embed Widget Here</span>
+      <h3 class="text-xl font-bold mb-1">What do you think?</h3>
+      <p class="text-gray-400 text-sm">React, vote on pricing, and leave a comment.</p>
+     </div><!-- Reactions -->
+     <div class="flex justify-center gap-4 mb-6 flex-wrap" id="reactionsBar"><button class="reaction-btn text-2xl" data-reaction="🔥" aria-label="Fire reaction">🔥 <span class="text-xs text-gray-500 font-mono" id="count-fire">0</span></button> <button class="reaction-btn text-2xl" data-reaction="💜" aria-label="Heart reaction">💜 <span class="text-xs text-gray-500 font-mono" id="count-heart">0</span></button> <button class="reaction-btn text-2xl" data-reaction="🎬" aria-label="Clapper reaction">🎬 <span class="text-xs text-gray-500 font-mono" id="count-clapper">0</span></button> <button class="reaction-btn text-2xl" data-reaction="⚡" aria-label="Lightning reaction">⚡ <span class="text-xs text-gray-500 font-mono" id="count-lightning">0</span></button> <button class="reaction-btn text-2xl" data-reaction="🚀" aria-label="Rocket reaction">🚀 <span class="text-xs text-gray-500 font-mono" id="count-rocket">0</span></button>
+     </div><!-- Price vote -->
+     <div class="mb-6">
+      <p class="text-sm text-gray-400 text-center mb-3">What would you pay for a single shoot?</p>
+      <div class="flex justify-center gap-2 flex-wrap" id="priceVoteBar"><button class="price-pill font-mono text-gray-400" data-price="$500">$500</button> <button class="price-pill font-mono text-gray-400" data-price="$750">$750</button> <button class="price-pill font-mono text-gray-400" data-price="$1,000">$1,000</button> <button class="price-pill font-mono text-gray-400" data-price="$1,500">$1,500</button> <button class="price-pill font-mono text-gray-400" data-price="$2,000">$2,000</button> <button class="price-pill font-mono text-gray-400" data-price="$2,500">$2,500</button> <button class="price-pill font-mono text-gray-400" data-price="$3,000">$3,000</button> <button class="price-pill font-mono text-gray-400" data-price="$4,000">$4,000</button> <button class="price-pill font-mono text-gray-400" data-price="$5,000">$5,000</button> <button class="price-pill font-mono text-gray-400" data-price="$5,000+">$5,000+</button>
+      </div>
+      <div id="priceVoteCounts" class="text-center mt-2 text-xs font-mono text-gray-600"></div>
+     </div><!-- Comment form -->
+     <form id="commentForm" class="mb-6">
+      <div class="flex gap-3"><input type="text" id="commentInput" placeholder="Leave a comment..." class="flex-1 bg-transparent border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 transition-colors" aria-label="Comment"> <button type="submit" id="commentSubmitBtn" class="px-5 py-3 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-purple-500/20" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">Send</button>
+      </div>
+     </form><!-- Comments list -->
+     <div id="commentsList" class="space-y-3 max-h-64 overflow-y-auto"></div>
+     <p id="noComments" class="text-center text-gray-600 text-sm font-mono">No comments yet. Be the first!</p>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full py-12 border-t border-white/5">
+   <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+     <svg width="20" height="20" viewbox="0 0 28 28" fill="none">
+      <rect x="2" y="6" width="24" height="16" rx="3" stroke="#8b5cf6" stroke-width="2" /><polygon points="11,10 11,18 19,14" fill="#8b5cf6" />
+     </svg><span class="text-sm text-gray-500">CreatorFrame Studio © 2025</span>
+    </div>
+    <div class="flex gap-6"><a href="#home" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Home</a> <a href="#work" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Work</a> <a href="#pricing" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Pricing</a> <a href="#book" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Book</a>
+    </div>
+   </div>
+  </footer>
+  <script>
+// ============ STATE ============
+let allData = [];
+let userReaction = null;
+let userPriceVote = null;
+
+const defaultConfig = {
+  hero_title: 'Your content deserves better production.',
+  hero_subtitle: 'Filming designed for creators and brands.',
+  work_title: 'Featured Work',
+  process_title: 'Our Process',
+  packages_title: 'Production Packages',
+  pricing_title: 'Transparent Pricing',
+  bottom_cta_text: 'Create content that stands out.',
+  faq_title: 'Frequently Asked Questions',
+  background_color: '#000000',
+  accent_color: '#8b5cf6',
+  secondary_accent: '#3b82f6',
+  text_color: '#ffffff',
+  muted_text_color: '#9ca3af',
+  font_family: 'Syne',
+  font_size: 16
+};
+
+// ============ ELEMENT SDK ============
+function applyConfig(config) {
+  const c = Object.assign({}, defaultConfig, config);
+
+  // Text content
+  const heroEl = document.getElementById('heroTitle');
+  if (heroEl) heroEl.innerHTML = c.hero_title.replace(/(better production\.?|stands out\.?)/, '<br><span style="background:linear-gradient(135deg,' + c.accent_color + ',' + c.secondary_accent + ');-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$1</span>');
+
+  const sub = document.getElementById('heroSubtitle');
+  if (sub) sub.textContent = c.hero_subtitle;
+
+  const wt = document.getElementById('workTitle');
+  if (wt) wt.textContent = c.work_title;
+
+  const pt = document.getElementById('processTitle');
+  if (pt) pt.textContent = c.process_title;
+
+  const pkt = document.getElementById('packagesTitle');
+  if (pkt) pkt.textContent = c.packages_title;
+
+  const prt = document.getElementById('pricingTitle');
+  if (prt) prt.textContent = c.pricing_title;
+
+  const bt = document.getElementById('bottomCtaText');
+  if (bt) bt.innerHTML = c.bottom_cta_text.replace(/(stands out\.?)/, '<br><span style="background:linear-gradient(135deg,' + c.accent_color + ',' + c.secondary_accent + ');-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$1</span>');
+
+  const fqt = document.getElementById('faqTitle');
+  if (fqt) fqt.textContent = c.faq_title;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  // Font
+  const fontStack = c.font_family + ', sans-serif';
+  document.body.style.fontFamily = fontStack;
+
+  // Font size
+  const base = c.font_size || 16;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = (base * 2.5) + 'px');
+  document.querySelectorAll('p, li').forEach(el => {
+    if (!el.closest('.font-mono') && !el.classList.contains('font-mono')) {
+      // only adjust main text
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => {
+    const c = Object.assign({}, defaultConfig, config);
+    return {
+      recolorables: [
+        { get: () => c.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => c.muted_text_color, set: (v) => { config.muted_text_color = v; window.elementSdk.setConfig({ muted_text_color: v }); } },
+        { get: () => c.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => c.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => c.secondary_accent, set: (v) => { config.secondary_accent = v; window.elementSdk.setConfig({ secondary_accent: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = Object.assign({}, defaultConfig, config);
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['work_title', c.work_title],
+      ['process_title', c.process_title],
+      ['packages_title', c.packages_title],
+      ['pricing_title', c.pricing_title],
+      ['bottom_cta_text', c.bottom_cta_text],
+      ['faq_title', c.faq_title]
+    ]);
+  }
+});
+
+// ============ DATA SDK ============
+function renderWidget() {
+  // Count reactions
+  const reactionCounts = { '🔥': 0, '💜': 0, '🎬': 0, '⚡': 0, '🚀': 0 };
+  const priceCounts = {};
+  const comments = [];
+
+  allData.forEach(d => {
+    if (d.type === 'reaction' && reactionCounts.hasOwnProperty(d.reaction)) {
+      reactionCounts[d.reaction]++;
+    }
+    if (d.type === 'price_vote' && d.price_vote) {
+      priceCounts[d.price_vote] = (priceCounts[d.price_vote] || 0) + 1;
+    }
+    if (d.type === 'comment' && d.comment) {
+      comments.push(d);
+    }
+  });
+
+  document.getElementById('count-fire').textContent = reactionCounts['🔥'];
+  document.getElementById('count-heart').textContent = reactionCounts['💜'];
+  document.getElementById('count-clapper').textContent = reactionCounts['🎬'];
+  document.getElementById('count-lightning').textContent = reactionCounts['⚡'];
+  document.getElementById('count-rocket').textContent = reactionCounts['🚀'];
+
+  // Price vote counts
+  const pvEl = document.getElementById('priceVoteCounts');
+  const totalVotes = Object.values(priceCounts).reduce((a, b) => a + b, 0);
+  pvEl.textContent = totalVotes > 0 ? totalVotes + ' vote' + (totalVotes !== 1 ? 's' : '') : '';
+
+  // Comments
+  const list = document.getElementById('commentsList');
+  const noComments = document.getElementById('noComments');
+  const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  const newIds = new Set(comments.map(c => c.__backendId));
+  existingEls.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach((c, i) => {
+    if (existingEls.has(c.__backendId)) {
+      const el = existingEls.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'flex items-start gap-3 p-3 rounded-xl border border-white/5';
+      div.style.background = 'rgba(255,255,255,0.02)';
+      const time = c.timestamp ? new Date(c.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+      div.innerHTML = '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(139,92,246,0.15);"><i data-lucide="user" style="width:14px;height:14px;color:#8b5cf6;"></i></div><div class="flex-1 min-w-0"><p class="comment-text text-sm text-gray-300 break-words">' + escapeHtml(c.comment) + '</p><span class="text-[10px] font-mono text-gray-600">' + time + '</span></div>';
+      list.appendChild(div);
+    }
+  });
+
+  noComments.style.display = comments.length > 0 ? 'none' : 'block';
+  lucide.createIcons();
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderWidget();
+  }
+};
+
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+
+// ============ REACTIONS ============
+document.getElementById('reactionsBar').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.reaction-btn');
+  if (!btn || btn.disabled) return;
+  const reaction = btn.dataset.reaction;
+
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+
+  btn.disabled = true;
+  const res = await window.dataSdk.create({ type: 'reaction', reaction, comment: '', price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  if (!res.isOk) showToast('Error submitting reaction');
+});
+
+// ============ PRICE VOTES ============
+document.getElementById('priceVoteBar').addEventListener('click', async (e) => {
+  const pill = e.target.closest('.price-pill');
+  if (!pill || pill.disabled) return;
+
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+
+  pill.disabled = true;
+  const res = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', price_vote: pill.dataset.price, timestamp: new Date().toISOString() });
+  pill.disabled = false;
+  if (!res.isOk) showToast('Error submitting vote');
+});
+
+// ============ COMMENTS ============
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const btn = document.getElementById('commentSubmitBtn');
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+  const res = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  btn.textContent = 'Send';
+  if (res.isOk) { input.value = ''; } else { showToast('Error posting comment'); }
+});
+
+// ============ TOAST ============
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ FAQ ============
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('i');
+    const isOpen = answer.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-toggle i').forEach(i => i.style.transform = '');
+    document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (!isOpen) {
+      answer.classList.add('open');
+      icon.style.transform = 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// ============ MOBILE NAV ============
+document.getElementById('mobileToggle').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(l => {
+  l.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+});
+
+// ============ SCROLL REVEAL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal-up, .reveal-left').forEach(el => observer.observe(el));
+
+// ============ ACTIVE NAV ============
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.nav-link[href="#' + entry.target.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => navObserver.observe(s));
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a15ebc5d127c5',t:'MTc3NTU3NTk1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

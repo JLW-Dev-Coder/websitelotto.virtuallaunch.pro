@@ -1,1 +1,772 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/428991e0-6eb9-47ba-9e66-5864ba26dca0 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpaceLayer AR</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #050505; color: #e0e0e0; }
+.font-heading { font-family: 'Syne', sans-serif; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #14b8a6; border-radius: 3px; }
+
+/* Glass panel */
+.glass { background: rgba(20, 184, 166, 0.04); border: 1px solid rgba(20, 184, 166, 0.12); backdrop-filter: blur(20px); }
+.glass-strong { background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.2); backdrop-filter: blur(30px); }
+
+/* Grid background */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(20,184,166,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,184,166,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Glow */
+.teal-glow { box-shadow: 0 0 40px rgba(20,184,166,0.15), 0 0 80px rgba(20,184,166,0.05); }
+.teal-glow-strong { box-shadow: 0 0 60px rgba(20,184,166,0.25), 0 0 120px rgba(20,184,166,0.1); }
+
+/* Animated border for pricing */
+.pricing-card {
+  position: relative;
+  overflow: hidden;
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: conic-gradient(from 0deg, transparent, #14b8a6, transparent, #14b8a6, transparent);
+  border-radius: inherit;
+  z-index: -1;
+  animation: borderSpin 6s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.pricing-card:hover::before { opacity: 1; }
+@keyframes borderSpin { to { transform: rotate(360deg); } }
+.pricing-card-inner {
+  background: #0a0a0a;
+  border-radius: inherit;
+  height: 100%;
+}
+
+/* Perspective hover */
+.persp-card {
+  transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
+  transform-style: preserve-3d;
+}
+.persp-card:hover { transform: perspective(800px) rotateY(-3deg) rotateX(2deg) scale(1.02); }
+
+/* Fade-in animation */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* Before/After slider */
+.ba-container { position: relative; overflow: hidden; cursor: ew-resize; }
+.ba-before, .ba-after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ba-before { z-index: 2; }
+.ba-after { z-index: 1; }
+.ba-divider {
+  position: absolute; top: 0; bottom: 0; width: 3px;
+  background: #14b8a6; z-index: 3;
+  box-shadow: 0 0 15px rgba(20,184,166,0.5);
+}
+.ba-handle {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #14b8a6; z-index: 4;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(20,184,166,0.5);
+}
+
+/* Room SVG outline animation */
+.room-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 3s ease forwards; }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+/* Pulse */
+@keyframes pulse-teal {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(20,184,166,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(20,184,166,0); }
+}
+.pulse-teal { animation: pulse-teal 2.5s infinite; }
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: #14b8a6;
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Reaction button */
+.reaction-btn {
+  transition: all 0.2s;
+  border: 1px solid rgba(20,184,166,0.15);
+  background: rgba(20,184,166,0.05);
+}
+.reaction-btn:hover { border-color: rgba(20,184,166,0.4); background: rgba(20,184,166,0.12); transform: scale(1.1); }
+.reaction-btn.selected { border-color: #14b8a6; background: rgba(20,184,166,0.2); }
+
+/* Stagger children */
+.stagger > * { opacity: 0; transform: translateY(20px); animation: staggerIn 0.5s ease forwards; }
+.stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger > *:nth-child(6) { animation-delay: 0.6s; }
+@keyframes staggerIn { to { opacity: 1; transform: translateY(0); } }
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: rgba(20,184,166,0.3);
+  border-radius: 50%;
+  animation: floatParticle 8s ease-in-out infinite;
+}
+@keyframes floatParticle {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  25% { transform: translateY(-40px) translateX(20px); opacity: 0.7; }
+  50% { transform: translateY(-20px) translateX(-15px); opacity: 0.4; }
+  75% { transform: translateY(-60px) translateX(10px); opacity: 0.6; }
+}
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        teal: { 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 400: '#2dd4bf', 300: '#5eead4' },
+        dark: { 900: '#050505', 800: '#0a0a0a', 700: '#111111', 600: '#1a1a1a' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto grid-bg" style="position:relative;"><!-- Particles -->
+   <div id="particles" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div><!-- NAV -->
+   <nav id="main-nav" style="position:fixed;top:0;left:0;right:0;z-index:50;transition:background 0.3s;">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-heading font-bold text-xl tracking-tight" style="color:#14b8a6;" id="nav-brand"> <span style="display:inline-flex;align-items:center;gap:8px;">
+       <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+        <rect x="2" y="2" width="24" height="24" rx="4" stroke="#14b8a6" stroke-width="1.5" class="room-line" /><line x1="2" y1="14" x2="26" y2="14" stroke="#14b8a6" stroke-width="0.5" opacity="0.4" /><line x1="14" y1="2" x2="14" y2="26" stroke="#14b8a6" stroke-width="0.5" opacity="0.4" /><circle cx="14" cy="14" r="4" stroke="#14b8a6" stroke-width="1" fill="none" opacity="0.6" />
+       </svg><span id="brand-text">SpaceLayer AR</span> </span> </a>
+     <div class="hidden md:flex items-center gap-8 text-sm" style="color:#888;"><a href="#home" class="nav-link hover:text-white transition">Home</a> <a href="#visualize" class="nav-link hover:text-white transition">Visualize</a> <a href="#layouts" class="nav-link hover:text-white transition">Layouts</a> <a href="#transformations" class="nav-link hover:text-white transition">Transformations</a> <a href="#pricing" class="nav-link hover:text-white transition">Pricing</a> <a href="#faq" class="nav-link hover:text-white transition">FAQ</a> <a href="#start" class="px-5 py-2 rounded-full text-sm font-medium transition" style="background:#14b8a6;color:#050505;">Start Design</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:#14b8a6;"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm" style="color:#888;background:rgba(5,5,5,0.95);"><a href="#home" class="hover:text-white py-1">Home</a> <a href="#visualize" class="hover:text-white py-1">Visualize</a> <a href="#layouts" class="hover:text-white py-1">Layouts</a> <a href="#transformations" class="hover:text-white py-1">Transformations</a> <a href="#pricing" class="hover:text-white py-1">Pricing</a> <a href="#faq" class="hover:text-white py-1">FAQ</a> <a href="#start" class="py-2 rounded-full text-center font-medium" style="background:#14b8a6;color:#050505;">Start Design</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative flex items-center justify-center" style="min-height:100%;padding:120px 24px 80px;">
+    <div class="max-w-5xl mx-auto text-center relative z-10"><!-- Room SVG outline -->
+     <svg class="mx-auto mb-8" width="280" height="160" viewbox="0 0 280 160" fill="none" style="opacity:0.5;"><rect x="10" y="10" width="260" height="140" rx="2" stroke="#14b8a6" stroke-width="0.8" class="room-line" /> <line x1="10" y1="80" x2="140" y2="80" stroke="#14b8a6" stroke-width="0.5" class="room-line" style="animation-delay:0.5s;" /> <line x1="140" y1="10" x2="140" y2="150" stroke="#14b8a6" stroke-width="0.5" class="room-line" style="animation-delay:0.8s;" /> <rect x="30" y="25" width="45" height="35" rx="2" stroke="#2dd4bf" stroke-width="0.5" stroke-dasharray="3 3" class="room-line" style="animation-delay:1s;" /> <rect x="160" y="90" width="80" height="45" rx="2" stroke="#2dd4bf" stroke-width="0.5" stroke-dasharray="3 3" class="room-line" style="animation-delay:1.3s;" /> <circle cx="90" cy="110" r="18" stroke="#14b8a6" stroke-width="0.4" fill="none" class="room-line" style="animation-delay:1.5s;" />
+     </svg>
+     <h1 id="hero-title" class="font-heading font-bold leading-tight mb-6" style="font-size:clamp(2.5rem,6vw,4.5rem);color:white;letter-spacing:-0.03em;">Design your space<br>
+      before touching it.</h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl mb-10 max-w-2xl mx-auto" style="color:#888;line-height:1.7;">Augmented reality for interior decisions.</p>
+     <div class="flex flex-wrap items-center justify-center gap-4"><a href="#start" class="px-8 py-3.5 rounded-full font-heading font-semibold text-sm tracking-wide transition pulse-teal" style="background:#14b8a6;color:#050505;"> Start Design </a> <a href="#transformations" class="px-8 py-3.5 rounded-full font-heading font-medium text-sm tracking-wide transition glass hover:border-teal-400" style="color:#14b8a6;"> View Transformations </a>
+     </div>
+    </div><!-- Ambient glow -->
+    <div style="position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(20,184,166,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+   </section><!-- VISUALIZE -->
+   <section id="visualize" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Spatial Preview</p>
+      <h2 id="viz-title" class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">AR Room Overlays</h2>
+      <p class="max-w-xl mx-auto" style="color:#666;">See furniture, colors, and layouts placed directly in your space through augmented reality.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 stagger"><!-- Card 1 -->
+      <div class="glass rounded-2xl p-6 persp-card">
+       <div class="w-full rounded-xl mb-5 flex items-center justify-center" style="height:180px;background:linear-gradient(135deg,#0a1a18,#0d2925);">
+        <svg width="120" height="100" viewbox="0 0 120 100" fill="none"><rect x="5" y="5" width="110" height="90" rx="4" stroke="#14b8a6" stroke-width="0.8" /> <rect x="15" y="50" width="30" height="20" rx="2" fill="rgba(20,184,166,0.15)" stroke="#14b8a6" stroke-width="0.5" /> <rect x="55" y="30" width="50" height="40" rx="2" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="0.5" stroke-dasharray="4 2" /> <circle cx="80" cy="50" r="8" fill="rgba(20,184,166,0.2)" stroke="#14b8a6" stroke-width="0.5" /> <text x="60" y="80" fill="#14b8a6" font-size="7" opacity="0.6">
+          overlay active
+         </text>
+        </svg>
+       </div>
+       <h3 class="font-heading font-semibold text-lg mb-2" style="color:white;">Furniture Placement</h3>
+       <p class="text-sm" style="color:#666;">Drag, drop, and preview real furniture models in your actual room dimensions.</p>
+      </div><!-- Card 2 -->
+      <div class="glass rounded-2xl p-6 persp-card">
+       <div class="w-full rounded-xl mb-5 flex items-center justify-center" style="height:180px;background:linear-gradient(135deg,#0a1218,#0d1925);">
+        <svg width="120" height="100" viewbox="0 0 120 100" fill="none"><rect x="5" y="5" width="50" height="90" rx="3" fill="rgba(20,184,166,0.06)" stroke="#14b8a6" stroke-width="0.6" /> <rect x="65" y="5" width="50" height="90" rx="3" fill="rgba(45,212,191,0.06)" stroke="#2dd4bf" stroke-width="0.6" /> <rect x="12" y="30" width="36" height="10" rx="1" fill="#14b8a6" opacity="0.3" /> <rect x="72" y="30" width="36" height="10" rx="1" fill="#2dd4bf" opacity="0.3" /> <rect x="12" y="50" width="36" height="10" rx="1" fill="#14b8a6" opacity="0.2" /> <rect x="72" y="50" width="36" height="10" rx="1" fill="#2dd4bf" opacity="0.2" /> <text x="18" y="22" fill="#14b8a6" font-size="7">
+          A
+         </text> <text x="80" y="22" fill="#2dd4bf" font-size="7">
+          B
+         </text>
+        </svg>
+       </div>
+       <h3 class="font-heading font-semibold text-lg mb-2" style="color:white;">Wall &amp; Palette Swap</h3>
+       <p class="text-sm" style="color:#666;">Test paint colors, wallpapers, and textures on your walls in real time.</p>
+      </div><!-- Card 3 -->
+      <div class="glass rounded-2xl p-6 persp-card">
+       <div class="w-full rounded-xl mb-5 flex items-center justify-center" style="height:180px;background:linear-gradient(135deg,#12100a,#1a150d);">
+        <svg width="120" height="100" viewbox="0 0 120 100" fill="none"><circle cx="60" cy="20" r="10" stroke="#14b8a6" stroke-width="0.8" fill="none" /> <line x1="60" y1="30" x2="60" y2="55" stroke="#14b8a6" stroke-width="0.5" /> <line x1="60" y1="55" x2="30" y2="80" stroke="#14b8a6" stroke-width="0.5" stroke-dasharray="3 2" /> <line x1="60" y1="55" x2="90" y2="80" stroke="#14b8a6" stroke-width="0.5" stroke-dasharray="3 2" /> <rect x="20" y="75" width="22" height="16" rx="2" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="0.5" /> <rect x="78" y="75" width="22" height="16" rx="2" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="0.5" /> <text x="35" y="90" fill="#14b8a6" font-size="5" text-anchor="middle">
+          3D
+         </text> <text x="89" y="90" fill="#14b8a6" font-size="5" text-anchor="middle">
+          AR
+         </text>
+        </svg>
+       </div>
+       <h3 class="font-heading font-semibold text-lg mb-2" style="color:white;">Lighting Simulation</h3>
+       <p class="text-sm" style="color:#666;">Preview how natural and artificial light interacts with your design choices.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- LAYOUTS -->
+   <section id="layouts" class="py-24 px-6" style="background:rgba(10,10,10,0.6);">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Arrangements</p>
+      <h2 id="lay-title" class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">Design Layouts</h2>
+      <p class="max-w-xl mx-auto" style="color:#666;">Explore curated layout templates for every room type and style.</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 stagger">
+      <div class="glass rounded-xl p-5 persp-card group cursor-pointer">
+       <div class="rounded-lg mb-4 flex items-center justify-center" style="height:120px;background:linear-gradient(135deg,#0a1a18,#0f2520);">
+        <svg width="80" height="60" viewbox="0 0 80 60" fill="none"><rect x="2" y="2" width="76" height="56" rx="2" stroke="#14b8a6" stroke-width="0.6" /> <rect x="6" y="6" width="30" height="24" rx="1" fill="rgba(20,184,166,0.15)" /> <rect x="40" y="6" width="34" height="12" rx="1" fill="rgba(20,184,166,0.1)" /> <rect x="40" y="22" width="34" height="8" rx="1" fill="rgba(20,184,166,0.08)" /> <rect x="6" y="36" width="68" height="16" rx="1" fill="rgba(20,184,166,0.06)" />
+        </svg>
+       </div>
+       <h4 class="font-heading font-semibold text-sm mb-1" style="color:white;">Open Concept Living</h4>
+       <p class="text-xs" style="color:#555;">Flowing spaces with defined zones</p>
+      </div>
+      <div class="glass rounded-xl p-5 persp-card group cursor-pointer">
+       <div class="rounded-lg mb-4 flex items-center justify-center" style="height:120px;background:linear-gradient(135deg,#0d0a18,#150d25);">
+        <svg width="80" height="60" viewbox="0 0 80 60" fill="none"><rect x="2" y="2" width="76" height="56" rx="2" stroke="#14b8a6" stroke-width="0.6" /> <rect x="6" y="6" width="20" height="48" rx="1" fill="rgba(20,184,166,0.12)" /> <rect x="30" y="6" width="20" height="48" rx="1" fill="rgba(20,184,166,0.08)" /> <rect x="54" y="6" width="20" height="48" rx="1" fill="rgba(20,184,166,0.12)" />
+        </svg>
+       </div>
+       <h4 class="font-heading font-semibold text-sm mb-1" style="color:white;">Minimal Bedroom</h4>
+       <p class="text-xs" style="color:#555;">Clean symmetry and calm palette</p>
+      </div>
+      <div class="glass rounded-xl p-5 persp-card group cursor-pointer">
+       <div class="rounded-lg mb-4 flex items-center justify-center" style="height:120px;background:linear-gradient(135deg,#18120a,#251a0d);">
+        <svg width="80" height="60" viewbox="0 0 80 60" fill="none"><rect x="2" y="2" width="76" height="56" rx="2" stroke="#14b8a6" stroke-width="0.6" /> <rect x="20" y="15" width="40" height="30" rx="12" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="0.4" /> <rect x="6" y="6" width="14" height="10" rx="1" fill="rgba(20,184,166,0.15)" /> <rect x="60" y="6" width="14" height="10" rx="1" fill="rgba(20,184,166,0.15)" />
+        </svg>
+       </div>
+       <h4 class="font-heading font-semibold text-sm mb-1" style="color:white;">Modern Kitchen</h4>
+       <p class="text-xs" style="color:#555;">Island-centered workflow design</p>
+      </div>
+      <div class="glass rounded-xl p-5 persp-card group cursor-pointer">
+       <div class="rounded-lg mb-4 flex items-center justify-center" style="height:120px;background:linear-gradient(135deg,#0a1518,#0d2022);">
+        <svg width="80" height="60" viewbox="0 0 80 60" fill="none"><rect x="2" y="2" width="76" height="56" rx="2" stroke="#14b8a6" stroke-width="0.6" /> <rect x="6" y="35" width="68" height="18" rx="1" fill="rgba(20,184,166,0.1)" /> <rect x="6" y="6" width="32" height="25" rx="1" fill="rgba(20,184,166,0.08)" /> <rect x="42" y="6" width="32" height="25" rx="1" fill="rgba(20,184,166,0.12)" />
+        </svg>
+       </div>
+       <h4 class="font-heading font-semibold text-sm mb-1" style="color:white;">Home Office</h4>
+       <p class="text-xs" style="color:#555;">Productive dual-screen setups</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- TRANSFORMATIONS -->
+   <section id="transformations" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Before → After</p>
+      <h2 id="trans-title" class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">Transformations</h2>
+      <p class="max-w-xl mx-auto" style="color:#666;">Drag the slider to reveal the design transformation.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8"><!-- BA 1 -->
+      <div class="fade-up">
+       <div class="ba-container rounded-2xl" style="height:280px;" data-ba="1">
+        <div class="ba-before rounded-2xl" style="background:linear-gradient(135deg,#1a1a1a,#111);clip-path:inset(0 50% 0 0);">
+         <div class="w-full h-full flex flex-col items-center justify-center p-6">
+          <svg width="100" height="70" viewbox="0 0 100 70" fill="none" style="opacity:0.6;"><rect x="5" y="5" width="90" height="60" rx="2" stroke="#444" stroke-width="0.8" /> <rect x="10" y="35" width="35" height="20" rx="1" stroke="#444" stroke-width="0.5" fill="rgba(68,68,68,0.1)" /> <rect x="55" y="15" width="30" height="40" rx="1" stroke="#444" stroke-width="0.5" fill="rgba(68,68,68,0.08)" />
+          </svg><span class="mt-3 text-xs font-medium" style="color:#555;">Before</span>
+         </div>
+        </div>
+        <div class="ba-after rounded-2xl" style="background:linear-gradient(135deg,#0a1a18,#0d2520);">
+         <div class="w-full h-full flex flex-col items-center justify-center p-6">
+          <svg width="100" height="70" viewbox="0 0 100 70" fill="none"><rect x="5" y="5" width="90" height="60" rx="2" stroke="#14b8a6" stroke-width="0.8" /> <rect x="10" y="35" width="35" height="20" rx="1" stroke="#14b8a6" stroke-width="0.5" fill="rgba(20,184,166,0.15)" /> <rect x="55" y="15" width="30" height="40" rx="1" stroke="#14b8a6" stroke-width="0.5" fill="rgba(20,184,166,0.1)" /> <circle cx="25" cy="25" r="8" fill="rgba(20,184,166,0.2)" stroke="#14b8a6" stroke-width="0.4" />
+          </svg><span class="mt-3 text-xs font-medium" style="color:#14b8a6;">After</span>
+         </div>
+        </div>
+        <div class="ba-divider" style="left:50%;"></div>
+        <div class="ba-handle" style="left:50%;">
+         <i data-lucide="grip-vertical" style="width:16px;height:16px;color:#050505;"></i>
+        </div>
+       </div>
+       <p class="text-center mt-3 text-sm font-heading font-medium" style="color:#888;">Living Room Revival</p>
+      </div><!-- BA 2 -->
+      <div class="fade-up">
+       <div class="ba-container rounded-2xl" style="height:280px;" data-ba="2">
+        <div class="ba-before rounded-2xl" style="background:linear-gradient(135deg,#1a1510,#151010);clip-path:inset(0 50% 0 0);">
+         <div class="w-full h-full flex flex-col items-center justify-center p-6">
+          <svg width="100" height="70" viewbox="0 0 100 70" fill="none" style="opacity:0.6;"><rect x="5" y="5" width="90" height="60" rx="2" stroke="#444" stroke-width="0.8" /> <rect x="25" y="25" width="50" height="8" rx="1" stroke="#444" stroke-width="0.5" fill="rgba(68,68,68,0.1)" /> <rect x="10" y="10" width="15" height="50" rx="1" stroke="#444" stroke-width="0.5" fill="rgba(68,68,68,0.08)" />
+          </svg><span class="mt-3 text-xs font-medium" style="color:#555;">Before</span>
+         </div>
+        </div>
+        <div class="ba-after rounded-2xl" style="background:linear-gradient(135deg,#0d0a18,#18102a);">
+         <div class="w-full h-full flex flex-col items-center justify-center p-6">
+          <svg width="100" height="70" viewbox="0 0 100 70" fill="none"><rect x="5" y="5" width="90" height="60" rx="2" stroke="#14b8a6" stroke-width="0.8" /> <rect x="25" y="25" width="50" height="8" rx="2" stroke="#2dd4bf" stroke-width="0.5" fill="rgba(45,212,191,0.12)" /> <rect x="10" y="10" width="15" height="50" rx="1" stroke="#14b8a6" stroke-width="0.5" fill="rgba(20,184,166,0.1)" /> <rect x="80" y="10" width="10" height="50" rx="1" stroke="#14b8a6" stroke-width="0.4" fill="rgba(20,184,166,0.08)" />
+          </svg><span class="mt-3 text-xs font-medium" style="color:#14b8a6;">After</span>
+         </div>
+        </div>
+        <div class="ba-divider" style="left:50%;"></div>
+        <div class="ba-handle" style="left:50%;">
+         <i data-lucide="grip-vertical" style="width:16px;height:16px;color:#050505;"></i>
+        </div>
+       </div>
+       <p class="text-center mt-3 text-sm font-heading font-medium" style="color:#888;">Kitchen Reimagined</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-24 px-6" style="background:rgba(10,10,10,0.6);">
+    <div class="max-w-5xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Investment</p>
+      <h2 class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">Choose Your View</h2>
+      <p class="max-w-xl mx-auto" style="color:#666;">Every tier includes AR visualization, design templates, and layout previews.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 stagger"><!-- Basic -->
+      <div class="pricing-card rounded-2xl persp-card" style="z-index:1;">
+       <div class="pricing-card-inner rounded-2xl p-8 flex flex-col">
+        <p class="text-xs font-semibold tracking-widest uppercase mb-2" style="color:#14b8a6;">Basic</p>
+        <h3 class="font-heading font-bold text-3xl mb-1" style="color:white;">$149</h3>
+        <p class="text-xs mb-6" style="color:#555;">Single room preview</p>
+        <ul class="flex-1 space-y-3 mb-8">
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>1 room AR overlay</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>3 layout templates</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Before/after preview</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>48-hour delivery</li>
+        </ul><button class="w-full py-3 rounded-full font-heading font-semibold text-sm transition glass hover:border-teal-400" style="color:#14b8a6;">Select Basic</button>
+       </div>
+      </div><!-- Pro -->
+      <div class="pricing-card rounded-2xl persp-card teal-glow" style="z-index:2;transform:scale(1.03);">
+       <div class="pricing-card-inner rounded-2xl p-8 flex flex-col relative"><span class="absolute top-4 right-4 text-xs px-3 py-1 rounded-full font-medium" style="background:rgba(20,184,166,0.15);color:#14b8a6;">Popular</span>
+        <p class="text-xs font-semibold tracking-widest uppercase mb-2" style="color:#14b8a6;">Pro</p>
+        <h3 class="font-heading font-bold text-3xl mb-1" style="color:white;">$349</h3>
+        <p class="text-xs mb-6" style="color:#555;">Multi-room visualization</p>
+        <ul class="flex-1 space-y-3 mb-8">
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Up to 4 rooms</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>10 layout templates</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Full color palette system</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Lighting simulation</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>24-hour delivery</li>
+        </ul><button class="w-full py-3 rounded-full font-heading font-semibold text-sm transition" style="background:#14b8a6;color:#050505;">Select Pro</button>
+       </div>
+      </div><!-- Studio -->
+      <div class="pricing-card rounded-2xl persp-card" style="z-index:1;">
+       <div class="pricing-card-inner rounded-2xl p-8 flex flex-col">
+        <p class="text-xs font-semibold tracking-widest uppercase mb-2" style="color:#14b8a6;">Studio</p>
+        <h3 class="font-heading font-bold text-3xl mb-1" style="color:white;">$799</h3>
+        <p class="text-xs mb-6" style="color:#555;">Full design system</p>
+        <ul class="flex-1 space-y-3 mb-8">
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Unlimited rooms</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Custom layout design</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Full renovation guide</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Priority support</li>
+         <li class="flex items-start gap-2 text-sm" style="color:#999;"><i data-lucide="check" style="width:16px;height:16px;color:#14b8a6;flex-shrink:0;margin-top:2px;"></i>Contractor referrals</li>
+        </ul><button class="w-full py-3 rounded-full font-heading font-semibold text-sm transition glass hover:border-teal-400" style="color:#14b8a6;">Select Studio</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Support</p>
+      <h2 class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">FAQ</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="faq-item glass rounded-xl overflow-hidden fade-up"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="font-heading font-medium text-sm" style="color:white;">How does AR visualization work?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#14b8a6;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 text-sm overflow-hidden" style="max-height:0;transition:max-height 0.4s ease,padding 0.4s;color:#666;">
+        Upload photos of your room or provide dimensions. Our AR engine maps your space and overlays design elements — furniture, colors, lighting — so you see real results before committing.
+       </div>
+      </div>
+      <div class="faq-item glass rounded-xl overflow-hidden fade-up"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="font-heading font-medium text-sm" style="color:white;">What file formats do I receive?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#14b8a6;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 text-sm overflow-hidden" style="max-height:0;transition:max-height 0.4s ease,padding 0.4s;color:#666;">
+        You receive high-resolution renders (PNG/PDF), interactive 3D models, and an AR-compatible file for mobile viewing. Studio tier includes editable design files.
+       </div>
+      </div>
+      <div class="faq-item glass rounded-xl overflow-hidden fade-up"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="font-heading font-medium text-sm" style="color:white;">Can I request revisions?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#14b8a6;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 text-sm overflow-hidden" style="max-height:0;transition:max-height 0.4s ease,padding 0.4s;color:#666;">
+        Basic includes 1 revision, Pro includes 3, and Studio includes unlimited revisions until you're satisfied with the design.
+       </div>
+      </div>
+      <div class="faq-item glass rounded-xl overflow-hidden fade-up"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="font-heading font-medium text-sm" style="color:white;">Do you offer contractor referrals?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#14b8a6;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 text-sm overflow-hidden" style="max-height:0;transition:max-height 0.4s ease,padding 0.4s;color:#666;">
+        Studio tier includes access to our vetted contractor network. We match you with professionals who can bring your AR-previewed design to life.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="start" class="py-24 px-6" style="background:rgba(10,10,10,0.6);">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="fade-up">
+      <div class="mb-8" style="display:inline-block;">
+       <svg width="60" height="60" viewbox="0 0 60 60" fill="none"><rect x="5" y="5" width="50" height="50" rx="8" stroke="#14b8a6" stroke-width="1" class="room-line" /> <circle cx="30" cy="30" r="12" stroke="#14b8a6" stroke-width="0.8" fill="rgba(20,184,166,0.1)" class="room-line" style="animation-delay:0.5s;" /> <circle cx="30" cy="30" r="4" fill="#14b8a6" opacity="0.6" />
+       </svg>
+      </div>
+      <h2 id="bottom-cta-text" class="font-heading font-bold text-3xl md:text-5xl mb-4" style="color:white;">See it before it exists.</h2>
+      <p class="max-w-lg mx-auto mb-10" style="color:#666;">Start your spatial design journey. Upload your room, choose a style, and watch it transform.</p><a href="#home" class="inline-block px-10 py-4 rounded-full font-heading font-semibold text-sm tracking-wide transition pulse-teal" style="background:#14b8a6;color:#050505;"> Start Your Design </a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="mt-20 fade-up">
+      <div class="glass-strong rounded-2xl p-8 text-left max-w-2xl mx-auto">
+       <h3 class="font-heading font-semibold text-lg mb-2" style="color:white;">Community Feedback</h3>
+       <p class="text-sm mb-6" style="color:#555;">React, vote on fair pricing, and share your thoughts.</p><!-- Reactions -->
+       <div class="mb-6">
+        <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">React</p>
+        <div class="flex flex-wrap gap-2" id="reactions-container"><button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="🔥" onclick="handleReaction('🔥')"><span>🔥</span><span class="reaction-count text-xs" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="💡" onclick="handleReaction('💡')"><span>💡</span><span class="reaction-count text-xs" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="🏠" onclick="handleReaction('🏠')"><span>🏠</span><span class="reaction-count text-xs" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="✨" onclick="handleReaction('✨')"><span>✨</span><span class="reaction-count text-xs" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="👏" onclick="handleReaction('👏')"><span>👏</span><span class="reaction-count text-xs" style="color:#888;">0</span></button>
+        </div>
+       </div><!-- Price Vote -->
+       <div class="mb-6">
+        <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">What would you pay?</p>
+        <div class="flex flex-wrap gap-2" id="price-votes-container"><button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$49" onclick="handlePriceVote('$49')"><span>$49</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$99" onclick="handlePriceVote('$99')"><span>$99</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$149" onclick="handlePriceVote('$149')"><span>$149</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$199" onclick="handlePriceVote('$199')"><span>$199</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$249" onclick="handlePriceVote('$249')"><span>$249</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$299" onclick="handlePriceVote('$299')"><span>$299</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$349" onclick="handlePriceVote('$349')"><span>$349</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$499" onclick="handlePriceVote('$499')"><span>$499</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$699" onclick="handlePriceVote('$699')"><span>$699</span> <span class="price-count" style="color:#888;">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-xs" data-price="$999" onclick="handlePriceVote('$999')"><span>$999</span> <span class="price-count" style="color:#888;">0</span></button>
+        </div>
+       </div><!-- Comments -->
+       <div>
+        <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#14b8a6;">Comments</p>
+        <form id="comment-form" class="flex gap-2 mb-4" onsubmit="handleCommentSubmit(event)"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-2.5 rounded-xl text-sm border-0 outline-none" style="background:rgba(20,184,166,0.06);color:white;border:1px solid rgba(20,184,166,0.15);" autocomplete="off"> <button type="submit" id="comment-submit-btn" class="px-5 py-2.5 rounded-xl font-heading font-semibold text-xs transition" style="background:#14b8a6;color:#050505;">Send</button>
+        </form>
+        <div id="comments-list" class="space-y-2 max-h-60 overflow-y-auto"></div>
+        <p id="comments-empty" class="text-xs text-center py-4" style="color:#444;">No comments yet. Be the first!</p>
+       </div><!-- Embed note -->
+       <div class="mt-6 pt-4" style="border-top:1px solid rgba(20,184,166,0.1);">
+        <p class="text-xs text-center" style="color:#333;">Embed Widget Here</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-8 px-6 text-center" style="border-top:1px solid rgba(20,184,166,0.08);">
+    <p class="text-xs" style="color:#333;">© 2025 SpaceLayer AR. All rights reserved.</p>
+   </footer>
+  </div>
+  <script>
+// ========== CONFIG & SDK ==========
+const defaultConfig = {
+  background_color: '#050505',
+  surface_color: '#0a0a0a',
+  text_color: '#e0e0e0',
+  primary_action_color: '#14b8a6',
+  secondary_action_color: '#888888',
+  font_family: 'Syne',
+  font_size: 16,
+  brand_name: 'SpaceLayer AR',
+  hero_title: 'Design your space before touching it.',
+  hero_subtitle: 'Augmented reality for interior decisions.',
+  visualize_title: 'AR Room Overlays',
+  layouts_title: 'Design Layouts',
+  transforms_title: 'Transformations',
+  bottom_cta_text: 'See it before it exists.'
+};
+
+let allData = [];
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+
+  document.body.style.background = bg;
+  document.body.style.color = txt;
+
+  const wrapper = document.getElementById('app-wrapper');
+  if (wrapper) wrapper.style.background = bg;
+
+  // Pricing card inners
+  document.querySelectorAll('.pricing-card-inner').forEach(el => el.style.background = surface);
+
+  // Primary action buttons
+  document.querySelectorAll('[style*="background:#14b8a6"], [style*="background: #14b8a6"]').forEach(el => {
+    if (el.style.background.includes('#14b8a6') || el.style.backgroundColor === 'rgb(20, 184, 166)') {
+      el.style.background = primary;
+    }
+  });
+
+  // Text with secondary color
+  document.querySelectorAll('[style*="color:#888"]').forEach(el => el.style.color = secondary);
+
+  // Headings font
+  document.querySelectorAll('.font-heading').forEach(el => {
+    el.style.fontFamily = `${font}, sans-serif`;
+  });
+
+  // Font sizes
+  const heroEl = document.getElementById('hero-title');
+  if (heroEl) heroEl.style.fontSize = `clamp(${baseSize * 1.5}px, 6vw, ${baseSize * 2.8}px)`;
+
+  const subtitleEl = document.getElementById('hero-subtitle');
+  if (subtitleEl) subtitleEl.style.fontSize = `${baseSize * 1.15}px`;
+
+  // Text content
+  const brandEl = document.getElementById('brand-text');
+  if (brandEl) brandEl.textContent = config.brand_name || defaultConfig.brand_name;
+
+  if (heroEl) {
+    const t = config.hero_title || defaultConfig.hero_title;
+    heroEl.innerHTML = t.replace(/\n/g, '<br>');
+  }
+  if (subtitleEl) subtitleEl.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+
+  const vizEl = document.getElementById('viz-title');
+  if (vizEl) vizEl.textContent = config.visualize_title || defaultConfig.visualize_title;
+
+  const layEl = document.getElementById('lay-title');
+  if (layEl) layEl.textContent = config.layouts_title || defaultConfig.layouts_title;
+
+  const transEl = document.getElementById('trans-title');
+  if (transEl) transEl.textContent = config.transforms_title || defaultConfig.transforms_title;
+
+  const ctaEl = document.getElementById('bottom-cta-text');
+  if (ctaEl) ctaEl.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['brand_name', config.brand_name || defaultConfig.brand_name],
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['visualize_title', config.visualize_title || defaultConfig.visualize_title],
+    ['layouts_title', config.layouts_title || defaultConfig.layouts_title],
+    ['transforms_title', config.transforms_title || defaultConfig.transforms_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// ========== DATA SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    updatePriceVoteCounts();
+    updateCommentsList();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts() {
+  const counts = {};
+  allData.filter(d => d.type === 'reaction').forEach(d => {
+    counts[d.reaction] = (counts[d.reaction] || 0) + 1;
+  });
+  document.querySelectorAll('#reactions-container .reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.reaction-count').textContent = counts[r] || 0;
+  });
+}
+
+function updatePriceVoteCounts() {
+  const counts = {};
+  allData.filter(d => d.type === 'price_vote').forEach(d => {
+    counts[d.price_vote] = (counts[d.price_vote] || 0) + 1;
+  });
+  document.querySelectorAll('#price-votes-container .reaction-btn').forEach(btn => {
+    const p = btn.dataset.price;
+    btn.querySelector('.price-count').textContent = counts[p] || 0;
+  });
+}
+
+function updateCommentsList() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => {
+    return new Date(b.timestamp) - new Date(a.timestamp);
+  });
+  const list = document.getElementById('comments-list');
+  const empty = document.getElementById('comments-empty');
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  const currentIds = new Set();
+  comments.forEach(c => {
+    currentIds.add(c.__backendId);
+    if (existingMap.has(c.__backendId)) {
+      existingMap.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'glass rounded-lg px-4 py-3';
+      div.innerHTML = `<p class="text-sm" style="color:#ccc;">${escapeHtml(c.comment_text)}</p><p class="text-xs mt-1" style="color:#444;">${new Date(c.timestamp).toLocaleString()}</p>`;
+      list.prepend(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+  empty.style.display = comments.length ? 'none' : 'block';
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.querySelector(`[data-reaction="${emoji}"]`);
+  btn.classList.add('selected');
+  btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, section_id: 'bottom', comment_text: '', price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  if (!r.isOk) showToast('Error saving reaction');
+}
+
+async function handlePriceVote(price) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.querySelector(`[data-price="${price}"]`);
+  btn.classList.add('selected');
+  btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'price_vote', reaction: '', section_id: 'bottom', comment_text: '', price_vote: price, timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  if (!r.isOk) showToast('Error saving vote');
+}
+
+async function handleCommentSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', section_id: 'bottom', comment_text: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.textContent = 'Send';
+  btn.disabled = false;
+  if (r.isOk) { input.value = ''; } else { showToast('Error saving comment'); }
+}
+
+// Toast
+function showToast(msg) {
+  let t = document.getElementById('toast-msg');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-msg';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 24px;border-radius:12px;background:#14b8a6;color:#050505;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 2500);
+}
+
+// ========== INTERACTIONS ==========
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = answer.style.maxHeight !== '0px' && answer.style.maxHeight !== '';
+  if (isOpen) {
+    answer.style.maxHeight = '0px';
+    answer.style.paddingBottom = '0';
+    icon.style.transform = 'rotate(0deg)';
+  } else {
+    answer.style.maxHeight = answer.scrollHeight + 20 + 'px';
+    answer.style.paddingBottom = '16px';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Before/After sliders
+document.querySelectorAll('.ba-container').forEach(container => {
+  let isDragging = false;
+  const update = (x) => {
+    const rect = container.getBoundingClientRect();
+    let pct = ((x - rect.left) / rect.width) * 100;
+    pct = Math.max(5, Math.min(95, pct));
+    container.querySelector('.ba-before').style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    container.querySelector('.ba-divider').style.left = pct + '%';
+    container.querySelector('.ba-handle').style.left = pct + '%';
+  };
+  container.addEventListener('mousedown', (e) => { isDragging = true; update(e.clientX); });
+  container.addEventListener('touchstart', (e) => { isDragging = true; update(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('mousemove', (e) => { if (isDragging) update(e.clientX); });
+  window.addEventListener('touchmove', (e) => { if (isDragging) update(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('mouseup', () => isDragging = false);
+  window.addEventListener('touchend', () => isDragging = false);
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Nav background on scroll
+const nav = document.getElementById('main-nav');
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  nav.style.background = appWrapper.scrollTop > 50 ? 'rgba(5,5,5,0.9)' : 'transparent';
+  nav.style.backdropFilter = appWrapper.scrollTop > 50 ? 'blur(20px)' : 'none';
+});
+
+// Particles
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 15; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  p.style.animationDuration = (6 + Math.random() * 6) + 's';
+  particlesContainer.appendChild(p);
+}
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a662fb61027c5',t:'MTc3NTU3OTI0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

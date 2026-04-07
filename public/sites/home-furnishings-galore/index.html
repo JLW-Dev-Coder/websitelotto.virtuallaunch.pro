@@ -1,1 +1,593 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5292456b-16e3-4f08-923d-117683c2c957 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoftStructure Home</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['DM Sans', 'Helvetica', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+/* Scroll reveal */
+.sr { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.sr.visible { opacity: 1; transform: translateY(0); }
+.sr-left { opacity: 0; transform: translateX(-60px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.sr-left.visible { opacity: 1; transform: translateX(0); }
+.sr-right { opacity: 0; transform: translateX(60px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.sr-right.visible { opacity: 1; transform: translateX(0); }
+.sr-scale { opacity: 0; transform: scale(0.92); transition: opacity 0.7s ease, transform 0.7s ease; }
+.sr-scale.visible { opacity: 1; transform: scale(1); }
+
+/* Stagger children */
+.stagger > *:nth-child(1) { transition-delay: 0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.12s; }
+.stagger > *:nth-child(3) { transition-delay: 0.24s; }
+.stagger > *:nth-child(4) { transition-delay: 0.36s; }
+
+/* Slow pan on hero */
+@keyframes slowpan {
+  0% { transform: scale(1.08) translate(0, 0); }
+  50% { transform: scale(1.12) translate(-1.5%, -1%); }
+  100% { transform: scale(1.08) translate(0, 0); }
+}
+.hero-pan { animation: slowpan 20s ease-in-out infinite; }
+
+/* Pulse CTA */
+@keyframes gentlepulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(180,145,110,0.3); }
+  50% { box-shadow: 0 0 0 10px rgba(180,145,110,0); }
+}
+.cta-pulse { animation: gentlepulse 2.5s ease-in-out infinite; }
+
+/* Texture overlay */
+.texture-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s, left 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Smooth image hover */
+.img-hover img { transition: transform 0.6s ease; }
+.img-hover:hover img { transform: scale(1.05); }
+
+/* Star fill animation */
+@keyframes staranim {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Sticky nav */
+.sticky-nav {
+  transition: background-color 0.3s, box-shadow 0.3s, padding 0.3s;
+}
+.sticky-nav.scrolled {
+  background-color: rgba(250,247,243,0.95);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+  backdrop-filter: blur(8px);
+}
+
+/* Best value ribbon */
+.ribbon {
+  position: absolute;
+  top: 16px;
+  right: -8px;
+  padding: 4px 16px 4px 12px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 2;
+}
+.ribbon::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -6px;
+  border: 3px solid transparent;
+}
+
+/* Vote widget styles */
+.vote-btn { transition: all 0.2s ease; }
+.vote-btn:hover { transform: scale(1.05); }
+.vote-btn.voted { transform: scale(1.1); }
+
+.comment-input:focus { outline: none; box-shadow: 0 0 0 1px rgba(180,145,110,0.4); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ccc3b8; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background-color:#FAF7F3; color:#3A3530; font-family:'DM Sans',sans-serif;"><!-- Sticky Nav -->
+   <nav id="main-nav" class="sticky-nav fixed top-0 left-0 w-full z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between"><a href="#home" class="font-serif text-xl tracking-wide" style="color:#3A3530; font-weight:500; text-decoration:none;">SoftStructure</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-xs tracking-widest uppercase" style="color:#6B635A; text-decoration:none;">Home</a> <a href="#collections" class="nav-link text-xs tracking-widest uppercase" style="color:#6B635A; text-decoration:none;">Collections</a> <a href="#rooms" class="nav-link text-xs tracking-widest uppercase" style="color:#6B635A; text-decoration:none;">Shop by Room</a> <a href="#bundles" class="nav-link text-xs tracking-widest uppercase" style="color:#6B635A; text-decoration:none;">Bundles</a> <a href="#reviews" class="nav-link text-xs tracking-widest uppercase" style="color:#6B635A; text-decoration:none;">Reviews</a> <a href="#shop" class="nav-link text-xs tracking-widest uppercase px-4 py-2 border" style="color:#3A3530; border-color:#B4916E; text-decoration:none;">Shop</a>
+     </div><button id="mobile-toggle" class="md:hidden" style="color:#3A3530;" aria-label="Toggle menu"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 flex flex-col gap-3"><a href="#home" class="text-xs tracking-widest uppercase py-2" style="color:#6B635A; text-decoration:none;">Home</a> <a href="#collections" class="text-xs tracking-widest uppercase py-2" style="color:#6B635A; text-decoration:none;">Collections</a> <a href="#rooms" class="text-xs tracking-widest uppercase py-2" style="color:#6B635A; text-decoration:none;">Shop by Room</a> <a href="#bundles" class="text-xs tracking-widest uppercase py-2" style="color:#6B635A; text-decoration:none;">Bundles</a> <a href="#reviews" class="text-xs tracking-widest uppercase py-2" style="color:#6B635A; text-decoration:none;">Reviews</a> <a href="#shop" class="text-xs tracking-widest uppercase py-2 inline-block border px-4" style="color:#3A3530; border-color:#B4916E; text-decoration:none;">Shop</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full overflow-hidden texture-overlay" style="min-height:600px; height:85%;">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&amp;q=80" alt="Cozy living room with neutral furnishings" class="hero-pan w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='linear-gradient(135deg,#d4c5b5,#e8ddd2)';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(250,247,243,0.92) 0%, rgba(250,247,243,0.6) 50%, rgba(250,247,243,0.2) 100%);"></div>
+    </div>
+    <div class="relative z-10 h-full flex items-center px-6" style="min-height:600px;">
+     <div class="max-w-7xl mx-auto w-full">
+      <div class="max-w-xl">
+       <p class="sr text-xs tracking-widest uppercase mb-4" style="color:#B4916E;">SoftStructure Home</p>
+       <h1 id="hero-title" class="sr font-serif text-5xl md:text-6xl lg:text-7xl leading-tight mb-6" style="color:#3A3530; font-weight:300;">Texture is the new luxury.</h1>
+       <p id="hero-subtitle" class="sr text-base md:text-lg mb-10" style="color:#6B635A; font-weight:300; line-height:1.7;">Furnishings that make your home feel finished.</p>
+       <div class="sr flex flex-wrap gap-4"><a href="#collections" id="cta-primary-btn" class="cta-pulse inline-block px-8 py-3.5 text-xs tracking-widest uppercase" style="background:#3A3530; color:#FAF7F3; text-decoration:none;">Shop Collections</a> <a href="#rooms" id="cta-secondary-btn" class="inline-block px-8 py-3.5 text-xs tracking-widest uppercase border" style="color:#3A3530; border-color:#3A3530; text-decoration:none;">Browse Rooms</a>
+       </div>
+      </div>
+     </div>
+    </div><!-- Thin decorative line -->
+    <div class="absolute bottom-0 left-0 w-full h-px" style="background:linear-gradient(to right, transparent, #B4916E40, transparent);"></div>
+   </section><!-- Collections -->
+   <section id="collections" class="w-full px-6 py-20 md:py-28">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="sr text-xs tracking-widest uppercase mb-3" style="color:#B4916E;">Curated for You</p>
+      <h2 class="sr font-serif text-3xl md:text-5xl" style="color:#3A3530; font-weight:300;">Seasonal Collections</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger"><!-- Warm Neutrals -->
+      <div class="sr group cursor-pointer img-hover">
+       <div class="relative overflow-hidden mb-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1615529182904-14819c35db37?w=600&amp;q=80" alt="Warm neutral textiles and decor" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#d4c5b5';this.alt='Image unavailable';">
+        <div class="absolute inset-0 flex items-end p-5" style="background:linear-gradient(to top, rgba(58,53,48,0.6), transparent 60%);">
+         <div>
+          <h3 class="font-serif text-xl mb-1" style="color:#FAF7F3;">Warm Neutrals</h3>
+          <p class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.7);">24 pieces</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Coastal Light -->
+      <div class="sr group cursor-pointer img-hover">
+       <div class="relative overflow-hidden mb-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1617325247661-675ab4b64ae2?w=600&amp;q=80" alt="Light coastal home decor" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#c9d5d8';this.alt='Image unavailable';">
+        <div class="absolute inset-0 flex items-end p-5" style="background:linear-gradient(to top, rgba(58,53,48,0.6), transparent 60%);">
+         <div>
+          <h3 class="font-serif text-xl mb-1" style="color:#FAF7F3;">Coastal Light</h3>
+          <p class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.7);">18 pieces</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Modern Boho -->
+      <div class="sr group cursor-pointer img-hover">
+       <div class="relative overflow-hidden mb-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&amp;q=80" alt="Modern boho styled room" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#c8b9a6';this.alt='Image unavailable';">
+        <div class="absolute inset-0 flex items-end p-5" style="background:linear-gradient(to top, rgba(58,53,48,0.6), transparent 60%);">
+         <div>
+          <h3 class="font-serif text-xl mb-1" style="color:#FAF7F3;">Modern Boho</h3>
+          <p class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.7);">21 pieces</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Dark Luxe -->
+      <div class="sr group cursor-pointer img-hover">
+       <div class="relative overflow-hidden mb-4" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&amp;q=80" alt="Dark luxe interior styling" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#4a4440';this.alt='Image unavailable';">
+        <div class="absolute inset-0 flex items-end p-5" style="background:linear-gradient(to top, rgba(58,53,48,0.6), transparent 60%);">
+         <div>
+          <h3 class="font-serif text-xl mb-1" style="color:#FAF7F3;">Dark Luxe</h3>
+          <p class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.7);">16 pieces</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Divider -->
+   <div class="w-full px-6">
+    <div class="max-w-7xl mx-auto h-px" style="background:linear-gradient(to right, transparent, #B4916E30, transparent);"></div>
+   </div><!-- Shop by Room -->
+   <section id="rooms" class="w-full px-6 py-20 md:py-28">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="sr text-xs tracking-widest uppercase mb-3" style="color:#B4916E;">Find Your Style</p>
+      <h2 class="sr font-serif text-3xl md:text-5xl" style="color:#3A3530; font-weight:300;">Shop by Room</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 stagger"><!-- Living -->
+      <div class="sr-left group cursor-pointer img-hover relative overflow-hidden" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?w=800&amp;q=80" alt="Styled living room" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#d4c5b5';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-center justify-center" style="background:rgba(58,53,48,0.25); transition:background 0.4s;">
+        <div class="text-center">
+         <h3 class="font-serif text-3xl mb-2" style="color:#FAF7F3;">Living</h3>
+         <p class="text-xs tracking-widest uppercase" style="color:rgba(250,247,243,0.8);">Explore</p>
+        </div>
+       </div>
+      </div><!-- Bedroom -->
+      <div class="sr-right group cursor-pointer img-hover relative overflow-hidden" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&amp;q=80" alt="Cozy bedroom with throw blankets" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#e0d5c9';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-center justify-center" style="background:rgba(58,53,48,0.25);">
+        <div class="text-center">
+         <h3 class="font-serif text-3xl mb-2" style="color:#FAF7F3;">Bedroom</h3>
+         <p class="text-xs tracking-widest uppercase" style="color:rgba(250,247,243,0.8);">Explore</p>
+        </div>
+       </div>
+      </div><!-- Entry -->
+      <div class="sr-left group cursor-pointer img-hover relative overflow-hidden" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&amp;q=80" alt="Styled entryway with decor" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#c8c0b5';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-center justify-center" style="background:rgba(58,53,48,0.25);">
+        <div class="text-center">
+         <h3 class="font-serif text-3xl mb-2" style="color:#FAF7F3;">Entry</h3>
+         <p class="text-xs tracking-widest uppercase" style="color:rgba(250,247,243,0.8);">Explore</p>
+        </div>
+       </div>
+      </div><!-- Office -->
+      <div class="sr-right group cursor-pointer img-hover relative overflow-hidden" style="aspect-ratio:16/9;"><img src="https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=800&amp;q=80" alt="Home office with textiles" class="w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#bfb8ae';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-center justify-center" style="background:rgba(58,53,48,0.25);">
+        <div class="text-center">
+         <h3 class="font-serif text-3xl mb-2" style="color:#FAF7F3;">Office</h3>
+         <p class="text-xs tracking-widest uppercase" style="color:rgba(250,247,243,0.8);">Explore</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bundles -->
+   <section id="bundles" class="w-full px-6 py-20 md:py-28 texture-overlay relative" style="background:#F2EDE7;">
+    <div class="max-w-7xl mx-auto relative z-10">
+     <div class="text-center mb-16">
+      <p class="sr text-xs tracking-widest uppercase mb-3" style="color:#B4916E;">Save More, Style More</p>
+      <h2 class="sr font-serif text-3xl md:text-5xl" style="color:#3A3530; font-weight:300;">Curated Bundles</h2>
+      <p class="sr mt-4 text-sm" style="color:#6B635A; max-width:500px; margin-left:auto; margin-right:auto;">Bundles increase cart size. Seasonal drops keep customers coming back. Home decor always sells.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger"><!-- Starter Set -->
+      <div class="sr-scale relative p-8 text-center" style="background:#FAF7F3; box-shadow:0 2px 20px rgba(0,0,0,0.04);">
+       <div class="mb-6">
+        <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#B4916E" stroke-width="1" class="mx-auto"><rect x="4" y="8" width="32" height="24" rx="2" /><path d="M4 16h32" /><circle cx="20" cy="24" r="4" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-2xl mb-2" style="color:#3A3530;">Starter Set</h3>
+       <p class="text-xs uppercase tracking-wider mb-4" style="color:#B4916E;">2 pillows + 1 throw</p>
+       <p class="font-serif text-3xl mb-1" style="color:#3A3530;">$89</p>
+       <p class="text-xs mb-6" style="color:#6B635A; text-decoration:line-through;">$120 value</p><a href="#shop" class="inline-block w-full py-3 text-xs tracking-widest uppercase border" style="color:#3A3530; border-color:#3A3530; text-decoration:none; transition:all 0.3s;" onmouseover="this.style.background='#3A3530';this.style.color='#FAF7F3'" onmouseout="this.style.background='transparent';this.style.color='#3A3530'">Add to Cart</a>
+      </div><!-- Room Refresh -->
+      <div class="sr-scale relative p-8 text-center" style="background:#FAF7F3; box-shadow:0 4px 30px rgba(0,0,0,0.08);">
+       <div class="ribbon" style="background:#B4916E; color:#FAF7F3;">
+        Best Value
+       </div>
+       <div class="mb-6">
+        <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#B4916E" stroke-width="1" class="mx-auto"><rect x="2" y="6" width="36" height="28" rx="2" /><path d="M2 14h36M14 6v28M26 6v28" /><circle cx="8" cy="24" r="2" /><circle cx="20" cy="24" r="2" /><circle cx="32" cy="24" r="2" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-2xl mb-2" style="color:#3A3530;">Room Refresh</h3>
+       <p class="text-xs uppercase tracking-wider mb-4" style="color:#B4916E;">4 pillows + throw + rug</p>
+       <p class="font-serif text-3xl mb-1" style="color:#3A3530;">$249</p>
+       <p class="text-xs mb-6" style="color:#6B635A; text-decoration:line-through;">$380 value</p><a href="#shop" class="cta-pulse inline-block w-full py-3 text-xs tracking-widest uppercase" style="background:#3A3530; color:#FAF7F3; text-decoration:none; transition:all 0.3s;">Add to Cart</a>
+      </div><!-- Full Cozy -->
+      <div class="sr-scale relative p-8 text-center" style="background:#FAF7F3; box-shadow:0 2px 20px rgba(0,0,0,0.04);">
+       <div class="mb-6">
+        <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#B4916E" stroke-width="1" class="mx-auto"><rect x="2" y="4" width="36" height="32" rx="2" /><path d="M2 12h36M2 20h36M2 28h36" /><path d="M14 4v32M26 4v32" />
+        </svg>
+       </div>
+       <h3 class="font-serif text-2xl mb-2" style="color:#3A3530;">Full Cozy</h3>
+       <p class="text-xs uppercase tracking-wider mb-4" style="color:#B4916E;">6 pillows + 2 throws + rug + candles</p>
+       <p class="font-serif text-3xl mb-1" style="color:#3A3530;">$449</p>
+       <p class="text-xs mb-6" style="color:#6B635A; text-decoration:line-through;">$640 value</p><a href="#shop" class="inline-block w-full py-3 text-xs tracking-widest uppercase border" style="color:#3A3530; border-color:#3A3530; text-decoration:none; transition:all 0.3s;" onmouseover="this.style.background='#3A3530';this.style.color='#FAF7F3'" onmouseout="this.style.background='transparent';this.style.color='#3A3530'">Add to Cart</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="w-full px-6 py-20 md:py-28">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="sr text-xs tracking-widest uppercase mb-3" style="color:#B4916E;">What Customers Say</p>
+      <h2 class="sr font-serif text-3xl md:text-5xl" style="color:#3A3530; font-weight:300;">Real Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger">
+      <div class="sr p-8" style="background:#F2EDE7;">
+       <div class="flex gap-1 mb-4" id="stars-1"></div>
+       <p class="font-serif text-lg italic leading-relaxed mb-6" style="color:#3A3530;">"The throw blanket is insanely soft. My living room finally feels pulled together."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium" style="background:#B4916E; color:#FAF7F3;">
+         JM
+        </div>
+        <div>
+         <p class="text-sm font-medium" style="color:#3A3530;">Jordan M.</p>
+         <p class="text-xs" style="color:#6B635A;">Verified Buyer</p>
+        </div>
+       </div>
+      </div>
+      <div class="sr p-8" style="background:#F2EDE7;">
+       <div class="flex gap-1 mb-4" id="stars-2"></div>
+       <p class="font-serif text-lg italic leading-relaxed mb-6" style="color:#3A3530;">"Ordered the Room Refresh bundle and every single piece exceeded expectations. True luxury feel."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium" style="background:#B4916E; color:#FAF7F3;">
+         AL
+        </div>
+        <div>
+         <p class="text-sm font-medium" style="color:#3A3530;">Anika L.</p>
+         <p class="text-xs" style="color:#6B635A;">Verified Buyer</p>
+        </div>
+       </div>
+      </div>
+      <div class="sr p-8" style="background:#F2EDE7;">
+       <div class="flex gap-1 mb-4" id="stars-3"></div>
+       <p class="font-serif text-lg italic leading-relaxed mb-6" style="color:#3A3530;">"The rug texture is incredible in person. Photos don't do it justice. Already ordered a second."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium" style="background:#B4916E; color:#FAF7F3;">
+         TS
+        </div>
+        <div>
+         <p class="text-sm font-medium" style="color:#3A3530;">Theo S.</p>
+         <p class="text-xs" style="color:#6B635A;">Verified Buyer</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote Widget -->
+   <section id="shop" class="w-full px-6 py-20 md:py-28 relative texture-overlay" style="background:#3A3530;">
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <p class="sr text-xs tracking-widest uppercase mb-4" style="color:#B4916E;">Ready to Transform?</p>
+     <h2 id="bottom-cta-title" class="sr font-serif text-4xl md:text-6xl mb-8" style="color:#FAF7F3; font-weight:300;">Refresh a room in minutes.</h2>
+     <div class="sr flex flex-wrap justify-center gap-4 mb-16"><a href="#collections" class="cta-pulse inline-block px-10 py-4 text-xs tracking-widest uppercase" style="background:#B4916E; color:#FAF7F3; text-decoration:none;">Shop Now</a> <a href="#bundles" class="inline-block px-10 py-4 text-xs tracking-widest uppercase border" style="color:#FAF7F3; border-color:rgba(250,247,243,0.3); text-decoration:none; transition:border-color 0.3s;" onmouseover="this.style.borderColor='#FAF7F3'" onmouseout="this.style.borderColor='rgba(250,247,243,0.3)'">View Bundles</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="sr" style="border-top:1px solid rgba(250,247,243,0.1); padding-top:40px;">
+      <p class="text-xs tracking-widest uppercase mb-6" style="color:rgba(250,247,243,0.5);">Vote + Comment (Embed Widget Here)</p>
+      <div class="flex justify-center gap-6 mb-8"><button id="vote-up" class="vote-btn flex items-center gap-2 px-5 py-2.5" style="background:rgba(250,247,243,0.08); border:1px solid rgba(250,247,243,0.15); color:#FAF7F3; cursor:pointer; border-radius:0;">
+        <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M12 19V5m0 0l-7 7m7-7l7 7" />
+        </svg><span id="vote-up-count" class="text-sm">24</span> </button> <button id="vote-down" class="vote-btn flex items-center gap-2 px-5 py-2.5" style="background:rgba(250,247,243,0.08); border:1px solid rgba(250,247,243,0.15); color:#FAF7F3; cursor:pointer; border-radius:0;">
+        <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M12 5v14m0 0l7-7m-7 7l-7-7" />
+        </svg><span id="vote-down-count" class="text-sm">3</span> </button>
+      </div><!-- Comment form -->
+      <div class="max-w-lg mx-auto">
+       <div class="flex gap-3"><input id="comment-input" type="text" placeholder="Leave a comment..." class="comment-input flex-1 px-4 py-3 text-sm" style="background:rgba(250,247,243,0.06); border:1px solid rgba(250,247,243,0.12); color:#FAF7F3;" aria-label="Comment"> <button id="comment-submit" class="px-5 py-3 text-xs tracking-widest uppercase" style="background:#B4916E; color:#FAF7F3; border:none; cursor:pointer;">Post</button>
+       </div>
+       <div id="comments-list" class="mt-6 text-left flex flex-col gap-3"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full px-6 py-12" style="background:#332F2B;">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+     <p class="font-serif text-lg" style="color:rgba(250,247,243,0.6);">SoftStructure Home</p>
+     <div class="flex gap-6"><a href="#" class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.4); text-decoration:none;">Privacy</a> <a href="#" class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.4); text-decoration:none;">Terms</a> <a href="#" class="text-xs tracking-wider uppercase" style="color:rgba(250,247,243,0.4); text-decoration:none;">Contact</a>
+     </div>
+     <p class="text-xs" style="color:rgba(250,247,243,0.3);">2024 SoftStructure. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- Config & SDK ---
+const defaultConfig = {
+  hero_title: 'Texture is the new luxury.',
+  hero_subtitle: 'Furnishings that make your home feel finished.',
+  cta_primary: 'Shop Collections',
+  cta_secondary: 'Browse Rooms',
+  bottom_cta_title: 'Refresh a room in minutes.',
+  background_color: '#FAF7F3',
+  surface_color: '#F2EDE7',
+  text_color: '#3A3530',
+  accent_color: '#B4916E',
+  dark_color: '#3A3530',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  const c = (k) => config[k] || defaultConfig[k];
+  const font = c('font_family');
+  const baseSize = c('font_size');
+  const serifStack = `${font}, Georgia, serif`;
+
+  // Text content
+  el('hero-title').textContent = c('hero_title');
+  el('hero-subtitle').textContent = c('hero_subtitle');
+  el('cta-primary-btn').textContent = c('cta_primary');
+  el('cta-secondary-btn').textContent = c('cta_secondary');
+  el('bottom-cta-title').textContent = c('bottom_cta_title');
+
+  // Colors
+  const bg = c('background_color');
+  const surface = c('surface_color');
+  const text = c('text_color');
+  const accent = c('accent_color');
+  const dark = c('dark_color');
+
+  document.getElementById('app-wrapper').style.backgroundColor = bg;
+  document.getElementById('app-wrapper').style.color = text;
+
+  // Font
+  document.querySelectorAll('.font-serif').forEach(el => {
+    el.style.fontFamily = serifStack;
+  });
+
+  // Font size scaling
+  el('hero-title').style.fontSize = `${baseSize * 3.5}px`;
+  el('hero-subtitle').style.fontSize = `${baseSize * 1.1}px`;
+  el('bottom-cta-title').style.fontSize = `${baseSize * 3}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    function mutable(key) {
+      return {
+        get: () => c(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      };
+    }
+    return {
+      recolorables: [
+        mutable('background_color'),
+        mutable('surface_color'),
+        mutable('text_color'),
+        mutable('accent_color'),
+        mutable('dark_color')
+      ],
+      borderables: [],
+      fontEditable: mutable('font_family'),
+      fontSizeable: mutable('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    return new Map([
+      ['hero_title', c('hero_title')],
+      ['hero_subtitle', c('hero_subtitle')],
+      ['cta_primary', c('cta_primary')],
+      ['cta_secondary', c('cta_secondary')],
+      ['bottom_cta_title', c('bottom_cta_title')]
+    ]);
+  }
+});
+
+// --- Stars ---
+function renderStars(containerId, count) {
+  const container = document.getElementById(containerId);
+  for (let i = 0; i < 5; i++) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('width','16');
+    svg.setAttribute('height','16');
+    svg.setAttribute('viewBox','0 0 24 24');
+    svg.setAttribute('fill', i < count ? '#B4916E' : 'none');
+    svg.setAttribute('stroke','#B4916E');
+    svg.setAttribute('stroke-width','1.5');
+    svg.innerHTML = '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/>';
+    container.appendChild(svg);
+  }
+}
+renderStars('stars-1', 5);
+renderStars('stars-2', 5);
+renderStars('stars-3', 5);
+
+// --- Scroll reveal ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.sr, .sr-left, .sr-right, .sr-scale').forEach(el => observer.observe(el));
+
+// --- Sticky nav ---
+const appWrapper = document.getElementById('app-wrapper');
+const nav = document.getElementById('main-nav');
+appWrapper.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', appWrapper.scrollTop > 50);
+});
+
+// --- Active nav link ---
+const sections = ['home','collections','rooms','bundles','reviews','shop'];
+appWrapper.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && sec.offsetTop - 120 <= appWrapper.scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// --- Smooth scroll ---
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if (target) {
+      appWrapper.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+    }
+    // Close mobile menu
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// --- Mobile menu ---
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// --- Vote widget ---
+let votes = { up: 24, down: 3 };
+let userVote = null;
+document.getElementById('vote-up').addEventListener('click', function() {
+  if (userVote === 'up') { votes.up--; userVote = null; this.classList.remove('voted'); }
+  else {
+    if (userVote === 'down') { votes.down--; document.getElementById('vote-down').classList.remove('voted'); }
+    votes.up++; userVote = 'up'; this.classList.add('voted');
+  }
+  document.getElementById('vote-up-count').textContent = votes.up;
+  document.getElementById('vote-down-count').textContent = votes.down;
+});
+document.getElementById('vote-down').addEventListener('click', function() {
+  if (userVote === 'down') { votes.down--; userVote = null; this.classList.remove('voted'); }
+  else {
+    if (userVote === 'up') { votes.up--; document.getElementById('vote-up').classList.remove('voted'); }
+    votes.down++; userVote = 'down'; this.classList.add('voted');
+  }
+  document.getElementById('vote-up-count').textContent = votes.up;
+  document.getElementById('vote-down-count').textContent = votes.down;
+});
+
+// --- Comments ---
+const comments = [];
+document.getElementById('comment-submit').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.push({ text, time: new Date() });
+  input.value = '';
+  renderComments();
+});
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('comment-submit').click(); }
+});
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = '';
+  comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'py-3 px-4';
+    div.style.cssText = 'background:rgba(250,247,243,0.05); border:1px solid rgba(250,247,243,0.08);';
+    const mins = Math.floor((Date.now() - c.time) / 60000);
+    const timeStr = mins < 1 ? 'Just now' : `${mins}m ago`;
+    div.innerHTML = `<p class="text-sm" style="color:#FAF7F3;">${c.text.replace(/</g,'&lt;')}</p><p class="text-xs mt-1" style="color:rgba(250,247,243,0.3);">${timeStr}</p>`;
+    list.appendChild(div);
+  });
+}
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a365fd00027c5',t:'MTc3NTU3NzI4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

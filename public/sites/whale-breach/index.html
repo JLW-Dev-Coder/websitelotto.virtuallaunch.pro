@@ -1,1 +1,608 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/8ca56754-dad2-4fa9-8a14-05a047a04989 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhaleSong Vault</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #040d1a;
+      --surface: rgba(15, 40, 70, 0.45);
+      --text: #d4e8f7;
+      --accent: #00c8ff;
+      --accent2: #0a6e8a;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .font-display { font-family: 'Cormorant Garamond', serif; }
+
+    /* Glassmorphism */
+    .glass {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 200, 255, 0.12);
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,255,0.4), transparent);
+      animation: floatUp linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-800px) scale(0.3); opacity: 0; }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      25% { transform: translateX(12px) translateY(-8px); }
+      50% { transform: translateX(-6px) translateY(4px); }
+      75% { transform: translateX(8px) translateY(-12px); }
+    }
+
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,200,255,0.3); }
+      50% { box-shadow: 0 0 40px rgba(0,200,255,0.6); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .animate-drift { animation: drift 8s ease-in-out infinite; }
+    .animate-slow-zoom { animation: slowZoom 20s ease-in-out infinite alternate; }
+    .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Wave divider */
+    .wave-divider {
+      position: relative;
+      height: 60px;
+      overflow: hidden;
+    }
+    .wave-divider svg {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      height: 60px;
+      animation: wave 8s linear infinite;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #040d1a; }
+    ::-webkit-scrollbar-thumb { background: #0a6e8a; border-radius: 3px; }
+
+    /* Nav active */
+    .nav-link { position: relative; transition: color 0.3s; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: all 0.3s;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link:hover { color: #00c8ff; }
+
+    .img-card {
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .img-card img {
+      transition: transform 6s ease;
+    }
+    .img-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .review-card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .review-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,200,255,0.15);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto relative"><!-- Particles container -->
+   <div id="particles" class="fixed inset-0 pointer-events-none z-0" aria-hidden="true"></div><!-- Ambient underwater overlay -->
+   <div class="fixed inset-0 pointer-events-none z-0" style="background: radial-gradient(ellipse at 30% 80%, rgba(0,100,180,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 20%, rgba(0,200,255,0.05) 0%, transparent 50%);"></div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-500" style="border-top: none; border-left: none; border-right: none;">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2 group">
+      <svg width="32" height="32" viewbox="0 0 32 32" fill="none" class="animate-drift"><path d="M4 20c2-4 6-10 12-10s10 6 12 10c-3 2-7 4-12 4S7 22 4 20z" fill="#00c8ff" opacity="0.7" /> <path d="M8 18c1.5-3 4-7 8-7s6.5 4 8 7c-2 1.5-5 3-8 3s-6-1.5-8-3z" fill="#0a6e8a" opacity="0.8" /> <circle cx="20" cy="16" r="1.2" fill="#d4e8f7" />
+      </svg><span class="font-display text-xl font-bold tracking-wide" style="color: var(--accent);">WhaleSong</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-light"><a href="#home" class="nav-link">Home</a> <a href="#wallpapers" class="nav-link">Wallpapers</a> <a href="#prints" class="nav-link">Prints</a> <a href="#preview" class="nav-link">Preview</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" aria-label="Menu"> <i data-lucide="menu" style="color: var(--accent); width:24px; height:24px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+     <div class="flex flex-col gap-3 text-sm"><a href="#home" class="nav-link py-1">Home</a> <a href="#wallpapers" class="nav-link py-1">Wallpapers</a> <a href="#prints" class="nav-link py-1">Prints</a> <a href="#preview" class="nav-link py-1">Preview</a> <a href="#reviews" class="nav-link py-1">Reviews</a> <a href="#download" class="nav-link py-1">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;">
+    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=1600&amp;q=80" alt="Humpback whale underwater" class="w-full h-full object-cover animate-slow-zoom" style="filter: brightness(0.35) saturate(1.3);" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#040d1a,#0a3d5c)'; this.alt='Image unavailable';">
+    </div>
+    <div class="absolute inset-0 z-1" style="background: linear-gradient(to bottom, rgba(4,13,26,0.4) 0%, rgba(4,13,26,0.2) 40%, rgba(4,13,26,0.8) 100%);"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height: 100%; padding-top: 120px; padding-bottom: 80px;">
+     <p id="tagline-el" class="text-sm uppercase tracking-[0.3em] mb-6 font-light" style="color: var(--accent); animation: fadeInUp 1s ease 0.2s both;">Calm you can feel.</p>
+     <h1 id="hero-title-el" class="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-tight mb-6" style="animation: fadeInUp 1s ease 0.4s both; max-width: 800px;">Bring the ocean into your day.</h1>
+     <p id="hero-subtitle-el" class="text-lg md:text-xl font-light mb-10 max-w-xl" style="animation: fadeInUp 1s ease 0.6s both; opacity: 0.85;">Whale wallpapers and prints curated for calm.</p>
+     <div class="flex flex-col sm:flex-row gap-4" style="animation: fadeInUp 1s ease 0.8s both;"><a href="#download" id="cta-primary-el" class="px-8 py-4 rounded-full font-medium text-sm uppercase tracking-wider animate-pulse-glow transition-all hover:scale-105" style="background: var(--accent); color: #040d1a;"> Download the Vault </a> <a href="#preview" id="cta-secondary-el" class="px-8 py-4 rounded-full font-medium text-sm uppercase tracking-wider border transition-all hover:scale-105" style="border-color: rgba(0,200,255,0.4); color: var(--accent); background: rgba(0,200,255,0.08);"> Preview Collection </a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2" style="animation: fadeInUp 1s ease 1.2s both;">
+      <div class="flex flex-col items-center gap-2 opacity-60"><span class="text-xs tracking-widest uppercase">Explore</span> <i data-lucide="chevron-down" style="width:20px; height:20px; animation: drift 2s ease-in-out infinite;"></i>
+      </div>
+     </div>
+    </div>
+   </section><!-- Wave Divider -->
+   <div class="wave-divider" style="background: var(--bg);">
+    <svg viewbox="0 0 1200 60" preserveaspectratio="none"><path d="M0,30 C150,50 350,10 600,30 C850,50 1050,10 1200,30 L1200,60 L0,60 Z" fill="rgba(0,200,255,0.06)" />
+    </svg>
+   </div><!-- WHAT'S INSIDE -->
+   <section class="relative z-10 py-20 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+     <div class="fade-in-up">
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">The Complete Collection</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold mb-4">What's Inside the Vault</h2>
+      <p class="font-light opacity-70 max-w-lg mx-auto mb-14">A curated treasury of ocean calm — designed for your screens, walls, and wellbeing.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div class="fade-in-up glass rounded-2xl p-6 text-center group hover:border-cyan-400/30 transition-all">
+       <div class="text-4xl mb-3">
+        🐋
+       </div>
+       <div class="font-display text-2xl font-bold" style="color: var(--accent);">
+        150
+       </div>
+       <p class="text-sm font-light opacity-70 mt-1">Whale &amp; Ocean Wallpapers</p>
+      </div>
+      <div class="fade-in-up glass rounded-2xl p-6 text-center group hover:border-cyan-400/30 transition-all" style="transition-delay: 0.1s;">
+       <div class="text-4xl mb-3">
+        🖼️
+       </div>
+       <div class="font-display text-2xl font-bold" style="color: var(--accent);">
+        24
+       </div>
+       <p class="text-sm font-light opacity-70 mt-1">Printable Ocean Posters</p>
+      </div>
+      <div class="fade-in-up glass rounded-2xl p-6 text-center group hover:border-cyan-400/30 transition-all" style="transition-delay: 0.2s;">
+       <div class="text-4xl mb-3">
+        🌊
+       </div>
+       <div class="font-display text-2xl font-bold" style="color: var(--accent);">
+        12
+       </div>
+       <p class="text-sm font-light opacity-70 mt-1">Calming Blue Gradients</p>
+      </div>
+      <div class="fade-in-up glass rounded-2xl p-6 text-center group hover:border-cyan-400/30 transition-all" style="transition-delay: 0.3s;">
+       <div class="text-4xl mb-3">
+        📓
+       </div>
+       <div class="font-display text-2xl font-bold" style="color: var(--accent);">
+        ∞
+       </div>
+       <p class="text-sm font-light opacity-70 mt-1">Journaling Cards</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS / COLLECTIONS -->
+   <section id="wallpapers" class="relative z-10 py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 fade-in-up">
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">Curated Collections</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold">Four Moods of the Sea</h2>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6"><!-- Deep Blue -->
+      <div class="fade-in-up img-card relative group"><img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=800&amp;q=80" alt="Deep blue ocean" class="w-full aspect-[4/3] object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#041428,#0a3d5c)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-6">
+        <h3 class="font-display text-2xl font-bold">Deep Blue</h3>
+        <p class="text-sm font-light opacity-80">Midnight ocean depths — moody, mysterious, meditative.</p>
+       </div>
+      </div><!-- Surface Light -->
+      <div class="fade-in-up img-card relative group" style="transition-delay: 0.1s;"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&amp;q=80" alt="Ocean surface light" class="w-full aspect-[4/3] object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#0a4d6e,#3aa5c4)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-6">
+        <h3 class="font-display text-2xl font-bold">Surface Light</h3>
+        <p class="text-sm font-light opacity-80">Sun-kissed waves — bright, hopeful, alive.</p>
+       </div>
+      </div><!-- Underwater Giants -->
+      <div class="fade-in-up img-card relative group" style="transition-delay: 0.2s;"><img src="https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=800&amp;q=80" alt="Underwater whale" class="w-full aspect-[4/3] object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#062033,#0a5e7a)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-6">
+        <h3 class="font-display text-2xl font-bold">Underwater Giants</h3>
+        <p class="text-sm font-light opacity-80">Humpbacks in their world — awe, scale, serenity.</p>
+       </div>
+      </div><!-- Minimal Ocean -->
+      <div class="fade-in-up img-card relative group" style="transition-delay: 0.3s;"><img src="https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?w=800&amp;q=80" alt="Minimal ocean horizon" class="w-full aspect-[4/3] object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#0a3050,#1a6080)'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-6">
+        <h3 class="font-display text-2xl font-bold">Minimal Ocean</h3>
+        <p class="text-sm font-light opacity-80">Clean horizons — quiet, spacious, free.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRINTS -->
+   <section id="prints" class="relative z-10 py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 fade-in-up">
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">Print-Ready Posters</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold">Perfect for Offices &amp; Bedrooms</h2>
+      <p class="font-light opacity-70 max-w-lg mx-auto mt-4">24 high-resolution ocean posters. Download, print, and frame. Instant serenity on any wall.</p>
+     </div>
+     <div class="grid grid-cols-3 gap-4 max-w-3xl mx-auto">
+      <div class="fade-in-up rounded-xl overflow-hidden aspect-[3/4] relative group" style="background: linear-gradient(180deg, #062a42, #0a4d6e);">
+       <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+        <div class="text-5xl mb-3">
+         🌊
+        </div>
+        <p class="font-display text-sm font-bold">Tidal Calm</p>
+       </div>
+      </div>
+      <div class="fade-in-up rounded-xl overflow-hidden aspect-[3/4] relative group" style="background: linear-gradient(180deg, #0a1e30, #063a58); transition-delay: 0.1s;">
+       <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+        <div class="text-5xl mb-3">
+         🐋
+        </div>
+        <p class="font-display text-sm font-bold">Gentle Giant</p>
+       </div>
+      </div>
+      <div class="fade-in-up rounded-xl overflow-hidden aspect-[3/4] relative group" style="background: linear-gradient(180deg, #041830, #0a6e8a); transition-delay: 0.2s;">
+       <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+        <div class="text-5xl mb-3">
+         ✨
+        </div>
+        <p class="font-display text-sm font-bold">Bioluminance</p>
+       </div>
+      </div>
+     </div>
+     <div class="text-center mt-8 fade-in-up">
+      <p class="text-sm font-light opacity-60">+ 21 more poster designs inside the vault</p>
+     </div>
+    </div>
+   </section><!-- Wave Divider -->
+   <div class="wave-divider">
+    <svg viewbox="0 0 1200 60" preserveaspectratio="none"><path d="M0,30 C150,10 350,50 600,30 C850,10 1050,50 1200,30 L1200,60 L0,60 Z" fill="rgba(0,200,255,0.06)" />
+    </svg>
+   </div><!-- PREVIEW -->
+   <section id="preview" class="relative z-10 py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 fade-in-up">
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">Wallpaper Preview</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold">A Glimpse Into the Vault</h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]"><img src="https://images.unsplash.com/photo-1454391304352-2bf4678b1a7a?w=600&amp;q=80" alt="Whale tail at sunset" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#062a42,#0a4d6e)'; this.alt='Image unavailable';">
+      </div>
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]" style="transition-delay:0.05s;"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&amp;q=80" alt="Tropical ocean waves" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a3d5c,#1a7090)'; this.alt='Image unavailable';">
+      </div>
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]" style="transition-delay:0.1s;"><img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?w=600&amp;q=80" alt="Deep blue underwater" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#041428,#0a3d5c)'; this.alt='Image unavailable';">
+      </div>
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]" style="transition-delay:0.15s;"><img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?w=600&amp;q=80" alt="Sea waves crashing" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a4d6e,#3aa5c4)'; this.alt='Image unavailable';">
+      </div>
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]" style="transition-delay:0.2s;"><img src="https://images.unsplash.com/photo-1468581264429-2548ef9eb732?w=600&amp;q=80" alt="Boat on ocean horizon" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#062033,#0a5e7a)'; this.alt='Image unavailable';">
+      </div>
+      <div class="fade-in-up img-card rounded-xl aspect-[3/2]" style="transition-delay:0.25s;"><img src="https://images.unsplash.com/photo-1513553404607-988bf2703777?w=600&amp;q=80" alt="Marine blue water" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a1e30,#0a6e8a)'; this.alt='Image unavailable';">
+      </div>
+     </div>
+     <div class="text-center mt-8 fade-in-up">
+      <p class="text-sm font-light opacity-50">Showing 6 of 150+ wallpapers</p>
+     </div>
+    </div>
+   </section><!-- PRICING / VALUE -->
+   <section class="relative z-10 py-20 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="fade-in-up glass rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1" style="background: linear-gradient(90deg, transparent, var(--accent), transparent);"></div>
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">The Full Vault</p>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-3">Everything You Need</h2>
+      <p class="font-light opacity-70 mb-8 max-w-md mx-auto">Wellness aesthetic sells. One download, endless calm for your screens and spaces.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-left">
+       <div class="flex items-start gap-2">
+        <i data-lucide="check" style="color: var(--accent); width:16px; height:16px; margin-top:2px; flex-shrink:0;"></i><span class="text-sm font-light">150 Wallpapers</span>
+       </div>
+       <div class="flex items-start gap-2">
+        <i data-lucide="check" style="color: var(--accent); width:16px; height:16px; margin-top:2px; flex-shrink:0;"></i><span class="text-sm font-light">24 Print Posters</span>
+       </div>
+       <div class="flex items-start gap-2">
+        <i data-lucide="check" style="color: var(--accent); width:16px; height:16px; margin-top:2px; flex-shrink:0;"></i><span class="text-sm font-light">12 Gradient BGs</span>
+       </div>
+       <div class="flex items-start gap-2">
+        <i data-lucide="check" style="color: var(--accent); width:16px; height:16px; margin-top:2px; flex-shrink:0;"></i><span class="text-sm font-light">Journaling Cards</span>
+       </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center"><a href="#download" class="px-8 py-4 rounded-full font-medium text-sm uppercase tracking-wider animate-pulse-glow transition-all hover:scale-105" style="background: var(--accent); color: #040d1a;"> Get Instant Access </a>
+      </div>
+      <p class="text-xs font-light opacity-40 mt-4">Instant download · All formats included · Commercial use OK</p>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative z-10 py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 fade-in-up">
+      <p class="text-xs uppercase tracking-[0.3em] mb-3" style="color: var(--accent);">What People Say</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold">Serenity, Delivered</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="fade-in-up review-card glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><span style="color: var(--accent);">★★★★★</span>
+       </div>
+       <p class="font-light text-sm mb-4 opacity-80">"I replaced every screen in my office with these wallpapers. My clients literally comment on how calming the space feels."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--accent); color: #040d1a;">
+         M
+        </div>
+        <div>
+         <p class="text-sm font-medium">Maya T.</p>
+         <p class="text-xs opacity-50">Interior Designer</p>
+        </div>
+       </div>
+      </div>
+      <div class="fade-in-up review-card glass rounded-2xl p-6" style="transition-delay:0.1s;">
+       <div class="flex gap-1 mb-3"><span style="color: var(--accent);">★★★★★</span>
+       </div>
+       <p class="font-light text-sm mb-4 opacity-80">"The print quality is unreal. I framed three of the whale posters and they look like they belong in a gallery."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--accent); color: #040d1a;">
+         J
+        </div>
+        <div>
+         <p class="text-sm font-medium">James R.</p>
+         <p class="text-xs opacity-50">Photographer</p>
+        </div>
+       </div>
+      </div>
+      <div class="fade-in-up review-card glass rounded-2xl p-6" style="transition-delay:0.2s;">
+       <div class="flex gap-1 mb-3"><span style="color: var(--accent);">★★★★★</span>
+       </div>
+       <p class="font-light text-sm mb-4 opacity-80">"Instant download serenity is exactly right. I use the gradient backgrounds for my YouTube channel and they're perfect."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--accent); color: #040d1a;">
+         S
+        </div>
+        <div>
+         <p class="text-sm font-medium">Sofia L.</p>
+         <p class="text-xs opacity-50">Content Creator</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Wave Divider -->
+   <div class="wave-divider">
+    <svg viewbox="0 0 1200 60" preserveaspectratio="none"><path d="M0,30 C150,50 350,10 600,30 C850,50 1050,10 1200,30 L1200,60 L0,60 Z" fill="rgba(0,200,255,0.06)" />
+    </svg>
+   </div><!-- DOWNLOAD CTA -->
+   <section id="download" class="relative z-10 py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="fade-in-up">
+      <div class="text-6xl mb-6 animate-drift">
+       🐋
+      </div>
+      <h2 id="bottom-cta-el" class="font-display text-4xl md:text-6xl font-bold mb-6">Make your screen breathe.</h2>
+      <p class="font-light opacity-70 mb-10 max-w-md mx-auto">150+ wallpapers, 24 printable posters, gradient backgrounds, and journaling cards. All yours, instantly.</p><a href="#" class="inline-block px-10 py-5 rounded-full font-medium text-sm uppercase tracking-wider animate-pulse-glow transition-all hover:scale-105" style="background: var(--accent); color: #040d1a;" onclick="event.preventDefault(); document.getElementById('download-toast').classList.remove('hidden'); setTimeout(() => document.getElementById('download-toast').classList.add('hidden'), 3000);"> Download the Vault Now </a>
+      <p class="text-xs font-light opacity-40 mt-4">Instant download · No subscription · Yours forever</p>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT -->
+   <section class="relative z-10 py-16 px-6">
+    <div class="max-w-2xl mx-auto">
+     <div class="fade-in-up glass rounded-3xl p-8 text-center">
+      <h3 class="font-display text-2xl font-bold mb-2">Vote + Comment</h3>
+      <p class="text-sm font-light opacity-60 mb-6">Love WhaleSong Vault? Let us know what you'd want in Volume 2.</p>
+      <div class="flex justify-center gap-4 mb-6"><button id="vote-btn" class="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all hover:scale-105" style="background: rgba(0,200,255,0.15); border: 1px solid rgba(0,200,255,0.3); color: var(--accent);" onclick="let c=document.getElementById('vote-count'); let n=parseInt(c.textContent)+1; c.textContent=n; this.style.background='var(--accent)'; this.style.color='#040d1a';"> <i data-lucide="thumbs-up" style="width:16px; height:16px;"></i> <span id="vote-count">247</span> votes </button>
+      </div>
+      <div class="text-left"><textarea id="comment-input" class="w-full rounded-xl p-4 text-sm font-light resize-none focus:outline-none focus:ring-2 transition-all" rows="3" placeholder="Tell us what ocean scenes you'd love to see next..." style="background: rgba(0,200,255,0.06); border: 1px solid rgba(0,200,255,0.15); color: var(--text); focus:ring-color: var(--accent);"></textarea>
+       <div class="flex justify-between items-center mt-3">
+        <div id="comments-list" class="text-xs font-light opacity-50"></div><button class="px-5 py-2 rounded-full text-xs font-medium transition-all hover:scale-105" style="background: var(--accent); color: #040d1a;" onclick="const input=document.getElementById('comment-input'); if(input.value.trim()){const list=document.getElementById('comments-list'); list.innerHTML='<p class=\'mb-1\'>✓ Comment submitted! Thank you.</p>'+list.innerHTML; input.value='';}"> Submit </button>
+       </div>
+      </div>
+      <p class="text-xs opacity-30 mt-4">Embed Widget Here — Connect your preferred voting/comment platform</p>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="relative z-10 py-12 px-6 border-t" style="border-color: rgba(0,200,255,0.08);">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="24" height="24" viewbox="0 0 32 32" fill="none"><path d="M4 20c2-4 6-10 12-10s10 6 12 10c-3 2-7 4-12 4S7 22 4 20z" fill="#00c8ff" opacity="0.7" />
+      </svg><span class="font-display text-sm" style="color: var(--accent);">WhaleSong Vault</span>
+     </div>
+     <p class="text-xs font-light opacity-40">© 2025 WhaleSong Vault. All rights reserved. Calm you can feel.</p>
+    </div>
+   </footer><!-- Download Toast -->
+   <div id="download-toast" class="hidden fixed bottom-8 right-8 z-50 glass rounded-2xl p-5 flex items-center gap-3" style="animation: fadeInUp 0.4s ease;"><i data-lucide="check-circle" style="color: var(--accent); width:24px; height:24px;"></i>
+    <div>
+     <p class="text-sm font-medium">Download started!</p>
+     <p class="text-xs font-light opacity-60">Check your downloads folder.</p>
+    </div>
+   </div>
+  </div>
+  <script>
+  // Element SDK
+  const defaultConfig = {
+    background_color: '#040d1a',
+    surface_color: 'rgba(15,40,70,0.45)',
+    text_color: '#d4e8f7',
+    accent_color: '#00c8ff',
+    accent2_color: '#0a6e8a',
+    font_family: 'Cormorant Garamond',
+    font_size: 16,
+    hero_title: 'Bring the ocean into your day.',
+    hero_subtitle: 'Whale wallpapers and prints curated for calm.',
+    cta_primary: 'Download the Vault',
+    cta_secondary: 'Preview Collection',
+    tagline: 'Calm you can feel.',
+    bottom_cta_text: 'Make your screen breathe.'
+  };
+
+  async function onConfigChange(config) {
+    const bg = config.background_color || defaultConfig.background_color;
+    const surface = config.surface_color || defaultConfig.surface_color;
+    const text = config.text_color || defaultConfig.text_color;
+    const accent = config.accent_color || defaultConfig.accent_color;
+    const accent2 = config.accent2_color || defaultConfig.accent2_color;
+    const font = config.font_family || defaultConfig.font_family;
+    const size = config.font_size || defaultConfig.font_size;
+
+    document.documentElement.style.setProperty('--bg', bg);
+    document.documentElement.style.setProperty('--surface', surface);
+    document.documentElement.style.setProperty('--text', text);
+    document.documentElement.style.setProperty('--accent', accent);
+    document.documentElement.style.setProperty('--accent2', accent2);
+    document.body.style.background = bg;
+    document.body.style.color = text;
+
+    const displayStack = `${font}, serif`;
+    const bodyStack = `Outfit, sans-serif`;
+    document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = displayStack);
+    document.body.style.fontFamily = bodyStack;
+    document.body.style.fontSize = size + 'px';
+
+    // Text content
+    const el = (id) => document.getElementById(id);
+    if (el('hero-title-el')) el('hero-title-el').textContent = config.hero_title || defaultConfig.hero_title;
+    if (el('hero-subtitle-el')) el('hero-subtitle-el').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    if (el('cta-primary-el')) el('cta-primary-el').textContent = config.cta_primary || defaultConfig.cta_primary;
+    if (el('cta-secondary-el')) el('cta-secondary-el').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+    if (el('tagline-el')) el('tagline-el').textContent = config.tagline || defaultConfig.tagline;
+    if (el('bottom-cta-el')) el('bottom-cta-el').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  }
+
+  function mapToCapabilities(config) {
+    const mkColor = (key) => ({
+      get: () => config[key] || defaultConfig[key],
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        mkColor('background_color'),
+        mkColor('surface_color'),
+        mkColor('text_color'),
+        mkColor('accent_color'),
+        mkColor('accent2_color')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  }
+
+  function mapToEditPanelValues(config) {
+    return new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['tagline', config.tagline || defaultConfig.tagline],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ]);
+  }
+
+  window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+
+  // Particles
+  function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 6 + 2;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '-20px';
+      p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      container.appendChild(p);
+    }
+  }
+  createParticles();
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const wrapper = document.getElementById('app-wrapper');
+  wrapper.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (wrapper.scrollTop >= s.offsetTop - 100) current = s.id; });
+    navLinks.forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a757d605b27c5',t:'MTc3NTU3OTg2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

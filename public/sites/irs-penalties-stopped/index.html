@@ -1,1 +1,681 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/fa4146f8-6cde-4cc6-89bd-271c1e17fef3 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PenaltyLift Relief</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+.font-mono { font-family: 'Space Mono', monospace; }
+
+@keyframes countDown {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.3); }
+  50% { box-shadow: 0 0 40px rgba(34,197,94,0.4); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes barShrink {
+  from { width: 100%; }
+  to { width: var(--target-width); }
+}
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-slide-up { animation: slideUp 0.7s ease forwards; }
+.animate-fade-scale { animation: fadeScale 0.5s ease forwards; }
+.glow-pulse { animation: pulseGlow 3s ease-in-out infinite; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0;
+  height: 2px; background: #ef4444; transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+.nav-link.active::after { background: #22c55e; }
+
+.penalty-card {
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+.penalty-card:hover {
+  border-color: rgba(239,68,68,0.4);
+  transform: translateY(-4px);
+}
+
+.step-line {
+  background: linear-gradient(180deg, #ef4444 0%, #eab308 50%, #22c55e 100%);
+}
+
+.result-bar {
+  background: linear-gradient(90deg, #ef4444, #22c55e);
+  border-radius: 4px;
+  height: 8px;
+}
+
+.emoji-btn { transition: all 0.15s ease; }
+.emoji-btn:hover { transform: scale(1.2); }
+.emoji-btn.selected { transform: scale(1.3); background: rgba(255,255,255,0.1); border-radius: 8px; }
+
+.price-chip {
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.price-chip:hover { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+.price-chip.selected { border-color: #22c55e; background: rgba(34,197,94,0.15); color: #22c55e; }
+
+.comment-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: border-color 0.2s;
+}
+.comment-input:focus { border-color: #22c55e; outline: none; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 12px 24px; border-radius: 8px; z-index: 100;
+  animation: slideUp 0.3s ease;
+}
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '#0a0a0b',
+        surface: '#141416',
+        accent: '#ef4444',
+        success: '#22c55e',
+        txt: '#f0f0f0'
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-bg text-txt overflow-auto" id="app-body"><!-- Toast container -->
+  <div id="toast-container"></div><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-bg/90 backdrop-blur-md border-b border-white/5">
+   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-mono font-bold text-base tracking-tight"> <span class="text-accent">Penalty</span><span class="text-success">Lift</span> </a>
+    <div class="hidden md:flex gap-6 text-sm"><a href="#home" class="nav-link text-white/70 hover:text-white">Home</a> <a href="#penalties" class="nav-link text-white/70 hover:text-white">Penalties</a> <a href="#eligibility" class="nav-link text-white/70 hover:text-white">Eligibility</a> <a href="#results" class="nav-link text-white/70 hover:text-white">Results</a> <a href="#faq" class="nav-link text-white/70 hover:text-white">FAQ</a> <a href="#cta" class="nav-link text-white/70 hover:text-white">Remove Penalties</a>
+    </div><button id="mobile-menu-btn" class="md:hidden text-white/70"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm"><a href="#home" class="text-white/70 hover:text-white py-1">Home</a> <a href="#penalties" class="text-white/70 hover:text-white py-1">Penalties</a> <a href="#eligibility" class="text-white/70 hover:text-white py-1">Eligibility</a> <a href="#results" class="text-white/70 hover:text-white py-1">Results</a> <a href="#faq" class="text-white/70 hover:text-white py-1">FAQ</a> <a href="#cta" class="text-white/70 hover:text-white py-1">Remove Penalties</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="pt-28 pb-20 px-4 relative overflow-hidden">
+   <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at 50% 0%, #ef4444 0%, transparent 60%);"></div>
+   <div class="max-w-3xl mx-auto text-center relative z-10">
+    <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-accent/30 text-accent text-xs font-mono tracking-wider">
+     PENALTY ABATEMENT SPECIALISTS
+    </div>
+    <h1 id="hero-title" class="text-4xl md:text-6xl font-bold leading-tight mb-5" style="letter-spacing:-0.03em;">IRS penalties aren't<br>
+     always <span class="text-accent line-through decoration-2">final</span><span class="text-success">.</span></h1>
+    <p id="hero-subtitle" class="text-lg md:text-xl text-white/50 mb-10 max-w-xl mx-auto">We help remove what doesn't belong.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#eligibility" class="px-8 py-3.5 bg-success text-bg font-bold rounded-lg hover:bg-green-400 transition-colors text-sm">Check Eligibility</a> <a href="#results" class="px-8 py-3.5 border border-white/15 rounded-lg hover:border-white/30 transition-colors text-sm">See Results</a>
+    </div><!-- Animated penalty counter -->
+    <div class="mt-16 glow-pulse inline-block rounded-2xl bg-surface px-10 py-6 border border-white/5">
+     <div class="text-xs text-white/40 font-mono mb-2">
+      AVERAGE CLIENT SAVINGS
+     </div>
+     <div class="font-mono text-4xl font-bold">
+      <span class="text-accent">$</span><span id="counter" class="text-success">0</span>
+     </div>
+    </div>
+   </div>
+  </section><!-- PENALTIES -->
+  <section id="penalties" class="py-20 px-4">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14">
+     <div class="text-accent font-mono text-xs tracking-widest mb-3">
+      COMMON PENALTIES
+     </div>
+     <h2 class="text-3xl md:text-4xl font-bold">Types of IRS Penalties</h2>
+     <p class="text-white/40 mt-3 max-w-lg mx-auto text-sm">Understanding what you're dealing with is the first step toward relief.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="clock" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Failure to File</h3>
+      <p class="text-white/40 text-sm leading-relaxed">5% per month on unpaid taxes, up to 25%. Often the most severe — and the most removable.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       UP TO 25% PENALTY
+      </div>
+     </div>
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="dollar-sign" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Failure to Pay</h3>
+      <p class="text-white/40 text-sm leading-relaxed">0.5% per month on unpaid balance. Accrues interest and can compound significantly over time.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       0.5% / MONTH
+      </div>
+     </div>
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="alert-triangle" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Accuracy Penalty</h3>
+      <p class="text-white/40 text-sm leading-relaxed">20% of the underpayment. Applied when the IRS finds substantial errors or negligence on your return.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       20% UNDERPAYMENT
+      </div>
+     </div>
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="calculator" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Estimated Tax Penalty</h3>
+      <p class="text-white/40 text-sm leading-relaxed">Charged when quarterly estimated payments are missed or insufficient throughout the tax year.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       QUARTERLY BASED
+      </div>
+     </div>
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="file-x" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Information Return</h3>
+      <p class="text-white/40 text-sm leading-relaxed">Penalties for late or incorrect W-2s, 1099s, and other information returns filed with the IRS.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       PER RETURN
+      </div>
+     </div>
+     <div class="penalty-card rounded-xl bg-surface p-6">
+      <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+       <i data-lucide="ban" style="width:20px;height:20px;color:#ef4444;"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-2">Dishonored Check</h3>
+      <p class="text-white/40 text-sm leading-relaxed">2% penalty for payments over $1,250 returned by bank. Even honest mistakes can trigger this.</p>
+      <div class="mt-4 font-mono text-xs text-accent">
+       2% MINIMUM
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- ELIGIBILITY -->
+  <section id="eligibility" class="py-20 px-4 bg-surface">
+   <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14">
+     <div class="text-success font-mono text-xs tracking-widest mb-3">
+      QUALIFICATION
+     </div>
+     <h2 class="text-3xl md:text-4xl font-bold">Are You Eligible for Relief?</h2>
+     <p class="text-white/40 mt-3 max-w-lg mx-auto text-sm">Most taxpayers qualify for at least one abatement path. Here's the process.</p>
+    </div>
+    <div class="relative"><!-- Vertical line -->
+     <div class="absolute left-6 md:left-8 top-0 bottom-0 w-0.5 step-line hidden md:block"></div>
+     <div class="space-y-8">
+      <div class="flex gap-5 md:gap-8 items-start">
+       <div class="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center font-mono font-bold text-accent text-lg relative z-10">
+        1
+       </div>
+       <div class="pt-1 md:pt-3">
+        <h3 class="font-bold text-lg mb-1">Identify Your Penalty Type</h3>
+        <p class="text-white/40 text-sm">We review your IRS notices to determine exactly which penalties were assessed and their current status.</p>
+       </div>
+      </div>
+      <div class="flex gap-5 md:gap-8 items-start">
+       <div class="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-yellow-500/15 border-2 border-yellow-500 flex items-center justify-center font-mono font-bold text-yellow-500 text-lg relative z-10">
+        2
+       </div>
+       <div class="pt-1 md:pt-3">
+        <h3 class="font-bold text-lg mb-1">Establish Reasonable Cause</h3>
+        <p class="text-white/40 text-sm">Natural disasters, illness, reliance on a tax advisor, or death in the family — the IRS accepts documented reasons.</p>
+       </div>
+      </div>
+      <div class="flex gap-5 md:gap-8 items-start">
+       <div class="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-yellow-300/15 border-2 border-yellow-300 flex items-center justify-center font-mono font-bold text-yellow-300 text-lg relative z-10">
+        3
+       </div>
+       <div class="pt-1 md:pt-3">
+        <h3 class="font-bold text-lg mb-1">First-Time Abatement Check</h3>
+        <p class="text-white/40 text-sm">If you've been compliant for 3+ years, you may qualify for automatic FTA — the fastest path to relief.</p>
+       </div>
+      </div>
+      <div class="flex gap-5 md:gap-8 items-start">
+       <div class="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-full bg-success/15 border-2 border-success flex items-center justify-center font-mono font-bold text-success text-lg relative z-10">
+        4
+       </div>
+       <div class="pt-1 md:pt-3">
+        <h3 class="font-bold text-lg mb-1">Submit &amp; Get Relief</h3>
+        <p class="text-white/40 text-sm">We prepare your abatement request with supporting documentation and submit it directly to the IRS on your behalf.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- RESULTS -->
+  <section id="results" class="py-20 px-4">
+   <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-14">
+     <div class="text-success font-mono text-xs tracking-widest mb-3">
+      REAL OUTCOMES
+     </div>
+     <h2 class="text-3xl md:text-4xl font-bold">Penalties Reduced. Money Returned.</h2>
+    </div>
+    <div class="space-y-6" id="results-container"><!-- Results rendered by JS -->
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" class="py-20 px-4 bg-surface">
+   <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-14">
+     <div class="text-white/40 font-mono text-xs tracking-widest mb-3">
+      FAQ
+     </div>
+     <h2 class="text-3xl md:text-4xl font-bold">Common Questions</h2>
+    </div>
+    <div class="space-y-3" id="faq-container"></div>
+   </div>
+  </section><!-- BOTTOM CTA -->
+  <section id="cta" class="py-20 px-4 relative overflow-hidden">
+   <div class="absolute inset-0 opacity-15" style="background: radial-gradient(ellipse at 50% 100%, #22c55e 0%, transparent 60%);"></div>
+   <div class="max-w-3xl mx-auto text-center relative z-10">
+    <h2 id="bottom-cta-text" class="text-3xl md:text-4xl font-bold mb-5">Stop overpaying unnecessary penalties.</h2>
+    <p class="text-white/40 mb-8 text-sm max-w-lg mx-auto">Our team has removed millions in IRS penalties. You could be next.</p><a href="#eligibility" class="inline-block px-10 py-4 bg-success text-bg font-bold rounded-lg hover:bg-green-400 transition-colors">Remove My Penalties</a>
+   </div>
+  </section><!-- VOTE + COMMENT WIDGET -->
+  <section id="widget" class="py-16 px-4 bg-surface border-t border-white/5">
+   <div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+     <div class="text-white/30 font-mono text-xs tracking-widest mb-2">
+      EMBED WIDGET HERE
+     </div>
+     <h3 class="text-2xl font-bold mb-1">Vote &amp; Comment</h3>
+     <p class="text-white/40 text-sm">React and share your thoughts on penalty relief.</p>
+    </div><!-- Reactions -->
+    <div class="flex justify-center gap-3 mb-6 flex-wrap" id="emoji-bar"><!-- Rendered by JS -->
+    </div><!-- Price Options -->
+    <div class="mb-6">
+     <div class="text-xs text-white/30 font-mono mb-3 text-center">
+      SELECT A VALUE
+     </div>
+     <div class="flex justify-center gap-2 flex-wrap" id="price-bar"><!-- Rendered by JS -->
+     </div>
+    </div><!-- Comment Input -->
+    <form id="comment-form" class="flex gap-3 mb-8"><input type="text" id="comment-input" class="comment-input flex-1 rounded-lg px-4 py-3 text-sm text-white placeholder-white/30" placeholder="Share your experience..." maxlength="280" aria-label="Comment"> <button type="submit" id="submit-btn" class="px-5 py-3 bg-success text-bg font-bold rounded-lg hover:bg-green-400 transition-colors text-sm flex-shrink-0">Post</button>
+    </form><!-- Comments List -->
+    <div id="comments-list" class="space-y-3"></div>
+    <div id="loading-indicator" class="text-center text-white/20 text-sm hidden">
+     Saving...
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="py-8 px-4 border-t border-white/5 text-center">
+   <div class="font-mono text-sm">
+    <span class="text-accent">Penalty</span><span class="text-success">Lift</span> <span class="text-white/30">Relief</span>
+   </div>
+   <p class="text-white/20 text-xs mt-2">Remove what you shouldn't be paying.</p>
+  </footer>
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  background_color: '#0a0a0b',
+  surface_color: '#141416',
+  text_color: '#f0f0f0',
+  primary_action_color: '#22c55e',
+  secondary_action_color: '#ef4444',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: "IRS penalties aren't always final.",
+  hero_subtitle: "We help remove what doesn't belong.",
+  bottom_cta_text: "Stop overpaying unnecessary penalties."
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const sf = config.surface_color || defaultConfig.surface_color;
+  const tx = config.text_color || defaultConfig.text_color;
+  const pa = config.primary_action_color || defaultConfig.primary_action_color;
+  const sa = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const ff = config.font_family || defaultConfig.font_family;
+  const fs = config.font_size || defaultConfig.font_size;
+
+  const body = document.getElementById('app-body');
+  body.style.backgroundColor = bg;
+  body.style.color = tx;
+  body.style.fontFamily = `${ff}, sans-serif`;
+  body.style.fontSize = fs + 'px';
+
+  // Surface sections
+  document.querySelectorAll('#eligibility, #faq, #widget').forEach(el => el.style.backgroundColor = sf);
+
+  // Cards
+  document.querySelectorAll('.penalty-card').forEach(el => el.style.backgroundColor = sf);
+
+  // Primary action buttons
+  document.querySelectorAll('a.bg-success, button.bg-success, #submit-btn').forEach(el => {
+    el.style.backgroundColor = pa;
+  });
+
+  // Accent text
+  document.querySelectorAll('.text-accent').forEach(el => el.style.color = sa);
+  document.querySelectorAll('.text-success:not(a):not(button)').forEach(el => el.style.color = pa);
+
+  // Nav
+  const nav = document.getElementById('sticky-nav');
+  if (nav) nav.style.backgroundColor = bg + 'e6';
+
+  // Hero title
+  const ht = document.getElementById('hero-title');
+  if (ht) {
+    const title = config.hero_title || defaultConfig.hero_title;
+    ht.innerHTML = title.replace(/final/, `<span class="text-accent line-through decoration-2">final</span><span class="text-success">.</span>`);
+    ht.style.fontSize = (fs * 2.8) + 'px';
+  }
+
+  const hs = document.getElementById('hero-subtitle');
+  if (hs) {
+    hs.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    hs.style.fontSize = (fs * 1.15) + 'px';
+  }
+
+  const bc = document.getElementById('bottom-cta-text');
+  if (bc) {
+    bc.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+    bc.style.fontSize = (fs * 2) + 'px';
+  }
+
+  // Headings
+  document.querySelectorAll('h2').forEach(el => { el.style.fontSize = (fs * 2) + 'px'; });
+  document.querySelectorAll('h3').forEach(el => { el.style.fontSize = (fs * 1.15) + 'px'; });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ===== ANIMATED COUNTER =====
+function animateCounter() {
+  const el = document.getElementById('counter');
+  const target = 14832;
+  const duration = 2000;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== RESULTS DATA =====
+const resultsData = [
+  { label: 'Failure to File — Self-Employed', original: 18750, reduced: 2200 },
+  { label: 'Failure to Pay — Small Business', original: 9340, reduced: 0 },
+  { label: 'Accuracy Penalty — W-2 Employee', original: 6100, reduced: 1500 },
+  { label: 'Estimated Tax — Freelancer', original: 4280, reduced: 800 }
+];
+
+function renderResults() {
+  const c = document.getElementById('results-container');
+  c.innerHTML = '';
+  resultsData.forEach((r, i) => {
+    const pct = ((r.original - r.reduced) / r.original * 100).toFixed(0);
+    const barW = (r.reduced / r.original * 100).toFixed(1);
+    const d = document.createElement('div');
+    d.className = 'bg-surface rounded-xl p-6 border border-white/5';
+    d.innerHTML = `
+      <div class="flex justify-between items-center mb-3">
+        <span class="text-sm font-medium">${r.label}</span>
+        <span class="font-mono text-success text-sm font-bold">${pct}% removed</span>
+      </div>
+      <div class="flex items-center gap-4 mb-2">
+        <span class="font-mono text-accent text-xs line-through">$${r.original.toLocaleString()}</span>
+        <i data-lucide="arrow-right" style="width:14px;height:14px;color:rgba(255,255,255,0.3);"></i>
+        <span class="font-mono text-success text-sm font-bold">$${r.reduced.toLocaleString()}</span>
+      </div>
+      <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+        <div class="result-bar" style="--target-width:${barW}%;width:100%;animation:barShrink 1.5s ${i*0.2}s ease forwards;"></div>
+      </div>
+    `;
+    c.appendChild(d);
+  });
+  lucide.createIcons();
+}
+
+// ===== FAQ =====
+const faqs = [
+  { q: 'How long does penalty abatement take?', a: 'Most cases resolve within 30-90 days. First-time abatement requests can be processed immediately by phone.' },
+  { q: 'What is "reasonable cause"?', a: 'The IRS accepts documented circumstances beyond your control — illness, natural disaster, reliance on a professional, or death in the family.' },
+  { q: 'Do I qualify for first-time abatement?', a: 'If you\'ve filed on time and had no penalties for the past 3 tax years, you likely qualify for automatic FTA.' },
+  { q: 'Can interest be removed too?', a: 'Interest can only be reduced if the underlying penalty is removed. Once the penalty is abated, related interest is recalculated.' },
+  { q: 'What if my request is denied?', a: 'We can appeal to the IRS Office of Appeals or pursue alternative relief strategies based on your specific situation.' }
+];
+
+function renderFAQ() {
+  const c = document.getElementById('faq-container');
+  c.innerHTML = '';
+  faqs.forEach((f, i) => {
+    const d = document.createElement('div');
+    d.className = 'border border-white/5 rounded-lg overflow-hidden';
+    d.innerHTML = `
+      <button class="w-full flex justify-between items-center px-5 py-4 text-left text-sm font-medium hover:bg-white/5 transition-colors" onclick="toggleFaq(${i})">
+        <span>${f.q}</span>
+        <i data-lucide="chevron-down" style="width:16px;height:16px;transition:transform 0.2s;" id="faq-icon-${i}"></i>
+      </button>
+      <div id="faq-body-${i}" class="hidden px-5 pb-4 text-white/40 text-sm">${f.a}</div>
+    `;
+    c.appendChild(d);
+  });
+  lucide.createIcons();
+}
+
+function toggleFaq(i) {
+  const body = document.getElementById('faq-body-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  const open = !body.classList.contains('hidden');
+  body.classList.toggle('hidden');
+  icon.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// ===== WIDGET: EMOJIS, PRICES, COMMENTS =====
+const emojis = ['🔥','💰','✅','🎯','⚡','💪'];
+const prices = ['$9','$19','$29','$49','$79','$99','$149','$199','$299','$499'];
+let selectedEmoji = null;
+let selectedPrice = null;
+let allData = [];
+
+function renderEmojiBar() {
+  const c = document.getElementById('emoji-bar');
+  c.innerHTML = '';
+  emojis.forEach(e => {
+    const btn = document.createElement('button');
+    btn.className = 'emoji-btn text-2xl p-2';
+    btn.textContent = e;
+    btn.setAttribute('aria-label', 'React with ' + e);
+    btn.onclick = () => {
+      selectedEmoji = selectedEmoji === e ? null : e;
+      document.querySelectorAll('.emoji-btn').forEach(b => b.classList.toggle('selected', b.textContent === selectedEmoji));
+    };
+    c.appendChild(btn);
+  });
+}
+
+function renderPriceBar() {
+  const c = document.getElementById('price-bar');
+  c.innerHTML = '';
+  prices.forEach(p => {
+    const chip = document.createElement('button');
+    chip.className = 'price-chip rounded-full px-3 py-1.5 text-xs font-mono text-white/60';
+    chip.textContent = p;
+    chip.setAttribute('aria-label', 'Select price ' + p);
+    chip.onclick = () => {
+      selectedPrice = selectedPrice === p ? null : p;
+      document.querySelectorAll('.price-chip').forEach(b => b.classList.toggle('selected', b.textContent === selectedPrice));
+    };
+    c.appendChild(chip);
+  });
+}
+
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = `toast text-sm font-medium ${type === 'error' ? 'bg-red-600' : 'bg-green-600'} text-white`;
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function renderComments() {
+  const c = document.getElementById('comments-list');
+  const existing = new Map([...c.children].map(el => [el.dataset.id, el]));
+  const comments = allData.filter(d => d.type === 'vote');
+
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  comments.forEach(item => {
+    const id = item.__backendId;
+    if (existing.has(id)) {
+      existing.delete(id);
+      return;
+    }
+    const div = document.createElement('div');
+    div.dataset.id = id;
+    div.className = 'flex items-start gap-3 bg-white/5 rounded-lg p-4 animate-fade-scale';
+    const date = new Date(item.timestamp);
+    const timeStr = date.toLocaleDateString(undefined, { month:'short', day:'numeric' });
+    div.innerHTML = `
+      <div class="text-xl flex-shrink-0">${item.emoji || '💬'}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          ${item.price ? `<span class="font-mono text-xs text-success">${item.price}</span>` : ''}
+          <span class="text-white/20 text-xs">${timeStr}</span>
+        </div>
+        <p class="text-sm text-white/60 break-words">${item.comment}</p>
+      </div>
+    `;
+    c.appendChild(div);
+  });
+
+  existing.forEach(el => el.remove());
+}
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderComments();
+  }
+};
+
+(async () => {
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) {
+    console.error('Data SDK init failed');
+  }
+})();
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text && !selectedEmoji && !selectedPrice) return;
+
+  if (allData.length >= 999) {
+    showToast('Maximum entries reached. Please try later.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  const loader = document.getElementById('loading-indicator');
+  btn.disabled = true;
+  btn.textContent = '...';
+  loader.classList.remove('hidden');
+
+  const result = await window.dataSdk.create({
+    section_id: 'widget',
+    type: 'vote',
+    emoji: selectedEmoji || '',
+    price: selectedPrice || '',
+    comment: text || (selectedEmoji ? selectedEmoji + ' reacted' : 'Voted ' + selectedPrice),
+    timestamp: new Date().toISOString()
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Post';
+  loader.classList.add('hidden');
+
+  if (result.isOk) {
+    input.value = '';
+    selectedEmoji = null;
+    selectedPrice = null;
+    document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.price-chip').forEach(b => b.classList.remove('selected'));
+    showToast('Posted!', 'success');
+  } else {
+    showToast('Failed to post. Try again.', 'error');
+  }
+});
+
+// ===== NAV =====
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Active nav on scroll
+const sections = ['home','penalties','eligibility','results','faq','cta'];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => { const el = document.getElementById(s); if(el) observer.observe(el); });
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ===== INIT =====
+renderResults();
+renderFAQ();
+renderEmojiBar();
+renderPriceBar();
+animateCounter();
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4d6de4be27c5',t:'MTc3NTU3ODIyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

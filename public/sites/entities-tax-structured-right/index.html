@@ -1,1 +1,725 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/537d6514-0b91-47fd-866f-a52781d0311e -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StructureFlow Advisor</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        slate900: '#0f172a',
+        slate800: '#1e293b',
+        slate700: '#334155',
+        electric: '#3b82f6',
+        electricDark: '#2563eb',
+        electricGlow: '#60a5fa',
+        surface: '#1a2332',
+        surfaceLight: '#243244'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+* { box-sizing: border-box; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.15); } 50% { box-shadow: 0 0 40px rgba(59,130,246,0.3); } }
+@keyframes draw { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+@keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes barGrow { from { width: 0; } }
+@keyframes nodeAppear { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+
+.anim-fade-up { animation: fadeUp 0.7s ease both; }
+.anim-fade-up-d1 { animation: fadeUp 0.7s 0.1s ease both; }
+.anim-fade-up-d2 { animation: fadeUp 0.7s 0.2s ease both; }
+.anim-fade-up-d3 { animation: fadeUp 0.7s 0.3s ease both; }
+.anim-fade-up-d4 { animation: fadeUp 0.7s 0.4s ease both; }
+.anim-fade-up-d5 { animation: fadeUp 0.7s 0.5s ease both; }
+.anim-slide-r { animation: slideRight 0.6s ease both; }
+.anim-slide-r-d1 { animation: slideRight 0.6s 0.15s ease both; }
+.anim-slide-r-d2 { animation: slideRight 0.6s 0.3s ease both; }
+.anim-glow { animation: pulse-glow 3s ease-in-out infinite; }
+.anim-bar { animation: barGrow 1s ease both; }
+.anim-bar-d1 { animation: barGrow 1s 0.2s ease both; }
+.anim-bar-d2 { animation: barGrow 1s 0.4s ease both; }
+.anim-count { animation: countUp 0.6s ease both; }
+.anim-node { animation: nodeAppear 0.5s ease both; }
+.anim-node-d1 { animation: nodeAppear 0.5s 0.2s ease both; }
+.anim-node-d2 { animation: nodeAppear 0.5s 0.4s ease both; }
+.anim-node-d3 { animation: nodeAppear 0.5s 0.6s ease both; }
+
+.draw-line { stroke-dasharray: 200; animation: draw 1.2s ease both; }
+.draw-line-d1 { stroke-dasharray: 200; animation: draw 1.2s 0.3s ease both; }
+
+.card-hover { transition: all 0.3s ease; }
+.card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(59,130,246,0.15); }
+.card-hover:hover .card-icon { transform: scale(1.1); }
+.card-icon { transition: transform 0.3s ease; }
+
+.nav-link { position: relative; transition: color 0.2s; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #3b82f6; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.cta-btn { transition: all 0.3s ease; position: relative; overflow: hidden; }
+.cta-btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; background: rgba(255,255,255,0.1); border-radius: 50%; transform: translate(-50%,-50%); transition: width 0.5s, height 0.5s; }
+.cta-btn:hover::before { width: 300px; height: 300px; }
+
+.compare-cell { transition: background 0.2s; }
+.compare-cell:hover { background: rgba(59,130,246,0.08); }
+
+.faq-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.faq-panel.open { max-height: 400px; padding-top: 12px; padding-bottom: 4px; }
+.faq-chevron { transition: transform 0.3s; }
+.faq-chevron.open { transform: rotate(180deg); }
+
+.reaction-btn { transition: all 0.2s; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { transform: scale(1.1); ring: 2px solid #3b82f6; }
+
+.price-chip { transition: all 0.2s; cursor: pointer; }
+.price-chip:hover { background: rgba(59,130,246,0.15); border-color: #3b82f6; }
+.price-chip.voted { background: rgba(59,130,246,0.2); border-color: #3b82f6; color: #60a5fa; }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 12px 24px; border-radius: 10px; font-size: 14px; z-index: 999; opacity: 0; transition: all 0.4s ease; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.mono { font-family: 'Space Mono', monospace; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-slate900 text-gray-200">
+  <div id="app-wrapper" class="w-full h-full overflow-auto">
+   <!-- Toast -->
+   <div id="toast" class="toast"></div><!-- Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 bg-slate900 bg-opacity-90 backdrop-blur-sm border-b border-slate700 border-opacity-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
+     <a href="#home" class="flex items-center gap-2 text-white font-bold text-lg">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none"><rect x="2" y="6" width="10" height="16" rx="2" stroke="#3b82f6" stroke-width="2" /><rect x="16" y="2" width="10" height="24" rx="2" stroke="#60a5fa" stroke-width="2" /><line x1="12" y1="14" x2="16" y2="14" stroke="#3b82f6" stroke-width="2" stroke-dasharray="2 2" />
+      </svg><span>StructureFlow</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm text-gray-400">
+      <a href="#home" class="nav-link hover:text-white">Home</a> <a href="#structures" class="nav-link hover:text-white">Structures</a> <a href="#comparison" class="nav-link hover:text-white">Comparison</a> <a href="#pricing" class="nav-link hover:text-white">Pricing</a> <a href="#faq" class="nav-link hover:text-white">FAQ</a> <a href="#optimize" class="cta-btn bg-electric hover:bg-electricDark text-white px-4 py-2 rounded-lg text-sm font-medium">Optimize Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-gray-400 hover:text-white"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate700 bg-slate900 px-4 pb-4 pt-2 space-y-2 text-sm">
+     <a href="#home" class="block py-2 text-gray-400 hover:text-white">Home</a> <a href="#structures" class="block py-2 text-gray-400 hover:text-white">Structures</a> <a href="#comparison" class="block py-2 text-gray-400 hover:text-white">Comparison</a> <a href="#pricing" class="block py-2 text-gray-400 hover:text-white">Pricing</a> <a href="#faq" class="block py-2 text-gray-400 hover:text-white">FAQ</a> <a href="#optimize" class="block py-2 bg-electric text-white rounded-lg text-center font-medium">Optimize Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative pt-32 pb-20 px-4 sm:px-6 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="absolute top-20 right-10 w-72 h-72 bg-electric rounded-full opacity-5 blur-3xl"></div>
+     <div class="absolute bottom-0 left-10 w-96 h-96 bg-electricGlow rounded-full opacity-5 blur-3xl"></div><!-- Grid pattern -->
+     <svg class="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg"><defs>
+       <pattern id="grid" width="40" height="40" patternunits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#3b82f6" stroke-width="0.5" />
+       </pattern>
+      </defs><rect width="100%" height="100%" fill="url(#grid)" />
+     </svg>
+    </div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="anim-fade-up inline-flex items-center gap-2 bg-surface border border-slate700 rounded-full px-4 py-1.5 text-xs text-electricGlow mb-6 mono">
+      <span class="w-2 h-2 bg-electric rounded-full animate-pulse"></span> Entity Structure Optimization
+     </div>
+     <h1 id="hero-title" class="anim-fade-up-d1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5">Your entity structure<br>
+       determines your outcome.</h1>
+     <p id="hero-subtitle" class="anim-fade-up-d2 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-8">Optimize how your business is taxed and protected.</p>
+     <div class="anim-fade-up-d3 flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="#optimize" id="cta-primary-btn" class="cta-btn bg-electric hover:bg-electricDark text-white px-7 py-3.5 rounded-xl font-semibold text-base inline-flex items-center justify-center gap-2 anim-glow"> <i data-lucide="zap" style="width:18px;height:18px;"></i> <span>Optimize Now</span> </a> <a href="#comparison" id="cta-secondary-btn" class="cta-btn bg-surface border border-slate700 hover:border-electric text-gray-300 hover:text-white px-7 py-3.5 rounded-xl font-semibold text-base inline-flex items-center justify-center gap-2"> <i data-lucide="git-compare" style="width:18px;height:18px;"></i> <span>Compare Structures</span> </a>
+     </div><!-- Decision tree mini diagram -->
+     <div class="anim-fade-up-d4 mt-14">
+      <svg width="320" height="130" viewbox="0 0 320 130" fill="none" class="mx-auto" style="max-width:100%;">
+       <circle cx="160" cy="20" r="16" stroke="#3b82f6" stroke-width="2" fill="#1a2332" class="anim-node" /> <text x="160" y="24" text-anchor="middle" fill="#60a5fa" font-size="11" font-family="Space Mono, monospace">
+        ?
+       </text> <line x1="145" y1="36" x2="80" y2="80" stroke="#334155" stroke-width="1.5" class="draw-line" /> <line x1="160" y1="36" x2="160" y2="80" stroke="#334155" stroke-width="1.5" class="draw-line-d1" /> <line x1="175" y1="36" x2="240" y2="80" stroke="#334155" stroke-width="1.5" class="draw-line" /> <rect x="48" y="80" width="64" height="34" rx="8" stroke="#3b82f6" stroke-width="1.5" fill="#1a2332" class="anim-node-d1" /> <text x="80" y="101" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="bold" font-family="DM Sans">
+        LLC
+       </text> <rect x="128" y="80" width="64" height="34" rx="8" stroke="#60a5fa" stroke-width="1.5" fill="#1a2332" class="anim-node-d2" /> <text x="160" y="101" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="bold" font-family="DM Sans">
+        S-Corp
+       </text> <rect x="208" y="80" width="64" height="34" rx="8" stroke="#2563eb" stroke-width="1.5" fill="#1a2332" class="anim-node-d3" /> <text x="240" y="101" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="bold" font-family="DM Sans">
+        C-Corp
+       </text>
+      </svg>
+     </div>
+    </div>
+   </section><!-- Structures -->
+   <section id="structures" class="py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-electric mono text-sm mb-2 anim-fade-up">ENTITY TYPES</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white anim-fade-up-d1">Three Structures, Three Strategies</h2>
+      <p class="text-gray-400 mt-3 max-w-xl mx-auto anim-fade-up-d2">Each structure offers distinct advantages. The right choice depends on your revenue, goals, and growth trajectory.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <!-- LLC -->
+      <div class="card-hover bg-surface border border-slate700 rounded-2xl p-6 anim-slide-r">
+       <div class="card-icon w-12 h-12 rounded-xl bg-electric bg-opacity-10 flex items-center justify-center mb-4">
+        <i data-lucide="shield" style="width:22px;height:22px;color:#3b82f6;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">LLC</h3>
+       <p class="text-sm text-gray-400 mb-4">Limited Liability Company — flexible, simple, and protective. Ideal for solopreneurs and small teams.</p>
+       <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#3b82f6;"></i> Pass-through taxation
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#3b82f6;"></i> Personal asset protection
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#3b82f6;"></i> Minimal compliance
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#3b82f6;"></i> Flexible profit distribution
+        </div>
+       </div>
+       <div class="mt-5 pt-4 border-t border-slate700">
+        <span class="mono text-xs text-electricGlow">Best for: &lt;$250K revenue</span>
+       </div>
+      </div><!-- S-Corp -->
+      <div class="card-hover bg-surface border border-electric border-opacity-40 rounded-2xl p-6 relative anim-slide-r-d1">
+       <div class="absolute -top-3 right-4 bg-electric text-white text-xs px-3 py-1 rounded-full font-medium">
+        Popular
+       </div>
+       <div class="card-icon w-12 h-12 rounded-xl bg-electric bg-opacity-10 flex items-center justify-center mb-4">
+        <i data-lucide="trending-up" style="width:22px;height:22px;color:#60a5fa;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">S-Corp</h3>
+       <p class="text-sm text-gray-400 mb-4">S Corporation — tax-efficient for growing businesses. Reduces self-employment tax through salary/distribution split.</p>
+       <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#60a5fa;"></i> SE tax savings
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#60a5fa;"></i> Salary + distribution split
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#60a5fa;"></i> Pass-through income
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#60a5fa;"></i> Credibility boost
+        </div>
+       </div>
+       <div class="mt-5 pt-4 border-t border-slate700">
+        <span class="mono text-xs text-electricGlow">Best for: $100K–$500K revenue</span>
+       </div>
+      </div><!-- C-Corp -->
+      <div class="card-hover bg-surface border border-slate700 rounded-2xl p-6 anim-slide-r-d2">
+       <div class="card-icon w-12 h-12 rounded-xl bg-electric bg-opacity-10 flex items-center justify-center mb-4">
+        <i data-lucide="building" style="width:22px;height:22px;color:#2563eb;"></i>
+       </div>
+       <h3 class="text-xl font-bold text-white mb-2">C-Corp</h3>
+       <p class="text-sm text-gray-400 mb-4">C Corporation — built for scale and investment. Required for VC funding, IPO paths, and complex ownership structures.</p>
+       <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#2563eb;"></i> Unlimited shareholders
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#2563eb;"></i> Stock options &amp; equity
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#2563eb;"></i> Retained earnings
+        </div>
+        <div class="flex items-center gap-2 text-gray-300"><i data-lucide="check-circle" style="width:15px;height:15px;color:#2563eb;"></i> Investor-ready
+        </div>
+       </div>
+       <div class="mt-5 pt-4 border-t border-slate700">
+        <span class="mono text-xs text-electricGlow">Best for: $500K+ / funded</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Comparison -->
+   <section id="comparison" class="py-20 px-4 sm:px-6 bg-surface">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <p class="text-electric mono text-sm mb-2">SIDE-BY-SIDE</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Structure Comparison</h2>
+     </div>
+     <div class="overflow-x-auto rounded-2xl border border-slate700">
+      <table class="w-full text-sm">
+       <thead>
+        <tr class="border-b border-slate700 bg-slate800">
+         <th class="text-left py-4 px-5 text-gray-400 font-medium">Feature</th>
+         <th class="py-4 px-5 text-center text-electric font-bold">LLC</th>
+         <th class="py-4 px-5 text-center text-electricGlow font-bold">S-Corp</th>
+         <th class="py-4 px-5 text-center text-electricDark font-bold" style="color:#93c5fd;">C-Corp</th>
+        </tr>
+       </thead>
+       <tbody class="text-gray-300">
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">Tax Treatment</td>
+         <td class="py-3.5 px-5 text-center">Pass-through</td>
+         <td class="py-3.5 px-5 text-center">Pass-through</td>
+         <td class="py-3.5 px-5 text-center">Double taxation</td>
+        </tr>
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">SE Tax Savings</td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="x" style="width:16px;height:16px;color:#64748b;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center">N/A</td>
+        </tr>
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">Ownership Limits</td>
+         <td class="py-3.5 px-5 text-center">None</td>
+         <td class="py-3.5 px-5 text-center">100 shareholders</td>
+         <td class="py-3.5 px-5 text-center">Unlimited</td>
+        </tr>
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">Investor Friendly</td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="minus" style="width:16px;height:16px;color:#64748b;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="minus" style="width:16px;height:16px;color:#64748b;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;display:inline;"></i></td>
+        </tr>
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">Compliance Level</td>
+         <td class="py-3.5 px-5 text-center"><span class="bg-green-900 bg-opacity-40 text-green-400 px-2 py-0.5 rounded text-xs">Low</span></td>
+         <td class="py-3.5 px-5 text-center"><span class="bg-yellow-900 bg-opacity-40 text-yellow-400 px-2 py-0.5 rounded text-xs">Medium</span></td>
+         <td class="py-3.5 px-5 text-center"><span class="bg-red-900 bg-opacity-40 text-red-400 px-2 py-0.5 rounded text-xs">High</span></td>
+        </tr>
+        <tr class="compare-cell border-b border-slate700">
+         <td class="py-3.5 px-5 font-medium text-white">Liability Protection</td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;display:inline;"></i></td>
+         <td class="py-3.5 px-5 text-center"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;display:inline;"></i></td>
+        </tr>
+        <tr class="compare-cell">
+         <td class="py-3.5 px-5 font-medium text-white">Setup Complexity</td>
+         <td class="py-3.5 px-5 text-center">Simple</td>
+         <td class="py-3.5 px-5 text-center">Moderate</td>
+         <td class="py-3.5 px-5 text-center">Complex</td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </section><!-- Impact -->
+   <section id="impact" class="py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-electric mono text-sm mb-2">FINANCIAL IMPACT</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Tax Outcome Scenarios</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">At $200K net income, see how each structure impacts your total tax obligation.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5 mb-12">
+      <!-- LLC Tax -->
+      <div class="bg-surface border border-slate700 rounded-2xl p-6 text-center card-hover">
+       <div class="mono text-xs text-gray-500 mb-1">
+        LLC
+       </div>
+       <div class="text-3xl font-bold text-white mb-1 anim-count">
+        $56,400
+       </div>
+       <div class="text-xs text-gray-500 mb-4">
+        Estimated total tax
+       </div>
+       <div class="space-y-2">
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Income Tax (24%)</span><span>$48,000</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-electric rounded-full anim-bar" style="width:85%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>SE Tax</span><span>$8,400</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-electricGlow rounded-full anim-bar-d1" style="width:15%"></div>
+         </div>
+        </div>
+       </div>
+      </div><!-- S-Corp Tax -->
+      <div class="bg-surface border border-electric border-opacity-40 rounded-2xl p-6 text-center card-hover relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-electric text-white text-xs px-3 py-1 rounded-full font-medium">
+        Best Value
+       </div>
+       <div class="mono text-xs text-gray-500 mb-1">
+        S-Corp
+       </div>
+       <div class="text-3xl font-bold text-electric mb-1 anim-count">
+        $43,200
+       </div>
+       <div class="text-xs text-gray-500 mb-4">
+        Estimated total tax
+       </div>
+       <div class="space-y-2">
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Income Tax (24%)</span><span>$48,000</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-electric rounded-full anim-bar" style="width:85%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>SE Tax (salary only)</span><span>$0</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-green-500 rounded-full anim-bar-d1" style="width:0%"></div>
+         </div>
+        </div>
+        <div class="mt-2 bg-green-900 bg-opacity-20 border border-green-800 border-opacity-30 rounded-lg px-3 py-2"><span class="text-green-400 text-xs font-medium">💰 You save ~$13,200/yr</span>
+        </div>
+       </div>
+      </div><!-- C-Corp Tax -->
+      <div class="bg-surface border border-slate700 rounded-2xl p-6 text-center card-hover">
+       <div class="mono text-xs text-gray-500 mb-1">
+        C-Corp
+       </div>
+       <div class="text-3xl font-bold text-white mb-1 anim-count">
+        $62,000
+       </div>
+       <div class="text-xs text-gray-500 mb-4">
+        Estimated total tax
+       </div>
+       <div class="space-y-2">
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Corp Tax (21%)</span><span>$42,000</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-blue-800 rounded-full anim-bar" style="width:75%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Dividend Tax</span><span>$20,000</span>
+         </div>
+         <div class="w-full h-2 bg-slate800 rounded-full overflow-hidden">
+          <div class="h-full bg-blue-600 rounded-full anim-bar-d1" style="width:35%"></div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <p class="text-center text-xs text-gray-600 italic">*Illustrative scenarios. Actual outcomes vary by jurisdiction, deductions, and circumstances. Consult a tax professional.</p>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 sm:px-6 bg-surface">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12">
+      <p class="text-electric mono text-sm mb-2">FAQ</p>
+      <h2 class="text-3xl font-bold text-white">Common Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden">
+       <button class="faq-btn w-full flex items-center justify-between px-5 py-4 text-left text-white font-medium text-sm hover:text-electric transition-colors" onclick="toggleFaq(this)"> <span>When should I switch from LLC to S-Corp?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;flex-shrink:0;color:#64748b;"></i> </button>
+       <div class="faq-panel px-5 text-sm text-gray-400">
+        Generally when net income consistently exceeds $50K–$80K. The SE tax savings at that level outweigh the additional compliance costs of running payroll.
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden">
+       <button class="faq-btn w-full flex items-center justify-between px-5 py-4 text-left text-white font-medium text-sm hover:text-electric transition-colors" onclick="toggleFaq(this)"> <span>Can I convert my LLC to an S-Corp later?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;flex-shrink:0;color:#64748b;"></i> </button>
+       <div class="faq-panel px-5 text-sm text-gray-400">
+        Yes. You file Form 2553 with the IRS to elect S-Corp tax treatment. Your LLC remains the same legal entity — only the tax classification changes. Timing matters: file by March 15 for the current tax year.
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden">
+       <button class="faq-btn w-full flex items-center justify-between px-5 py-4 text-left text-white font-medium text-sm hover:text-electric transition-colors" onclick="toggleFaq(this)"> <span>What's the real cost of double taxation with a C-Corp?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;flex-shrink:0;color:#64748b;"></i> </button>
+       <div class="faq-panel px-5 text-sm text-gray-400">
+        Corporate profits are taxed at 21%, then distributions to shareholders are taxed again at capital gains rates (0–20%). However, C-Corps can retain earnings, deduct more expenses, and offer stock-based compensation — sometimes making the effective rate competitive.
+       </div>
+      </div>
+      <div class="faq-item bg-slate800 border border-slate700 rounded-xl overflow-hidden">
+       <button class="faq-btn w-full flex items-center justify-between px-5 py-4 text-left text-white font-medium text-sm hover:text-electric transition-colors" onclick="toggleFaq(this)"> <span>Do I need a C-Corp to raise venture capital?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;flex-shrink:0;color:#64748b;"></i> </button>
+       <div class="faq-panel px-5 text-sm text-gray-400">
+        Most VCs require a Delaware C-Corp. It enables preferred stock issuance, clean cap tables, and QSBS tax benefits. If fundraising is on your roadmap, structuring as a C-Corp early avoids costly conversions later.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 px-4 sm:px-6 bg-slate900">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-electric mono text-sm mb-2">PRICING</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Structure Optimization Plans</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">Choose the package that matches your business stage and optimization needs.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <!-- Starter -->
+      <div class="card-hover bg-surface border border-slate700 rounded-2xl p-8 flex flex-col anim-slide-r">
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Starter</h3>
+        <p class="text-sm text-gray-400">For solopreneurs &amp; side hustles</p>
+       </div>
+       <div class="mb-6"><span class="text-4xl font-bold text-white">$99</span> <span class="text-gray-400 text-sm mono">/one-time</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;margin-top:2px;"></i> <span>Entity structure comparison</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;margin-top:2px;"></i> <span>Basic tax impact analysis</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;margin-top:2px;"></i> <span>Formation checklist</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#3b82f6;flex-shrink:0;margin-top:2px;"></i> <span>Email support</span></li>
+       </ul><button class="w-full cta-btn bg-surface border border-slate700 hover:border-electric text-gray-300 hover:text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors">Get Started</button>
+      </div><!-- Professional (Popular) -->
+      <div class="card-hover bg-surface border border-electric border-opacity-40 rounded-2xl p-8 flex flex-col anim-slide-r-d1 relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-electric text-white text-xs px-3 py-1 rounded-full font-medium">
+        Most Popular
+       </div>
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Professional</h3>
+        <p class="text-sm text-electricGlow">For growing businesses</p>
+       </div>
+       <div class="mb-6"><span class="text-4xl font-bold text-electric">$249</span> <span class="text-gray-400 text-sm mono">/one-time</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#60a5fa;flex-shrink:0;margin-top:2px;"></i> <span>Everything in Starter, plus:</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#60a5fa;flex-shrink:0;margin-top:2px;"></i> <span>3-year tax projection</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#60a5fa;flex-shrink:0;margin-top:2px;"></i> <span>S-Corp election strategy</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#60a5fa;flex-shrink:0;margin-top:2px;"></i> <span>Conversion roadmap</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#60a5fa;flex-shrink:0;margin-top:2px;"></i> <span>Priority email support</span></li>
+       </ul><button class="w-full cta-btn bg-electric hover:bg-electricDark text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors">Choose Plan</button>
+      </div><!-- Enterprise -->
+      <div class="card-hover bg-surface border border-slate700 rounded-2xl p-8 flex flex-col anim-slide-r-d2">
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Enterprise</h3>
+        <p class="text-sm text-gray-400">For funded &amp; scaling teams</p>
+       </div>
+       <div class="mb-6"><span class="text-4xl font-bold text-white">$599</span> <span class="text-gray-400 text-sm mono">/one-time</span>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px;"></i> <span>Everything in Professional, plus:</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px;"></i> <span>VC funding structure optimization</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px;"></i> <span>Cap table &amp; equity strategy</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px;"></i> <span>Multi-jurisdiction planning</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px;"></i> <span>Direct advisor access</span></li>
+       </ul><button class="w-full cta-btn bg-surface border border-slate700 hover:border-electric text-gray-300 hover:text-white px-6 py-3 rounded-xl font-semibold text-sm transition-colors">Contact Sales</button>
+      </div>
+     </div>
+     <div class="text-center mt-12">
+      <p class="text-xs text-gray-600">All plans include lifetime access to comparison charts &amp; tax impact tools. No monthly fees.</p>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment -->
+   <section id="optimize" class="py-20 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+     <!-- CTA -->
+     <div class="text-center mb-16">
+      <h2 id="bottom-cta-title" class="text-3xl sm:text-4xl font-bold text-white mb-4">Structure your business for advantage.</h2>
+      <p class="text-gray-400 mb-8 max-w-lg mx-auto">Get a personalized entity structure recommendation based on your revenue, goals, and tax situation.</p><a href="#optimize" class="cta-btn bg-electric hover:bg-electricDark text-white px-8 py-4 rounded-xl font-semibold text-lg inline-flex items-center gap-2 anim-glow"> <i data-lucide="rocket" style="width:20px;height:20px;"></i> Start Your Optimization </a>
+     </div><!-- Embed Widget -->
+     <div class="bg-surface border border-slate700 rounded-2xl p-6 sm:p-8">
+      <div class="text-center mb-6">
+       <p class="mono text-xs text-gray-500 mb-2">EMBED WIDGET HERE</p>
+       <h3 class="text-xl font-bold text-white">Community Feedback</h3>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactions-container">
+       <!-- Rendered by JS -->
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-sm text-gray-400 text-center mb-3">What would you pay for a full structure optimization?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-chips">
+        <!-- Rendered by JS -->
+       </div>
+      </div><!-- Comment -->
+      <div>
+       <div id="comments-list" class="space-y-3 mb-4 max-h-64 overflow-y-auto"></div>
+       <form id="comment-form" class="flex gap-2">
+        <input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-slate800 border border-slate700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-electric transition-colors"> <button type="submit" id="comment-submit" class="bg-electric hover:bg-electricDark text-white px-4 py-2.5 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post </button>
+       </form>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-slate700 py-8 px-4 text-center">
+    <p class="text-xs text-gray-600">© 2025 StructureFlow Advisor. The right structure changes everything.</p>
+   </footer>
+  </div>
+  <script>
+// --- Config & SDK ---
+const defaultConfig = {
+  background_color: '#0f172a',
+  surface_color: '#1a2332',
+  text_color: '#e2e8f0',
+  primary_action_color: '#3b82f6',
+  secondary_action_color: '#334155',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: 'Your entity structure determines your outcome.',
+  hero_subtitle: 'Optimize how your business is taxed and protected.',
+  cta_primary: 'Optimize Now',
+  cta_secondary: 'Compare Structures',
+  bottom_cta_title: 'Structure your business for advantage.'
+};
+
+const REACTIONS = ['🔥','💡','🚀','💰','🎯','⚡'];
+const PRICES = ['$49','$99','$149','$199','$249','$299','$399','$499','$749','$999'];
+
+let allData = [];
+let userReaction = null;
+let userPriceVote = null;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// --- Render widget ---
+function renderReactions() {
+  const c = document.getElementById('reactions-container');
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+  c.innerHTML = REACTIONS.map(r => {
+    const sel = userReaction === r ? 'selected ring-2 ring-electric bg-electric bg-opacity-10' : '';
+    return `<button class="reaction-btn flex items-center gap-1.5 bg-slate800 border border-slate700 rounded-full px-4 py-2 text-sm ${sel}" data-r="${r}"><span class="text-lg">${r}</span><span class="mono text-xs text-gray-400">${counts[r]}</span></button>`;
+  }).join('');
+  c.querySelectorAll('[data-r]').forEach(btn => {
+    btn.addEventListener('click', () => handleReaction(btn.dataset.r));
+  });
+}
+
+function renderPriceChips() {
+  const c = document.getElementById('price-chips');
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price_vote').forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+  c.innerHTML = PRICES.map(p => {
+    const sel = userPriceVote === p ? 'voted' : '';
+    return `<button class="price-chip border border-slate700 rounded-lg px-3 py-1.5 text-sm mono ${sel}" data-p="${p}">${p}<span class="text-xs text-gray-500 ml-1">(${counts[p]})</span></button>`;
+  }).join('');
+  c.querySelectorAll('[data-p]').forEach(btn => {
+    btn.addEventListener('click', () => handlePriceVote(btn.dataset.p));
+  });
+}
+
+function renderComments() {
+  const c = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment');
+  if (!comments.length) { c.innerHTML = '<p class="text-center text-xs text-gray-600">No comments yet. Be the first!</p>'; return; }
+
+  const existingEls = new Map([...c.children].filter(el => el.dataset.id).map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(cm => cm.__backendId));
+
+  comments.forEach(cm => {
+    const id = cm.__backendId;
+    if (existingEls.has(id)) {
+      existingEls.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'bg-slate800 border border-slate700 rounded-lg px-4 py-3 text-sm text-gray-300';
+      const time = cm.created_at ? new Date(cm.created_at).toLocaleDateString() : '';
+      div.innerHTML = `<span class="text-gray-200">${escHtml(cm.comment || '')}</span><span class="block text-xs text-gray-600 mt-1 mono">${time}</span>`;
+      c.appendChild(div);
+    }
+  });
+  existingEls.forEach(el => el.remove());
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function handleReaction(r) {
+  if (userReaction === r) return;
+  userReaction = r;
+  renderReactions();
+  const res = await window.dataSdk.create({ type: 'reaction', reaction: r, comment: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!res.isOk) showToast('Could not save reaction.');
+}
+
+async function handlePriceVote(p) {
+  if (userPriceVote === p) return;
+  userPriceVote = p;
+  renderPriceChips();
+  const res = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', price_vote: p, created_at: new Date().toISOString() });
+  if (!res.isOk) showToast('Could not save vote.');
+}
+
+// --- Data SDK ---
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPriceChips();
+    renderComments();
+  }
+};
+
+// --- Element SDK ---
+function applyConfig(cfg) {
+  document.body.style.background = cfg.background_color || defaultConfig.background_color;
+  const primary = cfg.primary_action_color || defaultConfig.primary_action_color;
+  const textC = cfg.text_color || defaultConfig.text_color;
+  const font = cfg.font_family || defaultConfig.font_family;
+  const baseSize = cfg.font_size || defaultConfig.font_size;
+
+  document.body.style.color = textC;
+  document.body.style.fontFamily = `${font}, DM Sans, sans-serif`;
+
+  const ht = document.getElementById('hero-title');
+  if (ht) { ht.textContent = cfg.hero_title || defaultConfig.hero_title; ht.style.fontSize = `${baseSize * 3}px`; }
+  const hs = document.getElementById('hero-subtitle');
+  if (hs) { hs.textContent = cfg.hero_subtitle || defaultConfig.hero_subtitle; hs.style.fontSize = `${baseSize * 1.2}px`; }
+
+  const cpb = document.getElementById('cta-primary-btn');
+  if (cpb) { cpb.querySelector('span').textContent = cfg.cta_primary || defaultConfig.cta_primary; cpb.style.background = primary; }
+  const csb = document.getElementById('cta-secondary-btn');
+  if (csb) csb.querySelector('span').textContent = cfg.cta_secondary || defaultConfig.cta_secondary;
+
+  const bct = document.getElementById('bottom-cta-title');
+  if (bct) bct.textContent = cfg.bottom_cta_title || defaultConfig.bottom_cta_title;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      { get: () => cfg.background_color || defaultConfig.background_color, set: v => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => cfg.surface_color || defaultConfig.surface_color, set: v => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => cfg.text_color || defaultConfig.text_color, set: v => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => cfg.primary_action_color || defaultConfig.primary_action_color, set: v => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: v => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => cfg.font_family || defaultConfig.font_family, set: v => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => cfg.font_size || defaultConfig.font_size, set: v => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', cfg.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', cfg.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', cfg.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+
+// --- Init Data SDK ---
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// --- FAQ toggle ---
+function toggleFaq(btn) {
+  const panel = btn.nextElementSibling;
+  const chevron = btn.querySelector('.faq-chevron');
+  panel.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+// --- Comment form ---
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const res = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (res.isOk) { input.value = ''; } else { showToast('Could not post comment.'); }
+});
+
+// --- Mobile menu ---
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// --- Init Lucide ---
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a280e477e27c5',t:'MTc3NTU3NjY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

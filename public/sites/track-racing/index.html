@@ -1,1 +1,663 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/bc3e816d-d30f-4112-90ab-eeddc67ab337 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Circuit</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', 'sans-serif'],
+        body: ['"Barlow"', 'sans-serif']
+      },
+      colors: {
+        apex: {
+          black: '#0a0a0a',
+          dark: '#111111',
+          card: '#1a1a1a',
+          red: '#e11d48',
+          white: '#f5f5f5'
+        }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+
+/* Glass card */
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Hero zoom */
+@keyframes heroZoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+.hero-bg { animation: heroZoom 8s ease-out forwards; }
+
+/* Section reveal */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CTA glow */
+@keyframes ctaGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(225,29,72,0.3); }
+  50% { box-shadow: 0 0 40px rgba(225,29,72,0.6); }
+}
+.cta-glow { animation: ctaGlow 2.5s ease-in-out infinite; }
+
+/* Checklist animation */
+.check-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.4s ease;
+}
+.check-item.checked {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Motion blur line accents */
+@keyframes blurStreak {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(200%); opacity: 0; }
+}
+.blur-streak {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225,29,72,0.6), transparent);
+  animation: blurStreak 3s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 3px; }
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #e11d48;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Image cover helper */
+.img-cover { object-fit: cover; width: 100%; height: 100%; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-apex-black text-apex-white font-body">
+  <div id="app" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-14"><a href="#home" class="font-display text-2xl tracking-wider" id="nav-brand">APEX <span class="text-apex-red">CIRCUIT</span></a>
+     <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase"><a href="#home" class="nav-link text-apex-white/70 hover:text-apex-white transition">Home</a> <a href="#wallpapers" class="nav-link text-apex-white/70 hover:text-apex-white transition">Wallpapers</a> <a href="#planner" class="nav-link text-apex-white/70 hover:text-apex-white transition">Track Planner</a> <a href="#preview" class="nav-link text-apex-white/70 hover:text-apex-white transition">Preview</a> <a href="#reviews" class="nav-link text-apex-white/70 hover:text-apex-white transition">Reviews</a> <a href="#download" class="nav-link text-apex-white/70 hover:text-apex-white transition">Download</a>
+     </div><button id="mobile-toggle" class="md:hidden text-apex-white/70"><i data-lucide="menu" class="w-5 h-5"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm uppercase tracking-wide"><a href="#home" class="text-apex-white/70 hover:text-apex-white py-1">Home</a> <a href="#wallpapers" class="text-apex-white/70 hover:text-apex-white py-1">Wallpapers</a> <a href="#planner" class="text-apex-white/70 hover:text-apex-white py-1">Track Planner</a> <a href="#preview" class="text-apex-white/70 hover:text-apex-white py-1">Preview</a> <a href="#reviews" class="text-apex-white/70 hover:text-apex-white py-1">Reviews</a> <a href="#download" class="text-apex-white/70 hover:text-apex-white py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="height:100%;">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1600&amp;q=80" alt="Race track at speed" class="hero-bg img-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='linear-gradient(135deg,#1a1a1a,#0a0a0a)';this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-apex-black/70 via-apex-black/50 to-apex-black"></div>
+    </div><!-- Motion blur streaks -->
+    <div class="blur-streak" style="top:30%;width:300px;animation-delay:0s;"></div>
+    <div class="blur-streak" style="top:55%;width:200px;animation-delay:1.2s;"></div>
+    <div class="blur-streak" style="top:75%;width:250px;animation-delay:0.6s;"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="height:100%;padding-top:56px;"><!-- Flag icon -->
+     <svg class="w-10 h-10 mb-6 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" />
+     </svg>
+     <h1 id="hero-tagline" class="font-display text-6xl md:text-8xl lg:text-9xl tracking-wide leading-none mb-4">PRECISION AT<br><span class="text-apex-red">FULL SPEED.</span></h1>
+     <p id="hero-subhead" class="text-apex-white/60 text-lg md:text-xl max-w-2xl mb-10 font-light">Racing visuals and track templates built from real photography.</p>
+     <div class="flex flex-col sm:flex-row gap-4"><a href="#download" class="cta-glow bg-apex-red hover:bg-red-700 text-white font-semibold px-8 py-3.5 rounded-sm tracking-wider uppercase text-sm transition-colors">Download the Pack</a> <a href="#preview" class="border border-apex-white/20 hover:border-apex-white/50 text-apex-white/80 hover:text-white font-semibold px-8 py-3.5 rounded-sm tracking-wider uppercase text-sm transition-all">Preview Gallery</a>
+     </div>
+     <div class="mt-12 flex items-center gap-8 text-apex-white/30 text-xs uppercase tracking-widest"><span>135 Wallpapers</span> <span class="w-1 h-1 rounded-full bg-apex-red"></span> <span>30 Posters</span> <span class="w-1 h-1 rounded-full bg-apex-red"></span> <span>Track Templates</span>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="relative py-24 px-6 reveal-section">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex items-center gap-3 mb-2"><!-- Helmet icon -->
+      <svg class="w-5 h-5 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M2 12a10 10 0 0 1 10-10 10 10 0 0 1 10 10c0 2-1 3-2 4H4c-1-1-2-2-2-4z" /><path d="M2 12h20" /><path d="M12 2v10" />
+      </svg><span class="text-apex-red text-xs uppercase tracking-[0.3em] font-semibold">Gallery</span>
+     </div>
+     <h2 class="font-display text-5xl md:text-6xl tracking-wide mb-4">135 RACING <span class="text-apex-red">WALLPAPERS</span></h2>
+     <p class="text-apex-white/50 max-w-xl mb-12 font-light">High-resolution track photography. Phones, desktops, tablets — every ratio covered.</p>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="col-span-2 row-span-2 rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&amp;q=80" alt="Race car cornering" class="img-cover h-full transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-apex-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="text-sm font-medium tracking-wide">Corner Entry — 4K Desktop</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group aspect-square"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&amp;q=80" alt="Race track aerial" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-apex-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3"><span class="text-xs tracking-wide">Aerial View</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group aspect-square"><img src="https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?w=400&amp;q=80" alt="Pit lane" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-apex-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3"><span class="text-xs tracking-wide">Pit Lane</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group aspect-square"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&amp;q=80" alt="Track sunset" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-apex-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3"><span class="text-xs tracking-wide">Golden Hour</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group aspect-square"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&amp;q=80" alt="Racing detail" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-apex-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3"><span class="text-xs tracking-wide">Detail Shot</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="py-20 px-6 reveal-section">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid md:grid-cols-3 gap-4">
+      <div class="glass-card rounded p-8 hover:border-apex-red/30 transition-colors group">
+       <svg class="w-8 h-8 text-apex-red mb-4 group-hover:scale-110 transition-transform" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+       </svg>
+       <h3 class="font-display text-2xl tracking-wide mb-2">135 WALLPAPERS</h3>
+       <p class="text-apex-white/40 text-sm font-light leading-relaxed">4K desktop, mobile, and tablet ratios. Real track photography, professionally graded.</p>
+      </div>
+      <div class="glass-card rounded p-8 hover:border-apex-red/30 transition-colors group">
+       <svg class="w-8 h-8 text-apex-red mb-4 group-hover:scale-110 transition-transform" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+       </svg>
+       <h3 class="font-display text-2xl tracking-wide mb-2">30 POSTERS</h3>
+       <p class="text-apex-white/40 text-sm font-light leading-relaxed">Print-ready racing posters. Typography overlays, minimal compositions, bold statements.</p>
+      </div>
+      <div class="glass-card rounded p-8 hover:border-apex-red/30 transition-colors group">
+       <svg class="w-8 h-8 text-apex-red mb-4 group-hover:scale-110 transition-transform" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+       </svg>
+       <h3 class="font-display text-2xl tracking-wide mb-2">STORY TEMPLATES</h3>
+       <p class="text-apex-white/40 text-sm font-light leading-relaxed">Instagram-ready stories plus a 50-caption pack. Designed for the track day community.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- TRACK PLANNER -->
+   <section id="planner" class="py-24 px-6 reveal-section">
+    <div class="max-w-7xl mx-auto">
+     <div class="grid md:grid-cols-2 gap-12 items-start">
+      <div>
+       <div class="flex items-center gap-3 mb-2"><!-- Stopwatch icon -->
+        <svg class="w-5 h-5 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+         <circle cx="12" cy="14" r="8" /><line x1="12" y1="6" x2="12" y2="2" /><line x1="10" y1="2" x2="14" y2="2" /><line x1="21" y1="8" x2="19" y2="10" />
+        </svg><span class="text-apex-red text-xs uppercase tracking-[0.3em] font-semibold">Planner</span>
+       </div>
+       <h2 id="planner-title" class="font-display text-5xl md:text-6xl tracking-wide mb-4">TRACK DAY <span class="text-apex-red">PLANNER</span></h2>
+       <p class="text-apex-white/50 max-w-md mb-8 font-light">A printable track day organizer with setup checklist. Never arrive unprepared.</p><!-- Setup Checklist -->
+       <div class="glass-card rounded p-6 mb-6">
+        <h3 class="font-display text-xl tracking-wide mb-4 flex items-center gap-2">
+         <svg class="w-4 h-4 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+         </svg> SETUP CHECKLIST</h3>
+        <div id="checklist" class="space-y-3">
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="0">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Tire pressure — cold set to spec</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="1">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Brake fluid level and pad thickness</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="2">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Coolant and oil levels topped</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="3">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Lug nut torque verified</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="4">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Helmet, gloves, HANS device packed</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="5">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Dash cam and data logger ready</span>
+         </div>
+         <div class="check-item flex items-center gap-3 text-sm cursor-pointer group" data-idx="6">
+          <div class="w-5 h-5 rounded-sm border border-apex-white/20 group-hover:border-apex-red flex items-center justify-center transition-colors check-box">
+           <svg class="w-3 h-3 text-apex-red opacity-0 check-mark transition-opacity" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+           </svg>
+          </div><span class="text-apex-white/70 group-hover:text-apex-white transition">Registration and insurance docs</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Track Day Planner Preview Card -->
+      <div class="glass-card rounded p-6">
+       <div class="flex items-center justify-between mb-6">
+        <h3 class="font-display text-xl tracking-wide">TRACK DAY SCHEDULE</h3><span class="text-apex-red text-xs uppercase tracking-widest">Template</span>
+       </div>
+       <div class="space-y-4">
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">06:30</span>
+         <div>
+          <p class="text-sm font-medium">Gates Open</p>
+          <p class="text-xs text-apex-white/40">Arrive early, unload, pit setup</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">07:15</span>
+         <div>
+          <p class="text-sm font-medium">Tech Inspection</p>
+          <p class="text-xs text-apex-white/40">Vehicle safety check, wristband collection</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">08:00</span>
+         <div>
+          <p class="text-sm font-medium">Drivers Meeting</p>
+          <p class="text-xs text-apex-white/40">Flag rules, passing zones, track notes</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">09:00</span>
+         <div>
+          <p class="text-sm font-medium">Session 1 — Green Flag</p>
+          <p class="text-xs text-apex-white/40">20 min session, focus on line and braking</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">12:00</span>
+         <div>
+          <p class="text-sm font-medium">Lunch / Tire Review</p>
+          <p class="text-xs text-apex-white/40">Check pressures, review data, hydrate</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-4 p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05]"><span class="text-apex-red font-display text-lg w-20 shrink-0">16:00</span>
+         <div>
+          <p class="text-sm font-medium">Final Session + Cooldown</p>
+          <p class="text-xs text-apex-white/40">Last laps, cooldown lap, pack up</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="py-24 px-6 reveal-section">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex items-center gap-3 mb-2"><!-- Track icon -->
+      <svg class="w-5 h-5 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" />
+      </svg><span class="text-apex-red text-xs uppercase tracking-[0.3em] font-semibold">Preview</span>
+     </div>
+     <h2 class="font-display text-5xl md:text-6xl tracking-wide mb-12">INSIDE THE <span class="text-apex-red">PACK</span></h2>
+     <div class="grid md:grid-cols-3 gap-4">
+      <div class="glass-card rounded overflow-hidden group">
+       <div class="aspect-[4/5] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500&amp;q=80" alt="Racing poster preview" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-apex-black to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5"><span class="text-xs uppercase tracking-widest text-apex-red">Poster</span>
+         <p class="font-display text-xl mt-1">VELOCITY SERIES</p>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card rounded overflow-hidden group">
+       <div class="aspect-[4/5] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500&amp;q=80" alt="Story template preview" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-apex-black to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5"><span class="text-xs uppercase tracking-widest text-apex-red">Story</span>
+         <p class="font-display text-xl mt-1">GRID WALK TEMPLATE</p>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card rounded overflow-hidden group">
+       <div class="aspect-[4/5] relative overflow-hidden"><img src="https://images.unsplash.com/photo-1547744152-14d985cb937f?w=500&amp;q=80" alt="Caption pack preview" class="img-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='#1a1a1a';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-apex-black to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-5"><span class="text-xs uppercase tracking-widest text-apex-red">Captions</span>
+         <p class="font-display text-xl mt-1">50 RACING LINES</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-24 px-6 reveal-section">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex items-center gap-3 mb-2">
+      <svg class="w-5 h-5 text-apex-red" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg><span class="text-apex-red text-xs uppercase tracking-[0.3em] font-semibold">Reviews</span>
+     </div>
+     <h2 class="font-display text-5xl md:text-6xl tracking-wide mb-12">FROM THE <span class="text-apex-red">PADDOCK</span></h2>
+     <div class="grid md:grid-cols-3 gap-4">
+      <div class="glass-card rounded p-6">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-apex-white/60 text-sm font-light leading-relaxed mb-4">"The wallpapers are insane. My entire phone and desktop feel like a racing cockpit now. Quality is unreal."</p>
+       <p class="text-xs text-apex-white/40 font-semibold uppercase tracking-wider">— Marcus T. / Track Day Regular</p>
+      </div>
+      <div class="glass-card rounded p-6">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-apex-white/60 text-sm font-light leading-relaxed mb-4">"The track planner saved my last HPDE. Setup checklist alone is worth it. Professional-grade templates."</p>
+       <p class="text-xs text-apex-white/40 font-semibold uppercase tracking-wider">— Sarah K. / HPDE Instructor</p>
+      </div>
+      <div class="glass-card rounded p-6">
+       <div class="flex gap-1 mb-4">
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg class="w-4 h-4 text-apex-red" fill="currentColor" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-apex-white/60 text-sm font-light leading-relaxed mb-4">"Used the caption pack and story templates for my racing page. Followers doubled in two weeks. Not kidding."</p>
+       <p class="text-xs text-apex-white/40 font-semibold uppercase tracking-wider">— Jay R. / Motorsport Content Creator</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section class="py-20 px-6 reveal-section">
+    <div class="max-w-3xl mx-auto">
+     <div class="glass-card rounded-lg p-8 md:p-12 text-center border-apex-red/20"><span class="text-apex-red text-xs uppercase tracking-[0.3em] font-semibold">Circuit Performance Pack</span>
+      <h2 class="font-display text-5xl md:text-6xl tracking-wide mt-4 mb-2">$29</h2>
+      <p class="text-apex-white/40 text-sm mb-8">One-time purchase. Instant download. No subscriptions.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-left mb-10">
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>135 Wallpapers
+       </div>
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>30 Posters
+       </div>
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Track Planner
+       </div>
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Setup Checklist
+       </div>
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>Story Templates
+       </div>
+       <div class="flex items-center gap-2 text-sm text-apex-white/60">
+        <svg class="w-4 h-4 text-apex-red shrink-0" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <polyline points="20 6 9 17 4 12" />
+        </svg>50 Captions
+       </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center text-xs text-apex-white/30 uppercase tracking-widest"><span>Track day niche</span> <span class="hidden sm:inline">·</span> <span>Performance enthusiasts</span> <span class="hidden sm:inline">·</span> <span>Racing aesthetic premium</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="py-24 px-6 reveal-section">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="blur-streak" style="width:400px;left:10%;animation-delay:0.3s;"></div>
+     <svg class="w-10 h-10 text-apex-red mx-auto mb-6" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" />
+     </svg>
+     <h2 id="bottom-cta-text" class="font-display text-5xl md:text-7xl tracking-wide mb-6">DESIGN AT <span class="text-apex-red">RACE PACE.</span></h2>
+     <p class="text-apex-white/50 max-w-xl mx-auto mb-10 font-light">135 wallpapers. 30 posters. Track planner. Setup checklist. Story templates. Caption pack. All yours.</p><a href="#" class="cta-glow inline-block bg-apex-red hover:bg-red-700 text-white font-semibold px-12 py-4 rounded-sm tracking-wider uppercase text-sm transition-colors" onclick="event.preventDefault();">Download the Pack — $29</a> <!-- Vote + Comment Widget -->
+     <div class="mt-16 glass-card rounded-lg p-8 max-w-lg mx-auto">
+      <h3 class="font-display text-xl tracking-wide mb-4">VOTE + COMMENT</h3>
+      <p class="text-apex-white/40 text-xs uppercase tracking-widest mb-6">Embed Widget Here</p>
+      <div class="flex items-center justify-center gap-6 mb-6"><button id="upvote-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-sm border border-apex-white/10 hover:border-apex-red/50 transition-all group">
+        <svg class="w-5 h-5 text-apex-white/50 group-hover:text-apex-red transition-colors" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg><span id="upvote-count" class="font-display text-lg">0</span> </button> <button id="downvote-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-sm border border-apex-white/10 hover:border-apex-white/30 transition-all group">
+        <svg class="w-5 h-5 text-apex-white/50 group-hover:text-apex-white transition-colors" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg><span id="downvote-count" class="font-display text-lg">0</span> </button>
+      </div>
+      <div class="space-y-3">
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 bg-apex-white/[0.04] border border-apex-white/10 rounded-sm px-4 py-2.5 text-sm text-apex-white placeholder-apex-white/30 focus:outline-none focus:border-apex-red/50 transition"> <button id="comment-btn" class="bg-apex-red hover:bg-red-700 text-white px-4 py-2.5 rounded-sm text-sm font-semibold tracking-wider uppercase transition-colors">Post</button>
+       </div>
+       <div id="comments-list" class="space-y-2 max-h-40 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="border-t border-apex-white/[0.06] py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-apex-white/30 uppercase tracking-widest"><span class="font-display text-base tracking-wider text-apex-white/50">APEX <span class="text-apex-red">CIRCUIT</span></span> <span>Circuit Performance Pack — 2024</span>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- Element SDK ---
+const defaultConfig = {
+  hero_tagline: 'Precision at full speed.',
+  hero_subhead: 'Racing visuals and track templates built from real photography.',
+  planner_title: 'Track Day Planner',
+  bottom_cta_text: 'Design at race pace.',
+  background_color: '#0a0a0a',
+  surface_color: '#1a1a1a',
+  text_color: '#f5f5f5',
+  accent_color: '#e11d48',
+  secondary_action_color: '#ffffff'
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  // Text
+  const heroTag = document.getElementById('hero-tagline');
+  const parts = c.hero_tagline.split(/\s+/);
+  const last = parts.pop();
+  heroTag.innerHTML = parts.join(' ') + '<br><span class="text-apex-red" style="color:' + c.accent_color + '">' + last + '</span>';
+
+  document.getElementById('hero-subhead').textContent = c.hero_subhead;
+
+  const plannerTitle = document.getElementById('planner-title');
+  const pParts = c.planner_title.split(' ');
+  const pLast = pParts.pop();
+  plannerTitle.innerHTML = pParts.join(' ') + ' <span style="color:' + c.accent_color + '">' + pLast + '</span>';
+
+  const ctaEl = document.getElementById('bottom-cta-text');
+  const cParts = c.bottom_cta_text.split(' ');
+  const cLast = cParts.pop();
+  ctaEl.innerHTML = cParts.join(' ') + ' <span style="color:' + c.accent_color + '">' + cLast + '</span>';
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  document.querySelectorAll('.glass-card').forEach(el => {
+    el.style.borderColor = c.surface_color;
+  });
+
+  document.querySelectorAll('.cta-glow').forEach(el => {
+    el.style.backgroundColor = c.accent_color;
+  });
+
+  // Font
+  if (c.font_family) {
+    const stack = c.font_family + ', Barlow, sans-serif';
+    document.body.style.fontFamily = stack;
+  }
+  if (c.font_size) {
+    const base = c.font_size;
+    document.querySelectorAll('p, span:not(.font-display)').forEach(el => {
+      if (!el.closest('.font-display')) el.style.fontSize = base + 'px';
+    });
+  }
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      { get: () => cfg.background_color || defaultConfig.background_color, set: v => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => cfg.surface_color || defaultConfig.surface_color, set: v => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => cfg.text_color || defaultConfig.text_color, set: v => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => cfg.accent_color || defaultConfig.accent_color, set: v => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: v => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => cfg.font_family || defaultConfig.font_family || 'Barlow',
+      set: v => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => cfg.font_size || 14,
+      set: v => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['hero_tagline', cfg.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', cfg.hero_subhead || defaultConfig.hero_subhead],
+    ['planner_title', cfg.planner_title || defaultConfig.planner_title],
+    ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// --- Mobile menu ---
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// --- Intersection Observer for reveals ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal-section').forEach(el => observer.observe(el));
+
+// --- Checklist animation on scroll ---
+const checkObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.check-item').forEach((item, i) => {
+        setTimeout(() => item.classList.add('checked'), i * 120);
+      });
+      checkObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+checkObserver.observe(document.getElementById('checklist'));
+
+// --- Checklist toggle ---
+document.querySelectorAll('.check-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const mark = item.querySelector('.check-mark');
+    const box = item.querySelector('.check-box');
+    const isChecked = mark.style.opacity === '1';
+    mark.style.opacity = isChecked ? '0' : '1';
+    box.style.borderColor = isChecked ? 'rgba(255,255,255,0.2)' : '#e11d48';
+    box.style.backgroundColor = isChecked ? 'transparent' : 'rgba(225,29,72,0.1)';
+  });
+});
+
+// --- Vote ---
+let upvotes = 0, downvotes = 0;
+document.getElementById('upvote-btn').addEventListener('click', () => {
+  document.getElementById('upvote-count').textContent = ++upvotes;
+});
+document.getElementById('downvote-btn').addEventListener('click', () => {
+  document.getElementById('downvote-count').textContent = ++downvotes;
+});
+
+// --- Comments ---
+document.getElementById('comment-btn').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'p-3 rounded bg-apex-white/[0.03] border border-apex-white/[0.05] text-sm text-apex-white/60';
+  div.textContent = text;
+  list.prepend(div);
+  input.value = '';
+});
+document.getElementById('comment-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('comment-btn').click(); }
+});
+
+// --- Lucide ---
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6e66256a27c5',t:'MTc3NTU3OTU3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

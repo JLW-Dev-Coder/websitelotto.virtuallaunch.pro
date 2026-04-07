@@ -1,1 +1,690 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5199397a-a542-498b-8b99-78396ecd9dc0 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InkPop Flash Drops</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+  .font-bebas { font-family: 'Bebas Neue', cursive; }
+  .font-mono { font-family: 'Space Mono', monospace; }
+
+  /* Ink drip animations */
+  @keyframes dripDown {
+    0% { transform: translateY(-100%) scaleY(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(0) scaleY(1); opacity: 1; }
+  }
+  @keyframes dripGrow {
+    0% { height: 0; }
+    100% { height: 100%; }
+  }
+  @keyframes glitch1 {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-3px, 2px); }
+    40% { transform: translate(3px, -2px); }
+    60% { transform: translate(-2px, -1px); }
+    80% { transform: translate(2px, 1px); }
+  }
+  @keyframes glitch2 {
+    0%, 100% { clip-path: inset(0 0 0 0); }
+    25% { clip-path: inset(10% 0 60% 0); }
+    50% { clip-path: inset(40% 0 20% 0); }
+    75% { clip-path: inset(70% 0 5% 0); }
+  }
+  @keyframes popIn {
+    0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+    70% { transform: scale(1.1) rotate(2deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes flickerGlow {
+    0%, 100% { text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
+    50% { text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 40px var(--accent); }
+  }
+  @keyframes zoomReveal {
+    0% { transform: scale(0.3); opacity: 0; filter: blur(8px); }
+    100% { transform: scale(1); opacity: 1; filter: blur(0); }
+  }
+  @keyframes pulseBtn {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 45, 85, 0.6); }
+    50% { box-shadow: 0 0 0 12px rgba(255, 45, 85, 0); }
+  }
+  @keyframes stickerBomb {
+    0% { transform: scale(0) rotate(-180deg); }
+    60% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  @keyframes inkSplat {
+    0% { transform: scale(0); border-radius: 50%; }
+    50% { border-radius: 40% 60% 55% 45%; }
+    100% { transform: scale(1); border-radius: 35% 65% 50% 50%; }
+  }
+  @keyframes slideUp {
+    0% { transform: translateY(40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes floatDrip {
+    0% { transform: translateY(-20px); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(calc(100% + 40px)); opacity: 0; }
+  }
+  @keyframes morphBlob {
+    0% { border-radius: 40% 60% 55% 45%; }
+    25% { border-radius: 50% 50% 40% 60%; }
+    50% { border-radius: 60% 40% 50% 50%; }
+    75% { border-radius: 45% 55% 60% 40%; }
+    100% { border-radius: 40% 60% 55% 45%; }
+  }
+  .anim-pop { animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .morph-blob { animation: morphBlob 8s ease-in-out infinite; }
+  .anim-zoom { animation: zoomReveal 0.7s ease-out both; }
+  .anim-slide { animation: slideUp 0.5s ease-out both; }
+  .anim-glitch:hover { animation: glitch1 0.3s linear; }
+  .anim-pulse { animation: pulseBtn 2s infinite; }
+  .anim-flicker { animation: flickerGlow 2s ease-in-out infinite; }
+  .anim-sticker { animation: stickerBomb 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .anim-splat { animation: inkSplat 0.6s ease-out both; }
+
+  /* Intersection observer reveal */
+  .reveal-item { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+  .reveal-item.visible { opacity: 1; transform: translateY(0); }
+
+  /* Ink drip decorations */
+  .ink-drip {
+    position: absolute;
+    width: 4px;
+    background: var(--accent);
+    border-radius: 0 0 50% 50%;
+    animation: floatDrip 3s ease-in infinite;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #1a1a1a;
+    --text: #f0f0f0;
+    --accent: #ff2d55;
+    --accent2: #00f0ff;
+  }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+  .flash-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+  .flash-card:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow: 0 0 30px rgba(255, 45, 85, 0.3);
+  }
+
+  .reaction-btn {
+    transition: transform 0.2s, background 0.2s;
+  }
+  .reaction-btn:hover { transform: scale(1.2); }
+  .reaction-btn.selected { transform: scale(1.15); }
+
+  .toast-msg {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 12px 24px;
+    border-radius: 8px;
+    z-index: 1000;
+    transition: transform 0.4s ease;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+  }
+  .toast-msg.show { transform: translateX(-50%) translateY(0); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  /* Sticker accents */
+  .sticker {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 2px solid var(--accent);
+    border-radius: 2px;
+    transform: rotate(-3deg);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg);color:var(--text);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto relative">
+   <!-- Floating ink drips background -->
+   <div id="ink-drips" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 font-mono" style="background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,45,85,0.2);">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
+     <a href="#home" class="font-bebas text-2xl tracking-wider" style="color:var(--accent);">INK<span style="color:var(--accent2);">POP</span></a>
+     <div class="hidden md:flex gap-6 text-xs uppercase tracking-widest">
+      <a href="#home" class="nav-link" style="color:var(--text);">Home</a> <a href="#flash-sets" class="nav-link" style="color:var(--text);">Flash Sets</a> <a href="#preview" class="nav-link" style="color:var(--text);">Preview</a> <a href="#licensing" class="nav-link" style="color:var(--text);">Licensing</a> <a href="#reviews" class="nav-link" style="color:var(--text);">Reviews</a> <a href="#download" class="nav-link" style="color:var(--text);">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:var(--text);"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden flex-col gap-3 px-6 pb-4 text-xs uppercase tracking-widest">
+     <a href="#home" class="nav-link py-1" style="color:var(--text);">Home</a> <a href="#flash-sets" class="nav-link py-1" style="color:var(--text);">Flash Sets</a> <a href="#preview" class="nav-link py-1" style="color:var(--text);">Preview</a> <a href="#licensing" class="nav-link py-1" style="color:var(--text);">Licensing</a> <a href="#reviews" class="nav-link py-1" style="color:var(--text);">Reviews</a> <a href="#download" class="nav-link py-1" style="color:var(--text);">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center pt-14 overflow-hidden">
+    <!-- Ink splat decorations --> <!-- Ink splat decorations -->
+    <div class="absolute top-20 left-10 w-32 h-32 opacity-20 morph-blob" style="background:var(--accent);"></div>
+    <div class="absolute bottom-20 right-10 w-40 h-40 opacity-15 morph-blob" style="background:var(--accent2);animation-delay:2s;"></div>
+    <div class="absolute top-40 right-20 w-20 h-20 opacity-10 morph-blob" style="background:var(--accent);animation-delay:4s;"></div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+     <!-- Sticker accents -->
+     <div class="flex justify-center gap-3 mb-6 flex-wrap">
+      <span class="sticker anim-sticker" style="animation-delay:0.1s;color:var(--accent);">Tattoo-Ready</span> <span class="sticker anim-sticker" style="animation-delay:0.3s;color:var(--accent2);border-color:var(--accent2);">50 Designs</span> <span class="sticker anim-sticker" style="animation-delay:0.5s;color:var(--accent);">Commercial License</span>
+     </div>
+     <h1 id="hero-title" class="font-bebas text-6xl sm:text-8xl md:text-9xl leading-none tracking-tight anim-flicker" style="color:var(--text);">Drop fresh flash.</h1>
+     <h2 id="hero-subtitle" class="font-bebas text-4xl sm:text-6xl md:text-7xl leading-none mt-2" style="color:var(--accent);">Fill your calendar.</h2>
+     <p class="font-mono text-sm mt-6 opacity-60" style="color:var(--text);">50 flash designs · Stencil-ready files · IG promo set · Pricing guide</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+      <a href="#download" id="cta-primary-btn" class="font-mono text-sm uppercase tracking-widest px-8 py-4 font-bold anim-pulse transition-all hover:scale-105" style="background:var(--accent);color:#fff;border:none;border-radius:2px;">Get the Flash Pack</a> <a href="#preview" id="cta-secondary-btn" class="font-mono text-sm uppercase tracking-widest px-8 py-4 font-bold transition-all hover:scale-105" style="background:transparent;color:var(--accent2);border:2px solid var(--accent2);border-radius:2px;">View Preview</a>
+     </div><!-- Rate This Drop Module -->
+     <div class="mt-14 p-6 rounded-lg relative" style="background:var(--surface);border:1px solid rgba(255,45,85,0.2);">
+      <div class="absolute -top-3 left-6 sticker" style="background:var(--bg);color:var(--accent);font-size:10px;">
+       Rate This Drop
+      </div><!-- Sign in -->
+      <div id="signin-area" class="mt-2">
+       <p class="font-mono text-xs opacity-50 mb-3">Enter your name to react &amp; comment</p>
+       <div class="flex gap-2 max-w-sm mx-auto">
+        <input id="name-input" type="text" placeholder="Your artist name" class="flex-1 px-3 py-2 font-mono text-xs rounded" style="background:var(--bg);color:var(--text);border:1px solid rgba(255,45,85,0.3);outline:none;"> <button id="signin-btn" class="px-4 py-2 font-mono text-xs uppercase tracking-wider font-bold" style="background:var(--accent);color:#fff;border:none;border-radius:2px;">Enter</button>
+       </div>
+      </div><!-- Voting area (hidden until signed in) -->
+      <div id="vote-area" class="hidden mt-2">
+       <p id="welcome-msg" class="font-mono text-xs opacity-50 mb-4"></p><!-- Reactions -->
+       <div class="flex justify-center gap-3 mb-4 flex-wrap">
+        <button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="fire" style="background:rgba(255,45,85,0.1);">🔥</button> <button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="skull" style="background:rgba(255,45,85,0.1);">💀</button> <button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="heart" style="background:rgba(255,45,85,0.1);">🖤</button> <button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="star" style="background:rgba(255,45,85,0.1);">⭐</button> <button class="reaction-btn text-2xl p-2 rounded-lg" data-reaction="money" style="background:rgba(255,45,85,0.1);">💰</button>
+       </div>
+       <div id="reaction-counts" class="flex justify-center gap-4 font-mono text-xs opacity-60 mb-5"></div><!-- Price selector -->
+       <p class="font-mono text-xs opacity-50 mb-2">What would you pay?</p>
+       <div class="flex justify-center gap-2 mb-5 flex-wrap">
+        <button class="price-btn font-mono text-xs px-4 py-2 rounded transition-all" data-price="$29" style="border:1px solid rgba(255,45,85,0.3);background:transparent;color:var(--text);">$29</button> <button class="price-btn font-mono text-xs px-4 py-2 rounded transition-all" data-price="$49" style="border:1px solid rgba(255,45,85,0.3);background:transparent;color:var(--text);">$49</button> <button class="price-btn font-mono text-xs px-4 py-2 rounded transition-all" data-price="$69" style="border:1px solid rgba(255,45,85,0.3);background:transparent;color:var(--text);">$69</button> <button class="price-btn font-mono text-xs px-4 py-2 rounded transition-all" data-price="$99" style="border:1px solid rgba(255,45,85,0.3);background:transparent;color:var(--text);">$99</button>
+       </div><!-- Comment -->
+       <div class="flex gap-2 max-w-md mx-auto">
+        <input id="comment-input" type="text" placeholder="Drop a comment..." class="flex-1 px-3 py-2 font-mono text-xs rounded" style="background:var(--bg);color:var(--text);border:1px solid rgba(255,45,85,0.3);outline:none;"> <button id="submit-vote-btn" class="px-4 py-2 font-mono text-xs uppercase tracking-wider font-bold" style="background:var(--accent);color:#fff;border:none;border-radius:2px;">Send</button>
+       </div>
+      </div><!-- Comments feed -->
+      <div id="comments-feed" class="mt-4 max-h-48 overflow-auto text-left space-y-2"></div>
+     </div>
+    </div>
+   </section><!-- FLASH SETS -->
+   <section id="flash-sets" class="py-24 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="font-bebas text-5xl sm:text-7xl text-center mb-4 reveal-item" style="color:var(--text);">Flash Sets</h2>
+     <p class="font-mono text-xs text-center opacity-50 mb-14 reveal-item">5 themed collections · 10 designs each</p>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="flash-grid">
+      <!-- Neo-Trad -->
+      <div class="flash-card reveal-item p-6 rounded-lg relative overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,45,85,0.15);">
+       <div class="absolute top-0 right-0 w-24 h-24 opacity-10" style="background:var(--accent);border-radius:0 0 0 100%;"></div>
+       <div class="text-4xl mb-3">
+        🐍
+       </div>
+       <h3 class="font-bebas text-3xl" style="color:var(--accent);">Neo-Trad</h3>
+       <p class="font-mono text-xs opacity-60 mt-2">Bold lines, saturated color. Roses, daggers, snakes, eagles. Classic with a modern punch.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,85,0.1);color:var(--accent);">10 designs</span> <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,240,255,0.1);color:var(--accent2);">Stencil-ready</span>
+       </div>
+      </div><!-- Cute -->
+      <div class="flash-card reveal-item p-6 rounded-lg relative overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,45,85,0.15);">
+       <div class="absolute top-0 right-0 w-24 h-24 opacity-10" style="background:var(--accent2);border-radius:0 0 0 100%;"></div>
+       <div class="text-4xl mb-3">
+        🍒
+       </div>
+       <h3 class="font-bebas text-3xl" style="color:var(--accent2);">Cute</h3>
+       <p class="font-mono text-xs opacity-60 mt-2">Kawaii vibes. Cherries, bows, little ghosts, candy hearts. Perfect for walk-in clients.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,85,0.1);color:var(--accent);">10 designs</span> <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,240,255,0.1);color:var(--accent2);">Stencil-ready</span>
+       </div>
+      </div><!-- Minimal -->
+      <div class="flash-card reveal-item p-6 rounded-lg relative overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,45,85,0.15);">
+       <div class="absolute top-0 right-0 w-24 h-24 opacity-10" style="background:var(--accent);border-radius:0 0 0 100%;"></div>
+       <div class="text-4xl mb-3">
+        ✨
+       </div>
+       <h3 class="font-bebas text-3xl" style="color:var(--text);">Minimal</h3>
+       <p class="font-mono text-xs opacity-60 mt-2">Clean single-needle style. Geometric shapes, fine lines, micro symbols. Less is more.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,85,0.1);color:var(--accent);">10 designs</span> <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,240,255,0.1);color:var(--accent2);">Stencil-ready</span>
+       </div>
+      </div><!-- Gothic -->
+      <div class="flash-card reveal-item p-6 rounded-lg relative overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,45,85,0.15);">
+       <div class="absolute top-0 right-0 w-24 h-24 opacity-10" style="background:var(--accent);border-radius:0 0 0 100%;"></div>
+       <div class="text-4xl mb-3">
+        🦇
+       </div>
+       <h3 class="font-bebas text-3xl" style="color:var(--accent);">Gothic</h3>
+       <p class="font-mono text-xs opacity-60 mt-2">Dark romance. Coffins, moons, bats, ornate frames. Heavy blackwork energy.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,85,0.1);color:var(--accent);">10 designs</span> <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,240,255,0.1);color:var(--accent2);">Stencil-ready</span>
+       </div>
+      </div><!-- Floral -->
+      <div class="flash-card reveal-item p-6 rounded-lg relative overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,45,85,0.15);">
+       <div class="absolute top-0 right-0 w-24 h-24 opacity-10" style="background:var(--accent2);border-radius:0 0 0 100%;"></div>
+       <div class="text-4xl mb-3">
+        🌸
+       </div>
+       <h3 class="font-bebas text-3xl" style="color:var(--accent2);">Floral</h3>
+       <p class="font-mono text-xs opacity-60 mt-2">Botanical beauty. Peonies, wildflowers, ferns, bouquets. Versatile and always in demand.</p>
+       <div class="mt-4 flex gap-2">
+        <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(255,45,85,0.1);color:var(--accent);">10 designs</span> <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,240,255,0.1);color:var(--accent2);">Stencil-ready</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="py-24 px-4 relative" style="background:linear-gradient(180deg, var(--bg) 0%, rgba(255,45,85,0.03) 50%, var(--bg) 100%);">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="font-bebas text-5xl sm:text-7xl text-center mb-4 reveal-item" style="color:var(--text);">Preview</h2>
+     <p class="font-mono text-xs text-center opacity-50 mb-14 reveal-item">Tap any design to zoom in</p>
+     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3" id="preview-grid"></div>
+    </div>
+   </section><!-- LICENSING -->
+   <section id="licensing" class="py-24 px-4 relative">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="font-bebas text-5xl sm:text-7xl text-center mb-4 reveal-item" style="color:var(--text);">Licensing</h2>
+     <p class="font-mono text-xs text-center opacity-50 mb-14 reveal-item">Clear terms. No surprises.</p>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="reveal-item p-6 rounded-lg" style="background:var(--surface);border:1px solid rgba(0,240,255,0.2);">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:rgba(0,240,255,0.15);"><i data-lucide="check" style="color:var(--accent2);width:20px;height:20px;"></i>
+        </div>
+        <h3 class="font-bebas text-2xl" style="color:var(--accent2);">What's Included</h3>
+       </div>
+       <ul class="font-mono text-xs space-y-3 opacity-70">
+        <li class="flex gap-2"><span style="color:var(--accent2);">✓</span> Commercial tattoo use</li>
+        <li class="flex gap-2"><span style="color:var(--accent2);">✓</span> Unlimited client applications</li>
+        <li class="flex gap-2"><span style="color:var(--accent2);">✓</span> Print for flash sheets &amp; display</li>
+        <li class="flex gap-2"><span style="color:var(--accent2);">✓</span> Social media promotion</li>
+        <li class="flex gap-2"><span style="color:var(--accent2);">✓</span> Modify &amp; adapt designs</li>
+       </ul>
+      </div>
+      <div class="reveal-item p-6 rounded-lg" style="background:var(--surface);border:1px solid rgba(255,45,85,0.2);">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:rgba(255,45,85,0.15);"><i data-lucide="x" style="color:var(--accent);width:20px;height:20px;"></i>
+        </div>
+        <h3 class="font-bebas text-2xl" style="color:var(--accent);">Not Permitted</h3>
+       </div>
+       <ul class="font-mono text-xs space-y-3 opacity-70">
+        <li class="flex gap-2"><span style="color:var(--accent);">✗</span> Resell as digital product</li>
+        <li class="flex gap-2"><span style="color:var(--accent);">✗</span> Claim as original artwork</li>
+        <li class="flex gap-2"><span style="color:var(--accent);">✗</span> Use in NFT/crypto projects</li>
+        <li class="flex gap-2"><span style="color:var(--accent);">✗</span> Redistribute source files</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-24 px-4 relative" style="background:linear-gradient(180deg, var(--bg) 0%, rgba(0,240,255,0.03) 50%, var(--bg) 100%);">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="font-bebas text-5xl sm:text-7xl text-center mb-4 reveal-item" style="color:var(--text);">Reviews</h2>
+     <p class="font-mono text-xs text-center opacity-50 mb-14 reveal-item">What artists &amp; buyers say</p>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal-item p-6 rounded-lg" style="background:var(--surface);border:1px solid rgba(255,45,85,0.1);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="font-mono text-xs opacity-70 mb-4">"Dropped the neo-trad set on my wall and booked 6 appointments in one weekend. These designs sell themselves."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bebas" style="background:var(--accent);color:#fff;">
+         M
+        </div>
+        <div>
+         <p class="font-mono text-xs font-bold" style="color:var(--text);">@mika.ink</p>
+         <p class="font-mono text-xs opacity-40">Tattoo Artist · LA</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal-item p-6 rounded-lg" style="background:var(--surface);border:1px solid rgba(255,45,85,0.1);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="font-mono text-xs opacity-70 mb-4">"The stencil files are perfect. No cleanup needed. Literally print and go. Best flash pack I've bought."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bebas" style="background:var(--accent2);color:#000;">
+         J
+        </div>
+        <div>
+         <p class="font-mono text-xs font-bold" style="color:var(--text);">@jake_tattoos</p>
+         <p class="font-mono text-xs opacity-40">Apprentice · NYC</p>
+        </div>
+       </div>
+      </div>
+      <div class="reveal-item p-6 rounded-lg" style="background:var(--surface);border:1px solid rgba(255,45,85,0.1);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="font-mono text-xs opacity-70 mb-4">"Got the floral set tattooed on my arm. The artist said these were some of the cleanest flash files she's worked with."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bebas" style="background:var(--accent);color:#fff;">
+         S
+        </div>
+        <div>
+         <p class="font-mono text-xs font-bold" style="color:var(--text);">Sarah K.</p>
+         <p class="font-mono text-xs opacity-40">Buyer · Portland</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="download" class="py-24 px-4 relative text-center overflow-hidden">
+    <div class="absolute inset-0 opacity-5" style="background:radial-gradient(circle at center, var(--accent) 0%, transparent 70%);"></div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+     <h2 id="bottom-cta-title" class="font-bebas text-5xl sm:text-7xl md:text-8xl mb-6 reveal-item anim-flicker" style="color:var(--text);">New flash, new bookings.</h2>
+     <p class="font-mono text-sm opacity-50 mb-4 reveal-item">50 designs · Stencil files · IG promo kit · Pricing guide · Commercial license</p>
+     <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8 reveal-item flex-wrap">
+      <span class="sticker" style="color:var(--accent);">Boost Bookings</span> <span class="sticker" style="color:var(--accent2);border-color:var(--accent2);">Tattoo-Ready Files</span> <span class="sticker" style="color:var(--accent);">Commercial License</span>
+     </div><button id="bottom-cta-btn" class="font-mono text-sm uppercase tracking-widest px-10 py-5 font-bold anim-pulse transition-all hover:scale-105 reveal-item" style="background:var(--accent);color:#fff;border:none;border-radius:2px;">Download Now</button>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 text-center font-mono text-xs opacity-30" style="border-top:1px solid rgba(255,45,85,0.1);">
+    <p>InkPop Flash Drops · Flash that sells itself. · © 2024</p>
+   </footer><!-- Zoom Modal -->
+   <div id="zoom-modal" class="modal-overlay">
+    <div class="relative p-8">
+     <button id="close-modal" class="absolute top-2 right-2" style="color:var(--text);"><i data-lucide="x" style="width:24px;height:24px;"></i></button>
+     <div id="modal-content" class="w-64 h-64 sm:w-80 sm:h-80 rounded-lg flex items-center justify-center" style="background:var(--surface);border:2px solid var(--accent);"></div>
+    </div>
+   </div><!-- Toast -->
+   <div id="toast" class="toast-msg" style="background:var(--accent);color:#fff;"></div>
+  </div>
+  <script>
+// ============ CONFIG & SDK SETUP ============
+const defaultConfig = {
+  background_color: '#0a0a0a',
+  surface_color: '#1a1a1a',
+  text_color: '#f0f0f0',
+  primary_action_color: '#ff2d55',
+  secondary_action_color: '#00f0ff',
+  font_family: 'Bebas Neue',
+  font_size: 16,
+  hero_title: 'Drop fresh flash.',
+  hero_subtitle: 'Fill your calendar.',
+  cta_primary: 'Get the Flash Pack',
+  cta_secondary: 'View Preview',
+  bottom_cta_title: 'New flash, new bookings.',
+  bottom_cta_button: 'Download Now'
+};
+
+function applyConfig(c) {
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color || defaultConfig.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color || defaultConfig.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color || defaultConfig.text_color);
+  document.documentElement.style.setProperty('--accent', c.primary_action_color || defaultConfig.primary_action_color);
+  document.documentElement.style.setProperty('--accent2', c.secondary_action_color || defaultConfig.secondary_action_color);
+
+  // Font
+  const ff = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-bebas').forEach(el => el.style.fontFamily = `${ff}, cursive, sans-serif`);
+
+  // Font size
+  const bs = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-mono').forEach(el => {
+    if (!el.closest('.font-bebas')) el.style.fontSize = `${bs * 0.75}px`;
+  });
+
+  // Text
+  const ht = document.getElementById('hero-title');
+  if (ht) ht.textContent = c.hero_title || defaultConfig.hero_title;
+  const hs = document.getElementById('hero-subtitle');
+  if (hs) hs.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  const cp = document.getElementById('cta-primary-btn');
+  if (cp) cp.textContent = c.cta_primary || defaultConfig.cta_primary;
+  const cs = document.getElementById('cta-secondary-btn');
+  if (cs) cs.textContent = c.cta_secondary || defaultConfig.cta_secondary;
+  const bt = document.getElementById('bottom-cta-title');
+  if (bt) bt.textContent = c.bottom_cta_title || defaultConfig.bottom_cta_title;
+  const bb = document.getElementById('bottom-cta-btn');
+  if (bb) bb.textContent = c.bottom_cta_button || defaultConfig.bottom_cta_button;
+}
+
+// Element SDK
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+      ['bottom_cta_button', config.bottom_cta_button || defaultConfig.bottom_cta_button],
+    ])
+  });
+}
+
+// ============ DATA SDK ============
+let allVotes = [];
+let currentUser = null;
+
+const dataHandler = {
+  onDataChanged(data) {
+    allVotes = data;
+    renderReactionCounts();
+    renderComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function renderReactionCounts() {
+  const counts = { fire: 0, skull: 0, heart: 0, star: 0, money: 0 };
+  allVotes.forEach(v => { if (v.reaction_type && counts[v.reaction_type] !== undefined) counts[v.reaction_type]++; });
+  const el = document.getElementById('reaction-counts');
+  if (el) el.innerHTML = Object.entries(counts).map(([k, c]) => {
+    const emoji = { fire:'🔥', skull:'💀', heart:'🖤', star:'⭐', money:'💰' }[k];
+    return `<span>${emoji} ${c}</span>`;
+  }).join('');
+}
+
+function renderComments() {
+  const feed = document.getElementById('comments-feed');
+  if (!feed) return;
+  const comments = allVotes.filter(v => v.comment);
+  const existingIds = new Map([...feed.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(v => {
+    const id = v.__backendId;
+    if (existingIds.has(id)) {
+      existingIds.delete(id);
+      return;
+    }
+    const div = document.createElement('div');
+    div.dataset.id = id;
+    div.className = 'font-mono text-xs p-3 rounded';
+    div.style.cssText = 'background:rgba(255,45,85,0.05);border:1px solid rgba(255,45,85,0.1);';
+    const priceTag = v.price_vote ? ` <span style="color:var(--accent);">${v.price_vote}</span>` : '';
+    const reactionEmoji = { fire:'🔥', skull:'💀', heart:'🖤', star:'⭐', money:'💰' }[v.reaction_type] || '';
+    div.innerHTML = `<span style="color:var(--accent2);">${v.display_name || 'Anon'}</span>${priceTag} ${reactionEmoji}<br><span class="opacity-60">${v.comment}</span>`;
+    feed.appendChild(div);
+  });
+
+  existingIds.forEach(el => el.remove());
+}
+
+// ============ UI LOGIC ============
+
+// Sign in
+document.getElementById('signin-btn').addEventListener('click', () => {
+  const name = document.getElementById('name-input').value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('signin-area').classList.add('hidden');
+  document.getElementById('vote-area').classList.remove('hidden');
+  document.getElementById('welcome-msg').textContent = `Hey ${name} 🤘 React, vote, and comment below.`;
+});
+
+// Reactions
+let selectedReaction = null;
+document.querySelectorAll('.reaction-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.reaction-btn').forEach(b => { b.classList.remove('selected'); b.style.background = 'rgba(255,45,85,0.1)'; });
+    btn.classList.add('selected');
+    btn.style.background = 'rgba(255,45,85,0.3)';
+    selectedReaction = btn.dataset.reaction;
+  });
+});
+
+// Price
+let selectedPrice = null;
+document.querySelectorAll('.price-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.price-btn').forEach(b => { b.style.background = 'transparent'; b.style.color = 'var(--text)'; });
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    selectedPrice = btn.dataset.price;
+  });
+});
+
+// Submit vote
+document.getElementById('submit-vote-btn').addEventListener('click', async () => {
+  if (!currentUser) return;
+  if (allVotes.length >= 999) { showToast('Limit reached!'); return; }
+  const comment = document.getElementById('comment-input').value.trim();
+  if (!selectedReaction && !selectedPrice && !comment) return;
+
+  const btn = document.getElementById('submit-vote-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  const result = await window.dataSdk.create({
+    reaction_type: selectedReaction || '',
+    price_vote: selectedPrice || '',
+    display_name: currentUser,
+    comment: comment,
+    created_at: new Date().toISOString()
+  });
+
+  btn.textContent = 'Send';
+  btn.disabled = false;
+
+  if (result.isOk) {
+    document.getElementById('comment-input').value = '';
+    showToast('Vote recorded! 🤘');
+  } else {
+    showToast('Error — try again');
+  }
+});
+
+// Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ============ PREVIEW GRID ============
+const previewSymbols = ['🐍','🌹','🗡️','🦅','🍒','🎀','👻','💀','✨','△','🦇','🌙','⚰️','🕸️','🌸','🌿','🔮','💎','🔥','♠️','🐉','☠️','🖤','⚡'];
+const previewGrid = document.getElementById('preview-grid');
+previewSymbols.forEach((sym, i) => {
+  const div = document.createElement('div');
+  div.className = 'aspect-square flex items-center justify-center text-3xl rounded-lg cursor-pointer transition-all hover:scale-110';
+  div.style.cssText = `background:var(--surface);border:1px solid rgba(255,45,85,0.1);animation:zoomReveal 0.5s ease-out ${i * 0.05}s both;`;
+  div.textContent = sym;
+  div.addEventListener('click', () => {
+    const modal = document.getElementById('zoom-modal');
+    const content = document.getElementById('modal-content');
+    content.innerHTML = `<span class="text-8xl">${sym}</span>`;
+    modal.classList.add('open');
+  });
+  previewGrid.appendChild(div);
+});
+
+document.getElementById('close-modal').addEventListener('click', () => document.getElementById('zoom-modal').classList.remove('open'));
+document.getElementById('zoom-modal').addEventListener('click', (e) => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
+
+// ============ INK DRIPS ============
+const dripsContainer = document.getElementById('ink-drips');
+for (let i = 0; i < 12; i++) {
+  const drip = document.createElement('div');
+  drip.className = 'ink-drip';
+  drip.style.left = `${Math.random() * 100}%`;
+  drip.style.height = `${20 + Math.random() * 40}px`;
+  drip.style.animationDelay = `${Math.random() * 5}s`;
+  drip.style.animationDuration = `${3 + Math.random() * 4}s`;
+  drip.style.opacity = 0.15 + Math.random() * 0.15;
+  dripsContainer.appendChild(drip);
+}
+
+// ============ INTERSECTION OBSERVER ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+
+// ============ LUCIDE ============
+lucide.createIcons();
+
+// Initial config apply
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6a77442a27c5',t:'MTc3NTU3OTQxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

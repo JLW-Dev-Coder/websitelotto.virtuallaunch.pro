@@ -1,1 +1,665 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/62db9932-ae77-4031-886d-effe4a76cfa2 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redline Foundry</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow:wght@300;400;500;600;700&amp;family=Barlow+Condensed:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        charcoal: '#1a1a1e',
+        'charcoal-light': '#242428',
+        'charcoal-mid': '#2e2e33',
+        redline: '#c41e2a',
+        'redline-dark': '#9a1821',
+        metallic: '#b8b8c0',
+        'metallic-dim': '#7a7a82',
+        chrome: '#e8e8ec',
+      },
+      fontFamily: {
+        bebas: ['Bebas Neue', 'sans-serif'],
+        barlow: ['Barlow', 'sans-serif'],
+        'barlow-c': ['Barlow Condensed', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1a1e; }
+::-webkit-scrollbar-thumb { background: #c41e2a; border-radius: 3px; }
+
+/* Glass card */
+.glass-card {
+  background: rgba(36, 36, 40, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(184, 184, 192, 0.1);
+}
+
+/* Hero zoom */
+@keyframes heroZoom {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.hero-zoom { animation: heroZoom 1.8s ease-out forwards; }
+
+/* Motion blur overlay */
+@keyframes motionBlur {
+  0% { opacity: 0.08; transform: translateX(-100%); }
+  50% { opacity: 0.15; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+.motion-blur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(196, 30, 42, 0.2), transparent);
+  animation: motionBlur 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* CTA pulse */
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196, 30, 42, 0.5); }
+  50% { box-shadow: 0 0 20px 4px rgba(196, 30, 42, 0.25); }
+}
+.cta-pulse { animation: ctaPulse 2.5s ease-in-out infinite; }
+
+/* Section reveal */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger-child { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.stagger-child.visible { opacity: 1; transform: translateY(0); }
+
+/* Gallery hover */
+.gallery-item img { transition: transform 0.5s ease; }
+.gallery-item:hover img { transform: scale(1.08); }
+
+/* Nav active indicator */
+.nav-link { position: relative; }
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #c41e2a;
+}
+
+/* Review card slide */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Chrome shimmer on hover */
+.chrome-shimmer { position: relative; overflow: hidden; }
+.chrome-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(232,232,236,0.08), transparent);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.chrome-shimmer:hover::before { left: 100%; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+.img-fade { opacity: 0; transition: opacity 0.5s ease; }
+.img-fade.loaded { opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full bg-charcoal text-chrome font-barlow overflow-auto"><!-- STICKY NAV -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(26,26,30,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(184,184,192,0.08);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none" stroke="#c41e2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="14" cy="14" r="11" /><path d="M14 7v7l4 3" /><path d="M7 14h2M19 14h2" />
+      </svg><span class="font-bebas text-xl tracking-wider text-chrome">REDLINE <span class="text-redline">FOUNDRY</span></span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Home</a> <a href="#wallpapers" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Wallpapers</a> <a href="#cruise" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Cruise Planner</a> <a href="#preview" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Preview</a> <a href="#reviews" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Reviews</a> <a href="#download" class="nav-link font-barlow-c text-sm tracking-wider text-metallic hover:text-chrome transition-colors uppercase">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-chrome" aria-label="Toggle menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+       <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+     <div class="flex flex-col gap-3 pt-2"><a href="#home" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Home</a> <a href="#wallpapers" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Wallpapers</a> <a href="#cruise" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Cruise Planner</a> <a href="#preview" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Preview</a> <a href="#reviews" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Reviews</a> <a href="#download" class="mobile-nav font-barlow-c text-sm tracking-wider text-metallic uppercase">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1611859266238-4b98091d9d9b?w=1920&amp;q=80" alt="Muscle car" class="hero-zoom w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#1a1a1e,#2e2e33)'; this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal"></div>
+    </div>
+    <div class="absolute inset-0 motion-blur"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6" style="min-height: 100%; padding-top: 80px; padding-bottom: 60px;">
+     <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-redline/30 bg-redline/10">
+      <svg width="14" height="14" fill="none" stroke="#c41e2a" stroke-width="1.5" stroke-linecap="round">
+       <circle cx="7" cy="7" r="5" /><path d="M7 4v3l2 1.5" />
+      </svg><span class="font-barlow-c text-xs tracking-widest text-redline uppercase">Digital Power Pack</span>
+     </div>
+     <h1 id="hero-tagline" class="font-bebas text-6xl sm:text-8xl md:text-9xl leading-none tracking-wide text-chrome mb-4">Raw power. Clean design.</h1>
+     <p id="hero-subhead" class="font-barlow text-lg sm:text-xl text-metallic max-w-2xl mb-10 font-light">Muscle car visuals and cruise templates built from real photography.</p>
+     <div class="flex flex-col sm:flex-row gap-4"><a href="#download" class="cta-pulse inline-flex items-center gap-2 px-8 py-3.5 bg-redline hover:bg-redline-dark rounded font-barlow-c font-bold text-sm tracking-widest uppercase text-white transition-colors">
+       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M9 3v9M5 9l4 4 4-4" /><path d="M3 14h12" />
+       </svg> Download the Pack </a> <a href="#preview" class="inline-flex items-center gap-2 px-8 py-3.5 border border-metallic/30 hover:border-chrome/50 rounded font-barlow-c font-bold text-sm tracking-widest uppercase text-chrome transition-colors">
+       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="2" width="14" height="14" rx="2" /><circle cx="9" cy="9" r="3" />
+       </svg> Preview Gallery </a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50"><span class="font-barlow-c text-xs tracking-widest text-metallic-dim uppercase">Scroll</span>
+      <svg width="16" height="24" fill="none" stroke="#7a7a82" stroke-width="1.5" stroke-linecap="round">
+       <path d="M8 4v16M4 16l4 4 4-4" />
+      </svg>
+     </div>
+    </div>
+   </section><!-- WHAT'S INSIDE -->
+   <section id="wallpapers" class="relative w-full py-20 sm:py-28 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal-section text-center mb-16"><span class="font-barlow-c text-xs tracking-widest text-redline uppercase mb-3 block">What's Inside</span>
+      <h2 class="font-bebas text-5xl sm:text-6xl text-chrome tracking-wide">The Complete Power Pack</h2>
+      <div class="w-16 h-0.5 bg-redline mx-auto mt-4"></div>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Card 1 -->
+      <div class="reveal-section glass-card chrome-shimmer rounded-xl p-6 flex flex-col items-center text-center">
+       <div class="w-14 h-14 rounded-full bg-redline/10 flex items-center justify-center mb-4">
+        <svg width="28" height="28" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="3" y="3" width="22" height="16" rx="2" /><path d="M8 22h12M12 19v3M16 19v3" />
+        </svg>
+       </div>
+       <h3 id="stat-wallpapers-label" class="font-bebas text-3xl text-chrome mb-1"><span id="stat-wallpapers-num">115</span> Wallpapers</h3>
+       <p class="text-metallic-dim text-sm font-light">4K resolution muscle car photography for desktop and mobile screens.</p>
+      </div><!-- Card 2 -->
+      <div class="reveal-section glass-card chrome-shimmer rounded-xl p-6 flex flex-col items-center text-center">
+       <div class="w-14 h-14 rounded-full bg-redline/10 flex items-center justify-center mb-4">
+        <svg width="28" height="28" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="5" y="2" width="18" height="24" rx="2" /><path d="M9 8h10M9 12h10M9 16h6" />
+        </svg>
+       </div>
+       <h3 class="font-bebas text-3xl text-chrome mb-1"><span id="stat-posters-num">25</span> Posters</h3>
+       <p class="text-metallic-dim text-sm font-light">Print-ready posters with bold typography and classic muscle aesthetics.</p>
+      </div><!-- Card 3 -->
+      <div class="reveal-section glass-card chrome-shimmer rounded-xl p-6 flex flex-col items-center text-center">
+       <div class="w-14 h-14 rounded-full bg-redline/10 flex items-center justify-center mb-4">
+        <svg width="28" height="28" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="3" y="5" width="22" height="18" rx="2" /><path d="M3 10h22" /><circle cx="8" cy="7.5" r="1" /><circle cx="12" cy="7.5" r="1" />
+        </svg>
+       </div>
+       <h3 class="font-bebas text-3xl text-chrome mb-1"><span id="stat-templates-num">40+</span> Templates</h3>
+       <p class="text-metallic-dim text-sm font-light">Social templates, caption packs, and content layouts ready to post.</p>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="reveal-section flex flex-wrap justify-center gap-3 mt-12"><span class="px-4 py-1.5 rounded-full border border-metallic/15 bg-charcoal-mid/50 font-barlow-c text-xs tracking-wider text-metallic-dim uppercase">American Muscle Niche</span> <span class="px-4 py-1.5 rounded-full border border-metallic/15 bg-charcoal-mid/50 font-barlow-c text-xs tracking-wider text-metallic-dim uppercase">Car Enthusiast Evergreen</span> <span class="px-4 py-1.5 rounded-full border border-metallic/15 bg-charcoal-mid/50 font-barlow-c text-xs tracking-wider text-metallic-dim uppercase">Garage Aesthetic</span>
+     </div>
+    </div>
+   </section><!-- CRUISE PLANNER -->
+   <section id="cruise" class="relative w-full py-20 sm:py-28 px-4 sm:px-6 bg-charcoal-light">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal-section text-center mb-16"><span class="font-barlow-c text-xs tracking-widest text-redline uppercase mb-3 block">Plan Your Run</span>
+      <h2 class="font-bebas text-5xl sm:text-6xl text-chrome tracking-wide">Cruise Planner &amp; Build Checklist</h2>
+      <div class="w-16 h-0.5 bg-redline mx-auto mt-4"></div>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><!-- Route Planner Preview -->
+      <div class="reveal-section glass-card rounded-xl overflow-hidden">
+       <div class="p-5 border-b border-metallic/10 flex items-center gap-3">
+        <svg width="22" height="22" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <circle cx="6" cy="6" r="3" /><circle cx="16" cy="16" r="3" /><path d="M8.5 7.5L13.5 14.5" />
+        </svg><span class="font-barlow-c font-semibold text-sm tracking-wider uppercase text-chrome">Route Planner</span>
+       </div>
+       <div class="p-6">
+        <div class="space-y-4">
+         <div class="flex items-center gap-4">
+          <div class="w-8 h-8 rounded-full bg-redline/20 flex items-center justify-center flex-shrink-0"><span class="font-bebas text-sm text-redline">A</span>
+          </div>
+          <div class="flex-1 h-10 rounded bg-charcoal-mid/80 border border-metallic/10 flex items-center px-3"><span class="text-metallic-dim text-sm font-light">Los Angeles, CA</span>
+          </div>
+         </div>
+         <div class="flex items-center gap-4">
+          <div class="w-8 flex items-center justify-center">
+           <div class="w-0.5 h-8 bg-redline/30"></div>
+          </div>
+          <div class="flex items-center gap-2 text-metallic-dim text-xs">
+           <svg width="14" height="14" fill="none" stroke="#7a7a82" stroke-width="1.2" stroke-linecap="round">
+            <circle cx="7" cy="7" r="5" /><path d="M7 4v3h3" />
+           </svg><span>~4h 30m</span> <span class="text-metallic/20 mx-1">|</span>
+           <svg width="14" height="14" fill="none" stroke="#7a7a82" stroke-width="1.2" stroke-linecap="round">
+            <path d="M2 10c2-4 4-6 5-6s3 2 5 6" /><path d="M1 12h12" />
+           </svg><span>~280 mi</span>
+          </div>
+         </div>
+         <div class="flex items-center gap-4">
+          <div class="w-8 h-8 rounded-full bg-chrome/10 flex items-center justify-center flex-shrink-0"><span class="font-bebas text-sm text-chrome">B</span>
+          </div>
+          <div class="flex-1 h-10 rounded bg-charcoal-mid/80 border border-metallic/10 flex items-center px-3"><span class="text-metallic-dim text-sm font-light">Las Vegas, NV</span>
+          </div>
+         </div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-metallic/10 flex items-center gap-2">
+         <svg width="16" height="16" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round">
+          <path d="M3 8l3 3 7-7" />
+         </svg><span class="text-metallic-dim text-xs font-light">Editable Canva template included in pack</span>
+        </div>
+       </div>
+      </div><!-- Build Checklist Preview -->
+      <div class="reveal-section glass-card rounded-xl overflow-hidden">
+       <div class="p-5 border-b border-metallic/10 flex items-center gap-3">
+        <svg width="22" height="22" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="3" y="3" width="16" height="16" rx="2" /><path d="M7 8l2 2 4-4" /><path d="M7 14h8" />
+        </svg><span class="font-barlow-c font-semibold text-sm tracking-wider uppercase text-chrome">Build Checklist</span>
+       </div>
+       <div class="p-6">
+        <div class="space-y-3">
+         <div class="flex items-center gap-3 p-3 rounded-lg bg-charcoal-mid/50 border border-metallic/8">
+          <div class="w-5 h-5 rounded border-2 border-redline flex items-center justify-center flex-shrink-0">
+           <svg width="10" height="10" fill="none" stroke="#c41e2a" stroke-width="2" stroke-linecap="round">
+            <path d="M2 5l2.5 2.5L8 3" />
+           </svg>
+          </div><span class="text-chrome text-sm">Engine bay detail &amp; chrome polish</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-lg bg-charcoal-mid/50 border border-metallic/8">
+          <div class="w-5 h-5 rounded border-2 border-redline flex items-center justify-center flex-shrink-0">
+           <svg width="10" height="10" fill="none" stroke="#c41e2a" stroke-width="2" stroke-linecap="round">
+            <path d="M2 5l2.5 2.5L8 3" />
+           </svg>
+          </div><span class="text-chrome text-sm">Tire pressure &amp; tread check</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-lg bg-charcoal-mid/50 border border-metallic/8">
+          <div class="w-5 h-5 rounded border-2 border-metallic/30 flex-shrink-0"></div><span class="text-metallic-dim text-sm">Brake fluid &amp; pad inspection</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-lg bg-charcoal-mid/50 border border-metallic/8">
+          <div class="w-5 h-5 rounded border-2 border-metallic/30 flex-shrink-0"></div><span class="text-metallic-dim text-sm">Interior wipe &amp; gauge cluster clean</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-lg bg-charcoal-mid/50 border border-metallic/8">
+          <div class="w-5 h-5 rounded border-2 border-metallic/30 flex-shrink-0"></div><span class="text-metallic-dim text-sm">Fuel up &amp; route confirmation</span>
+         </div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-metallic/10 flex items-center gap-2">
+         <svg width="16" height="16" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round">
+          <path d="M3 8l3 3 7-7" />
+         </svg><span class="text-metallic-dim text-xs font-light">Printable PDF checklist included</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW GALLERY -->
+   <section id="preview" class="relative w-full py-20 sm:py-28 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal-section text-center mb-16"><span class="font-barlow-c text-xs tracking-widest text-redline uppercase mb-3 block">Gallery</span>
+      <h2 class="font-bebas text-5xl sm:text-6xl text-chrome tracking-wide">Preview the Collection</h2>
+      <div class="w-16 h-0.5 bg-redline mx-auto mt-4"></div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&amp;q=80" alt="Classic muscle car" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Desktop Wallpaper</span>
+       </div>
+      </div>
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&amp;q=80" alt="Dodge Challenger" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Poster Design</span>
+       </div>
+      </div>
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&amp;q=80" alt="Sports car sunset" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Social Template</span>
+       </div>
+      </div>
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&amp;q=80" alt="Corvette" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Mobile Wallpaper</span>
+       </div>
+      </div>
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&amp;q=80" alt="Red muscle car" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Caption Pack</span>
+       </div>
+      </div>
+      <div class="reveal-section gallery-item rounded-xl overflow-hidden aspect-[4/3] relative group"><img src="https://images.unsplash.com/photo-1525609004556-c46c70d6de7a?w=600&amp;q=80" alt="Muscle car engine" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='#2e2e33'; this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4"><span class="font-barlow-c text-xs tracking-wider text-chrome uppercase">Print Poster</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full py-20 sm:py-28 px-4 sm:px-6 bg-charcoal-light">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal-section text-center mb-16"><span class="font-barlow-c text-xs tracking-widest text-redline uppercase mb-3 block">Community</span>
+      <h2 class="font-bebas text-5xl sm:text-6xl text-chrome tracking-wide">What Gearheads Say</h2>
+      <div class="w-16 h-0.5 bg-redline mx-auto mt-4"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal-section glass-card rounded-xl p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+       </div>
+       <p class="text-metallic text-sm font-light leading-relaxed mb-4">"Finally a digital pack that actually looks like it belongs in a garage, not a corporate office. The wallpapers are insane quality."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-redline/20 flex items-center justify-center">
+         <span class="font-bebas text-sm text-redline">M</span>
+        </div>
+        <div><span class="text-chrome text-sm font-medium block">Mike R.</span> <span class="text-metallic-dim text-xs">Camaro SS Owner</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal-section glass-card rounded-xl p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+       </div>
+       <p class="text-metallic text-sm font-light leading-relaxed mb-4">"Used the cruise planner for our Route 66 trip. The build checklist saved us from forgetting the oil check. Legit useful."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-redline/20 flex items-center justify-center">
+         <span class="font-bebas text-sm text-redline">J</span>
+        </div>
+        <div><span class="text-chrome text-sm font-medium block">Jake T.</span> <span class="text-metallic-dim text-xs">Mustang GT Enthusiast</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal-section glass-card rounded-xl p-6">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+        <svg width="16" height="16" fill="#c41e2a" stroke="none">
+         <polygon points="8,1 10,6 16,6.5 11.5,10.5 13,16 8,13 3,16 4.5,10.5 0,6.5 6,6" />
+        </svg>
+       </div>
+       <p class="text-metallic text-sm font-light leading-relaxed mb-4">"The social templates are perfect for my car page. Went from 200 to 3K followers in two months using the caption pack."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-redline/20 flex items-center justify-center">
+         <span class="font-bebas text-sm text-redline">S</span>
+        </div>
+        <div><span class="text-chrome text-sm font-medium block">Sarah L.</span> <span class="text-metallic-dim text-xs">Challenger Hellcat Driver</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="relative w-full py-20 sm:py-28 px-4 sm:px-6 overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1920&amp;q=80" alt="Muscle car road" class="w-full h-full object-cover img-fade" loading="lazy" onload="this.classList.add('loaded')" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#1a1a1e,#2e2e33)'; this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-charcoal/85"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="reveal-section">
+      <svg class="mx-auto mb-6" width="48" height="48" fill="none" stroke="#c41e2a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="24" cy="24" r="20" /><path d="M16 24c0-6 4-10 8-10s8 4 8 10" /><circle cx="24" cy="24" r="4" /><path d="M24 20v-6" />
+      </svg>
+      <h2 id="bottom-cta-heading" class="font-bebas text-5xl sm:text-7xl text-chrome tracking-wide mb-4">Make power look premium.</h2>
+      <p class="text-metallic text-lg font-light mb-10 max-w-xl mx-auto">115 wallpapers. 25 posters. Cruise planner. Build checklist. Social templates. Caption pack. One download.</p><a href="#" class="cta-pulse inline-flex items-center gap-3 px-10 py-4 bg-redline hover:bg-redline-dark rounded font-barlow-c font-bold tracking-widest uppercase text-white transition-colors" onclick="event.preventDefault(); document.getElementById('download-toast').classList.remove('hidden'); setTimeout(()=>document.getElementById('download-toast').classList.add('hidden'),3000);">
+       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M10 3v10M6 10l4 4 4-4" /><path d="M3 15v2a2 2 0 002 2h10a2 2 0 002-2v-2" />
+       </svg> Get the Full Pack </a> <!-- Download toast -->
+      <div id="download-toast" class="hidden mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-redline/20 border border-redline/30">
+       <svg width="16" height="16" fill="none" stroke="#c41e2a" stroke-width="1.5" stroke-linecap="round">
+        <path d="M3 8l3 3 7-7" />
+       </svg><span class="text-chrome text-sm">Link your download source to this button</span>
+      </div><!-- Vote + Comment Widget Area -->
+      <div class="mt-14 pt-10 border-t border-metallic/10">
+       <div class="glass-card rounded-xl p-8 max-w-lg mx-auto">
+        <h3 class="font-bebas text-2xl text-chrome tracking-wide mb-2">Vote + Comment</h3>
+        <p class="text-metallic-dim text-sm font-light mb-6">Embed Widget Here</p>
+        <div class="flex justify-center gap-4 mb-6"><button id="upvote-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-metallic/20 hover:border-redline/50 hover:bg-redline/10 transition-all" onclick="handleVote(1)">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+           <path d="M9 3l5 8H4z" />
+          </svg><span id="upvote-count" class="font-barlow-c text-sm text-chrome">47</span> </button> <button id="downvote-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-metallic/20 hover:border-metallic/40 transition-all" onclick="handleVote(-1)">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+           <path d="M9 15l5-8H4z" />
+          </svg><span id="downvote-count" class="font-barlow-c text-sm text-chrome">2</span> </button>
+        </div>
+        <div class="space-y-3">
+         <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 h-10 rounded-lg bg-charcoal-mid/80 border border-metallic/15 px-3 text-sm text-chrome placeholder:text-metallic-dim/50 focus:outline-none focus:border-redline/50 transition-colors font-barlow" aria-label="Comment"> <button onclick="addComment()" class="px-4 h-10 rounded-lg bg-redline/20 hover:bg-redline/30 border border-redline/30 font-barlow-c text-xs tracking-wider uppercase text-redline transition-colors">Post</button>
+         </div>
+         <div id="comments-list" class="space-y-2 max-h-40 overflow-auto"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-4 sm:px-6 border-t border-metallic/10">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none" stroke="#c41e2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="14" cy="14" r="11" /><path d="M14 7v7l4 3" />
+      </svg><span class="font-bebas text-sm tracking-wider text-metallic-dim">REDLINE FOUNDRY</span>
+     </div><span class="text-metallic-dim text-xs font-light">Raw power. Clean design. All rights reserved.</span>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_tagline: 'Raw power. Clean design.',
+  hero_subhead: 'Muscle car visuals and cruise templates built from real photography.',
+  stat_wallpapers: '115',
+  stat_posters: '25',
+  stat_templates: '40+',
+  bottom_cta_text: 'Make power look premium.',
+  background_color: '#1a1a1e',
+  surface_color: '#242428',
+  text_color: '#e8e8ec',
+  accent_color: '#c41e2a',
+  secondary_color: '#7a7a82',
+  font_family: 'Bebas Neue',
+  font_size: 16,
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.getElementById('hero-tagline').textContent = c.hero_tagline;
+  document.getElementById('hero-subhead').textContent = c.hero_subhead;
+  document.getElementById('stat-wallpapers-num').textContent = c.stat_wallpapers;
+  document.getElementById('stat-posters-num').textContent = c.stat_posters;
+  document.getElementById('stat-templates-num').textContent = c.stat_templates;
+  document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+  // Colors
+  const root = document.documentElement;
+  document.getElementById('app-wrapper').style.backgroundColor = c.background_color;
+
+  // Apply accent color to redline elements
+  document.querySelectorAll('.cta-pulse, [class*="bg-redline"]').forEach(el => {
+    if (el.classList.contains('bg-redline') || el.classList.contains('cta-pulse')) {
+      el.style.backgroundColor = c.accent_color;
+    }
+  });
+
+  // Text color
+  document.querySelectorAll('h1, h2, h3').forEach(el => { el.style.color = c.text_color; });
+
+  // Font
+  const fontStack = `${c.font_family}, Bebas Neue, sans-serif`;
+  document.querySelectorAll('.font-bebas, h1, h2, h3').forEach(el => { el.style.fontFamily = fontStack; });
+
+  // Font size scaling
+  const base = c.font_size;
+  document.getElementById('hero-subhead').style.fontSize = `${base * 1.2}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['stat_wallpapers', config.stat_wallpapers || defaultConfig.stat_wallpapers],
+    ['stat_posters', config.stat_posters || defaultConfig.stat_posters],
+    ['stat_templates', config.stat_templates || defaultConfig.stat_templates],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ]),
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-nav').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal-section').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = ['home','wallpapers','cruise','preview','reviews','download'];
+const navLinks = document.querySelectorAll('.nav-link');
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 100 <= wrapper.scrollTop) current = id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+  });
+});
+
+// Vote system
+let voted = 0;
+function handleVote(dir) {
+  const upEl = document.getElementById('upvote-count');
+  const downEl = document.getElementById('downvote-count');
+  let up = parseInt(upEl.textContent);
+  let down = parseInt(downEl.textContent);
+
+  if (voted === dir) { // undo
+    if (dir === 1) up--;
+    else down--;
+    voted = 0;
+  } else {
+    if (voted === -dir) { // switch
+      if (dir === 1) { up++; down--; }
+      else { up--; down++; }
+    } else {
+      if (dir === 1) up++;
+      else down++;
+    }
+    voted = dir;
+  }
+  upEl.textContent = up;
+  downEl.textContent = down;
+  document.getElementById('upvote-btn').style.borderColor = voted === 1 ? '#c41e2a' : '';
+  document.getElementById('downvote-btn').style.borderColor = voted === -1 ? '#c41e2a' : '';
+}
+
+// Comment system
+const comments = [];
+function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: 'Just now' });
+  input.value = '';
+  renderComments();
+}
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); addComment(); }
+});
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="flex items-start gap-2 p-2 rounded-lg bg-charcoal-mid/30">
+      <div class="w-6 h-6 rounded-full bg-redline/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg width="12" height="12" fill="none" stroke="#c41e2a" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="4" r="2.5"/><path d="M2 11c0-2.2 1.8-4 4-4s4 1.8 4 4"/></svg>
+      </div>
+      <div>
+        <span class="text-chrome text-xs block">${c.text}</span>
+        <span class="text-metallic-dim text-[10px]">${c.time}</span>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5666235927c5',t:'MTc3NTU3ODU5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

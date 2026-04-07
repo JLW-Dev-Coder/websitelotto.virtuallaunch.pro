@@ -1,1 +1,721 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a7f5f01f-4471-4c66-8e90-22dc59904d01 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuditShield Defense</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { 900: '#0a1128', 800: '#101d3f', 700: '#162556', 600: '#1c2f6e' },
+        accent: { red: '#c0392b', redLight: '#e74c3c' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; }
+.font-display { font-family: 'DM Serif Display', serif; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(192,57,43,0.3); } 50% { box-shadow: 0 0 40px rgba(192,57,43,0.6); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes countUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible { animation: fadeUp 0.8s ease forwards; }
+.anim-slide-left { opacity: 0; }
+.anim-slide-left.visible { animation: slideLeft 0.8s ease forwards; }
+.anim-slide-right { opacity: 0; }
+.anim-slide-right.visible { animation: slideRight 0.8s ease forwards; }
+.anim-fade-in { opacity: 0; }
+.anim-fade-in.visible { animation: fadeIn 0.8s ease forwards; }
+
+.pulse-btn { animation: pulse-glow 2.5s ease-in-out infinite; }
+.shimmer-text {
+  background: linear-gradient(90deg, #ffffff 0%, #e74c3c 50%, #ffffff 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+.nav-active { color: #e74c3c !important; border-bottom: 2px solid #e74c3c; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a1128; }
+::-webkit-scrollbar-thumb { background: #1c2f6e; border-radius: 4px; }
+
+.shield-icon {
+  width: 60px; height: 70px;
+  background: linear-gradient(135deg, #1c2f6e, #c0392b);
+  clip-path: polygon(50% 0%, 100% 15%, 100% 65%, 50% 100%, 0% 65%, 0% 15%);
+}
+
+.card-hover { transition: transform 0.3s, box-shadow 0.3s; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(192,57,43,0.2); }
+
+.toast-notification {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  padding: 12px 24px; border-radius: 8px; font-size: 14px;
+  background: #162556; color: #fff; border: 1px solid #1c2f6e;
+  transform: translateY(100px); opacity: 0; transition: all 0.4s ease;
+}
+.toast-notification.show { transform: translateY(0); opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-navy-900 text-white overflow-auto">
+  <div id="app-wrapper" class="w-full h-full"><!-- Toast -->
+   <div id="toast" class="toast-notification"></div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,17,40,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(28,47,110,0.4);">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
+     <div class="flex items-center gap-2">
+      <div class="shield-icon flex items-center justify-center" style="width:32px;height:38px;"><i data-lucide="shield-check" style="width:16px;height:16px;color:#fff;"></i>
+      </div><span class="font-display text-lg tracking-wide">AuditShield</span>
+     </div>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="nav-link hover:text-red-400 transition-colors py-1" data-section="home">Home</a> <a href="#audits" class="nav-link hover:text-red-400 transition-colors py-1" data-section="audits">Audits</a> <a href="#defense" class="nav-link hover:text-red-400 transition-colors py-1" data-section="defense">Defense</a> <a href="#results" class="nav-link hover:text-red-400 transition-colors py-1" data-section="results">Results</a> <a href="#faq" class="nav-link hover:text-red-400 transition-colors py-1" data-section="faq">FAQ</a> <a href="#get-help" class="bg-accent-red hover:bg-accent-redLight text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">Get Help</a>
+     </div><button id="mobile-toggle" class="md:hidden p-2"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-3 text-sm font-medium"><a href="#home" class="block py-2 hover:text-red-400 transition-colors">Home</a> <a href="#audits" class="block py-2 hover:text-red-400 transition-colors">Audits</a> <a href="#defense" class="block py-2 hover:text-red-400 transition-colors">Defense</a> <a href="#results" class="block py-2 hover:text-red-400 transition-colors">Results</a> <a href="#faq" class="block py-2 hover:text-red-400 transition-colors">FAQ</a> <a href="#get-help" class="block py-2 text-red-400 font-semibold">Get Help</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden" style="padding-top:80px;"><!-- Background pattern -->
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 20%, rgba(28,47,110,0.4) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(192,57,43,0.15) 0%, transparent 50%);"></div>
+    <div class="absolute inset-0" style="background-image:repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(28,47,110,0.1) 60px, rgba(28,47,110,0.1) 61px), repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(28,47,110,0.1) 60px, rgba(28,47,110,0.1) 61px);"></div>
+    <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+     <div class="anim-fade-up mb-6">
+      <div class="inline-flex items-center gap-2 bg-navy-800 border border-navy-600 rounded-full px-5 py-2 text-sm text-gray-300 mb-8"><i data-lucide="shield" style="width:16px;height:16px;color:#c0392b;"></i> <span id="hero-tagline">You don't face the IRS alone.</span>
+      </div>
+     </div>
+     <h1 id="hero-title" class="font-display text-5xl md:text-7xl leading-tight mb-6 anim-fade-up" style="animation-delay:0.2s;">Facing an IRS audit?</h1>
+     <p id="hero-subtitle" class="text-xl md:text-2xl text-gray-300 font-light max-w-2xl mx-auto mb-10 anim-fade-up" style="animation-delay:0.4s;">Professional representation that protects you.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 anim-fade-up" style="animation-delay:0.6s;"><a href="#get-help" id="cta-primary-btn" class="pulse-btn bg-accent-red hover:bg-accent-redLight text-white font-semibold px-8 py-4 rounded-xl text-lg transition-colors inline-flex items-center gap-2"> <i data-lucide="phone" style="width:20px;height:20px;"></i> <span>Get Help Now</span> </a> <a href="#results" id="cta-secondary-btn" class="border border-navy-600 hover:border-accent-red text-gray-200 hover:text-white font-medium px-8 py-4 rounded-xl text-lg transition-all inline-flex items-center gap-2"> <i data-lucide="bar-chart-3" style="width:20px;height:20px;"></i> <span>See Results</span> </a>
+     </div><!-- Authority Badges -->
+     <div class="mt-16 flex flex-wrap items-center justify-center gap-6 anim-fade-up" style="animation-delay:0.8s;">
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="check-circle" style="width:18px;height:18px;color:#c0392b;"></i> IRS Enrolled Agents
+      </div>
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="check-circle" style="width:18px;height:18px;color:#c0392b;"></i> 2,400+ Cases Resolved
+      </div>
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="check-circle" style="width:18px;height:18px;color:#c0392b;"></i> Confidential &amp; Secure
+      </div>
+      <div class="flex items-center gap-2 text-gray-400 text-sm">
+       <i data-lucide="check-circle" style="width:18px;height:18px;color:#c0392b;"></i> 97% Success Rate
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 anim-fade-in" style="animation-delay:1.2s;">
+     <div class="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center pt-2">
+      <div class="w-1.5 h-3 bg-gray-400 rounded-full" style="animation: fadeUp 1.5s ease infinite;"></div>
+     </div>
+    </div>
+   </section><!-- AUDITS -->
+   <section id="audits" class="w-full py-24 px-6 relative">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, #0a1128 0%, #101d3f 50%, #0a1128 100%);"></div>
+    <div class="relative z-10 max-w-6xl mx-auto">
+     <div class="text-center mb-16"><span class="text-accent-red text-sm font-semibold tracking-widest uppercase anim-fade-up">Understanding Your Situation</span>
+      <h2 class="font-display text-4xl md:text-5xl mt-4 anim-fade-up" style="animation-delay:0.15s;">Types of IRS Audits</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.3s;">Not all audits are created equal. Understanding which one you're facing is the first step toward a strong defense.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Correspondence -->
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-slide-left" style="animation-delay:0.2s;">
+       <div class="w-14 h-14 rounded-xl bg-navy-700 flex items-center justify-center mb-6"><i data-lucide="mail" style="width:28px;height:28px;color:#c0392b;"></i>
+       </div>
+       <h3 class="font-display text-2xl mb-3">Correspondence Audit</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">The most common type. The IRS sends a letter requesting clarification or documentation on specific items in your return.</p>
+       <div class="flex items-center gap-2 text-sm"><span class="px-3 py-1 rounded-full bg-navy-700 text-gray-300">Low Severity</span> <span class="px-3 py-1 rounded-full bg-navy-700 text-gray-300">Mail-Based</span>
+       </div>
+      </div><!-- Office -->
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-fade-up" style="animation-delay:0.35s;">
+       <div class="w-14 h-14 rounded-xl bg-navy-700 flex items-center justify-center mb-6"><i data-lucide="building-2" style="width:28px;height:28px;color:#c0392b;"></i>
+       </div>
+       <h3 class="font-display text-2xl mb-3">Office Audit</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">You're asked to visit an IRS office with specific records. These audits are more in-depth and cover broader areas of your return.</p>
+       <div class="flex items-center gap-2 text-sm"><span class="px-3 py-1 rounded-full bg-navy-700 text-gray-300">Medium Severity</span> <span class="px-3 py-1 rounded-full bg-navy-700 text-accent-red">In-Person</span>
+       </div>
+      </div><!-- Field -->
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-slide-right" style="animation-delay:0.5s;">
+       <div class="w-14 h-14 rounded-xl bg-navy-700 flex items-center justify-center mb-6"><i data-lucide="alert-triangle" style="width:28px;height:28px;color:#e74c3c;"></i>
+       </div>
+       <h3 class="font-display text-2xl mb-3">Field Audit</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">The most serious type. An IRS agent visits your home or business to conduct a thorough examination of records and assets.</p>
+       <div class="flex items-center gap-2 text-sm"><span class="px-3 py-1 rounded-full bg-accent-red/20 text-accent-redLight">High Severity</span> <span class="px-3 py-1 rounded-full bg-accent-red/20 text-accent-redLight">On-Site</span>
+       </div>
+      </div>
+     </div><!-- Urgency Banner -->
+     <div class="mt-12 bg-gradient-to-r from-accent-red/10 to-navy-800 border border-accent-red/30 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-4 anim-fade-up" style="animation-delay:0.6s;"><i data-lucide="clock" style="width:32px;height:32px;color:#e74c3c;flex-shrink:0;"></i>
+      <div>
+       <p class="font-semibold text-lg">Time is critical.</p>
+       <p class="text-gray-400 text-sm">IRS audit responses have strict deadlines. Missing them can escalate your case and increase penalties. Act now.</p>
+      </div><a href="#get-help" class="ml-auto shrink-0 bg-accent-red hover:bg-accent-redLight text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">Respond Now</a>
+     </div>
+    </div>
+   </section><!-- DEFENSE -->
+   <section id="defense" class="w-full py-24 px-6 relative">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, #0a1128 0%, #101d3f 100%);"></div>
+    <div class="relative z-10 max-w-6xl mx-auto">
+     <div class="text-center mb-16"><span class="text-accent-red text-sm font-semibold tracking-widest uppercase anim-fade-up">Our Process</span>
+      <h2 class="font-display text-4xl md:text-5xl mt-4 anim-fade-up" style="animation-delay:0.15s;">How We Defend You</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.3s;">A proven, systematic approach that has protected thousands of taxpayers.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 items-start"><!-- Steps -->
+      <div class="space-y-8">
+       <div class="flex gap-5 anim-slide-left" style="animation-delay:0.2s;">
+        <div class="shrink-0 w-12 h-12 rounded-full bg-accent-red flex items-center justify-center font-display text-xl">
+         1
+        </div>
+        <div>
+         <h3 class="font-display text-xl mb-1">Free Case Review</h3>
+         <p class="text-gray-400 text-sm leading-relaxed">We analyze your IRS notice, identify exposures, and determine the best defense strategy — at no cost.</p>
+        </div>
+       </div>
+       <div class="flex gap-5 anim-slide-left" style="animation-delay:0.35s;">
+        <div class="shrink-0 w-12 h-12 rounded-full bg-navy-600 flex items-center justify-center font-display text-xl">
+         2
+        </div>
+        <div>
+         <h3 class="font-display text-xl mb-1">Document Preparation</h3>
+         <p class="text-gray-400 text-sm leading-relaxed">Our team organizes and prepares your records, building a comprehensive response that addresses every IRS concern.</p>
+        </div>
+       </div>
+       <div class="flex gap-5 anim-slide-left" style="animation-delay:0.5s;">
+        <div class="shrink-0 w-12 h-12 rounded-full bg-navy-600 flex items-center justify-center font-display text-xl">
+         3
+        </div>
+        <div>
+         <h3 class="font-display text-xl mb-1">Direct Representation</h3>
+         <p class="text-gray-400 text-sm leading-relaxed">We communicate with the IRS on your behalf. You never have to face an agent or navigate the bureaucracy alone.</p>
+        </div>
+       </div>
+       <div class="flex gap-5 anim-slide-left" style="animation-delay:0.65s;">
+        <div class="shrink-0 w-12 h-12 rounded-full bg-navy-600 flex items-center justify-center font-display text-xl">
+         4
+        </div>
+        <div>
+         <h3 class="font-display text-xl mb-1">Resolution &amp; Protection</h3>
+         <p class="text-gray-400 text-sm leading-relaxed">We negotiate the best possible outcome, minimize penalties, and set up safeguards to protect you going forward.</p>
+        </div>
+       </div>
+      </div><!-- Included Templates Card -->
+      <div class="anim-slide-right" style="animation-delay:0.3s;">
+       <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8">
+        <div class="flex items-center gap-3 mb-6"><i data-lucide="file-text" style="width:24px;height:24px;color:#c0392b;"></i>
+         <h3 class="font-display text-xl">Defense Kit Included</h3>
+        </div>
+        <div class="space-y-4">
+         <div class="flex items-start gap-3 bg-navy-700/50 rounded-xl p-4"><i data-lucide="check" style="width:20px;height:20px;color:#c0392b;flex-shrink:0;margin-top:2px;"></i>
+          <div>
+           <p class="font-medium text-sm">Case Defense Templates</p>
+           <p class="text-gray-500 text-xs mt-0.5">Pre-built response frameworks for each audit type</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3 bg-navy-700/50 rounded-xl p-4"><i data-lucide="check" style="width:20px;height:20px;color:#c0392b;flex-shrink:0;margin-top:2px;"></i>
+          <div>
+           <p class="font-medium text-sm">Complete Audit Checklist</p>
+           <p class="text-gray-500 text-xs mt-0.5">Every document and record you need, organized</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3 bg-navy-700/50 rounded-xl p-4"><i data-lucide="check" style="width:20px;height:20px;color:#c0392b;flex-shrink:0;margin-top:2px;"></i>
+          <div>
+           <p class="font-medium text-sm">Consultation Funnel Access</p>
+           <p class="text-gray-500 text-xs mt-0.5">Priority scheduling with our enrolled agents</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3 bg-navy-700/50 rounded-xl p-4"><i data-lucide="check" style="width:20px;height:20px;color:#c0392b;flex-shrink:0;margin-top:2px;"></i>
+          <div>
+           <p class="font-medium text-sm">Authority Badges &amp; Credentials</p>
+           <p class="text-gray-500 text-xs mt-0.5">Verified credentials to confirm our standing</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- RESULTS -->
+   <section id="results" class="w-full py-24 px-6 relative">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, #101d3f 0%, #0a1128 100%);"></div>
+    <div class="relative z-10 max-w-6xl mx-auto">
+     <div class="text-center mb-16"><span class="text-accent-red text-sm font-semibold tracking-widest uppercase anim-fade-up">Proven Track Record</span>
+      <h2 class="font-display text-4xl md:text-5xl mt-4 anim-fade-up" style="animation-delay:0.15s;">Real Results, Real Relief</h2>
+     </div><!-- Stats -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div class="text-center bg-navy-800/60 border border-navy-600 rounded-2xl p-6 anim-fade-up" style="animation-delay:0.1s;">
+       <div class="font-display text-4xl text-accent-red stat-num" data-target="97">
+        0
+       </div>
+       <div class="text-sm text-gray-400 mt-2">
+        Success Rate %
+       </div>
+      </div>
+      <div class="text-center bg-navy-800/60 border border-navy-600 rounded-2xl p-6 anim-fade-up" style="animation-delay:0.2s;">
+       <div class="font-display text-4xl text-white stat-num" data-target="2400">
+        0
+       </div>
+       <div class="text-sm text-gray-400 mt-2">
+        Cases Resolved
+       </div>
+      </div>
+      <div class="text-center bg-navy-800/60 border border-navy-600 rounded-2xl p-6 anim-fade-up" style="animation-delay:0.3s;">
+       <div class="font-display text-4xl text-white stat-num" data-target="18">
+        0
+       </div>
+       <div class="text-sm text-gray-400 mt-2">
+        Years Experience
+       </div>
+      </div>
+      <div class="text-center bg-navy-800/60 border border-navy-600 rounded-2xl p-6 anim-fade-up" style="animation-delay:0.4s;">
+       <div class="font-display text-4xl text-white stat-num" data-target="42">
+        0
+       </div>
+       <div class="text-sm text-gray-400 mt-2">
+        States Covered
+       </div>
+      </div>
+     </div><!-- Testimonials -->
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-fade-up" style="animation-delay:0.2s;">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-6">"I received a field audit notice and was terrified. AuditShield handled everything. They reduced my liability by 84% and I never had to speak to the IRS once."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-navy-600 flex items-center justify-center font-display text-sm">
+         MR
+        </div>
+        <div>
+         <p class="text-sm font-medium">Michael R.</p>
+         <p class="text-xs text-gray-500">Field Audit — Resolved</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-fade-up" style="animation-delay:0.35s;">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-6">"Three years of unfiled returns had me paralyzed with fear. They guided me through every step, negotiated penalties down to almost nothing. Absolute lifesavers."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-navy-600 flex items-center justify-center font-display text-sm">
+         SL
+        </div>
+        <div>
+         <p class="text-sm font-medium">Sarah L.</p>
+         <p class="text-xs text-gray-500">Correspondence Audit — Resolved</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-navy-800 border border-navy-600 rounded-2xl p-8 card-hover anim-fade-up" style="animation-delay:0.5s;">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#e74c3c;fill:#e74c3c;"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-6">"As a small business owner, an office audit felt like the end. AuditShield's team was calm, professional, and incredibly thorough. Case dismissed with zero adjustments."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-navy-600 flex items-center justify-center font-display text-sm">
+         DK
+        </div>
+        <div>
+         <p class="text-sm font-medium">David K.</p>
+         <p class="text-xs text-gray-500">Office Audit — Dismissed</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full py-24 px-6 relative">
+    <div class="absolute inset-0" style="background:#0a1128;"></div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+     <div class="text-center mb-16"><span class="text-accent-red text-sm font-semibold tracking-widest uppercase anim-fade-up">Common Questions</span>
+      <h2 class="font-display text-4xl md:text-5xl mt-4 anim-fade-up" style="animation-delay:0.15s;">Frequently Asked</h2>
+     </div>
+     <div class="space-y-4" id="faq-container">
+      <div class="faq-item bg-navy-800 border border-navy-600 rounded-xl overflow-hidden anim-fade-up" style="animation-delay:0.1s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-medium text-sm pr-4">What happens if I ignore an IRS audit notice?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-5 pb-5 hidden">
+        <p class="text-gray-400 text-sm leading-relaxed">Ignoring an IRS audit notice is one of the worst things you can do. The IRS will proceed without your input, typically resulting in the maximum possible tax assessment, plus penalties and interest. It can also lead to enforced collection actions including wage garnishments and bank levies.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navy-800 border border-navy-600 rounded-xl overflow-hidden anim-fade-up" style="animation-delay:0.2s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-medium text-sm pr-4">Can you represent me without me being present?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-5 pb-5 hidden">
+        <p class="text-gray-400 text-sm leading-relaxed">Yes. As Enrolled Agents authorized by the U.S. Treasury, we have full Power of Attorney to represent you before the IRS. In most cases, you never need to speak to or meet with an IRS agent. We handle all communication and appearances on your behalf.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navy-800 border border-navy-600 rounded-xl overflow-hidden anim-fade-up" style="animation-delay:0.3s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-medium text-sm pr-4">How much does audit representation cost?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-5 pb-5 hidden">
+        <p class="text-gray-400 text-sm leading-relaxed">Costs vary based on the type and complexity of your audit. We provide a free initial case review and transparent pricing before you commit. Most clients find that professional representation saves them significantly more than it costs through reduced penalties and liabilities.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navy-800 border border-navy-600 rounded-xl overflow-hidden anim-fade-up" style="animation-delay:0.4s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="font-medium text-sm pr-4">How quickly can you start on my case?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-5 pb-5 hidden">
+        <p class="text-gray-400 text-sm leading-relaxed">We begin working on your case within 24 hours of your initial consultation. If your audit response deadline is imminent, we offer emergency expedited service to ensure timely filing with the IRS.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="get-help" class="w-full py-24 px-6 relative">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 30%, rgba(192,57,43,0.15) 0%, transparent 60%), #0a1128;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto"><!-- CTA -->
+     <div class="text-center mb-20 anim-fade-up">
+      <div class="shield-icon mx-auto mb-6 flex items-center justify-center"><i data-lucide="shield-check" style="width:28px;height:28px;color:#fff;"></i>
+      </div>
+      <h2 id="bottom-cta-heading" class="font-display text-4xl md:text-5xl mb-4">Protect your position with expert defense.</h2>
+      <p class="text-gray-400 max-w-lg mx-auto mb-8">Schedule your free, confidential case review. There's no obligation and no risk — just clarity on your next steps.</p><!-- Consultation Form -->
+      <div class="max-w-md mx-auto bg-navy-800 border border-navy-600 rounded-2xl p-8">
+       <form id="consult-form" class="space-y-4">
+        <div><label for="cf-name" class="block text-sm text-gray-400 mb-1 text-left">Full Name</label> <input id="cf-name" type="text" class="w-full bg-navy-700 border border-navy-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-red transition-colors" placeholder="John Doe" required>
+        </div>
+        <div><label for="cf-email" class="block text-sm text-gray-400 mb-1 text-left">Email</label> <input id="cf-email" type="email" class="w-full bg-navy-700 border border-navy-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-red transition-colors" placeholder="john@example.com" required>
+        </div>
+        <div><label for="cf-type" class="block text-sm text-gray-400 mb-1 text-left">Audit Type</label> <select id="cf-type" class="w-full bg-navy-700 border border-navy-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-red transition-colors"> <option value="correspondence">Correspondence Audit</option> <option value="office">Office Audit</option> <option value="field">Field Audit</option> <option value="unsure">Not Sure</option> </select>
+        </div><button type="submit" id="consult-submit" class="w-full bg-accent-red hover:bg-accent-redLight text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"> <i data-lucide="phone" style="width:18px;height:18px;"></i> <span>Request Free Case Review</span> </button>
+       </form>
+       <div id="consult-success" class="hidden text-center py-6"><i data-lucide="check-circle" style="width:48px;height:48px;color:#c0392b;margin:0 auto 12px;display:block;"></i>
+        <p class="font-display text-xl mb-2">Request Received</p>
+        <p class="text-gray-400 text-sm">We'll contact you within 24 hours to schedule your free consultation.</p>
+       </div>
+      </div>
+     </div><!-- VOTE + COMMENT MODULE -->
+     <div class="border-t border-navy-700 pt-16 anim-fade-up">
+      <div class="text-center mb-10">
+       <p class="text-xs text-gray-500 tracking-widest uppercase mb-2">Embed Widget Here</p>
+       <h3 class="font-display text-2xl">Rate &amp; React</h3>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8"><button onclick="submitReaction('🛡️')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">🛡️ <span class="reaction-count" data-emoji="🛡️">0</span></button> <button onclick="submitReaction('💪')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">💪 <span class="reaction-count" data-emoji="💪">0</span></button> <button onclick="submitReaction('🔥')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">🔥 <span class="reaction-count" data-emoji="🔥">0</span></button> <button onclick="submitReaction('⚖️')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">⚖️ <span class="reaction-count" data-emoji="⚖️">0</span></button> <button onclick="submitReaction('✅')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">✅ <span class="reaction-count" data-emoji="✅">0</span></button> <button onclick="submitReaction('👏')" class="reaction-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-xl px-4 py-2 text-sm transition-all flex items-center gap-2">👏 <span class="reaction-count" data-emoji="👏">0</span></button>
+      </div><!-- Price Vote -->
+      <div class="mb-10">
+       <p class="text-center text-sm text-gray-400 mb-4">What would you pay for expert audit defense?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-votes"><button onclick="submitPriceVote('$97')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$97</button> <button onclick="submitPriceVote('$197')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$197</button> <button onclick="submitPriceVote('$297')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$297</button> <button onclick="submitPriceVote('$497')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$497</button> <button onclick="submitPriceVote('$697')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$697</button> <button onclick="submitPriceVote('$997')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$997</button> <button onclick="submitPriceVote('$1,497')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$1,497</button> <button onclick="submitPriceVote('$1,997')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$1,997</button> <button onclick="submitPriceVote('$2,997')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$2,997</button> <button onclick="submitPriceVote('$4,997')" class="price-btn bg-navy-800 hover:bg-navy-700 border border-navy-600 hover:border-accent-red rounded-lg px-4 py-2 text-sm transition-all">$4,997</button>
+       </div>
+       <div id="price-result" class="text-center text-xs text-gray-500 mt-3"></div>
+      </div><!-- Comments -->
+      <div class="max-w-2xl mx-auto">
+       <h4 class="font-display text-lg mb-4">Leave a Comment</h4>
+       <form id="comment-form" class="flex gap-3 mb-6"><input id="comment-input" type="text" class="flex-1 bg-navy-800 border border-navy-600 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-red transition-colors" placeholder="Share your thoughts..." required> <button type="submit" id="comment-submit" class="bg-accent-red hover:bg-accent-redLight text-white px-5 py-3 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"> <i data-lucide="send" style="width:16px;height:16px;"></i> Post </button>
+       </form>
+       <div id="comments-list" class="space-y-3"></div>
+       <p id="no-comments" class="text-gray-500 text-sm text-center py-4">No comments yet. Be the first to share your thoughts.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 border-t border-navy-700">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="shield-icon flex items-center justify-center" style="width:24px;height:28px;"><i data-lucide="shield-check" style="width:12px;height:12px;color:#fff;"></i>
+      </div><span class="font-display text-sm">AuditShield Defense</span>
+     </div>
+     <p class="text-gray-500 text-xs">© 2024 AuditShield Defense. All rights reserved. This is a sample/demo site.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  hero_title: "Facing an IRS audit?",
+  hero_subtitle: "Professional representation that protects you.",
+  tagline: "You don't face the IRS alone.",
+  cta_primary: "Get Help Now",
+  cta_secondary: "See Results",
+  bottom_cta_text: "Protect your position with expert defense.",
+  background_color: "#0a1128",
+  surface_color: "#101d3f",
+  text_color: "#ffffff",
+  primary_action_color: "#c0392b",
+  secondary_action_color: "#1c2f6e"
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = key => config[key] || defaultConfig[key];
+
+    document.getElementById('hero-title').textContent = c('hero_title');
+    document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+    document.getElementById('hero-tagline').textContent = c('tagline');
+    document.getElementById('cta-primary-btn').querySelector('span').textContent = c('cta_primary');
+    document.getElementById('cta-secondary-btn').querySelector('span').textContent = c('cta_secondary');
+    document.getElementById('bottom-cta-heading').textContent = c('bottom_cta_text');
+
+    // Colors
+    const bg = c('background_color');
+    const surface = c('surface_color');
+    const txt = c('text_color');
+    const primary = c('primary_action_color');
+    const secondary = c('secondary_action_color');
+
+    document.body.style.backgroundColor = bg;
+    document.querySelectorAll('h1,h2,h3,.font-display').forEach(el => el.style.color = txt);
+
+    document.querySelectorAll('.bg-accent-red, .pulse-btn, #consult-submit, #comment-submit').forEach(el => {
+      el.style.backgroundColor = primary;
+    });
+
+    document.querySelectorAll('.card-hover, .faq-item, #consult-form input, #consult-form select, #comment-input').forEach(el => {
+      el.style.borderColor = secondary;
+    });
+
+    // Font
+    const font = c('font_family');
+    if (font) {
+      document.querySelectorAll('.font-display').forEach(el => {
+        el.style.fontFamily = `${font}, 'DM Serif Display', serif`;
+      });
+      document.querySelectorAll('p, span, a, button, input, select, label').forEach(el => {
+        el.style.fontFamily = `${font}, 'Outfit', sans-serif`;
+      });
+    }
+
+    // Font size
+    const baseSize = config.font_size || defaultConfig.font_size;
+    if (baseSize) {
+      document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 3}px`);
+      document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2.2}px`);
+      document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.4}px`);
+      document.querySelectorAll('p').forEach(el => el.style.fontSize = `${baseSize}px`);
+    }
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family || 'DM Serif Display',
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size || 16,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["tagline", config.tagline || defaultConfig.tagline],
+    ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+    ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Data SDK
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    updateReactionCounts(data);
+    updatePriceResults(data);
+    updateComments(data);
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error("Data SDK init failed");
+})();
+
+// ===== DATA HELPERS =====
+function updateReactionCounts(data) {
+  const reactions = data.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => { counts[r.reaction] = (counts[r.reaction] || 0) + 1; });
+  document.querySelectorAll('.reaction-count').forEach(el => {
+    const emoji = el.dataset.emoji;
+    el.textContent = counts[emoji] || 0;
+  });
+}
+
+function updatePriceResults(data) {
+  const votes = data.filter(d => d.type === 'price_vote');
+  const el = document.getElementById('price-result');
+  if (votes.length === 0) { el.textContent = ''; return; }
+  const counts = {};
+  votes.forEach(v => { counts[v.price_vote] = (counts[v.price_vote] || 0) + 1; });
+  const top = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+  el.textContent = `${votes.length} vote${votes.length>1?'s':''} — Most popular: ${top[0]}`;
+}
+
+function updateComments(data) {
+  const comments = data.filter(d => d.type === 'comment').sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const container = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+
+  const existingMap = new Map([...container.children].map(el => [el.dataset.id, el]));
+
+  if (comments.length === 0) {
+    noComments.classList.remove('hidden');
+    container.innerHTML = '';
+    return;
+  }
+  noComments.classList.add('hidden');
+
+  const newIds = new Set(comments.map(c => c.__backendId));
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      const el = existingMap.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment_text;
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'bg-navy-800 border border-navy-600 rounded-xl p-4 flex items-start gap-3';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' at ' + time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-navy-600 flex items-center justify-center shrink-0"><i data-lucide="user" style="width:14px;height:14px;color:#c0392b;"></i></div>
+        <div><p class="comment-text text-sm text-gray-200">${escapeHtml(c.comment_text)}</p><p class="text-xs text-gray-500 mt-1">${timeStr}</p></div>
+      `;
+      container.appendChild(div);
+      lucide.createIcons();
+    }
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== INTERACTIONS =====
+async function submitReaction(emoji) {
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  const r = await window.dataSdk.create({ type: 'reaction', section: 'widget', reaction: emoji, comment_text: '', price_vote: '', timestamp: new Date().toISOString() });
+  if (!r.isOk) showToast('Could not save reaction.');
+}
+
+async function submitPriceVote(price) {
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  document.querySelectorAll('.price-btn').forEach(b => {
+    b.classList.remove('bg-accent-red');
+    b.classList.add('bg-navy-800');
+  });
+  event.target.classList.add('bg-accent-red');
+  event.target.classList.remove('bg-navy-800');
+  const r = await window.dataSdk.create({ type: 'price_vote', section: 'widget', reaction: '', comment_text: '', price_vote: price, timestamp: new Date().toISOString() });
+  if (!r.isOk) showToast('Could not save vote.');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Posting...</span>';
+  const r = await window.dataSdk.create({ type: 'comment', section: 'widget', reaction: '', comment_text: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" style="width:16px;height:16px;"></i> Post';
+  lucide.createIcons();
+  if (r.isOk) { input.value = ''; showToast('Comment posted!'); }
+  else showToast('Could not post comment.');
+});
+
+document.getElementById('consult-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('consult-form').classList.add('hidden');
+  document.getElementById('consult-success').classList.remove('hidden');
+  lucide.createIcons();
+});
+
+// FAQ
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-toggle [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.anim-fade-up, .anim-slide-left, .anim-slide-right, .anim-fade-in').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = ['home','audits','defense','results','faq','get-help'];
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && sec.offsetTop - 100 <= appWrapper.scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('nav-active', l.dataset.section === current);
+  });
+});
+
+// Stat counter animation
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const step = Math.max(1, Math.floor(target / 60));
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(interval); }
+        el.textContent = current.toLocaleString();
+      }, 20);
+      statObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2995954127c5',t:'MTc3NTU3Njc1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

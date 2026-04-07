@@ -1,1 +1,644 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5e24d0d4-aee1-4940-aedf-f76f25eae8e6 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexTax Strategy</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  .gold-glow { box-shadow: 0 0 40px rgba(212,175,55,0.08), 0 0 80px rgba(212,175,55,0.04); }
+  .gold-glow-hover:hover { box-shadow: 0 0 50px rgba(212,175,55,0.15), 0 0 100px rgba(212,175,55,0.06); }
+
+  .glass-panel {
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212,175,55,0.12);
+  }
+
+  .glass-panel-strong {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(212,175,55,0.18);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .animate-fade-up { animation: fadeUp 1s ease-out forwards; }
+  .animate-fade-in { animation: fadeIn 1.2s ease-out forwards; }
+  .delay-1 { animation-delay: 0.15s; opacity: 0; }
+  .delay-2 { animation-delay: 0.3s; opacity: 0; }
+  .delay-3 { animation-delay: 0.45s; opacity: 0; }
+  .delay-4 { animation-delay: 0.6s; opacity: 0; }
+  .delay-5 { animation-delay: 0.75s; opacity: 0; }
+
+  .gold-shimmer {
+    background: linear-gradient(90deg, #d4af37 0%, #f5e6a3 50%, #d4af37 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+
+  .scroll-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+    background: #d4af37; transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .scenario-bar { transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+  .radial-bg {
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 70%);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #d4af37 0%, #b8972e 100%);
+    color: #050505; font-weight: 600; transition: all 0.3s ease;
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(212,175,55,0.3); transform: translateY(-1px); }
+
+  .btn-outline {
+    border: 1px solid rgba(212,175,55,0.4); color: #d4af37; transition: all 0.3s ease;
+  }
+  .btn-outline:hover { border-color: #d4af37; background: rgba(212,175,55,0.08); }
+
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+  .faq-answer.open { max-height: 300px; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #050505; }
+  ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 3px; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        apex: { black: '#050505', gold: '#d4af37', goldLight: '#f5e6a3', muted: '#8a8a8a', surface: '#0d0d0d' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:#050505; color:#e8e8e8; font-family:'DM Sans',sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- NAV -->
+   <nav id="main-nav" style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(5,5,5,0.85);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border-bottom:1px solid rgba(212,175,55,0.06);transition:all 0.3s ease;">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;"><a href="#home" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#d4af37;text-decoration:none;letter-spacing:1px;">APEX<span style="color:#e8e8e8;font-weight:400;">TAX</span></a>
+     <div id="nav-links" style="display:flex;gap:28px;align-items:center;" class="hidden md:flex"><a href="#home" class="nav-link" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;">Home</a> <a href="#strategy" class="nav-link" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;">Strategy</a> <a href="#scenarios" class="nav-link" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;">Scenarios</a> <a href="#impact" class="nav-link" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;">Impact</a> <a href="#faq" class="nav-link" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.3s;">FAQ</a> <a href="#apply" class="btn-primary" style="padding:8px 20px;border-radius:4px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;">Apply</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="background:none;border:none;color:#d4af37;cursor:pointer;"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" style="display:none;padding:0 24px 20px;flex-direction:column;gap:16px;"><a href="#home" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;">Home</a> <a href="#strategy" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;">Strategy</a> <a href="#scenarios" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;">Scenarios</a> <a href="#impact" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;">Impact</a> <a href="#faq" style="color:#8a8a8a;text-decoration:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;">FAQ</a> <a href="#apply" class="btn-primary" style="padding:10px 20px;border-radius:4px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;text-align:center;">Apply</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="radial-bg" style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;">
+    <div style="max-width:900px;text-align:center;">
+     <p class="animate-fade-up" style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#d4af37;margin-bottom:32px;">Wealth Retention Engine</p>
+     <h1 id="hero-title" class="animate-fade-up delay-1" style="font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,72px);line-height:1.05;font-weight:400;margin-bottom:28px;color:#f0f0f0;">High income should not<br>
+      mean high tax.</h1>
+     <p id="hero-subtitle" class="animate-fade-up delay-2" style="font-size:clamp(16px,2vw,20px);color:#8a8a8a;line-height:1.6;max-width:600px;margin:0 auto 48px;font-weight:300;">Strategic tax planning designed for those who think long-term.</p>
+     <div class="animate-fade-up delay-3" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#apply" class="btn-primary" style="padding:14px 32px;border-radius:4px;font-size:14px;letter-spacing:1px;text-decoration:none;">Apply for Strategy Session</a> <a href="#scenarios" class="btn-outline" style="padding:14px 32px;border-radius:4px;font-size:14px;letter-spacing:1px;text-decoration:none;">See Scenarios</a>
+     </div>
+    </div>
+    <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);opacity:0.3;"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#d4af37;"></i>
+    </div>
+   </section><!-- STRATEGY -->
+   <section id="strategy" style="padding:100px 24px;position:relative;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div class="scroll-reveal" style="text-align:center;margin-bottom:72px;">
+      <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#d4af37;margin-bottom:16px;">The Framework</p>
+      <h2 id="strategy-title" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:400;color:#f0f0f0;">Three Pillars of Retention</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div class="glass-panel gold-glow-hover scroll-reveal" style="border-radius:12px;padding:48px 36px;transition:all 0.4s ease;">
+       <div style="width:48px;height:48px;border-radius:8px;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:28px;"><i data-lucide="shield" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 id="pillar-1-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#f0f0f0;margin-bottom:16px;">Entity Architecture</h3>
+       <p style="color:#8a8a8a;line-height:1.7;font-size:15px;font-weight:300;">Structuring the right legal entities to compartmentalize income streams, defer liabilities, and create compounding efficiency across your wealth ecosystem.</p>
+      </div>
+      <div class="glass-panel gold-glow-hover scroll-reveal" style="border-radius:12px;padding:48px 36px;transition:all 0.4s ease;">
+       <div style="width:48px;height:48px;border-radius:8px;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:28px;"><i data-lucide="trending-up" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 id="pillar-2-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#f0f0f0;margin-bottom:16px;">Income Reallocation</h3>
+       <p style="color:#8a8a8a;line-height:1.7;font-size:15px;font-weight:300;">Strategically shifting income timing, categorization, and jurisdiction to minimize effective tax rates while maintaining full compliance and audit resilience.</p>
+      </div>
+      <div class="glass-panel gold-glow-hover scroll-reveal" style="border-radius:12px;padding:48px 36px;transition:all 0.4s ease;">
+       <div style="width:48px;height:48px;border-radius:8px;background:rgba(212,175,55,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:28px;"><i data-lucide="lock" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 id="pillar-3-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#f0f0f0;margin-bottom:16px;">Generational Transfer</h3>
+       <p style="color:#8a8a8a;line-height:1.7;font-size:15px;font-weight:300;">Deploying trusts, gifting strategies, and estate-level instruments that ensure wealth passes intact—shielded from erosion by tax, probate, and inflation.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- SCENARIOS -->
+   <section id="scenarios" style="padding:100px 24px;position:relative;" class="radial-bg">
+    <div style="max-width:1000px;margin:0 auto;">
+     <div class="scroll-reveal" style="text-align:center;margin-bottom:72px;">
+      <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#d4af37;margin-bottom:16px;">Compare Outcomes</p>
+      <h2 id="scenarios-title" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:400;color:#f0f0f0;">The Cost of Inaction</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;"><!-- No Strategy -->
+      <div class="glass-panel scroll-reveal" style="border-radius:12px;padding:40px 32px;border-color:rgba(255,255,255,0.06);">
+       <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8a8a8a;margin-bottom:24px;">No Strategy</p>
+       <div style="margin-bottom:24px;">
+        <p style="font-size:14px;color:#8a8a8a;margin-bottom:8px;">Gross Income</p>
+        <p style="font-size:28px;font-family:'Playfair Display',serif;color:#f0f0f0;">$1,200,000</p>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">Federal Tax</span><span style="color:#e05050;font-size:13px;">-$324,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:#e05050;border-radius:4px;" data-target="42"></div>
+        </div>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">State Tax</span><span style="color:#e05050;font-size:13px;">-$108,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:#e05050;border-radius:4px;" data-target="28"></div>
+        </div>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">FICA / Medicare</span><span style="color:#e05050;font-size:13px;">-$42,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:#e05050;border-radius:4px;" data-target="15"></div>
+        </div>
+       </div>
+       <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;margin-top:24px;">
+        <p style="font-size:13px;color:#8a8a8a;margin-bottom:4px;">Net Retained</p>
+        <p style="font-size:32px;font-family:'Playfair Display',serif;color:#e05050;">$726,000</p>
+        <p style="font-size:13px;color:#8a8a8a;">39.5% effective rate</p>
+       </div>
+      </div><!-- Optimized -->
+      <div class="glass-panel-strong gold-glow scroll-reveal" style="border-radius:12px;padding:40px 32px;">
+       <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d4af37;margin-bottom:24px;">Optimized Outcome</p>
+       <div style="margin-bottom:24px;">
+        <p style="font-size:14px;color:#8a8a8a;margin-bottom:8px;">Gross Income</p>
+        <p style="font-size:28px;font-family:'Playfair Display',serif;color:#f0f0f0;">$1,200,000</p>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">Federal Tax</span><span style="color:#d4af37;font-size:13px;">-$198,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e6a3);border-radius:4px;" data-target="26"></div>
+        </div>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">State Tax</span><span style="color:#d4af37;font-size:13px;">-$54,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e6a3);border-radius:4px;" data-target="14"></div>
+        </div>
+       </div>
+       <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+         <span style="font-size:13px;color:#8a8a8a;">FICA / Medicare</span><span style="color:#d4af37;font-size:13px;">-$18,000</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:8px;overflow:hidden;">
+         <div class="scenario-bar" style="width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e6a3);border-radius:4px;" data-target="8"></div>
+        </div>
+       </div>
+       <div style="border-top:1px solid rgba(212,175,55,0.2);padding-top:20px;margin-top:24px;">
+        <p style="font-size:13px;color:#8a8a8a;margin-bottom:4px;">Net Retained</p>
+        <p class="gold-shimmer" style="font-size:32px;font-family:'Playfair Display',serif;">$930,000</p>
+        <p style="font-size:13px;color:#d4af37;">22.5% effective rate · <strong>$204,000 saved</strong></p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- IMPACT -->
+   <section id="impact" style="padding:100px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <div class="scroll-reveal" style="text-align:center;margin-bottom:72px;">
+      <p style="font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#d4af37;margin-bottom:16px;">Projected Savings</p>
+      <h2 id="impact-title" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:400;color:#f0f0f0;">The Compounding Advantage</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:72px;">
+      <div class="glass-panel scroll-reveal" style="border-radius:12px;padding:36px;text-align:center;">
+       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px;">Year 1</p>
+       <p class="counter" data-target="204000" style="font-family:'Playfair Display',serif;font-size:36px;color:#d4af37;">$0</p>
+       <p style="font-size:13px;color:#8a8a8a;margin-top:8px;">saved</p>
+      </div>
+      <div class="glass-panel scroll-reveal" style="border-radius:12px;padding:36px;text-align:center;">
+       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px;">Year 5</p>
+       <p class="counter" data-target="1180000" style="font-family:'Playfair Display',serif;font-size:36px;color:#d4af37;">$0</p>
+       <p style="font-size:13px;color:#8a8a8a;margin-top:8px;">retained</p>
+      </div>
+      <div class="glass-panel scroll-reveal" style="border-radius:12px;padding:36px;text-align:center;">
+       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px;">Year 10</p>
+       <p class="counter" data-target="2840000" style="font-family:'Playfair Display',serif;font-size:36px;color:#d4af37;">$0</p>
+       <p style="font-size:13px;color:#8a8a8a;margin-top:8px;">compounded</p>
+      </div>
+      <div class="glass-panel scroll-reveal" style="border-radius:12px;padding:36px;text-align:center;">
+       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px;">Lifetime</p>
+       <p class="counter" data-target="8200000" style="font-family:'Playfair Display',serif;font-size:36px;color:#d4af37;">$0</p>
+       <p style="font-size:13px;color:#8a8a8a;margin-top:8px;">protected</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" style="padding:80px 24px;" class="radial-bg">
+    <div style="max-width:720px;margin:0 auto;">
+     <div class="scroll-reveal" style="text-align:center;margin-bottom:56px;">
+      <h2 id="faq-title" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,40px);font-weight:400;color:#f0f0f0;">Frequently Asked</h2>
+     </div>
+     <div id="faq-list" class="scroll-reveal">
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#f0f0f0;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:16px;font-family:'DM Sans',sans-serif;text-align:left;"> <span>Who is this for?</span><i data-lucide="plus" style="width:18px;height:18px;color:#d4af37;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer" style="color:#8a8a8a;font-size:15px;line-height:1.7;padding:0 0;">
+        <p style="padding-bottom:24px;">Individuals and business owners earning $500K+ annually who are paying more than necessary due to reactive tax preparation rather than proactive strategy.</p>
+       </div>
+      </div>
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#f0f0f0;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:16px;font-family:'DM Sans',sans-serif;text-align:left;"> <span>Is this legal?</span><i data-lucide="plus" style="width:18px;height:18px;color:#d4af37;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer" style="color:#8a8a8a;font-size:15px;line-height:1.7;padding:0 0;">
+        <p style="padding-bottom:24px;">Every strategy we deploy is fully compliant with IRS guidelines and state law. We operate in the space between aggressive avoidance and passive overpayment.</p>
+       </div>
+      </div>
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#f0f0f0;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:16px;font-family:'DM Sans',sans-serif;text-align:left;"> <span>What does the engagement include?</span><i data-lucide="plus" style="width:18px;height:18px;color:#d4af37;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer" style="color:#8a8a8a;font-size:15px;line-height:1.7;padding:0 0;">
+        <p style="padding-bottom:24px;">Tax strategy frameworks, scenario comparison visuals, savings projection tools, and advisory scripts—delivered as a comprehensive digital package with ongoing support.</p>
+       </div>
+      </div>
+      <div class="faq-item"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#f0f0f0;padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:16px;font-family:'DM Sans',sans-serif;text-align:left;"> <span>How quickly do clients see results?</span><i data-lucide="plus" style="width:18px;height:18px;color:#d4af37;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer" style="color:#8a8a8a;font-size:15px;line-height:1.7;padding:0 0;">
+        <p style="padding-bottom:24px;">Most clients see measurable tax reduction within the first filing cycle. The full compounding effect becomes dramatic within 3–5 years of sustained strategy.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="apply" style="padding:100px 24px;">
+    <div style="max-width:800px;margin:0 auto;">
+     <div class="scroll-reveal" style="text-align:center;margin-bottom:80px;">
+      <h2 id="bottom-cta-text" style="font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,56px);font-weight:400;color:#f0f0f0;margin-bottom:24px;">Stop reacting.<br><span class="gold-shimmer">Start structuring.</span></h2>
+      <p style="color:#8a8a8a;font-size:17px;margin-bottom:40px;font-weight:300;">Apply for a confidential strategy session. Limited availability.</p><a href="#apply" class="btn-primary" style="padding:16px 40px;border-radius:4px;font-size:15px;letter-spacing:1px;text-decoration:none;display:inline-block;">Apply for Strategy Session</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="glass-panel scroll-reveal" style="border-radius:16px;padding:40px 32px;max-width:640px;margin:0 auto;">
+      <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d4af37;margin-bottom:24px;text-align:center;">Embed Widget Here</p><!-- Reactions -->
+      <div style="margin-bottom:32px;">
+       <p style="font-size:14px;color:#8a8a8a;margin-bottom:16px;">What's your reaction?</p>
+       <div id="reactions-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div><!-- Price Vote -->
+      <div style="margin-bottom:32px;">
+       <p style="font-size:14px;color:#8a8a8a;margin-bottom:16px;">What would you pay for this?</p>
+       <div id="price-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div><!-- Comment -->
+      <div>
+       <p style="font-size:14px;color:#8a8a8a;margin-bottom:12px;">Leave a comment</p>
+       <div style="display:flex;gap:8px;"><input id="comment-input" type="text" placeholder="Share your thoughts..." style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;color:#e8e8e8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(212,175,55,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"> <button id="comment-submit" onclick="submitComment()" style="background:linear-gradient(135deg,#d4af37,#b8972e);border:none;border-radius:8px;padding:12px 20px;cursor:pointer;color:#050505;font-weight:600;font-size:13px;transition:opacity 0.3s;white-space:nowrap;">Send</button>
+       </div>
+       <div id="comment-status" style="margin-top:8px;font-size:13px;display:none;"></div>
+      </div><!-- Comments List -->
+      <div id="comments-list" style="margin-top:24px;"></div><!-- Vote Counts -->
+      <div id="vote-summary" style="margin-top:24px;display:none;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;">
+       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px;">Community Pulse</p>
+       <div id="vote-summary-content" style="font-size:13px;color:#8a8a8a;line-height:1.8;"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding:40px 24px;border-top:1px solid rgba(255,255,255,0.04);text-align:center;">
+    <p style="font-size:12px;color:#8a8a8a;letter-spacing:1px;">© 2025 ApexTax Strategy · Keep more of what you earn. Intentionally.</p>
+   </footer>
+  </div>
+  <script>
+// === CONFIG ===
+const defaultConfig = {
+  background_color: '#050505',
+  surface_color: '#0d0d0d',
+  text_color: '#e8e8e8',
+  primary_action_color: '#d4af37',
+  secondary_action_color: '#8a8a8a',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: 'High income should not\nmean high tax.',
+  hero_subtitle: 'Strategic tax planning designed for those who think long-term.',
+  strategy_title: 'Three Pillars of Retention',
+  pillar_1_title: 'Entity Architecture',
+  pillar_2_title: 'Income Reallocation',
+  pillar_3_title: 'Generational Transfer',
+  scenarios_title: 'The Cost of Inaction',
+  impact_title: 'The Compounding Advantage',
+  bottom_cta_text: 'Stop reacting.\nStart structuring.',
+  faq_title: 'Frequently Asked'
+};
+
+// === ELEMENT SDK ===
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    const baseSize = c('font_size');
+    const font = c('font_family');
+    const fontStack = `${font}, 'DM Sans', sans-serif`;
+    const headingStack = `'Playfair Display', ${font}, serif`;
+
+    document.body.style.background = c('background_color');
+    document.body.style.color = c('text_color');
+    document.body.style.fontFamily = fontStack;
+    document.body.style.fontSize = baseSize + 'px';
+
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) { heroTitle.textContent = c('hero_title').replace(/\\n/g, '\n'); heroTitle.style.fontFamily = headingStack; heroTitle.style.fontSize = `clamp(36px,6vw,${baseSize*4.5}px)`; }
+
+    const heroSub = document.getElementById('hero-subtitle');
+    if (heroSub) { heroSub.textContent = c('hero_subtitle'); heroSub.style.fontSize = `${baseSize*1.25}px`; }
+
+    const stratTitle = document.getElementById('strategy-title');
+    if (stratTitle) { stratTitle.textContent = c('strategy_title'); stratTitle.style.fontFamily = headingStack; }
+
+    document.getElementById('pillar-1-title').textContent = c('pillar_1_title');
+    document.getElementById('pillar-2-title').textContent = c('pillar_2_title');
+    document.getElementById('pillar-3-title').textContent = c('pillar_3_title');
+
+    document.getElementById('scenarios-title').textContent = c('scenarios_title');
+    document.getElementById('scenarios-title').style.fontFamily = headingStack;
+
+    document.getElementById('impact-title').textContent = c('impact_title');
+    document.getElementById('impact-title').style.fontFamily = headingStack;
+
+    document.getElementById('faq-title').textContent = c('faq_title');
+    document.getElementById('faq-title').style.fontFamily = headingStack;
+
+    const btmCta = document.getElementById('bottom-cta-text');
+    if (btmCta) { btmCta.innerHTML = c('bottom_cta_text').replace(/\\n/g, '<br>').replace(/Start structuring\./, '<span class="gold-shimmer">Start structuring.</span>'); btmCta.style.fontFamily = headingStack; }
+  },
+  mapToCapabilities: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    const makeColor = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        makeColor('background_color'),
+        makeColor('surface_color'),
+        makeColor('text_color'),
+        makeColor('primary_action_color'),
+        makeColor('secondary_action_color')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c('font_family'),
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c('font_size'),
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    return new Map([
+      ['hero_title', c('hero_title')],
+      ['hero_subtitle', c('hero_subtitle')],
+      ['strategy_title', c('strategy_title')],
+      ['pillar_1_title', c('pillar_1_title')],
+      ['pillar_2_title', c('pillar_2_title')],
+      ['pillar_3_title', c('pillar_3_title')],
+      ['scenarios_title', c('scenarios_title')],
+      ['impact_title', c('impact_title')],
+      ['bottom_cta_text', c('bottom_cta_text')],
+      ['faq_title', c('faq_title')]
+    ]);
+  }
+});
+
+// === DATA SDK ===
+const reactions = ['🔥','💰','🧠','👏','🎯','💎'];
+const prices = ['Free','$29','$49','$97','$197','$497','$997','$1,997','$4,997','$9,997'];
+let allData = [];
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    updatePriceCounts();
+    renderComments();
+    updateVoteSummary();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// Build reaction buttons
+const reactionsContainer = document.getElementById('reactions-container');
+reactions.forEach(emoji => {
+  const btn = document.createElement('button');
+  btn.className = 'reaction-btn';
+  btn.dataset.emoji = emoji;
+  btn.style.cssText = 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:18px;transition:all 0.3s;display:flex;align-items:center;gap:6px;';
+  btn.innerHTML = `${emoji} <span class="count" style="font-size:12px;color:#8a8a8a;">0</span>`;
+  btn.onmouseenter = () => { btn.style.borderColor = 'rgba(212,175,55,0.4)'; btn.style.background = 'rgba(212,175,55,0.08)'; };
+  btn.onmouseleave = () => { btn.style.borderColor = 'rgba(255,255,255,0.08)'; btn.style.background = 'rgba(255,255,255,0.04)'; };
+  btn.onclick = () => submitReaction(emoji, btn);
+  reactionsContainer.appendChild(btn);
+});
+
+// Build price buttons
+const priceContainer = document.getElementById('price-container');
+prices.forEach(price => {
+  const btn = document.createElement('button');
+  btn.dataset.price = price;
+  btn.style.cssText = 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:13px;color:#8a8a8a;transition:all 0.3s;font-family:"DM Sans",sans-serif;';
+  btn.textContent = price;
+  btn.onmouseenter = () => { btn.style.borderColor = 'rgba(212,175,55,0.4)'; btn.style.color = '#d4af37'; };
+  btn.onmouseleave = () => { btn.style.borderColor = 'rgba(255,255,255,0.08)'; btn.style.color = '#8a8a8a'; };
+  btn.onclick = () => submitPrice(price, btn);
+  priceContainer.appendChild(btn);
+});
+
+async function submitReaction(emoji, btn) {
+  if (allData.length >= 999) { showStatus('Limit reached', '#e05050'); return; }
+  btn.style.opacity = '0.5'; btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price: '', timestamp: new Date().toISOString() });
+  btn.style.opacity = '1'; btn.disabled = false;
+  if (!r.isOk) showStatus('Error saving reaction', '#e05050');
+}
+
+async function submitPrice(price, btn) {
+  if (allData.length >= 999) { showStatus('Limit reached', '#e05050'); return; }
+  btn.style.opacity = '0.5'; btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'price', reaction: '', comment: '', price, timestamp: new Date().toISOString() });
+  btn.style.opacity = '1'; btn.disabled = false;
+  if (!r.isOk) showStatus('Error saving vote', '#e05050');
+}
+
+async function submitComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showStatus('Limit reached', '#e05050'); return; }
+  const btn = document.getElementById('comment-submit');
+  btn.textContent = '...'; btn.disabled = true;
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price: '', timestamp: new Date().toISOString() });
+  btn.textContent = 'Send'; btn.disabled = false;
+  if (r.isOk) { input.value = ''; showStatus('Comment added', '#d4af37'); }
+  else showStatus('Error saving comment', '#e05050');
+}
+
+function showStatus(msg, color) {
+  const el = document.getElementById('comment-status');
+  el.textContent = msg; el.style.color = color; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 2500);
+}
+
+function updateReactionCounts() {
+  const counts = {};
+  allData.filter(d => d.type === 'reaction').forEach(d => { counts[d.reaction] = (counts[d.reaction] || 0) + 1; });
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const cnt = btn.querySelector('.count');
+    if (cnt) cnt.textContent = counts[btn.dataset.emoji] || 0;
+  });
+}
+
+function updatePriceCounts() {
+  // subtle highlight on voted prices
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const seen = new Set();
+
+  comments.slice(0, 20).forEach(c => {
+    seen.add(c.__backendId);
+    if (existing.has(c.__backendId)) {
+      const el = existing.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.style.cssText = 'padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);';
+      div.innerHTML = `<p class="comment-text" style="color:#e8e8e8;font-size:14px;margin-bottom:4px;">${escapeHtml(c.comment)}</p><p style="font-size:11px;color:#8a8a8a;">${timeAgo(c.timestamp)}</p>`;
+      list.appendChild(div);
+    }
+  });
+  existing.forEach((el, id) => { if (!seen.has(id)) el.remove(); });
+}
+
+function updateVoteSummary() {
+  const summary = document.getElementById('vote-summary');
+  const content = document.getElementById('vote-summary-content');
+  const reactionCount = allData.filter(d => d.type === 'reaction').length;
+  const priceVotes = allData.filter(d => d.type === 'price');
+  const commentCount = allData.filter(d => d.type === 'comment').length;
+
+  if (reactionCount + priceVotes.length + commentCount === 0) { summary.style.display = 'none'; return; }
+  summary.style.display = 'block';
+
+  let topPrice = '—';
+  if (priceVotes.length) {
+    const pc = {};
+    priceVotes.forEach(d => { pc[d.price] = (pc[d.price]||0)+1; });
+    topPrice = Object.entries(pc).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  content.innerHTML = `${reactionCount} reactions · ${priceVotes.length} price votes · ${commentCount} comments<br>Most voted price: <span style="color:#d4af37;font-weight:600;">${topPrice}</span>`;
+}
+
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - new Date(ts).getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+// === FAQ ===
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-item i').forEach(i => i.style.transform = 'rotate(0)');
+  if (!isOpen) {
+    answer.classList.add('open');
+    icon.style.transform = 'rotate(45deg)';
+  }
+}
+
+// === SCROLL ANIMATIONS ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate scenario bars
+      e.target.querySelectorAll('.scenario-bar').forEach(bar => {
+        const target = bar.dataset.target;
+        if (target) bar.style.width = target + '%';
+      });
+      // Animate counters
+      e.target.querySelectorAll('.counter').forEach(counter => {
+        if (counter.dataset.animated) return;
+        counter.dataset.animated = 'true';
+        const target = parseInt(counter.dataset.target);
+        const duration = 2000;
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          counter.textContent = '$' + Math.floor(target * eased).toLocaleString();
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// === MOBILE MENU ===
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => { document.getElementById('mobile-menu').style.display = 'none'; });
+});
+
+// === LUCIDE ICONS ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a354e735127c5',t:'MTc3NTU3NzIzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

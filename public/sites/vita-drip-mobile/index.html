@@ -1,1 +1,735 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/19678afc-dad5-481d-aec4-1e65e97cf518 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VitalDrip Mobile</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&amp;family=Playfair+Display:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html { scroll-behavior: smooth; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #0B1120;
+    --surface: #ffffff;
+    --text: #C8D6E5;
+    --primary: #3B82F6;
+    --secondary: #1E3A5F;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .font-display { font-family: 'Playfair Display', serif; }
+
+  /* Liquid blob animation */
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 15px) scale(0.95); }
+  }
+  .blob { animation: blobFloat 8s ease-in-out infinite; }
+  .blob-delay { animation-delay: -3s; }
+
+  /* Enhanced drip animation with water physics - full page */
+  @keyframes dripFall {
+    0% { transform: translateY(-40px) scaleY(0.8); opacity: 0; }
+    10% { opacity: 1; transform: translateY(-35px) scaleY(1); }
+    50% { transform: translateY(calc(100vh * 0.5)) scaleY(0.95); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh) scaleY(0.6); opacity: 0; }
+  }
+
+  @keyframes dripSplash {
+    0% { transform: scale(1); opacity: 0; }
+    20% { transform: scale(1.3); opacity: 0.6; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  @keyframes waterFlow {
+    0%, 100% { opacity: 0.15; transform: scaleY(0.95); }
+    50% { opacity: 0.25; transform: scaleY(1.05); }
+  }
+
+  .drip-drop { animation: dripFall 5.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+  .drip-drop:nth-child(1) { animation-delay: 0s; left: 15%; }
+  .drip-drop:nth-child(2) { animation-delay: 1.2s; left: 35%; }
+  .drip-drop:nth-child(3) { animation-delay: 2.1s; left: 55%; }
+  .drip-drop:nth-child(4) { animation-delay: 0.6s; left: 75%; }
+  .drip-drop:nth-child(5) { animation-delay: 1.8s; left: 25%; }
+  .drip-drop:nth-child(6) { animation-delay: 2.5s; left: 65%; }
+
+  .drip-splash { animation: dripSplash 1.5s ease-out forwards; }
+
+  .water-stream {
+    animation: waterFlow 2s ease-in-out infinite;
+  }
+
+  /* Fade in on scroll */
+  .fade-section { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-section.visible { opacity: 1; transform: translateY(0); }
+
+  /* Glass panel */
+  .glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .glass-light {
+    background: rgba(59,130,246,0.06);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(59,130,246,0.12);
+  }
+
+  /* Pricing glow */
+  .price-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .price-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 40px rgba(59,130,246,0.2), 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  /* Nav */
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+  /* Pulse ring */
+  @keyframes pulseRing {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .pulse-ring { animation: pulseRing 2s ease-out infinite; }
+
+  /* Reaction button */
+  .reaction-btn {
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .reaction-btn:hover { transform: scale(1.15); }
+  .reaction-btn.selected { background: rgba(59,130,246,0.25); border-color: rgba(59,130,246,0.5); }
+
+  /* Hero gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #3B82F6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Smooth scroll offset for sticky nav */
+  section[id] { scroll-margin-top: 80px; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    padding: 12px 24px; border-radius: 12px; z-index: 1000;
+    background: rgba(59,130,246,0.9); color: #fff;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.4s ease;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @keyframes fadeStagger {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { 900: '#0B1120', 800: '#111b2e', 700: '#1a2844' },
+        ice: { 50: '#f0f7ff', 100: '#e0efff', 200: '#b9ddff', 400: '#60a5fa', 500: '#3B82F6' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto" style="background: var(--bg);"><!-- ANIMATED WATER DRIPS (FULL PAGE) -->
+   <div id="fullpage-drips" class="fixed inset-0 pointer-events-none" style="z-index:1;overflow:hidden;"><!-- Drop 1 -->
+    <div class="drip-drop absolute" style="width:12px;height:20px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.7), rgba(59,130,246,0.4));top:-30px;box-shadow:0 2px 8px rgba(59,130,246,0.3);"></div><!-- Drop 2 -->
+    <div class="drip-drop absolute" style="width:10px;height:18px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.6), rgba(59,130,246,0.3));top:-30px;box-shadow:0 2px 6px rgba(59,130,246,0.25);"></div><!-- Drop 3 -->
+    <div class="drip-drop absolute" style="width:14px;height:22px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.75), rgba(59,130,246,0.45));top:-30px;box-shadow:0 2px 10px rgba(59,130,246,0.35);"></div><!-- Drop 4 -->
+    <div class="drip-drop absolute" style="width:11px;height:19px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.65), rgba(59,130,246,0.35));top:-30px;box-shadow:0 2px 7px rgba(59,130,246,0.28);"></div><!-- Drop 5 -->
+    <div class="drip-drop absolute" style="width:9px;height:16px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.55), rgba(59,130,246,0.3));top:-30px;box-shadow:0 2px 5px rgba(59,130,246,0.2);"></div><!-- Drop 6 -->
+    <div class="drip-drop absolute" style="width:13px;height:21px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,180,255,0.7), rgba(59,130,246,0.4));top:-30px;box-shadow:0 2px 9px rgba(59,130,246,0.32);"></div>
+   </div><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(11,17,32,0.8); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <div class="flex items-center gap-2">
+      <svg width="32" height="32" viewbox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#3B82F6" stroke-width="2" opacity="0.3" /> <path d="M16 6 L16 20 M12 16 L16 20 L20 16" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /> <circle cx="16" cy="24" r="2" fill="#3B82F6" />
+      </svg><span id="nav-brand" class="text-white font-semibold text-lg tracking-tight">VitalDrip Mobile</span>
+     </div>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-gray-300 hover:text-white">Home</a> <a href="#treatments" class="nav-link text-sm text-gray-300 hover:text-white">Treatments</a> <a href="#benefits" class="nav-link text-sm text-gray-300 hover:text-white">Benefits</a> <a href="#process" class="nav-link text-sm text-gray-300 hover:text-white">Process</a> <a href="#pricing" class="nav-link text-sm text-gray-300 hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-sm text-gray-300 hover:text-white">FAQ</a> <a href="#book" class="px-5 py-2 rounded-full text-sm font-medium text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25" style="background: var(--primary);" id="nav-cta">Book Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#treatments" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">Treatments</a> <a href="#benefits" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">Benefits</a> <a href="#process" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">Process</a> <a href="#pricing" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">Pricing</a> <a href="#faq" class="text-sm text-gray-300 hover:text-white py-1" onclick="this.parentElement.classList.add('hidden')">FAQ</a> <a href="#book" class="text-sm text-white font-medium py-2 px-4 rounded-full text-center" style="background:var(--primary);" onclick="this.parentElement.classList.add('hidden')">Book Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" style="min-height:100%;"><!-- Animated water drip background -->
+    <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(180deg, rgba(59,130,246,0.08) 0%, rgba(11,17,32,1) 100%);">
+     <!-- Background blobs (subtle) -->
+     <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="blob absolute opacity-40" style="width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%);top:-10%;right:-5%;"></div>
+      <div class="blob blob-delay absolute opacity-30" style="width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(30,58,95,0.1),transparent 70%);bottom:10%;left:-8%;"></div>
+     </div>
+     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center py-24"><!-- Animated water droplet icon with ripple -->
+      <div class="flex justify-center mb-8 relative" style="height:100px;">
+       <div class="relative" style="width:80px;height:80px;display:flex;align-items:center;justify-content:center;">
+        <!-- Ripple circles -->
+        <div class="absolute rounded-full" style="width:60px;height:60px;border:2px solid rgba(59,130,246,0.2);animation:pulse 2s ease-out infinite;"></div>
+        <div class="absolute rounded-full" style="width:60px;height:60px;border:2px solid rgba(59,130,246,0.1);animation:pulse 2s ease-out infinite 0.5s;"></div><!-- Central drop -->
+        <div style="width:24px;height:32px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;background:linear-gradient(180deg, rgba(100,200,255,0.9), rgba(59,130,246,0.6));box-shadow:0 4px 16px rgba(59,130,246,0.4),inset -2px -2px 4px rgba(0,0,0,0.2);position:relative;z-index:2;"></div>
+       </div>
+      </div>
+      <p id="hero-tagline" class="text-sm uppercase tracking-[0.3em] mb-6" style="color:var(--primary);">Recovery delivered where you are.</p>
+      <h1 id="hero-title" class="font-display gradient-text text-5xl md:text-7xl font-bold leading-tight mb-6">Hydration that works instantly.</h1>
+      <p id="hero-subtitle" class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">IV therapy delivered directly to you.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#book" id="hero-cta-primary" class="px-8 py-4 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">Book Now</a> <a href="#treatments" id="hero-cta-secondary" class="px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:bg-white/10" style="border:1px solid rgba(59,130,246,0.4);color:var(--primary);">View Treatments</a>
+      </div><!-- Trust badges -->
+      <div class="flex flex-wrap justify-center gap-8 mt-16 opacity-60">
+       <div class="flex items-center gap-2 text-sm text-gray-400">
+        <i data-lucide="shield-check" style="width:18px;height:18px;color:#3B82F6;"></i> Licensed RNs
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-400">
+        <i data-lucide="clock" style="width:18px;height:18px;color:#3B82F6;"></i> 45-Min Sessions
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-400">
+        <i data-lucide="map-pin" style="width:18px;height:18px;color:#3B82F6;"></i> We Come To You
+       </div>
+       <div class="flex items-center gap-2 text-sm text-gray-400">
+        <i data-lucide="star" style="width:18px;height:18px;color:#3B82F6;"></i> 4.9 Rating
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TREATMENTS -->
+   <section id="treatments" class="fade-section relative py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.25em] mb-4" style="color:var(--primary);">Our Treatments</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">IV Options &amp; Benefits</h2>
+      <p class="text-gray-400 max-w-xl mx-auto">Medical-grade hydration and vitamin infusions, administered by certified nurses in the comfort of your space.</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,0.1);">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round">
+         <path d="M12 2v6m0 0c-3 4-6 6-6 10a6 6 0 1012 0c0-4-3-6-6-10z" />
+        </svg>
+       </div>
+       <h3 class="text-white font-semibold text-lg mb-2">Pure Hydration</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">1L saline solution for rapid rehydration. Ideal after travel, heat exposure, or dehydration.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Saline</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Electrolytes</span>
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,0.1);"><i data-lucide="zap" style="width:24px;height:24px;color:#3B82F6;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-lg mb-2">Energy Boost</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">B-complex vitamins and amino acids to combat fatigue and sharpen mental clarity.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">B12</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">B-Complex</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Amino Acids</span>
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,0.1);"><i data-lucide="heart-pulse" style="width:24px;height:24px;color:#3B82F6;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-lg mb-2">Recovery Blend</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Anti-inflammatory and antioxidant infusion for post-workout or illness recovery.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Glutathione</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Vitamin C</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Zinc</span>
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(59,130,246,0.1);"><i data-lucide="sparkles" style="width:24px;height:24px;color:#3B82F6;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-lg mb-2">Glow &amp; Immunity</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">High-dose Vitamin C and biotin for radiant skin and strengthened immune defense.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Biotin</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">Vitamin C</span> <span class="text-xs px-2 py-1 rounded-full" style="background:rgba(59,130,246,0.1);color:#60a5fa;">NAD+</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BENEFITS -->
+   <section id="benefits" class="fade-section relative py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.25em] mb-4" style="color:var(--primary);">Why IV Therapy</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">Feel the Difference</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="glass-light rounded-2xl p-8 text-center">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 relative" style="background:rgba(59,130,246,0.1);">
+        <div class="pulse-ring absolute inset-0 rounded-full" style="border:2px solid rgba(59,130,246,0.3);"></div><i data-lucide="battery-charging" style="width:28px;height:28px;color:#3B82F6;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-xl mb-3">Instant Energy</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">B-vitamins and amino acids bypass digestion for immediate absorption. Feel revitalized within minutes.</p>
+      </div>
+      <div class="glass-light rounded-2xl p-8 text-center">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 relative" style="background:rgba(59,130,246,0.1);">
+        <div class="pulse-ring absolute inset-0 rounded-full" style="border:2px solid rgba(59,130,246,0.3);animation-delay:0.7s;"></div><i data-lucide="refresh-cw" style="width:28px;height:28px;color:#3B82F6;"></i>
+       </div>
+       <h3 class="text-white font-semibold text-xl mb-3">Rapid Recovery</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Anti-inflammatory compounds accelerate recovery from workouts, travel, and illness.</p>
+      </div>
+      <div class="glass-light rounded-2xl p-8 text-center">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 relative" style="background:rgba(59,130,246,0.1);">
+        <div class="pulse-ring absolute inset-0 rounded-full" style="border:2px solid rgba(59,130,246,0.3);animation-delay:1.4s;"></div>
+        <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round">
+         <path d="M12 2v6m0 0c-3 4-6 6-6 10a6 6 0 1012 0c0-4-3-6-6-10z" />
+        </svg>
+       </div>
+       <h3 class="text-white font-semibold text-xl mb-3">Deep Hydration</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">100% bioavailability means every drop reaches your cells. Far more effective than oral hydration.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROCESS -->
+   <section id="process" class="fade-section relative py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.25em] mb-4" style="color:var(--primary);">How It Works</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">Simple. Safe. Seamless.</h2>
+     </div>
+     <div class="grid md:grid-cols-4 gap-6">
+      <div class="relative text-center">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white font-bold text-lg" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">
+        1
+       </div>
+       <div class="hidden md:block absolute top-7 left-[60%] w-[80%] h-px" style="background:linear-gradient(90deg,rgba(59,130,246,0.4),transparent);"></div>
+       <h3 class="text-white font-semibold mb-2">Book Online</h3>
+       <p class="text-gray-400 text-sm">Choose your treatment, select a time, and enter your location.</p>
+      </div>
+      <div class="relative text-center">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white font-bold text-lg" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">
+        2
+       </div>
+       <div class="hidden md:block absolute top-7 left-[60%] w-[80%] h-px" style="background:linear-gradient(90deg,rgba(59,130,246,0.4),transparent);"></div>
+       <h3 class="text-white font-semibold mb-2">Health Intake</h3>
+       <p class="text-gray-400 text-sm">Complete a quick intake form reviewed by our medical team.</p>
+      </div>
+      <div class="relative text-center">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white font-bold text-lg" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">
+        3
+       </div>
+       <div class="hidden md:block absolute top-7 left-[60%] w-[80%] h-px" style="background:linear-gradient(90deg,rgba(59,130,246,0.4),transparent);"></div>
+       <h3 class="text-white font-semibold mb-2">We Arrive</h3>
+       <p class="text-gray-400 text-sm">A licensed nurse arrives at your door with everything needed.</p>
+      </div>
+      <div class="text-center">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5 text-white font-bold text-lg" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">
+        4
+       </div>
+       <h3 class="text-white font-semibold mb-2">Feel Better</h3>
+       <p class="text-gray-400 text-sm">Relax during your 30–45 minute session and feel the difference.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="fade-section relative py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.25em] mb-4" style="color:var(--primary);">Pricing</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">Choose Your Drip</h2>
+      <p class="text-gray-400 max-w-lg mx-auto">Transparent pricing. No hidden fees. Every session includes a licensed nurse and all supplies.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Basic -->
+      <div class="price-card glass rounded-3xl p-8">
+       <p class="text-sm uppercase tracking-wider mb-2" style="color:var(--primary);">Basic</p>
+       <h3 class="text-white font-display text-2xl font-bold mb-1">Hydration</h3>
+       <p class="text-gray-500 text-sm mb-6">Essential rehydration</p>
+       <div class="flex items-baseline gap-1 mb-8"><span class="text-white font-display text-5xl font-bold">$149</span> <span class="text-gray-500 text-sm">/session</span>
+       </div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> 1L Normal Saline</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Licensed RN</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> 30-min session</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Mobile service</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-full font-medium transition-all duration-300 hover:bg-white/10" style="border:1px solid rgba(59,130,246,0.4);color:var(--primary);">Select Basic</a>
+      </div><!-- Plus (featured) -->
+      <div class="price-card glass rounded-3xl p-8 relative" style="border-color:rgba(59,130,246,0.3);box-shadow:0 0 60px rgba(59,130,246,0.1);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold text-white" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">
+        Most Popular
+       </div>
+       <p class="text-sm uppercase tracking-wider mb-2" style="color:var(--primary);">Plus</p>
+       <h3 class="text-white font-display text-2xl font-bold mb-1">Recovery Blend</h3>
+       <p class="text-gray-500 text-sm mb-6">Performance &amp; recovery</p>
+       <div class="flex items-baseline gap-1 mb-8"><span class="text-white font-display text-5xl font-bold">$249</span> <span class="text-gray-500 text-sm">/session</span>
+       </div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> 1L Saline + Vitamins</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> B12 &amp; B-Complex</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Glutathione add-on</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> 45-min session</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Post-session report</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-full font-medium text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);">Select Plus</a>
+      </div><!-- Elite -->
+      <div class="price-card glass rounded-3xl p-8">
+       <p class="text-sm uppercase tracking-wider mb-2" style="color:var(--primary);">Elite</p>
+       <h3 class="text-white font-display text-2xl font-bold mb-1">Premium Wellness</h3>
+       <p class="text-gray-500 text-sm mb-6">Complete rejuvenation</p>
+       <div class="flex items-baseline gap-1 mb-8"><span class="text-white font-display text-5xl font-bold">$399</span> <span class="text-gray-500 text-sm">/session</span>
+       </div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Everything in Plus</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> NAD+ Infusion</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> High-dose Vitamin C</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Priority scheduling</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;"></i> Wellness consultation</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-full font-medium transition-all duration-300 hover:bg-white/10" style="border:1px solid rgba(59,130,246,0.4);color:var(--primary);">Select Elite</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="fade-section relative py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16">
+      <p class="text-sm uppercase tracking-[0.25em] mb-4" style="color:var(--primary);">FAQ</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-4">Common Questions</h2>
+     </div>
+     <div class="space-y-4" id="faq-list">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="book" class="fade-section relative py-24 px-6">
+    <div class="max-w-4xl mx-auto text-center"><!-- Bottom CTA -->
+     <div class="glass rounded-3xl p-12 md:p-16 mb-16 relative overflow-hidden">
+      <div class="blob absolute" style="width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.15),transparent 70%);top:-20%;right:-10%;"></div>
+      <h2 id="bottom-cta-heading" class="font-display text-4xl md:text-5xl font-bold text-white mb-4 relative z-10">Feel better, faster.</h2>
+      <p class="text-gray-400 text-lg mb-8 relative z-10">Book your first session today and experience premium IV therapy at your doorstep.</p><a href="#book" class="inline-block px-10 py-4 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/30 hover:scale-105 relative z-10" style="background:linear-gradient(135deg,#3B82F6,#1d4ed8);" id="bottom-cta-btn">Book Now</a>
+     </div><!-- Vote + Comment Module -->
+     <div class="glass rounded-3xl p-8 md:p-12">
+      <p class="text-sm uppercase tracking-[0.25em] mb-2" style="color:var(--primary);">Community</p>
+      <h3 class="font-display text-2xl font-bold text-white mb-8">What do you think?</h3><!-- Reactions -->
+      <div class="mb-8">
+       <p class="text-gray-400 text-sm mb-4">React to VitalDrip:</p>
+       <div id="reactions-container" class="flex flex-wrap justify-center gap-3">
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-gray-400 text-sm mb-4">What would you pay for a session?</p>
+       <div id="price-vote-container" class="flex flex-wrap justify-center gap-2">
+       </div>
+      </div><!-- Comments -->
+      <div class="mt-8 pt-8" style="border-top:1px solid rgba(255,255,255,0.06);">
+       <p class="text-gray-400 text-sm mb-4">Leave a comment:</p>
+       <form id="comment-form" class="flex gap-3 mb-6"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-3 rounded-xl text-white text-sm outline-none transition-all duration-300 focus:border-blue-500/50" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);" aria-label="Comment"> <button type="submit" id="comment-submit" class="px-6 py-3 rounded-xl text-white font-medium text-sm transition-all duration-300 hover:shadow-lg" style="background:var(--primary);"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto">
+       </div>
+      </div><!-- Embed Widget Here -->
+      <div class="mt-8 pt-6" style="border-top:1px solid rgba(255,255,255,0.06);">
+       <p class="text-xs text-gray-600 text-center">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-12 px-6" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="24" height="24" viewbox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#3B82F6" stroke-width="2" opacity="0.3" /> <path d="M16 6 L16 20 M12 16 L16 20 L20 16" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /> <circle cx="16" cy="24" r="2" fill="#3B82F6" />
+      </svg><span id="footer-brand" class="text-white font-semibold">VitalDrip Mobile</span>
+     </div>
+     <p class="text-gray-600 text-sm">© 2025 VitalDrip Mobile. All rights reserved.</p>
+    </div>
+   </footer>
+  </div><!-- Toast -->
+  <div id="toast" class="toast"></div>
+  <script>
+// ============ CONFIG & SDK ============
+const defaultConfig = {
+  background_color: '#0B1120',
+  surface_color: '#ffffff',
+  text_color: '#C8D6E5',
+  primary_color: '#3B82F6',
+  secondary_color: '#1E3A5F',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: 'Hydration that works instantly.',
+  hero_subtitle: 'IV therapy delivered directly to you.',
+  brand_name: 'VitalDrip Mobile',
+  tagline: 'Recovery delivered where you are.',
+  cta_primary: 'Book Now',
+  cta_secondary: 'View Treatments',
+  bottom_cta_text: 'Feel better, faster.'
+};
+
+// ============ DATA ============
+const REACTIONS = ['💧','⚡','💪','✨','❤️','🔥'];
+const PRICE_OPTIONS = ['$99','$129','$149','$179','$199','$249','$299','$349','$399','$499'];
+
+let allData = [];
+let reactionCounts = {};
+let priceVoteCounts = {};
+let userReaction = null;
+let userPriceVote = null;
+
+// ============ FAQ DATA ============
+const faqs = [
+  { q: 'Is IV therapy safe?', a: 'Absolutely. All sessions are administered by licensed registered nurses using medical-grade equipment and sterile supplies.' },
+  { q: 'How long does a session take?', a: 'Most sessions take 30–45 minutes depending on the treatment selected.' },
+  { q: 'Where can you come?', a: 'We serve homes, offices, hotels, and event venues within our service area. Enter your address when booking to confirm availability.' },
+  { q: 'Do I need a prescription?', a: 'No prescription is needed. Our medical team reviews your intake form before each session to ensure safety.' },
+  { q: 'How quickly will I feel results?', a: 'Most clients feel the effects within 30 minutes to an hour after their session.' }
+];
+
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  faqs.forEach((faq, i) => {
+    const div = document.createElement('div');
+    div.className = 'glass rounded-xl overflow-hidden';
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(${i})">
+        <span class="text-white font-medium pr-4">${faq.q}</span>
+        <i data-lucide="chevron-down" style="width:20px;height:20px;color:#3B82F6;flex-shrink:0;transition:transform 0.3s ease;" id="faq-icon-${i}"></i>
+      </button>
+      <div id="faq-answer-${i}" class="px-5 overflow-hidden transition-all duration-300" style="max-height:0;opacity:0;">
+        <p class="text-gray-400 text-sm pb-5 leading-relaxed">${faq.a}</p>
+      </div>`;
+    list.appendChild(div);
+  });
+  lucide.createIcons();
+}
+
+function toggleFaq(i) {
+  const answer = document.getElementById('faq-answer-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  const isOpen = answer.style.maxHeight !== '0px' && answer.style.maxHeight !== '';
+  // close all
+  faqs.forEach((_, j) => {
+    const a = document.getElementById('faq-answer-' + j);
+    const ic = document.getElementById('faq-icon-' + j);
+    if (a) { a.style.maxHeight = '0px'; a.style.opacity = '0'; }
+    if (ic) ic.style.transform = 'rotate(0deg)';
+  });
+  if (!isOpen) {
+    answer.style.maxHeight = '200px';
+    answer.style.opacity = '1';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// ============ REACTIONS UI ============
+function buildReactions() {
+  const c = document.getElementById('reactions-container');
+  c.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const count = reactionCounts[r] || 0;
+    const selected = userReaction === r;
+    const btn = document.createElement('button');
+    btn.className = `reaction-btn flex items-center gap-2 px-4 py-2 rounded-full text-sm ${selected ? 'selected' : ''}`;
+    btn.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);${selected ? 'background:rgba(59,130,246,0.25);border-color:rgba(59,130,246,0.5);' : ''}`;
+    btn.innerHTML = `<span style="font-size:18px;">${r}</span><span class="text-gray-400">${count}</span>`;
+    btn.onclick = () => handleReaction(r);
+    c.appendChild(btn);
+  });
+}
+
+function buildPriceVotes() {
+  const c = document.getElementById('price-vote-container');
+  c.innerHTML = '';
+  PRICE_OPTIONS.forEach(p => {
+    const count = priceVoteCounts[p] || 0;
+    const selected = userPriceVote === p;
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200';
+    btn.style.cssText = `background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:${selected ? '#3B82F6' : '#9ca3af'};${selected ? 'background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.4);' : ''}`;
+    btn.innerHTML = `${p} <span class="opacity-50 ml-1">${count}</span>`;
+    btn.onclick = () => handlePriceVote(p);
+    c.appendChild(btn);
+  });
+}
+
+function buildComments() {
+  const c = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existingIds = new Map([...c.children].map(el => [el.dataset.id, el]));
+  const currentIds = new Set(comments.map(cm => cm.__backendId));
+
+  existingIds.forEach((el, id) => { if (!currentIds.has(id)) el.remove(); });
+
+  comments.forEach(cm => {
+    if (existingIds.has(cm.__backendId)) return;
+    const div = document.createElement('div');
+    div.className = 'glass rounded-xl p-4 text-left';
+    div.dataset.id = cm.__backendId;
+    const time = new Date(cm.timestamp);
+    const timeStr = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    div.innerHTML = `<p class="text-gray-300 text-sm">${escapeHtml(cm.comment_text)}</p><p class="text-gray-600 text-xs mt-2">${timeStr}</p>`;
+    c.prepend(div);
+  });
+
+  if (comments.length === 0 && c.children.length === 0) {
+    c.innerHTML = '<p class="text-gray-600 text-sm text-center py-4">No comments yet. Be the first!</p>';
+  }
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+// ============ HANDLERS ============
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  userReaction = emoji;
+  buildReactions();
+  const result = await window.dataSdk.create({ type: 'reaction', section_id: 'main', reaction: emoji, comment_text: '', price_vote: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction');
+}
+
+async function handlePriceVote(price) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  userPriceVote = price;
+  buildPriceVotes();
+  const result = await window.dataSdk.create({ type: 'price_vote', section_id: 'main', reaction: '', comment_text: '', price_vote: price, timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote');
+}
+
+async function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'comment', section_id: 'main', reaction: '', comment_text: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  if (result.isOk) { input.value = ''; showToast('Comment posted!'); } else { showToast('Could not post comment'); }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ DATA SDK ============
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    reactionCounts = {};
+    priceVoteCounts = {};
+    data.forEach(d => {
+      if (d.type === 'reaction' && d.reaction) reactionCounts[d.reaction] = (reactionCounts[d.reaction] || 0) + 1;
+      if (d.type === 'price_vote' && d.price_vote) priceVoteCounts[d.price_vote] = (priceVoteCounts[d.price_vote] || 0) + 1;
+    });
+    buildReactions();
+    buildPriceVotes();
+    buildComments();
+  }
+};
+
+// ============ ELEMENT SDK ============
+function applyConfig(config) {
+  document.documentElement.style.setProperty('--bg', config.background_color || defaultConfig.background_color);
+  document.documentElement.style.setProperty('--primary', config.primary_color || defaultConfig.primary_color);
+  document.documentElement.style.setProperty('--text', config.text_color || defaultConfig.text_color);
+  document.documentElement.style.setProperty('--secondary', config.secondary_color || defaultConfig.secondary_color);
+
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+  document.body.style.fontFamily = `${font}, 'DM Sans', sans-serif`;
+  document.body.style.fontSize = size + 'px';
+
+  const el = (id) => document.getElementById(id);
+  if (el('hero-title')) el('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  if (el('hero-subtitle')) el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  if (el('hero-tagline')) el('hero-tagline').textContent = config.tagline || defaultConfig.tagline;
+  if (el('nav-brand')) el('nav-brand').textContent = config.brand_name || defaultConfig.brand_name;
+  if (el('footer-brand')) el('footer-brand').textContent = config.brand_name || defaultConfig.brand_name;
+  if (el('hero-cta-primary')) el('hero-cta-primary').textContent = config.cta_primary || defaultConfig.cta_primary;
+  if (el('hero-cta-secondary')) el('hero-cta-secondary').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+  if (el('nav-cta')) el('nav-cta').textContent = config.cta_primary || defaultConfig.cta_primary;
+  if (el('bottom-cta-heading')) el('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  if (el('bottom-cta-btn')) el('bottom-cta-btn').textContent = config.cta_primary || defaultConfig.cta_primary;
+
+  // Font size scaling for display text
+  const displayEls = document.querySelectorAll('.font-display');
+  displayEls.forEach(de => {
+    if (de.tagName === 'H1') de.style.fontSize = (size * 3.5) + 'px';
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['brand_name', config.brand_name || defaultConfig.brand_name],
+      ['tagline', config.tagline || defaultConfig.tagline],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+// ============ INIT ============
+(async () => {
+  applyConfig(defaultConfig);
+  buildFAQ();
+  buildReactions();
+  buildPriceVotes();
+
+  document.getElementById('comment-form').addEventListener('submit', handleComment);
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-section').forEach(s => observer.observe(s));
+
+  // Data SDK
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) console.error('Data SDK init failed');
+
+  lucide.createIcons();
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a712d46af27c5',t:'MTc3NTU3OTY5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

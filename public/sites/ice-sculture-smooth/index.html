@@ -1,1 +1,607 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7c1736a5-70af-410b-8e98-57690ce8d479 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrystalCarve Ice Art</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&amp;family=Outfit:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['Outfit', 'system-ui', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Shimmer overlay */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-overlay {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.08) 60%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+/* Gentle pulse for CTAs */
+@keyframes gentle-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(147,197,253,0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(147,197,253,0.15); }
+}
+.cta-pulse { animation: gentle-pulse 3s ease-in-out infinite; }
+
+/* Fade in on scroll */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Frost particles */
+@keyframes float-up {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-100px) scale(0.3); opacity: 0; }
+}
+.frost-particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: rgba(200,220,255,0.5);
+  border-radius: 50%;
+  animation: float-up 4s ease-out infinite;
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0;
+  height: 1px; background: rgba(147,197,253,0.8); transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Image pan */
+@keyframes slow-pan {
+  0% { transform: scale(1.08) translate(0,0); }
+  50% { transform: scale(1.12) translate(-1%,-1%); }
+  100% { transform: scale(1.08) translate(0,0); }
+}
+.img-pan { animation: slow-pan 12s ease-in-out infinite; }
+
+/* Star rating */
+.star-filled { color: #93c5fd; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0f1a; }
+::-webkit-scrollbar-thumb { background: rgba(147,197,253,0.3); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: #070b14; color: #e2e8f0;"><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(7,11,20,0.6); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16"><a href="#home" class="font-serif text-xl tracking-wider" style="color: #93c5fd;"> <span style="font-weight:300;">Crystal</span><span style="font-weight:600;">Carve</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Home</a> <a href="#portfolio" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Portfolio</a> <a href="#packages" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Packages</a> <a href="#process" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Process</a> <a href="#reviews" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Reviews</a> <a href="#quote" class="nav-link font-sans text-xs tracking-widest uppercase" style="color: rgba(226,232,240,0.7);">Request Quote</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color: #93c5fd;" aria-label="Toggle menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+       <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Home</a> <a href="#portfolio" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Portfolio</a> <a href="#packages" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Packages</a> <a href="#process" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Process</a> <a href="#reviews" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Reviews</a> <a href="#quote" class="font-sans text-sm tracking-wider uppercase" style="color: rgba(226,232,240,0.7);">Request Quote</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;"><!-- Background image -->
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1551376347-075b0121a65b?w=1600&amp;q=80" alt="Ice sculpture" class="w-full h-full object-cover img-pan opacity-30" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a1628,#1a2744)';this.alt='Background unavailable';">
+     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(7,11,20,0.4) 0%, rgba(7,11,20,0.85) 60%, #070b14 100%);"></div>
+     <div class="shimmer-overlay absolute inset-0 pointer-events-none"></div>
+    </div><!-- Frost particles -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+     <div class="frost-particle" style="left:15%; top:70%; animation-delay:0s;"></div>
+     <div class="frost-particle" style="left:35%; top:80%; animation-delay:1s;"></div>
+     <div class="frost-particle" style="left:55%; top:75%; animation-delay:2s;"></div>
+     <div class="frost-particle" style="left:75%; top:85%; animation-delay:0.5s;"></div>
+     <div class="frost-particle" style="left:85%; top:72%; animation-delay:3s;"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-32 pb-24" style="min-height:100%;">
+     <p class="font-sans text-xs tracking-[0.35em] uppercase mb-6" style="color: rgba(147,197,253,0.7);">Bespoke Ice Artistry</p>
+     <h1 id="hero-tagline" class="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none mb-6" style="font-weight:300; color:#f0f4ff;">Luxury you can't ignore.</h1>
+     <p id="hero-subhead" class="font-sans text-base sm:text-lg max-w-xl mb-10" style="font-weight:200; color: rgba(226,232,240,0.6);">Ice sculptures for events that need a centerpiece.</p>
+     <div class="flex flex-col sm:flex-row gap-4"><a href="#quote" class="cta-pulse inline-block px-8 py-3.5 font-sans text-sm tracking-wider uppercase rounded-sm transition-all duration-300" style="background: rgba(147,197,253,0.15); border: 1px solid rgba(147,197,253,0.4); color: #93c5fd;" onmouseover="this.style.background='rgba(147,197,253,0.25)'" onmouseout="this.style.background='rgba(147,197,253,0.15)'">Request a Quote</a> <a href="#portfolio" class="inline-block px-8 py-3.5 font-sans text-sm tracking-wider uppercase rounded-sm transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.15); color: rgba(226,232,240,0.7);" onmouseover="this.style.borderColor='rgba(226,232,240,0.3)'" onmouseout="this.style.borderColor='rgba(226,232,240,0.15)'">View Portfolio</a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+      <div class="w-px h-12" style="background: linear-gradient(180deg, rgba(147,197,253,0.4), transparent);"></div>
+     </div>
+    </div>
+   </section><!-- PORTFOLIO -->
+   <section id="portfolio" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase mb-3" style="color: rgba(147,197,253,0.6);">Our Work</p>
+      <h2 class="font-serif text-4xl md:text-5xl" style="font-weight:300; color:#f0f4ff;">Portfolio</h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div class="reveal group relative overflow-hidden rounded-sm aspect-[3/4] md:row-span-2"><img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&amp;q=80" alt="Ice sculpture centerpiece" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0f1a2e,#1a2d4a)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5"><span class="font-sans text-sm tracking-wider" style="color: rgba(255,255,255,0.9);">Grand Centerpiece</span>
+       </div>
+      </div>
+      <div class="reveal group relative overflow-hidden rounded-sm aspect-square" style="animation-delay:0.1s;"><img src="https://images.unsplash.com/photo-1482275548304-a58859dc31b7?w=600&amp;q=80" alt="Crystal ice detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0f1a2e,#1a2d4a)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5"><span class="font-sans text-sm tracking-wider" style="color: rgba(255,255,255,0.9);">Frozen Detail</span>
+       </div>
+      </div>
+      <div class="reveal group relative overflow-hidden rounded-sm aspect-square" style="animation-delay:0.2s;"><img src="https://images.unsplash.com/photo-1543363136-3fdb62e11be5?w=600&amp;q=80" alt="Winter event decor" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0f1a2e,#1a2d4a)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5"><span class="font-sans text-sm tracking-wider" style="color: rgba(255,255,255,0.9);">Event Display</span>
+       </div>
+      </div>
+      <div class="reveal group relative overflow-hidden rounded-sm aspect-square" style="animation-delay:0.15s;"><img src="https://images.unsplash.com/photo-1470338745628-171cf53de3a8?w=600&amp;q=80" alt="Champagne ice bucket" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0f1a2e,#1a2d4a)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5"><span class="font-sans text-sm tracking-wider" style="color: rgba(255,255,255,0.9);">Champagne Service</span>
+       </div>
+      </div>
+      <div class="reveal group relative overflow-hidden rounded-sm aspect-square" style="animation-delay:0.25s;"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&amp;q=80" alt="Luxury event table" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0f1a2e,#1a2d4a)';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5"><span class="font-sans text-sm tracking-wider" style="color: rgba(255,255,255,0.9);">Gala Setting</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PACKAGES -->
+   <section id="packages" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent, rgba(147,197,253,0.03) 50%, transparent);"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="reveal text-center mb-16">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase mb-3" style="color: rgba(147,197,253,0.6);">Investment</p>
+      <h2 class="font-serif text-4xl md:text-5xl" style="font-weight:300; color:#f0f4ff;">Packages</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5"><!-- Elegance -->
+      <div class="reveal glass rounded-md p-8 flex flex-col transition-all duration-500 hover:border-opacity-25" style="border-color: rgba(147,197,253,0.15);">
+       <div class="mb-6">
+        <svg width="28" height="28" fill="none" stroke="rgba(147,197,253,0.6)" stroke-width="1">
+         <polygon points="14,2 17,10 26,10 19,15.5 21.5,24 14,19 6.5,24 9,15.5 2,10 11,10" />
+        </svg>
+       </div>
+       <h3 id="pkg1-name" class="font-serif text-2xl mb-1" style="color:#f0f4ff; font-weight:400;">Elegance</h3>
+       <p class="font-sans text-xs tracking-wider uppercase mb-6" style="color: rgba(147,197,253,0.5);">Starting at $2,500</p>
+       <ul class="flex-1 space-y-3 mb-8">
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Single sculpture up to 36"</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Standard design consultation</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Delivery &amp; setup included</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> LED base lighting</li>
+       </ul><a href="#quote" class="text-center py-3 font-sans text-xs tracking-widest uppercase rounded-sm transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.12); color: rgba(226,232,240,0.6);" onmouseover="this.style.borderColor='rgba(147,197,253,0.4)';this.style.color='#93c5fd'" onmouseout="this.style.borderColor='rgba(226,232,240,0.12)';this.style.color='rgba(226,232,240,0.6)'">Inquire</a>
+      </div><!-- Prestige -->
+      <div class="reveal glass-strong rounded-md p-8 flex flex-col relative overflow-hidden transition-all duration-500" style="border-color: rgba(147,197,253,0.25); animation-delay:0.1s;">
+       <div class="shimmer-overlay absolute inset-0 pointer-events-none rounded-md"></div>
+       <div class="relative z-10 flex flex-col h-full">
+        <div class="flex items-center justify-between mb-6">
+         <svg width="28" height="28" fill="none" stroke="rgba(147,197,253,0.8)" stroke-width="1">
+          <polygon points="14,2 17,10 26,10 19,15.5 21.5,24 14,19 6.5,24 9,15.5 2,10 11,10" />
+         </svg><span class="font-sans text-[10px] tracking-widest uppercase px-3 py-1 rounded-sm" style="background: rgba(147,197,253,0.12); color: #93c5fd;">Most Popular</span>
+        </div>
+        <h3 id="pkg2-name" class="font-serif text-2xl mb-1" style="color:#f0f4ff; font-weight:400;">Prestige</h3>
+        <p class="font-sans text-xs tracking-wider uppercase mb-6" style="color: rgba(147,197,253,0.6);">Starting at $5,800</p>
+        <ul class="flex-1 space-y-3 mb-8">
+         <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.7);"><span style="color: rgba(147,197,253,0.6);">—</span> Up to 3 sculptures, 48" max</li>
+         <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.7);"><span style="color: rgba(147,197,253,0.6);">—</span> Custom design session</li>
+         <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.7);"><span style="color: rgba(147,197,253,0.6);">—</span> Premium LED &amp; fog effects</li>
+         <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.7);"><span style="color: rgba(147,197,253,0.6);">—</span> On-site attendant (4 hrs)</li>
+         <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.7);"><span style="color: rgba(147,197,253,0.6);">—</span> Photo-ready finishing</li>
+        </ul><a href="#quote" class="cta-pulse text-center py-3 font-sans text-xs tracking-widest uppercase rounded-sm transition-all duration-300" style="background: rgba(147,197,253,0.15); border: 1px solid rgba(147,197,253,0.4); color: #93c5fd;" onmouseover="this.style.background='rgba(147,197,253,0.25)'" onmouseout="this.style.background='rgba(147,197,253,0.15)'">Inquire</a>
+       </div>
+      </div><!-- Imperial -->
+      <div class="reveal glass rounded-md p-8 flex flex-col transition-all duration-500" style="border-color: rgba(147,197,253,0.15); animation-delay:0.2s;">
+       <div class="mb-6">
+        <svg width="28" height="28" fill="none" stroke="rgba(147,197,253,0.6)" stroke-width="1">
+         <polygon points="14,2 17,10 26,10 19,15.5 21.5,24 14,19 6.5,24 9,15.5 2,10 11,10" />
+        </svg>
+       </div>
+       <h3 id="pkg3-name" class="font-serif text-2xl mb-1" style="color:#f0f4ff; font-weight:400;">Imperial</h3>
+       <p class="font-sans text-xs tracking-wider uppercase mb-6" style="color: rgba(147,197,253,0.5);">Starting at $12,000</p>
+       <ul class="flex-1 space-y-3 mb-8">
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Unlimited sculptures, any scale</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Full creative direction</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Interactive ice bars &amp; luges</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Full-event attendant team</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Priority scheduling</li>
+        <li class="flex items-start gap-3 font-sans text-sm" style="color: rgba(226,232,240,0.6);"><span style="color: rgba(147,197,253,0.5);">—</span> Branded monogram option</li>
+       </ul><a href="#quote" class="text-center py-3 font-sans text-xs tracking-widest uppercase rounded-sm transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.12); color: rgba(226,232,240,0.6);" onmouseover="this.style.borderColor='rgba(147,197,253,0.4)';this.style.color='#93c5fd'" onmouseout="this.style.borderColor='rgba(226,232,240,0.12)';this.style.color='rgba(226,232,240,0.6)'">Inquire</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROCESS -->
+   <section id="process" class="relative w-full py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase mb-3" style="color: rgba(147,197,253,0.6);">How It Works</p>
+      <h2 class="font-serif text-4xl md:text-5xl" style="font-weight:300; color:#f0f4ff;">Our Process</h2>
+     </div>
+     <div class="relative"><!-- Timeline line -->
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px" style="background: linear-gradient(180deg, transparent, rgba(147,197,253,0.2) 10%, rgba(147,197,253,0.2) 90%, transparent);"></div><!-- Step 1: Consultation -->
+      <div class="reveal relative flex items-start gap-6 md:gap-12 mb-16 md:flex-row">
+       <div class="hidden md:block md:w-1/2 text-right pr-8">
+        <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Consultation</h3>
+        <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">We discuss your vision, event details, and design preferences to craft the perfect concept.</p>
+       </div>
+       <div class="relative z-10 flex-shrink-0 w-12 h-12 rounded-full glass flex items-center justify-center" style="border: 1px solid rgba(147,197,253,0.3);"><!-- Calendar icon -->
+        <svg width="20" height="20" fill="none" stroke="rgba(147,197,253,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="3" y="4" width="14" height="14" rx="1.5" /><path d="M3 8h14M7 2v4M13 2v4" />
+        </svg>
+       </div>
+       <div class="md:w-1/2 md:pl-8">
+        <div class="md:hidden">
+         <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Consultation</h3>
+         <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">We discuss your vision, event details, and design preferences.</p>
+        </div>
+       </div>
+      </div><!-- Step 2: Design -->
+      <div class="reveal relative flex items-start gap-6 md:gap-12 mb-16 md:flex-row-reverse" style="animation-delay:0.1s;">
+       <div class="hidden md:block md:w-1/2 pl-8">
+        <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Design &amp; Approval</h3>
+        <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Our artists create detailed renderings for your review and refinement before carving begins.</p>
+       </div>
+       <div class="relative z-10 flex-shrink-0 w-12 h-12 rounded-full glass flex items-center justify-center" style="border: 1px solid rgba(147,197,253,0.3);"><!-- Diamond icon -->
+        <svg width="20" height="20" fill="none" stroke="rgba(147,197,253,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M3.5 8L10 18l6.5-10M3.5 8L6 3h8l2.5 5M3.5 8h13M6 3l4 5 4-5" />
+        </svg>
+       </div>
+       <div class="md:w-1/2 md:text-right md:pr-8">
+        <div class="md:hidden">
+         <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Design &amp; Approval</h3>
+         <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Detailed renderings for your review before carving begins.</p>
+        </div>
+       </div>
+      </div><!-- Step 3: Carving -->
+      <div class="reveal relative flex items-start gap-6 md:gap-12 mb-16 md:flex-row" style="animation-delay:0.2s;">
+       <div class="hidden md:block md:w-1/2 text-right pr-8">
+        <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Precision Carving</h3>
+        <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Master artisans sculpt your piece from crystal-clear blocks using professional-grade tools.</p>
+       </div>
+       <div class="relative z-10 flex-shrink-0 w-12 h-12 rounded-full glass flex items-center justify-center" style="border: 1px solid rgba(147,197,253,0.3);"><!-- Snowflake icon -->
+        <svg width="20" height="20" fill="none" stroke="rgba(147,197,253,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M10 2v16M2 10h16M4.5 4.5l11 11M15.5 4.5l-11 11M10 2l2 3-2 1-2-1 2-3z" />
+        </svg>
+       </div>
+       <div class="md:w-1/2 md:pl-8">
+        <div class="md:hidden">
+         <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Precision Carving</h3>
+         <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Master artisans sculpt from crystal-clear ice blocks.</p>
+        </div>
+       </div>
+      </div><!-- Step 4: Delivery -->
+      <div class="reveal relative flex items-start gap-6 md:gap-12 mb-16 md:flex-row-reverse" style="animation-delay:0.3s;">
+       <div class="hidden md:block md:w-1/2 pl-8">
+        <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Climate-Controlled Delivery</h3>
+        <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Transported in refrigerated vehicles and placed perfectly at your venue.</p>
+       </div>
+       <div class="relative z-10 flex-shrink-0 w-12 h-12 rounded-full glass flex items-center justify-center" style="border: 1px solid rgba(147,197,253,0.3);"><!-- Truck icon -->
+        <svg width="20" height="20" fill="none" stroke="rgba(147,197,253,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M1 11V4h11v7M12 14h3l3-3v-1h-6M5.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM15.5 16a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" /><path d="M8 14H1v-3" />
+        </svg>
+       </div>
+       <div class="md:w-1/2 md:text-right md:pr-8">
+        <div class="md:hidden">
+         <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Climate-Controlled Delivery</h3>
+         <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Refrigerated transport and perfect venue placement.</p>
+        </div>
+       </div>
+      </div><!-- Step 5: Protection -->
+      <div class="reveal relative flex items-start gap-6 md:gap-12 md:flex-row" style="animation-delay:0.4s;">
+       <div class="hidden md:block md:w-1/2 text-right pr-8">
+        <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Event Support</h3>
+        <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Our team ensures your sculpture looks flawless throughout the entire event.</p>
+       </div>
+       <div class="relative z-10 flex-shrink-0 w-12 h-12 rounded-full glass flex items-center justify-center" style="border: 1px solid rgba(147,197,253,0.3);"><!-- Shield icon -->
+        <svg width="20" height="20" fill="none" stroke="rgba(147,197,253,0.7)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M10 2l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V5l7-3z" />
+        </svg>
+       </div>
+       <div class="md:w-1/2 md:pl-8">
+        <div class="md:hidden">
+         <h3 class="font-serif text-xl mb-2" style="color:#f0f4ff;">Event Support</h3>
+         <p class="font-sans text-sm" style="color: rgba(226,232,240,0.5); font-weight:200;">Flawless sculpture throughout your entire event.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, transparent, rgba(147,197,253,0.02) 50%, transparent);"></div>
+    <div class="max-w-5xl mx-auto relative z-10">
+     <div class="reveal text-center mb-16">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase mb-3" style="color: rgba(147,197,253,0.6);">Testimonials</p>
+      <h2 class="font-serif text-4xl md:text-5xl" style="font-weight:300; color:#f0f4ff;">Client Reviews</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <div class="reveal glass rounded-md p-7">
+       <div class="flex gap-1 mb-4">
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="font-serif text-base italic mb-5" style="color: rgba(226,232,240,0.7); font-weight:300;">"The swan sculpture at our gala was the single most talked-about detail of the evening. Absolutely breathtaking."</p>
+       <div>
+        <p class="font-sans text-sm" style="color: #f0f4ff;">Victoria Ashford</p>
+        <p class="font-sans text-xs" style="color: rgba(147,197,253,0.5);">Corporate Gala, NYC</p>
+       </div>
+      </div>
+      <div class="reveal glass rounded-md p-7" style="animation-delay:0.1s;">
+       <div class="flex gap-1 mb-4">
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="font-serif text-base italic mb-5" style="color: rgba(226,232,240,0.7); font-weight:300;">"CrystalCarve transformed our wedding reception. The ice bar was functional art — our guests were mesmerized."</p>
+       <div>
+        <p class="font-sans text-sm" style="color: #f0f4ff;">James &amp; Claire Whitmore</p>
+        <p class="font-sans text-xs" style="color: rgba(147,197,253,0.5);">Wedding, The Hamptons</p>
+       </div>
+      </div>
+      <div class="reveal glass rounded-md p-7" style="animation-delay:0.2s;">
+       <div class="flex gap-1 mb-4">
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+        <svg class="star-filled" width="14" height="14" viewbox="0 0 14 14">
+         <polygon fill="currentColor" points="7,1 8.8,5 13,5.5 9.9,8.2 10.8,12.5 7,10.3 3.2,12.5 4.1,8.2 1,5.5 5.2,5" />
+        </svg>
+       </div>
+       <p class="font-serif text-base italic mb-5" style="color: rgba(226,232,240,0.7); font-weight:300;">"We've used them three years running for our annual product launch. The branded ice logos always steal the show."</p>
+       <div>
+        <p class="font-sans text-sm" style="color: #f0f4ff;">Marcus Reinholt</p>
+        <p class="font-sans text-xs" style="color: rgba(147,197,253,0.5);">Brand Launch, Chicago</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / QUOTE -->
+   <section id="quote" class="relative w-full py-24 px-6">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1457573557536-4983e6bc2340?w=1400&amp;q=80" alt="Frozen texture" class="w-full h-full object-cover opacity-10" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a1628,#1a2744)';this.alt='Background unavailable';">
+     <div class="absolute inset-0" style="background: linear-gradient(180deg, #070b14, rgba(7,11,20,0.7) 50%, #070b14);"></div>
+    </div>
+    <div class="max-w-3xl mx-auto relative z-10 text-center">
+     <div class="reveal">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase mb-3" style="color: rgba(147,197,253,0.6);">Get Started</p>
+      <h2 id="bottom-cta-heading" class="font-serif text-4xl md:text-5xl mb-4" style="font-weight:300; color:#f0f4ff;">Make your event unforgettable.</h2>
+      <p class="font-sans text-base mb-12" style="font-weight:200; color: rgba(226,232,240,0.5);">Tell us about your upcoming event and we'll craft a bespoke proposal within 48 hours.</p>
+     </div><!-- Quote Form -->
+     <form id="quote-form" class="reveal glass-strong rounded-md p-8 md:p-10 text-left space-y-5 max-w-xl mx-auto">
+      <div class="grid sm:grid-cols-2 gap-5">
+       <div><label for="qf-name" class="block font-sans text-xs tracking-wider uppercase mb-2" style="color: rgba(226,232,240,0.5);">Full Name</label> <input id="qf-name" type="text" required class="w-full bg-transparent font-sans text-sm px-4 py-3 rounded-sm outline-none transition-all duration-300 focus:border-opacity-50" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'">
+       </div>
+       <div><label for="qf-email" class="block font-sans text-xs tracking-wider uppercase mb-2" style="color: rgba(226,232,240,0.5);">Email</label> <input id="qf-email" type="email" required class="w-full bg-transparent font-sans text-sm px-4 py-3 rounded-sm outline-none transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'">
+       </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5">
+       <div><label for="qf-date" class="block font-sans text-xs tracking-wider uppercase mb-2" style="color: rgba(226,232,240,0.5);">Event Date</label> <input id="qf-date" type="date" class="w-full bg-transparent font-sans text-sm px-4 py-3 rounded-sm outline-none transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0; color-scheme: dark;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'">
+       </div>
+       <div><label for="qf-type" class="block font-sans text-xs tracking-wider uppercase mb-2" style="color: rgba(226,232,240,0.5);">Event Type</label> <select id="qf-type" class="w-full bg-transparent font-sans text-sm px-4 py-3 rounded-sm outline-none transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0; background: #0d1220;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'"> <option value="">Select...</option> <option>Corporate Event</option> <option>Wedding</option> <option>Private Party</option> <option>Brand Activation</option> <option>Other</option> </select>
+       </div>
+      </div>
+      <div><label for="qf-details" class="block font-sans text-xs tracking-wider uppercase mb-2" style="color: rgba(226,232,240,0.5);">Tell us about your vision</label> <textarea id="qf-details" rows="3" class="w-full bg-transparent font-sans text-sm px-4 py-3 rounded-sm outline-none transition-all duration-300 resize-none" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'"></textarea>
+      </div><button type="submit" id="quote-submit-btn" class="cta-pulse w-full py-3.5 font-sans text-xs tracking-widest uppercase rounded-sm transition-all duration-300" style="background: rgba(147,197,253,0.15); border: 1px solid rgba(147,197,253,0.4); color: #93c5fd;" onmouseover="this.style.background='rgba(147,197,253,0.25)'" onmouseout="this.style.background='rgba(147,197,253,0.15)'">Submit Inquiry</button>
+      <div id="form-success" class="hidden text-center py-3 font-sans text-sm" style="color: #93c5fd;">
+       Thank you! We'll be in touch within 48 hours.
+      </div>
+     </form><!-- Vote + Comment Widget -->
+     <div class="reveal mt-16 glass rounded-md p-8 max-w-xl mx-auto">
+      <p class="font-sans text-xs tracking-[0.25em] uppercase mb-5" style="color: rgba(147,197,253,0.5);">Vote + Comment</p>
+      <div class="flex items-center justify-center gap-6 mb-6"><button id="vote-up-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-sm font-sans text-xs tracking-wider transition-all duration-300" style="border: 1px solid rgba(147,197,253,0.2); color: rgba(147,197,253,0.7);" onmouseover="this.style.borderColor='rgba(147,197,253,0.5)'" onmouseout="this.style.borderColor='rgba(147,197,253,0.2)'">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M8 3v10M4 7l4-4 4 4" />
+        </svg><span id="vote-count">0</span> </button> <button id="vote-down-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-sm font-sans text-xs tracking-wider transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.1); color: rgba(226,232,240,0.4);" onmouseover="this.style.borderColor='rgba(226,232,240,0.2)'" onmouseout="this.style.borderColor='rgba(226,232,240,0.1)'">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M8 13V3M4 9l4 4 4-4" />
+        </svg></button>
+      </div>
+      <div class="space-y-3">
+       <div class="flex gap-3"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 bg-transparent font-sans text-sm px-4 py-2.5 rounded-sm outline-none transition-all duration-300" style="border: 1px solid rgba(226,232,240,0.1); color: #e2e8f0;" onfocus="this.style.borderColor='rgba(147,197,253,0.4)'" onblur="this.style.borderColor='rgba(226,232,240,0.1)'"> <button id="comment-submit-btn" class="px-5 py-2.5 font-sans text-xs tracking-wider uppercase rounded-sm transition-all duration-300" style="border: 1px solid rgba(147,197,253,0.25); color: rgba(147,197,253,0.6);" onmouseover="this.style.background='rgba(147,197,253,0.1)'" onmouseout="this.style.background='transparent'">Post</button>
+       </div>
+       <div id="comments-list" class="space-y-2"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-12 px-6" style="border-top: 1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-serif text-lg tracking-wider" style="color: rgba(147,197,253,0.5); font-weight:300;">CrystalCarve Ice Art</p>
+     <p class="font-sans text-xs" style="color: rgba(226,232,240,0.25);">Luxury Ice Sculptures for Extraordinary Events</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// === Element SDK ===
+const defaultConfig = {
+  hero_tagline: "Luxury you can't ignore.",
+  hero_subhead: "Ice sculptures for events that need a centerpiece.",
+  package_1_name: "Elegance",
+  package_2_name: "Prestige",
+  package_3_name: "Imperial",
+  bottom_cta_text: "Make your event unforgettable.",
+  background_color: "#070b14",
+  accent_color: "#93c5fd",
+  text_color: "#e2e8f0",
+  surface_color: "rgba(255,255,255,0.06)",
+  secondary_action_color: "rgba(226,232,240,0.15)",
+  font_family: "Cormorant Garamond",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  el('hero-tagline').textContent = config.hero_tagline || defaultConfig.hero_tagline;
+  el('hero-subhead').textContent = config.hero_subhead || defaultConfig.hero_subhead;
+  el('pkg1-name').textContent = config.package_1_name || defaultConfig.package_1_name;
+  el('pkg2-name').textContent = config.package_2_name || defaultConfig.package_2_name;
+  el('pkg3-name').textContent = config.package_3_name || defaultConfig.package_3_name;
+  el('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const bg = config.background_color || defaultConfig.background_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  document.getElementById('app-wrapper').style.background = bg;
+  document.getElementById('app-wrapper').style.color = txt;
+
+  const baseSize = config.font_size || defaultConfig.font_size;
+  const customFont = config.font_family || defaultConfig.font_family;
+  const serifStack = `${customFont}, Georgia, serif`;
+
+  document.querySelectorAll('.font-serif').forEach(e => {
+    e.style.fontFamily = serifStack;
+  });
+
+  el('hero-tagline').style.fontSize = `${baseSize * 4}px`;
+  el('hero-subhead').style.fontSize = `${baseSize * 1.1}px`;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["hero_tagline", config.hero_tagline || defaultConfig.hero_tagline],
+      ["hero_subhead", config.hero_subhead || defaultConfig.hero_subhead],
+      ["package_1_name", config.package_1_name || defaultConfig.package_1_name],
+      ["package_2_name", config.package_2_name || defaultConfig.package_2_name],
+      ["package_3_name", config.package_3_name || defaultConfig.package_3_name],
+      ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+// === Scroll Reveal ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// === Mobile Menu ===
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// === Nav scroll effect ===
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  if (wrapper.scrollTop > 50) {
+    nav.style.background = 'rgba(7,11,20,0.9)';
+  } else {
+    nav.style.background = 'rgba(7,11,20,0.6)';
+  }
+});
+
+// === Form ===
+document.getElementById('quote-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('quote-submit-btn').style.display = 'none';
+  document.getElementById('form-success').classList.remove('hidden');
+});
+
+// === Vote Widget ===
+let voteCount = 0;
+document.getElementById('vote-up-btn').addEventListener('click', () => {
+  voteCount++;
+  document.getElementById('vote-count').textContent = voteCount;
+});
+document.getElementById('vote-down-btn').addEventListener('click', () => {
+  voteCount--;
+  document.getElementById('vote-count').textContent = voteCount;
+});
+
+// === Comments ===
+document.getElementById('comment-submit-btn').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'font-sans text-sm px-4 py-3 rounded-sm';
+  div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: rgba(226,232,240,0.6);';
+  div.textContent = text;
+  list.prepend(div);
+  input.value = '';
+});
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('comment-submit-btn').click(); }
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a393cc18227c5',t:'MTc3NTU3NzQwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

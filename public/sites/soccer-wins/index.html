@@ -1,1 +1,791 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6bf8d1c7-21b2-4217-8265-38077c68755a -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatchDay Modern</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;family=Source+Sans+3:wght@300;400;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '#0a0a0f',
+        surface: '#14141f',
+        accent: '#00ff87',
+        txt: '#f0f0f0',
+        muted: '#6b7280'
+      },
+      fontFamily: {
+        oswald: ['Oswald', 'sans-serif'],
+        body: ['Source Sans 3', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,255,135,0.3); }
+  50% { box-shadow: 0 0 40px rgba(0,255,135,0.6); }
+}
+@keyframes sweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes motionLine {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes chipSlide {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible { animation: fadeUp 0.7s ease forwards; }
+.anim-slide-in { opacity: 0; }
+.anim-slide-in.visible { animation: slideIn 0.6s ease forwards; }
+.anim-chip { opacity: 0; }
+.anim-chip.visible { animation: chipSlide 0.5s ease forwards; }
+
+.cta-pulse { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+.sweep-text {
+  background: linear-gradient(90deg, #f0f0f0 0%, #00ff87 45%, #f0f0f0 55%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: sweep 4s ease-in-out infinite;
+}
+
+.motion-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00ff87, transparent);
+  transform-origin: left;
+  animation: motionLine 3s ease-in-out infinite;
+}
+
+.nav-active { color: #00ff87; }
+
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,255,135,0.15); }
+
+.img-cover { object-fit: cover; width: 100%; height: 100%; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #00ff87; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-bg text-txt font-body overflow-auto">
+  <div id="app-wrapper" class="w-full"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-bg/90 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-oswald font-700 text-xl tracking-wider"> <span class="text-accent">MATCH</span><span>DAY</span> </a>
+     <div class="hidden md:flex gap-8 text-sm font-semibold tracking-wide uppercase"><a href="#home" class="nav-link nav-active hover:text-accent transition-colors">Home</a> <a href="#posters" class="nav-link hover:text-accent transition-colors">Posters</a> <a href="#lineups" class="nav-link hover:text-accent transition-colors">Lineups</a> <a href="#spotlights" class="nav-link hover:text-accent transition-colors">Player Spotlights</a> <a href="#reviews" class="nav-link hover:text-accent transition-colors">Reviews</a> <a href="#download" class="nav-link hover:text-accent transition-colors">Download</a>
+     </div><button id="mobile-toggle" class="md:hidden text-txt" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm font-semibold uppercase"><a href="#home" class="nav-link hover:text-accent">Home</a> <a href="#posters" class="nav-link hover:text-accent">Posters</a> <a href="#lineups" class="nav-link hover:text-accent">Lineups</a> <a href="#spotlights" class="nav-link hover:text-accent">Player Spotlights</a> <a href="#reviews" class="nav-link hover:text-accent">Reviews</a> <a href="#download" class="nav-link hover:text-accent">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:100%;">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1600&amp;q=80" alt="Soccer stadium at night" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a0a0f,#1a1a2e)';this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/70 to-bg"></div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 flex flex-col justify-center items-center text-center" style="min-height:100%;padding-top:120px;padding-bottom:80px;">
+     <div class="relative mb-4">
+      <div class="motion-line" style="top:-10px;left:-40px;width:180px;animation-delay:0s;"></div>
+      <div class="motion-line" style="bottom:-10px;right:-40px;width:140px;animation-delay:1.5s;"></div><span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/30 text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+       </svg> 80+ Pro Templates </span>
+     </div>
+     <h1 id="hero-title" class="font-oswald font-700 text-5xl md:text-7xl lg:text-8xl uppercase leading-none mb-6 sweep-text anim-fade-up" style="animation-delay:0.15s;">Your club deserves<br>
+      match-day graphics.</h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl text-gray-300 max-w-2xl mb-10 anim-fade-up" style="animation-delay:0.3s;">Posters, lineups, and stories that look pro.</p>
+     <div class="flex flex-col sm:flex-row gap-4 anim-fade-up" style="animation-delay:0.45s;"><a href="#download" id="cta-primary-btn" class="cta-pulse px-8 py-4 bg-accent text-bg font-oswald font-600 text-lg uppercase tracking-wider rounded hover:bg-green-400 transition-colors">Download the Pack</a> <a href="#posters" id="cta-secondary-btn" class="px-8 py-4 border border-white/20 font-oswald font-600 text-lg uppercase tracking-wider rounded hover:border-accent hover:text-accent transition-colors">Preview Posters</a>
+     </div><!-- Fixture Chips -->
+     <div class="mt-16 flex flex-wrap justify-center gap-3">
+      <div class="anim-chip px-4 py-2 bg-surface/80 backdrop-blur rounded border border-white/10 flex items-center gap-3 text-sm" style="animation-delay:0.6s;">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+       </svg><span class="text-gray-400">SAT 19:45</span> <span class="font-semibold">City FC vs United</span>
+      </div>
+      <div class="anim-chip px-4 py-2 bg-surface/80 backdrop-blur rounded border border-white/10 flex items-center gap-3 text-sm" style="animation-delay:0.75s;">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" /><circle cx="12" cy="10" r="3" />
+       </svg><span class="text-gray-400">Emirates Arena</span>
+      </div>
+      <div class="anim-chip px-4 py-2 bg-surface/80 backdrop-blur rounded border border-white/10 flex items-center gap-3 text-sm" style="animation-delay:0.9s;">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+       </svg><span class="font-semibold text-accent">LIVE</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- STATS STRIP -->
+   <section class="w-full bg-surface border-y border-white/5 py-10">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+     <div class="anim-fade-up">
+      <div class="text-3xl md:text-4xl font-oswald font-700 text-accent">
+       80+
+      </div>
+      <div class="text-sm text-gray-400 mt-1 uppercase tracking-wider">
+       Match Posters
+      </div>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.1s;">
+      <div class="text-3xl md:text-4xl font-oswald font-700 text-accent">
+       24
+      </div>
+      <div class="text-sm text-gray-400 mt-1 uppercase tracking-wider">
+       Lineup Graphics
+      </div>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.2s;">
+      <div class="text-3xl md:text-4xl font-oswald font-700 text-accent">
+       40+
+      </div>
+      <div class="text-sm text-gray-400 mt-1 uppercase tracking-wider">
+       Story Templates
+      </div>
+     </div>
+     <div class="anim-fade-up" style="animation-delay:0.3s;">
+      <div class="text-3xl md:text-4xl font-oswald font-700 text-accent">
+       100%
+      </div>
+      <div class="text-sm text-gray-400 mt-1 uppercase tracking-wider">
+       Sponsor-Ready
+      </div>
+     </div>
+    </div>
+   </section><!-- POSTERS -->
+   <section id="posters" class="w-full py-24">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">The Collection</span>
+      <h2 class="font-oswald font-700 text-4xl md:text-6xl uppercase mt-3 anim-fade-up" style="animation-delay:0.1s;">Match Posters</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.2s;">80 bold, print-ready poster designs. Every one sponsor-ready with editable placeholders.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="anim-fade-up card-hover rounded-lg overflow-hidden bg-surface border border-white/5 group" style="animation-delay:0.1s;">
+       <div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&amp;q=80" alt="Soccer ball on field" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg/90">
+         <span class="text-xs uppercase tracking-wider text-accent">Kickoff Series</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover rounded-lg overflow-hidden bg-surface border border-white/5 group" style="animation-delay:0.2s;">
+       <div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&amp;q=80" alt="Night match lights" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg/90">
+         <span class="text-xs uppercase tracking-wider text-accent">Night Edition</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover rounded-lg overflow-hidden bg-surface border border-white/5 group" style="animation-delay:0.3s;">
+       <div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&amp;q=80" alt="Players running" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg/90">
+         <span class="text-xs uppercase tracking-wider text-accent">Derby Day</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover rounded-lg overflow-hidden bg-surface border border-white/5 group" style="animation-delay:0.4s;">
+       <div class="relative h-64 overflow-hidden"><img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&amp;q=80" alt="Fans crowd" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg/90">
+         <span class="text-xs uppercase tracking-wider text-accent">Fan Zone</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Sponsor Strip -->
+     <div class="mt-12 p-6 bg-surface/50 border border-white/5 rounded-lg anim-fade-up">
+      <p class="text-xs uppercase tracking-widest text-gray-500 text-center mb-4">Sponsor Strip Module — Fully Editable</p>
+      <div class="flex justify-center items-center gap-10 flex-wrap opacity-40"><span class="font-oswald text-lg tracking-wider">NIKE</span> <span class="font-oswald text-lg tracking-wider">ADIDAS</span> <span class="font-oswald text-lg tracking-wider">PUMA</span> <span class="font-oswald text-lg tracking-wider">EMIRATES</span> <span class="font-oswald text-lg tracking-wider">BETWAY</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- LINEUPS -->
+   <section id="lineups" class="w-full py-24 bg-surface/40">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">Formation Ready</span>
+      <h2 class="font-oswald font-700 text-4xl md:text-6xl uppercase mt-3 anim-fade-up" style="animation-delay:0.1s;">Lineup Graphics</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.2s;">24 formation templates. Drag, drop, publish. Your squad never looked this clean.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Lineup Card 1 -->
+      <div class="anim-slide-in card-hover bg-bg rounded-lg border border-white/5 overflow-hidden" style="animation-delay:0.1s;">
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-6"><span class="text-accent font-oswald font-600 uppercase text-sm tracking-wider">4-3-3 Classic</span>
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+         </svg>
+        </div><!-- Mini pitch -->
+        <div class="relative w-full bg-green-900/30 rounded border border-green-800/30" style="aspect-ratio:3/4;">
+         <div class="absolute inset-0 flex flex-col justify-between items-center py-4 px-3">
+          <div class="flex gap-4">
+           <span class="w-6 h-6 rounded-full bg-accent/80"></span><span class="w-6 h-6 rounded-full bg-accent/80"></span><span class="w-6 h-6 rounded-full bg-accent/80"></span>
+          </div>
+          <div class="flex gap-6">
+           <span class="w-6 h-6 rounded-full bg-accent/60"></span><span class="w-6 h-6 rounded-full bg-accent/60"></span><span class="w-6 h-6 rounded-full bg-accent/60"></span>
+          </div>
+          <div class="flex gap-4">
+           <span class="w-6 h-6 rounded-full bg-accent/40"></span><span class="w-6 h-6 rounded-full bg-accent/40"></span><span class="w-6 h-6 rounded-full bg-accent/40"></span><span class="w-6 h-6 rounded-full bg-accent/40"></span>
+          </div>
+          <div>
+           <span class="w-7 h-7 rounded-full bg-white/30 block"></span>
+          </div>
+         </div>
+         <div class="absolute top-1/2 left-0 right-0 border-t border-green-800/30"></div>
+         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-b-0 rounded-t"></div>
+         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-t-0 rounded-b"></div>
+        </div>
+       </div>
+      </div><!-- Lineup Card 2 -->
+      <div class="anim-slide-in card-hover bg-bg rounded-lg border border-white/5 overflow-hidden" style="animation-delay:0.25s;">
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-6"><span class="text-accent font-oswald font-600 uppercase text-sm tracking-wider">3-5-2 Wing</span>
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+         </svg>
+        </div>
+        <div class="relative w-full bg-green-900/30 rounded border border-green-800/30" style="aspect-ratio:3/4;">
+         <div class="absolute inset-0 flex flex-col justify-between items-center py-4 px-3">
+          <div class="flex gap-8">
+           <span class="w-6 h-6 rounded-full bg-accent/80"></span><span class="w-6 h-6 rounded-full bg-accent/80"></span>
+          </div>
+          <div class="flex gap-3">
+           <span class="w-5 h-5 rounded-full bg-accent/60"></span><span class="w-5 h-5 rounded-full bg-accent/60"></span><span class="w-5 h-5 rounded-full bg-accent/60"></span><span class="w-5 h-5 rounded-full bg-accent/60"></span><span class="w-5 h-5 rounded-full bg-accent/60"></span>
+          </div>
+          <div class="flex gap-5">
+           <span class="w-6 h-6 rounded-full bg-accent/40"></span><span class="w-6 h-6 rounded-full bg-accent/40"></span><span class="w-6 h-6 rounded-full bg-accent/40"></span>
+          </div>
+          <div>
+           <span class="w-7 h-7 rounded-full bg-white/30 block"></span>
+          </div>
+         </div>
+         <div class="absolute top-1/2 left-0 right-0 border-t border-green-800/30"></div>
+         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-b-0 rounded-t"></div>
+         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-t-0 rounded-b"></div>
+        </div>
+       </div>
+      </div><!-- Lineup Card 3 -->
+      <div class="anim-slide-in card-hover bg-bg rounded-lg border border-white/5 overflow-hidden" style="animation-delay:0.4s;">
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-6"><span class="text-accent font-oswald font-600 uppercase text-sm tracking-wider">4-4-2 Diamond</span>
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+         </svg>
+        </div>
+        <div class="relative w-full bg-green-900/30 rounded border border-green-800/30" style="aspect-ratio:3/4;">
+         <div class="absolute inset-0 flex flex-col justify-between items-center py-4 px-3">
+          <div class="flex gap-8">
+           <span class="w-6 h-6 rounded-full bg-accent/80"></span><span class="w-6 h-6 rounded-full bg-accent/80"></span>
+          </div>
+          <div>
+           <span class="w-6 h-6 rounded-full bg-accent/70 block"></span>
+          </div>
+          <div class="flex gap-8">
+           <span class="w-5 h-5 rounded-full bg-accent/50"></span><span class="w-5 h-5 rounded-full bg-accent/50"></span>
+          </div>
+          <div>
+           <span class="w-5 h-5 rounded-full bg-accent/40 block"></span>
+          </div>
+          <div class="flex gap-4">
+           <span class="w-6 h-6 rounded-full bg-accent/30"></span><span class="w-6 h-6 rounded-full bg-accent/30"></span><span class="w-6 h-6 rounded-full bg-accent/30"></span><span class="w-6 h-6 rounded-full bg-accent/30"></span>
+          </div>
+          <div>
+           <span class="w-7 h-7 rounded-full bg-white/30 block"></span>
+          </div>
+         </div>
+         <div class="absolute top-1/2 left-0 right-0 border-t border-green-800/30"></div>
+         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-b-0 rounded-t"></div>
+         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 border border-green-800/30 border-t-0 rounded-b"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PLAYER SPOTLIGHTS -->
+   <section id="spotlights" class="w-full py-24">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">Star Players</span>
+      <h2 class="font-oswald font-700 text-4xl md:text-6xl uppercase mt-3 anim-fade-up" style="animation-delay:0.1s;">Player Spotlights</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.2s;">6 spotlight card templates. Celebrate every player's moment.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.05s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=600&amp;q=80" alt="Soccer player" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #10
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Marcus Rivera</h3>
+        <p class="text-gray-400 text-sm mt-1">Striker — 22 Goals This Season</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 38 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> 12 Assists</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.15s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=600&amp;q=80" alt="Goalkeeper" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #1
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Leon Hartmann</h3>
+        <p class="text-gray-400 text-sm mt-1">Goalkeeper — 14 Clean Sheets</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 36 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> 82 Saves</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.25s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&amp;q=80" alt="Soccer training" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #7
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Aisha Nakamura</h3>
+        <p class="text-gray-400 text-sm mt-1">Midfielder — Playmaker of the Year</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 40 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> 18 Assists</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.35s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=600&amp;q=80" alt="Player cleats" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #4
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Tomás Delgado</h3>
+        <p class="text-gray-400 text-sm mt-1">Defender — Wall of Steel</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 42 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> 96% Tackles</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.45s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=600&amp;q=80" alt="Soccer celebration" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #11
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Elise Van Der Berg</h3>
+        <p class="text-gray-400 text-sm mt-1">Winger — Speed Demon</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 35 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> 15 Goals</span>
+        </div>
+       </div>
+      </div>
+      <div class="anim-fade-up card-hover bg-surface rounded-lg border border-white/5 overflow-hidden group" style="animation-delay:0.55s;">
+       <div class="relative h-56 overflow-hidden"><img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=600&amp;q=80" alt="Soccer night match" class="img-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.background='#14141f';this.alt='Image unavailable';">
+        <div class="absolute top-3 right-3 bg-accent text-bg text-xs font-bold px-2 py-1 rounded font-oswald">
+         #9
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-oswald font-600 text-lg uppercase">Kofi Mensah</h3>
+        <p class="text-gray-400 text-sm mt-1">Captain — Heart of the Team</p>
+        <div class="flex gap-4 mt-3 text-xs text-gray-500"><span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+          </svg> 44 Apps</span> <span class="flex items-center gap-1">
+          <svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+           <path d="M6 9l6 6 6-6" />
+          </svg> Captain</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-24 bg-surface/40">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">Trusted By Clubs</span>
+      <h2 class="font-oswald font-700 text-4xl md:text-6xl uppercase mt-3 anim-fade-up" style="animation-delay:0.1s;">Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="anim-fade-up bg-bg rounded-lg border border-white/5 p-6" style="animation-delay:0.1s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"Our social media went from amateur hour to Champions League level. Sponsors started reaching out to US."</p>
+       <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+        — FC Riverside, Social Media Manager
+       </div>
+      </div>
+      <div class="anim-fade-up bg-bg rounded-lg border border-white/5 p-6" style="animation-delay:0.2s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"We reuse these every single match day. Best investment we've made for our league's brand this year."</p>
+       <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+        — Metro League, Director of Operations
+       </div>
+      </div>
+      <div class="anim-fade-up bg-bg rounded-lg border border-white/5 p-6" style="animation-delay:0.3s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#00ff87" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"Professional look, fast turnaround. Our players share these on their own accounts. That's when you know it's fire."</p>
+       <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+        — Academy United, Head Coach
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section class="w-full py-24">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-accent text-xs font-semibold uppercase tracking-widest anim-fade-up">One Pack. Every Match.</span>
+      <h2 class="font-oswald font-700 text-4xl md:text-6xl uppercase mt-3 anim-fade-up" style="animation-delay:0.1s;">What's Inside</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.05s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">80 Match Posters</h3>
+        <p class="text-gray-400 text-xs mt-1">Every style from minimal to maximal</p>
+       </div>
+      </div>
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.1s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">Lineup Graphics</h3>
+        <p class="text-gray-400 text-xs mt-1">24 formation templates ready to fill</p>
+       </div>
+      </div>
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.15s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">Player Spotlights</h3>
+        <p class="text-gray-400 text-xs mt-1">Celebrate your stars with style</p>
+       </div>
+      </div>
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.2s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">Story Templates</h3>
+        <p class="text-gray-400 text-xs mt-1">40+ Instagram &amp; TikTok ready</p>
+       </div>
+      </div>
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.25s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">Caption Pack</h3>
+        <p class="text-gray-400 text-xs mt-1">Pre-written captions for every post</p>
+       </div>
+      </div>
+      <div class="anim-fade-up bg-surface rounded-lg border border-white/5 p-6 flex gap-4 items-start" style="animation-delay:0.3s;">
+       <div class="w-10 h-10 rounded bg-accent/10 flex items-center justify-center flex-shrink-0">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#00ff87" stroke-width="1.5">
+         <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-oswald font-600 uppercase text-sm">Sponsor Strips</h3>
+        <p class="text-gray-400 text-xs mt-1">Plug-and-play sponsor layouts</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE -->
+   <section id="download" class="w-full py-24 relative overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1600&amp;q=80" alt="Stadium lights" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a0a0f,#1a1a2e)';this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-bg/90"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+     <h2 id="bottom-cta-title" class="font-oswald font-700 text-4xl md:text-6xl uppercase sweep-text anim-fade-up">Make every match a moment.</h2>
+     <p class="text-gray-400 mt-6 text-lg anim-fade-up" style="animation-delay:0.1s;">Teams and leagues buy repeatedly. Sponsor-ready. Professional look — fast.</p>
+     <div class="mt-10 anim-fade-up" style="animation-delay:0.2s;"><a href="#" class="cta-pulse inline-block px-10 py-5 bg-accent text-bg font-oswald font-700 text-xl uppercase tracking-wider rounded hover:bg-green-400 transition-colors" onclick="event.preventDefault();">Download the Pack</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="mt-20 anim-fade-up" style="animation-delay:0.3s;">
+      <div class="bg-surface/80 backdrop-blur rounded-lg border border-white/10 p-8">
+       <h3 class="font-oswald font-600 text-lg uppercase mb-6 text-accent">Vote + Comment</h3>
+       <div class="flex justify-center gap-6 mb-8"><button id="vote-up" class="flex items-center gap-2 px-5 py-3 rounded border border-white/10 hover:border-accent hover:text-accent transition-colors group">
+         <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:stroke-[#00ff87] transition-colors">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+         </svg><span id="vote-up-count" class="font-oswald font-600">0</span> </button> <button id="vote-down" class="flex items-center gap-2 px-5 py-3 rounded border border-white/10 hover:border-red-400 hover:text-red-400 transition-colors group">
+         <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:stroke-red-400 transition-colors">
+          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+         </svg><span id="vote-down-count" class="font-oswald font-600">0</span> </button>
+       </div>
+       <form id="comment-form" class="space-y-4"><label for="comment-input" class="sr-only">Add a comment</label> <textarea id="comment-input" rows="3" placeholder="Drop a comment..." class="w-full bg-bg/60 border border-white/10 rounded px-4 py-3 text-sm text-txt placeholder-gray-500 focus:outline-none focus:border-accent resize-none"></textarea> <button type="submit" class="px-6 py-2.5 bg-accent text-bg font-oswald font-600 uppercase text-sm rounded hover:bg-green-400 transition-colors">Post Comment</button>
+       </form>
+       <div id="comments-list" class="mt-6 space-y-3 text-left"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="font-oswald font-700 tracking-wider">
+      <span class="text-accent">MATCH</span>DAY MODERN
+     </div>
+     <p class="text-gray-500 text-xs">Clean kits. Loud energy.</p>
+     <p class="text-gray-600 text-xs">© 2024 MatchDay Modern. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: "Your club deserves match-day graphics.",
+  hero_subtitle: "Posters, lineups, and stories that look pro.",
+  cta_primary: "Download the Pack",
+  cta_secondary: "Preview Posters",
+  bottom_cta_title: "Make every match a moment.",
+  background_color: "#0a0a0f",
+  surface_color: "#14141f",
+  text_color: "#f0f0f0",
+  accent_color: "#00ff87",
+  muted_color: "#6b7280",
+  font_family: "Oswald",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  const c = (k) => config[k] || defaultConfig[k];
+
+  // Text
+  el('hero-title').innerHTML = c('hero_title').replace(/match-day graphics/, 'match-day graphics.');
+  // Split on period for line break if needed
+  const title = c('hero_title');
+  el('hero-title').textContent = title;
+  el('hero-subtitle').textContent = c('hero_subtitle');
+  el('cta-primary-btn').textContent = c('cta_primary');
+  el('cta-secondary-btn').textContent = c('cta_secondary');
+  el('bottom-cta-title').textContent = c('bottom_cta_title');
+
+  // Colors
+  const bg = c('background_color');
+  const surface = c('surface_color');
+  const txt = c('text_color');
+  const accent = c('accent_color');
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = txt;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--txt', txt);
+  document.documentElement.style.setProperty('--accent', accent);
+
+  // Apply accent to all accent-colored elements
+  document.querySelectorAll('.text-accent').forEach(e => e.style.color = accent);
+  document.querySelectorAll('.bg-accent').forEach(e => { e.style.backgroundColor = accent; });
+  document.querySelectorAll('.border-accent').forEach(e => e.style.borderColor = accent);
+  document.querySelectorAll('.bg-surface, .bg-surface\\/80, .bg-surface\\/40, .bg-surface\\/50').forEach(e => e.style.backgroundColor = surface);
+
+  // Font
+  const font = c('font_family');
+  const baseSize = c('font_size');
+  document.querySelectorAll('.font-oswald, h1, h2, h3').forEach(e => {
+    e.style.fontFamily = `${font}, Oswald, sans-serif`;
+  });
+  document.body.style.fontFamily = `Source Sans 3, ${font}, sans-serif`;
+  document.body.style.fontSize = `${baseSize}px`;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.muted_color || defaultConfig.muted_color, set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["hero_title", config.hero_title || defaultConfig.hero_title],
+      ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+      ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+      ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+      ["bottom_cta_title", config.bottom_cta_title || defaultConfig.bottom_cta_title],
+    ])
+  });
+}
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim-fade-up, .anim-slide-in, .anim-chip').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = ['home','posters','lineups','spotlights','reviews','download'];
+const navLinks = document.querySelectorAll('.nav-link');
+document.getElementById('app-wrapper').addEventListener('scroll', () => {
+  // Use parent scroll
+});
+window.addEventListener('scroll', () => {}, { passive: true });
+// Use intersection observer for nav
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('nav-active'));
+      document.querySelectorAll(`.nav-link[href="#${entry.target.id}"]`).forEach(l => l.classList.add('nav-active'));
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(id => { const s = document.getElementById(id); if (s) navObserver.observe(s); });
+
+// Vote system
+let upVotes = 0, downVotes = 0;
+document.getElementById('vote-up').addEventListener('click', () => {
+  upVotes++;
+  document.getElementById('vote-up-count').textContent = upVotes;
+});
+document.getElementById('vote-down').addEventListener('click', () => {
+  downVotes++;
+  document.getElementById('vote-down-count').textContent = downVotes;
+});
+
+// Comment system
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleTimeString() });
+  input.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="bg-bg/60 rounded p-4 border border-white/5">
+      <p class="text-sm text-gray-300">${c.text.replace(/</g,'&lt;')}</p>
+      <span class="text-xs text-gray-600 mt-1 block">${c.time}</span>
+    </div>
+  `).join('');
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a65a7866527c5',t:'MTc3NTU3OTIxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

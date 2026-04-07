@@ -1,1 +1,713 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6fc505df-0cc9-40fe-a0b4-ebf0d9a3d2fb -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Apex Garage</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Barlow:wght@300;400;500;600;700&amp;family=Barlow+Condensed:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #14141f;
+    --text: #e8e6f0;
+    --neon-magenta: #ff2d7b;
+    --neon-blue: #00c8ff;
+  }
+
+  .neon-text-magenta { color: var(--neon-magenta); text-shadow: 0 0 20px rgba(255,45,123,0.5), 0 0 40px rgba(255,45,123,0.2); }
+  .neon-text-blue { color: var(--neon-blue); text-shadow: 0 0 20px rgba(0,200,255,0.5), 0 0 40px rgba(0,200,255,0.2); }
+
+  .glass-card {
+    background: rgba(20, 20, 31, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,45,123,0.15);
+  }
+
+  .glass-card-blue {
+    background: rgba(20, 20, 31, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,200,255,0.15);
+  }
+
+  @keyframes panSlow {
+    0% { transform: scale(1.15) translate(0, 0); }
+    50% { transform: scale(1.15) translate(-3%, -1%); }
+    100% { transform: scale(1.15) translate(0, 0); }
+  }
+
+  @keyframes streakLeft {
+    0% { transform: translateX(100%) scaleX(0); opacity: 0; }
+    10% { opacity: 1; }
+    50% { transform: translateX(-20%) scaleX(1); opacity: 0.7; }
+    100% { transform: translateX(-150%) scaleX(0.5); opacity: 0; }
+  }
+
+  @keyframes streakRight {
+    0% { transform: translateX(-100%) scaleX(0); opacity: 0; }
+    10% { opacity: 1; }
+    50% { transform: translateX(20%) scaleX(1); opacity: 0.6; }
+    100% { transform: translateX(150%) scaleX(0.5); opacity: 0; }
+  }
+
+  .hero-pan { animation: panSlow 25s ease-in-out infinite; }
+
+  .light-streak {
+    position: absolute;
+    height: 2px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .streak-magenta {
+    background: linear-gradient(90deg, transparent, var(--neon-magenta), transparent);
+    box-shadow: 0 0 12px var(--neon-magenta);
+    animation: streakLeft 4s ease-in-out infinite;
+  }
+
+  .streak-blue {
+    background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+    box-shadow: 0 0 12px var(--neon-blue);
+    animation: streakRight 5s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,45,123,0.4), 0 0 40px rgba(255,45,123,0.2); }
+    50% { box-shadow: 0 0 30px rgba(255,45,123,0.7), 0 0 60px rgba(255,45,123,0.3); }
+  }
+
+  .glow-pulse { animation: glowPulse 2.5s ease-in-out infinite; }
+
+  @keyframes glowPulseBlue {
+    0%, 100% { box-shadow: 0 0 20px rgba(0,200,255,0.4), 0 0 40px rgba(0,200,255,0.2); }
+    50% { box-shadow: 0 0 30px rgba(0,200,255,0.7), 0 0 60px rgba(0,200,255,0.3); }
+  }
+
+  .glow-pulse-blue { animation: glowPulseBlue 2.5s ease-in-out infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal { opacity: 0; }
+  .reveal.visible { animation: fadeUp 0.8s ease-out forwards; }
+
+  @keyframes checkTick {
+    0% { stroke-dashoffset: 24; }
+    100% { stroke-dashoffset: 0; }
+  }
+
+  .check-animated path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+  }
+
+  .check-animated.ticked path {
+    animation: checkTick 0.4s ease-out forwards;
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--neon-magenta);
+    box-shadow: 0 0 6px var(--neon-magenta);
+    transition: width 0.3s;
+  }
+
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  .nav-link:hover, .nav-link.active { color: var(--neon-magenta); }
+
+  .wallpaper-card { transition: transform 0.4s, box-shadow 0.4s; }
+  .wallpaper-card:hover { transform: translateY(-6px); box-shadow: 0 10px 40px rgba(255,45,123,0.2); }
+
+  .review-card { transition: transform 0.3s; }
+  .review-card:hover { transform: translateY(-4px); }
+
+  .asphalt-texture {
+    background-image:
+      radial-gradient(ellipse at 20% 80%, rgba(0,200,255,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,45,123,0.04) 0%, transparent 50%),
+      linear-gradient(180deg, var(--bg) 0%, #0d0d15 100%);
+  }
+
+  .wet-reflection {
+    background: linear-gradient(180deg, transparent, rgba(0,200,255,0.03) 60%, rgba(255,45,123,0.02));
+  }
+
+  .scroll-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, transparent, rgba(255,45,123,0.4), transparent);
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif;">
+  <div id="app" class="scroll-wrapper w-full"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,45,123,0.1);">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;">
+     <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <path d="M14 2L26 8v12l-12 6L2 20V8l12-6z" stroke="#ff2d7b" stroke-width="1.2" fill="none" /><path d="M14 8l6 3v6l-6 3-6-3v-6l6-3z" stroke="#00c8ff" stroke-width="1" fill="none" />
+      </svg><span style="font-family:'Orbitron',monospace;font-weight:700;font-size:14px;letter-spacing:2px;color:var(--neon-magenta);">NEON APEX</span>
+     </div>
+     <div id="nav-links" style="display:flex;gap:24px;align-items:center;" class="hidden md:flex"><a href="#home" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Home</a> <a href="#wallpapers" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Wallpapers</a> <a href="#planner" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Night Planner</a> <a href="#preview" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Preview</a> <a href="#reviews" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Reviews</a> <a href="#download" class="nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;">Download</a>
+     </div><button id="mobile-toggle" class="md:hidden" style="background:none;border:none;color:var(--text);cursor:pointer;"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" style="display:none;padding:0 24px 16px;flex-direction:column;gap:12px;"><a href="#home" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,45,123,0.1);">Home</a> <a href="#wallpapers" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,45,123,0.1);">Wallpapers</a> <a href="#planner" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,45,123,0.1);">Night Planner</a> <a href="#preview" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,45,123,0.1);">Preview</a> <a href="#reviews" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,45,123,0.1);">Reviews</a> <a href="#download" class="mobile-nav-link" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);text-decoration:none;padding:8px 0;">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;overflow:hidden;min-height:600px;display:flex;align-items:center;justify-content:center;">
+    <div style="position:absolute;inset:0;z-index:0;"><img src="https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?w=1600&amp;q=80" alt="JDM car in neon-lit Tokyo street" loading="lazy" class="hero-pan" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.35) saturate(1.3);" onerror="this.style.background='linear-gradient(135deg,#0a0a0f,#1a0a20)';this.alt='Hero background';">
+     <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,15,0.4) 0%, rgba(10,10,15,0.9) 100%);"></div>
+    </div><!-- Light streaks -->
+    <div class="light-streak streak-magenta" style="top:30%;left:0;width:300px;animation-delay:0s;"></div>
+    <div class="light-streak streak-blue" style="top:55%;right:0;width:250px;animation-delay:1.5s;"></div>
+    <div class="light-streak streak-magenta" style="top:75%;left:10%;width:200px;animation-delay:3s;"></div>
+    <div style="position:relative;z-index:10;text-align:center;padding:80px 24px 60px;max-width:800px;">
+     <p style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--neon-blue);margin-bottom:20px;" class="reveal">JDM Premium Aesthetic Pack</p>
+     <h1 id="hero-title" style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(36px,6vw,72px);line-height:1.05;margin:0 0 20px;background:linear-gradient(135deg,#fff 30%,var(--neon-magenta) 70%,var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="reveal">Midnight roads.<br>
+      Endless boost.</h1>
+     <p id="hero-subhead" style="font-family:'Barlow',sans-serif;font-size:clamp(15px,2vw,19px);font-weight:300;color:rgba(232,230,240,0.7);max-width:560px;margin:0 auto 36px;line-height:1.7;" class="reveal">JDM visuals and night drive templates built from real photography.</p>
+     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;" class="reveal"><a href="#download" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 36px;background:var(--neon-magenta);color:#fff;border:none;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;" class="glow-pulse">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7" />
+       </svg> Download the Pack </a> <a href="#preview" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 36px;background:transparent;color:var(--neon-blue);border:1px solid rgba(0,200,255,0.4);border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="3" />
+       </svg> Preview Gallery </a>
+     </div><!-- Stats bar -->
+     <div style="display:flex;justify-content:center;align-items:center;gap:32px;margin-top:48px;flex-wrap:wrap;" class="reveal">
+      <div style="text-align:center;">
+       <div style="font-family:'Orbitron',monospace;font-weight:700;font-size:28px;color:var(--neon-magenta);">
+        130
+       </div>
+       <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,230,240,0.5);">
+        Wallpapers
+       </div>
+      </div>
+      <div class="stat-divider hidden sm:block"></div>
+      <div style="text-align:center;">
+       <div style="font-family:'Orbitron',monospace;font-weight:700;font-size:28px;color:var(--neon-blue);">
+        28
+       </div>
+       <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,230,240,0.5);">
+        Printable Posters
+       </div>
+      </div>
+      <div class="stat-divider hidden sm:block"></div>
+      <div style="text-align:center;">
+       <div style="font-family:'Orbitron',monospace;font-weight:700;font-size:28px;color:var(--neon-magenta);">
+        6
+       </div>
+       <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,230,240,0.5);">
+        Bonus Tools
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="asphalt-texture" style="padding:80px 24px;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-blue);margin-bottom:12px;">The Collection</p>
+      <h2 style="font-family:'Orbitron',monospace;font-weight:800;font-size:clamp(24px,4vw,42px);margin:0;" class="neon-text-magenta">130 JDM Wallpapers</h2>
+      <p style="font-family:'Barlow',sans-serif;font-weight:300;color:rgba(232,230,240,0.5);margin-top:12px;font-size:15px;">Curated night photography. Every angle. Every legend.</p>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+      <div class="wallpaper-card glass-card reveal" style="border-radius:8px;overflow:hidden;"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&amp;q=80" alt="JDM car neon reflection" loading="lazy" style="width:100%;height:200px;object-fit:cover;filter:saturate(1.2) brightness(0.8);" onerror="this.style.background='linear-gradient(135deg,#14141f,#1a0a20)';this.alt='Wallpaper preview';">
+       <div style="padding:16px;">
+        <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--neon-magenta);margin:0 0 4px;">NEON STREETS</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">32 wallpapers</p>
+       </div>
+      </div>
+      <div class="wallpaper-card glass-card reveal" style="border-radius:8px;overflow:hidden;"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&amp;q=80" alt="Sports car at night" loading="lazy" style="width:100%;height:200px;object-fit:cover;filter:saturate(1.2) brightness(0.8);" onerror="this.style.background='linear-gradient(135deg,#14141f,#1a0a20)';this.alt='Wallpaper preview';">
+       <div style="padding:16px;">
+        <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--neon-blue);margin:0 0 4px;">TUNNEL RUNS</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">28 wallpapers</p>
+       </div>
+      </div>
+      <div class="wallpaper-card glass-card reveal" style="border-radius:8px;overflow:hidden;"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&amp;q=80" alt="Car on highway at night" loading="lazy" style="width:100%;height:200px;object-fit:cover;filter:saturate(1.2) brightness(0.8);" onerror="this.style.background='linear-gradient(135deg,#14141f,#1a0a20)';this.alt='Wallpaper preview';">
+       <div style="padding:16px;">
+        <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--neon-magenta);margin:0 0 4px;">MIDNIGHT LEGENDS</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">24 wallpapers</p>
+       </div>
+      </div>
+      <div class="wallpaper-card glass-card reveal" style="border-radius:8px;overflow:hidden;"><img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&amp;q=80" alt="JDM car drifting" loading="lazy" style="width:100%;height:200px;object-fit:cover;filter:saturate(1.2) brightness(0.8);" onerror="this.style.background='linear-gradient(135deg,#14141f,#1a0a20)';this.alt='Wallpaper preview';">
+       <div style="padding:16px;">
+        <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--neon-blue);margin:0 0 4px;">DRIFT CULTURE</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">46 wallpapers</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- NIGHT PLANNER -->
+   <section id="planner" class="wet-reflection" style="padding:80px 24px;background-color:var(--bg);">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-magenta);margin-bottom:12px;">Plan Your Run</p>
+      <h2 id="planner-title" style="font-family:'Orbitron',monospace;font-weight:800;font-size:clamp(24px,4vw,42px);margin:0;" class="neon-text-blue">Night Drive Planner</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;" class="flex-col md:grid"><!-- Route Planner Card -->
+      <div class="glass-card-blue reveal" style="border-radius:12px;padding:32px;">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="1.2">
+         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
+        </svg>
+        <h3 style="font-family:'Orbitron',monospace;font-weight:700;font-size:16px;margin:0;color:var(--neon-blue);">Route Planning</h3>
+       </div>
+       <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,200,255,0.05);border-radius:8px;border:1px solid rgba(0,200,255,0.1);">
+         <div style="width:8px;height:8px;border-radius:50%;background:var(--neon-blue);box-shadow:0 0 8px var(--neon-blue);flex-shrink:0;"></div><span style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.7);">Daikoku PA Parking Area</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,200,255,0.05);border-radius:8px;border:1px solid rgba(0,200,255,0.1);">
+         <div style="width:8px;height:8px;border-radius:50%;background:var(--neon-magenta);box-shadow:0 0 8px var(--neon-magenta);flex-shrink:0;"></div><span style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.7);">Tatsumi PA Loop</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,200,255,0.05);border-radius:8px;border:1px solid rgba(0,200,255,0.1);">
+         <div style="width:8px;height:8px;border-radius:50%;background:var(--neon-blue);box-shadow:0 0 8px var(--neon-blue);flex-shrink:0;"></div><span style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.7);">Wangan Expressway Sprint</span>
+        </div>
+       </div>
+       <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.35);margin-top:16px;">Printable route sheets included in the pack</p>
+      </div><!-- Mod Checklist Card -->
+      <div class="glass-card reveal" style="border-radius:12px;padding:32px;">
+       <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.2">
+         <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 12l2 2 4-4" />
+        </svg>
+        <h3 style="font-family:'Orbitron',monospace;font-weight:700;font-size:16px;margin:0;color:var(--neon-magenta);">Mod Checklist</h3>
+       </div>
+       <div id="checklist" style="display:flex;flex-direction:column;gap:12px;">
+        <div class="checklist-item" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,45,123,0.05);border-radius:8px;border:1px solid rgba(255,45,123,0.1);cursor:pointer;transition:all 0.3s;">
+         <div class="check-box" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,45,123,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;">
+          <svg class="check-animated" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="2.5">
+           <path d="M5 12l5 5L20 7" />
+          </svg>
+         </div>
+         <div>
+          <p style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.8);margin:0;">Coilovers &amp; Suspension</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:11px;color:rgba(232,230,240,0.35);margin:2px 0 0;">Stance + handling setup</p>
+         </div>
+        </div>
+        <div class="checklist-item" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,45,123,0.05);border-radius:8px;border:1px solid rgba(255,45,123,0.1);cursor:pointer;transition:all 0.3s;">
+         <div class="check-box" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,45,123,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;">
+          <svg class="check-animated" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="2.5">
+           <path d="M5 12l5 5L20 7" />
+          </svg>
+         </div>
+         <div>
+          <p style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.8);margin:0;">Turbo Upgrade</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:11px;color:rgba(232,230,240,0.35);margin:2px 0 0;">Single or twin turbo config</p>
+         </div>
+        </div>
+        <div class="checklist-item" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,45,123,0.05);border-radius:8px;border:1px solid rgba(255,45,123,0.1);cursor:pointer;transition:all 0.3s;">
+         <div class="check-box" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,45,123,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;">
+          <svg class="check-animated" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="2.5">
+           <path d="M5 12l5 5L20 7" />
+          </svg>
+         </div>
+         <div>
+          <p style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.8);margin:0;">Wheel &amp; Tire Setup</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:11px;color:rgba(232,230,240,0.35);margin:2px 0 0;">TE37s, RPF1s, or custom fitment</p>
+         </div>
+        </div>
+        <div class="checklist-item" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,45,123,0.05);border-radius:8px;border:1px solid rgba(255,45,123,0.1);cursor:pointer;transition:all 0.3s;">
+         <div class="check-box" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,45,123,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;">
+          <svg class="check-animated" width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="2.5">
+           <path d="M5 12l5 5L20 7" />
+          </svg>
+         </div>
+         <div>
+          <p style="font-family:'Barlow',sans-serif;font-size:14px;color:rgba(232,230,240,0.8);margin:0;">Exhaust &amp; ECU Tune</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:11px;color:rgba(232,230,240,0.35);margin:2px 0 0;">Sound + power delivery</p>
+         </div>
+        </div>
+       </div>
+       <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.35);margin-top:16px;">Full editable checklist included</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW / WHAT'S INSIDE -->
+   <section id="preview" class="asphalt-texture" style="padding:80px 24px;">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-magenta);margin-bottom:12px;">What's Inside</p>
+      <h2 style="font-family:'Orbitron',monospace;font-weight:800;font-size:clamp(24px,4vw,42px);margin:0;color:var(--text);">The Full Pack</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+      <div class="glass-card reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-magenta);margin:0 0 6px;">130 WALLPAPERS</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">4K &amp; mobile ready</p>
+      </div>
+      <div class="glass-card-blue reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-blue);margin:0 0 6px;">MOD CHECKLIST</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">Editable PDF tracker</p>
+      </div>
+      <div class="glass-card reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-magenta);margin:0 0 6px;">28 POSTERS</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">Print-ready high res</p>
+      </div>
+      <div class="glass-card-blue reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" /><circle cx="12" cy="9" r="2.5" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-blue);margin:0 0 6px;">DRIVE PLANNER</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">Route planning sheets</p>
+      </div>
+      <div class="glass-card reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-magenta)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <rect x="2" y="2" width="20" height="20" rx="5" /><path d="M12 8v8M8 12h8" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-magenta);margin:0 0 6px;">STORY TEMPLATES</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">IG &amp; TikTok ready</p>
+      </div>
+      <div class="glass-card-blue reveal" style="border-radius:12px;padding:28px;text-align:center;">
+       <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="1.2" style="margin:0 auto 16px;display:block;">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+       </svg>
+       <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;color:var(--neon-blue);margin:0 0 6px;">CAPTION PACK</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.5);margin:0;">60+ JDM captions</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" style="padding:80px 24px;background:var(--bg);">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-blue);margin-bottom:12px;">From The Community</p>
+      <h2 style="font-family:'Orbitron',monospace;font-weight:800;font-size:clamp(24px,4vw,42px);margin:0;" class="neon-text-magenta">Reviews</h2>
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+      <div class="review-card glass-card reveal" style="border-radius:12px;padding:28px;">
+       <div style="display:flex;gap:4px;margin-bottom:16px;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+       </div>
+       <p style="font-family:'Barlow',sans-serif;font-size:14px;line-height:1.7;color:rgba(232,230,240,0.7);margin:0 0 16px;">"Best JDM aesthetic pack I've found. The wallpapers are insanely high quality and the planner is actually useful for meet coordination."</p>
+       <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;color:var(--neon-magenta);margin:0;">@DRIFT_KING_TK</p>
+      </div>
+      <div class="review-card glass-card-blue reveal" style="border-radius:12px;padding:28px;">
+       <div style="display:flex;gap:4px;margin-bottom:16px;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-blue)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-blue)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-blue)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-blue)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-blue)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+       </div>
+       <p style="font-family:'Barlow',sans-serif;font-size:14px;line-height:1.7;color:rgba(232,230,240,0.7);margin:0 0 16px;">"Used the story templates for my car page and gained 2K followers in a month. The neon aesthetic is exactly what the JDM community loves."</p>
+       <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;color:var(--neon-blue);margin:0;">@WANGAN_WARRIOR</p>
+      </div>
+      <div class="review-card glass-card reveal" style="border-radius:12px;padding:28px;">
+       <div style="display:flex;gap:4px;margin-bottom:16px;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="var(--neon-magenta)" stroke="none">
+         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+       </div>
+       <p style="font-family:'Barlow',sans-serif;font-size:14px;line-height:1.7;color:rgba(232,230,240,0.7);margin:0 0 16px;">"The mod checklist is genius. I printed it and keep it in my garage. Caption pack is fire too — saves hours on content creation."</p>
+       <p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;color:var(--neon-magenta);margin:0;">@BOOST_SOCIETY</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" style="position:relative;padding:80px 24px;overflow:hidden;">
+    <div style="position:absolute;inset:0;z-index:0;"><img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1400&amp;q=80" alt="Japanese highway at night" loading="lazy" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.2) saturate(1.4);" onerror="this.style.background='linear-gradient(135deg,#0a0a0f,#1a0520)';this.alt='Background';">
+     <div style="position:absolute;inset:0;background:linear-gradient(180deg, var(--bg) 0%, rgba(10,10,15,0.7) 50%, var(--bg) 100%);"></div>
+    </div>
+    <div class="light-streak streak-blue" style="top:20%;width:350px;animation-delay:0.5s;"></div>
+    <div class="light-streak streak-magenta" style="top:60%;width:280px;animation-delay:2s;"></div>
+    <div style="position:relative;z-index:10;max-width:700px;margin:0 auto;text-align:center;">
+     <h2 id="bottom-cta-text" style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(28px,5vw,52px);margin:0 0 16px;background:linear-gradient(135deg,var(--neon-blue) 20%,var(--neon-magenta) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="reveal">Turn every night into a run.</h2>
+     <p style="font-family:'Barlow',sans-serif;font-size:16px;font-weight:300;color:rgba(232,230,240,0.6);margin-bottom:36px;line-height:1.7;" class="reveal">130 wallpapers. 28 posters. Night planner. Mod checklist. Story templates. Caption pack. One download.</p><!-- Pricing Cards -->
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px;" class="reveal">
+      <div class="glass-card" style="border-radius:12px;padding:24px;text-align:center;">
+       <p style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--neon-magenta);margin:0 0 8px;">Night Racing Aesthetic</p>
+       <p style="font-family:'Orbitron',monospace;font-weight:800;font-size:32px;color:#fff;margin:0;">$27</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.4);margin:4px 0 0;">One-time download</p>
+      </div>
+      <div class="glass-card-blue" style="border-radius:12px;padding:24px;text-align:center;position:relative;">
+       <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--neon-blue);color:#0a0a0f;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;padding:4px 12px;border-radius:20px;font-weight:700;">
+        BEST VALUE
+       </div>
+       <p style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--neon-blue);margin:0 0 8px;">JDM Premium Pack</p>
+       <p style="font-family:'Orbitron',monospace;font-weight:800;font-size:32px;color:#fff;margin:0;">$39</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.4);margin:4px 0 0;">+ future updates free</p>
+      </div>
+      <div class="glass-card" style="border-radius:12px;padding:24px;text-align:center;">
+       <p style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--neon-magenta);margin:0 0 8px;">Car Culture Evergreen</p>
+       <p style="font-family:'Orbitron',monospace;font-weight:800;font-size:32px;color:#fff;margin:0;">$19</p>
+       <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.4);margin:4px 0 0;">Wallpapers only</p>
+      </div>
+     </div><a href="#download" style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;padding:18px 48px;background:linear-gradient(135deg,var(--neon-magenta),#ff1a6c);color:#fff;border:none;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:all 0.3s;" class="glow-pulse reveal">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+       <path d="M12 5v14M5 12l7 7 7-7" />
+      </svg> Download Now </a> <!-- Vote + Comment Widget -->
+     <div class="glass-card reveal" style="border-radius:12px;padding:28px;margin-top:40px;">
+      <p style="font-family:'Orbitron',monospace;font-size:12px;letter-spacing:2px;color:var(--neon-blue);margin:0 0 20px;">VOTE + COMMENT</p>
+      <div style="display:flex;gap:16px;justify-content:center;margin-bottom:20px;"><button id="vote-up" style="display:flex;align-items:center;gap:6px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);color:var(--neon-blue);padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;transition:all 0.3s;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg><span id="vote-count">142</span> </button> <button id="vote-fire" style="display:flex;align-items:center;gap:6px;background:rgba(255,45,123,0.1);border:1px solid rgba(255,45,123,0.3);color:var(--neon-magenta);padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;transition:all 0.3s;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M12 12c0-3 2.5-6 2.5-6S17 9 17 12a5 5 0 01-10 0c0-3 2.5-6 2.5-6S12 9 12 12z" />
+        </svg><span id="fire-count">89</span> </button>
+      </div>
+      <div style="display:flex;gap:8px;"><input id="comment-input" type="text" placeholder="Drop a comment..." style="flex:1;background:rgba(20,20,31,0.8);border:1px solid rgba(255,45,123,0.15);border-radius:6px;padding:10px 16px;color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(0,200,255,0.5)'" onblur="this.style.borderColor='rgba(255,45,123,0.15)'"> <label for="comment-input" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Comment</label> <button id="comment-submit" style="background:var(--neon-magenta);border:none;border-radius:6px;padding:10px 16px;cursor:pointer;color:#fff;transition:all 0.3s;">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+        </svg></button>
+      </div>
+      <div id="comments-list" style="margin-top:16px;display:flex;flex-direction:column;gap:8px;"></div>
+      <p style="font-family:'Barlow',sans-serif;font-size:11px;color:rgba(232,230,240,0.25);margin:12px 0 0;text-align:center;">(Embed Widget Here)</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding:32px 24px;border-top:1px solid rgba(255,45,123,0.1);background:var(--bg);">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+     <div style="display:flex;align-items:center;gap:8px;">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none">
+       <path d="M14 2L26 8v12l-12 6L2 20V8l12-6z" stroke="#ff2d7b" stroke-width="1.2" fill="none" />
+      </svg><span style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:rgba(232,230,240,0.4);">NEON APEX GARAGE</span>
+     </div>
+     <p style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(232,230,240,0.25);margin:0;">All photography via Unsplash. Digital product mockup.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#14141f',
+  text_color: '#e8e6f0',
+  neon_magenta: '#ff2d7b',
+  neon_blue: '#00c8ff',
+  font_family: 'Orbitron',
+  font_size: 16,
+  hero_title: 'Midnight roads.\nEndless boost.',
+  hero_subhead: 'JDM visuals and night drive templates built from real photography.',
+  planner_title: 'Night Drive Planner',
+  bottom_cta_text: 'Turn every night into a run.'
+};
+
+function applyConfig(config) {
+  const root = document.documentElement;
+  root.style.setProperty('--bg', config.background_color || defaultConfig.background_color);
+  root.style.setProperty('--surface', config.surface_color || defaultConfig.surface_color);
+  root.style.setProperty('--text', config.text_color || defaultConfig.text_color);
+  root.style.setProperty('--neon-magenta', config.neon_magenta || defaultConfig.neon_magenta);
+  root.style.setProperty('--neon-blue', config.neon_blue || defaultConfig.neon_blue);
+
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.querySelectorAll('[style*="font-family:\'Orbitron\'"]').forEach(el => {
+    el.style.fontFamily = `${font}, monospace`;
+  });
+
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    const t = config.hero_title || defaultConfig.hero_title;
+    heroTitle.innerHTML = t.replace(/\n/g, '<br>');
+    heroTitle.style.fontSize = `clamp(36px,6vw,${size * 4.5}px)`;
+    heroTitle.style.fontFamily = `${font}, monospace`;
+  }
+  const heroSub = document.getElementById('hero-subhead');
+  if (heroSub) {
+    heroSub.textContent = config.hero_subhead || defaultConfig.hero_subhead;
+    heroSub.style.fontSize = `${size}px`;
+  }
+  const plannerTitle = document.getElementById('planner-title');
+  if (plannerTitle) {
+    plannerTitle.textContent = config.planner_title || defaultConfig.planner_title;
+    plannerTitle.style.fontFamily = `${font}, monospace`;
+  }
+  const bottomCta = document.getElementById('bottom-cta-text');
+  if (bottomCta) {
+    bottomCta.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+    bottomCta.style.fontFamily = `${font}, monospace`;
+  }
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.neon_magenta || defaultConfig.neon_magenta, set: (v) => { config.neon_magenta = v; window.elementSdk.setConfig({ neon_magenta: v }); } },
+      { get: () => config.neon_blue || defaultConfig.neon_blue, set: (v) => { config.neon_blue = v; window.elementSdk.setConfig({ neon_blue: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['planner_title', config.planner_title || defaultConfig.planner_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+});
+
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobile-menu').style.display = 'none';
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationDelay = `${i * 0.1}s`;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Active nav
+const scrollWrapper = document.getElementById('app');
+const sections = ['home','wallpapers','planner','preview','reviews','download'];
+scrollWrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Checklist interactivity
+document.querySelectorAll('.checklist-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const svg = item.querySelector('.check-animated');
+    const box = item.querySelector('.check-box');
+    const isTicked = svg.classList.contains('ticked');
+    svg.classList.toggle('ticked');
+    box.style.background = isTicked ? 'transparent' : 'rgba(255,45,123,0.15)';
+    box.style.borderColor = isTicked ? 'rgba(255,45,123,0.4)' : 'var(--neon-magenta)';
+  });
+});
+
+// Vote buttons
+let voteCount = 142, fireCount = 89;
+document.getElementById('vote-up').addEventListener('click', function() {
+  voteCount++;
+  document.getElementById('vote-count').textContent = voteCount;
+  this.style.background = 'rgba(0,200,255,0.25)';
+  setTimeout(() => this.style.background = 'rgba(0,200,255,0.1)', 300);
+});
+document.getElementById('vote-fire').addEventListener('click', function() {
+  fireCount++;
+  document.getElementById('fire-count').textContent = fireCount;
+  this.style.background = 'rgba(255,45,123,0.25)';
+  setTimeout(() => this.style.background = 'rgba(255,45,123,0.1)', 300);
+});
+
+// Comment
+document.getElementById('comment-submit').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const comment = document.createElement('div');
+  comment.style.cssText = 'padding:10px 14px;background:rgba(20,20,31,0.8);border-radius:6px;border:1px solid rgba(255,45,123,0.1);';
+  comment.innerHTML = `<p style="font-family:'Barlow',sans-serif;font-size:13px;color:rgba(232,230,240,0.7);margin:0;">${text.replace(/</g,'&lt;')}</p><p style="font-family:'Barlow',sans-serif;font-size:10px;color:rgba(232,230,240,0.3);margin:4px 0 0;">Just now</p>`;
+  list.prepend(comment);
+  input.value = '';
+});
+
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('comment-submit').click(); }
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6891629227c5',t:'MTc3NTU3OTMzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

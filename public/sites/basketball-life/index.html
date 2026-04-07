@@ -1,1 +1,978 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/03138acf-d4b0-4822-b0e1-d43d0f6fa056 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RimRush Graphics</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Barlow+Condensed:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        'heading': ['Oswald', 'sans-serif'],
+        'body': ['Barlow Condensed', 'sans-serif'],
+        'mono': ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Neon glow utilities */
+.neon-orange { text-shadow: 0 0 20px rgba(255,107,0,0.6), 0 0 40px rgba(255,107,0,0.3); }
+.neon-border { box-shadow: 0 0 15px rgba(255,107,0,0.3), inset 0 0 15px rgba(255,107,0,0.05); }
+.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+.glass-strong { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.12); }
+
+/* Court line overlay */
+.court-lines {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.06;
+  background:
+    linear-gradient(90deg, transparent 49.5%, #ff6b00 49.5%, #ff6b00 50.5%, transparent 50.5%),
+    radial-gradient(circle at 50% 50%, transparent 18%, #ff6b00 18%, #ff6b00 18.5%, transparent 18.5%);
+}
+
+/* Light sweep */
+@keyframes lightSweep {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+.light-sweep::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255,107,0,0.07), transparent);
+  width: 40%; animation: lightSweep 4s ease-in-out infinite;
+}
+
+/* Reveal animations */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes revealScale {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,107,0,0.4); } 50% { box-shadow: 0 0 0 12px rgba(255,107,0,0); } }
+@keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { from { opacity:0; transform: translateX(-30px); } to { opacity:1; transform: translateX(0); } }
+
+.reveal { opacity: 0; }
+.reveal.visible { animation: revealUp 0.5s ease forwards; }
+.reveal-scale { opacity: 0; }
+.reveal-scale.visible { animation: revealScale 0.4s ease forwards; }
+.cta-pulse { animation: pulse 2s infinite; }
+
+/* Scoreboard ticker */
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-scroll { animation: tickerScroll 20s linear infinite; }
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after {
+  content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px;
+  background: #ff6b00; transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #ff6b00; border-radius: 3px; }
+
+/* Star rating */
+.star-filled { color: #ff6b00; }
+.star-empty { color: #333; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-[#0a0a0a] text-white font-body overflow-x-hidden">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- SVG Icons (hidden) -->
+   <svg style="display:none"><symbol id="ico-basketball" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <circle cx="12" cy="12" r="10" />
+     <path d="M2 12h20" />
+     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10" />
+     <path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10" />
+    </symbol> <symbol id="ico-hoop" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <rect x="6" y="2" width="12" height="2" rx="1" />
+     <ellipse cx="12" cy="10" rx="6" ry="3" />
+     <line x1="7" y1="11" x2="5" y2="22" />
+     <line x1="17" y1="11" x2="19" y2="22" />
+     <line x1="10" y1="12.5" x2="9" y2="22" />
+     <line x1="14" y1="12.5" x2="15" y2="22" />
+    </symbol> <symbol id="ico-stopwatch" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <circle cx="12" cy="14" r="8" />
+     <line x1="12" y1="14" x2="12" y2="10" />
+     <line x1="10" y1="2" x2="14" y2="2" />
+     <line x1="12" y1="2" x2="12" y2="6" />
+     <line x1="19.07" y1="7.93" x2="17.66" y2="9.34" />
+    </symbol> <symbol id="ico-lightning" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </symbol> <symbol id="ico-calendar" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <rect x="3" y="4" width="18" height="18" rx="2" />
+     <line x1="16" y1="2" x2="16" y2="6" />
+     <line x1="8" y1="2" x2="8" y2="6" />
+     <line x1="3" y1="10" x2="21" y2="10" />
+    </symbol> <symbol id="ico-trophy" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M6 9H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+     <path d="M18 9h2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2" />
+     <path d="M6 4h12v6a6 6 0 0 1-12 0V4z" />
+     <path d="M9 18h6" />
+     <path d="M12 16v2" />
+     <rect x="8" y="20" width="8" height="2" rx="1" />
+    </symbol>
+   </svg><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 group">
+      <svg class="w-6 h-6 text-[#ff6b00]">
+       <use href="#ico-basketball" />
+      </svg><span id="nav-logo" class="font-heading text-lg font-bold tracking-wider uppercase">RimRush</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-body font-medium tracking-wide uppercase"><a href="#home" class="nav-link text-[#ff6b00]">Home</a> <a href="#posters" class="nav-link text-white/70 hover:text-white transition">Game Posters</a> <a href="#stats" class="nav-link text-white/70 hover:text-white transition">Stats</a> <a href="#tournament" class="nav-link text-white/70 hover:text-white transition">Tournament</a> <a href="#reviews" class="nav-link text-white/70 hover:text-white transition">Reviews</a> <a href="#download" class="nav-link text-white/70 hover:text-white transition">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white/70 hover:text-white" aria-label="Open menu">
+      <svg class="w-6 h-6">
+       <use href="#ico-lightning" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2"><a href="#home" class="block py-2 text-sm uppercase tracking-wide text-[#ff6b00]">Home</a> <a href="#posters" class="block py-2 text-sm uppercase tracking-wide text-white/70">Game Posters</a> <a href="#stats" class="block py-2 text-sm uppercase tracking-wide text-white/70">Stats</a> <a href="#tournament" class="block py-2 text-sm uppercase tracking-wide text-white/70">Tournament</a> <a href="#reviews" class="block py-2 text-sm uppercase tracking-wide text-white/70">Reviews</a> <a href="#download" class="block py-2 text-sm uppercase tracking-wide text-white/70">Download</a>
+    </div>
+   </nav><!-- Scoreboard Ticker -->
+   <div class="fixed top-14 left-0 w-full z-40 overflow-hidden" style="background:rgba(255,107,0,0.08);border-bottom:1px solid rgba(255,107,0,0.15);height:28px;">
+    <div class="ticker-scroll flex items-center h-full whitespace-nowrap font-mono text-xs text-[#ff6b00]/80 tracking-widest uppercase"><span class="mx-6">70 Game Posters</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">40 Story Templates</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Scoreboard Tiles</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Player Stat Cards</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Bracket Templates</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Caption Pack</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Perfect for Leagues &amp; Gyms</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Weekly Content Ready</span><span class="mx-2 text-[#ff6b00]/30">|</span> <!-- duplicate for seamless scroll --> <span class="mx-6">70 Game Posters</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">40 Story Templates</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Scoreboard Tiles</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Player Stat Cards</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Bracket Templates</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Caption Pack</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Perfect for Leagues &amp; Gyms</span><span class="mx-2 text-[#ff6b00]/30">|</span> <span class="mx-6">Weekly Content Ready</span><span class="mx-2 text-[#ff6b00]/30">|</span>
+    </div>
+   </div><!-- HERO SECTION -->
+   <section id="home" class="relative w-full overflow-hidden light-sweep" style="padding-top:calc(56px + 28px);min-height:600px;">
+    <div class="court-lines"></div><!-- Hero bg image -->
+    <div class="absolute inset-0" style="z-index:0;"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600&amp;q=80" alt="Basketball court arena" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1a0a00,#0a0a0a)';this.alt='Image unavailable';" style="filter:brightness(0.25) contrast(1.2);">
+    </div><!-- Gradient overlays -->
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.95) 100%);z-index:1;"></div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 60%, rgba(255,107,0,0.08) 0%, transparent 60%);z-index:1;"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center" style="min-height:calc(100% - 84px);padding:80px 0 60px;"><!-- Badge -->
+     <div class="reveal inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8">
+      <svg class="w-4 h-4 text-[#ff6b00]">
+       <use href="#ico-lightning" />
+      </svg><span class="text-xs font-mono uppercase tracking-[0.2em] text-white/70">Street-to-Arena Hype Kit</span>
+     </div>
+     <h1 id="hero-tagline" class="reveal font-heading text-5xl sm:text-7xl lg:text-8xl font-bold uppercase leading-[0.9] tracking-tight mb-6" style="animation-delay:0.1s;"><span class="block text-white">Posters that feel</span> <span class="block neon-orange" style="background:linear-gradient(90deg,#ff6b00,#ff9a40);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">like a highlight reel.</span></h1>
+     <p id="hero-subhead" class="reveal text-lg sm:text-xl text-white/50 font-body font-light max-w-xl mb-10 tracking-wide" style="animation-delay:0.2s;">Graphics for teams, leagues, gyms, and tournaments.</p>
+     <div class="reveal flex flex-col sm:flex-row gap-4" style="animation-delay:0.3s;"><a href="#download" id="cta-primary-btn" class="cta-pulse inline-flex items-center gap-2 bg-[#ff6b00] hover:bg-[#e55e00] text-black font-heading font-bold uppercase tracking-wider text-sm px-8 py-3.5 rounded transition-all">
+       <svg class="w-4 h-4">
+        <use href="#ico-lightning" />
+       </svg><span>Get the Pack</span> </a> <a href="#posters" id="cta-secondary-btn" class="inline-flex items-center gap-2 glass hover:bg-white/10 text-white font-heading font-medium uppercase tracking-wider text-sm px-8 py-3.5 rounded transition-all">
+       <svg class="w-4 h-4">
+        <use href="#ico-hoop" />
+       </svg><span>See Posters</span> </a>
+     </div><!-- Quick stats row -->
+     <div class="reveal mt-16 grid grid-cols-3 gap-6 sm:gap-12" style="animation-delay:0.4s;">
+      <div class="text-center">
+       <div class="font-heading text-3xl sm:text-4xl font-bold text-[#ff6b00]">
+        70
+       </div>
+       <div class="text-xs uppercase tracking-widest text-white/40 mt-1">
+        Game Posters
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-heading text-3xl sm:text-4xl font-bold text-[#ff6b00]">
+        40
+       </div>
+       <div class="text-xs uppercase tracking-widest text-white/40 mt-1">
+        Story Templates
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="font-heading text-3xl sm:text-4xl font-bold text-[#ff6b00]">
+        200+
+       </div>
+       <div class="text-xs uppercase tracking-widest text-white/40 mt-1">
+        Total Assets
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- GAME POSTERS SECTION -->
+   <section id="posters" class="relative w-full py-20 sm:py-28 overflow-hidden">
+    <div class="court-lines"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-4">
+       <svg class="w-5 h-5 text-[#ff6b00]">
+        <use href="#ico-basketball" />
+       </svg><span class="text-xs font-mono uppercase tracking-[0.2em] text-[#ff6b00]">Game Day Ready</span>
+      </div>
+      <h2 class="font-heading text-4xl sm:text-5xl font-bold uppercase tracking-tight">Game Posters</h2>
+      <p class="text-white/40 mt-3 font-light tracking-wide">70 templates designed for maximum hype</p>
+     </div><!-- Poster grid -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="reveal-scale group relative rounded-lg overflow-hidden aspect-[3/4] neon-border" style="animation-delay:0.05s;"><img src="https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?w=600&amp;q=80" alt="Basketball dunk action" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.background='#1a1a1a';">
+       <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.9) 0%,transparent 50%);"></div>
+       <div class="absolute bottom-0 left-0 p-4">
+        <div class="font-heading text-sm font-bold uppercase tracking-wide">
+         Game Night
+        </div>
+        <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest mt-0.5">
+         Poster Template
+        </div>
+       </div>
+      </div>
+      <div class="reveal-scale group relative rounded-lg overflow-hidden aspect-[3/4] neon-border" style="animation-delay:0.1s;"><img src="https://images.unsplash.com/photo-1515523110800-9415d13b84a8?w=600&amp;q=80" alt="Basketball hoop close up" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.background='#1a1a1a';">
+       <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.9) 0%,transparent 50%);"></div>
+       <div class="absolute bottom-0 left-0 p-4">
+        <div class="font-heading text-sm font-bold uppercase tracking-wide">
+         Tip Off
+        </div>
+        <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest mt-0.5">
+         Poster Template
+        </div>
+       </div>
+      </div>
+      <div class="reveal-scale group relative rounded-lg overflow-hidden aspect-[3/4] neon-border" style="animation-delay:0.15s;"><img src="https://images.unsplash.com/photo-1504450758481-7338bbe75005?w=600&amp;q=80" alt="Basketball player silhouette" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.background='#1a1a1a';">
+       <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.9) 0%,transparent 50%);"></div>
+       <div class="absolute bottom-0 left-0 p-4">
+        <div class="font-heading text-sm font-bold uppercase tracking-wide">
+         Rivalry
+        </div>
+        <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest mt-0.5">
+         Poster Template
+        </div>
+       </div>
+      </div>
+      <div class="reveal-scale group relative rounded-lg overflow-hidden aspect-[3/4] neon-border" style="animation-delay:0.2s;"><img src="https://images.unsplash.com/photo-1519861531473-9200262188bf?w=600&amp;q=80" alt="Basketball on court" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.background='#1a1a1a';">
+       <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.9) 0%,transparent 50%);"></div>
+       <div class="absolute bottom-0 left-0 p-4">
+        <div class="font-heading text-sm font-bold uppercase tracking-wide">
+         Playoff
+        </div>
+        <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest mt-0.5">
+         Poster Template
+        </div>
+       </div>
+      </div>
+     </div><!-- Content types row -->
+     <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="reveal glass-strong rounded-lg p-4 text-center" style="animation-delay:0.05s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-2">
+        <use href="#ico-basketball" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase">
+        Scoreboard Tiles
+       </div>
+       <div class="text-[10px] text-white/40 mt-1">
+        Live score graphics
+       </div>
+      </div>
+      <div class="reveal glass-strong rounded-lg p-4 text-center" style="animation-delay:0.1s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-2">
+        <use href="#ico-calendar" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase">
+        Story Templates
+       </div>
+       <div class="text-[10px] text-white/40 mt-1">
+        40 story designs
+       </div>
+      </div>
+      <div class="reveal glass-strong rounded-lg p-4 text-center" style="animation-delay:0.15s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-2">
+        <use href="#ico-lightning" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase">
+        Caption Pack
+       </div>
+       <div class="text-[10px] text-white/40 mt-1">
+        Ready-to-post captions
+       </div>
+      </div>
+      <div class="reveal glass-strong rounded-lg p-4 text-center" style="animation-delay:0.2s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-2">
+        <use href="#ico-stopwatch" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase">
+        Weekly Content
+       </div>
+       <div class="text-[10px] text-white/40 mt-1">
+        High engagement design
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- STATS / PLAYER CARDS SECTION -->
+   <section id="stats" class="relative w-full py-20 sm:py-28 overflow-hidden" style="background:linear-gradient(180deg,rgba(255,107,0,0.03) 0%,transparent 100%);">
+    <div class="court-lines"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-4">
+       <svg class="w-5 h-5 text-[#ff6b00]">
+        <use href="#ico-stopwatch" />
+       </svg><span class="text-xs font-mono uppercase tracking-[0.2em] text-[#ff6b00]">Player Profiles</span>
+      </div>
+      <h2 id="stats-heading-el" class="font-heading text-4xl sm:text-5xl font-bold uppercase tracking-tight">Player Stat Cards</h2>
+      <p class="text-white/40 mt-3 font-light tracking-wide">Glassmorphism stat cards that pop on every feed</p>
+     </div><!-- Stat Cards -->
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5"><!-- Card 1 -->
+      <div class="reveal-scale glass-strong rounded-xl overflow-hidden" style="animation-delay:0.05s;">
+       <div class="relative h-48 overflow-hidden"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&amp;q=80" alt="Basketball gym lights" loading="lazy" class="w-full h-full object-cover" style="filter:brightness(0.6) contrast(1.1);" onerror="this.style.background='#1a1a1a';">
+        <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.95) 10%,transparent 60%);"></div>
+        <div class="absolute bottom-3 left-4">
+         <div class="font-heading text-xl font-bold uppercase">
+          #23 Marcus Cole
+         </div>
+         <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest">
+          Point Guard
+         </div>
+        </div>
+        <div class="absolute top-3 right-3 glass rounded-full w-10 h-10 flex items-center justify-center">
+         <svg class="w-4 h-4 text-[#ff6b00]">
+          <use href="#ico-basketball" />
+         </svg>
+        </div>
+       </div>
+       <div class="p-4 grid grid-cols-3 gap-3 text-center">
+        <div>
+         <div class="font-mono text-2xl font-bold text-[#ff6b00]">
+          28.4
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          PPG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          7.2
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          APG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          3.1
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          SPG
+         </div>
+        </div>
+       </div>
+       <div class="px-4 pb-4">
+        <div class="w-full h-1 rounded-full bg-white/10 overflow-hidden">
+         <div class="h-full rounded-full" style="width:85%;background:linear-gradient(90deg,#ff6b00,#ff9a40);"></div>
+        </div>
+        <div class="flex justify-between mt-1 text-[9px] text-white/30 uppercase tracking-widest"><span>Efficiency</span><span>85%</span>
+        </div>
+       </div>
+      </div><!-- Card 2 -->
+      <div class="reveal-scale glass-strong rounded-xl overflow-hidden" style="animation-delay:0.15s;">
+       <div class="relative h-48 overflow-hidden"><img src="https://images.unsplash.com/photo-1577471488278-16eec37ffcc2?w=600&amp;q=80" alt="Basketball sneakers on court" loading="lazy" class="w-full h-full object-cover" style="filter:brightness(0.6) contrast(1.1);" onerror="this.style.background='#1a1a1a';">
+        <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.95) 10%,transparent 60%);"></div>
+        <div class="absolute bottom-3 left-4">
+         <div class="font-heading text-xl font-bold uppercase">
+          #07 Kai Rivera
+         </div>
+         <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest">
+          Shooting Guard
+         </div>
+        </div>
+        <div class="absolute top-3 right-3 glass rounded-full w-10 h-10 flex items-center justify-center">
+         <svg class="w-4 h-4 text-[#ff6b00]">
+          <use href="#ico-lightning" />
+         </svg>
+        </div>
+       </div>
+       <div class="p-4 grid grid-cols-3 gap-3 text-center">
+        <div>
+         <div class="font-mono text-2xl font-bold text-[#ff6b00]">
+          22.1
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          PPG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          4.8
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          RPG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          2.5
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          3PT
+         </div>
+        </div>
+       </div>
+       <div class="px-4 pb-4">
+        <div class="w-full h-1 rounded-full bg-white/10 overflow-hidden">
+         <div class="h-full rounded-full" style="width:78%;background:linear-gradient(90deg,#ff6b00,#ff9a40);"></div>
+        </div>
+        <div class="flex justify-between mt-1 text-[9px] text-white/30 uppercase tracking-widest"><span>Efficiency</span><span>78%</span>
+        </div>
+       </div>
+      </div><!-- Card 3 -->
+      <div class="reveal-scale glass-strong rounded-xl overflow-hidden" style="animation-delay:0.25s;">
+       <div class="relative h-48 overflow-hidden"><img src="https://images.unsplash.com/photo-1559692048-79a3f837883d?w=600&amp;q=80" alt="Basketball scoreboard" loading="lazy" class="w-full h-full object-cover" style="filter:brightness(0.6) contrast(1.1);" onerror="this.style.background='#1a1a1a';">
+        <div class="absolute inset-0" style="background:linear-gradient(0deg,rgba(10,10,10,0.95) 10%,transparent 60%);"></div>
+        <div class="absolute bottom-3 left-4">
+         <div class="font-heading text-xl font-bold uppercase">
+          #11 Deon Parks
+         </div>
+         <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest">
+          Center
+         </div>
+        </div>
+        <div class="absolute top-3 right-3 glass rounded-full w-10 h-10 flex items-center justify-center">
+         <svg class="w-4 h-4 text-[#ff6b00]">
+          <use href="#ico-trophy" />
+         </svg>
+        </div>
+       </div>
+       <div class="p-4 grid grid-cols-3 gap-3 text-center">
+        <div>
+         <div class="font-mono text-2xl font-bold text-[#ff6b00]">
+          18.7
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          PPG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          11.3
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          RPG
+         </div>
+        </div>
+        <div>
+         <div class="font-mono text-2xl font-bold text-white">
+          2.8
+         </div>
+         <div class="text-[9px] uppercase tracking-widest text-white/40">
+          BPG
+         </div>
+        </div>
+       </div>
+       <div class="px-4 pb-4">
+        <div class="w-full h-1 rounded-full bg-white/10 overflow-hidden">
+         <div class="h-full rounded-full" style="width:91%;background:linear-gradient(90deg,#ff6b00,#ff9a40);"></div>
+        </div>
+        <div class="flex justify-between mt-1 text-[9px] text-white/30 uppercase tracking-widest"><span>Efficiency</span><span>91%</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TOURNAMENT BRACKETS SECTION -->
+   <section id="tournament" class="relative w-full py-20 sm:py-28 overflow-hidden">
+    <div class="court-lines"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-4">
+       <svg class="w-5 h-5 text-[#ff6b00]">
+        <use href="#ico-trophy" />
+       </svg><span class="text-xs font-mono uppercase tracking-[0.2em] text-[#ff6b00]">Bracket Season</span>
+      </div>
+      <h2 id="tournament-heading-el" class="font-heading text-4xl sm:text-5xl font-bold uppercase tracking-tight">Tournament Brackets</h2>
+      <p class="text-white/40 mt-3 font-light tracking-wide">Run your tournament visuals like the pros</p>
+     </div><!-- Bracket Preview -->
+     <div class="reveal glass-strong rounded-xl p-5 sm:p-8 neon-border overflow-x-auto">
+      <div class="min-w-[600px]"><!-- Round labels -->
+       <div class="grid grid-cols-4 gap-4 mb-6">
+        <div class="text-center text-[10px] font-mono uppercase tracking-widest text-[#ff6b00]">
+         Quarterfinals
+        </div>
+        <div class="text-center text-[10px] font-mono uppercase tracking-widest text-[#ff6b00]">
+         Semifinals
+        </div>
+        <div class="text-center text-[10px] font-mono uppercase tracking-widest text-[#ff6b00]">
+         Finals
+        </div>
+        <div class="text-center text-[10px] font-mono uppercase tracking-widest text-[#ff6b00]">
+         Champion
+        </div>
+       </div>
+       <div class="grid grid-cols-4 gap-4 items-center"><!-- QF -->
+        <div class="space-y-3">
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center">
+          <span class="text-xs font-heading uppercase font-medium">Hawks</span><span class="font-mono text-xs text-[#ff6b00] font-bold">87</span>
+         </div>
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center opacity-50">
+          <span class="text-xs font-heading uppercase font-medium">Wolves</span><span class="font-mono text-xs text-white/40">72</span>
+         </div>
+         <div class="h-3"></div>
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center">
+          <span class="text-xs font-heading uppercase font-medium">Thunder</span><span class="font-mono text-xs text-[#ff6b00] font-bold">95</span>
+         </div>
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center opacity-50">
+          <span class="text-xs font-heading uppercase font-medium">Blaze</span><span class="font-mono text-xs text-white/40">88</span>
+         </div>
+        </div><!-- SF -->
+        <div class="space-y-3">
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center" style="margin-top:20px;">
+          <span class="text-xs font-heading uppercase font-medium">Hawks</span><span class="font-mono text-xs text-[#ff6b00] font-bold">91</span>
+         </div>
+         <div class="glass rounded-lg p-2.5 flex justify-between items-center opacity-50" style="margin-top:40px;">
+          <span class="text-xs font-heading uppercase font-medium">Thunder</span><span class="font-mono text-xs text-white/40">84</span>
+         </div>
+        </div><!-- Finals -->
+        <div class="flex items-center justify-center" style="padding-top:30px;">
+         <div class="glass-strong rounded-lg p-3 w-full neon-border flex justify-between items-center"><span class="text-sm font-heading uppercase font-bold">Hawks</span> <span class="font-mono text-sm text-[#ff6b00] font-bold">102</span>
+         </div>
+        </div><!-- Champion -->
+        <div class="flex items-center justify-center" style="padding-top:30px;">
+         <div class="text-center">
+          <svg class="w-10 h-10 text-[#ff6b00] mx-auto mb-2">
+           <use href="#ico-trophy" />
+          </svg>
+          <div class="font-heading text-xl font-bold uppercase neon-orange">
+           Hawks
+          </div>
+          <div class="text-[10px] text-[#ff6b00] uppercase tracking-widest mt-1">
+           Champions
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="reveal glass rounded-lg p-5 text-center" style="animation-delay:0.05s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-3">
+        <use href="#ico-hoop" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase mb-1">
+        Perfect for Leagues &amp; Gyms
+       </div>
+       <div class="text-xs text-white/40">
+        Professional graphics without the pro budget
+       </div>
+      </div>
+      <div class="reveal glass rounded-lg p-5 text-center" style="animation-delay:0.1s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-3">
+        <use href="#ico-calendar" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase mb-1">
+        Weekly Content
+       </div>
+       <div class="text-xs text-white/40">
+        Enough templates for an entire season
+       </div>
+      </div>
+      <div class="reveal glass rounded-lg p-5 text-center" style="animation-delay:0.15s;">
+       <svg class="w-6 h-6 text-[#ff6b00] mx-auto mb-3">
+        <use href="#ico-lightning" />
+       </svg>
+       <div class="font-heading text-sm font-bold uppercase mb-1">
+        High Engagement Design
+       </div>
+       <div class="text-xs text-white/40">
+        Graphics built to stop the scroll
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="relative w-full py-20 sm:py-28 overflow-hidden" style="background:linear-gradient(180deg,rgba(255,107,0,0.03) 0%,transparent 100%);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+     <div class="reveal text-center mb-14">
+      <div class="inline-flex items-center gap-2 mb-4">
+       <svg class="w-5 h-5 text-[#ff6b00]">
+        <use href="#ico-basketball" />
+       </svg><span class="text-xs font-mono uppercase tracking-[0.2em] text-[#ff6b00]">Community</span>
+      </div>
+      <h2 class="font-heading text-4xl sm:text-5xl font-bold uppercase tracking-tight">What Players Say</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="reveal glass-strong rounded-xl p-6" style="animation-delay:0.05s;">
+       <div class="flex gap-1 mb-3">
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+       </div>
+       <p class="text-sm text-white/60 font-light leading-relaxed mb-4">"Our rec league went from zero social presence to 2K followers in a month. These posters are insane."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#ff6b00]/20 flex items-center justify-center font-heading text-xs font-bold text-[#ff6b00]">
+         JT
+        </div>
+        <div>
+         <div class="text-xs font-heading font-bold uppercase">
+          Jay Torres
+         </div>
+         <div class="text-[10px] text-white/30">
+          League Director
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="reveal glass-strong rounded-xl p-6" style="animation-delay:0.1s;">
+       <div class="flex gap-1 mb-3">
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+       </div>
+       <p class="text-sm text-white/60 font-light leading-relaxed mb-4">"Best basketball templates I've ever used. The stat cards alone are worth it. Our players love seeing their numbers on these."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#ff6b00]/20 flex items-center justify-center font-heading text-xs font-bold text-[#ff6b00]">
+         ML
+        </div>
+        <div>
+         <div class="text-xs font-heading font-bold uppercase">
+          Mike Lawson
+         </div>
+         <div class="text-[10px] text-white/30">
+          Gym Owner
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="reveal glass-strong rounded-xl p-6" style="animation-delay:0.15s;">
+       <div class="flex gap-1 mb-3">
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+        <svg class="w-4 h-4 star-filled">
+         <use href="#ico-lightning" />
+        </svg>
+       </div>
+       <p class="text-sm text-white/60 font-light leading-relaxed mb-4">"Posted a tournament bracket from this pack and it got more engagement than anything we've ever done. Fire content."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#ff6b00]/20 flex items-center justify-center font-heading text-xs font-bold text-[#ff6b00]">
+         SR
+        </div>
+        <div>
+         <div class="text-xs font-heading font-bold uppercase">
+          Sara Reyes
+         </div>
+         <div class="text-[10px] text-white/30">
+          Tournament Organizer
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD SECTION -->
+   <section id="download" class="relative w-full py-24 sm:py-32 overflow-hidden">
+    <div class="court-lines"></div><!-- BG image -->
+    <div class="absolute inset-0" style="z-index:0;"><img src="https://images.unsplash.com/photo-1504450758481-7338bbe75005?w=1600&amp;q=80" alt="Basketball arena" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#1a0a00';" style="filter:brightness(0.15) contrast(1.2);">
+    </div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(255,107,0,0.1) 0%, transparent 60%);z-index:1;"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
+     <div class="reveal">
+      <svg class="w-12 h-12 text-[#ff6b00] mx-auto mb-6">
+       <use href="#ico-trophy" />
+      </svg>
+      <h2 id="bottom-cta-el" class="font-heading text-4xl sm:text-6xl font-bold uppercase tracking-tight leading-[0.95] mb-5">Make your season<br><span style="background:linear-gradient(90deg,#ff6b00,#ff9a40);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">look elite.</span></h2>
+      <p class="text-white/40 text-lg font-light mb-8 tracking-wide">70 game posters, 40 story templates, stat cards, brackets &amp; more.</p><a href="#" id="bottom-cta-btn" class="cta-pulse inline-flex items-center gap-2 bg-[#ff6b00] hover:bg-[#e55e00] text-black font-heading font-bold uppercase tracking-wider text-sm px-10 py-4 rounded transition-all" onclick="event.preventDefault();">
+       <svg class="w-5 h-5">
+        <use href="#ico-lightning" />
+       </svg><span>Get the Pack Now</span> </a>
+     </div><!-- What's included summary -->
+     <div class="reveal mt-14 glass-strong rounded-xl p-6 neon-border" style="animation-delay:0.1s;">
+      <div class="text-[10px] font-mono uppercase tracking-widest text-[#ff6b00] mb-4">
+       What's Included
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-left">
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-basketball" />
+        </svg><span class="text-xs text-white/60">70 Game Posters</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-calendar" />
+        </svg><span class="text-xs text-white/60">40 Story Templates</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-stopwatch" />
+        </svg><span class="text-xs text-white/60">Scoreboard Tiles</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-lightning" />
+        </svg><span class="text-xs text-white/60">Player Stat Cards</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-trophy" />
+        </svg><span class="text-xs text-white/60">Bracket Templates</span>
+       </div>
+       <div class="flex items-center gap-2">
+        <svg class="w-3.5 h-3.5 text-[#ff6b00] flex-shrink-0">
+         <use href="#ico-hoop" />
+        </svg><span class="text-xs text-white/60">Caption Pack</span>
+       </div>
+      </div>
+     </div><!-- Vote + Comment Widget -->
+     <div class="reveal mt-10 glass-strong rounded-xl p-6" style="animation-delay:0.2s;">
+      <div class="text-[10px] font-mono uppercase tracking-widest text-[#ff6b00] mb-4">
+       Vote + Comment
+      </div>
+      <div class="flex flex-col sm:flex-row items-center gap-4 mb-5"><button id="vote-btn" class="flex items-center gap-2 glass hover:bg-white/10 rounded-lg px-5 py-2.5 transition-all group" onclick="handleVote()">
+        <svg class="w-5 h-5 text-[#ff6b00] transition-transform group-hover:scale-110">
+         <use href="#ico-lightning" />
+        </svg><span class="font-heading text-sm font-bold uppercase">Hype This</span> <span id="vote-count" class="font-mono text-sm text-[#ff6b00]">247</span> </button>
+       <div class="text-xs text-white/30">
+        Show some love for RimRush
+       </div>
+      </div>
+      <form id="comment-form" class="flex gap-2" onsubmit="handleComment(event)"><input type="text" id="comment-input" placeholder="Drop a comment..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#ff6b00]/50 transition font-body" aria-label="Comment"> <button type="submit" class="bg-[#ff6b00] hover:bg-[#e55e00] text-black font-heading font-bold uppercase text-xs px-5 py-2.5 rounded-lg transition-all">Send</button>
+      </form>
+      <div id="comments-list" class="mt-4 space-y-2 max-h-40 overflow-auto"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 text-[#ff6b00]">
+       <use href="#ico-basketball" />
+      </svg><span class="font-heading text-sm font-bold uppercase tracking-wider">RimRush Graphics</span>
+     </div>
+     <div class="text-xs text-white/30 font-mono">
+      © 2025 RimRush. All rights reserved.
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Default config
+const defaultConfig = {
+  background_color: '#0a0a0a',
+  accent_color: '#ff6b00',
+  text_color: '#ffffff',
+  surface_color: '#ffffff0d',
+  secondary_action_color: '#ff9a40',
+  font_family: 'Oswald',
+  font_size: 16,
+  hero_tagline: 'Posters that feel like a highlight reel.',
+  hero_subhead: 'Graphics for teams, leagues, gyms, and tournaments.',
+  cta_primary: 'Get the Pack',
+  cta_secondary: 'See Posters',
+  stats_heading: 'Player Stat Cards',
+  tournament_heading: 'Tournament Brackets',
+  bottom_cta_text: 'Make your season look elite.'
+};
+
+// Vote & comment state (in-memory only)
+let voteCount = 247;
+let hasVoted = false;
+const comments = [];
+
+function handleVote() {
+  if (!hasVoted) {
+    voteCount++;
+    hasVoted = true;
+    document.getElementById('vote-count').textContent = voteCount;
+    document.getElementById('vote-btn').classList.add('neon-border');
+  }
+}
+
+function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: 'Just now' });
+  input.value = '';
+  renderComments();
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="glass rounded-lg px-3 py-2 flex items-start gap-2">
+      <div class="w-5 h-5 rounded-full bg-[#ff6b00]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg class="w-3 h-3 text-[#ff6b00]"><use href="#ico-basketball"/></svg>
+      </div>
+      <div>
+        <div class="text-xs text-white/70">${c.text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="text-[9px] text-white/30 mt-0.5">${c.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Scroll reveal observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+// Active nav highlight
+const sections = ['home','posters','stats','tournament','reviews','download'];
+const appWrapper = document.getElementById('app-wrapper');
+
+appWrapper.addEventListener('scroll', () => {
+  const scrollY = appWrapper.scrollTop;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrollY) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    link.classList.toggle('text-[#ff6b00]', link.getAttribute('href') === '#' + current);
+    link.classList.toggle('text-white/70', link.getAttribute('href') !== '#' + current);
+  });
+});
+
+// Mobile menu toggle
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Smooth scroll for anchor links within the wrapper
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      appWrapper.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+    }
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// Element SDK
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const cf = c.font_family || defaultConfig.font_family;
+  const bs = c.font_size || defaultConfig.font_size;
+
+  // Hero tagline
+  const heroTag = document.getElementById('hero-tagline');
+  if (heroTag) {
+    const words = (c.hero_tagline || defaultConfig.hero_tagline).split(' ');
+    const mid = Math.ceil(words.length / 2);
+    heroTag.innerHTML = `<span class="block text-white">${words.slice(0, mid).join(' ')}</span><span class="block" style="background:linear-gradient(90deg,${c.accent_color || '#ff6b00'},${c.secondary_action_color || '#ff9a40'});-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${words.slice(mid).join(' ')}</span>`;
+    heroTag.style.fontFamily = `${cf}, sans-serif`;
+  }
+
+  const heroSub = document.getElementById('hero-subhead');
+  if (heroSub) heroSub.textContent = c.hero_subhead || defaultConfig.hero_subhead;
+
+  const ctaPri = document.getElementById('cta-primary-btn');
+  if (ctaPri) {
+    ctaPri.querySelector('span').textContent = c.cta_primary || defaultConfig.cta_primary;
+    ctaPri.style.background = c.accent_color || '#ff6b00';
+  }
+  const ctaSec = document.getElementById('cta-secondary-btn');
+  if (ctaSec) ctaSec.querySelector('span').textContent = c.cta_secondary || defaultConfig.cta_secondary;
+
+  const statsH = document.getElementById('stats-heading-el');
+  if (statsH) {
+    statsH.textContent = c.stats_heading || defaultConfig.stats_heading;
+    statsH.style.fontFamily = `${cf}, sans-serif`;
+  }
+
+  const tourH = document.getElementById('tournament-heading-el');
+  if (tourH) {
+    tourH.textContent = c.tournament_heading || defaultConfig.tournament_heading;
+    tourH.style.fontFamily = `${cf}, sans-serif`;
+  }
+
+  const bottomCta = document.getElementById('bottom-cta-el');
+  if (bottomCta) {
+    const txt = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+    const words2 = txt.split(' ');
+    const mid2 = Math.ceil(words2.length / 2);
+    bottomCta.innerHTML = `${words2.slice(0, mid2).join(' ')}<br><span style="background:linear-gradient(90deg,${c.accent_color || '#ff6b00'},${c.secondary_action_color || '#ff9a40'});-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${words2.slice(mid2).join(' ')}</span>`;
+    bottomCta.style.fontFamily = `${cf}, sans-serif`;
+  }
+
+  // Font size scaling on headings
+  document.querySelectorAll('.font-heading').forEach(el => {
+    if (el.tagName === 'H1' || el.id === 'hero-tagline') return; // skip hero, it has its own size
+  });
+
+  // Background color
+  document.body.style.backgroundColor = c.background_color || '#0a0a0a';
+
+  // Accent color on SVG icons
+  document.querySelectorAll('.text-\\[\\#ff6b00\\]').forEach(el => {
+    el.style.color = c.accent_color || '#ff6b00';
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['stats_heading', config.stats_heading || defaultConfig.stats_heading],
+    ['tournament_heading', config.tournament_heading || defaultConfig.tournament_heading],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e89fe00c24027c5',t:'MTc3NTU3NDk3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,661 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/685560d7-ab4a-4f63-884b-b8fd274de623 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptProfit Kits</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Sora:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a12;
+  --surface: #14142a;
+  --text: #e8e8f0;
+  --primary: #6c3fff;
+  --secondary: #00e5a0;
+}
+
+body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(108,63,255,0.3), 0 8px 32px rgba(0,0,0,0.4); }
+  50% { box-shadow: 0 0 40px rgba(108,63,255,0.5), 0 12px 40px rgba(0,0,0,0.5); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blink-caret {
+  50% { border-color: transparent; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes icon-bounce {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.15) rotate(-3deg); }
+  75% { transform: scale(1.05) rotate(2deg); }
+}
+
+.card-module {
+  animation: glow-pulse 3s ease-in-out infinite;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card-module:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 0 50px rgba(108,63,255,0.6), 0 16px 48px rgba(0,0,0,0.6);
+}
+.card-module:hover .mod-icon {
+  animation: icon-bounce 0.6s ease;
+}
+
+.float-anim { animation: float 4s ease-in-out infinite; }
+.float-anim-delay { animation: float 4s ease-in-out infinite; animation-delay: 1s; }
+.float-anim-delay2 { animation: float 4s ease-in-out infinite; animation-delay: 2s; }
+
+.slide-in { animation: slide-up 0.7s ease-out both; }
+.slide-d1 { animation-delay: 0.1s; }
+.slide-d2 { animation-delay: 0.2s; }
+.slide-d3 { animation-delay: 0.3s; }
+.slide-d4 { animation-delay: 0.4s; }
+.slide-d5 { animation-delay: 0.5s; }
+.slide-d6 { animation-delay: 0.6s; }
+
+.code-card {
+  background: linear-gradient(135deg, #14142a 0%, #1a1a3e 100%);
+  border: 1px solid rgba(108,63,255,0.3);
+  font-family: 'Space Mono', monospace;
+  position: relative;
+  overflow: hidden;
+}
+.code-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6c3fff, #00e5a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c3fff, #5a2de0);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,63,255,0.5); }
+.btn-primary:hover::after { opacity: 1; }
+
+.nav-glass {
+  background: rgba(10,10,18,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(108,63,255,0.15);
+}
+
+.widget-panel {
+  background: linear-gradient(135deg, #14142a, #1c1c3a);
+  border: 1px solid rgba(108,63,255,0.25);
+}
+
+.reaction-btn {
+  transition: all 0.2s;
+  border: 1px solid rgba(108,63,255,0.2);
+  background: rgba(108,63,255,0.08);
+}
+.reaction-btn:hover { background: rgba(108,63,255,0.2); transform: scale(1.1); }
+.reaction-btn.active { background: rgba(108,63,255,0.35); border-color: var(--primary); }
+
+.price-chip {
+  transition: all 0.2s;
+  border: 1px solid rgba(0,229,160,0.2);
+  background: rgba(0,229,160,0.06);
+}
+.price-chip:hover { background: rgba(0,229,160,0.15); }
+.price-chip.active { background: rgba(0,229,160,0.3); border-color: var(--secondary); }
+
+.mesh-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(108,63,255,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,229,160,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(108,63,255,0.06) 0%, transparent 50%),
+    var(--bg);
+}
+
+.scroll-mt { scroll-margin-top: 80px; }
+
+.comment-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(108,63,255,0.2); }
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--primary); color: white; padding: 10px 24px; border-radius: 8px;
+  font-size: 14px; z-index: 999; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast-msg.show { opacity: 1; }
+
+.signin-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto mesh-bg"><!-- Toast -->
+   <div id="toast" class="toast-msg"></div><!-- Sign-in Overlay (hidden) -->
+   <div id="signin-overlay" class="signin-overlay" style="display:none;">
+    <div class="widget-panel rounded-2xl p-8 max-w-sm w-full mx-4 text-center">
+     <h3 class="text-xl font-bold mb-2">Join the conversation</h3>
+     <p class="text-sm opacity-60 mb-6">Enter a display name to vote &amp; comment</p><input id="signin-name" type="text" placeholder="Your name" maxlength="30" class="w-full px-4 py-3 rounded-lg bg-black/30 border border-white/10 text-white comment-input mb-4">
+     <div class="flex gap-3"><button onclick="cancelSignin()" class="flex-1 px-4 py-3 rounded-lg border border-white/10 hover:bg-white/5 transition">Cancel</button> <button onclick="confirmSignin()" class="flex-1 px-4 py-3 rounded-lg btn-primary text-white font-semibold">Enter</button>
+     </div>
+    </div>
+   </div><!-- Nav -->
+   <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto flex items-center justify-between h-16"><a href="#home" class="font-bold text-lg tracking-tight"> <span class="gradient-text">PromptProfit</span> <span class="opacity-70">Kits</span> </a> <button id="mobile-menu-btn" class="md:hidden p-2" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+     <div class="hidden md:flex items-center gap-6 text-sm"><a href="#home" class="opacity-70 hover:opacity-100 transition">Home</a> <a href="#inside" class="opacity-70 hover:opacity-100 transition">What's Inside</a> <a href="#usecases" class="opacity-70 hover:opacity-100 transition">Use Cases</a> <a href="#preview" class="opacity-70 hover:opacity-100 transition">Preview</a> <a href="#reviews" class="opacity-70 hover:opacity-100 transition">Reviews</a> <a href="#getkit" class="btn-primary px-5 py-2 rounded-lg text-white font-semibold text-sm">Get the Kit</a>
+     </div>
+    </div>
+    <div id="mobile-nav" class="hidden md:hidden pb-4 flex flex-col gap-3 text-sm"><a href="#home" class="opacity-70 hover:opacity-100 py-1">Home</a> <a href="#inside" class="opacity-70 hover:opacity-100 py-1">What's Inside</a> <a href="#usecases" class="opacity-70 hover:opacity-100 py-1">Use Cases</a> <a href="#preview" class="opacity-70 hover:opacity-100 py-1">Preview</a> <a href="#reviews" class="opacity-70 hover:opacity-100 py-1">Reviews</a> <a href="#getkit" class="btn-primary px-5 py-2 rounded-lg text-white font-semibold text-center">Get the Kit</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="scroll-mt pt-28 pb-20 px-4">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+     <div class="slide-in">
+      <div class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-6 border border-white/10" style="background:rgba(108,63,255,0.15);color:#b49aff;">
+       🚀 300+ Niche Prompts • 52-Week Calendar • Done-For-You
+      </div>
+      <h1 id="hero-heading" class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">Your niche doesn't need more ideas. It needs <span class="gradient-text">better prompts.</span></h1>
+      <p id="hero-subtext" class="text-lg opacity-60 mb-8 max-w-lg">Pre-written prompts that print money for your niche. Sell as a product, offer as a service, or build retainers — all from one kit.</p><a href="#getkit" id="hero-cta" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-bold text-lg"> <i data-lucide="zap" style="width:20px;height:20px;"></i> <span>Get the Kit</span> </a>
+     </div><!-- Vote Widget -->
+     <div class="widget-panel rounded-2xl p-6 slide-in slide-d2 float-anim">
+      <div class="flex items-center gap-2 mb-4"><i data-lucide="message-circle" style="width:18px;height:18px;color:#00e5a0;"></i>
+       <h3 class="font-bold text-lg">Would you sell this?</h3>
+      </div><!-- Reactions -->
+      <div class="mb-4">
+       <p class="text-xs uppercase tracking-wider opacity-40 mb-2">React</p>
+       <div id="reactions-row" class="flex flex-wrap gap-2"><!-- filled by JS -->
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-4">
+       <p class="text-xs uppercase tracking-wider opacity-40 mb-2">What would you charge?</p>
+       <div id="prices-row" class="flex flex-wrap gap-2"><!-- filled by JS -->
+       </div>
+      </div><!-- Comments -->
+      <div class="mb-3">
+       <p class="text-xs uppercase tracking-wider opacity-40 mb-2">Comments</p>
+       <div id="comments-list" class="max-h-40 overflow-auto space-y-2 mb-3"></div>
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Share your thoughts..." maxlength="200" class="flex-1 px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-white text-sm comment-input"> <button onclick="submitComment()" id="comment-btn" class="px-4 py-2 rounded-lg btn-primary text-white text-sm font-semibold flex items-center gap-1"> <i data-lucide="send" style="width:14px;height:14px;"></i> </button>
+       </div>
+      </div>
+      <div class="text-center pt-3 border-t border-white/5">
+       <p class="text-xs opacity-30">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- What's Inside -->
+   <section id="inside" class="scroll-mt py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 slide-in">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-3">What's Inside the Kit</h2>
+      <p class="opacity-50 max-w-xl mx-auto">6 powerful modules. 300+ prompts. Every angle covered.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="card-module rounded-2xl p-6 slide-in slide-d1" style="animation-delay:0.6s,0s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#6c3fff,#9b6fff);"><i data-lucide="megaphone" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Ad Copy Prompts</h3>
+       <p class="text-sm opacity-50">Facebook, Google, Instagram — scroll-stopping ads for any niche in seconds.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        50+ prompts
+       </div>
+      </div>
+      <div class="card-module rounded-2xl p-6 slide-in slide-d2" style="animation-delay:0.9s,0.3s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#00e5a0,#00b880);"><i data-lucide="file-text" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Social Posts</h3>
+       <p class="text-sm opacity-50">52-week content calendar with daily prompts. Never run out of ideas.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        260+ prompts
+       </div>
+      </div>
+      <div class="card-module rounded-2xl p-6 slide-in slide-d3" style="animation-delay:1.2s,0.6s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24);"><i data-lucide="star" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Review Replies</h3>
+       <p class="text-sm opacity-50">Professional replies to 1-star and 5-star reviews. Reputation on autopilot.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        30+ prompts
+       </div>
+      </div>
+      <div class="card-module rounded-2xl p-6 slide-in slide-d4" style="animation-delay:1.5s,0.9s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#ffc048,#ff9500);"><i data-lucide="smartphone" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">SMS Follow-Ups</h3>
+       <p class="text-sm opacity-50">Booking confirmations, no-show recovery, promo blasts — all pre-written.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        25+ prompts
+       </div>
+      </div>
+      <div class="card-module rounded-2xl p-6 slide-in slide-d5" style="animation-delay:1.8s,1.2s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#00b4d8,#0077b6);"><i data-lucide="tag" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Seasonal Offers</h3>
+       <p class="text-sm opacity-50">Holiday promos, flash sales, and limited-time campaigns ready to go.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        24+ prompts
+       </div>
+      </div>
+      <div class="card-module rounded-2xl p-6 slide-in slide-d6" style="animation-delay:2.1s,1.5s;">
+       <div class="mod-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:linear-gradient(135deg,#e040fb,#ab47bc);"><i data-lucide="layout" style="width:22px;height:22px;color:white;"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Landing Pages</h3>
+       <p class="text-sm opacity-50">High-converting landing page copy. Headlines, CTAs, and objection handling.</p>
+       <div class="mt-3 text-xs font-mono opacity-30">
+        20+ prompts
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Use Cases -->
+   <section id="usecases" class="scroll-mt py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-3">Two Ways to Profit</h2>
+      <p class="opacity-50">Whether you want passive income or recurring revenue — this kit does both.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8"><!-- Sell as Product -->
+      <div class="widget-panel rounded-2xl p-8 float-anim">
+       <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#6c3fff,#9b6fff);"><i data-lucide="package" style="width:20px;height:20px;color:white;"></i>
+        </div>
+        <h3 class="font-bold text-xl">Sell as a Product</h3>
+       </div>
+       <ul class="space-y-3 text-sm opacity-70">
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>List on Gumroad, Etsy, or your own site</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>White-label for any niche (plumbers, nail techs, landscapers)</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Price $27–$97 per kit — pure profit</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Done-for-you marketing brain in a box</li>
+       </ul>
+       <div class="mt-6 p-3 rounded-lg text-center text-sm font-semibold" style="background:rgba(108,63,255,0.12);color:#b49aff;">
+        💰 Passive income — sell once, profit forever
+       </div>
+      </div><!-- Sell as Service -->
+      <div class="widget-panel rounded-2xl p-8 float-anim-delay">
+       <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#00e5a0,#00b880);"><i data-lucide="refresh-cw" style="width:20px;height:20px;color:white;"></i>
+        </div>
+        <h3 class="font-bold text-xl">Sell as a Service</h3>
+       </div>
+       <ul class="space-y-3 text-sm opacity-70">
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Offer weekly content drops to local businesses</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Turn prompts into $500–$2K/mo retainers</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Run AI-generated content as a recurring offer</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e5a0;flex-shrink:0;margin-top:2px;"></i>Become the "marketing person" without the grind</li>
+       </ul>
+       <div class="mt-6 p-3 rounded-lg text-center text-sm font-semibold" style="background:rgba(0,229,160,0.12);color:#00e5a0;">
+        🔁 Recurring revenue — turn prompts into retainers
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Preview -->
+   <section id="preview" class="scroll-mt py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-3">Preview: Sample Prompts</h2>
+      <p class="opacity-50">See the quality. Imagine the results.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="code-card rounded-2xl p-6 float-anim">
+       <div class="flex items-center gap-2 mb-3"><span class="w-3 h-3 rounded-full bg-red-500"></span> <span class="w-3 h-3 rounded-full bg-yellow-500"></span> <span class="w-3 h-3 rounded-full bg-green-500"></span> <span class="ml-2 text-xs opacity-30">ad_copy.prompt</span>
+       </div>
+       <p class="text-sm leading-relaxed opacity-80" style="font-family:'Space Mono',monospace;">"Write a Facebook ad for a <span style="color:#00e5a0;">[plumbing company]</span> targeting homeowners within 15 miles. Highlight same-day service, include a seasonal discount of <span style="color:#00e5a0;">[20%]</span>, and end with an urgent CTA."</p>
+       <div class="mt-4 text-xs opacity-30">
+        Module: Ad Copy • Type: Paid Social
+       </div>
+      </div>
+      <div class="code-card rounded-2xl p-6 float-anim-delay">
+       <div class="flex items-center gap-2 mb-3"><span class="w-3 h-3 rounded-full bg-red-500"></span> <span class="w-3 h-3 rounded-full bg-yellow-500"></span> <span class="w-3 h-3 rounded-full bg-green-500"></span> <span class="ml-2 text-xs opacity-30">review_reply.prompt</span>
+       </div>
+       <p class="text-sm leading-relaxed opacity-80" style="font-family:'Space Mono',monospace;">"Write a warm, professional reply to this <span style="color:#00e5a0;">[5-star Google review]</span> from a customer named <span style="color:#00e5a0;">[Sarah]</span>. Thank them specifically for mentioning <span style="color:#00e5a0;">[fast response time]</span>."</p>
+       <div class="mt-4 text-xs opacity-30">
+        Module: Reviews • Type: Reputation
+       </div>
+      </div>
+      <div class="code-card rounded-2xl p-6 float-anim-delay2">
+       <div class="flex items-center gap-2 mb-3"><span class="w-3 h-3 rounded-full bg-red-500"></span> <span class="w-3 h-3 rounded-full bg-yellow-500"></span> <span class="w-3 h-3 rounded-full bg-green-500"></span> <span class="ml-2 text-xs opacity-30">sms_followup.prompt</span>
+       </div>
+       <p class="text-sm leading-relaxed opacity-80" style="font-family:'Space Mono',monospace;">"Write a friendly SMS for a <span style="color:#00e5a0;">[nail salon]</span> to send 24 hours after an appointment. Ask for a Google review and offer <span style="color:#00e5a0;">[10% off]</span> their next visit."</p>
+       <div class="mt-4 text-xs opacity-30">
+        Module: SMS • Type: Follow-Up
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="scroll-mt py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-3">What Buyers Are Saying</h2>
+      <p class="opacity-50">Real results from real niche entrepreneurs.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="widget-panel rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"I customized these for a landscaping company and sold the pack for $47. Made back 10x in the first week."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#6c3fff,#00e5a0);">
+         MR
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Marcus R.</p>
+         <p class="text-xs opacity-40">Digital Product Seller</p>
+        </div>
+       </div>
+      </div>
+      <div class="widget-panel rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"I turned the SMS and review prompts into a $1,500/mo retainer for 3 salons. This kit literally prints money."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#ff6b6b,#ffc048);">
+         JT
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Jasmine T.</p>
+         <p class="text-xs opacity-40">Freelance Marketer</p>
+        </div>
+       </div>
+      </div>
+      <div class="widget-panel rounded-2xl p-6">
+       <div class="flex items-center gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#ffc048;fill:#ffc048;"></i>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"The 52-week calendar alone is worth $500. I white-labeled it for plumbers and it's my best-selling Gumroad product."</p>
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:linear-gradient(135deg,#00e5a0,#0077b6);">
+         DL
+        </div>
+        <div>
+         <p class="text-sm font-semibold">Derek L.</p>
+         <p class="text-xs opacity-40">Niche Template Creator</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA -->
+   <section id="getkit" class="scroll-mt py-24 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="widget-panel rounded-3xl p-10 md:p-14" style="background:linear-gradient(135deg, #14142a 0%, #1c1040 50%, #14142a 100%); border: 1px solid rgba(108,63,255,0.3);">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style="background:rgba(0,229,160,0.12);color:#00e5a0;"><i data-lucide="zap" style="width:14px;height:14px;"></i> Ready to launch?
+      </div>
+      <h2 id="bottom-cta-heading" class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">Launch a new digital product <span class="gradient-text">in one day.</span></h2>
+      <p class="opacity-50 mb-8 max-w-lg mx-auto">300+ prompts. 52-week calendar. 6 modules. Everything you need to build a niche prompt business — starting today.</p><a href="#" onclick="event.preventDefault();showToast('🎉 Thanks for your interest! Kit coming soon.')" class="btn-primary inline-flex items-center gap-3 px-10 py-5 rounded-xl text-white font-bold text-lg"> <i data-lucide="download" style="width:22px;height:22px;"></i> <span id="bottom-cta-btn">Get the Kit — $47</span> </a>
+      <p class="mt-4 text-xs opacity-30">Instant download • Lifetime updates • 100% yours to resell</p>
+     </div>
+    </div>
+   </section>
+   <footer class="py-8 text-center text-xs opacity-30 border-t border-white/5">
+    <p>© 2025 PromptProfit Kits. Built for niche entrepreneurs.</p>
+   </footer>
+  </div>
+  <script>
+// Data
+const REACTIONS = ['🔥','💰','🚀','🎯','👏'];
+const PRICES = ['$17','$27','$37','$47','$57','$67','$77','$97','$127','$197'];
+let allData = [];
+let currentUser = null;
+let pendingAction = null;
+
+// Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Sign-in
+function requireUser(callback) {
+  if (currentUser) { callback(); return; }
+  pendingAction = callback;
+  document.getElementById('signin-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('signin-name').focus(), 100);
+}
+function cancelSignin() {
+  document.getElementById('signin-overlay').style.display = 'none';
+  pendingAction = null;
+}
+function confirmSignin() {
+  const name = document.getElementById('signin-name').value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('signin-overlay').style.display = 'none';
+  if (pendingAction) { pendingAction(); pendingAction = null; }
+}
+
+// Build reactions row
+function buildReactionsRow() {
+  const row = document.getElementById('reactions-row');
+  row.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const count = allData.filter(d => d.type === 'reaction' && d.reaction === r).length;
+    const myVote = allData.find(d => d.type === 'reaction' && d.reaction === r && d.username === currentUser);
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn rounded-lg px-3 py-1.5 text-sm flex items-center gap-1' + (myVote ? ' active' : '');
+    btn.textContent = `${r} ${count || ''}`;
+    btn.onclick = () => requireUser(() => toggleReaction(r));
+    row.appendChild(btn);
+  });
+}
+
+// Build prices row
+function buildPricesRow() {
+  const row = document.getElementById('prices-row');
+  row.innerHTML = '';
+  PRICES.forEach(p => {
+    const count = allData.filter(d => d.type === 'price' && d.price === p).length;
+    const myVote = allData.find(d => d.type === 'price' && d.price === p && d.username === currentUser);
+    const btn = document.createElement('button');
+    btn.className = 'price-chip rounded-lg px-3 py-1.5 text-xs font-mono' + (myVote ? ' active' : '');
+    btn.textContent = `${p}${count ? ' ('+count+')' : ''}`;
+    btn.onclick = () => requireUser(() => togglePrice(p));
+    row.appendChild(btn);
+  });
+}
+
+// Build comments
+function buildComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment');
+  if (comments.length === 0) {
+    list.innerHTML = '<p class="text-xs opacity-30 text-center py-2">No comments yet. Be the first!</p>';
+    return;
+  }
+  // Selective update
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const currentIds = new Set();
+  comments.forEach(c => {
+    currentIds.add(c.__backendId);
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'flex items-start gap-2 text-sm';
+      div.innerHTML = `<span class="font-semibold opacity-80 shrink-0" style="color:#00e5a0;">${escHtml(c.username)}:</span><span class="opacity-60">${escHtml(c.comment)}</span>`;
+      list.appendChild(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+async function toggleReaction(r) {
+  const existing = allData.find(d => d.type === 'reaction' && d.reaction === r && d.username === currentUser);
+  if (existing) {
+    await window.dataSdk.delete(existing);
+  } else {
+    if (allData.length >= 999) { showToast('Limit reached!'); return; }
+    await window.dataSdk.create({ type: 'reaction', reaction: r, price: '', comment: '', username: currentUser, timestamp: new Date().toISOString() });
+  }
+}
+
+async function togglePrice(p) {
+  const existing = allData.find(d => d.type === 'price' && d.username === currentUser);
+  if (existing && existing.price === p) {
+    await window.dataSdk.delete(existing);
+  } else if (existing) {
+    await window.dataSdk.update({ ...existing, price: p });
+  } else {
+    if (allData.length >= 999) { showToast('Limit reached!'); return; }
+    await window.dataSdk.create({ type: 'price', reaction: '', price: p, comment: '', username: currentUser, timestamp: new Date().toISOString() });
+  }
+}
+
+async function submitComment() {
+  requireUser(async () => {
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if (!text) return;
+    if (allData.length >= 999) { showToast('Limit reached!'); return; }
+    const btn = document.getElementById('comment-btn');
+    btn.disabled = true; btn.style.opacity = '0.5';
+    const res = await window.dataSdk.create({ type: 'comment', reaction: '', price: '', comment: text, username: currentUser, timestamp: new Date().toISOString() });
+    btn.disabled = false; btn.style.opacity = '1';
+    if (res.isOk) { input.value = ''; } else { showToast('Error posting comment.'); }
+  });
+}
+
+function renderAll() {
+  buildReactionsRow();
+  buildPricesRow();
+  buildComments();
+}
+
+// Data SDK
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderAll();
+  }
+};
+
+// Element SDK
+const defaultConfig = {
+  hero_heading: "Your niche doesn't need more ideas. It needs better prompts.",
+  hero_subtext: "Pre-written prompts that print money for your niche. Sell as a product, offer as a service, or build retainers — all from one kit.",
+  cta_text: "Get the Kit",
+  bottom_cta_heading: "Launch a new digital product in one day.",
+  background_color: "#0a0a12",
+  surface_color: "#14142a",
+  text_color: "#e8e8f0",
+  primary_color: "#6c3fff",
+  secondary_color: "#00e5a0",
+  font_family: "Sora",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const h = document.getElementById('hero-heading');
+  const heading = config.hero_heading || defaultConfig.hero_heading;
+  h.innerHTML = heading.replace(/(better prompts\.?)/i, '<span class="gradient-text">$1</span>');
+
+  document.getElementById('hero-subtext').textContent = config.hero_subtext || defaultConfig.hero_subtext;
+  document.getElementById('hero-cta').querySelector('span').textContent = config.cta_text || defaultConfig.cta_text;
+
+  const bh = document.getElementById('bottom-cta-heading');
+  const btext = config.bottom_cta_heading || defaultConfig.bottom_cta_heading;
+  bh.innerHTML = btext.replace(/(in one day\.?)/i, '<span class="gradient-text">$1</span>');
+
+  // Colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_color || defaultConfig.primary_color;
+  const secondary = config.secondary_color || defaultConfig.secondary_color;
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--text', txt);
+  document.documentElement.style.setProperty('--primary', primary);
+  document.documentElement.style.setProperty('--secondary', secondary);
+  document.getElementById('app').style.color = txt;
+
+  // Font
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+  document.body.style.fontFamily = `${font}, Sora, sans-serif`;
+  document.body.style.fontSize = `${size}px`;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${size * 3}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${size * 2.2}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${size * 1.25}px`);
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: v => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: v => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_heading", config.hero_heading || defaultConfig.hero_heading],
+    ["hero_subtext", config.hero_subtext || defaultConfig.hero_subtext],
+    ["cta_text", config.cta_text || defaultConfig.cta_text],
+    ["bottom_cta_heading", config.bottom_cta_heading || defaultConfig.bottom_cta_heading],
+  ])
+});
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+  renderAll();
+})();
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6002c4c227c5',t:'MTc3NTU3ODk4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

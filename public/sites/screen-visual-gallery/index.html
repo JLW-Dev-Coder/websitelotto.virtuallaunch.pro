@@ -1,1 +1,530 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/567af0a9-5264-4bc4-b9f9-6ee8af7cc816 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyGrid Aerials</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html{height:100%;scroll-behavior:smooth}
+body{height:100%;margin:0;font-family:'DM Sans',sans-serif;overflow-x:hidden}
+.font-serif{font-family:'Instrument Serif',serif}
+@keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes floatGrid{0%,100%{opacity:.12}50%{opacity:.25}}
+@keyframes pulse-soft{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes panLeft{0%{transform:scale(1.1) translateX(0)}100%{transform:scale(1.1) translateX(-3%)}}
+@keyframes panRight{0%{transform:scale(1.1) translateX(-3%)}100%{transform:scale(1.1) translateX(0)}}
+.anim-zoom{animation:slowZoom 20s ease-in-out infinite alternate}
+.anim-fade-up{animation:fadeUp .8s ease both}
+.anim-delay-1{animation-delay:.15s}
+.anim-delay-2{animation-delay:.3s}
+.anim-delay-3{animation-delay:.45s}
+.anim-delay-4{animation-delay:.6s}
+.anim-delay-5{animation-delay:.75s}
+.anim-float{animation:floatGrid 4s ease-in-out infinite}
+.anim-pulse{animation:pulse-soft 2.5s ease-in-out infinite}
+.anim-pan-l{animation:panLeft 25s ease-in-out infinite alternate}
+.anim-pan-r{animation:panRight 25s ease-in-out infinite alternate}
+.grid-overlay{background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:60px 60px}
+.cat-card{transition:all .5s cubic-bezier(.25,.8,.25,1)}
+.cat-card:hover{transform:translateY(-6px)}
+.cat-card:hover .cat-img{transform:scale(1.06)}
+.cat-img{transition:transform .7s cubic-bezier(.25,.8,.25,1)}
+.nav-link{position:relative}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;transition:width .3s ease}
+.nav-link:hover::after{width:100%}
+.toast-msg{animation:fadeUp .4s ease both}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.reaction-btn{transition:all .2s ease}
+.reaction-btn:hover{transform:scale(1.15)}
+.reaction-btn.active{ring:2px solid currentColor}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{
+bg:'var(--c-bg)',surface:'var(--c-surface)',txt:'var(--c-txt)',accent:'var(--c-accent)',muted:'var(--c-muted)'
+}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--c-bg);color:var(--c-txt)"><!-- Toast container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-2"></div><!-- NAV -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-serif text-xl tracking-wide" id="nav-logo">SkyGrid</a>
+    <div class="hidden md:flex gap-8 text-sm tracking-widest uppercase"><a href="#home" class="nav-link" style="--c-after:var(--c-accent)">Home</a> <a href="#gallery" class="nav-link">Gallery</a> <a href="#collections" class="nav-link">Collections</a> <a href="#prints" class="nav-link">Print Sets</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+    </div><button id="mobile-menu-btn" class="md:hidden"><i data-lucide="menu" class="w-5 h-5"></i></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm tracking-widest uppercase"><a href="#home" class="py-1">Home</a> <a href="#gallery" class="py-1">Gallery</a> <a href="#collections" class="py-1">Collections</a> <a href="#prints" class="py-1">Print Sets</a> <a href="#reviews" class="py-1">Reviews</a> <a href="#download" class="py-1">Download</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden" style="height:100%">
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&amp;q=80" alt="Aerial ocean view" class="w-full h-full object-cover anim-zoom" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0a1628,#1a3a5c)';this.alt='Image unavailable';">
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.45),rgba(0,0,0,.7))"></div>
+    <div class="absolute inset-0 grid-overlay anim-float"></div>
+   </div>
+   <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+    <p class="text-xs tracking-[.4em] uppercase mb-6 anim-fade-up" style="color:var(--c-accent)">SkyGrid Aerials</p>
+    <h1 id="hero-title" class="font-serif text-4xl sm:text-5xl md:text-7xl leading-tight max-w-4xl anim-fade-up anim-delay-1" style="font-style:italic">Lose yourself in patterns from the sky.</h1>
+    <p id="hero-subtitle" class="mt-6 text-base md:text-lg max-w-xl anim-fade-up anim-delay-2" style="color:var(--c-muted)">Aerial wallpapers and prints, curated.</p>
+    <div class="flex flex-wrap gap-4 mt-10 anim-fade-up anim-delay-3"><a href="#download" id="hero-cta-primary" class="px-8 py-3 text-sm tracking-wider uppercase font-medium transition-all duration-300 hover:brightness-110" style="background:var(--c-accent);color:var(--c-bg);border-radius:2px">Download Collection</a> <a href="#gallery" id="hero-cta-secondary" class="px-8 py-3 text-sm tracking-wider uppercase font-medium border transition-all duration-300 hover:bg-white/10" style="border-color:var(--c-muted);border-radius:2px">Browse Gallery</a>
+    </div>
+    <div class="absolute bottom-8 anim-pulse">
+     <i data-lucide="chevron-down" class="w-5 h-5" style="color:var(--c-muted)"></i>
+    </div>
+   </div>
+  </section><!-- GALLERY STRIP -->
+  <section id="gallery" class="w-full py-24 px-6" style="background:var(--c-bg)">
+   <div class="max-w-7xl mx-auto">
+    <p class="text-xs tracking-[.4em] uppercase mb-3 anim-fade-up" style="color:var(--c-accent)">Gallery</p>
+    <h2 class="font-serif text-3xl md:text-5xl anim-fade-up anim-delay-1" style="font-style:italic">150 aerial wallpapers</h2>
+    <p class="mt-4 max-w-lg anim-fade-up anim-delay-2" style="color:var(--c-muted)">Every image captured from above, color-graded for screens that look expensive.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-14">
+     <div class="col-span-2 row-span-2 overflow-hidden rounded" style="aspect-ratio:1/1">
+      <img src="https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=800&amp;q=80" alt="Aerial forest" class="w-full h-full object-cover anim-pan-l" loading="lazy" onerror="this.style.background='#1a3a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="overflow-hidden rounded" style="aspect-ratio:1/1">
+      <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&amp;q=80" alt="Aerial city grid" class="w-full h-full object-cover anim-pan-r" loading="lazy" onerror="this.style.background='#2a2a3a';this.alt='Image unavailable';">
+     </div>
+     <div class="overflow-hidden rounded" style="aspect-ratio:1/1">
+      <img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&amp;q=80" alt="Aerial desert" class="w-full h-full object-cover anim-pan-l" loading="lazy" onerror="this.style.background='#3a2a1a';this.alt='Image unavailable';">
+     </div>
+     <div class="overflow-hidden rounded" style="aspect-ratio:1/1">
+      <img src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=600&amp;q=80" alt="Aerial river" class="w-full h-full object-cover anim-pan-r" loading="lazy" onerror="this.style.background='#1a2a3a';this.alt='Image unavailable';">
+     </div>
+     <div class="overflow-hidden rounded" style="aspect-ratio:1/1">
+      <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&amp;q=80" alt="Farmland patterns" class="w-full h-full object-cover anim-pan-l" loading="lazy" onerror="this.style.background='#2a3a1a';this.alt='Image unavailable';">
+     </div>
+    </div>
+   </div>
+  </section><!-- COLLECTIONS -->
+  <section id="collections" class="w-full py-24 px-6" style="background:var(--c-surface)">
+   <div class="max-w-7xl mx-auto">
+    <p class="text-xs tracking-[.4em] uppercase mb-3" style="color:var(--c-accent)">Collections</p>
+    <h2 class="font-serif text-3xl md:text-5xl" style="font-style:italic">Curated by terrain</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-14" id="collections-grid">
+    </div>
+   </div>
+  </section><!-- PRINT SETS -->
+  <section id="prints" class="w-full py-24 px-6" style="background:var(--c-bg)">
+   <div class="max-w-7xl mx-auto">
+    <p class="text-xs tracking-[.4em] uppercase mb-3" style="color:var(--c-accent)">Print Sets</p>
+    <h2 class="font-serif text-3xl md:text-5xl" style="font-style:italic">Art for your walls</h2>
+    <p class="mt-4 max-w-lg" style="color:var(--c-muted)">24 printable top-down art posters. Premium minimal art, great for offices.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
+     <div class="rounded overflow-hidden group" style="background:var(--c-surface)">
+      <div class="overflow-hidden" style="aspect-ratio:4/3">
+       <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&amp;q=80" alt="Modern office interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+      </div>
+      <div class="p-6">
+       <p class="font-medium text-sm tracking-wider uppercase">Office Collection</p>
+       <p class="mt-2 text-xs" style="color:var(--c-muted)">8 prints · Clean lines &amp; ocean blues</p>
+      </div>
+     </div>
+     <div class="rounded overflow-hidden group" style="background:var(--c-surface)">
+      <div class="overflow-hidden" style="aspect-ratio:4/3">
+       <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=700&amp;q=80" alt="Living room interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+      </div>
+      <div class="p-6">
+       <p class="font-medium text-sm tracking-wider uppercase">Home Collection</p>
+       <p class="mt-2 text-xs" style="color:var(--c-muted)">8 prints · Warm earth tones</p>
+      </div>
+     </div>
+     <div class="rounded overflow-hidden group" style="background:var(--c-surface)">
+      <div class="overflow-hidden" style="aspect-ratio:4/3">
+       <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=700&amp;q=80" alt="Studio interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+      </div>
+      <div class="p-6">
+       <p class="font-medium text-sm tracking-wider uppercase">Studio Collection</p>
+       <p class="mt-2 text-xs" style="color:var(--c-muted)">8 prints · Abstract geometries</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-24 px-6" style="background:var(--c-surface)">
+   <div class="max-w-5xl mx-auto text-center">
+    <p class="text-xs tracking-[.4em] uppercase mb-3" style="color:var(--c-accent)">Reviews</p>
+    <h2 class="font-serif text-3xl md:text-5xl mb-16" style="font-style:italic">What people say</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+     <div class="p-8 rounded" style="background:var(--c-bg)">
+      <div class="flex gap-1 justify-center mb-4" style="color:var(--c-accent)">
+       ★★★★★
+      </div>
+      <p class="text-sm leading-relaxed" style="color:var(--c-muted)">"My desktop hasn't looked this good in years. The aerial shots are stunning — every wallpaper feels like a painting."</p>
+      <p class="mt-4 text-xs font-medium tracking-wider uppercase">— Sarah K., Designer</p>
+     </div>
+     <div class="p-8 rounded" style="background:var(--c-bg)">
+      <div class="flex gap-1 justify-center mb-4" style="color:var(--c-accent)">
+       ★★★★★
+      </div>
+      <p class="text-sm leading-relaxed" style="color:var(--c-muted)">"Printed the office set for our studio. Clients always ask where we got them. Worth every penny."</p>
+      <p class="mt-4 text-xs font-medium tracking-wider uppercase">— Marcus T., Architect</p>
+     </div>
+     <div class="p-8 rounded" style="background:var(--c-bg)">
+      <div class="flex gap-1 justify-center mb-4" style="color:var(--c-accent)">
+       ★★★★★
+      </div>
+      <p class="text-sm leading-relaxed" style="color:var(--c-muted)">"The color palette pack alone is a goldmine. I use it across all my projects now."</p>
+      <p class="mt-4 text-xs font-medium tracking-wider uppercase">— Yuki N., Photographer</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="download" class="w-full py-24 px-6 relative overflow-hidden" style="background:var(--c-bg)">
+   <div class="absolute inset-0 grid-overlay anim-float"></div>
+   <div class="relative z-10 max-w-4xl mx-auto text-center">
+    <h2 id="bottom-cta-title" class="font-serif text-3xl md:text-5xl mb-4" style="font-style:italic">Make your screen a gallery.</h2>
+    <p class="text-sm mb-8" style="color:var(--c-muted)">150 aerial wallpapers · 24 printable posters · Color palette pack</p>
+    <p class="text-xs tracking-[.3em] uppercase mb-2" style="color:var(--c-accent)">Embed Widget Here</p><!-- Sign-in / Vote / Comment Module -->
+    <div class="mt-12 max-w-2xl mx-auto rounded-lg p-8" style="background:var(--c-surface)"><!-- Not signed in -->
+     <div id="auth-section">
+      <p class="text-sm mb-4" style="color:var(--c-muted)">Sign in to vote on pricing &amp; leave a comment</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center"><input type="text" id="display-name-input" placeholder="Your display name" class="px-4 py-2 rounded text-sm w-64 outline-none" style="background:var(--c-bg);color:var(--c-txt);border:1px solid rgba(255,255,255,.1)"> <button id="sign-in-btn" class="px-6 py-2 text-sm font-medium tracking-wider uppercase rounded transition-all hover:brightness-110" style="background:var(--c-accent);color:var(--c-bg)">Sign In</button>
+      </div>
+     </div><!-- Signed in content -->
+     <div id="signed-in-section" class="hidden">
+      <div class="flex items-center justify-between mb-6">
+       <p class="text-sm">Signed in as <span id="user-display" class="font-medium" style="color:var(--c-accent)"></span></p><button id="sign-out-btn" class="text-xs underline" style="color:var(--c-muted)">Sign out</button>
+      </div><!-- Reactions -->
+      <div class="mb-8">
+       <p class="text-xs tracking-[.3em] uppercase mb-4" style="color:var(--c-muted)">React</p>
+       <div class="flex gap-3 justify-center flex-wrap" id="reaction-btns"><button class="reaction-btn text-2xl p-2 rounded" data-emoji="🔥">🔥 <span class="text-xs">0</span></button> <button class="reaction-btn text-2xl p-2 rounded" data-emoji="😍">😍 <span class="text-xs">0</span></button> <button class="reaction-btn text-2xl p-2 rounded" data-emoji="🤩">🤩 <span class="text-xs">0</span></button> <button class="reaction-btn text-2xl p-2 rounded" data-emoji="👏">👏 <span class="text-xs">0</span></button> <button class="reaction-btn text-2xl p-2 rounded" data-emoji="💎">💎 <span class="text-xs">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-xs tracking-[.3em] uppercase mb-4" style="color:var(--c-muted)">What would you pay?</p>
+       <div class="flex flex-wrap gap-2 justify-center" id="price-btns">
+       </div>
+       <p id="user-vote-display" class="text-xs mt-3 hidden" style="color:var(--c-accent)"></p>
+      </div><!-- Comment -->
+      <div>
+       <p class="text-xs tracking-[.3em] uppercase mb-4" style="color:var(--c-muted)">Leave a comment</p>
+       <form id="comment-form" class="flex gap-2"><input type="text" id="comment-input" placeholder="Beautiful collection..." class="flex-1 px-4 py-2 rounded text-sm outline-none" style="background:var(--c-bg);color:var(--c-txt);border:1px solid rgba(255,255,255,.1)"> <button type="submit" id="comment-submit-btn" class="px-4 py-2 rounded text-sm font-medium tracking-wider uppercase transition-all hover:brightness-110" style="background:var(--c-accent);color:var(--c-bg)">Send</button>
+       </form>
+      </div>
+     </div><!-- Comments list -->
+     <div id="comments-list" class="mt-8 text-left space-y-3">
+     </div><!-- Price results -->
+     <div id="price-results" class="mt-6">
+      <p class="text-xs tracking-[.3em] uppercase mb-3" style="color:var(--c-muted)">Price votes</p>
+      <div id="price-bars" class="space-y-2"></div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full py-8 px-6 text-center" style="background:var(--c-surface)">
+   <p class="font-serif text-lg">SkyGrid Aerials</p>
+   <p class="text-xs mt-2" style="color:var(--c-muted)">The world looks better from above. © 2024</p>
+  </footer>
+  <script>
+// ========== CONFIG & CONSTANTS ==========
+const PRICES = ['$5','$9','$12','$15','$19','$24','$29','$39','$49','$79'];
+const COLLECTIONS = [
+  {name:'Ocean',img:'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80',count:38},
+  {name:'City',img:'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80',count:32},
+  {name:'Desert',img:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80',count:28},
+  {name:'Forest',img:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80',count:30},
+  {name:'Abstract Earth',img:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80',count:22}
+];
+
+const defaultConfig = {
+  background_color: '#0a0f1a',
+  surface_color: '#111827',
+  text_color: '#e8e6e1',
+  accent_color: '#c8a87e',
+  muted_color: '#6b7280',
+  font_family: 'Instrument Serif',
+  font_size: 16,
+  hero_title: 'Lose yourself in patterns from the sky.',
+  hero_subtitle: 'Aerial wallpapers and prints, curated.',
+  cta_primary: 'Download Collection',
+  cta_secondary: 'Browse Gallery',
+  bottom_cta_title: 'Make your screen a gallery.'
+};
+
+let currentUser = null;
+let allData = [];
+
+// ========== APPLY COLORS ==========
+function applyColors(c) {
+  const r = document.documentElement;
+  r.style.setProperty('--c-bg', c.background_color || defaultConfig.background_color);
+  r.style.setProperty('--c-surface', c.surface_color || defaultConfig.surface_color);
+  r.style.setProperty('--c-txt', c.text_color || defaultConfig.text_color);
+  r.style.setProperty('--c-accent', c.accent_color || defaultConfig.accent_color);
+  r.style.setProperty('--c-muted', c.muted_color || defaultConfig.muted_color);
+}
+
+// ========== BUILD STATIC UI ==========
+function buildCollections() {
+  const grid = document.getElementById('collections-grid');
+  grid.innerHTML = '';
+  COLLECTIONS.forEach((col, i) => {
+    const d = document.createElement('div');
+    d.className = `cat-card rounded overflow-hidden cursor-pointer anim-fade-up anim-delay-${i+1}`;
+    d.style.background = 'var(--c-bg)';
+    d.innerHTML = `<div class="overflow-hidden" style="aspect-ratio:3/4"><img src="${col.img}" alt="Aerial ${col.name}" class="cat-img w-full h-full object-cover" loading="lazy" onerror="this.style.background='#1a1a2a';this.alt='Image unavailable';"></div><div class="p-4"><p class="text-sm font-medium tracking-wider uppercase">${col.name}</p><p class="text-xs mt-1" style="color:var(--c-muted)">${col.count} wallpapers</p></div>`;
+    grid.appendChild(d);
+  });
+}
+
+function buildPriceBtns() {
+  const c = document.getElementById('price-btns');
+  c.innerHTML = '';
+  PRICES.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'px-4 py-2 rounded text-xs font-medium tracking-wider transition-all hover:brightness-110';
+    b.style.cssText = 'background:var(--c-bg);border:1px solid rgba(255,255,255,.1);color:var(--c-txt)';
+    b.textContent = p;
+    b.dataset.price = p;
+    b.addEventListener('click', () => votePrice(p));
+    c.appendChild(b);
+  });
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg px-4 py-2 rounded text-sm';
+  t.style.cssText = 'background:var(--c-accent);color:var(--c-bg)';
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ========== AUTH ==========
+document.getElementById('sign-in-btn').addEventListener('click', () => {
+  const name = document.getElementById('display-name-input').value.trim();
+  if (!name) { showToast('Please enter a display name'); return; }
+  currentUser = name;
+  document.getElementById('auth-section').classList.add('hidden');
+  document.getElementById('signed-in-section').classList.remove('hidden');
+  document.getElementById('user-display').textContent = name;
+  updateVoteUI();
+});
+
+document.getElementById('sign-out-btn').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('auth-section').classList.remove('hidden');
+  document.getElementById('signed-in-section').classList.add('hidden');
+});
+
+// ========== REACTIONS ==========
+document.getElementById('reaction-btns').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.reaction-btn');
+  if (!btn || !currentUser) return;
+  const emoji = btn.dataset.emoji;
+  const existing = allData.find(d => d.type === 'reaction' && d.emoji === emoji && d.display_name === currentUser);
+  if (existing) {
+    btn.disabled = true;
+    const r = await window.dataSdk.delete(existing);
+    btn.disabled = false;
+    if (!r.isOk) showToast('Error removing reaction');
+  } else {
+    if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+    btn.disabled = true;
+    const r = await window.dataSdk.create({ type: 'reaction', emoji, display_name: currentUser, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+    btn.disabled = false;
+    if (!r.isOk) showToast('Error adding reaction');
+  }
+});
+
+// ========== PRICE VOTE ==========
+async function votePrice(price) {
+  if (!currentUser) return;
+  const existing = allData.find(d => d.type === 'price_vote' && d.display_name === currentUser);
+  if (existing) {
+    const r = await window.dataSdk.update({ ...existing, price_vote: price });
+    if (!r.isOk) showToast('Error updating vote');
+  } else {
+    if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+    const r = await window.dataSdk.create({ type: 'price_vote', emoji: '', display_name: currentUser, comment_text: '', price_vote: price, created_at: new Date().toISOString() });
+    if (!r.isOk) showToast('Error voting');
+  }
+}
+
+// ========== COMMENT ==========
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.textContent = '...';
+  const r = await window.dataSdk.create({ type: 'comment', emoji: '', display_name: currentUser, comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Send';
+  if (r.isOk) { input.value = ''; } else { showToast('Error posting comment'); }
+});
+
+// ========== RENDER DATA ==========
+function renderData(data) {
+  allData = data;
+  // Reactions
+  const emojis = ['🔥','😍','🤩','👏','💎'];
+  emojis.forEach(em => {
+    const count = data.filter(d => d.type === 'reaction' && d.emoji === em).length;
+    const btn = document.querySelector(`.reaction-btn[data-emoji="${em}"]`);
+    if (btn) {
+      const isActive = currentUser && data.some(d => d.type === 'reaction' && d.emoji === em && d.display_name === currentUser);
+      btn.querySelector('span').textContent = count;
+      btn.style.background = isActive ? 'var(--c-accent)' : 'transparent';
+      btn.style.color = isActive ? 'var(--c-bg)' : 'var(--c-txt)';
+    }
+  });
+
+  // Price votes
+  const votes = data.filter(d => d.type === 'price_vote');
+  const totalVotes = votes.length;
+  const barsEl = document.getElementById('price-bars');
+  barsEl.innerHTML = '';
+  if (totalVotes > 0) {
+    const counts = {};
+    votes.forEach(v => { counts[v.price_vote] = (counts[v.price_vote] || 0) + 1; });
+    PRICES.forEach(p => {
+      const c = counts[p] || 0;
+      if (c === 0) return;
+      const pct = Math.round((c / totalVotes) * 100);
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-3 text-xs';
+      row.innerHTML = `<span class="w-10 text-right font-medium">${p}</span><div class="flex-1 rounded-full overflow-hidden" style="background:var(--c-bg);height:8px"><div class="h-full rounded-full transition-all duration-500" style="background:var(--c-accent);width:${pct}%"></div></div><span style="color:var(--c-muted)">${c}</span>`;
+      barsEl.appendChild(row);
+    });
+  }
+  updateVoteUI();
+
+  // Comments
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  list.innerHTML = '';
+  comments.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'p-4 rounded text-sm';
+    el.style.background = 'var(--c-bg)';
+    const timeAgo = getTimeAgo(new Date(c.created_at));
+    el.innerHTML = `<div class="flex justify-between items-center mb-1"><span class="font-medium text-xs tracking-wider uppercase" style="color:var(--c-accent)">${escHtml(c.display_name)}</span><span class="text-xs" style="color:var(--c-muted)">${timeAgo}</span></div><p style="color:var(--c-muted)">${escHtml(c.comment_text)}</p>`;
+    list.appendChild(el);
+  });
+}
+
+function updateVoteUI() {
+  if (!currentUser) return;
+  const myVote = allData.find(d => d.type === 'price_vote' && d.display_name === currentUser);
+  const display = document.getElementById('user-vote-display');
+  const btns = document.querySelectorAll('#price-btns button');
+  btns.forEach(b => {
+    if (myVote && b.dataset.price === myVote.price_vote) {
+      b.style.background = 'var(--c-accent)';
+      b.style.color = 'var(--c-bg)';
+    } else {
+      b.style.background = 'var(--c-bg)';
+      b.style.color = 'var(--c-txt)';
+    }
+  });
+  if (myVote) {
+    display.classList.remove('hidden');
+    display.textContent = `Your vote: ${myVote.price_vote}`;
+  } else {
+    display.classList.add('hidden');
+  }
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function getTimeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+// ========== NAV SCROLL ==========
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  const y = window.scrollY;
+  nav.style.background = y > 80 ? 'var(--c-bg)' : 'transparent';
+  nav.style.boxShadow = y > 80 ? '0 1px 0 rgba(255,255,255,.05)' : 'none';
+  lastScroll = y;
+});
+
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ========== NAV LINK STYLES ==========
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.style.setProperty('--c-after', 'var(--c-accent)');
+  const s = l.querySelector('::after') || l;
+  l.addEventListener('mouseenter', () => l.style.color = 'var(--c-accent)');
+  l.addEventListener('mouseleave', () => l.style.color = '');
+});
+
+// ========== INIT ==========
+buildCollections();
+buildPriceBtns();
+applyColors(defaultConfig);
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    applyColors(config);
+    const ff = config.font_family || defaultConfig.font_family;
+    const fs = config.font_size || defaultConfig.font_size;
+    document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = `${ff}, 'Instrument Serif', serif`);
+    document.body.style.fontFamily = `'DM Sans', sans-serif`;
+
+    document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+    document.getElementById('hero-title').style.fontSize = `${fs * 3.5}px`;
+    document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    document.getElementById('hero-subtitle').style.fontSize = `${fs}px`;
+    document.getElementById('hero-cta-primary').textContent = config.cta_primary || defaultConfig.cta_primary;
+    document.getElementById('hero-cta-secondary').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+    document.getElementById('bottom-cta-title').textContent = config.bottom_cta_title || defaultConfig.bottom_cta_title;
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.muted_color || defaultConfig.muted_color, set: v => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+
+// Data SDK
+window.dataSdk.init({
+  onDataChanged(data) {
+    renderData(data);
+  }
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a63b7826b27c5',t:'MTc3NTU3OTE0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

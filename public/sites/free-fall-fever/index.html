@@ -1,1 +1,640 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/1f5d7bfc-a925-49ac-9a30-956563d3b89b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freefall Fever</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow+Condensed:wght@300;400;600;700&amp;family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        bebas: ['Bebas Neue', 'sans-serif'],
+        barlow: ['Barlow Condensed', 'sans-serif'],
+        orbitron: ['Orbitron', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+  html, body { height: 100%; margin: 0; }
+
+  @keyframes drift {
+    0% { transform: translateX(-10%) translateY(0); opacity: 0.15; }
+    50% { transform: translateX(5%) translateY(-20px); opacity: 0.25; }
+    100% { transform: translateX(-10%) translateY(0); opacity: 0.15; }
+  }
+  @keyframes drift2 {
+    0% { transform: translateX(10%) translateY(0); opacity: 0.1; }
+    50% { transform: translateX(-5%) translateY(-30px); opacity: 0.2; }
+    100% { transform: translateX(10%) translateY(0); opacity: 0.1; }
+  }
+  @keyframes fallIn {
+    0% { opacity: 0; transform: translateY(-60px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.7) rotate(-3deg); }
+    60% { transform: scale(1.05) rotate(1deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes slideUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 230, 255, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(0, 230, 255, 0.7), 0 0 80px rgba(0, 230, 255, 0.3); }
+  }
+  @keyframes altimeter {
+    0% { height: 15%; }
+    25% { height: 65%; }
+    50% { height: 40%; }
+    75% { height: 85%; }
+    100% { height: 15%; }
+  }
+  @keyframes streak {
+    0% { transform: translateY(-100%) scaleY(0.5); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(300%) scaleY(2); opacity: 0; }
+  }
+  @keyframes floatCard {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(1deg); }
+  }
+  @keyframes starPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .anim-fall { animation: fallIn 0.8s ease-out both; }
+  .anim-pop { animation: popIn 0.6s ease-out both; }
+  .anim-slide { animation: slideUp 0.7s ease-out both; }
+  .anim-float { animation: floatCard 4s ease-in-out infinite; }
+
+  .cloud-layer-1 {
+    animation: drift 18s ease-in-out infinite;
+    background: radial-gradient(ellipse 600px 120px at 30% 50%, rgba(255,255,255,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 400px 80px at 70% 60%, rgba(255,255,255,0.08) 0%, transparent 70%);
+  }
+  .cloud-layer-2 {
+    animation: drift2 24s ease-in-out infinite;
+    background: radial-gradient(ellipse 500px 100px at 60% 40%, rgba(255,255,255,0.1) 0%, transparent 70%),
+                radial-gradient(ellipse 350px 70px at 20% 70%, rgba(255,255,255,0.07) 0%, transparent 70%);
+  }
+
+  .streak-line {
+    position: absolute;
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, rgba(0,230,255,0.6), transparent);
+    animation: streak 2.5s linear infinite;
+  }
+
+  .altimeter-bar {
+    animation: altimeter 6s ease-in-out infinite;
+  }
+
+  .nav-active { color: #00e6ff; border-bottom: 2px solid #00e6ff; }
+
+  .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .img-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .img-card:hover {
+    transform: scale(1.04) rotate(-0.5deg);
+    box-shadow: 0 20px 60px rgba(0,230,255,0.25);
+  }
+
+  .review-star { animation: starPulse 2s ease-in-out infinite; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0e1a; }
+  ::-webkit-scrollbar-thumb { background: #00e6ff; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background: #0a0e1a; color: #e8edf5; font-family: 'Barlow Condensed', sans-serif;">
+  <div id="app-root" class="w-full h-full overflow-auto" style="background: linear-gradient(180deg, #0a0e1a 0%, #0d1628 40%, #0a1a2e 70%, #0a0e1a 100%);"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position: sticky; top: 0; z-index: 50; background: rgba(10,14,26,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,230,255,0.15);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px;">
+     <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #00e6ff, #0066ff); display: flex; align-items: center; justify-content: center;"><i data-lucide="wind" style="width:20px;height:20px;color:#0a0e1a;"></i>
+      </div><span class="font-bebas" style="font-size: 22px; letter-spacing: 3px; color: #00e6ff;">FREEFALL FEVER</span>
+     </div>
+     <div style="display: flex; gap: 24px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;" id="nav-links"><a href="#home" class="nav-link nav-active" style="text-decoration:none; padding-bottom:4px; transition: color 0.3s;">Home</a> <a href="#gallery" class="nav-link" style="text-decoration:none; color:#8892a8; padding-bottom:4px; transition: color 0.3s;">Gallery</a> <a href="#wallpapers" class="nav-link" style="text-decoration:none; color:#8892a8; padding-bottom:4px; transition: color 0.3s;">Wallpapers</a> <a href="#stories" class="nav-link" style="text-decoration:none; color:#8892a8; padding-bottom:4px; transition: color 0.3s;">Stories</a> <a href="#reviews" class="nav-link" style="text-decoration:none; color:#8892a8; padding-bottom:4px; transition: color 0.3s;">Reviews</a> <a href="#download" class="nav-link" style="text-decoration:none; color:#8892a8; padding-bottom:4px; transition: color 0.3s;">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" style="position: relative; min-height: 90%; overflow: hidden; display: flex; align-items: center; justify-content: center;"><!-- Cloud layers -->
+    <div class="cloud-layer-1" style="position: absolute; inset: 0; pointer-events: none;"></div>
+    <div class="cloud-layer-2" style="position: absolute; inset: 0; pointer-events: none;"></div><!-- Streaks -->
+    <div style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;">
+     <div class="streak-line" style="left: 12%; animation-delay: 0s;"></div>
+     <div class="streak-line" style="left: 28%; animation-delay: 0.8s; height: 80px;"></div>
+     <div class="streak-line" style="left: 55%; animation-delay: 1.4s; height: 50px;"></div>
+     <div class="streak-line" style="left: 78%; animation-delay: 0.4s;"></div>
+     <div class="streak-line" style="left: 90%; animation-delay: 2s; height: 70px;"></div>
+    </div><!-- Altimeter -->
+    <div style="position: absolute; right: 40px; top: 15%; bottom: 15%; width: 36px; display: flex; flex-direction: column; align-items: center; gap: 6px;"><span class="font-orbitron" style="font-size: 9px; color: #00e6ff; letter-spacing: 2px;">ALT</span>
+     <div style="flex: 1; width: 4px; background: rgba(0,230,255,0.15); border-radius: 4px; position: relative; overflow: hidden;">
+      <div class="altimeter-bar" style="position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, #00e6ff, #0066ff); border-radius: 4px;"></div>
+     </div><span class="font-orbitron" id="alt-readout" style="font-size: 10px; color: #00e6ff;">12,500ft</span>
+    </div><!-- Hero Content -->
+    <div style="position: relative; z-index: 10; text-align: center; max-width: 800px; padding: 60px 24px;">
+     <div class="anim-fall" style="animation-delay: 0.1s;"><span id="el-tagline" class="font-orbitron" style="font-size: 13px; letter-spacing: 6px; color: #00e6ff; text-transform: uppercase; display: inline-block; padding: 6px 20px; border: 1px solid rgba(0,230,255,0.3); border-radius: 30px; margin-bottom: 24px;">Chase the drop.</span>
+     </div>
+     <h1 id="el-hero-title" class="font-bebas anim-fall" style="font-size: clamp(52px, 8vw, 110px); line-height: 0.95; letter-spacing: 4px; margin: 0 0 20px 0; animation-delay: 0.3s; background: linear-gradient(180deg, #ffffff 30%, #7eb8d8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your feed needs altitude.</h1>
+     <p id="el-hero-subtitle" class="anim-fall" style="font-size: 20px; color: #8892a8; font-weight: 300; max-width: 560px; margin: 0 auto 36px; line-height: 1.5; animation-delay: 0.5s;">Freefall visuals and templates built for attention.</p>
+     <div class="anim-fall" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation-delay: 0.7s;"><a href="#download" id="el-primary-cta" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; background: linear-gradient(135deg, #00e6ff, #0066ff); color: #0a0e1a; font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; text-decoration: none; animation: pulse-glow 3s ease-in-out infinite; transition: transform 0.2s;"> <i data-lucide="download" style="width:18px;height:18px;"></i> Download the Pack </a> <a href="#gallery" id="el-secondary-cta" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; border: 2px solid rgba(0,230,255,0.4); color: #00e6ff; font-weight: 600; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; text-decoration: none; transition: all 0.3s;"> <i data-lucide="image" style="width:18px;height:18px;"></i> See the Gallery </a>
+     </div><!-- Floating Vote Card -->
+     <div class="anim-float anim-pop" style="position: absolute; top: 10%; right: -60px; animation-delay: 1s; width: 200px; background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(0,230,255,0.2); border-radius: 16px; padding: 18px; text-align: left;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;"><i data-lucide="message-circle" style="width:16px;height:16px;color:#00e6ff;"></i> <span style="font-size: 12px; font-weight: 600; color: #00e6ff; text-transform: uppercase; letter-spacing: 1px;">Community</span>
+      </div>
+      <div style="font-size: 13px; color: #c0c8d8; margin-bottom: 12px;">
+       Vote + Comment
+      </div>
+      <div style="display: flex; gap: 8px;"><button onclick="handleVote()" id="vote-btn" style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(0,230,255,0.15);border:1px solid rgba(0,230,255,0.3);border-radius:20px;color:#00e6ff;font-size:12px;cursor:pointer;transition:all 0.3s;"> <i data-lucide="thumbs-up" style="width:12px;height:12px;"></i> <span id="vote-count">247</span> </button> <button style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;color:#8892a8;font-size:12px;cursor:pointer;"> <i data-lucide="message-circle" style="width:12px;height:12px;"></i> 38 </button>
+      </div>
+     </div>
+    </div><!-- Altitude Chips -->
+    <div style="position: absolute; left: 30px; top: 40%; display: flex; flex-direction: column; gap: 12px;">
+     <div style="padding: 6px 14px; background: rgba(0,230,255,0.1); border: 1px solid rgba(0,230,255,0.2); border-radius: 20px; font-size: 11px; color: #00e6ff; font-family: 'Orbitron', sans-serif;">
+      🪂 15,000ft
+     </div>
+     <div style="padding: 6px 14px; background: rgba(0,102,255,0.1); border: 1px solid rgba(0,102,255,0.2); border-radius: 20px; font-size: 11px; color: #5599ff; font-family: 'Orbitron', sans-serif;">
+      ⚡ 120mph
+     </div>
+     <div style="padding: 6px 14px; background: rgba(255,100,50,0.1); border: 1px solid rgba(255,100,50,0.2); border-radius: 20px; font-size: 11px; color: #ff8844; font-family: 'Orbitron', sans-serif;">
+      🔥 60sec freefall
+     </div>
+    </div>
+   </section><!-- WHAT'S INSIDE -->
+   <section style="padding: 80px 24px; text-align: center; position: relative;">
+    <div class="scroll-reveal" style="max-width: 1000px; margin: 0 auto;"><span class="font-orbitron" style="font-size: 11px; color: #00e6ff; letter-spacing: 4px; text-transform: uppercase;">What's Inside</span>
+     <h2 class="font-bebas" style="font-size: 48px; margin: 12px 0 50px; letter-spacing: 3px; color: #fff;">THE ULTIMATE SKYDIVING CONTENT PACK</h2>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+      <div style="padding: 32px 20px; background: rgba(0,230,255,0.04); border: 1px solid rgba(0,230,255,0.12); border-radius: 16px; transition: transform 0.3s, border-color 0.3s;" onmouseenter="this.style.borderColor='rgba(0,230,255,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(0,230,255,0.12)';this.style.transform='translateY(0)'">
+       <div style="font-size: 36px; margin-bottom: 12px;">
+        🖼️
+       </div>
+       <div class="font-bebas" style="font-size: 36px; color: #00e6ff;">
+        100
+       </div>
+       <div style="font-size: 14px; color: #8892a8; text-transform: uppercase; letter-spacing: 2px;">
+        Wallpapers
+       </div>
+      </div>
+      <div style="padding: 32px 20px; background: rgba(0,102,255,0.04); border: 1px solid rgba(0,102,255,0.12); border-radius: 16px; transition: transform 0.3s, border-color 0.3s;" onmouseenter="this.style.borderColor='rgba(0,102,255,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(0,102,255,0.12)';this.style.transform='translateY(0)'">
+       <div style="font-size: 36px; margin-bottom: 12px;">
+        🎨
+       </div>
+       <div class="font-bebas" style="font-size: 36px; color: #5599ff;">
+        20
+       </div>
+       <div style="font-size: 14px; color: #8892a8; text-transform: uppercase; letter-spacing: 2px;">
+        Posters
+       </div>
+      </div>
+      <div style="padding: 32px 20px; background: rgba(255,100,50,0.04); border: 1px solid rgba(255,100,50,0.12); border-radius: 16px; transition: transform 0.3s, border-color 0.3s;" onmouseenter="this.style.borderColor='rgba(255,100,50,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(255,100,50,0.12)';this.style.transform='translateY(0)'">
+       <div style="font-size: 36px; margin-bottom: 12px;">
+        📱
+       </div>
+       <div class="font-bebas" style="font-size: 36px; color: #ff8844;">
+        40
+       </div>
+       <div style="font-size: 14px; color: #8892a8; text-transform: uppercase; letter-spacing: 2px;">
+        Story Templates
+       </div>
+      </div>
+      <div style="padding: 32px 20px; background: rgba(180,100,255,0.04); border: 1px solid rgba(180,100,255,0.12); border-radius: 16px; transition: transform 0.3s, border-color 0.3s;" onmouseenter="this.style.borderColor='rgba(180,100,255,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(180,100,255,0.12)';this.style.transform='translateY(0)'">
+       <div style="font-size: 36px; margin-bottom: 12px;">
+        🃏
+       </div>
+       <div class="font-bebas" style="font-size: 36px; color: #b464ff;">
+        ∞
+       </div>
+       <div style="font-size: 14px; color: #8892a8; text-transform: uppercase; letter-spacing: 2px;">
+        Challenge Cards
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- GALLERY -->
+   <section id="gallery" style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 1100px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 50px;"><span class="font-orbitron" style="font-size: 11px; color: #00e6ff; letter-spacing: 4px;">PREVIEW</span>
+      <h2 id="el-gallery-title" class="font-bebas" style="font-size: 48px; margin: 12px 0 0; letter-spacing: 3px; color: #fff;">The Gallery</h2>
+     </div>
+     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+      <div class="img-card" style="grid-row: span 2; border-radius: 16px; overflow: hidden; position: relative; min-height: 380px;"><img src="https://images.unsplash.com/photo-1474623809196-26c1d33457cc?w=600&amp;h=800&amp;fit=crop" alt="Skydiver in freefall" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#0066ff,#00e6ff)';this.alt='Image unavailable';">
+       <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(10,14,26,0.9));"><span class="font-orbitron" style="font-size:10px;color:#00e6ff;letter-spacing:2px;">FREEFALL SHOT</span>
+       </div>
+      </div>
+      <div class="img-card" style="border-radius: 16px; overflow: hidden; position: relative; min-height: 180px;"><img src="https://images.unsplash.com/photo-1503256207526-0d5d80fa2f47?w=500&amp;h=350&amp;fit=crop" alt="Aerial clouds view" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#0a1a2e,#0066ff)';this.alt='Image unavailable';">
+       <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(10,14,26,0.9));"><span class="font-orbitron" style="font-size:9px;color:#5599ff;letter-spacing:2px;">ABOVE THE CLOUDS</span>
+       </div>
+      </div>
+      <div class="img-card" style="border-radius: 16px; overflow: hidden; position: relative; min-height: 180px;"><img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=500&amp;h=350&amp;fit=crop" alt="Parachute deploying" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#0066ff,#b464ff)';this.alt='Image unavailable';">
+       <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(10,14,26,0.9));"><span class="font-orbitron" style="font-size:9px;color:#ff8844;letter-spacing:2px;">CHUTE DEPLOY</span>
+       </div>
+      </div>
+      <div class="img-card" style="border-radius: 16px; overflow: hidden; position: relative; min-height: 180px;"><img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?w=500&amp;h=350&amp;fit=crop" alt="Sunrise above clouds" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#ff8844,#0066ff)';this.alt='Image unavailable';">
+       <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(10,14,26,0.9));"><span class="font-orbitron" style="font-size:9px;color:#b464ff;letter-spacing:2px;">GOLDEN HOUR</span>
+       </div>
+      </div>
+      <div class="img-card" style="border-radius: 16px; overflow: hidden; position: relative; min-height: 180px;"><img src="https://images.unsplash.com/photo-1581095373899-1867a5765f7e?w=500&amp;h=350&amp;fit=crop" alt="Helmet cam view skydiving" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#00e6ff,#0a1a2e)';this.alt='Image unavailable';">
+       <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(10,14,26,0.9));"><span class="font-orbitron" style="font-size:9px;color:#00e6ff;letter-spacing:2px;">HELMET CAM</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 1100px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 50px;"><span class="font-orbitron" style="font-size: 11px; color: #00e6ff; letter-spacing: 4px;">SCREENS</span>
+      <h2 id="el-wallpapers-title" class="font-bebas" style="font-size: 48px; margin: 12px 0 0; letter-spacing: 3px; color: #fff;">Wallpaper Pack</h2>
+     </div>
+     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+      <div style="width: 160px; height: 280px; border-radius: 24px; overflow: hidden; border: 3px solid rgba(0,230,255,0.2); position: relative;" class="img-card"><img src="https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=320&amp;h=560&amp;fit=crop" alt="Phone wallpaper skydive" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(180deg,#0066ff,#0a0e1a)';this.alt='Image unavailable';">
+       <div style="position:absolute;top:10px;left:10px;padding:3px 10px;background:rgba(0,230,255,0.2);border-radius:12px;font-size:9px;color:#00e6ff;font-family:'Orbitron',sans-serif;">
+        PHONE
+       </div>
+      </div>
+      <div style="width: 160px; height: 280px; border-radius: 24px; overflow: hidden; border: 3px solid rgba(0,102,255,0.2); position: relative;" class="img-card"><img src="https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=320&amp;h=560&amp;fit=crop" alt="Phone wallpaper clouds" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(180deg,#b464ff,#0a0e1a)';this.alt='Image unavailable';">
+       <div style="position:absolute;top:10px;left:10px;padding:3px 10px;background:rgba(0,102,255,0.2);border-radius:12px;font-size:9px;color:#5599ff;font-family:'Orbitron',sans-serif;">
+        PHONE
+       </div>
+      </div>
+      <div style="width: 160px; height: 280px; border-radius: 24px; overflow: hidden; border: 3px solid rgba(255,100,50,0.2); position: relative;" class="img-card"><img src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=320&amp;h=560&amp;fit=crop" alt="Phone wallpaper sunset sky" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(180deg,#ff8844,#0a0e1a)';this.alt='Image unavailable';">
+       <div style="position:absolute;top:10px;left:10px;padding:3px 10px;background:rgba(255,100,50,0.2);border-radius:12px;font-size:9px;color:#ff8844;font-family:'Orbitron',sans-serif;">
+        PHONE
+       </div>
+      </div>
+      <div style="width: 160px; height: 280px; border-radius: 24px; overflow: hidden; border: 3px solid rgba(180,100,255,0.2); position: relative;" class="img-card"><img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?w=320&amp;h=560&amp;fit=crop" alt="Phone wallpaper aerial" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(180deg,#00e6ff,#0a0e1a)';this.alt='Image unavailable';">
+       <div style="position:absolute;top:10px;left:10px;padding:3px 10px;background:rgba(180,100,255,0.2);border-radius:12px;font-size:9px;color:#b464ff;font-family:'Orbitron',sans-serif;">
+        PHONE
+       </div>
+      </div>
+     </div>
+     <p style="text-align:center;margin-top:24px;color:#8892a8;font-size:14px;">+ 96 more in the full pack, including desktop &amp; tablet sizes</p>
+    </div>
+   </section><!-- STORIES -->
+   <section id="stories" style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 1100px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 50px;"><span class="font-orbitron" style="font-size: 11px; color: #ff8844; letter-spacing: 4px;">SOCIAL</span>
+      <h2 id="el-stories-title" class="font-bebas" style="font-size: 48px; margin: 12px 0 0; letter-spacing: 3px; color: #fff;">Story Templates</h2>
+     </div>
+     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+      <div style="width: 140px; height: 250px; border-radius: 20px; background: linear-gradient(180deg, #00e6ff 0%, #0066ff 50%, #0a0e1a 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; position: relative; overflow: hidden;" class="img-card">
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;">
+        JUMP<br>
+        DAY
+       </div>
+       <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;">
+        @yourtag
+       </div>
+      </div>
+      <div style="width: 140px; height: 250px; border-radius: 20px; background: linear-gradient(180deg, #ff8844 0%, #ff4466 50%, #0a0e1a 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; position: relative; overflow: hidden;" class="img-card">
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;">
+        SEND<br>
+        IT
+       </div>
+       <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;">
+        @yourtag
+       </div>
+      </div>
+      <div style="width: 140px; height: 250px; border-radius: 20px; background: linear-gradient(180deg, #b464ff 0%, #0066ff 50%, #0a0e1a 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; position: relative; overflow: hidden;" class="img-card">
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;">
+        ABOVE<br>
+        ALL
+       </div>
+       <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;">
+        @yourtag
+       </div>
+      </div>
+      <div style="width: 140px; height: 250px; border-radius: 20px; background: linear-gradient(180deg, #0a1a2e 0%, #00e6ff 60%, #0a0e1a 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; position: relative; overflow: hidden;" class="img-card">
+       <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;">
+        FREE<br>
+        FALL
+       </div>
+       <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:4px;">
+        @yourtag
+       </div>
+      </div>
+     </div>
+     <p style="text-align:center;margin-top:24px;color:#8892a8;font-size:14px;">40 editable templates — drag, drop, post</p>
+    </div>
+   </section><!-- BUCKET LIST CHALLENGE -->
+   <section style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 900px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 50px;"><span class="font-orbitron" style="font-size: 11px; color: #ff8844; letter-spacing: 4px;">DARE YOURSELF</span>
+      <h2 id="el-bucket-title" class="font-bebas" style="font-size: 48px; margin: 12px 0 0; letter-spacing: 3px; color: #fff;">Bucket List Challenge</h2>
+     </div>
+     <div id="bucket-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 1000px; margin: 0 auto;">
+     <div style="text-align: center; margin-bottom: 50px;"><span class="font-orbitron" style="font-size: 11px; color: #00e6ff; letter-spacing: 4px;">PROOF</span>
+      <h2 class="font-bebas" style="font-size: 48px; margin: 12px 0 0; letter-spacing: 3px; color: #fff;">What Creators Say</h2>
+     </div>
+     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+      <div style="padding: 28px; background: rgba(0,230,255,0.04); border: 1px solid rgba(0,230,255,0.1); border-radius: 16px;">
+       <div style="display:flex;gap:3px;margin-bottom:14px;"><span class="review-star" style="color:#00e6ff;font-size:16px;">★</span> <span class="review-star" style="color:#00e6ff;font-size:16px;animation-delay:0.1s;">★</span> <span class="review-star" style="color:#00e6ff;font-size:16px;animation-delay:0.2s;">★</span> <span class="review-star" style="color:#00e6ff;font-size:16px;animation-delay:0.3s;">★</span> <span class="review-star" style="color:#00e6ff;font-size:16px;animation-delay:0.4s;">★</span>
+       </div>
+       <p style="font-size:15px;color:#c0c8d8;line-height:1.6;margin:0 0 14px;">"Instant engagement boost. My skydive reels tripled in saves."</p><span style="font-size:12px;color:#5599ff;font-weight:600;">— @skybound.mike</span>
+      </div>
+      <div style="padding: 28px; background: rgba(0,102,255,0.04); border: 1px solid rgba(0,102,255,0.1); border-radius: 16px;">
+       <div style="display:flex;gap:3px;margin-bottom:14px;"><span class="review-star" style="color:#5599ff;font-size:16px;">★</span> <span class="review-star" style="color:#5599ff;font-size:16px;animation-delay:0.15s;">★</span> <span class="review-star" style="color:#5599ff;font-size:16px;animation-delay:0.25s;">★</span> <span class="review-star" style="color:#5599ff;font-size:16px;animation-delay:0.35s;">★</span> <span class="review-star" style="color:#5599ff;font-size:16px;animation-delay:0.45s;">★</span>
+       </div>
+       <p style="font-size:15px;color:#c0c8d8;line-height:1.6;margin:0 0 14px;">"The wallpapers alone are worth it. My phone looks insane now."</p><span style="font-size:12px;color:#ff8844;font-weight:600;">— @cloud.chaser</span>
+      </div>
+      <div style="padding: 28px; background: rgba(180,100,255,0.04); border: 1px solid rgba(180,100,255,0.1); border-radius: 16px;">
+       <div style="display:flex;gap:3px;margin-bottom:14px;"><span class="review-star" style="color:#b464ff;font-size:16px;">★</span> <span class="review-star" style="color:#b464ff;font-size:16px;animation-delay:0.12s;">★</span> <span class="review-star" style="color:#b464ff;font-size:16px;animation-delay:0.24s;">★</span> <span class="review-star" style="color:#b464ff;font-size:16px;animation-delay:0.36s;">★</span> <span class="review-star" style="color:#b464ff;font-size:16px;animation-delay:0.48s;">★</span>
+       </div>
+       <p style="font-size:15px;color:#c0c8d8;line-height:1.6;margin:0 0 14px;">"Perfect for creators. Adrenaline sells and this pack proves it."</p><span style="font-size:12px;color:#b464ff;font-weight:600;">— @jumpqueen.co</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section style="padding: 80px 24px; position: relative;">
+    <div class="scroll-reveal" style="max-width: 500px; margin: 0 auto; text-align: center;"><span class="font-orbitron" style="font-size: 11px; color: #ff8844; letter-spacing: 4px;">PRICING</span>
+     <h2 class="font-bebas" style="font-size: 48px; margin: 12px 0 20px; letter-spacing: 3px; color: #fff;">One Pack. Zero Limits.</h2>
+     <div style="padding: 40px; background: rgba(0,230,255,0.04); border: 2px solid rgba(0,230,255,0.2); border-radius: 24px; position: relative;">
+      <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:4px 20px;background:linear-gradient(135deg,#00e6ff,#0066ff);border-radius:20px;font-size:11px;color:#0a0e1a;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+       Best Value
+      </div>
+      <div class="font-bebas" style="font-size: 64px; color: #00e6ff; margin-bottom: 8px;">
+       $27
+      </div>
+      <div style="font-size: 14px; color: #8892a8; margin-bottom: 24px;">
+       One-time payment • Instant download
+      </div>
+      <div style="text-align: left; margin-bottom: 28px;">
+       <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <i data-lucide="check" style="width:16px;height:16px;color:#00e6ff;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c8d8;">100 HD skydiving wallpapers</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <i data-lucide="check" style="width:16px;height:16px;color:#00e6ff;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c8d8;">20 printable posters</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <i data-lucide="check" style="width:16px;height:16px;color:#00e6ff;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c8d8;">40 story templates</span>
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+        <i data-lucide="check" style="width:16px;height:16px;color:#00e6ff;flex-shrink:0;"></i><span style="font-size:14px;color:#c0c8d8;">Bucket list challenge cards</span>
+       </div>
+      </div><a href="#download" style="display: block; padding: 16px; background: linear-gradient(135deg, #00e6ff, #0066ff); color: #0a0e1a; font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; text-decoration: none; text-align: center; animation: pulse-glow 3s ease-in-out infinite;">Get the Pack Now</a>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" style="padding: 100px 24px; position: relative; text-align: center;">
+    <div class="scroll-reveal" style="max-width: 700px; margin: 0 auto;">
+     <div style="font-size: 48px; margin-bottom: 20px;">
+      🪂
+     </div>
+     <h2 id="el-bottom-cta" class="font-bebas" style="font-size: clamp(36px, 5vw, 64px); letter-spacing: 3px; margin: 0 0 16px; background: linear-gradient(135deg, #00e6ff, #5599ff, #b464ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Make your screen feel airborne.</h2>
+     <p style="font-size: 16px; color: #8892a8; margin-bottom: 36px;">100 wallpapers. 20 posters. 40 templates. Instant download.</p><a href="#" onclick="event.preventDefault();showToast('Demo — download would start here!')" style="display: inline-flex; align-items: center; gap: 10px; padding: 18px 48px; background: linear-gradient(135deg, #00e6ff, #0066ff); color: #0a0e1a; font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 3px; border-radius: 50px; text-decoration: none; animation: pulse-glow 3s ease-in-out infinite;"> <i data-lucide="download" style="width:20px;height:20px;"></i> Download Now </a>
+    </div>
+   </section><!-- FOOTER -->
+   <footer style="padding: 40px 24px; border-top: 1px solid rgba(0,230,255,0.1); text-align: center;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+     <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #00e6ff, #0066ff); display: flex; align-items: center; justify-content: center;"><i data-lucide="wind" style="width:14px;height:14px;color:#0a0e1a;"></i>
+     </div><span class="font-bebas" style="font-size: 16px; letter-spacing: 3px; color: #00e6ff;">FREEFALL FEVER</span>
+    </div>
+    <p style="font-size: 12px; color: #555e70;">© 2025 Freefall Fever. Adrenaline sells. All rights reserved.</p>
+   </footer><!-- Toast -->
+   <div id="toast" style="position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);padding:12px 28px;background:linear-gradient(135deg,#00e6ff,#0066ff);color:#0a0e1a;font-weight:700;border-radius:30px;font-size:14px;transition:bottom 0.4s ease;z-index:999;white-space:nowrap;"></div>
+  </div>
+  <script>
+// Bucket list challenges
+const challenges = [
+  { emoji: "🪂", text: "Tandem jump from 15,000ft", tag: "BEGINNER" },
+  { emoji: "📸", text: "Get a helmet-cam selfie", tag: "CLASSIC" },
+  { emoji: "🌅", text: "Jump at sunrise", tag: "EPIC" },
+  { emoji: "🏔️", text: "Alpine scenic jump", tag: "DREAM" },
+  { emoji: "🤸", text: "First solo freefall flip", tag: "BOLD" },
+  { emoji: "☁️", text: "Break through a cloud layer", tag: "LEGENDARY" },
+  { emoji: "🌊", text: "Land on a beach DZ", tag: "VIBES" },
+  { emoji: "🎯", text: "Hit the bullseye target", tag: "PRO" },
+];
+
+function renderBucketCards() {
+  const grid = document.getElementById('bucket-grid');
+  grid.innerHTML = '';
+  const colors = ['#00e6ff','#5599ff','#ff8844','#b464ff','#00e6ff','#ff8844','#5599ff','#b464ff'];
+  challenges.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.style.cssText = `padding:20px;background:rgba(${i%2===0?'0,230,255':'180,100,255'},0.04);border:1px solid ${colors[i]}33;border-radius:16px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;`;
+    card.innerHTML = `
+      <div style="font-size:28px;margin-bottom:8px;">${c.emoji}</div>
+      <div style="font-size:14px;color:#e8edf5;font-weight:600;margin-bottom:8px;">${c.text}</div>
+      <span style="padding:3px 10px;background:${colors[i]}22;border:1px solid ${colors[i]}44;border-radius:12px;font-size:10px;color:${colors[i]};font-family:'Orbitron',sans-serif;letter-spacing:1px;">${c.tag}</span>
+      <div class="check-mark" style="position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;border:2px solid ${colors[i]}44;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-size:12px;color:transparent;">✓</div>
+    `;
+    card.onclick = () => {
+      const check = card.querySelector('.check-mark');
+      const done = check.style.background !== '';
+      if (done) {
+        check.style.background = '';
+        check.style.color = 'transparent';
+        card.style.borderColor = colors[i] + '33';
+      } else {
+        check.style.background = colors[i];
+        check.style.color = '#0a0e1a';
+        card.style.borderColor = colors[i];
+      }
+    };
+    card.onmouseenter = () => { card.style.transform = 'translateY(-4px)'; };
+    card.onmouseleave = () => { card.style.transform = 'translateY(0)'; };
+    grid.appendChild(card);
+  });
+}
+
+// Vote handler
+let voted = false;
+function handleVote() {
+  const btn = document.getElementById('vote-btn');
+  const count = document.getElementById('vote-count');
+  if (!voted) {
+    voted = true;
+    count.textContent = 248;
+    btn.style.background = 'rgba(0,230,255,0.3)';
+  } else {
+    voted = false;
+    count.textContent = 247;
+    btn.style.background = 'rgba(0,230,255,0.15)';
+  }
+}
+
+// Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.bottom = '30px';
+  setTimeout(() => { t.style.bottom = '-60px'; }, 2500);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// Nav active state
+const sections = ['home','gallery','wallpapers','stories','reviews','download'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && sec.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.remove('nav-active');
+    l.style.color = '#8892a8';
+    if (l.getAttribute('href') === '#' + current) {
+      l.classList.add('nav-active');
+      l.style.color = '#00e6ff';
+    }
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Altimeter readout
+const altitudes = ['15,000ft','12,500ft','10,000ft','7,500ft','5,000ft','3,000ft'];
+let altIdx = 0;
+setInterval(() => {
+  altIdx = (altIdx + 1) % altitudes.length;
+  const el = document.getElementById('alt-readout');
+  if (el) el.textContent = altitudes[altIdx];
+}, 2000);
+
+// Init
+renderBucketCards();
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#0a0e1a',
+  accent_color: '#00e6ff',
+  text_color: '#e8edf5',
+  primary_action_color: '#0066ff',
+  secondary_action_color: '#5599ff',
+  font_family: 'Barlow Condensed',
+  font_size: 16,
+  hero_title: 'Your feed needs altitude.',
+  hero_subtitle: 'Freefall visuals and templates built for attention.',
+  tagline: 'Chase the drop.',
+  gallery_title: 'The Gallery',
+  wallpapers_title: 'Wallpaper Pack',
+  stories_title: 'Story Templates',
+  bucket_title: 'Bucket List Challenge',
+  bottom_cta_text: 'Make your screen feel airborne.',
+  primary_cta: 'Download the Pack',
+  secondary_cta: 'See the Gallery',
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseSize = c.font_size || defaultConfig.font_size;
+  const fallback = 'Arial, sans-serif';
+
+  document.body.style.fontFamily = `${font}, ${fallback}`;
+  document.body.style.color = c.text_color;
+
+  const root = document.getElementById('app-root');
+  root.style.background = `linear-gradient(180deg, ${c.background_color} 0%, ${c.primary_action_color}15 40%, ${c.background_color} 100%)`;
+
+  // Text content
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('el-hero-title', c.hero_title);
+  setText('el-hero-subtitle', c.hero_subtitle);
+  setText('el-tagline', c.tagline);
+  setText('el-gallery-title', c.gallery_title);
+  setText('el-wallpapers-title', c.wallpapers_title);
+  setText('el-stories-title', c.stories_title);
+  setText('el-bucket-title', c.bucket_title);
+  setText('el-bottom-cta', c.bottom_cta_text);
+
+  // CTA buttons text
+  const primaryBtn = document.getElementById('el-primary-cta');
+  if (primaryBtn) primaryBtn.innerHTML = `<i data-lucide="download" style="width:18px;height:18px;"></i> ${c.primary_cta}`;
+  const secondaryBtn = document.getElementById('el-secondary-cta');
+  if (secondaryBtn) secondaryBtn.innerHTML = `<i data-lucide="image" style="width:18px;height:18px;"></i> ${c.secondary_cta}`;
+  lucide.createIcons();
+
+  // Font sizing
+  const title = document.getElementById('el-hero-title');
+  if (title) title.style.fontSize = `clamp(52px, 8vw, ${baseSize * 6.5}px)`;
+  const sub = document.getElementById('el-hero-subtitle');
+  if (sub) sub.style.fontSize = `${baseSize * 1.25}px`;
+
+  // Accent color on nav brand
+  document.querySelectorAll('.nav-active').forEach(el => { el.style.color = c.accent_color; el.style.borderBottomColor = c.accent_color; });
+
+  // Primary action buttons
+  if (primaryBtn) primaryBtn.style.background = `linear-gradient(135deg, ${c.accent_color}, ${c.primary_action_color})`;
+  if (secondaryBtn) { secondaryBtn.style.borderColor = c.accent_color + '66'; secondaryBtn.style.color = c.accent_color; }
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (cfg) => { applyConfig(cfg); },
+    mapToCapabilities: (cfg) => ({
+      recolorables: [
+        { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => cfg.accent_color || defaultConfig.accent_color, set: (v) => { cfg.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => cfg.primary_action_color || defaultConfig.primary_action_color, set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => cfg.font_family || defaultConfig.font_family,
+        set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => cfg.font_size || defaultConfig.font_size,
+        set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (cfg) => new Map([
+      ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+      ['tagline', cfg.tagline || defaultConfig.tagline],
+      ['gallery_title', cfg.gallery_title || defaultConfig.gallery_title],
+      ['wallpapers_title', cfg.wallpapers_title || defaultConfig.wallpapers_title],
+      ['stories_title', cfg.stories_title || defaultConfig.stories_title],
+      ['bucket_title', cfg.bucket_title || defaultConfig.bucket_title],
+      ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text],
+      ['primary_cta', cfg.primary_cta || defaultConfig.primary_cta],
+      ['secondary_cta', cfg.secondary_cta || defaultConfig.secondary_cta],
+    ])
+  });
+}
+
+applyConfig(defaultConfig);
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2f95e04e27c5',t:'MTc3NTU3NzAwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

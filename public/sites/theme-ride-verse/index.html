@@ -1,1 +1,528 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/ee50a3a9-315f-46b4-b1ac-12daae20bf60 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParkPulse Planner</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+body { font-family: 'Nunito', sans-serif; }
+
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+@keyframes popIn { 0%{opacity:0;transform:scale(0.7) rotate(-3deg)} 100%{opacity:1;transform:scale(1) rotate(0)} }
+@keyframes slideUp { 0%{opacity:0;transform:translateY(40px)} 100%{opacity:1;transform:translateY(0)} }
+@keyframes sparkle { 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes spin-slow { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(255,107,53,0.3)} 50%{box-shadow:0 0 40px rgba(255,107,53,0.6)} }
+
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-pop { animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+.anim-slide { animation: slideUp 0.7s ease-out both; }
+.anim-sparkle { animation: sparkle 2s ease-in-out infinite; }
+.anim-pulse { animation: pulse 2s ease-in-out infinite; }
+.anim-spin { animation: spin-slow 20s linear infinite; }
+.anim-glow { animation: glow 2.5s ease-in-out infinite; }
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+
+.gradient-hero { background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #6b21a8 60%, #ff6b35 100%); }
+.gradient-warm { background: linear-gradient(135deg, #ff6b35, #ff8c42, #ffd166); }
+.gradient-cool { background: linear-gradient(135deg, #6b21a8, #a855f7, #c084fc); }
+.gradient-night { background: linear-gradient(180deg, #0f0a1a 0%, #1a0533 50%, #2d1b69 100%); }
+
+.nav-glass { background: rgba(15,10,26,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(168,85,247,0.2); }
+.card-glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+.card-light { background: rgba(255,255,255,0.95); border: 2px solid rgba(107,33,168,0.12); }
+
+.badge { display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em; }
+
+.scroll-reveal { opacity:0; transform:translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.scroll-reveal.visible { opacity:1; transform:translateY(0); }
+
+.ride-card { transition: transform 0.3s, box-shadow 0.3s; }
+.ride-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 20px 40px rgba(107,33,168,0.3); }
+
+.sparkle-dot { position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd166; }
+
+.nav-link { position:relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:50%; width:0; height:2px; background:#ff6b35; transition:all 0.3s; transform:translateX(-50%); border-radius:2px; }
+.nav-link:hover::after, .nav-link.active::after { width:80%; }
+
+.marquee-track { display:flex; animation: marquee 30s linear infinite; }
+
+.img-cover { width:100%; height:100%; object-fit:cover; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#0f0a1a;"><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex items-center justify-between"><a href="#home" class="flex items-center gap-2 text-white font-bold text-lg" style="font-family:'Fredoka',sans-serif;"> <span class="w-8 h-8 rounded-lg gradient-warm flex items-center justify-center text-sm">🎢</span> ParkPulse </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-white/80 hover:text-white text-sm font-semibold transition">Home</a> <a href="#planner" class="nav-link text-white/80 hover:text-white text-sm font-semibold transition">Planner</a> <a href="#maps" class="nav-link text-white/80 hover:text-white text-sm font-semibold transition">Maps</a> <a href="#preview" class="nav-link text-white/80 hover:text-white text-sm font-semibold transition">Preview</a> <a href="#reviews" class="nav-link text-white/80 hover:text-white text-sm font-semibold transition">Reviews</a> <a href="#download" class="nav-link px-4 py-2 rounded-full text-sm font-bold text-white gradient-warm hover:opacity-90 transition">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden mt-3 pb-2 flex flex-col gap-2"><a href="#home" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2">Home</a> <a href="#planner" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2">Planner</a> <a href="#maps" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2">Maps</a> <a href="#preview" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2">Preview</a> <a href="#reviews" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2">Reviews</a> <a href="#download" class="text-white/80 hover:text-white text-sm font-semibold py-1 px-2 gradient-warm rounded-full text-center text-white">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="gradient-hero relative overflow-hidden pt-28 pb-20 px-4 md:px-8"><!-- Sparkle dots -->
+    <div class="sparkle-dot anim-sparkle" style="top:15%;left:10%;"></div>
+    <div class="sparkle-dot anim-sparkle delay-2" style="top:25%;left:85%;width:6px;height:6px;"></div>
+    <div class="sparkle-dot anim-sparkle delay-4" style="top:60%;left:20%;width:5px;height:5px;"></div>
+    <div class="sparkle-dot anim-sparkle delay-6" style="top:70%;left:75%;"></div>
+    <div class="sparkle-dot anim-sparkle delay-3" style="top:40%;left:50%;width:3px;height:3px;"></div>
+    <div class="sparkle-dot anim-sparkle delay-5" style="top:80%;left:40%;width:5px;height:5px;background:#a855f7;"></div><!-- Decorative ferris wheel -->
+    <div class="absolute top-16 right-0 opacity-10 anim-spin" style="width:300px;height:300px;">
+     <svg viewbox="0 0 200 200" fill="none" stroke="white" stroke-width="1.5"><circle cx="100" cy="100" r="80" /><circle cx="100" cy="100" r="40" /> <line x1="100" y1="20" x2="100" y2="180" /><line x1="20" y1="100" x2="180" y2="100" /> <line x1="43" y1="43" x2="157" y2="157" /><line x1="157" y1="43" x2="43" y2="157" /> <circle cx="100" cy="20" r="8" fill="white" /><circle cx="100" cy="180" r="8" fill="white" /> <circle cx="20" cy="100" r="8" fill="white" /><circle cx="180" cy="100" r="8" fill="white" />
+     </svg>
+    </div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="flex flex-col lg:flex-row items-center gap-10"><!-- Left content -->
+      <div class="flex-1 text-center lg:text-left">
+       <div class="badge bg-yellow-400/20 text-yellow-300 mb-4 anim-pop">
+        🎟️ Digital Planner Kit
+       </div>
+       <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4 anim-slide" style="font-family:'Fredoka',sans-serif;">More rides.<br>
+        Less wandering.</h1>
+       <p id="hero-subtitle" class="text-lg md:text-xl text-white/70 max-w-lg mb-8 anim-slide delay-2" style="font-family:'Nunito',sans-serif;">A theme park planner kit that saves time and boosts fun.</p>
+       <div class="flex flex-wrap gap-3 justify-center lg:justify-start anim-slide delay-3"><a href="#download" class="px-7 py-3.5 rounded-full font-bold text-white gradient-warm anim-glow text-base hover:opacity-90 transition inline-flex items-center gap-2"> <i data-lucide="download" style="width:18px;height:18px;"></i> Get the Planner </a> <a href="#maps" class="px-7 py-3.5 rounded-full font-bold text-white border-2 border-white/30 hover:border-white/60 transition text-base inline-flex items-center gap-2"> <i data-lucide="map" style="width:18px;height:18px;"></i> See Map Templates </a>
+       </div><!-- Social proof -->
+       <div class="mt-8 flex items-center gap-4 justify-center lg:justify-start anim-slide delay-5">
+        <div class="flex -space-x-2">
+         <div class="w-8 h-8 rounded-full bg-pink-400 border-2 border-purple-900 flex items-center justify-center text-xs">
+          👩
+         </div>
+         <div class="w-8 h-8 rounded-full bg-blue-400 border-2 border-purple-900 flex items-center justify-center text-xs">
+          👨
+         </div>
+         <div class="w-8 h-8 rounded-full bg-green-400 border-2 border-purple-900 flex items-center justify-center text-xs">
+          👧
+         </div>
+         <div class="w-8 h-8 rounded-full bg-yellow-400 border-2 border-purple-900 flex items-center justify-center text-xs">
+          🧒
+         </div>
+        </div>
+        <p class="text-white/60 text-sm"><span class="text-white font-bold">2,400+</span> families planned smarter</p>
+       </div>
+      </div><!-- Right: floating card + vote widget -->
+      <div class="flex-1 max-w-md relative"><!-- Main preview card -->
+       <div class="card-glass rounded-3xl p-5 anim-float relative">
+        <div class="rounded-2xl overflow-hidden mb-4" style="height:200px;"><img src="https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=600&amp;q=80" alt="Theme park at night with colorful lights" class="img-cover" loading="lazy" onerror="console.error('Image failed:',this.src);this.style.background='linear-gradient(135deg,#6b21a8,#ff6b35)';this.alt='Theme park image';">
+        </div>
+        <div class="flex items-center justify-between mb-2"><span class="badge bg-green-500/20 text-green-300">✅ Ready to Use</span> <span class="text-white/50 text-xs">v2.4</span>
+        </div>
+        <h3 class="text-white font-bold text-lg" style="font-family:'Fredoka',sans-serif;">ParkPulse Full Kit</h3>
+        <p class="text-white/50 text-sm mt-1">Itinerary + Maps + Checklists + Trackers</p>
+        <div class="mt-3 flex items-center gap-2"><span class="text-yellow-400 text-sm">⭐⭐⭐⭐⭐</span> <span class="text-white/40 text-xs">4.9 (312 reviews)</span>
+        </div>
+       </div><!-- Floating vote card -->
+       <div class="absolute -bottom-6 -left-6 card-glass rounded-2xl p-4 anim-pop delay-4" style="min-width:180px;">
+        <p class="text-white/60 text-xs font-semibold uppercase tracking-wider mb-2">Vote + Comment</p>
+        <div class="flex gap-2 mb-2"><button id="vote-up" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500/20 text-green-300 text-xs font-bold hover:bg-green-500/30 transition"> <i data-lucide="thumbs-up" style="width:12px;height:12px;"></i> <span id="vote-up-count">47</span> </button> <button id="vote-down" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-500/20 text-red-300 text-xs font-bold hover:bg-red-500/30 transition"> <i data-lucide="thumbs-down" style="width:12px;height:12px;"></i> <span id="vote-down-count">2</span> </button>
+        </div>
+        <p class="text-white/40 text-xs">Embed Widget Here</p>
+       </div><!-- Floating badge -->
+       <div class="absolute -top-3 -right-3 bg-yellow-400 text-purple-900 rounded-full w-16 h-16 flex flex-col items-center justify-center font-extrabold text-xs anim-pop delay-6" style="font-family:'Fredoka',sans-serif;"><span class="text-base leading-none">$12</span> <span class="text-[8px] opacity-70">ONE TIME</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Marquee -->
+   <div class="w-full overflow-hidden py-3" style="background:linear-gradient(90deg,#ff6b35,#ffd166,#ff6b35);">
+    <div class="marquee-track whitespace-nowrap"><span class="text-purple-900 font-bold text-sm mx-6">🎢 SAVES HOURS IN LINE</span> <span class="text-purple-900 font-bold text-sm mx-6">👨‍👩‍👧‍👦 PERFECT FOR FAMILIES &amp; GROUPS</span> <span class="text-purple-900 font-bold text-sm mx-6">🎁 HIGHLY GIFTABLE</span> <span class="text-purple-900 font-bold text-sm mx-6">📱 INSTANT DOWNLOAD</span> <span class="text-purple-900 font-bold text-sm mx-6">🗺️ RIDE PRIORITY MAPS</span> <span class="text-purple-900 font-bold text-sm mx-6">📋 PACKING CHECKLISTS</span> <span class="text-purple-900 font-bold text-sm mx-6">🎢 SAVES HOURS IN LINE</span> <span class="text-purple-900 font-bold text-sm mx-6">👨‍👩‍👧‍👦 PERFECT FOR FAMILIES &amp; GROUPS</span> <span class="text-purple-900 font-bold text-sm mx-6">🎁 HIGHLY GIFTABLE</span> <span class="text-purple-900 font-bold text-sm mx-6">📱 INSTANT DOWNLOAD</span> <span class="text-purple-900 font-bold text-sm mx-6">🗺️ RIDE PRIORITY MAPS</span> <span class="text-purple-900 font-bold text-sm mx-6">📋 PACKING CHECKLISTS</span>
+    </div>
+   </div><!-- PLANNER SECTION -->
+   <section id="planner" class="gradient-night py-20 px-4 md:px-8 relative">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="badge bg-purple-500/20 text-purple-300 mb-3">📅 PLAN YOUR DAY</span>
+      <h2 id="planner-title" class="text-3xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka',sans-serif;">Your Day, Mapped Out</h2>
+      <p class="text-white/50 max-w-lg mx-auto">Timeline blocks and priority cards so you hit every ride at the right time.</p>
+     </div><!-- Timeline -->
+     <div class="grid md:grid-cols-2 gap-6 mb-12"><!-- Timeline Left -->
+      <div class="space-y-4 scroll-reveal">
+       <h3 class="text-white/40 text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><i data-lucide="clock" style="width:14px;height:14px;"></i> MORNING BLOCK</h3>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl gradient-warm flex items-center justify-center text-xl flex-shrink-0">
+         🎢
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Big Thunder Coaster</p>
+         <p class="text-white/40 text-xs">9:00 AM · Wait: ~15 min</p>
+        </div><span class="badge bg-red-500/20 text-red-300 text-[10px] flex-shrink-0">🔥 Priority</span>
+       </div>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-xl flex-shrink-0">
+         🏰
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Enchanted Castle Tour</p>
+         <p class="text-white/40 text-xs">9:45 AM · Wait: ~10 min</p>
+        </div><span class="badge bg-blue-500/20 text-blue-300 text-[10px] flex-shrink-0">👨‍👩‍👧 Family</span>
+       </div>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-xl flex-shrink-0">
+         🍦
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Snack Break: Ice Cream Alley</p>
+         <p class="text-white/40 text-xs">10:30 AM · 20 min break</p>
+        </div><span class="badge bg-green-500/20 text-green-300 text-[10px] flex-shrink-0">🍽️ Food</span>
+       </div>
+      </div><!-- Timeline Right -->
+      <div class="space-y-4 scroll-reveal delay-2">
+       <h3 class="text-white/40 text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><i data-lucide="sunset" style="width:14px;height:14px;"></i> AFTERNOON BLOCK</h3>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-xl flex-shrink-0">
+         🎡
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Skyline Ferris Wheel</p>
+         <p class="text-white/40 text-xs">1:00 PM · Wait: ~20 min</p>
+        </div><span class="badge bg-purple-500/20 text-purple-300 text-[10px] flex-shrink-0">📸 Photo</span>
+       </div>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0">
+         💦
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Splash Rapids</p>
+         <p class="text-white/40 text-xs">2:00 PM · Wait: ~25 min</p>
+        </div><span class="badge bg-red-500/20 text-red-300 text-[10px] flex-shrink-0">🔥 Priority</span>
+       </div>
+       <div class="ride-card card-glass rounded-2xl p-4 flex items-center gap-4 cursor-pointer">
+        <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center text-xl flex-shrink-0">
+         🎭
+        </div>
+        <div class="flex-1 min-w-0">
+         <p class="text-white font-bold text-sm">Parade &amp; Shows</p>
+         <p class="text-white/40 text-xs">3:30 PM · Main Street</p>
+        </div><span class="badge bg-yellow-500/20 text-yellow-300 text-[10px] flex-shrink-0">⭐ Must See</span>
+       </div>
+      </div>
+     </div><!-- What's included -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 scroll-reveal">
+      <div class="card-glass rounded-2xl p-5 text-center ride-card">
+       <div class="text-3xl mb-2">
+        📋
+       </div>
+       <p class="text-white font-bold text-sm">Itinerary Planner</p>
+       <p class="text-white/40 text-xs mt-1">Hour-by-hour blocks</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center ride-card">
+       <div class="text-3xl mb-2">
+        🗺️
+       </div>
+       <p class="text-white font-bold text-sm">Ride Priority Maps</p>
+       <p class="text-white/40 text-xs mt-1">Color-coded zones</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center ride-card">
+       <div class="text-3xl mb-2">
+        🎒
+       </div>
+       <p class="text-white font-bold text-sm">Packing Checklist</p>
+       <p class="text-white/40 text-xs mt-1">Nothing forgotten</p>
+      </div>
+      <div class="card-glass rounded-2xl p-5 text-center ride-card">
+       <div class="text-3xl mb-2">
+        📸
+       </div>
+       <p class="text-white font-bold text-sm">Photo Spot Tracker</p>
+       <p class="text-white/40 text-xs mt-1">Best angles marked</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- MAPS SECTION -->
+   <section id="maps" class="py-20 px-4 md:px-8" style="background:linear-gradient(180deg,#1a0533,#0f1729);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="badge bg-orange-500/20 text-orange-300 mb-3">🗺️ MAP TEMPLATES</span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka',sans-serif;">Navigate Like a Pro</h2>
+      <p class="text-white/50 max-w-lg mx-auto">Ride priority maps with color-coded zones, food spots, and photo locations.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="scroll-reveal ride-card rounded-3xl overflow-hidden relative group" style="min-height:280px;"><img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7570?w=500&amp;q=80" alt="Colorful roller coaster" class="img-cover absolute inset-0" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#ff6b35,#ffd166)';this.alt='Map template';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5"><span class="badge bg-red-500 text-white mb-2">THRILL ZONE</span>
+        <h3 class="text-white font-bold text-lg" style="font-family:'Fredoka',sans-serif;">Coaster Kingdom Map</h3>
+        <p class="text-white/60 text-sm mt-1">Priority routes for thrill seekers</p>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-2 ride-card rounded-3xl overflow-hidden relative group" style="min-height:280px;"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&amp;q=80" alt="Ferris wheel at sunset" class="img-cover absolute inset-0" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#6b21a8,#a855f7)';this.alt='Map template';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5"><span class="badge bg-blue-500 text-white mb-2">FAMILY ZONE</span>
+        <h3 class="text-white font-bold text-lg" style="font-family:'Fredoka',sans-serif;">Family Adventure Map</h3>
+        <p class="text-white/60 text-sm mt-1">Kid-friendly routes &amp; rest stops</p>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-4 ride-card rounded-3xl overflow-hidden relative group" style="min-height:280px;"><img src="https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=500&amp;q=80" alt="Carnival food and lights" class="img-cover absolute inset-0" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#ffd166,#ff6b35)';this.alt='Map template';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+       <div class="absolute bottom-0 left-0 right-0 p-5"><span class="badge bg-yellow-500 text-purple-900 mb-2">FOOD &amp; PHOTO</span>
+        <h3 class="text-white font-bold text-lg" style="font-family:'Fredoka',sans-serif;">Foodie &amp; Photo Map</h3>
+        <p class="text-white/60 text-sm mt-1">Best eats &amp; Instagram spots</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION -->
+   <section id="preview" class="py-20 px-4 md:px-8 gradient-night relative overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="badge bg-pink-500/20 text-pink-300 mb-3">👀 SNEAK PEEK</span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka',sans-serif;">What's Inside</h2>
+      <p class="text-white/50 max-w-lg mx-auto">Story templates, food trackers, and everything for the perfect park day.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="scroll-reveal">
+       <div class="rounded-3xl overflow-hidden" style="height:350px;"><img src="https://images.unsplash.com/photo-1536768139911-e290a59011e4?w=600&amp;q=80" alt="Amusement park with cotton candy colors" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#c084fc,#ff6b35)';this.alt='Preview image';">
+       </div>
+      </div>
+      <div class="scroll-reveal delay-2 space-y-4">
+       <div class="card-glass rounded-2xl p-4 flex items-start gap-3 ride-card">
+        <div class="w-10 h-10 rounded-xl gradient-warm flex items-center justify-center text-lg flex-shrink-0">
+         📱
+        </div>
+        <div>
+         <p class="text-white font-bold text-sm">Story Templates</p>
+         <p class="text-white/40 text-xs mt-1">Pre-designed Instagram &amp; TikTok templates for park day content</p>
+        </div>
+       </div>
+       <div class="card-glass rounded-2xl p-4 flex items-start gap-3 ride-card">
+        <div class="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center text-lg flex-shrink-0">
+         🍕
+        </div>
+        <div>
+         <p class="text-white font-bold text-sm">Food Spot Tracker</p>
+         <p class="text-white/40 text-xs mt-1">Rate and track every snack, meal, and treat across the park</p>
+        </div>
+       </div>
+       <div class="card-glass rounded-2xl p-4 flex items-start gap-3 ride-card">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-lg flex-shrink-0">
+         📍
+        </div>
+        <div>
+         <p class="text-white font-bold text-sm">Photo Spot Guide</p>
+         <p class="text-white/40 text-xs mt-1">Marked locations for the best photos with timing tips</p>
+        </div>
+       </div>
+       <div class="card-glass rounded-2xl p-4 flex items-start gap-3 ride-card">
+        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center text-lg flex-shrink-0">
+         🎒
+        </div>
+        <div>
+         <p class="text-white font-bold text-sm">Packing Checklist</p>
+         <p class="text-white/40 text-xs mt-1">Weather-based packing list so you never forget sunscreen again</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="py-20 px-4 md:px-8" style="background:#0f0a1a;">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="badge bg-yellow-500/20 text-yellow-300 mb-3">⭐ REVIEWS</span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-3" style="font-family:'Fredoka',sans-serif;">Families Love It</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="scroll-reveal card-glass rounded-2xl p-6 ride-card">
+       <div class="flex items-center gap-1 mb-3 text-yellow-400 text-sm">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-white/70 text-sm mb-4">"We rode 14 rides before lunch! This planner literally changed our Disney trip."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-xs">
+         👩
+        </div>
+        <div>
+         <p class="text-white font-bold text-xs">Sarah M.</p>
+         <p class="text-white/40 text-[10px]">Family of 4</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-2 card-glass rounded-2xl p-6 ride-card">
+       <div class="flex items-center gap-1 mb-3 text-yellow-400 text-sm">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-white/70 text-sm mb-4">"Gifted this to my sister's family. They said it was the best $12 they've ever spent on a trip!"</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-blue-400 flex items-center justify-center text-xs">
+         👨
+        </div>
+        <div>
+         <p class="text-white font-bold text-xs">Mike R.</p>
+         <p class="text-white/40 text-[10px]">Gift buyer</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-4 card-glass rounded-2xl p-6 ride-card">
+       <div class="flex items-center gap-1 mb-3 text-yellow-400 text-sm">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-white/70 text-sm mb-4">"The food tracker alone is worth it. Found hidden gems we would've missed!"</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-xs">
+         👩
+        </div>
+        <div>
+         <p class="text-white font-bold text-xs">Jess T.</p>
+         <p class="text-white/40 text-[10px]">Solo traveler</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="py-20 px-4 md:px-8 relative overflow-hidden" style="background:linear-gradient(135deg,#2d1b69,#6b21a8,#ff6b35);"><!-- Sparkles -->
+    <div class="sparkle-dot anim-sparkle" style="top:20%;left:15%;width:6px;height:6px;"></div>
+    <div class="sparkle-dot anim-sparkle delay-3" style="top:60%;left:80%;width:5px;height:5px;"></div>
+    <div class="sparkle-dot anim-sparkle delay-5" style="top:40%;left:50%;"></div>
+    <div class="max-w-3xl mx-auto text-center relative z-10">
+     <div class="scroll-reveal">
+      <div class="text-5xl mb-4">
+       🎢
+      </div>
+      <h2 id="bottom-cta" class="text-3xl md:text-5xl font-extrabold text-white mb-4" style="font-family:'Fredoka',sans-serif;">Make every hour count.</h2>
+      <p class="text-white/70 text-lg mb-8 max-w-md mx-auto">Plan the day. Max the fun. Get your ParkPulse Planner Kit and turn chaos into adventure.</p><a href="#" class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-purple-900 text-lg anim-pulse" style="background:linear-gradient(135deg,#ffd166,#ff6b35);" onclick="event.preventDefault();"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get ParkPulse — $12 </a>
+      <p class="text-white/40 text-xs mt-4">Instant download · Canva templates · Lifetime access</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-6 text-white/50 text-sm"><span class="flex items-center gap-1"><i data-lucide="check-circle" style="width:16px;height:16px;color:#22c55e;"></i> Saves hours in line</span> <span class="flex items-center gap-1"><i data-lucide="check-circle" style="width:16px;height:16px;color:#22c55e;"></i> Perfect for families</span> <span class="flex items-center gap-1"><i data-lucide="check-circle" style="width:16px;height:16px;color:#22c55e;"></i> Highly giftable</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 text-center" style="background:#0f0a1a;">
+    <div class="max-w-6xl mx-auto">
+     <div class="flex items-center justify-center gap-2 mb-3"><span class="w-6 h-6 rounded gradient-warm flex items-center justify-center text-xs">🎢</span> <span class="text-white font-bold text-sm" style="font-family:'Fredoka',sans-serif;">ParkPulse Planner</span>
+     </div>
+     <p class="text-white/30 text-xs">Plan the day. Max the fun. © 2025</p>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// Config & SDK
+const defaultConfig = {
+  hero_title: 'More rides.<br>Less wandering.',
+  hero_subtitle: 'A theme park planner kit that saves time and boosts fun.',
+  planner_title: 'Your Day, Mapped Out',
+  bottom_cta_text: 'Make every hour count.',
+  background_color: '#0f0a1a',
+  surface_color: '#1a0533',
+  text_color: '#ffffff',
+  accent_color: '#ff6b35',
+  secondary_accent: '#6b21a8',
+  font_family: 'Fredoka',
+  font_size: 16
+};
+
+async function initApp() {
+  await window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      const c = { ...defaultConfig, ...config };
+      document.getElementById('hero-title').innerHTML = c.hero_title;
+      document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+      document.getElementById('planner-title').textContent = c.planner_title;
+      document.getElementById('bottom-cta').textContent = c.bottom_cta_text;
+
+      // Font
+      const font = c.font_family || defaultConfig.font_family;
+      document.querySelectorAll('[style*="font-family:\'Fredoka\'"]').forEach(el => {
+        el.style.fontFamily = `${font}, Fredoka, sans-serif`;
+      });
+      document.getElementById('hero-title').style.fontFamily = `${font}, Fredoka, sans-serif`;
+      document.getElementById('planner-title').style.fontFamily = `${font}, Fredoka, sans-serif`;
+      document.getElementById('bottom-cta').style.fontFamily = `${font}, Fredoka, sans-serif`;
+
+      // Font size
+      const base = c.font_size || defaultConfig.font_size;
+      document.getElementById('hero-subtitle').style.fontSize = `${base * 1.2}px`;
+    },
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      const makeColor = (key) => ({
+        get: () => c[key] || defaultConfig[key],
+        set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [
+          makeColor('background_color'),
+          makeColor('surface_color'),
+          makeColor('text_color'),
+          makeColor('accent_color'),
+          makeColor('secondary_accent')
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family || defaultConfig.font_family,
+          set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size || defaultConfig.font_size,
+          set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_title', c.hero_title],
+        ['hero_subtitle', c.hero_subtitle],
+        ['planner_title', c.planner_title],
+        ['bottom_cta_text', c.bottom_cta_text]
+      ]);
+    }
+  });
+}
+initApp();
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Vote buttons
+let upCount = 47, downCount = 2;
+document.getElementById('vote-up').addEventListener('click', () => {
+  upCount++;
+  document.getElementById('vote-up-count').textContent = upCount;
+});
+document.getElementById('vote-down').addEventListener('click', () => {
+  downCount++;
+  document.getElementById('vote-down-count').textContent = downCount;
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// Active nav link
+const sections = ['home','planner','maps','preview','reviews','download'];
+window.addEventListener('scroll', () => {
+  const scrollY = document.getElementById('app-wrapper').scrollTop || window.scrollY;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 100 <= scrollY) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6e14368327c5',t:'MTc3NTU3OTU2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

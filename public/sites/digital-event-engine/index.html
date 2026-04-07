@@ -1,1 +1,815 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/74c92407-3fa7-4dfe-b3e2-e4a143682ad9 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamStage Pro</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html{height:100%;scroll-behavior:smooth}
+body{height:100%;margin:0;font-family:'Outfit',sans-serif;background:#08080f;color:#e2e2f0;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#08080f}
+::-webkit-scrollbar-thumb{background:#6b21a8;border-radius:3px}
+
+.app-root{width:100%;height:100%;overflow-y:auto;overflow-x:hidden}
+
+/* Animated gradient background */
+.hero-gradient{
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,58,237,.25),transparent),
+             radial-gradient(ellipse 60% 50% at 80% 20%,rgba(59,130,246,.15),transparent),
+             radial-gradient(ellipse 50% 40% at 20% 80%,rgba(168,85,247,.1),transparent),
+             #08080f;
+}
+
+/* Grid pattern overlay */
+.grid-overlay{
+  background-image:
+    linear-gradient(rgba(124,58,237,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,58,237,.06) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+/* Glow effects */
+.glow-purple{box-shadow:0 0 30px rgba(124,58,237,.3),0 0 60px rgba(124,58,237,.1)}
+.glow-blue{box-shadow:0 0 30px rgba(59,130,246,.3),0 0 60px rgba(59,130,246,.1)}
+.glow-hover:hover{box-shadow:0 0 40px rgba(124,58,237,.5),0 0 80px rgba(124,58,237,.2);transform:translateY(-4px)}
+
+/* Card styles */
+.card-glass{
+  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+  border:1px solid rgba(124,58,237,.15);
+  backdrop-filter:blur(10px);
+  transition:all .4s cubic-bezier(.25,.8,.25,1);
+}
+.card-glass:hover{
+  border-color:rgba(124,58,237,.4);
+  box-shadow:0 0 40px rgba(124,58,237,.15),inset 0 1px 0 rgba(255,255,255,.05);
+  transform:translateY(-6px);
+}
+
+/* Pricing card animated border */
+.pricing-card{
+  position:relative;
+  background:#0d0d1a;
+  border:1px solid rgba(124,58,237,.2);
+  transition:all .5s cubic-bezier(.25,.8,.25,1);
+  overflow:hidden;
+}
+.pricing-card::before{
+  content:'';position:absolute;inset:-2px;
+  background:conic-gradient(from var(--angle,0deg),transparent 40%,rgba(124,58,237,.6) 50%,transparent 60%);
+  border-radius:inherit;z-index:-1;opacity:0;
+  transition:opacity .5s;
+}
+.pricing-card:hover::before{opacity:1;animation:rotateBorder 3s linear infinite}
+.pricing-card:hover{
+  border-color:rgba(124,58,237,.5);
+  box-shadow:0 0 50px rgba(124,58,237,.2),0 20px 60px rgba(0,0,0,.5);
+  transform:translateY(-8px) scale(1.02);
+}
+.pricing-featured{
+  border-color:rgba(124,58,237,.4);
+  box-shadow:0 0 30px rgba(124,58,237,.15);
+}
+.pricing-featured::before{opacity:.5;animation:rotateBorder 3s linear infinite}
+
+@keyframes rotateBorder{to{--angle:360deg}}
+@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+
+/* Floating animation */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.float-anim{animation:float 4s ease-in-out infinite}
+.float-anim-delay{animation:float 4s ease-in-out 1s infinite}
+
+/* Fade in animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .8s ease forwards}
+.fade-up-d1{animation:fadeUp .8s ease .1s forwards;opacity:0}
+.fade-up-d2{animation:fadeUp .8s ease .2s forwards;opacity:0}
+.fade-up-d3{animation:fadeUp .8s ease .3s forwards;opacity:0}
+.fade-up-d4{animation:fadeUp .8s ease .4s forwards;opacity:0}
+.fade-up-d5{animation:fadeUp .8s ease .5s forwards;opacity:0}
+.fade-up-d6{animation:fadeUp .8s ease .6s forwards;opacity:0}
+
+/* Pulse glow on buttons */
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(124,58,237,.4)}50%{box-shadow:0 0 40px rgba(124,58,237,.7),0 0 60px rgba(59,130,246,.3)}}
+.pulse-glow{animation:pulseGlow 2.5s ease-in-out infinite}
+
+/* Scanline effect */
+@keyframes scanline{0%{top:-100%}100%{top:200%}}
+.scanline-effect::after{
+  content:'';position:absolute;left:0;width:100%;height:30%;
+  background:linear-gradient(transparent,rgba(124,58,237,.03),transparent);
+  animation:scanline 5s linear infinite;pointer-events:none;
+}
+
+/* Nav */
+.nav-glass{
+  background:rgba(8,8,15,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(124,58,237,.1);
+}
+.nav-link{position:relative;transition:color .3s}
+.nav-link::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,#7c3aed,#3b82f6);transition:width .3s;
+}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-link:hover,.nav-link.active{color:#a78bfa}
+
+/* Stage SVG grid */
+.stage-grid line{stroke:rgba(124,58,237,.15);stroke-width:.5}
+.stage-grid circle{fill:rgba(124,58,237,.3)}
+
+/* Section divider glow line */
+.glow-line{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.5),rgba(59,130,246,.5),transparent);
+}
+
+/* Reaction button */
+.reaction-btn{
+  background:rgba(255,255,255,.04);border:1px solid rgba(124,58,237,.15);
+  transition:all .3s;cursor:pointer;
+}
+.reaction-btn:hover{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.4);transform:scale(1.1)}
+.reaction-btn.selected{background:rgba(124,58,237,.25);border-color:#7c3aed}
+
+/* Toast */
+.toast-msg{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#7c3aed,#3b82f6);
+  padding:12px 24px;border-radius:12px;z-index:9999;
+  font-size:14px;font-weight:500;
+  animation:fadeUp .3s ease;
+  pointer-events:none;
+}
+
+/* Mobile nav */
+.mobile-menu{
+  position:fixed;inset:0;z-index:90;
+  background:rgba(8,8,15,.97);backdrop-filter:blur(20px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+}
+.mobile-menu.open{display:flex}
+
+/* Comment styling */
+.comment-item{
+  background:rgba(255,255,255,.02);border:1px solid rgba(124,58,237,.1);
+  border-radius:12px;padding:12px 16px;
+}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{void:'#08080f',amethyst:'#7c3aed',sapphire:'#3b82f6',lavender:'#a78bfa',surface:'#0d0d1a',surfaceLight:'#14142a'}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-root" id="appRoot"><!-- Sticky Navigation -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2">
+       <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amethyst to-sapphire flex items-center justify-center"><i data-lucide="radio" style="width:18px;height:18px;color:#fff"></i>
+       </div><span class="font-bold text-lg" id="navBrand">StreamStage Pro</span> </a>
+      <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm font-medium text-gray-400">Home</a> <a href="#events" class="nav-link text-sm font-medium text-gray-400">Events</a> <a href="#production" class="nav-link text-sm font-medium text-gray-400">Production</a> <a href="#features" class="nav-link text-sm font-medium text-gray-400">Features</a> <a href="#pricing" class="nav-link text-sm font-medium text-gray-400">Pricing</a> <a href="#faq" class="nav-link text-sm font-medium text-gray-400">FAQ</a> <a href="#cta" class="px-5 py-2 rounded-full bg-gradient-to-r from-amethyst to-sapphire text-white text-sm font-semibold hover:opacity-90 transition">Start Event</a>
+      </div><button class="md:hidden text-gray-400" id="menuToggle" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px"></i> </button>
+     </div>
+    </div>
+   </nav><!-- Mobile Menu -->
+   <div class="mobile-menu" id="mobileMenu"><button class="absolute top-5 right-5 text-gray-400" id="menuClose" aria-label="Close menu"><i data-lucide="x" style="width:28px;height:28px"></i></button> <a href="#home" class="text-2xl font-semibold text-gray-200 mobile-nav-link">Home</a> <a href="#events" class="text-2xl font-semibold text-gray-200 mobile-nav-link">Events</a> <a href="#production" class="text-2xl font-semibold text-gray-200 mobile-nav-link">Production</a> <a href="#features" class="text-2xl font-semibold text-gray-200 mobile-nav-link">Features</a> <a href="#pricing" class="text-2xl font-semibold text-gray-200 mobile-nav-link">Pricing</a> <a href="#faq" class="text-2xl font-semibold text-gray-200 mobile-nav-link">FAQ</a> <a href="#cta" class="mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-amethyst to-sapphire text-white text-lg font-semibold mobile-nav-link">Start Event</a>
+   </div><!-- ===== HERO ===== -->
+   <section id="home" class="hero-gradient grid-overlay scanline-effect relative min-h-screen flex items-center pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+       <div class="fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amethyst/10 border border-amethyst/20 text-lavender text-sm mb-6"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span id="taglineDisplay">Events without limits.</span>
+       </div>
+       <h1 class="fade-up-d1 text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight"><span class="bg-gradient-to-r from-white via-lavender to-sapphire bg-clip-text text-transparent" id="heroTitle">Your event, anywhere.</span></h1>
+       <p class="fade-up-d2 text-lg sm:text-xl text-gray-400 mt-6 max-w-lg" id="heroSubtitle">Virtual and hybrid events built to engage. Studio-grade production meets limitless reach.</p>
+       <div class="fade-up-d3 flex flex-wrap gap-4 mt-8"><a href="#cta" class="pulse-glow px-8 py-3.5 rounded-full bg-gradient-to-r from-amethyst to-sapphire text-white font-semibold text-lg hover:opacity-90 transition">Start Event</a> <a href="#features" class="px-8 py-3.5 rounded-full border border-amethyst/30 text-lavender font-semibold text-lg hover:bg-amethyst/10 transition">View Features</a>
+       </div>
+       <div class="fade-up-d4 flex items-center gap-8 mt-10 text-sm text-gray-500">
+        <div class="flex items-center gap-2">
+         <i data-lucide="users" style="width:16px;height:16px;color:#7c3aed"></i> 50K+ attendees hosted
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="globe" style="width:16px;height:16px;color:#3b82f6"></i> 120+ countries
+        </div>
+       </div>
+      </div><!-- Stage visual -->
+      <div class="fade-up-d3 relative">
+       <svg viewbox="0 0 400 300" class="w-full stage-grid float-anim" style="filter:drop-shadow(0 0 30px rgba(124,58,237,.2))"><defs>
+         <lineargradient id="stageGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity=".3" />
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity=".1" />
+         </lineargradient>
+        </defs> <!-- Stage platform --> <rect x="40" y="160" width="320" height="120" rx="8" fill="url(#stageGrad)" stroke="rgba(124,58,237,.3)" stroke-width="1" /> <!-- Grid lines --> <g class="stage-grid">
+         <line x1="40" y1="190" x2="360" y2="190" />
+         <line x1="40" y1="220" x2="360" y2="220" />
+         <line x1="40" y1="250" x2="360" y2="250" />
+         <line x1="100" y1="160" x2="100" y2="280" />
+         <line x1="160" y1="160" x2="160" y2="280" />
+         <line x1="220" y1="160" x2="220" y2="280" />
+         <line x1="280" y1="160" x2="280" y2="280" />
+         <line x1="340" y1="160" x2="340" y2="280" />
+        </g> <!-- Screen panels --> <rect x="60" y="30" width="120" height="70" rx="4" fill="rgba(124,58,237,.1)" stroke="rgba(124,58,237,.3)" stroke-width="1" /> <rect x="220" y="30" width="120" height="70" rx="4" fill="rgba(59,130,246,.1)" stroke="rgba(59,130,246,.3)" stroke-width="1" /> <!-- Center screen --> <rect x="130" y="10" width="140" height="90" rx="6" fill="rgba(124,58,237,.08)" stroke="rgba(124,58,237,.4)" stroke-width="1.5" /> <text x="200" y="55" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="Space Mono,monospace">
+         LIVE
+        </text> <circle cx="200" cy="70" r="3" fill="#ef4444">
+         <animate attributename="opacity" values="1;0.3;1" dur="1.5s" repeatcount="indefinite" />
+        </circle> <!-- Speaker dots --> <circle cx="80" cy="145" r="3" fill="rgba(124,58,237,.5)" /><circle cx="120" cy="145" r="3" fill="rgba(124,58,237,.5)" /><circle cx="200" cy="140" r="4" fill="rgba(124,58,237,.7)" /><circle cx="280" cy="145" r="3" fill="rgba(59,130,246,.5)" /><circle cx="320" cy="145" r="3" fill="rgba(59,130,246,.5)" /> <!-- Audience dots --> <g opacity=".4">
+         <circle cx="100" cy="200" r="2" fill="#a78bfa" />
+         <circle cx="130" cy="205" r="2" fill="#a78bfa" />
+         <circle cx="160" cy="200" r="2" fill="#a78bfa" />
+         <circle cx="190" cy="208" r="2" fill="#93c5fd" />
+         <circle cx="220" cy="200" r="2" fill="#93c5fd" />
+         <circle cx="250" cy="205" r="2" fill="#a78bfa" />
+         <circle cx="280" cy="200" r="2" fill="#93c5fd" />
+         <circle cx="310" cy="208" r="2" fill="#a78bfa" />
+         <circle cx="115" cy="230" r="2" fill="#a78bfa" />
+         <circle cx="145" cy="235" r="2" fill="#93c5fd" />
+         <circle cx="175" cy="230" r="2" fill="#a78bfa" />
+         <circle cx="205" cy="238" r="2" fill="#a78bfa" />
+         <circle cx="235" cy="230" r="2" fill="#93c5fd" />
+         <circle cx="265" cy="235" r="2" fill="#a78bfa" />
+         <circle cx="295" cy="230" r="2" fill="#93c5fd" />
+        </g> <!-- Light beams --> <polygon points="200,10 170,160 230,160" fill="rgba(124,58,237,.04)" /> <polygon points="100,30 80,160 120,160" fill="rgba(59,130,246,.03)" /> <polygon points="300,30 280,160 320,160" fill="rgba(59,130,246,.03)" />
+       </svg><!-- Floating UI panel -->
+       <div class="absolute top-4 right-4 card-glass rounded-xl p-3 float-anim-delay" style="width:140px">
+        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-green-400"></span> <span class="text-xs text-gray-400 font-mono">STREAMING</span>
+        </div>
+        <div class="text-xs text-gray-500">
+         Viewers: <span class="text-lavender font-bold">12,847</span>
+        </div>
+        <div class="text-xs text-gray-500 mt-1">
+         Quality: <span class="text-green-400">4K HDR</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== EVENTS ===== -->
+   <section id="events" class="relative py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="text-amethyst font-semibold text-sm uppercase tracking-widest">Event Types</span>
+      <h2 class="text-4xl sm:text-5xl font-bold mt-3">Every format. <span class="text-lavender">Every scale.</span></h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">From intimate webinars to global conferences, StreamStage Pro handles every event format with production-grade quality.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-amethyst/10 flex items-center justify-center mb-4">
+        <i data-lucide="video" style="width:24px;height:24px;color:#a78bfa"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Virtual Conferences</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Multi-track sessions, keynote stages, and breakout rooms with real-time engagement tools.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-sapphire/10 flex items-center justify-center mb-4">
+        <i data-lucide="monitor" style="width:24px;height:24px;color:#93c5fd"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Hybrid Productions</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Seamlessly merge in-person and virtual audiences with synchronized stage and stream.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-amethyst/10 flex items-center justify-center mb-4">
+        <i data-lucide="mic" style="width:24px;height:24px;color:#a78bfa"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Webinars &amp; Panels</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Interactive panels with live Q&amp;A, polls, and audience reactions for deep engagement.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-sapphire/10 flex items-center justify-center mb-4">
+        <i data-lucide="trophy" style="width:24px;height:24px;color:#93c5fd"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Award Shows</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Cinematic reveals, live voting, and red-carpet streams with multi-camera switching.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-amethyst/10 flex items-center justify-center mb-4">
+        <i data-lucide="music" style="width:24px;height:24px;color:#a78bfa"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Live Performances</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Concert-quality audio and visuals with spatial sound and immersive stage design.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="w-12 h-12 rounded-xl bg-sapphire/10 flex items-center justify-center mb-4">
+        <i data-lucide="briefcase" style="width:24px;height:24px;color:#93c5fd"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Corporate Summits</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Branded environments, executive town halls, and investor presentations at enterprise scale.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== PRODUCTION ===== -->
+   <section id="production" class="relative py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="text-sapphire font-semibold text-sm uppercase tracking-widest">Production Suite</span>
+      <h2 class="text-4xl sm:text-5xl font-bold mt-3">Broadcast-grade <span class="text-lavender">tools.</span></h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Everything you need to produce stunning virtual events, from stage design to live switching.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="card-glass rounded-2xl p-8 flex gap-5">
+       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amethyst/20 to-sapphire/20 flex items-center justify-center flex-shrink-0"><i data-lucide="layers" style="width:28px;height:28px;color:#a78bfa"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold mb-2">Multi-Layer Stage Design</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Drag-and-drop stage builder with layered visuals, animated backgrounds, and dynamic overlays for every scene.</p>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-8 flex gap-5">
+       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amethyst/20 to-sapphire/20 flex items-center justify-center flex-shrink-0"><i data-lucide="switch-camera" style="width:28px;height:28px;color:#93c5fd"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold mb-2">Live Camera Switching</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Cinematic transitions between cameras, screen shares, and pre-recorded segments with frame-perfect timing.</p>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-8 flex gap-5">
+       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amethyst/20 to-sapphire/20 flex items-center justify-center flex-shrink-0"><i data-lucide="bar-chart-3" style="width:28px;height:28px;color:#a78bfa"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold mb-2">Real-Time Analytics</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Live dashboards tracking engagement, attendance, and interaction metrics as your event unfolds.</p>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-8 flex gap-5">
+       <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amethyst/20 to-sapphire/20 flex items-center justify-center flex-shrink-0"><i data-lucide="shield" style="width:28px;height:28px;color:#93c5fd"></i>
+       </div>
+       <div>
+        <h3 class="text-xl font-bold mb-2">Enterprise Security</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">End-to-end encryption, SSO integration, and SOC 2 compliant infrastructure for sensitive corporate events.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== FEATURES ===== -->
+   <section id="features" class="relative py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="text-amethyst font-semibold text-sm uppercase tracking-widest">Interactive Features</span>
+      <h2 class="text-4xl sm:text-5xl font-bold mt-3">Engage. React. <span class="text-lavender">Connect.</span></h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Interactive tools that turn passive viewers into active participants.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-glass rounded-2xl p-6 text-center group">
+       <div class="w-16 h-16 mx-auto rounded-2xl bg-amethyst/10 flex items-center justify-center mb-4 group-hover:bg-amethyst/20 transition">
+        <i data-lucide="message-circle" style="width:28px;height:28px;color:#a78bfa"></i>
+       </div>
+       <h3 class="font-bold mb-1">Live Chat</h3>
+       <p class="text-gray-500 text-sm">Real-time moderated chat with emoji reactions and threading.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6 text-center group">
+       <div class="w-16 h-16 mx-auto rounded-2xl bg-sapphire/10 flex items-center justify-center mb-4 group-hover:bg-sapphire/20 transition">
+        <i data-lucide="bar-chart-2" style="width:28px;height:28px;color:#93c5fd"></i>
+       </div>
+       <h3 class="font-bold mb-1">Live Polls</h3>
+       <p class="text-gray-500 text-sm">Instant audience polling with animated results visualization.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6 text-center group">
+       <div class="w-16 h-16 mx-auto rounded-2xl bg-amethyst/10 flex items-center justify-center mb-4 group-hover:bg-amethyst/20 transition">
+        <i data-lucide="hand" style="width:28px;height:28px;color:#a78bfa"></i>
+       </div>
+       <h3 class="font-bold mb-1">Raise Hand</h3>
+       <p class="text-gray-500 text-sm">Queue-managed hand raising for structured audience Q&amp;A sessions.</p>
+      </div>
+      <div class="card-glass rounded-2xl p-6 text-center group">
+       <div class="w-16 h-16 mx-auto rounded-2xl bg-sapphire/10 flex items-center justify-center mb-4 group-hover:bg-sapphire/20 transition">
+        <i data-lucide="network" style="width:28px;height:28px;color:#93c5fd"></i>
+       </div>
+       <h3 class="font-bold mb-1">Breakout Rooms</h3>
+       <p class="text-gray-500 text-sm">Dynamic sub-sessions with automatic or manual attendee assignment.</p>
+      </div>
+     </div><!-- Digital product callout -->
+     <div class="mt-16 card-glass rounded-2xl p-8 sm:p-10 flex flex-col md:flex-row gap-8 items-center">
+      <div class="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-amethyst to-sapphire flex items-center justify-center"><i data-lucide="package" style="width:36px;height:36px;color:#fff"></i>
+      </div>
+      <div class="flex-1">
+       <h3 class="text-2xl font-bold mb-2">Digital Production Kit Included</h3>
+       <p class="text-gray-400 leading-relaxed">Every plan includes event layouts, streaming templates, stage designs, and production workflows — ready to customize and deploy.</p>
+       <div class="flex flex-wrap gap-3 mt-4"><span class="px-3 py-1 rounded-full bg-amethyst/10 border border-amethyst/20 text-lavender text-xs font-medium">Event Layouts</span> <span class="px-3 py-1 rounded-full bg-sapphire/10 border border-sapphire/20 text-blue-300 text-xs font-medium">Streaming Templates</span> <span class="px-3 py-1 rounded-full bg-amethyst/10 border border-amethyst/20 text-lavender text-xs font-medium">Stage Designs</span> <span class="px-3 py-1 rounded-full bg-sapphire/10 border border-sapphire/20 text-blue-300 text-xs font-medium">Production Workflows</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== PRICING ===== -->
+   <section id="pricing" class="relative py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="text-sapphire font-semibold text-sm uppercase tracking-widest">Pricing</span>
+      <h2 class="text-4xl sm:text-5xl font-bold mt-3">Scale as <span class="text-lavender">you grow.</span></h2>
+      <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Transparent pricing for every production level. All plans include the digital production kit.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto"><!-- Basic -->
+      <div class="pricing-card rounded-2xl p-8">
+       <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        Basic
+       </div>
+       <div class="text-4xl font-extrabold mb-1">
+        $99<span class="text-lg font-normal text-gray-500">/event</span>
+       </div>
+       <p class="text-gray-500 text-sm mb-6">Standard stream for straightforward events.</p>
+       <div class="glow-line mb-6"></div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Single-camera stream</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Up to 500 attendees</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Live chat</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Basic analytics</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> 1 stage template</li>
+       </ul><a href="#cta" class="block text-center py-3 rounded-full border border-amethyst/30 text-lavender font-semibold hover:bg-amethyst/10 transition">Get Started</a>
+      </div><!-- Pro (Featured) -->
+      <div class="pricing-card pricing-featured rounded-2xl p-8">
+       <div class="flex items-center justify-between mb-2">
+        <div class="text-sm font-semibold text-amethyst uppercase tracking-wider">
+         Pro
+        </div><span class="px-3 py-0.5 rounded-full bg-amethyst/20 text-lavender text-xs font-bold">Popular</span>
+       </div>
+       <div class="text-4xl font-extrabold mb-1">
+        $299<span class="text-lg font-normal text-gray-500">/event</span>
+       </div>
+       <p class="text-gray-500 text-sm mb-6">Interactive event with full engagement suite.</p>
+       <div class="glow-line mb-6"></div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Multi-camera switching</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Up to 5,000 attendees</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Polls, Q&amp;A, breakout rooms</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Advanced analytics</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> 5 stage templates</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#7c3aed"></i> Custom branding</li>
+       </ul><a href="#cta" class="block text-center py-3 rounded-full bg-gradient-to-r from-amethyst to-sapphire text-white font-semibold hover:opacity-90 transition">Get Started</a>
+      </div><!-- Enterprise -->
+      <div class="pricing-card rounded-2xl p-8">
+       <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
+        Enterprise
+       </div>
+       <div class="text-4xl font-extrabold mb-1">
+        Custom
+       </div>
+       <p class="text-gray-500 text-sm mb-6">Full production with dedicated support team.</p>
+       <div class="glow-line mb-6"></div>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> Unlimited cameras &amp; sources</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> Unlimited attendees</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> Dedicated production crew</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> SSO &amp; enterprise security</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> Unlimited templates</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6"></i> White-label option</li>
+       </ul><a href="#cta" class="block text-center py-3 rounded-full border border-sapphire/30 text-blue-300 font-semibold hover:bg-sapphire/10 transition">Contact Sales</a>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== FAQ ===== -->
+   <section id="faq" class="relative py-20 sm:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16"><span class="text-amethyst font-semibold text-sm uppercase tracking-widest">FAQ</span>
+      <h2 class="text-4xl sm:text-5xl font-bold mt-3">Questions? <span class="text-lavender">Answered.</span></h2>
+     </div>
+     <div class="space-y-4" id="faqContainer"><!-- FAQ items rendered by JS -->
+     </div>
+    </div>
+   </section>
+   <div class="glow-line"></div><!-- ===== BOTTOM CTA + VOTE/COMMENT ===== -->
+   <section id="cta" class="relative py-20 sm:py-28">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+     <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6"><span class="bg-gradient-to-r from-white via-lavender to-sapphire bg-clip-text text-transparent" id="bottomCtaText">Host without limits.</span></h2>
+     <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10">Launch your next virtual or hybrid event with studio-grade production and engagement tools built for scale.</p><a href="#home" class="pulse-glow inline-block px-10 py-4 rounded-full bg-gradient-to-r from-amethyst to-sapphire text-white font-bold text-lg hover:opacity-90 transition">Start Your Event</a> <!-- Vote + Comment Widget -->
+     <div class="mt-20 card-glass rounded-2xl p-8 sm:p-10 text-left">
+      <div class="text-center mb-6"><span class="text-xs uppercase tracking-widest text-gray-500 font-mono">Embed Widget Here</span>
+       <h3 class="text-2xl font-bold mt-2">What should this cost?</h3>
+       <p class="text-gray-400 text-sm mt-1">Vote on your ideal starting price, react, and leave feedback.</p>
+      </div><!-- Price voting -->
+      <div class="mb-8">
+       <p class="text-sm text-gray-400 mb-3 font-semibold">Vote on price:</p>
+       <div class="grid grid-cols-5 sm:grid-cols-10 gap-2" id="priceVotes"><!-- Rendered by JS -->
+       </div>
+       <div class="mt-3 text-xs text-gray-500" id="priceVoteSummary"></div>
+      </div><!-- Reactions -->
+      <div class="mb-8">
+       <p class="text-sm text-gray-400 mb-3 font-semibold">React:</p>
+       <div class="flex flex-wrap gap-2" id="reactionBar"><!-- Rendered by JS -->
+       </div>
+      </div><!-- Comments -->
+      <div>
+       <p class="text-sm text-gray-400 mb-3 font-semibold">Comments:</p>
+       <form id="commentForm" class="flex gap-2 mb-4"><label for="commentInput" class="sr-only">Comment</label> <input type="text" id="commentInput" placeholder="Share your thoughts..." class="flex-1 bg-white/5 border border-amethyst/20 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amethyst/50 transition"> <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amethyst to-sapphire text-white text-sm font-semibold hover:opacity-90 transition flex items-center gap-1" id="commentBtn"> <i data-lucide="send" style="width:14px;height:14px"></i> Send </button>
+       </form>
+       <div id="commentList" class="space-y-2 max-h-60 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-amethyst/10 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500"><span id="footerBrand">© 2025 StreamStage Pro. All rights reserved.</span>
+     <div class="flex items-center gap-4"><span>Events without limits.</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ========== CONFIG & SDK ==========
+const defaultConfig = {
+  background_color: '#08080f',
+  surface_color: '#0d0d1a',
+  text_color: '#e2e2f0',
+  primary_action_color: '#7c3aed',
+  secondary_action_color: '#3b82f6',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Your event, anywhere.',
+  hero_subtitle: 'Virtual and hybrid events built to engage. Studio-grade production meets limitless reach.',
+  brand_name: 'StreamStage Pro',
+  tagline: 'Events without limits.',
+  bottom_cta_text: 'Host without limits.'
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// FAQ data
+const faqs = [
+  { q: 'What equipment do I need to get started?', a: 'Just a computer and internet connection. Our platform handles all production, encoding, and delivery in the cloud.' },
+  { q: 'Can I customize the stage design?', a: 'Absolutely. Use our drag-and-drop stage builder or start from one of our included templates to match your brand.' },
+  { q: 'How many attendees can join?', a: 'Basic supports 500, Pro supports 5,000, and Enterprise scales to unlimited attendees with CDN delivery.' },
+  { q: 'Do you support hybrid events?', a: 'Yes. Our hybrid production tools synchronize in-person and virtual audiences seamlessly with unified analytics.' },
+  { q: 'What\'s included in the digital production kit?', a: 'Event layouts, streaming templates, customizable stage designs, and production workflow documents — included with every plan.' }
+];
+
+// Price options
+const priceOptions = ['$49','$99','$149','$199','$249','$299','$399','$499','$749','$999'];
+const reactions = ['🔥','👏','💡','🚀','❤️','⭐'];
+
+// ========== ELEMENT SDK ==========
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  const font = c.font_family || defaultConfig.font_family;
+  const baseFont = 'Outfit, sans-serif';
+  const fontStack = font === 'Outfit' ? baseFont : `${font}, ${baseFont}`;
+  const bs = c.font_size || defaultConfig.font_size;
+
+  document.body.style.fontFamily = fontStack;
+  document.body.style.background = c.background_color;
+  document.body.style.color = c.text_color;
+  document.body.style.fontSize = bs + 'px';
+
+  const el = (id) => document.getElementById(id);
+  if (el('heroTitle')) el('heroTitle').textContent = c.hero_title;
+  if (el('heroSubtitle')) el('heroSubtitle').textContent = c.hero_subtitle;
+  if (el('navBrand')) el('navBrand').textContent = c.brand_name;
+  if (el('taglineDisplay')) el('taglineDisplay').textContent = c.tagline;
+  if (el('bottomCtaText')) el('bottomCtaText').textContent = c.bottom_cta_text;
+  if (el('footerBrand')) el('footerBrand').textContent = `© 2025 ${c.brand_name}. All rights reserved.`;
+
+  // Apply colors to key elements
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.querySelectorAll('.pricing-card, .card-glass').forEach(card => {
+    card.style.backgroundColor = c.surface_color;
+  });
+}
+
+function makeRecolorable(key) {
+  return {
+    get: () => (window.elementSdk?.config?.[key]) || defaultConfig[key],
+    set: (v) => { window.elementSdk.setConfig({ [key]: v }); }
+  };
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      makeRecolorable('background_color'),
+      makeRecolorable('surface_color'),
+      makeRecolorable('text_color'),
+      makeRecolorable('primary_action_color'),
+      makeRecolorable('secondary_action_color')
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => cfg.font_family || defaultConfig.font_family,
+      set: (v) => { window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => cfg.font_size || defaultConfig.font_size,
+      set: (v) => { window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+    ['brand_name', cfg.brand_name || defaultConfig.brand_name],
+    ['tagline', cfg.tagline || defaultConfig.tagline],
+    ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ========== DATA SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    renderPriceVotes();
+    renderReactions();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ========== RENDER FUNCTIONS ==========
+
+// FAQ
+function renderFAQs() {
+  const container = document.getElementById('faqContainer');
+  container.innerHTML = '';
+  faqs.forEach((faq, i) => {
+    const div = document.createElement('div');
+    div.className = 'card-glass rounded-xl overflow-hidden';
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(${i})" aria-expanded="false">
+        <span class="font-semibold text-sm sm:text-base">${faq.q}</span>
+        <i data-lucide="chevron-down" style="width:20px;height:20px;color:#a78bfa;transition:transform .3s" id="faqIcon${i}"></i>
+      </button>
+      <div class="px-5 pb-0 overflow-hidden transition-all" style="max-height:0" id="faqBody${i}">
+        <p class="text-gray-400 text-sm pb-5 leading-relaxed">${faq.a}</p>
+      </div>`;
+    container.appendChild(div);
+  });
+  lucide.createIcons();
+}
+window.toggleFaq = function(i) {
+  const body = document.getElementById('faqBody' + i);
+  const icon = document.getElementById('faqIcon' + i);
+  const open = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+  body.style.maxHeight = open ? '0' : body.scrollHeight + 'px';
+  icon.style.transform = open ? '' : 'rotate(180deg)';
+};
+
+// Price votes
+function renderPriceVotes() {
+  const container = document.getElementById('priceVotes');
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const voteCounts = {};
+  priceOptions.forEach(p => voteCounts[p] = 0);
+  votes.forEach(v => { if (voteCounts[v.price_vote] !== undefined) voteCounts[v.price_vote]++; });
+
+  // Check if already rendered
+  if (container.children.length === 0) {
+    priceOptions.forEach(price => {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-btn rounded-lg px-2 py-2 text-xs font-mono text-center';
+      btn.dataset.price = price;
+      btn.innerHTML = `<div>${price}</div><div class="text-gray-500 mt-0.5 vote-count">0</div>`;
+      btn.onclick = () => castPriceVote(price);
+      container.appendChild(btn);
+    });
+  }
+
+  // Update counts
+  container.querySelectorAll('button').forEach(btn => {
+    const p = btn.dataset.price;
+    const countEl = btn.querySelector('.vote-count');
+    if (countEl) countEl.textContent = voteCounts[p] || 0;
+  });
+
+  const total = votes.length;
+  const summary = document.getElementById('priceVoteSummary');
+  if (total > 0) {
+    const top = Object.entries(voteCounts).sort((a, b) => b[1] - a[1])[0];
+    summary.textContent = `${total} vote${total > 1 ? 's' : ''} — most popular: ${top[0]}`;
+  } else {
+    summary.textContent = 'No votes yet. Be the first!';
+  }
+}
+
+async function castPriceVote(price) {
+  if (currentRecordCount >= 999) { showToast('Vote limit reached!'); return; }
+  const result = await window.dataSdk.create({ type: 'price_vote', item_id: 'pricing', reaction: '', comment: '', price_vote: price, timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+// Reactions
+function renderReactions() {
+  const container = document.getElementById('reactionBar');
+  const rData = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => counts[r] = 0);
+  rData.forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+
+  if (container.children.length === 0) {
+    reactions.forEach(r => {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-btn rounded-full px-4 py-2 flex items-center gap-1.5 text-sm';
+      btn.dataset.reaction = r;
+      btn.innerHTML = `<span>${r}</span><span class="reaction-count text-gray-400">0</span>`;
+      btn.onclick = () => castReaction(r);
+      container.appendChild(btn);
+    });
+  }
+
+  container.querySelectorAll('button').forEach(btn => {
+    const r = btn.dataset.reaction;
+    const countEl = btn.querySelector('.reaction-count');
+    if (countEl) countEl.textContent = counts[r] || 0;
+  });
+}
+
+async function castReaction(emoji) {
+  if (currentRecordCount >= 999) { showToast('Reaction limit reached!'); return; }
+  const result = await window.dataSdk.create({ type: 'reaction', item_id: 'cta', reaction: emoji, comment: '', price_vote: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+// Comments
+function renderComments() {
+  const container = document.getElementById('commentList');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existingMap = new Map([...container.children].map(el => [el.dataset.id, el]));
+
+  const rendered = new Set();
+  comments.forEach(c => {
+    const id = c.__backendId;
+    rendered.add(id);
+    if (existingMap.has(id)) {
+      // Already exists, skip
+      existingMap.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.className = 'comment-item';
+      div.dataset.id = id;
+      const date = new Date(c.timestamp);
+      const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p class="text-sm text-gray-200">${escapeHtml(c.comment)}</p><span class="text-xs text-gray-600 mt-1 block">${timeStr}</span>`;
+      container.prepend(div);
+    }
+  });
+
+  // Remove deleted
+  existingMap.forEach(el => el.remove());
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Comment form
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { showToast('Comment limit reached!'); return; }
+  const btn = document.getElementById('commentBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type: 'comment', item_id: 'cta', reaction: '', comment: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment.'); }
+});
+
+// Toast
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// Mobile menu
+document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('menuClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+document.querySelectorAll('.mobile-nav-link').forEach(l => l.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open')));
+
+// Active nav highlight
+const appRoot = document.getElementById('appRoot');
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+appRoot.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (appRoot.scrollTop >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+});
+
+// Init
+renderFAQs();
+renderPriceVotes();
+renderReactions();
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a236dc2a927c5',t:'MTc3NTU3NjUwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

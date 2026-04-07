@@ -1,1 +1,671 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/732dcd02-80ad-441a-8a4a-1320e75d2935 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Horizon</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Instrument+Serif:ital@0;1&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #1a1410;
+  --surface: #2a2118;
+  --text: #e8ddd0;
+  --accent: #d4793c;
+  --accent2: #a0876e;
+}
+
+.font-display { font-family: 'Bebas Neue', sans-serif; }
+.font-serif { font-family: 'Instrument Serif', serif; }
+.font-body { font-family: 'DM Sans', sans-serif; }
+
+.glass-card {
+  background: rgba(42, 33, 24, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 121, 60, 0.15);
+}
+
+.horizon-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes horizonPan {
+  0% { background-position: 30% 50%; }
+  50% { background-position: 70% 50%; }
+  100% { background-position: 30% 50%; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 121, 60, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(212, 121, 60, 0.6); }
+}
+@keyframes tickDraw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible { animation: fadeUp 0.8s ease forwards; }
+.anim-fade-in { opacity: 0; }
+.anim-fade-in.visible { animation: fadeIn 1s ease forwards; }
+.anim-slide-left { opacity: 0; }
+.anim-slide-left.visible { animation: slideInLeft 0.7s ease forwards; }
+
+.glow-cta { animation: glowPulse 3s ease-in-out infinite; }
+
+.hero-bg {
+  background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1920&q=80');
+  background-size: cover;
+  animation: horizonPan 30s ease-in-out infinite;
+}
+
+.checklist-tick {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+.tick-animated .checklist-tick {
+  animation: tickDraw 0.4s ease forwards;
+}
+
+/* Scroll snap for nav */
+.scroll-smooth { scroll-behavior: smooth; }
+
+/* Sticky nav */
+.sticky-nav {
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.sticky-nav.scrolled {
+  background: rgba(26, 20, 16, 0.95);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.img-cover { object-fit: cover; width: 100%; height: 100%; }
+
+.gallery-item {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.gallery-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 30px rgba(212, 121, 60, 0.2);
+}
+
+.review-card { transition: transform 0.3s ease; }
+.review-card:hover { transform: translateY(-4px); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background:var(--bg); color:var(--text);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto scroll-smooth"><!-- SVG Icon Definitions -->
+   <svg style="display:none"><symbol id="icon-helmet" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M12 2C6.48 2 2 6.48 2 12c0 2.76 1.12 5.26 2.93 7.07L6 18h12l1.07 1.07A9.96 9.96 0 0022 12c0-5.52-4.48-10-10-10z" />
+     <path d="M2 15h20" />
+     <path d="M7 18v2h10v-2" />
+    </symbol> <symbol id="icon-road" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M4 22L8 2h8l4 20" />
+     <path d="M12 6v4M12 14v4" />
+    </symbol> <symbol id="icon-compass" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <circle cx="12" cy="12" r="10" />
+     <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88" />
+    </symbol> <symbol id="icon-fuel" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M3 22V6a2 2 0 012-2h8a2 2 0 012 2v16" />
+     <path d="M15 12h2a2 2 0 012 2v3a2 2 0 002 2h0a2 2 0 002-2V9l-3-3" />
+     <path d="M7 8h4" />
+    </symbol> <symbol id="icon-mappin" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+     <circle cx="12" cy="10" r="3" />
+    </symbol> <symbol id="icon-checklist" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+     <rect x="9" y="2" width="6" height="4" rx="1" />
+     <path d="M9 14l2 2 4-4" />
+    </symbol>
+   </svg><!-- Sticky Navigation -->
+   <nav id="main-nav" class="sticky-nav fixed top-0 left-0 w-full z-50 font-body" style="background:rgba(26,20,16,0.7); backdrop-filter:blur(12px);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between" style="height:64px;"><a href="#home" class="font-display text-2xl tracking-wider" style="color:var(--accent);">IRON HORIZON</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Home</a> <a href="#wallpapers" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Wallpapers</a> <a href="#planner" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Ride Planner</a> <a href="#preview" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Preview</a> <a href="#reviews" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Reviews</a> <a href="#download" class="nav-link text-sm tracking-wide uppercase opacity-70 hover:opacity-100 transition-opacity" style="color:var(--text);">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:var(--text);" aria-label="Open menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+       <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3"><a href="#home" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Home</a> <a href="#wallpapers" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Wallpapers</a> <a href="#planner" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Ride Planner</a> <a href="#preview" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Preview</a> <a href="#reviews" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Reviews</a> <a href="#download" class="mobile-nav-link text-sm tracking-wide uppercase opacity-70" style="color:var(--text);">Download</a>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" class="relative w-full" style="min-height:100%;">
+    <div class="hero-bg absolute inset-0" style="z-index:0;">
+     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(26,20,16,0.4) 0%, rgba(26,20,16,0.85) 70%, var(--bg) 100%);"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height:100%; padding-top:120px; padding-bottom:80px;">
+     <div class="anim-fade-in" style="animation-delay:0.2s;">
+      <svg width="48" height="48" style="color:var(--accent);opacity:0.7;" class="mx-auto mb-6">
+       <use href="#icon-road" />
+      </svg>
+     </div>
+     <h1 id="hero-title" class="font-display tracking-wider anim-fade-up" style="font-size:clamp(3rem,8vw,7rem); line-height:0.95; color:var(--text);">Ride further.<br>
+      Design louder.</h1>
+     <p id="hero-subtitle" class="font-serif italic mt-6 max-w-xl mx-auto anim-fade-up opacity-80" style="font-size:clamp(1rem,2.5vw,1.35rem); animation-delay:0.15s; color:var(--text);">Motorcycle visuals and trip templates built from real photography.</p>
+     <div class="flex flex-col sm:flex-row gap-4 mt-10 anim-fade-up" style="animation-delay:0.3s;"><a href="#download" class="glow-cta font-display tracking-widest text-lg px-10 py-4 rounded-sm transition-all hover:brightness-110" style="background:var(--accent); color:var(--bg);">DOWNLOAD THE PACK</a> <a href="#preview" class="font-display tracking-widest text-lg px-10 py-4 rounded-sm border transition-all hover:bg-white hover:bg-opacity-5" style="border-color:var(--accent2); color:var(--text);">PREVIEW GALLERY</a>
+     </div>
+     <div class="flex items-center gap-8 mt-16 anim-fade-in" style="animation-delay:0.6s; color:var(--accent2);">
+      <div class="flex flex-col items-center"><span class="font-display text-3xl" style="color:var(--accent);">120</span> <span class="font-body text-xs uppercase tracking-wider opacity-60">Wallpapers</span>
+      </div>
+      <div style="width:1px;height:32px;background:var(--accent2);opacity:0.3;"></div>
+      <div class="flex flex-col items-center"><span class="font-display text-3xl" style="color:var(--accent);">26</span> <span class="font-body text-xs uppercase tracking-wider opacity-60">Posters</span>
+      </div>
+      <div style="width:1px;height:32px;background:var(--accent2);opacity:0.3;"></div>
+      <div class="flex flex-col items-center"><span class="font-display text-3xl" style="color:var(--accent);">6</span> <span class="font-body text-xs uppercase tracking-wider opacity-60">Templates</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS SECTION -->
+   <section id="wallpapers" class="w-full px-6 sm:px-12 py-24 max-w-7xl mx-auto">
+    <div class="horizon-line mb-16"></div>
+    <div class="flex items-center gap-4 mb-4 anim-slide-left">
+     <svg width="28" height="28" style="color:var(--accent);">
+      <use href="#icon-helmet" />
+     </svg><span class="font-body text-xs uppercase tracking-widest" style="color:var(--accent2);">The Collection</span>
+    </div>
+    <h2 id="wallpapers-title" class="font-display tracking-wider mb-4 anim-fade-up" style="font-size:clamp(2.2rem,5vw,4rem); color:var(--text);">120 Wallpapers. Zero compromise.</h2>
+    <p class="font-serif italic opacity-70 mb-12 max-w-2xl anim-fade-up" style="font-size:1.1rem; animation-delay:0.1s;">Curated from real rides across deserts, mountain passes, and coastal highways. Every frame tells a story of tarmac and freedom.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+     <div class="gallery-item rounded-md overflow-hidden anim-fade-up" style="aspect-ratio:3/4;animation-delay:0s;"><img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&amp;q=75" alt="Motorcycle on desert highway" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item rounded-md overflow-hidden anim-fade-up" style="aspect-ratio:3/4;animation-delay:0.1s;"><img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&amp;q=75" alt="Biker in mountains" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item rounded-md overflow-hidden anim-fade-up" style="aspect-ratio:3/4;animation-delay:0.2s;"><img src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=600&amp;q=75" alt="Motorcycle sunset silhouette" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item rounded-md overflow-hidden anim-fade-up" style="aspect-ratio:3/4;animation-delay:0.3s;"><img src="https://images.unsplash.com/photo-1525160354320-d8e92641c563?w=600&amp;q=75" alt="Touring motorcycle parked" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+     </div>
+    </div><!-- Pricing angles -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12">
+     <div class="glass-card rounded-md p-6 text-center anim-fade-up" style="animation-delay:0.1s;">
+      <svg width="24" height="24" class="mx-auto mb-3" style="color:var(--accent);">
+       <use href="#icon-compass" />
+      </svg><span class="font-display text-lg tracking-wider" style="color:var(--text);">ADVENTURE RIDERS</span>
+      <p class="font-body text-sm mt-2 opacity-60">Built for riders who chase horizons, not trends.</p>
+     </div>
+     <div class="glass-card rounded-md p-6 text-center anim-fade-up" style="animation-delay:0.2s;">
+      <svg width="24" height="24" class="mx-auto mb-3" style="color:var(--accent);">
+       <use href="#icon-mappin" />
+      </svg><span class="font-display text-lg tracking-wider" style="color:var(--text);">TRAVEL EVERGREEN</span>
+      <p class="font-body text-sm mt-2 opacity-60">Timeless visuals that work across every season.</p>
+     </div>
+     <div class="glass-card rounded-md p-6 text-center anim-fade-up" style="animation-delay:0.3s;">
+      <svg width="24" height="24" class="mx-auto mb-3" style="color:var(--accent);">
+       <use href="#icon-fuel" />
+      </svg><span class="font-display text-lg tracking-wider" style="color:var(--text);">MOTORCYCLE LIFESTYLE</span>
+      <p class="font-body text-sm mt-2 opacity-60">Content that speaks the language of the road.</p>
+     </div>
+    </div>
+   </section><!-- RIDE PLANNER SECTION -->
+   <section id="planner" class="w-full px-6 sm:px-12 py-24" style="background:linear-gradient(180deg, var(--bg) 0%, rgba(42,33,24,0.4) 50%, var(--bg) 100%);">
+    <div class="max-w-7xl mx-auto">
+     <div class="horizon-line mb-16"></div>
+     <div class="flex items-center gap-4 mb-4 anim-slide-left">
+      <svg width="28" height="28" style="color:var(--accent);">
+       <use href="#icon-compass" />
+      </svg><span class="font-body text-xs uppercase tracking-widest" style="color:var(--accent2);">Ride Planner</span>
+     </div>
+     <h2 id="planner-title" class="font-display tracking-wider mb-4 anim-fade-up" style="font-size:clamp(2.2rem,5vw,4rem); color:var(--text);">Plan Every Mile</h2>
+     <p class="font-serif italic opacity-70 mb-12 max-w-2xl anim-fade-up" style="font-size:1.1rem; animation-delay:0.1s;">A visual road trip planner and gear checklist designed for riders who prepare as hard as they ride.</p>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><!-- Route Planner Preview -->
+      <div class="glass-card rounded-lg p-6 sm:p-8 anim-fade-up" style="animation-delay:0.1s;">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" style="color:var(--accent);">
+         <use href="#icon-road" />
+        </svg>
+        <h3 class="font-display text-xl tracking-wider" style="color:var(--text);">ROUTE PLANNER</h3>
+       </div>
+       <div class="space-y-4">
+        <div class="flex items-center gap-4 p-4 rounded-md" style="background:rgba(26,20,16,0.6); border-left:3px solid var(--accent);">
+         <svg width="18" height="18" style="color:var(--accent);">
+          <use href="#icon-mappin" />
+         </svg>
+         <div>
+          <div class="font-body text-sm font-medium" style="color:var(--text);">
+           Start: Denver, CO
+          </div>
+          <div class="font-body text-xs opacity-50">
+           Elevation: 5,280 ft
+          </div>
+         </div>
+        </div>
+        <div class="flex justify-center">
+         <div style="width:1px;height:24px;background:var(--accent);opacity:0.4;"></div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-md" style="background:rgba(26,20,16,0.6); border-left:3px solid var(--accent2);">
+         <svg width="18" height="18" style="color:var(--accent2);">
+          <use href="#icon-fuel" />
+         </svg>
+         <div>
+          <div class="font-body text-sm font-medium" style="color:var(--text);">
+           Stop: Moab, UT
+          </div>
+          <div class="font-body text-xs opacity-50">
+           Fuel + Rest · 350 mi
+          </div>
+         </div>
+        </div>
+        <div class="flex justify-center">
+         <div style="width:1px;height:24px;background:var(--accent);opacity:0.4;"></div>
+        </div>
+        <div class="flex items-center gap-4 p-4 rounded-md" style="background:rgba(26,20,16,0.6); border-left:3px solid var(--accent);">
+         <svg width="18" height="18" style="color:var(--accent);">
+          <use href="#icon-mappin" />
+         </svg>
+         <div>
+          <div class="font-body text-sm font-medium" style="color:var(--text);">
+           End: Monument Valley, AZ
+          </div>
+          <div class="font-body text-xs opacity-50">
+           Total: 580 mi · ~9 hrs
+          </div>
+         </div>
+        </div>
+       </div>
+       <p class="font-body text-xs mt-6 opacity-40">Sample route from the included planner template</p>
+      </div><!-- Gear Checklist -->
+      <div class="glass-card rounded-lg p-6 sm:p-8 anim-fade-up" style="animation-delay:0.25s;">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" style="color:var(--accent);">
+         <use href="#icon-checklist" />
+        </svg>
+        <h3 class="font-display text-xl tracking-wider" style="color:var(--text);">GEAR CHECKLIST</h3>
+       </div>
+       <div id="checklist" class="space-y-3">
+       </div>
+       <p class="font-body text-xs mt-6 opacity-40">Interactive preview · Full checklist in the pack</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION -->
+   <section id="preview" class="w-full px-6 sm:px-12 py-24 max-w-7xl mx-auto">
+    <div class="horizon-line mb-16"></div>
+    <div class="flex items-center gap-4 mb-4 anim-slide-left">
+     <svg width="28" height="28" style="color:var(--accent);">
+      <use href="#icon-helmet" />
+     </svg><span class="font-body text-xs uppercase tracking-widest" style="color:var(--accent2);">What's Inside</span>
+    </div>
+    <h2 id="preview-title" class="font-display tracking-wider mb-12 anim-fade-up" style="font-size:clamp(2.2rem,5vw,4rem); color:var(--text);">Preview the Pack</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="glass-card rounded-lg overflow-hidden anim-fade-up" style="animation-delay:0s;">
+      <div style="aspect-ratio:16/10; overflow:hidden;"><img src="https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&amp;q=75" alt="Motorcycle road trip scenery" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5"><span class="font-display tracking-wider" style="color:var(--accent);">WALLPAPERS</span>
+       <p class="font-body text-sm mt-1 opacity-60">120 high-res motorcycle wallpapers for desktop and mobile</p>
+      </div>
+     </div>
+     <div class="glass-card rounded-lg overflow-hidden anim-fade-up" style="animation-delay:0.1s;">
+      <div style="aspect-ratio:16/10; overflow:hidden; position:relative;" class="flex items-center justify-center"><img src="https://images.unsplash.com/photo-1622185135505-2d795003994a?w=600&amp;q=75" alt="Rider silhouette poster style" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5"><span class="font-display tracking-wider" style="color:var(--accent);">POSTERS</span>
+       <p class="font-body text-sm mt-1 opacity-60">26 printable posters with cinematic motorcycle photography</p>
+      </div>
+     </div>
+     <div class="glass-card rounded-lg overflow-hidden anim-fade-up" style="animation-delay:0.2s;">
+      <div style="aspect-ratio:16/10; overflow:hidden;" class="flex items-center justify-center"><img src="https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?w=600&amp;q=75" alt="Motorcycle gear closeup" loading="lazy" class="img-cover" onerror="this.style.background='linear-gradient(135deg,#2a2118,#3a2f22)';this.alt='Image unavailable';">
+      </div>
+      <div class="p-5"><span class="font-display tracking-wider" style="color:var(--accent);">TEMPLATES</span>
+       <p class="font-body text-sm mt-1 opacity-60">Story templates, caption pack, and social media assets</p>
+      </div>
+     </div>
+    </div><!-- Pack contents list -->
+    <div class="glass-card rounded-lg p-6 sm:p-8 mt-8 anim-fade-up" style="animation-delay:0.3s;">
+     <h3 class="font-display tracking-wider text-lg mb-4" style="color:var(--accent);">FULL PACK INCLUDES</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-helmet" />
+       </svg> 120 Motorcycle Wallpapers
+      </div>
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-mappin" />
+       </svg> 26 Printable Posters
+      </div>
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-compass" />
+       </svg> Road Trip Planner
+      </div>
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-checklist" />
+       </svg> Gear Checklist
+      </div>
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-road" />
+       </svg> Story Templates
+      </div>
+      <div class="flex items-center gap-3 font-body text-sm">
+       <svg width="16" height="16" style="color:var(--accent);">
+        <use href="#icon-fuel" />
+       </svg> Caption Pack (200+)
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="w-full px-6 sm:px-12 py-24" style="background:linear-gradient(180deg, var(--bg) 0%, rgba(42,33,24,0.3) 50%, var(--bg) 100%);">
+    <div class="max-w-7xl mx-auto">
+     <div class="horizon-line mb-16"></div>
+     <div class="flex items-center gap-4 mb-4 anim-slide-left">
+      <svg width="28" height="28" style="color:var(--accent);">
+       <use href="#icon-fuel" />
+      </svg><span class="font-body text-xs uppercase tracking-widest" style="color:var(--accent2);">Testimonials</span>
+     </div>
+     <h2 id="reviews-title" class="font-display tracking-wider mb-12 anim-fade-up" style="font-size:clamp(2.2rem,5vw,4rem); color:var(--text);">From the Road</h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="review-card glass-card rounded-lg p-6 anim-fade-up" style="animation-delay:0s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="font-serif italic opacity-80 mb-4" style="font-size:0.95rem;">"These wallpapers are insane. Every one feels like a frame from a documentary. My entire phone and desktop are Iron Horizon now."</p>
+       <div class="font-body text-sm">
+        <span style="color:var(--accent);">Marcus T.</span><span class="opacity-40"> · ADV Rider, Colorado</span>
+       </div>
+      </div>
+      <div class="review-card glass-card rounded-lg p-6 anim-fade-up" style="animation-delay:0.15s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="font-serif italic opacity-80 mb-4" style="font-size:0.95rem;">"The ride planner template saved me hours prepping for a 3-day trip through the Blue Ridge Parkway. Legit useful, not just pretty."</p>
+       <div class="font-body text-sm">
+        <span style="color:var(--accent);">Sarah K.</span><span class="opacity-40"> · Sport Tourer, Virginia</span>
+       </div>
+      </div>
+      <div class="review-card glass-card rounded-lg p-6 anim-fade-up" style="animation-delay:0.3s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" fill="var(--accent)" stroke="none" viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="font-serif italic opacity-80 mb-4" style="font-size:0.95rem;">"Caption pack alone was worth it. Finally don't have to stare at a blank screen after posting a ride photo. The story templates are chef's kiss."</p>
+       <div class="font-body text-sm">
+        <span style="color:var(--accent);">Jake R.</span><span class="opacity-40"> · Café Racer, Portland</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA SECTION -->
+   <section id="download" class="w-full px-6 sm:px-12 py-24 relative">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="horizon-line mb-16"></div>
+     <svg width="56" height="56" class="mx-auto mb-8 anim-fade-in" style="color:var(--accent);opacity:0.8;">
+      <use href="#icon-compass" />
+     </svg>
+     <h2 id="bottom-cta-text" class="font-display tracking-wider mb-4 anim-fade-up" style="font-size:clamp(2.2rem,5vw,4rem); color:var(--text);">Plan your next ride visually.</h2>
+     <p class="font-serif italic opacity-70 mb-10 max-w-xl mx-auto anim-fade-up" style="font-size:1.15rem; animation-delay:0.1s;">Everything you need to fuel your motorcycle content, from wallpapers to ride plans to social templates.</p><a href="#" class="glow-cta inline-block font-display tracking-widest text-xl px-14 py-5 rounded-sm transition-all hover:brightness-110 anim-fade-up" style="background:var(--accent); color:var(--bg); animation-delay:0.2s;" onclick="event.preventDefault();">DOWNLOAD THE PACK</a> <!-- Vote + Comment Widget Area -->
+     <div class="glass-card rounded-lg p-8 mt-16 anim-fade-up" style="animation-delay:0.3s;">
+      <h3 class="font-display tracking-wider text-lg mb-6" style="color:var(--accent);">VOTE + COMMENT</h3>
+      <p class="font-body text-sm opacity-50 mb-6">Embed Widget Here</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4"><button id="upvote-btn" class="flex items-center gap-2 px-6 py-3 rounded-md font-body text-sm font-medium transition-all hover:brightness-110" style="background:rgba(212,121,60,0.15); border:1px solid var(--accent); color:var(--accent);">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+         <path d="M12 4l-8 8h5v8h6v-8h5z" stroke-linecap="round" stroke-linejoin="round" />
+        </svg> Upvote <span id="vote-count" class="font-display text-lg">47</span> </button>
+       <div class="w-full sm:w-auto flex-1 max-w-md">
+        <form id="comment-form" class="flex gap-2"><input type="text" id="comment-input" placeholder="Leave a comment..." class="flex-1 px-4 py-3 rounded-md font-body text-sm" style="background:rgba(26,20,16,0.8); border:1px solid rgba(160,135,110,0.3); color:var(--text); outline:none;" aria-label="Comment"> <button type="submit" class="px-5 py-3 rounded-md font-body text-sm font-medium transition-all hover:brightness-110" style="background:var(--accent2); color:var(--bg);">Send</button>
+        </form>
+       </div>
+      </div>
+      <div id="comments-list" class="mt-6 space-y-3 text-left max-w-md mx-auto"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full px-6 sm:px-12 py-12 text-center" style="border-top:1px solid rgba(160,135,110,0.15);"><span class="font-display text-xl tracking-wider" style="color:var(--accent);">IRON HORIZON</span>
+    <p class="font-body text-xs mt-2 opacity-40">Ride further. Design louder.</p>
+   </footer>
+  </div>
+  <script>
+// Checklist data & rendering
+const gearItems = [
+  { label: 'Full-face helmet', checked: false },
+  { label: 'Riding jacket (armored)', checked: false },
+  { label: 'Tank bag / saddle bags', checked: false },
+  { label: 'Tool kit & tire repair', checked: false },
+  { label: 'First aid kit', checked: false },
+  { label: 'Phone mount & charger', checked: false },
+  { label: 'Rain gear', checked: false },
+  { label: 'Water & snacks', checked: false }
+];
+
+function renderChecklist() {
+  const container = document.getElementById('checklist');
+  container.innerHTML = '';
+  gearItems.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-3 p-3 rounded-md cursor-pointer transition-all';
+    row.style.background = 'rgba(26,20,16,0.6)';
+    row.innerHTML = `
+      <div class="flex-shrink-0 w-6 h-6 rounded border flex items-center justify-center ${item.checked ? 'tick-animated' : ''}" style="border-color:var(--accent); ${item.checked ? 'background:var(--accent);' : ''}">
+        ${item.checked ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline class="checklist-tick" points="20 6 9 17 4 12"/></svg>' : ''}
+      </div>
+      <span class="font-body text-sm ${item.checked ? 'line-through opacity-50' : ''}" style="color:var(--text);">${item.label}</span>
+    `;
+    row.addEventListener('click', () => {
+      gearItems[i].checked = !gearItems[i].checked;
+      renderChecklist();
+    });
+    container.appendChild(row);
+  });
+}
+renderChecklist();
+
+// Vote functionality
+let voteCount = 47;
+let voted = false;
+document.getElementById('upvote-btn').addEventListener('click', function() {
+  if (!voted) { voteCount++; voted = true; this.style.background = 'var(--accent)'; this.style.color = 'var(--bg)'; }
+  else { voteCount--; voted = false; this.style.background = 'rgba(212,121,60,0.15)'; this.style.color = 'var(--accent)'; }
+  document.getElementById('vote-count').textContent = voteCount;
+});
+
+// Comment functionality
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: 'Just now' });
+  input.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="glass-card rounded-md p-3">
+      <p class="font-body text-sm" style="color:var(--text);">${c.text.replace(/</g,'&lt;')}</p>
+      <span class="font-body text-xs opacity-40">${c.time}</span>
+    </div>
+  `).join('');
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.anim-fade-up, .anim-fade-in, .anim-slide-left').forEach(el => observer.observe(el));
+
+// Sticky nav scroll effect
+const wrapper = document.getElementById('app-wrapper');
+const nav = document.getElementById('main-nav');
+wrapper.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', wrapper.scrollTop > 60);
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Ride further.\nDesign louder.',
+  hero_subtitle: 'Motorcycle visuals and trip templates built from real photography.',
+  wallpapers_title: '120 Wallpapers. Zero compromise.',
+  planner_title: 'Plan Every Mile',
+  preview_title: 'Preview the Pack',
+  reviews_title: 'From the Road',
+  bottom_cta_text: 'Plan your next ride visually.',
+  background_color: '#1a1410',
+  surface_color: '#2a2118',
+  text_color: '#e8ddd0',
+  accent_color: '#d4793c',
+  secondary_color: '#a0876e',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--accent', c.accent_color);
+  document.documentElement.style.setProperty('--accent2', c.secondary_color);
+
+  const heroEl = document.getElementById('hero-title');
+  if (heroEl) heroEl.innerHTML = (c.hero_title || defaultConfig.hero_title).replace(/\n/g, '<br>');
+
+  const subEl = document.getElementById('hero-subtitle');
+  if (subEl) subEl.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+
+  const wt = document.getElementById('wallpapers-title');
+  if (wt) wt.textContent = c.wallpapers_title || defaultConfig.wallpapers_title;
+
+  const pt = document.getElementById('planner-title');
+  if (pt) pt.textContent = c.planner_title || defaultConfig.planner_title;
+
+  const pvt = document.getElementById('preview-title');
+  if (pvt) pvt.textContent = c.preview_title || defaultConfig.preview_title;
+
+  const rt = document.getElementById('reviews-title');
+  if (rt) rt.textContent = c.reviews_title || defaultConfig.reviews_title;
+
+  const bct = document.getElementById('bottom-cta-text');
+  if (bct) bct.textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const fontStack = `${c.font_family}, 'DM Sans', sans-serif`;
+  document.querySelectorAll('.font-body').forEach(el => el.style.fontFamily = fontStack);
+
+  const base = c.font_size || 16;
+  document.querySelectorAll('.font-body').forEach(el => {
+    if (!el.classList.contains('text-xs') && !el.classList.contains('text-sm')) {
+      el.style.fontSize = base + 'px';
+    }
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+      ['planner_title', config.planner_title || defaultConfig.planner_title],
+      ['preview_title', config.preview_title || defaultConfig.preview_title],
+      ['reviews_title', config.reviews_title || defaultConfig.reviews_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a55ce52dd27c5',t:'MTc3NTU3ODU3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

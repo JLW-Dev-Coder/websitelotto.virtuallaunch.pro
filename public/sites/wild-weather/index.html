@@ -1,1 +1,701 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/4accf127-586a-40e6-9689-23dce713862a -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StormChase Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Barlow:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a12;
+  --surface: #13132a;
+  --text: #e8e8f0;
+  --primary: #4f6fff;
+  --secondary: #a855f7;
+}
+
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); }
+
+.font-display { font-family: 'Bebas Neue', sans-serif; }
+
+/* Lightning flash overlay */
+@keyframes lightningFlash {
+  0%, 94%, 100% { opacity: 0; }
+  95% { opacity: 0.15; }
+  96% { opacity: 0; }
+  97% { opacity: 0.08; }
+  98% { opacity: 0; }
+}
+
+.lightning-overlay {
+  animation: lightningFlash 8s infinite;
+  pointer-events: none;
+}
+
+/* Rain effect */
+@keyframes rainDrop {
+  0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  100% { transform: translateY(800px) translateX(-30px); opacity: 0; }
+}
+
+.rain-container { pointer-events: none; overflow: hidden; }
+
+.rain-drop {
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(79,111,255,0.4));
+  animation: rainDrop linear infinite;
+}
+
+/* Staggered entrance */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-up { opacity: 0; animation: slideUp 0.7s ease-out forwards; }
+.anim-d1 { animation-delay: 0.1s; }
+.anim-d2 { animation-delay: 0.25s; }
+.anim-d3 { animation-delay: 0.4s; }
+.anim-d4 { animation-delay: 0.55s; }
+.anim-d5 { animation-delay: 0.7s; }
+
+/* Pulse CTA */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(79,111,255,0.3); }
+  50% { box-shadow: 0 0 40px rgba(79,111,255,0.6), 0 0 80px rgba(79,111,255,0.2); }
+}
+
+.pulse-cta { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+/* Stat chip animation */
+@keyframes countPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.stat-chip { opacity: 0; animation: countPop 0.5s ease-out forwards; }
+
+/* Image hover zoom */
+.img-zoom { transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+.img-zoom:hover { transform: scale(1.08); }
+
+/* Warning badge */
+.warning-badge {
+  background: linear-gradient(135deg, rgba(79,111,255,0.15), rgba(168,85,247,0.15));
+  border: 1px solid rgba(79,111,255,0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Sticky nav */
+.nav-glass {
+  background: rgba(10,10,18,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(79,111,255,0.15);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* Card glass */
+.card-glass {
+  background: rgba(19,19,42,0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(79,111,255,0.12);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gallery card overlay */
+.gallery-overlay {
+  background: linear-gradient(to top, rgba(10,10,18,0.9) 0%, transparent 60%);
+}
+
+/* Section divider glow */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+}
+
+/* Floating card */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+.float-card { animation: floatCard 4s ease-in-out infinite; }
+
+/* Mobile nav */
+.mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+.mobile-menu.open { transform: translateX(0); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto relative" style="background: var(--bg);"><!-- Rain overlay -->
+   <div class="rain-container fixed inset-0 z-10" id="rainContainer"></div><!-- Lightning flash -->
+   <div class="lightning-overlay fixed inset-0 z-10 bg-white"></div><!-- STICKY NAV -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2"> <i data-lucide="cloud-lightning" style="width:22px;height:22px;color:var(--primary)"></i> <span class="font-display text-xl tracking-wider" id="nav-brand">STORMCHASE</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="hover:text-white transition-colors opacity-70 hover:opacity-100">Home</a> <a href="#gallery" class="hover:text-white transition-colors opacity-70 hover:opacity-100">Gallery</a> <a href="#wallpapers" class="hover:text-white transition-colors opacity-70 hover:opacity-100">Wallpapers</a> <a href="#prints" class="hover:text-white transition-colors opacity-70 hover:opacity-100">Prints</a> <a href="#reviews" class="hover:text-white transition-colors opacity-70 hover:opacity-100">Reviews</a> <a href="#download" class="px-4 py-1.5 rounded-full text-xs font-semibold" style="background:var(--primary);color:#fff;">Download</a>
+     </div><button id="mobileToggle" class="md:hidden" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+   </nav><!-- Mobile menu -->
+   <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-64 h-full z-50" style="background:var(--surface);">
+    <div class="p-6 flex flex-col gap-6"><button id="mobileClose" class="self-end" aria-label="Close menu"><i data-lucide="x" style="width:24px;height:24px;"></i></button> <a href="#home" class="text-lg font-medium mobile-link">Home</a> <a href="#gallery" class="text-lg font-medium mobile-link">Gallery</a> <a href="#wallpapers" class="text-lg font-medium mobile-link">Wallpapers</a> <a href="#prints" class="text-lg font-medium mobile-link">Prints</a> <a href="#reviews" class="text-lg font-medium mobile-link">Reviews</a> <a href="#download" class="text-lg font-medium mobile-link">Download</a>
+    </div>
+   </div><!-- ============ HERO ============ -->
+   <section id="home" class="relative w-full min-h-screen flex items-center overflow-hidden" style="min-height:100%;"><!-- Hero BG image -->
+    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1461511669078-d46bf351cd6e?w=1920&amp;q=80" alt="Dramatic lightning storm" loading="lazy" class="w-full h-full object-cover opacity-40" onerror="this.style.background='linear-gradient(135deg,#0a0a12,#1a1a3e)';this.alt='Storm background';">
+     <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,18,0.4), rgba(10,10,18,0.95));"></div>
+    </div>
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 py-32 w-full">
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1 max-w-2xl"><!-- Warning badge -->
+       <div class="warning-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 anim-up"><i data-lucide="alert-triangle" style="width:14px;height:14px;color:var(--primary)"></i> <span id="tagline-text">Weather so intense you can feel it.</span>
+       </div>
+       <h1 class="font-display text-6xl sm:text-7xl lg:text-8xl leading-none tracking-wide mb-4 anim-up anim-d1" id="hero-title">NATURE'S POWER,<br><span class="gradient-text">CAPTURED.</span></h1>
+       <p class="text-lg sm:text-xl opacity-70 mb-8 max-w-lg font-light anim-up anim-d2" id="hero-subtitle">Wild weather visuals for screens, prints, and creators.</p>
+       <div class="flex flex-wrap gap-4 mb-10 anim-up anim-d3"><a href="#download" class="pulse-cta px-8 py-3 rounded-full font-semibold text-white transition-all hover:scale-105" style="background:var(--primary);" id="cta-primary-btn"> <span class="flex items-center gap-2"><i data-lucide="download" style="width:18px;height:18px;"></i> <span id="cta-primary-text">Download Collection</span></span> </a> <a href="#gallery" class="px-8 py-3 rounded-full font-semibold transition-all hover:scale-105" style="border:1px solid rgba(79,111,255,0.4); color:var(--primary);" id="cta-secondary-btn"> <span class="flex items-center gap-2"><i data-lucide="image" style="width:18px;height:18px;"></i> <span id="cta-secondary-text">Browse Gallery</span></span> </a>
+       </div><!-- Stat chips -->
+       <div class="flex flex-wrap gap-3 anim-up anim-d4">
+        <div class="stat-chip card-glass px-4 py-2 rounded-lg text-sm flex items-center gap-2" style="animation-delay:0.6s"><i data-lucide="image" style="width:16px;height:16px;color:var(--primary)"></i> <span class="font-semibold">140</span> Wallpapers
+        </div>
+        <div class="stat-chip card-glass px-4 py-2 rounded-lg text-sm flex items-center gap-2" style="animation-delay:0.8s"><i data-lucide="printer" style="width:16px;height:16px;color:var(--secondary)"></i> <span class="font-semibold">24</span> Posters
+        </div>
+        <div class="stat-chip card-glass px-4 py-2 rounded-lg text-sm flex items-center gap-2" style="animation-delay:1s"><i data-lucide="check-square" style="width:16px;height:16px;color:var(--primary)"></i> <span class="font-semibold">10</span> Checklists
+        </div>
+        <div class="stat-chip card-glass px-4 py-2 rounded-lg text-sm flex items-center gap-2" style="animation-delay:1.2s"><i data-lucide="layers" style="width:16px;height:16px;color:var(--secondary)"></i> <span class="font-semibold">52</span> Fact Cards
+        </div>
+       </div>
+      </div><!-- Floating vote/comment card -->
+      <div class="float-card card-glass rounded-2xl p-6 w-72 anim-up anim-d5">
+       <div class="text-xs font-semibold uppercase tracking-widest opacity-50 mb-4">
+        Community
+       </div>
+       <div class="flex items-center gap-4 mb-5"><button id="voteBtn" class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:scale-105" style="background:rgba(79,111,255,0.15);border:1px solid rgba(79,111,255,0.3);"> <i data-lucide="thumbs-up" style="width:16px;height:16px;color:var(--primary)"></i> <span id="voteCount" class="text-sm font-semibold">247</span> </button> <button class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:scale-105" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);"> <i data-lucide="message-circle" style="width:16px;height:16px;color:var(--secondary)"></i> <span class="text-sm font-semibold">38</span> </button>
+       </div>
+       <div class="space-y-3">
+        <div class="flex items-start gap-3">
+         <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:var(--primary);">
+          J
+         </div>
+         <div>
+          <div class="text-xs font-semibold">
+           Jake M.
+          </div>
+          <div class="text-xs opacity-50 mt-0.5">
+           These lightning shots are unreal 🔥
+          </div>
+         </div>
+        </div>
+        <div class="flex items-start gap-3">
+         <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:var(--secondary);">
+          S
+         </div>
+         <div>
+          <div class="text-xs font-semibold">
+           Sara K.
+          </div>
+          <div class="text-xs opacity-50 mt-0.5">
+           Perfect for my weather page! ⛈️
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="mt-4 pt-3" style="border-top:1px solid rgba(255,255,255,0.06);">
+        <div class="text-xs opacity-30 text-center">
+         Vote + Comment (Embed Widget Here)
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ============ GALLERY ============ -->
+   <section id="gallery" class="relative z-20 py-24 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto">
+     <div class="glow-line w-full mb-16"></div>
+     <div class="text-center mb-12">
+      <div class="warning-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-4"><i data-lucide="grid" style="width:14px;height:14px;color:var(--primary)"></i> CURATED COLLECTION
+      </div>
+      <h2 class="font-display text-5xl sm:text-6xl tracking-wide" id="gallery-title-text">THE STORM GALLERY</h2>
+      <p class="opacity-50 mt-3 text-lg">Five forces of nature. One premium pack.</p>
+     </div><!-- Category filters -->
+     <div class="flex flex-wrap justify-center gap-3 mb-10" id="galleryFilters"><button class="gallery-filter active-filter px-5 py-2 rounded-full text-sm font-semibold transition-all" data-cat="all" style="background:var(--primary);color:#fff;">All</button> <button class="gallery-filter px-5 py-2 rounded-full text-sm font-semibold transition-all card-glass hover:scale-105" data-cat="lightning">⚡ Lightning</button> <button class="gallery-filter px-5 py-2 rounded-full text-sm font-semibold transition-all card-glass hover:scale-105" data-cat="waves">🌊 Waves</button> <button class="gallery-filter px-5 py-2 rounded-full text-sm font-semibold transition-all card-glass hover:scale-105" data-cat="clouds">☁️ Clouds</button> <button class="gallery-filter px-5 py-2 rounded-full text-sm font-semibold transition-all card-glass hover:scale-105" data-cat="snow">❄️ Snow</button> <button class="gallery-filter px-5 py-2 rounded-full text-sm font-semibold transition-all card-glass hover:scale-105" data-cat="rain">🌧️ Rain</button>
+     </div><!-- Gallery grid -->
+     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" id="galleryGrid">
+     </div>
+    </div>
+   </section><!-- ============ WALLPAPERS ============ -->
+   <section id="wallpapers" class="relative z-20 py-24 px-4 sm:px-8" style="background:var(--surface);">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1">
+       <div class="warning-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-4"><i data-lucide="monitor" style="width:14px;height:14px;color:var(--primary)"></i> DIGITAL COLLECTION
+       </div>
+       <h2 class="font-display text-5xl sm:text-6xl tracking-wide mb-4" id="wallpapers-title-text">140 WILD WEATHER WALLPAPERS</h2>
+       <p class="opacity-60 text-lg mb-6">4K resolution. Every device. Every storm type. Organized by category with instant download.</p>
+       <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="card-glass rounded-xl p-4 text-center">
+         <div class="font-display text-3xl" style="color:var(--primary);">
+          4K
+         </div>
+         <div class="text-xs opacity-50 mt-1">
+          Resolution
+         </div>
+        </div>
+        <div class="card-glass rounded-xl p-4 text-center">
+         <div class="font-display text-3xl" style="color:var(--secondary);">
+          5
+         </div>
+         <div class="text-xs opacity-50 mt-1">
+          Categories
+         </div>
+        </div>
+        <div class="card-glass rounded-xl p-4 text-center">
+         <div class="font-display text-3xl" style="color:var(--primary);">
+          PNG
+         </div>
+         <div class="text-xs opacity-50 mt-1">
+          + JPG Format
+         </div>
+        </div>
+        <div class="card-glass rounded-xl p-4 text-center">
+         <div class="font-display text-3xl" style="color:var(--secondary);">
+          ∞
+         </div>
+         <div class="text-xs opacity-50 mt-1">
+          Lifetime Access
+         </div>
+        </div>
+       </div>
+       <div class="warning-badge inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm"><i data-lucide="zap" style="width:16px;height:16px;color:var(--primary)"></i> <span><strong>Extreme visuals sell.</strong> Perfect for science pages and creators.</span>
+       </div>
+      </div>
+      <div class="flex-1 grid grid-cols-2 gap-3">
+       <div class="rounded-xl overflow-hidden aspect-[9/16]"><img src="https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=600&amp;q=80" alt="Phone wallpaper lightning" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';this.alt='Wallpaper preview';">
+       </div>
+       <div class="rounded-xl overflow-hidden aspect-[9/16]"><img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=600&amp;q=80" alt="Phone wallpaper storm clouds" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';this.alt='Wallpaper preview';">
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ============ PRINTS ============ -->
+   <section id="prints" class="relative z-20 py-24 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-12">
+      <div class="warning-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-4"><i data-lucide="printer" style="width:14px;height:14px;color:var(--secondary)"></i> PRINTABLE COLLECTION
+      </div>
+      <h2 class="font-display text-5xl sm:text-6xl tracking-wide" id="prints-title-text">24 PRINTABLE STORM POSTERS</h2>
+      <p class="opacity-50 mt-3 text-lg">Museum-quality designs. Print at home or professionally.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="card-glass rounded-2xl overflow-hidden group">
+       <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1429552077091-836152271555?w=600&amp;q=80" alt="Storm poster preview" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';">
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold">
+         Supercell Series
+        </div>
+        <div class="text-xs opacity-40 mt-1">
+         8 posters • A3 / A4 / Letter
+        </div>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl overflow-hidden group">
+       <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1527482937786-6f4c1bfe7ae8?w=600&amp;q=80" alt="Ocean storm poster" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';">
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold">
+         Ocean Fury
+        </div>
+        <div class="text-xs opacity-40 mt-1">
+         8 posters • A3 / A4 / Letter
+        </div>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl overflow-hidden group">
+       <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&amp;q=80" alt="Blizzard poster" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';">
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold">
+         Arctic Whiteout
+        </div>
+        <div class="text-xs opacity-40 mt-1">
+         8 posters • A3 / A4 / Letter
+        </div>
+       </div>
+      </div>
+     </div><!-- Bonus: Safety Checklists + Fact Cards -->
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      <div class="card-glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(79,111,255,0.15);"><i data-lucide="check-square" style="width:24px;height:24px;color:var(--primary)"></i>
+        </div>
+        <div>
+         <div class="font-semibold text-lg">
+          10 Safety Checklists
+         </div>
+         <div class="text-xs opacity-40">
+          Printable storm preparedness templates
+         </div>
+        </div>
+       </div>
+       <div class="space-y-2 text-sm opacity-60">
+        <div class="flex items-center gap-2">
+         <i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Hurricane prep
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Tornado safety
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Winter storm kit
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> + 7 more templates
+        </div>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(168,85,247,0.15);"><i data-lucide="layers" style="width:24px;height:24px;color:var(--secondary)"></i>
+        </div>
+        <div>
+         <div class="font-semibold text-lg">
+          Storm Facts Card Deck
+         </div>
+         <div class="text-xs opacity-40">
+          52 printable fact cards
+         </div>
+        </div>
+       </div>
+       <div class="space-y-2 text-sm opacity-60">
+        <div class="flex items-center gap-2">
+         <i data-lucide="zap" style="width:14px;height:14px;color:var(--secondary)"></i> Lightning strikes Earth 8M times/day
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="wind" style="width:14px;height:14px;color:var(--secondary)"></i> Tornado winds exceed 300 mph
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="droplets" style="width:14px;height:14px;color:var(--secondary)"></i> 1 hurricane = 10K nuclear bombs of energy
+        </div>
+        <div class="flex items-center gap-2">
+         <i data-lucide="snowflake" style="width:14px;height:14px;color:var(--secondary)"></i> + 49 more mind-blowing facts
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ============ REVIEWS ============ -->
+   <section id="reviews" class="relative z-20 py-24 px-4 sm:px-8" style="background:var(--surface);">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-5xl sm:text-6xl tracking-wide">STORM CHASERS SPEAK</h2>
+      <p class="opacity-50 mt-3 text-lg">Real creators. Real impact.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"Instant impact on my weather page. Followers went from 2K to 15K in a month using these visuals."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background:var(--primary);">
+         M
+        </div>
+        <div>
+         <div class="text-sm font-semibold">
+          Marcus T.
+         </div>
+         <div class="text-xs opacity-40">
+          Weather Blogger
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"The poster quality is insane. Printed the supercell series for my classroom — students were speechless."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background:var(--secondary);">
+         L
+        </div>
+        <div>
+         <div class="text-sm font-semibold">
+          Lisa R.
+         </div>
+         <div class="text-xs opacity-40">
+          Science Teacher
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="card-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3"><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span><span style="color:var(--primary);">★</span>
+       </div>
+       <p class="text-sm opacity-70 mb-4">"Safety checklists alone were worth it. Shared them with my community emergency group — everyone loved them."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style="background:var(--primary);">
+         D
+        </div>
+        <div>
+         <div class="text-sm font-semibold">
+          David K.
+         </div>
+         <div class="text-xs opacity-40">
+          Emergency Coordinator
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ============ DOWNLOAD / BOTTOM CTA ============ -->
+   <section id="download" class="relative z-20 py-32 px-4 sm:px-8 text-center overflow-hidden">
+    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?w=1920&amp;q=80" alt="Dramatic storm sky" loading="lazy" class="w-full h-full object-cover opacity-20" onerror="this.style.background='linear-gradient(135deg,#0a0a12,#1a1a3e)';">
+     <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, rgba(79,111,255,0.1), transparent 70%), linear-gradient(to top, var(--bg), transparent);"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+     <h2 class="font-display text-5xl sm:text-7xl tracking-wide mb-4" id="bottom-cta-text">MAKE YOUR SCREEN FEEL ALIVE.</h2>
+     <p class="opacity-50 text-lg mb-8">140 wallpapers • 24 posters • 10 checklists • 52 fact cards</p>
+     <div class="flex flex-wrap justify-center gap-4 mb-8"><a href="#" class="pulse-cta px-10 py-4 rounded-full font-semibold text-white text-lg transition-all hover:scale-105 inline-flex items-center gap-2" style="background:var(--primary);" onclick="event.preventDefault();"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Full Collection </a>
+     </div>
+     <div class="flex flex-wrap justify-center gap-6 text-sm opacity-40"><span class="flex items-center gap-1"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Instant Download</span> <span class="flex items-center gap-1"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Commercial License</span> <span class="flex items-center gap-1"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Lifetime Access</span>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="relative z-20 py-10 px-4 text-center" style="border-top:1px solid rgba(79,111,255,0.1);">
+    <div class="flex items-center justify-center gap-2 mb-3"><i data-lucide="cloud-lightning" style="width:18px;height:18px;color:var(--primary)"></i> <span class="font-display text-lg tracking-wider">STORMCHASE STUDIO</span>
+    </div>
+    <p class="text-xs opacity-30">© 2025 StormChase Studio. All rights reserved. Weather images from Unsplash.</p>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// Gallery data
+const galleryItems = [
+  { cat:'lightning', src:'https://images.unsplash.com/photo-1461511669078-d46bf351cd6e?w=500&q=75', alt:'Lightning bolt' },
+  { cat:'waves', src:'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=500&q=75', alt:'Hurricane waves' },
+  { cat:'clouds', src:'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=500&q=75', alt:'Storm clouds' },
+  { cat:'snow', src:'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=500&q=75', alt:'Blizzard' },
+  { cat:'rain', src:'https://images.unsplash.com/photo-1428592953211-077101b2021b?w=500&q=75', alt:'Heavy rain' },
+  { cat:'lightning', src:'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=500&q=75', alt:'Night lightning' },
+  { cat:'waves', src:'https://images.unsplash.com/photo-1527482937786-6f4c1bfe7ae8?w=500&q=75', alt:'Crashing waves' },
+  { cat:'clouds', src:'https://images.unsplash.com/photo-1429552077091-836152271555?w=500&q=75', alt:'Thunderclouds' },
+  { cat:'snow', src:'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=500&q=75', alt:'Snow storm' },
+  { cat:'rain', src:'https://images.unsplash.com/photo-1492011221367-f47e3ccd77a0?w=500&q=75', alt:'Rainy sky' },
+  { cat:'lightning', src:'https://images.unsplash.com/photo-1472145246862-b24cf25c4a36?w=500&q=75', alt:'Storm strike' },
+  { cat:'clouds', src:'https://images.unsplash.com/photo-1514632595-4944383f2737?w=500&q=75', alt:'Dark sky' },
+];
+
+const galleryGrid = document.getElementById('galleryGrid');
+
+function renderGallery(filter) {
+  const items = filter === 'all' ? galleryItems : galleryItems.filter(i => i.cat === filter);
+  galleryGrid.innerHTML = '';
+  items.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'relative rounded-xl overflow-hidden aspect-square cursor-pointer group';
+    div.innerHTML = `
+      <img src="${item.src}" alt="${item.alt}" loading="lazy" class="w-full h-full object-cover img-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a3e,#0a0a12)';this.alt='Image unavailable';">
+      <div class="gallery-overlay absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+        <span class="text-xs font-semibold uppercase tracking-wider">${item.cat}</span>
+      </div>
+    `;
+    div.style.opacity = '0';
+    div.style.animation = `slideUp 0.4s ease-out ${idx * 0.05}s forwards`;
+    galleryGrid.appendChild(div);
+  });
+}
+
+renderGallery('all');
+
+// Filter buttons
+document.getElementById('galleryFilters').addEventListener('click', (e) => {
+  const btn = e.target.closest('.gallery-filter');
+  if (!btn) return;
+  document.querySelectorAll('.gallery-filter').forEach(b => {
+    b.style.background = '';
+    b.style.color = '';
+    b.classList.add('card-glass');
+  });
+  btn.classList.remove('card-glass');
+  btn.style.background = 'var(--primary)';
+  btn.style.color = '#fff';
+  renderGallery(btn.dataset.cat);
+});
+
+// Vote button
+let votes = 247;
+document.getElementById('voteBtn').addEventListener('click', () => {
+  votes++;
+  document.getElementById('voteCount').textContent = votes;
+});
+
+// Rain drops
+const rainContainer = document.getElementById('rainContainer');
+for (let i = 0; i < 40; i++) {
+  const drop = document.createElement('div');
+  drop.className = 'rain-drop';
+  drop.style.left = Math.random() * 100 + '%';
+  drop.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+  drop.style.animationDelay = Math.random() * 3 + 's';
+  drop.style.height = (12 + Math.random() * 16) + 'px';
+  rainContainer.appendChild(drop);
+}
+
+// Mobile menu
+const mobileMenu = document.getElementById('mobileMenu');
+document.getElementById('mobileToggle').addEventListener('click', () => mobileMenu.classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click', () => mobileMenu.classList.remove('open'));
+document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+// Intersection observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(s => {
+  s.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(s);
+});
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#0a0a12',
+  surface_color: '#13132a',
+  text_color: '#e8e8f0',
+  primary_color: '#4f6fff',
+  secondary_color: '#a855f7',
+  font_family: 'Barlow',
+  font_size: 16,
+  hero_title: "NATURE'S POWER, CAPTURED.",
+  hero_subtitle: 'Wild weather visuals for screens, prints, and creators.',
+  tagline: 'Weather so intense you can feel it.',
+  cta_primary: 'Download Collection',
+  cta_secondary: 'Browse Gallery',
+  gallery_title: 'THE STORM GALLERY',
+  wallpapers_title: '140 WILD WEATHER WALLPAPERS',
+  prints_title: '24 PRINTABLE STORM POSTERS',
+  bottom_cta_text: 'MAKE YOUR SCREEN FEEL ALIVE.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--primary', c.primary_color);
+  document.documentElement.style.setProperty('--secondary', c.secondary_color);
+  document.body.style.color = c.text_color;
+
+  // Font
+  const fontStack = `${c.font_family}, Barlow, sans-serif`;
+  document.body.style.fontFamily = fontStack;
+
+  // Font size scaling
+  const base = c.font_size || 16;
+  const allText = document.querySelectorAll('p, span, a, div, button');
+  // We apply base to body, headings scale via font-display class
+  document.body.style.fontSize = base + 'px';
+
+  // Text content
+  const titleParts = c.hero_title.split(',');
+  const t = document.getElementById('hero-title');
+  if (t) t.innerHTML = titleParts.length > 1
+    ? `${titleParts[0].trim()},<br><span class="gradient-text">${titleParts.slice(1).join(',').trim()}</span>`
+    : `<span class="gradient-text">${c.hero_title}</span>`;
+
+  const sub = document.getElementById('hero-subtitle');
+  if (sub) sub.textContent = c.hero_subtitle;
+
+  const tag = document.getElementById('tagline-text');
+  if (tag) tag.textContent = c.tagline;
+
+  const ctaP = document.getElementById('cta-primary-text');
+  if (ctaP) ctaP.textContent = c.cta_primary;
+
+  const ctaS = document.getElementById('cta-secondary-text');
+  if (ctaS) ctaS.textContent = c.cta_secondary;
+
+  const gal = document.getElementById('gallery-title-text');
+  if (gal) gal.textContent = c.gallery_title;
+
+  const wall = document.getElementById('wallpapers-title-text');
+  if (wall) wall.textContent = c.wallpapers_title;
+
+  const prints = document.getElementById('prints-title-text');
+  if (prints) prints.textContent = c.prints_title;
+
+  const bottom = document.getElementById('bottom-cta-text');
+  if (bottom) bottom.textContent = c.bottom_cta_text;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['tagline', config.tagline || defaultConfig.tagline],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['gallery_title', config.gallery_title || defaultConfig.gallery_title],
+      ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+      ['prints_title', config.prints_title || defaultConfig.prints_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ])
+  });
+}
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a75c7e21727c5',t:'MTc3NTU3OTg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

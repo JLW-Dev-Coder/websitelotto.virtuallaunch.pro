@@ -1,1 +1,712 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6c0da573-47dd-4476-b2e1-4e3c6567cb09 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SealSwift Notary</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+    .font-heading { font-family: 'DM Serif Display', serif; }
+    .font-body { font-family: 'Source Sans 3', sans-serif; }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes checkTick {
+      0% { stroke-dashoffset: 24; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
+      50% { box-shadow: 0 0 20px 6px rgba(212, 175, 55, 0.25); }
+    }
+    @keyframes slideCard {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .animate-on-scroll { opacity: 0; }
+    .animate-on-scroll.visible { animation: fadeInUp 0.7s ease forwards; }
+    .animate-left.visible { animation: fadeInLeft 0.7s ease forwards; }
+    .animate-right.visible { animation: fadeInRight 0.7s ease forwards; }
+    .animate-scale.visible { animation: scaleIn 0.6s ease forwards; }
+    .animate-card.visible { animation: slideCard 0.6s ease forwards; }
+
+    .pulse-cta { animation: pulse-glow 2.5s infinite; }
+
+    .check-anim path {
+      stroke-dasharray: 24;
+      stroke-dashoffset: 24;
+    }
+    .check-anim.visible path {
+      animation: checkTick 0.4s ease forwards;
+    }
+
+    .trust-badge { animation: float 3s ease-in-out infinite; }
+    .trust-badge:nth-child(2) { animation-delay: 0.3s; }
+    .trust-badge:nth-child(3) { animation-delay: 0.6s; }
+    .trust-badge:nth-child(4) { animation-delay: 0.9s; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #D4AF37;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    .sticky-nav {
+      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .gold-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #F5E6A3 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-bg {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f172a 100%);
+    }
+
+    .service-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
+    }
+
+    .testimonial-card {
+      transition: transform 0.3s ease;
+    }
+    .testimonial-card:hover { transform: translateY(-3px); }
+
+    html { scroll-behavior: smooth; }
+
+    .checklist-item {
+      transition: background 0.3s ease;
+    }
+    .checklist-item:hover {
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    /* Stamp SVG */
+    .stamp-icon {
+      filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 50: '#f0f3f8', 100: '#dce3ef', 200: '#b9c7df', 300: '#8da3c8', 400: '#6080b0', 500: '#3d5a8a', 600: '#1e3a5f', 700: '#152d4a', 800: '#0f2035', 900: '#0a1628', 950: '#0f172a' },
+            gold: { 50: '#fdf9e7', 100: '#f9f0c3', 200: '#f5e6a3', 300: '#edcf5d', 400: '#e4b832', 500: '#D4AF37', 600: '#b8922a', 700: '#8f7020', 800: '#6b5418', 900: '#4a3a11' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body bg-white text-navy-950 overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav class="sticky-nav fixed top-0 left-0 w-full z-50 border-b border-navy-800/30" id="main-nav">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16"><a href="#home" class="flex items-center gap-2">
+     <svg class="stamp-icon w-7 h-7 sm:w-8 sm:h-8" viewbox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#D4AF37" stroke-width="2" /> <circle cx="16" cy="16" r="10" stroke="#D4AF37" stroke-width="1.5" /> <text x="16" y="20" text-anchor="middle" fill="#D4AF37" font-size="10" font-weight="bold" font-family="DM Serif Display, serif">
+       S
+      </text>
+     </svg><span class="font-heading text-gold-500 text-lg sm:text-xl">SealSwift</span> </a>
+    <div class="hidden md:flex items-center gap-6 lg:gap-8"><a href="#home" class="nav-link text-white/80 hover:text-gold-300 text-sm font-medium transition-colors">Home</a> <a href="#services" class="nav-link text-white/80 hover:text-gold-300 text-sm font-medium transition-colors">Services</a> <a href="#what-to-bring" class="nav-link text-white/80 hover:text-gold-300 text-sm font-medium transition-colors">What to Bring</a> <a href="#reviews" class="nav-link text-white/80 hover:text-gold-300 text-sm font-medium transition-colors">Reviews</a> <a href="#faq" class="nav-link text-white/80 hover:text-gold-300 text-sm font-medium transition-colors">FAQ</a> <a href="#schedule" class="bg-gold-500 hover:bg-gold-600 text-navy-950 px-4 py-2 rounded-md text-sm font-semibold transition-colors">Schedule</a>
+    </div><button id="mobile-toggle" class="md:hidden text-white/80 p-2" aria-label="Toggle menu"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+   </div>
+   <div id="mobile-menu" class="md:hidden hidden border-t border-navy-800/30 pb-4">
+    <div class="flex flex-col px-6 pt-2 gap-3"><a href="#home" class="text-white/80 hover:text-gold-300 text-sm font-medium py-1 mobile-nav-link">Home</a> <a href="#services" class="text-white/80 hover:text-gold-300 text-sm font-medium py-1 mobile-nav-link">Services</a> <a href="#what-to-bring" class="text-white/80 hover:text-gold-300 text-sm font-medium py-1 mobile-nav-link">What to Bring</a> <a href="#reviews" class="text-white/80 hover:text-gold-300 text-sm font-medium py-1 mobile-nav-link">Reviews</a> <a href="#faq" class="text-white/80 hover:text-gold-300 text-sm font-medium py-1 mobile-nav-link">FAQ</a> <a href="#schedule" class="bg-gold-500 hover:bg-gold-600 text-navy-950 px-4 py-2 rounded-md text-sm font-semibold text-center mt-1 mobile-nav-link">Schedule</a>
+    </div>
+   </div>
+  </nav><!-- Hero -->
+  <section id="home" class="hero-bg w-full relative overflow-hidden" style="padding-top: 80px;">
+   <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 right-10 w-64 h-64 rounded-full" style="background: radial-gradient(circle, #D4AF37 0%, transparent 70%);"></div>
+    <div class="absolute bottom-10 left-10 w-48 h-48 rounded-full" style="background: radial-gradient(circle, #D4AF37 0%, transparent 70%);"></div>
+   </div>
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-28 relative z-10">
+    <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+     <div class="flex-1 text-center lg:text-left">
+      <div class="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 rounded-full px-4 py-1.5 mb-6 animate-on-scroll"><span class="w-2 h-2 bg-gold-500 rounded-full"></span> <span class="text-gold-300 text-xs sm:text-sm font-medium">Now Accepting Same-Day Appointments</span>
+      </div>
+      <h1 id="hero-title" class="font-heading text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-5 animate-on-scroll" style="animation-delay: 0.1s;">Need it notarized <span class="gold-gradient">today?</span></h1>
+      <p id="hero-subtitle" class="text-navy-300 text-lg sm:text-xl max-w-lg mx-auto lg:mx-0 mb-8 animate-on-scroll" style="animation-delay: 0.2s;">Clear pricing. Fast scheduling. Done right.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-on-scroll" style="animation-delay: 0.3s;"><a href="#schedule" class="pulse-cta bg-gold-500 hover:bg-gold-600 text-navy-950 px-7 py-3.5 rounded-lg font-bold text-base transition-colors inline-flex items-center justify-center gap-2"> <i data-lucide="calendar" class="w-5 h-5"></i> Schedule Now </a> <a href="#what-to-bring" class="border-2 border-white/20 hover:border-gold-500/50 text-white hover:text-gold-300 px-7 py-3.5 rounded-lg font-semibold text-base transition-all inline-flex items-center justify-center gap-2"> <i data-lucide="clipboard-list" class="w-5 h-5"></i> See What to Bring </a>
+      </div>
+     </div>
+     <div class="flex-1 max-w-md lg:max-w-lg animate-on-scroll animate-right" style="animation-delay: 0.3s;">
+      <div class="relative">
+       <div class="absolute -inset-4 bg-gold-500/10 rounded-2xl blur-xl"></div>
+       <div class="relative bg-navy-800/50 rounded-2xl border border-navy-700/50 p-6 sm:p-8">
+        <div class="flex items-center gap-3 mb-5">
+         <div class="w-10 h-10 bg-gold-500/20 rounded-lg flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5 text-gold-400"></i>
+         </div>
+         <div>
+          <p class="text-white font-semibold text-sm">Certified &amp; Bonded</p>
+          <p class="text-navy-400 text-xs">State-Commissioned Notary</p>
+         </div>
+        </div>
+        <div class="space-y-3">
+         <div class="flex items-center gap-3 bg-navy-900/40 rounded-lg p-3"><i data-lucide="clock" class="w-4 h-4 text-gold-400 flex-shrink-0"></i> <span class="text-white/80 text-sm">Same-day appointments available</span>
+         </div>
+         <div class="flex items-center gap-3 bg-navy-900/40 rounded-lg p-3"><i data-lucide="map-pin" class="w-4 h-4 text-gold-400 flex-shrink-0"></i> <span class="text-white/80 text-sm">Mobile service — we come to you</span>
+         </div>
+         <div class="flex items-center gap-3 bg-navy-900/40 rounded-lg p-3"><i data-lucide="dollar-sign" class="w-4 h-4 text-gold-400 flex-shrink-0"></i> <span class="text-white/80 text-sm">Transparent, upfront pricing</span>
+         </div>
+         <div class="flex items-center gap-3 bg-navy-900/40 rounded-lg p-3"><i data-lucide="check-circle" class="w-4 h-4 text-gold-400 flex-shrink-0"></i> <span class="text-white/80 text-sm">500+ documents notarized</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Trust Badges -->
+  <section class="w-full bg-navy-50 border-y border-navy-100">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <div class="flex flex-wrap justify-center items-center gap-6 sm:gap-10 lg:gap-14">
+     <div class="trust-badge flex items-center gap-2 text-navy-600"><i data-lucide="award" class="w-5 h-5 text-gold-600"></i> <span class="text-sm font-semibold">State Commissioned</span>
+     </div>
+     <div class="trust-badge flex items-center gap-2 text-navy-600"><i data-lucide="shield" class="w-5 h-5 text-gold-600"></i> <span class="text-sm font-semibold">$100K E&amp;O Insured</span>
+     </div>
+     <div class="trust-badge flex items-center gap-2 text-navy-600"><i data-lucide="star" class="w-5 h-5 text-gold-600"></i> <span class="text-sm font-semibold">5.0 Google Rating</span>
+     </div>
+     <div class="trust-badge flex items-center gap-2 text-navy-600"><i data-lucide="users" class="w-5 h-5 text-gold-600"></i> <span class="text-sm font-semibold">500+ Clients Served</span>
+     </div>
+    </div>
+   </div>
+  </section><!-- Services -->
+  <section id="services" class="w-full bg-white">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="text-center mb-12"><span class="text-gold-600 font-semibold text-sm uppercase tracking-wider animate-on-scroll">What We Offer</span>
+     <h2 id="services-title" class="font-heading text-3xl sm:text-4xl text-navy-950 mt-2 animate-on-scroll" style="animation-delay: 0.1s;">Our Notary Services</h2>
+     <p class="text-navy-500 mt-3 max-w-xl mx-auto animate-on-scroll" style="animation-delay: 0.15s;">Professional notarization for all your legal documents — in office or at your location.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.1s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="file-text" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">General Notarization</h3>
+      <p class="text-navy-500 text-sm mb-4">Affidavits, acknowledgments, jurats, oaths, and more.</p>
+      <p class="text-gold-600 font-bold text-lg">$15<span class="text-navy-400 text-sm font-normal">/signature</span></p>
+     </div>
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.2s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="home" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">Real Estate Closings</h3>
+      <p class="text-navy-500 text-sm mb-4">Loan signings, deeds, title transfers, and refinance packages.</p>
+      <p class="text-gold-600 font-bold text-lg">$150<span class="text-navy-400 text-sm font-normal">/signing</span></p>
+     </div>
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.3s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="car" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">Mobile Notary</h3>
+      <p class="text-navy-500 text-sm mb-4">We travel to your home, office, hospital, or any location.</p>
+      <p class="text-gold-600 font-bold text-lg">+$25<span class="text-navy-400 text-sm font-normal"> travel fee</span></p>
+     </div>
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.35s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="scroll" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">Power of Attorney</h3>
+      <p class="text-navy-500 text-sm mb-4">POA documents, healthcare directives, and guardianship forms.</p>
+      <p class="text-gold-600 font-bold text-lg">$15<span class="text-navy-400 text-sm font-normal">/signature</span></p>
+     </div>
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.4s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="globe" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">Apostille Assistance</h3>
+      <p class="text-navy-500 text-sm mb-4">Help preparing documents for international use and authentication.</p>
+      <p class="text-gold-600 font-bold text-lg">$50<span class="text-navy-400 text-sm font-normal">/document</span></p>
+     </div>
+     <div class="service-card bg-white border border-navy-100 rounded-xl p-6 animate-on-scroll animate-scale" style="animation-delay: 0.45s;">
+      <div class="w-12 h-12 bg-navy-950 rounded-xl flex items-center justify-center mb-4"><i data-lucide="building" class="w-6 h-6 text-gold-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-navy-950 mb-2">Business Documents</h3>
+      <p class="text-navy-500 text-sm mb-4">Articles of incorporation, contracts, operating agreements.</p>
+      <p class="text-gold-600 font-bold text-lg">$15<span class="text-navy-400 text-sm font-normal">/signature</span></p>
+     </div>
+    </div>
+   </div>
+  </section><!-- What to Bring -->
+  <section id="what-to-bring" class="w-full bg-navy-50">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="text-center mb-12"><span class="text-gold-600 font-semibold text-sm uppercase tracking-wider animate-on-scroll">Be Prepared</span>
+     <h2 id="checklist-title" class="font-heading text-3xl sm:text-4xl text-navy-950 mt-2 animate-on-scroll" style="animation-delay: 0.1s;">What to Bring</h2>
+     <p class="text-navy-500 mt-3 max-w-xl mx-auto animate-on-scroll" style="animation-delay: 0.15s;">Have these items ready for a smooth, quick appointment.</p>
+    </div>
+    <div class="max-w-2xl mx-auto space-y-3" id="checklist-container">
+     <div class="checklist-item flex items-start gap-4 bg-white rounded-xl p-4 sm:p-5 border border-navy-100 animate-on-scroll" style="animation-delay: 0.15s;">
+      <div class="flex-shrink-0 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center mt-0.5">
+       <svg class="check-anim w-4 h-4" viewbox="0 0 16 16" fill="none">
+        <path d="M3 8.5L6.5 12L13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <div>
+       <h4 class="font-semibold text-navy-950">Valid Government-Issued Photo ID</h4>
+       <p class="text-navy-500 text-sm mt-0.5">Driver's license, passport, or state ID — must be current and unexpired.</p>
+      </div>
+     </div>
+     <div class="checklist-item flex items-start gap-4 bg-white rounded-xl p-4 sm:p-5 border border-navy-100 animate-on-scroll" style="animation-delay: 0.25s;">
+      <div class="flex-shrink-0 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center mt-0.5">
+       <svg class="check-anim w-4 h-4" viewbox="0 0 16 16" fill="none">
+        <path d="M3 8.5L6.5 12L13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <div>
+       <h4 class="font-semibold text-navy-950">Your Unsigned Document(s)</h4>
+       <p class="text-navy-500 text-sm mt-0.5">Do NOT sign beforehand — signatures must be witnessed by the notary.</p>
+      </div>
+     </div>
+     <div class="checklist-item flex items-start gap-4 bg-white rounded-xl p-4 sm:p-5 border border-navy-100 animate-on-scroll" style="animation-delay: 0.35s;">
+      <div class="flex-shrink-0 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center mt-0.5">
+       <svg class="check-anim w-4 h-4" viewbox="0 0 16 16" fill="none">
+        <path d="M3 8.5L6.5 12L13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <div>
+       <h4 class="font-semibold text-navy-950">All Signing Parties Present</h4>
+       <p class="text-navy-500 text-sm mt-0.5">Every person who needs to sign must attend with their own valid ID.</p>
+      </div>
+     </div>
+     <div class="checklist-item flex items-start gap-4 bg-white rounded-xl p-4 sm:p-5 border border-navy-100 animate-on-scroll" style="animation-delay: 0.45s;">
+      <div class="flex-shrink-0 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center mt-0.5">
+       <svg class="check-anim w-4 h-4" viewbox="0 0 16 16" fill="none">
+        <path d="M3 8.5L6.5 12L13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <div>
+       <h4 class="font-semibold text-navy-950">Any Required Witnesses</h4>
+       <p class="text-navy-500 text-sm mt-0.5">Some documents require additional witnesses — check your paperwork first.</p>
+      </div>
+     </div>
+     <div class="checklist-item flex items-start gap-4 bg-white rounded-xl p-4 sm:p-5 border border-navy-100 animate-on-scroll" style="animation-delay: 0.55s;">
+      <div class="flex-shrink-0 w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center mt-0.5">
+       <svg class="check-anim w-4 h-4" viewbox="0 0 16 16" fill="none">
+        <path d="M3 8.5L6.5 12L13 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <div>
+       <h4 class="font-semibold text-navy-950">Payment Method</h4>
+       <p class="text-navy-500 text-sm mt-0.5">We accept cash, Zelle, Venmo, and all major credit cards.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Reviews -->
+  <section id="reviews" class="w-full bg-white">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="text-center mb-12"><span class="text-gold-600 font-semibold text-sm uppercase tracking-wider animate-on-scroll">Testimonials</span>
+     <h2 class="font-heading text-3xl sm:text-4xl text-navy-950 mt-2 animate-on-scroll" style="animation-delay: 0.1s;">What Our Clients Say</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+     <div class="testimonial-card bg-navy-50 rounded-xl p-6 border border-navy-100 animate-on-scroll animate-card" style="animation-delay: 0.1s;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i>
+      </div>
+      <p class="text-navy-700 text-sm leading-relaxed mb-4">"Came to my office within an hour of calling. Super professional, explained everything clearly. Will absolutely use again."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 bg-navy-950 rounded-full flex items-center justify-center text-gold-400 font-bold text-sm">
+        MR
+       </div>
+       <div>
+        <p class="text-navy-950 font-semibold text-sm">Maria R.</p>
+        <p class="text-navy-400 text-xs">Real Estate Closing</p>
+       </div>
+      </div>
+     </div>
+     <div class="testimonial-card bg-navy-50 rounded-xl p-6 border border-navy-100 animate-on-scroll animate-card" style="animation-delay: 0.2s;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i>
+      </div>
+      <p class="text-navy-700 text-sm leading-relaxed mb-4">"Needed a power of attorney notarized urgently for my mom in the hospital. They were there in 45 minutes. Lifesaver."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 bg-navy-950 rounded-full flex items-center justify-center text-gold-400 font-bold text-sm">
+        JT
+       </div>
+       <div>
+        <p class="text-navy-950 font-semibold text-sm">James T.</p>
+        <p class="text-navy-400 text-xs">Power of Attorney</p>
+       </div>
+      </div>
+     </div>
+     <div class="testimonial-card bg-navy-50 rounded-xl p-6 border border-navy-100 animate-on-scroll animate-card" style="animation-delay: 0.3s;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i> <i data-lucide="star" class="w-4 h-4 text-gold-500 fill-gold-500"></i>
+      </div>
+      <p class="text-navy-700 text-sm leading-relaxed mb-4">"The online scheduling was so easy. No back-and-forth calls. Showed up on time, friendly, and efficient. Highly recommend!"</p>
+      <div class="flex items-center gap-3">
+       <div class="w-9 h-9 bg-navy-950 rounded-full flex items-center justify-center text-gold-400 font-bold text-sm">
+        SK
+       </div>
+       <div>
+        <p class="text-navy-950 font-semibold text-sm">Sarah K.</p>
+        <p class="text-navy-400 text-xs">Business Documents</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" class="w-full bg-navy-50">
+   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+    <div class="text-center mb-12"><span class="text-gold-600 font-semibold text-sm uppercase tracking-wider animate-on-scroll">Common Questions</span>
+     <h2 class="font-heading text-3xl sm:text-4xl text-navy-950 mt-2 animate-on-scroll" style="animation-delay: 0.1s;">Frequently Asked Questions</h2>
+    </div>
+    <div class="space-y-3" id="faq-container">
+     <div class="faq-item bg-white rounded-xl border border-navy-100 overflow-hidden animate-on-scroll" style="animation-delay: 0.1s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-semibold text-navy-950 pr-4">How long does a notarization take?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-navy-400 flex-shrink-0 transition-transform duration-300"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5">
+       <p class="text-navy-600 text-sm leading-relaxed">Most notarizations take 5–15 minutes. Real estate closings and loan packages may take 30–60 minutes depending on the number of documents.</p>
+      </div>
+     </div>
+     <div class="faq-item bg-white rounded-xl border border-navy-100 overflow-hidden animate-on-scroll" style="animation-delay: 0.15s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-semibold text-navy-950 pr-4">Do I need to sign the document before my appointment?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-navy-400 flex-shrink-0 transition-transform duration-300"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5">
+       <p class="text-navy-600 text-sm leading-relaxed">No! Please do NOT sign your documents beforehand. The notary must witness your signature for it to be valid.</p>
+      </div>
+     </div>
+     <div class="faq-item bg-white rounded-xl border border-navy-100 overflow-hidden animate-on-scroll" style="animation-delay: 0.2s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-semibold text-navy-950 pr-4">What forms of ID do you accept?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-navy-400 flex-shrink-0 transition-transform duration-300"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5">
+       <p class="text-navy-600 text-sm leading-relaxed">We accept current, government-issued photo IDs: driver's licenses, state IDs, passports, and military IDs. The ID must be unexpired.</p>
+      </div>
+     </div>
+     <div class="faq-item bg-white rounded-xl border border-navy-100 overflow-hidden animate-on-scroll" style="animation-delay: 0.25s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-semibold text-navy-950 pr-4">How far do you travel for mobile notary service?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-navy-400 flex-shrink-0 transition-transform duration-300"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5">
+       <p class="text-navy-600 text-sm leading-relaxed">We travel within a 30-mile radius. For locations beyond that, additional travel fees may apply. Contact us for a quote.</p>
+      </div>
+     </div>
+     <div class="faq-item bg-white rounded-xl border border-navy-100 overflow-hidden animate-on-scroll" style="animation-delay: 0.3s;"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-semibold text-navy-950 pr-4">Can I notarize documents on weekends or after hours?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-navy-400 flex-shrink-0 transition-transform duration-300"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5">
+       <p class="text-navy-600 text-sm leading-relaxed">Yes! We offer evening and weekend appointments by request. Simply book online and choose a time that works for you.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Schedule CTA -->
+  <section id="schedule" class="w-full hero-bg relative overflow-hidden">
+   <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-5 left-1/4 w-40 h-40 rounded-full" style="background: radial-gradient(circle, #D4AF37 0%, transparent 70%);"></div>
+   </div>
+   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center relative z-10">
+    <div class="animate-on-scroll"><i data-lucide="calendar-check" class="w-12 h-12 text-gold-400 mx-auto mb-5"></i>
+    </div>
+    <h2 id="bottom-cta-text" class="font-heading text-3xl sm:text-4xl text-white mb-4 animate-on-scroll" style="animation-delay: 0.1s;">Book your appointment in minutes.</h2>
+    <p class="text-navy-300 text-lg mb-8 animate-on-scroll" style="animation-delay: 0.15s;">Choose a date and time that works for you. Same-day availability most days.</p><!-- Scheduling Form -->
+    <div class="bg-navy-800/50 border border-navy-700/50 rounded-2xl p-6 sm:p-8 max-w-lg mx-auto animate-on-scroll" style="animation-delay: 0.2s;">
+     <form id="schedule-form" class="space-y-4">
+      <div class="text-left"><label for="sched-name" class="text-white/80 text-sm font-medium block mb-1">Full Name</label> <input id="sched-name" type="text" required class="w-full bg-navy-900/60 border border-navy-600/40 rounded-lg px-4 py-2.5 text-white text-sm placeholder-navy-400 focus:outline-none focus:border-gold-500/60 transition-colors" placeholder="Your full name">
+      </div>
+      <div class="text-left"><label for="sched-phone" class="text-white/80 text-sm font-medium block mb-1">Phone Number</label> <input id="sched-phone" type="tel" required class="w-full bg-navy-900/60 border border-navy-600/40 rounded-lg px-4 py-2.5 text-white text-sm placeholder-navy-400 focus:outline-none focus:border-gold-500/60 transition-colors" placeholder="(555) 123-4567">
+      </div>
+      <div class="text-left"><label for="sched-service" class="text-white/80 text-sm font-medium block mb-1">Service Needed</label> <select id="sched-service" required class="w-full bg-navy-900/60 border border-navy-600/40 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-gold-500/60 transition-colors"> <option value="" class="text-navy-950">Select a service</option> <option value="general" class="text-navy-950">General Notarization</option> <option value="realestate" class="text-navy-950">Real Estate Closing</option> <option value="mobile" class="text-navy-950">Mobile Notary</option> <option value="poa" class="text-navy-950">Power of Attorney</option> <option value="apostille" class="text-navy-950">Apostille Assistance</option> <option value="business" class="text-navy-950">Business Documents</option> </select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+       <div class="text-left"><label for="sched-date" class="text-white/80 text-sm font-medium block mb-1">Preferred Date</label> <input id="sched-date" type="date" required class="w-full bg-navy-900/60 border border-navy-600/40 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-gold-500/60 transition-colors">
+       </div>
+       <div class="text-left"><label for="sched-time" class="text-white/80 text-sm font-medium block mb-1">Preferred Time</label> <select id="sched-time" required class="w-full bg-navy-900/60 border border-navy-600/40 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-gold-500/60 transition-colors"> <option value="" class="text-navy-950">Select</option> <option value="9am" class="text-navy-950">9:00 AM</option> <option value="10am" class="text-navy-950">10:00 AM</option> <option value="11am" class="text-navy-950">11:00 AM</option> <option value="12pm" class="text-navy-950">12:00 PM</option> <option value="1pm" class="text-navy-950">1:00 PM</option> <option value="2pm" class="text-navy-950">2:00 PM</option> <option value="3pm" class="text-navy-950">3:00 PM</option> <option value="4pm" class="text-navy-950">4:00 PM</option> <option value="5pm" class="text-navy-950">5:00 PM</option> </select>
+       </div>
+      </div><button type="submit" id="submit-btn" class="pulse-cta w-full bg-gold-500 hover:bg-gold-600 text-navy-950 py-3.5 rounded-lg font-bold text-base transition-colors flex items-center justify-center gap-2 mt-2"> <i data-lucide="calendar" class="w-5 h-5"></i> Schedule My Appointment </button>
+     </form>
+     <div id="form-success" class="hidden text-center py-6">
+      <div class="w-14 h-14 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="check-circle" class="w-8 h-8 text-green-400"></i>
+      </div>
+      <h3 class="font-heading text-xl text-white mb-2">Appointment Requested!</h3>
+      <p class="text-navy-300 text-sm">We'll confirm your appointment within 1 hour via phone or text.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Vote + Comment Widget -->
+  <section class="w-full bg-white border-t border-navy-100">
+   <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <div class="text-center mb-8 animate-on-scroll">
+     <h2 class="font-heading text-2xl sm:text-3xl text-navy-950">Vote + Comment</h2>
+     <p class="text-navy-500 mt-2 text-sm">Help us improve — share your thoughts or vote on what matters to you.</p>
+    </div>
+    <div class="bg-navy-50 rounded-2xl border border-navy-100 p-6 sm:p-8 animate-on-scroll" style="animation-delay: 0.1s;">
+     <div class="space-y-4 mb-6">
+      <p class="text-navy-700 font-semibold text-sm">What would you like to see from SealSwift?</p>
+      <div class="space-y-2" id="vote-options"><button class="vote-btn w-full flex items-center justify-between bg-white border border-navy-200 rounded-lg px-4 py-3 text-left hover:border-gold-400 transition-colors group" data-option="remote"> <span class="text-navy-700 text-sm group-hover:text-navy-950">📹 Remote Online Notarization (RON)</span> <span class="vote-count text-xs font-bold text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full">0</span> </button> <button class="vote-btn w-full flex items-center justify-between bg-white border border-navy-200 rounded-lg px-4 py-3 text-left hover:border-gold-400 transition-colors group" data-option="weekend"> <span class="text-navy-700 text-sm group-hover:text-navy-950">📅 More Weekend Availability</span> <span class="vote-count text-xs font-bold text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full">0</span> </button> <button class="vote-btn w-full flex items-center justify-between bg-white border border-navy-200 rounded-lg px-4 py-3 text-left hover:border-gold-400 transition-colors group" data-option="languages"> <span class="text-navy-700 text-sm group-hover:text-navy-950">🌍 Multilingual Services</span> <span class="vote-count text-xs font-bold text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full">0</span> </button>
+      </div>
+     </div>
+     <div><label for="comment-input" class="text-navy-700 font-semibold text-sm block mb-2">Leave a Comment</label> <textarea id="comment-input" rows="3" class="w-full bg-white border border-navy-200 rounded-lg px-4 py-3 text-navy-700 text-sm placeholder-navy-400 focus:outline-none focus:border-gold-500 transition-colors resize-none" placeholder="Your feedback or questions..."></textarea> <button id="comment-submit" class="mt-3 bg-navy-950 hover:bg-navy-800 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-2"> <i data-lucide="send" class="w-4 h-4"></i> Submit </button>
+     </div>
+     <div id="comments-list" class="mt-6 space-y-3 hidden">
+      <p class="text-navy-500 text-xs font-semibold uppercase tracking-wider">Recent Comments</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full bg-navy-950 border-t border-navy-800">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg class="w-6 h-6" viewbox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" stroke="#D4AF37" stroke-width="2" /> <circle cx="16" cy="16" r="10" stroke="#D4AF37" stroke-width="1.5" /> <text x="16" y="20" text-anchor="middle" fill="#D4AF37" font-size="10" font-weight="bold" font-family="DM Serif Display, serif">
+        S
+       </text>
+      </svg><span class="font-heading text-gold-500">SealSwift Notary</span>
+     </div>
+     <p class="text-navy-500 text-sm text-center">"Notarized fast, correctly, confidently."</p>
+     <p class="text-navy-600 text-xs">© 2025 SealSwift Notary. All rights reserved.</p>
+    </div>
+   </div>
+  </footer>
+  <script>
+    // Default config
+    const defaultConfig = {
+      hero_title: 'Need it notarized <span class="gold-gradient">today?</span>',
+      hero_subtitle: 'Clear pricing. Fast scheduling. Done right.',
+      services_title: 'Our Notary Services',
+      checklist_title: 'What to Bring',
+      bottom_cta_text: 'Book your appointment in minutes.',
+      background_color: '#ffffff',
+      surface_color: '#f0f3f8',
+      text_color: '#0a1628',
+      primary_action_color: '#D4AF37',
+      secondary_action_color: '#0f172a',
+      font_family: 'DM Serif Display',
+      font_size: 16
+    };
+
+    // Element SDK
+    window.elementSdk.init({
+      defaultConfig,
+      async onConfigChange(config) {
+        const c = { ...defaultConfig, ...config };
+
+        document.getElementById('hero-title').innerHTML = c.hero_title;
+        document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+        document.getElementById('services-title').textContent = c.services_title;
+        document.getElementById('checklist-title').textContent = c.checklist_title;
+        document.getElementById('bottom-cta-text').textContent = c.bottom_cta_text;
+
+        // Colors
+        document.getElementById('app-body').style.backgroundColor = c.background_color;
+        document.querySelectorAll('.service-card, .faq-item > button').forEach(el => {
+          el.style.backgroundColor = c.surface_color;
+        });
+
+        // Apply text color to body-level text
+        document.getElementById('app-body').style.color = c.text_color;
+
+        // Primary action
+        document.querySelectorAll('.pulse-cta').forEach(el => {
+          el.style.backgroundColor = c.primary_action_color;
+        });
+        document.querySelectorAll('.trust-badge i, .check-anim').forEach(el => {
+          if (el.tagName === 'I') el.style.color = c.primary_action_color;
+        });
+
+        // Secondary action
+        document.querySelectorAll('#comment-submit').forEach(el => {
+          el.style.backgroundColor = c.secondary_action_color;
+        });
+
+        // Font
+        const headingFont = `${c.font_family}, serif`;
+        document.querySelectorAll('.font-heading').forEach(el => {
+          el.style.fontFamily = headingFont;
+        });
+        document.querySelectorAll('h1, h2, h3').forEach(el => {
+          el.style.fontFamily = headingFont;
+        });
+
+        // Font size
+        const base = c.font_size;
+        document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${base * 3}px`);
+        document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${base * 2}px`);
+        document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${base * 1.25}px`);
+        document.querySelectorAll('p, span, a, button, label, option, select, input, textarea').forEach(el => {
+          if (!el.closest('h1') && !el.closest('h2') && !el.closest('h3')) {
+            // Don't override very small utility text
+          }
+        });
+      },
+      mapToCapabilities(config) {
+        const c = { ...defaultConfig, ...config };
+        const mkColor = (key) => ({
+          get: () => c[key] || defaultConfig[key],
+          set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+        });
+        return {
+          recolorables: [
+            mkColor('background_color'),
+            mkColor('surface_color'),
+            mkColor('text_color'),
+            mkColor('primary_action_color'),
+            mkColor('secondary_action_color')
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => c.font_family || defaultConfig.font_family,
+            set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => c.font_size || defaultConfig.font_size,
+            set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        };
+      },
+      mapToEditPanelValues(config) {
+        const c = { ...defaultConfig, ...config };
+        return new Map([
+          ['hero_title', c.hero_title],
+          ['hero_subtitle', c.hero_subtitle],
+          ['services_title', c.services_title],
+          ['checklist_title', c.checklist_title],
+          ['bottom_cta_text', c.bottom_cta_text]
+        ]);
+      }
+    });
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-scale, .animate-card, .check-anim').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Mobile menu
+    document.getElementById('mobile-toggle').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const icon = btn.querySelector('i');
+        const isOpen = !answer.classList.contains('hidden');
+
+        // Close all
+        document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+        document.querySelectorAll('.faq-toggle i').forEach(i => i.style.transform = 'rotate(0deg)');
+        document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+
+        if (!isOpen) {
+          answer.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Schedule form
+    document.getElementById('schedule-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('schedule-form').classList.add('hidden');
+      document.getElementById('form-success').classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    // Vote system
+    const votes = { remote: 0, weekend: 0, languages: 0 };
+    const voted = new Set();
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const opt = btn.dataset.option;
+        if (voted.has(opt)) return;
+        voted.add(opt);
+        votes[opt]++;
+        btn.querySelector('.vote-count').textContent = votes[opt];
+        btn.style.borderColor = '#D4AF37';
+        btn.style.background = 'rgba(212,175,55,0.05)';
+      });
+    });
+
+    // Comment system
+    const comments = [];
+    document.getElementById('comment-submit').addEventListener('click', () => {
+      const input = document.getElementById('comment-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      comments.push(text);
+      input.value = '';
+
+      const list = document.getElementById('comments-list');
+      list.classList.remove('hidden');
+
+      const el = document.createElement('div');
+      el.className = 'bg-white border border-navy-200 rounded-lg p-3 text-sm text-navy-700';
+      el.textContent = text;
+      list.appendChild(el);
+    });
+
+    // Set min date for scheduling
+    const dateInput = document.getElementById('sched-date');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+    }
+
+    // Active nav highlighting
+    const sections = ['home', 'services', 'what-to-bring', 'reviews', 'faq', 'schedule'];
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) navObserver.observe(el);
+    });
+
+    // Init Lucide
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5926b7da27c5',t:'MTc3NTU3ODcwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

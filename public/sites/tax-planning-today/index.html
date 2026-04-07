@@ -1,1 +1,702 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/52462a3f-860d-4c02-80ae-2f8e48c324df -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPath Tax Planning</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a26', 600: '#222233' },
+        gold: { 50: '#fff9e6', 100: '#fff0bf', 200: '#ffe08a', 300: '#ffd054', 400: '#ffc22e', 500: '#d4a012', 600: '#b8860b', 700: '#9a7209', 800: '#7c5c07' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; }
+.font-display { font-family: 'Playfair Display', serif; }
+
+/* Animated gradient line */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4a012, transparent);
+}
+
+/* Glow effect */
+.gold-glow {
+  box-shadow: 0 0 40px rgba(212, 160, 18, 0.08);
+}
+
+/* Hero particles */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(212, 160, 18, 0.3);
+  border-radius: 50%;
+  animation: float 8s infinite ease-in-out;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  50% { transform: translateY(-60px) translateX(20px); }
+}
+
+/* Fade in on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger > .reveal:nth-child(1) { transition-delay: 0.1s; }
+.stagger > .reveal:nth-child(2) { transition-delay: 0.25s; }
+.stagger > .reveal:nth-child(3) { transition-delay: 0.4s; }
+.stagger > .reveal:nth-child(4) { transition-delay: 0.55s; }
+.stagger > .reveal:nth-child(5) { transition-delay: 0.7s; }
+.stagger > .reveal:nth-child(6) { transition-delay: 0.85s; }
+
+/* Scenario bar animation */
+.bar-fill {
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 0%;
+}
+.bar-fill.animate { width: var(--target-width); }
+
+/* Nav blur */
+.nav-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Pulse ring on CTA */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(212, 160, 18, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(212, 160, 18, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 160, 18, 0); }
+}
+.pulse-gold { animation: pulse-ring 2.5s infinite; }
+
+/* Toast */
+.toast-enter { animation: toastIn 0.3s ease forwards; }
+.toast-exit { animation: toastOut 0.3s ease forwards; }
+@keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+/* Hexagonal grid pattern for hero bg */
+.hex-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(212,160,18,0.04) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-dark-900 text-white overflow-auto">
+  <div id="app-root" class="w-full h-full"><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 nav-blur bg-dark-900/80 border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center"><i data-lucide="trending-up" class="w-4 h-4 text-dark-900"></i>
+      </div><span class="font-display text-lg font-semibold tracking-tight">SmartPath</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-gray-400 hover:text-gold-400 transition-colors">Home</a> <a href="#strategy" class="nav-link text-sm text-gray-400 hover:text-gold-400 transition-colors">Strategy</a> <a href="#scenarios" class="nav-link text-sm text-gray-400 hover:text-gold-400 transition-colors">Scenarios</a> <a href="#benefits" class="nav-link text-sm text-gray-400 hover:text-gold-400 transition-colors">Benefits</a> <a href="#faq" class="nav-link text-sm text-gray-400 hover:text-gold-400 transition-colors">FAQ</a> <a href="#cta" class="px-5 py-2 bg-gold-500 text-dark-900 text-sm font-semibold rounded-lg hover:bg-gold-400 transition-colors">Start Planning</a>
+     </div><button id="mobile-toggle" class="md:hidden text-gray-400 hover:text-white"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-dark-800 border-t border-white/5 px-6 py-4 space-y-3"><a href="#home" class="block text-sm text-gray-400 hover:text-gold-400 py-2 mobile-link">Home</a> <a href="#strategy" class="block text-sm text-gray-400 hover:text-gold-400 py-2 mobile-link">Strategy</a> <a href="#scenarios" class="block text-sm text-gray-400 hover:text-gold-400 py-2 mobile-link">Scenarios</a> <a href="#benefits" class="block text-sm text-gray-400 hover:text-gold-400 py-2 mobile-link">Benefits</a> <a href="#faq" class="block text-sm text-gray-400 hover:text-gold-400 py-2 mobile-link">FAQ</a> <a href="#cta" class="block text-sm text-gold-500 font-semibold py-2 mobile-link">Start Planning</a>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center pt-16 hex-pattern overflow-hidden"><!-- Ambient particles -->
+    <div class="absolute inset-0 pointer-events-none" id="particles"></div><!-- Radial glow -->
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/20 bg-gold-500/5 mb-8 reveal" style="transition-delay:0s"><span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse"></span> <span class="text-gold-400 text-sm font-medium">Proactive Tax Strategy</span>
+     </div>
+     <h1 id="hero-title" class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 reveal" style="transition-delay:0.15s">Your future tax bill is<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">being written today.</span></h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 reveal" style="transition-delay:0.3s">Strategic planning that saves you more over time, not just this year. Build a tax future you control.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay:0.45s"><a href="#cta" class="px-8 py-4 bg-gold-500 text-dark-900 font-semibold rounded-xl hover:bg-gold-400 transition-all pulse-gold text-base"> Start Planning </a> <a href="#scenarios" class="px-8 py-4 border border-white/10 text-white rounded-xl hover:border-gold-500/40 hover:bg-white/5 transition-all text-base flex items-center gap-2"> <i data-lucide="bar-chart-3" class="w-5 h-5 text-gold-500"></i> See Scenarios </a>
+     </div><!-- Tagline -->
+     <p class="mt-12 text-sm text-gray-500 italic reveal" style="transition-delay:0.6s">"Pay less over time, not just this year."</p>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 animate-bounce"><i data-lucide="chevrons-down" class="w-5 h-5"></i>
+    </div>
+   </section><!-- Strategy Section -->
+   <section id="strategy" class="relative py-24 md:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-gold-500 text-sm font-semibold uppercase tracking-widest reveal">Our Approach</span>
+      <h2 id="strategy-title" class="font-display text-3xl md:text-5xl font-bold mt-4 reveal">A Three-Step Planning Framework</h2>
+      <div class="gold-line w-24 mx-auto mt-6 reveal"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8 stagger"><!-- Step 1 -->
+      <div class="reveal group relative bg-dark-800 border border-white/5 rounded-2xl p-8 hover:border-gold-500/30 transition-all duration-500 gold-glow">
+       <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-gold-500/5 to-transparent rounded-bl-[60px] rounded-tr-2xl"></div>
+       <div class="w-14 h-14 rounded-xl bg-gold-500/10 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 transition-colors"><span class="font-display text-2xl font-bold text-gold-500">01</span>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Diagnose &amp; Map</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">We analyze your entire financial landscape — income sources, entity structures, investment timing, and existing liabilities — to uncover hidden opportunities.</p>
+       <div class="mt-6 flex flex-wrap gap-2"><span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">Income Analysis</span> <span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">Entity Review</span>
+       </div>
+      </div><!-- Step 2 -->
+      <div class="reveal group relative bg-dark-800 border border-white/5 rounded-2xl p-8 hover:border-gold-500/30 transition-all duration-500 gold-glow">
+       <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-gold-500/5 to-transparent rounded-bl-[60px] rounded-tr-2xl"></div>
+       <div class="w-14 h-14 rounded-xl bg-gold-500/10 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 transition-colors"><span class="font-display text-2xl font-bold text-gold-500">02</span>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Model &amp; Project</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">We build multi-year projections that model different scenarios — showing exactly how each strategy affects your total tax burden over 5, 10, and 20 years.</p>
+       <div class="mt-6 flex flex-wrap gap-2"><span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">5-Year Forecast</span> <span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">Scenario Models</span>
+       </div>
+      </div><!-- Step 3 -->
+      <div class="reveal group relative bg-dark-800 border border-white/5 rounded-2xl p-8 hover:border-gold-500/30 transition-all duration-500 gold-glow">
+       <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-gold-500/5 to-transparent rounded-bl-[60px] rounded-tr-2xl"></div>
+       <div class="w-14 h-14 rounded-xl bg-gold-500/10 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 transition-colors"><span class="font-display text-2xl font-bold text-gold-500">03</span>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Execute &amp; Optimize</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">We implement the optimal strategy with precise timing — then continuously adjust as tax law and your circumstances evolve, keeping you ahead.</p>
+       <div class="mt-6 flex flex-wrap gap-2"><span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">Implementation</span> <span class="text-xs px-3 py-1 rounded-full bg-gold-500/10 text-gold-400">Ongoing Reviews</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Scenarios Section -->
+   <section id="scenarios" class="relative py-24 md:py-32 bg-dark-800/50">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-gold-500 text-sm font-semibold uppercase tracking-widest reveal">Compare Outcomes</span>
+      <h2 id="scenarios-title" class="font-display text-3xl md:text-5xl font-bold mt-4 reveal">See the Difference Planning Makes</h2>
+      <div class="gold-line w-24 mx-auto mt-6 reveal"></div>
+     </div><!-- Scenario Comparison -->
+     <div class="grid md:grid-cols-2 gap-8 mb-16 stagger"><!-- Without Planning -->
+      <div class="reveal bg-dark-900 border border-white/5 rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center"><i data-lucide="x" class="w-5 h-5 text-red-400"></i>
+        </div>
+        <h3 class="font-display text-xl font-semibold">Without Planning</h3>
+       </div>
+       <div class="space-y-5">
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">Year 1 Tax Burden</span><span class="text-red-400 font-semibold">$48,200</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-red-500/60 rounded-full" style="--target-width:85%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">5-Year Total</span><span class="text-red-400 font-semibold">$267,000</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-red-500/60 rounded-full" style="--target-width:92%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">10-Year Total</span><span class="text-red-400 font-semibold">$580,000</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-red-500/60 rounded-full" style="--target-width:96%"></div>
+         </div>
+        </div>
+       </div>
+       <div class="mt-8 pt-6 border-t border-white/5 text-center">
+        <p class="text-gray-500 text-sm">Reactive approach — filing taxes, not planning them</p>
+       </div>
+      </div><!-- With Planning -->
+      <div class="reveal bg-dark-900 border border-gold-500/20 rounded-2xl p-8 gold-glow">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-gold-400"></i>
+        </div>
+        <h3 class="font-display text-xl font-semibold">With SmartPath</h3>
+       </div>
+       <div class="space-y-5">
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">Year 1 Tax Burden</span><span class="text-gold-400 font-semibold">$31,400</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-gradient-to-r from-gold-600 to-gold-400 rounded-full" style="--target-width:55%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">5-Year Total</span><span class="text-gold-400 font-semibold">$172,000</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-gradient-to-r from-gold-600 to-gold-400 rounded-full" style="--target-width:60%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-sm mb-2">
+          <span class="text-gray-400">10-Year Total</span><span class="text-gold-400 font-semibold">$348,000</span>
+         </div>
+         <div class="h-3 bg-dark-700 rounded-full overflow-hidden">
+          <div class="bar-fill h-full bg-gradient-to-r from-gold-600 to-gold-400 rounded-full" style="--target-width:58%"></div>
+         </div>
+        </div>
+       </div>
+       <div class="mt-8 pt-6 border-t border-gold-500/10 text-center">
+        <p class="text-gold-400 font-semibold text-lg">Save up to $232,000 over 10 years</p>
+        <p class="text-gray-500 text-sm mt-1">Proactive strategy — compounding savings year over year</p>
+       </div>
+      </div>
+     </div><!-- Savings timeline mini chart -->
+     <div class="reveal max-w-3xl mx-auto bg-dark-900 border border-white/5 rounded-2xl p-8">
+      <h4 class="font-display text-lg font-semibold mb-6 text-center">Cumulative Savings Over Time</h4>
+      <div class="flex items-end justify-between gap-2 h-40 px-4">
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:10%"></div><span class="text-xs text-gray-500">Yr 1</span> <span class="text-xs text-gold-400 font-semibold">$17K</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:25%"></div><span class="text-xs text-gray-500">Yr 2</span> <span class="text-xs text-gold-400 font-semibold">$38K</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:42%"></div><span class="text-xs text-gray-500">Yr 3</span> <span class="text-xs text-gold-400 font-semibold">$62K</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:58%"></div><span class="text-xs text-gray-500">Yr 5</span> <span class="text-xs text-gold-400 font-semibold">$95K</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:78%"></div><span class="text-xs text-gray-500">Yr 7</span> <span class="text-xs text-gold-400 font-semibold">$158K</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center gap-2">
+        <div class="w-full bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md transition-all duration-700" style="height:100%"></div><span class="text-xs text-gray-500">Yr 10</span> <span class="text-xs text-gold-400 font-semibold">$232K</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Benefits Section -->
+   <section id="benefits" class="relative py-24 md:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-gold-500 text-sm font-semibold uppercase tracking-widest reveal">Advantages</span>
+      <h2 id="benefits-title" class="font-display text-3xl md:text-5xl font-bold mt-4 reveal">Why Strategic Tax Planning</h2>
+      <div class="gold-line w-24 mx-auto mt-6 reveal"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="piggy-bank" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Compound Savings</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Tax savings reinvested compound over time, turning modest yearly reductions into significant wealth differences.</p>
+      </div>
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="shield" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Audit Confidence</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Every strategy is fully documented with clear legal basis, giving you complete confidence and peace of mind.</p>
+      </div>
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="clock" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Timing Advantage</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Strategic timing of income, deductions, and investments aligns with your life events for maximum benefit.</p>
+      </div>
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="eye" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Full Visibility</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Real-time dashboards and projections so you always know exactly where you stand and what's ahead.</p>
+      </div>
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="refresh-cw" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Adaptive Strategy</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Tax law changes constantly. We monitor and adjust your strategy proactively so you never miss an opportunity.</p>
+      </div>
+      <div class="reveal bg-dark-800 border border-white/5 rounded-xl p-6 hover:border-gold-500/20 transition-all group">
+       <div class="w-12 h-12 rounded-lg bg-gold-500/10 flex items-center justify-center mb-4 group-hover:bg-gold-500/20 transition-colors"><i data-lucide="landmark" class="w-6 h-6 text-gold-500"></i>
+       </div>
+       <h4 class="font-display text-lg font-semibold mb-2">Legacy Planning</h4>
+       <p class="text-gray-400 text-sm leading-relaxed">Structure wealth transfer to minimize estate and gift taxes, protecting what you've built for future generations.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq" class="relative py-24 md:py-32 bg-dark-800/50">
+    <div class="max-w-3xl mx-auto px-6">
+     <div class="text-center mb-16"><span class="text-gold-500 text-sm font-semibold uppercase tracking-widest reveal">Questions</span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold mt-4 reveal">Frequently Asked</h2>
+      <div class="gold-line w-24 mx-auto mt-6 reveal"></div>
+     </div>
+     <div class="space-y-4 stagger" id="faq-list">
+      <div class="reveal faq-item bg-dark-900 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left p-6 flex justify-between items-center hover:bg-white/[0.02] transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">How is tax planning different from tax preparation?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold-500 flex-shrink-0 faq-icon transition-transform duration-300"></i> </button>
+       <div class="faq-content max-h-0 overflow-hidden transition-all duration-300">
+        <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Tax preparation looks backward — it files what happened. Tax planning looks forward — it strategically structures your finances to minimize future taxes. We focus on proactive decisions that compound savings over years, not just filling in forms.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-dark-900 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left p-6 flex justify-between items-center hover:bg-white/[0.02] transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">Who benefits most from proactive tax planning?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold-500 flex-shrink-0 faq-icon transition-transform duration-300"></i> </button>
+       <div class="faq-content max-h-0 overflow-hidden transition-all duration-300">
+        <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Business owners, high-income earners, real estate investors, and anyone with complex income sources benefit significantly. If you're paying more than $30K in annual taxes, strategic planning can yield substantial multi-year savings.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-dark-900 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left p-6 flex justify-between items-center hover:bg-white/[0.02] transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">How quickly will I see results?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold-500 flex-shrink-0 faq-icon transition-transform duration-300"></i> </button>
+       <div class="faq-content max-h-0 overflow-hidden transition-all duration-300">
+        <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Most clients see measurable tax reductions within their first filing year. However, the real power is in the compounding — year 3 and beyond is where the strategy delivers exponential returns on your planning investment.</p>
+       </div>
+      </div>
+      <div class="reveal faq-item bg-dark-900 border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full text-left p-6 flex justify-between items-center hover:bg-white/[0.02] transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">Is this just aggressive tax avoidance?</span> <i data-lucide="chevron-down" class="w-5 h-5 text-gold-500 flex-shrink-0 faq-icon transition-transform duration-300"></i> </button>
+       <div class="faq-content max-h-0 overflow-hidden transition-all duration-300">
+        <p class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">Absolutely not. Every strategy we recommend is fully compliant, well-documented, and tested against current tax code. We optimize within the law — taking advantage of provisions designed to be used, not loopholes.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment Widget -->
+   <section id="cta" class="relative py-24 md:py-32">
+    <div class="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-800 to-dark-900 pointer-events-none"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6"><!-- CTA -->
+     <div class="text-center mb-20 reveal">
+      <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 mb-8 shadow-lg shadow-gold-500/20"><i data-lucide="rocket" class="w-10 h-10 text-dark-900"></i>
+      </div>
+      <h2 id="cta-title" class="font-display text-3xl md:text-5xl font-bold mb-4">Build a smarter tax future.</h2>
+      <p class="text-gray-400 text-lg max-w-xl mx-auto mb-8">Schedule your strategy session today and discover how much you could be saving.</p><a href="#cta" class="inline-flex items-center gap-2 px-10 py-4 bg-gold-500 text-dark-900 font-semibold rounded-xl hover:bg-gold-400 transition-all text-lg pulse-gold"> Start Planning <i data-lucide="arrow-right" class="w-5 h-5"></i> </a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="reveal bg-dark-800 border border-white/5 rounded-2xl p-8 md:p-10">
+      <div class="text-center mb-8"><span class="text-xs text-gray-500 uppercase tracking-widest">Embed Widget Here</span>
+       <h3 class="font-display text-2xl font-semibold mt-2">Vote &amp; Comment</h3>
+       <p class="text-gray-400 text-sm mt-1">How much would you pay for a full tax planning strategy?</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactions-row"><button onclick="submitReaction('🔥')" class="reaction-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-full hover:border-gold-500/30 hover:bg-dark-600 transition-all text-sm flex items-center gap-2"> <span>🔥</span><span class="reaction-count text-gray-400">0</span> </button> <button onclick="submitReaction('💰')" class="reaction-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-full hover:border-gold-500/30 hover:bg-dark-600 transition-all text-sm flex items-center gap-2"> <span>💰</span><span class="reaction-count text-gray-400">0</span> </button> <button onclick="submitReaction('🧠')" class="reaction-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-full hover:border-gold-500/30 hover:bg-dark-600 transition-all text-sm flex items-center gap-2"> <span>🧠</span><span class="reaction-count text-gray-400">0</span> </button> <button onclick="submitReaction('👏')" class="reaction-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-full hover:border-gold-500/30 hover:bg-dark-600 transition-all text-sm flex items-center gap-2"> <span>👏</span><span class="reaction-count text-gray-400">0</span> </button> <button onclick="submitReaction('❤️')" class="reaction-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-full hover:border-gold-500/30 hover:bg-dark-600 transition-all text-sm flex items-center gap-2"> <span>❤️</span><span class="reaction-count text-gray-400">0</span> </button>
+      </div><!-- Price vote -->
+      <div class="mb-8">
+       <p class="text-sm text-gray-400 text-center mb-4">Choose a price point you'd pay:</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-row"><button onclick="submitPrice('$49')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$49 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$99')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$99 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$149')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$149 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$199')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$199 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$249')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$249 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$299')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$299 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$399')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$399 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$499')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$499 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$749')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$749 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button> <button onclick="submitPrice('$999')" class="price-btn px-4 py-2 bg-dark-700 border border-white/5 rounded-lg hover:border-gold-500/30 transition-all text-sm text-gray-300">$999 <span class="price-count text-gray-500 text-xs ml-1">(0)</span></button>
+       </div>
+      </div><!-- Comment form -->
+      <form id="comment-form" class="mb-6">
+       <div class="flex gap-3"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500/40 transition-colors"> <button type="submit" id="comment-submit" class="px-6 py-3 bg-gold-500 text-dark-900 font-semibold rounded-xl hover:bg-gold-400 transition-colors text-sm flex items-center gap-2"> <i data-lucide="send" class="w-4 h-4"></i> Send </button>
+       </div>
+      </form><!-- Comments list -->
+      <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"></div><!-- Loading/status -->
+      <div id="widget-status" class="hidden text-center py-2 text-sm text-gold-400"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center"><i data-lucide="trending-up" class="w-3 h-3 text-dark-900"></i>
+      </div><span class="font-display text-sm font-semibold">SmartPath Tax Planning</span>
+     </div>
+     <p class="text-gray-600 text-xs">© 2025 SmartPath. Strategic tax planning for a smarter future.</p>
+    </div>
+   </footer><!-- Toast container -->
+   <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
+  </div>
+  <script>
+// ---- Default Config ----
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#12121a',
+  text_color: '#ffffff',
+  primary_action_color: '#d4a012',
+  secondary_action_color: '#9a7209',
+  font_family: 'Playfair Display',
+  font_size: 16,
+  hero_title: 'Your future tax bill is being written today.',
+  hero_subtitle: 'Strategic planning that saves you more over time, not just this year. Build a tax future you control.',
+  strategy_title: 'A Three-Step Planning Framework',
+  scenarios_title: 'See the Difference Planning Makes',
+  benefits_title: 'Why Strategic Tax Planning',
+  cta_title: 'Build a smarter tax future.'
+};
+
+// ---- Data state ----
+let allRecords = [];
+let recordCount = 0;
+
+// ---- Element SDK ----
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = key => config[key] || defaultConfig[key];
+
+    // Colors
+    document.body.style.backgroundColor = c('background_color');
+    document.querySelectorAll('.bg-dark-800, .bg-dark-800\\/50').forEach(el => {
+      el.style.backgroundColor = c('surface_color');
+    });
+    document.body.style.color = c('text_color');
+
+    // Gold/primary action
+    const goldEls = document.querySelectorAll('.bg-gold-500, .pulse-gold');
+    goldEls.forEach(el => el.style.backgroundColor = c('primary_action_color'));
+    document.querySelectorAll('.text-gold-500, .text-gold-400').forEach(el => el.style.color = c('primary_action_color'));
+
+    // Font
+    const font = c('font_family');
+    document.querySelectorAll('.font-display').forEach(el => {
+      el.style.fontFamily = `${font}, serif`;
+    });
+
+    // Font size
+    const base = c('font_size');
+    document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${base * 3.5}px`);
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${base * 2.5}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${base * 1.25}px`);
+    document.querySelectorAll('p, span, a, button').forEach(el => {
+      if (!el.closest('h1') && !el.closest('h2') && !el.closest('h3')) {
+        // Don't override tiny utility text
+      }
+    });
+
+    // Text content
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) {
+      const parts = c('hero_title').split(' ');
+      const mid = Math.ceil(parts.length / 2);
+      heroTitle.innerHTML = parts.slice(0, mid).join(' ') + '<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">' + parts.slice(mid).join(' ') + '</span>';
+    }
+    const heroSub = document.getElementById('hero-subtitle');
+    if (heroSub) heroSub.textContent = c('hero_subtitle');
+    const stratTitle = document.getElementById('strategy-title');
+    if (stratTitle) stratTitle.textContent = c('strategy_title');
+    const scenTitle = document.getElementById('scenarios-title');
+    if (scenTitle) scenTitle.textContent = c('scenarios_title');
+    const benTitle = document.getElementById('benefits-title');
+    if (benTitle) benTitle.textContent = c('benefits_title');
+    const ctaTitle = document.getElementById('cta-title');
+    if (ctaTitle) ctaTitle.textContent = c('cta_title');
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['strategy_title', config.strategy_title || defaultConfig.strategy_title],
+    ['scenarios_title', config.scenarios_title || defaultConfig.scenarios_title],
+    ['benefits_title', config.benefits_title || defaultConfig.benefits_title],
+    ['cta_title', config.cta_title || defaultConfig.cta_title]
+  ])
+});
+
+// ---- Data SDK for Vote/Comment ----
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    recordCount = data.length;
+    renderWidgetData(data);
+  }
+};
+
+async function initData() {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+}
+initData();
+
+function renderWidgetData(data) {
+  // Count reactions
+  const reactionCounts = {};
+  const priceCounts = {};
+  const comments = [];
+
+  data.forEach(d => {
+    if (d.type === 'reaction' && d.reaction) {
+      reactionCounts[d.reaction] = (reactionCounts[d.reaction] || 0) + 1;
+    } else if (d.type === 'price' && d.price) {
+      priceCounts[d.price] = (priceCounts[d.price] || 0) + 1;
+    } else if (d.type === 'comment' && d.comment) {
+      comments.push(d);
+    }
+  });
+
+  // Update reaction counts
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const emoji = btn.querySelector('span:first-child').textContent;
+    const countEl = btn.querySelector('.reaction-count');
+    countEl.textContent = reactionCounts[emoji] || 0;
+  });
+
+  // Update price counts
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    const priceText = btn.textContent.trim().split(' ')[0];
+    const countEl = btn.querySelector('.price-count');
+    countEl.textContent = `(${priceCounts[priceText] || 0})`;
+  });
+
+  // Update comments
+  const list = document.getElementById('comments-list');
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set();
+
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  comments.forEach(c => {
+    newIds.add(c.__backendId);
+    if (existingMap.has(c.__backendId)) {
+      existingMap.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'bg-dark-700 rounded-lg px-4 py-3 text-sm text-gray-300';
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p>${escapeHtml(c.comment)}</p><span class="text-xs text-gray-600 mt-1 block">${timeStr}</span>`;
+      list.prepend(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+async function submitReaction(emoji) {
+  if (recordCount >= 999) { showToast('Limit reached'); return; }
+  showStatus('Saving...');
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price: '', timestamp: new Date().toISOString() });
+  if (r.isOk) showToast('Reaction added!'); else showToast('Error saving reaction');
+  hideStatus();
+}
+
+async function submitPrice(price) {
+  if (recordCount >= 999) { showToast('Limit reached'); return; }
+  showStatus('Saving...');
+  const r = await window.dataSdk.create({ type: 'price', reaction: '', comment: '', price, timestamp: new Date().toISOString() });
+  if (r.isOk) showToast('Vote recorded!'); else showToast('Error saving vote');
+  hideStatus();
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (recordCount >= 999) { showToast('Limit reached'); return; }
+
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Sending...</span>';
+
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price: '', timestamp: new Date().toISOString() });
+  if (r.isOk) { input.value = ''; showToast('Comment posted!'); }
+  else showToast('Error posting comment');
+
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Send';
+  lucide.createIcons();
+});
+
+function showStatus(msg) {
+  const el = document.getElementById('widget-status');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+function hideStatus() {
+  document.getElementById('widget-status').classList.add('hidden');
+}
+function showToast(msg) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast-enter px-5 py-3 bg-dark-700 border border-gold-500/20 rounded-xl text-sm text-gray-200 shadow-lg';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.classList.remove('toast-enter'); t.classList.add('toast-exit'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+// ---- FAQ toggle ----
+function toggleFaq(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('.faq-icon');
+  const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+  // Close all
+  document.querySelectorAll('.faq-content').forEach(c => c.style.maxHeight = '0px');
+  document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    content.style.maxHeight = content.scrollHeight + 'px';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// ---- Mobile menu ----
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-link').forEach(l => {
+  l.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ---- Scroll reveal ----
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ---- Bar fill animation ----
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.bar-fill').forEach(b => b.classList.add('animate'));
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('#scenarios').forEach(el => barObserver.observe(el));
+
+// ---- Hero particles ----
+(function() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 8 + 's';
+    p.style.animationDuration = (6 + Math.random() * 6) + 's';
+    container.appendChild(p);
+  }
+})();
+
+// ---- Active nav tracking ----
+const sections = ['home','strategy','scenarios','benefits','faq','cta'];
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 100;
+  sections.forEach((id, i) => {
+    const sec = document.getElementById(id);
+    if (sec && scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight) {
+      navLinks.forEach(l => l.classList.remove('text-gold-400'));
+      if (navLinks[i]) navLinks[i].classList.add('text-gold-400');
+    }
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6ba0e08327c5',t:'MTc3NTU3OTQ2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

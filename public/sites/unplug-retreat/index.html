@@ -1,1 +1,792 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a371f71e-8046-4bac-8d49-10afdb4ac055 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unplug Retreats</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['Jost', 'Helvetica', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+  html { height: 100%; }
+  body { height: 100%; margin: 0; }
+  .app-root { width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.08); opacity: 0.7; }
+  }
+  @keyframes gentleDrift {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+  }
+  @keyframes slowPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  .anim-fade-up { animation: fadeUp 1s ease-out forwards; opacity: 0; }
+  .anim-fade-in { animation: fadeIn 1.2s ease-out forwards; opacity: 0; }
+  .anim-delay-1 { animation-delay: 0.2s; }
+  .anim-delay-2 { animation-delay: 0.4s; }
+  .anim-delay-3 { animation-delay: 0.6s; }
+  .anim-delay-4 { animation-delay: 0.8s; }
+  .anim-delay-5 { animation-delay: 1s; }
+
+  .observe-anim { opacity: 0; }
+  .observe-anim.visible { animation: fadeUp 0.8s ease-out forwards; }
+
+  .pricing-card {
+    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1), box-shadow 0.5s ease;
+  }
+  .pricing-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  .nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+    left: 0;
+  }
+
+  .btn-primary {
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 1px;
+  }
+
+  .glow-card {
+    position: relative;
+  }
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .glow-card:hover::before {
+    opacity: 1;
+  }
+
+  .leaf-float { animation: gentleDrift 8s ease-in-out infinite; }
+  .leaf-float-2 { animation: gentleDrift 10s ease-in-out infinite 2s; }
+  .leaf-float-3 { animation: gentleDrift 12s ease-in-out infinite 4s; }
+  .circle-breathe { animation: breathe 6s ease-in-out infinite; }
+  .circle-breathe-2 { animation: breathe 8s ease-in-out infinite 2s; }
+  .slow-pulse { animation: slowPulse 5s ease-in-out infinite; }
+
+  .sticky-nav {
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, padding 0.3s ease;
+  }
+  .sticky-nav.scrolled {
+    box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #c4b5a3; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="app-root" id="appRoot"><!-- SVG Defs -->
+   <svg style="position:absolute;width:0;height:0;"><defs>
+     <symbol id="leaf1" viewbox="0 0 40 60">
+      <path d="M20 0 C8 15 0 30 0 45 C0 53 9 60 20 60 C31 60 40 53 40 45 C40 30 32 15 20 0Z" fill="currentColor" opacity="0.6" />
+      <line x1="20" y1="10" x2="20" y2="55" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+     </symbol>
+     <symbol id="leaf2" viewbox="0 0 50 30">
+      <ellipse cx="25" cy="15" rx="24" ry="14" fill="currentColor" opacity="0.5" />
+      <line x1="2" y1="15" x2="48" y2="15" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+     </symbol>
+     <symbol id="circle-ring" viewbox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
+     </symbol>
+    </defs>
+   </svg><!-- Sticky Nav -->
+   <nav class="sticky-nav fixed top-0 left-0 w-full z-50 py-5" id="mainNav" style="background-color: rgba(245,241,235,0.85); backdrop-filter: blur(12px);">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between"><a href="#home" class="font-serif text-xl tracking-wide" id="navLogo" style="color:#3d3a36;">Unplug</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>Home</a> <a href="#retreats" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>Retreats</a> <a href="#experience" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>Experience</a> <a href="#locations" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>Locations</a> <a href="#pricing" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>Pricing</a> <a href="#faq" class="nav-link font-sans text-xs tracking-widest uppercase" style="color:#6b6560;" data-nav>FAQ</a> <a href="#book" class="font-sans text-xs tracking-widest uppercase px-5 py-2 rounded-full" style="background-color:#3d3a36; color:#f5f1eb;">Book Retreat</a>
+     </div><button class="md:hidden" id="mobileMenuBtn" style="color:#3d3a36;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div><!-- Mobile Menu -->
+    <div class="hidden md:hidden" id="mobileMenu">
+     <div class="px-6 py-4 flex flex-col gap-3" style="background-color: rgba(245,241,235,0.98);"><a href="#home" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>Home</a> <a href="#retreats" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>Retreats</a> <a href="#experience" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>Experience</a> <a href="#locations" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>Locations</a> <a href="#pricing" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>Pricing</a> <a href="#faq" class="font-sans text-sm py-2" style="color:#6b6560;" data-nav-mobile>FAQ</a> <a href="#book" class="font-sans text-sm py-2 px-5 rounded-full text-center" style="background-color:#3d3a36; color:#f5f1eb;">Book Retreat</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height:100%; background: linear-gradient(170deg, #f5f1eb 0%, #e8e0d4 40%, #d4cdc2 100%);"><!-- Floating SVG elements -->
+    <svg class="leaf-float absolute" style="top:12%;left:8%;width:40px;height:60px;color:#b8a990;">
+     <use href="#leaf1" />
+    </svg>
+    <svg class="leaf-float-2 absolute" style="top:25%;right:12%;width:50px;height:30px;color:#c4b5a3;">
+     <use href="#leaf2" />
+    </svg>
+    <svg class="circle-breathe absolute" style="top:60%;left:15%;width:120px;height:120px;color:#b8a990;">
+     <use href="#circle-ring" />
+    </svg>
+    <svg class="leaf-float-3 absolute" style="bottom:20%;right:8%;width:35px;height:52px;color:#a99882;">
+     <use href="#leaf1" />
+    </svg>
+    <svg class="circle-breathe-2 absolute" style="top:15%;right:25%;width:80px;height:80px;color:#c4b5a3;">
+     <use href="#circle-ring" />
+    </svg>
+    <div class="slow-pulse absolute" style="top:40%;left:50%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(184,169,144,0.2),transparent 70%);transform:translate(-50%,-50%);"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height:100%;padding-top:140px;padding-bottom:100px;">
+     <p class="font-sans text-xs tracking-[0.35em] uppercase mb-8 anim-fade-up" id="heroTagline" style="color:#8a7f72;">Step away to come back clearer.</p>
+     <h1 class="font-serif font-300 leading-none mb-6 anim-fade-up anim-delay-1" id="heroTitle" style="color:#3d3a36;font-size:clamp(2.8rem,7vw,5.5rem);">Disconnect to reconnect.</h1>
+     <p class="font-sans font-300 max-w-lg mb-12 anim-fade-up anim-delay-2" id="heroSubtitle" style="color:#6b6560;font-size:clamp(1rem,2vw,1.2rem);">Experiences designed to reset your mind.</p>
+     <div class="flex flex-wrap gap-4 justify-center anim-fade-up anim-delay-3"><a href="#book" class="btn-primary font-sans text-sm tracking-wider px-8 py-3.5 rounded-full" style="background-color:#3d3a36;color:#f5f1eb;">Book Retreat</a> <a href="#locations" class="btn-primary font-sans text-sm tracking-wider px-8 py-3.5 rounded-full border" style="color:#3d3a36;border-color:#3d3a36;">View Locations</a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-10 anim-fade-in anim-delay-5" style="color:#8a7f72;"><i data-lucide="chevron-down" style="width:20px;height:20px;animation:gentleDrift 3s ease-in-out infinite;"></i>
+     </div>
+    </div>
+   </section><!-- RETREATS -->
+   <section id="retreats" class="w-full" style="background-color:#f5f1eb;">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32">
+     <div class="text-center mb-16 observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#8a7f72;">Our Programs</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-4" style="color:#3d3a36;">Retreat Types</h2>
+      <div class="section-divider mx-auto" style="background-color:#c4b5a3;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Retreat Card 1 -->
+      <div class="observe-anim p-8 rounded-2xl" style="background-color:#ece7df;">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-6" style="background-color:#d4cdc2;"><i data-lucide="sunrise" style="width:24px;height:24px;color:#6b6560;"></i>
+       </div>
+       <h3 class="font-serif text-2xl mb-3" style="color:#3d3a36;">Silent Morning</h3>
+       <p class="font-sans font-300 text-sm leading-relaxed mb-4" style="color:#6b6560;">A 3-day immersion in stillness. Wake with the sun, move through guided meditation, and let silence become your companion.</p>
+       <p class="font-sans text-xs tracking-wider uppercase" style="color:#8a7f72;">3 Days · Guided</p>
+      </div><!-- Retreat Card 2 -->
+      <div class="observe-anim p-8 rounded-2xl" style="background-color:#ece7df;animation-delay:0.2s;">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-6" style="background-color:#d4cdc2;"><i data-lucide="trees" style="width:24px;height:24px;color:#6b6560;"></i>
+       </div>
+       <h3 class="font-serif text-2xl mb-3" style="color:#3d3a36;">Forest Dwelling</h3>
+       <p class="font-sans font-300 text-sm leading-relaxed mb-4" style="color:#6b6560;">A week among ancient trees. Forest bathing, journaling under canopy, and nourishing plant-based meals prepared daily.</p>
+       <p class="font-sans text-xs tracking-wider uppercase" style="color:#8a7f72;">7 Days · Semi-Guided</p>
+      </div><!-- Retreat Card 3 -->
+      <div class="observe-anim p-8 rounded-2xl" style="background-color:#ece7df;animation-delay:0.4s;">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-6" style="background-color:#d4cdc2;"><i data-lucide="mountain-snow" style="width:24px;height:24px;color:#6b6560;"></i>
+       </div>
+       <h3 class="font-serif text-2xl mb-3" style="color:#3d3a36;">Deep Wilderness</h3>
+       <p class="font-sans font-300 text-sm leading-relaxed mb-4" style="color:#6b6560;">14 days of complete disconnection. Remote cabin living, solo hikes, and the profound clarity that only deep nature provides.</p>
+       <p class="font-sans text-xs tracking-wider uppercase" style="color:#8a7f72;">14 Days · Self-Guided</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- EXPERIENCE -->
+   <section id="experience" class="w-full relative overflow-hidden" style="background: linear-gradient(180deg, #ece7df 0%, #f5f1eb 100%);">
+    <svg class="leaf-float absolute" style="top:10%;right:10%;width:45px;height:68px;color:#c4b5a3;">
+     <use href="#leaf1" />
+    </svg>
+    <svg class="circle-breathe absolute" style="bottom:15%;left:8%;width:100px;height:100px;color:#b8a990;">
+     <use href="#circle-ring" />
+    </svg>
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32 relative z-10">
+     <div class="text-center mb-16 observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#8a7f72;">The Journey</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-4" style="color:#3d3a36;">What to Expect</h2>
+      <div class="section-divider mx-auto" style="background-color:#c4b5a3;"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 items-start">
+      <div class="space-y-10">
+       <div class="observe-anim flex gap-5">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background-color:#d4cdc2;"><span class="font-serif text-sm" style="color:#3d3a36;">1</span>
+        </div>
+        <div>
+         <h3 class="font-serif text-xl mb-2" style="color:#3d3a36;">Arrival &amp; Surrender</h3>
+         <p class="font-sans font-300 text-sm leading-relaxed" style="color:#6b6560;">Hand over your devices. Settle into your space. Feel the initial discomfort melt into relief as the digital world fades away.</p>
+        </div>
+       </div>
+       <div class="observe-anim flex gap-5">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background-color:#d4cdc2;"><span class="font-serif text-sm" style="color:#3d3a36;">2</span>
+        </div>
+        <div>
+         <h3 class="font-serif text-xl mb-2" style="color:#3d3a36;">Daily Rhythm</h3>
+         <p class="font-sans font-300 text-sm leading-relaxed" style="color:#6b6560;">Morning meditation, nature walks, nourishing meals, creative expression, and evening reflection. A rhythm your body remembers.</p>
+        </div>
+       </div>
+       <div class="observe-anim flex gap-5">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background-color:#d4cdc2;"><span class="font-serif text-sm" style="color:#3d3a36;">3</span>
+        </div>
+        <div>
+         <h3 class="font-serif text-xl mb-2" style="color:#3d3a36;">Deep Stillness</h3>
+         <p class="font-sans font-300 text-sm leading-relaxed" style="color:#6b6560;">By mid-retreat, silence becomes a friend. Thoughts slow. Creativity surges. You begin to hear what the noise was drowning out.</p>
+        </div>
+       </div>
+       <div class="observe-anim flex gap-5">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background-color:#d4cdc2;"><span class="font-serif text-sm" style="color:#3d3a36;">4</span>
+        </div>
+        <div>
+         <h3 class="font-serif text-xl mb-2" style="color:#3d3a36;">Re-Entry</h3>
+         <p class="font-sans font-300 text-sm leading-relaxed" style="color:#6b6560;">Guided re-integration session. A digital wellness plan. You return to the world, but the world feels different now.</p>
+        </div>
+       </div>
+      </div><!-- Visual element -->
+      <div class="observe-anim flex items-center justify-center">
+       <div class="relative w-full max-w-sm aspect-square">
+        <div class="absolute inset-0 rounded-full" style="background:radial-gradient(circle at 40% 40%, #d4cdc2 0%, #ece7df 50%, transparent 70%);"></div>
+        <div class="absolute inset-8 rounded-full" style="background:radial-gradient(circle at 60% 60%, #c4b5a3 0%, transparent 60%); opacity:0.4; animation: breathe 8s ease-in-out infinite;"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+         <div class="text-center">
+          <p class="font-serif text-6xl font-300" style="color:#3d3a36;">∞</p>
+          <p class="font-sans text-xs tracking-[0.3em] uppercase mt-2" style="color:#8a7f72;">Clarity awaits</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- LOCATIONS -->
+   <section id="locations" class="w-full" style="background-color:#f5f1eb;">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32">
+     <div class="text-center mb-16 observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#8a7f72;">Where We Are</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-4" style="color:#3d3a36;">Natural Environments</h2>
+      <div class="section-divider mx-auto" style="background-color:#c4b5a3;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="observe-anim group rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;">
+       <div class="absolute inset-0" style="background: linear-gradient(135deg, #8a9a7b 0%, #6b7a5c 50%, #4a5940 100%);"></div><!-- SVG forest scene -->
+       <svg class="absolute inset-0 w-full h-full" viewbox="0 0 300 400" preserveaspectratio="xMidYMid slice"><rect width="300" height="400" fill="none" /> <g opacity="0.3">
+         <polygon points="80,380 100,180 120,380" fill="#3d5a3a" />
+         <polygon points="130,380 150,150 170,380" fill="#4a6a47" />
+         <polygon points="180,380 200,200 220,380" fill="#3d5a3a" />
+         <polygon points="50,380 70,220 90,380" fill="#4a6a47" />
+         <polygon points="210,380 230,170 250,380" fill="#3d5a3a" />
+        </g> <circle cx="250" cy="60" r="30" fill="rgba(255,255,255,0.1)" />
+       </svg>
+       <div class="absolute inset-0 flex flex-col justify-end p-8" style="background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);">
+        <h3 class="font-serif text-2xl text-white mb-1">Pacific Northwest</h3>
+        <p class="font-sans text-sm text-white/70">Ancient forest · Oregon</p>
+       </div>
+      </div>
+      <div class="observe-anim group rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;animation-delay:0.15s;">
+       <div class="absolute inset-0" style="background: linear-gradient(135deg, #a0937a 0%, #8a7d64 50%, #6b604d 100%);"></div>
+       <svg class="absolute inset-0 w-full h-full" viewbox="0 0 300 400" preserveaspectratio="xMidYMid slice"><g opacity="0.3">
+         <polygon points="0,400 60,200 120,350 180,180 240,320 300,150 300,400" fill="#5a5040" />
+         <polygon points="0,400 80,250 160,300 240,220 300,280 300,400" fill="#6b604d" />
+        </g> <circle cx="60" cy="80" r="25" fill="rgba(255,255,255,0.1)" />
+       </svg>
+       <div class="absolute inset-0 flex flex-col justify-end p-8" style="background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);">
+        <h3 class="font-serif text-2xl text-white mb-1">Desert Mesa</h3>
+        <p class="font-sans text-sm text-white/70">Red rock silence · Utah</p>
+       </div>
+      </div>
+      <div class="observe-anim group rounded-2xl overflow-hidden relative" style="aspect-ratio:3/4;animation-delay:0.3s;">
+       <div class="absolute inset-0" style="background: linear-gradient(135deg, #7a8fa0 0%, #6480a0 50%, #4a6a8a 100%);"></div>
+       <svg class="absolute inset-0 w-full h-full" viewbox="0 0 300 400" preserveaspectratio="xMidYMid slice"><g opacity="0.2">
+         <ellipse cx="150" cy="350" rx="180" ry="40" fill="#5a7a9a" />
+         <path d="M0 300 Q75 260 150 300 Q225 340 300 300 L300 400 L0 400Z" fill="#4a6a8a" />
+         <path d="M0 320 Q75 290 150 320 Q225 350 300 320 L300 400 L0 400Z" fill="#5a7a9a" />
+        </g> <polygon points="100,380 130,280 140,320 170,250 200,380" fill="rgba(255,255,255,0.08)" /> <circle cx="220" cy="70" r="28" fill="rgba(255,255,255,0.08)" />
+       </svg>
+       <div class="absolute inset-0 flex flex-col justify-end p-8" style="background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);">
+        <h3 class="font-serif text-2xl text-white mb-1">Coastal Bluff</h3>
+        <p class="font-sans text-sm text-white/70">Ocean stillness · Maine</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="w-full" style="background: linear-gradient(180deg, #ece7df 0%, #f5f1eb 100%);">
+    <div class="max-w-6xl mx-auto px-6 py-24 md:py-32">
+     <div class="text-center mb-16 observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#8a7f72;">Investment</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-4" style="color:#3d3a36;">Choose Your Path</h2>
+      <div class="section-divider mx-auto" style="background-color:#c4b5a3;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8"><!-- Essential -->
+      <div class="pricing-card glow-card observe-anim rounded-2xl p-8 text-center" style="background-color:#f5f1eb; box-shadow: 0 4px 30px rgba(0,0,0,0.06);">
+       <p class="font-sans text-xs tracking-[0.3em] uppercase mb-2" style="color:#8a7f72;">Essential</p>
+       <h3 class="font-serif text-lg mb-6" style="color:#3d3a36;">Short Retreat</h3>
+       <p class="font-serif font-300 mb-1" style="color:#3d3a36;font-size:3rem;" id="priceEssential">$490</p>
+       <p class="font-sans text-xs mb-8" style="color:#8a7f72;">per person</p>
+       <div class="space-y-3 mb-8 text-left">
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">3-day guided retreat</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Shared accommodation</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Plant-based meals</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Morning meditation sessions</span>
+        </div>
+       </div><a href="#book" class="btn-primary block font-sans text-sm tracking-wider px-6 py-3 rounded-full border" style="color:#3d3a36;border-color:#c4b5a3;">Select Essential</a>
+      </div><!-- Extended -->
+      <div class="pricing-card glow-card observe-anim rounded-2xl p-8 text-center relative" style="background-color:#3d3a36; box-shadow: 0 4px 40px rgba(0,0,0,0.12); animation-delay:0.15s;">
+       <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans text-xs tracking-wider uppercase px-4 py-1 rounded-full" style="background-color:#c4b5a3;color:#3d3a36;">
+        Popular
+       </div>
+       <p class="font-sans text-xs tracking-[0.3em] uppercase mb-2" style="color:#a99882;">Extended</p>
+       <h3 class="font-serif text-lg mb-6" style="color:#f5f1eb;">Multi-Day</h3>
+       <p class="font-serif font-300 mb-1" style="color:#f5f1eb;font-size:3rem;" id="priceExtended">$1,290</p>
+       <p class="font-sans text-xs mb-8" style="color:#a99882;">per person</p>
+       <div class="space-y-3 mb-8 text-left">
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#c4b5a3;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#d4cdc2;">7-day semi-guided retreat</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#c4b5a3;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#d4cdc2;">Private cabin</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#c4b5a3;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#d4cdc2;">All meals + herbal tonics</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#c4b5a3;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#d4cdc2;">Forest bathing + journaling</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#c4b5a3;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#d4cdc2;">Digital wellness plan</span>
+        </div>
+       </div><a href="#book" class="btn-primary block font-sans text-sm tracking-wider px-6 py-3 rounded-full" style="background-color:#f5f1eb;color:#3d3a36;">Select Extended</a>
+      </div><!-- Immersion -->
+      <div class="pricing-card glow-card observe-anim rounded-2xl p-8 text-center" style="background-color:#f5f1eb; box-shadow: 0 4px 30px rgba(0,0,0,0.06); animation-delay:0.3s;">
+       <p class="font-sans text-xs tracking-[0.3em] uppercase mb-2" style="color:#8a7f72;">Immersion</p>
+       <h3 class="font-serif text-lg mb-6" style="color:#3d3a36;">Full Experience</h3>
+       <p class="font-serif font-300 mb-1" style="color:#3d3a36;font-size:3rem;" id="priceImmersion">$2,890</p>
+       <p class="font-sans text-xs mb-8" style="color:#8a7f72;">per person</p>
+       <div class="space-y-3 mb-8 text-left">
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">14-day full immersion</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Remote private cabin</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Chef-prepared meals daily</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">1-on-1 coaching sessions</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <i data-lucide="check" style="width:16px;height:16px;color:#8a7f72;flex-shrink:0;"></i><span class="font-sans text-sm" style="color:#6b6560;">Post-retreat support (30 days)</span>
+        </div>
+       </div><a href="#book" class="btn-primary block font-sans text-sm tracking-wider px-6 py-3 rounded-full border" style="color:#3d3a36;border-color:#c4b5a3;">Select Immersion</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="w-full" style="background-color:#f5f1eb;">
+    <div class="max-w-3xl mx-auto px-6 py-24 md:py-32">
+     <div class="text-center mb-16 observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#8a7f72;">Questions</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-4" style="color:#3d3a36;">FAQ</h2>
+      <div class="section-divider mx-auto" style="background-color:#c4b5a3;"></div>
+     </div>
+     <div class="space-y-4" id="faqContainer">
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section class="w-full" style="background: linear-gradient(180deg, #f5f1eb 0%, #ece7df 100%);">
+    <div class="max-w-4xl mx-auto px-6 py-24 md:py-32"><!-- Bottom CTA -->
+     <div class="text-center mb-20 observe-anim">
+      <svg class="mx-auto mb-8 leaf-float" style="width:50px;height:75px;color:#b8a990;">
+       <use href="#leaf1" />
+      </svg>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-6" id="bottomCta" style="color:#3d3a36;">Step out of noise.</h2>
+      <p class="font-sans font-300 max-w-md mx-auto mb-10" style="color:#6b6560;">Your mind is waiting. The forest is ready. All that's left is your decision.</p><a href="#book" class="btn-primary inline-block font-sans text-sm tracking-wider px-10 py-4 rounded-full" style="background-color:#3d3a36;color:#f5f1eb;">Begin Your Retreat</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="observe-anim rounded-2xl p-8 md:p-12" style="background-color:#f5f1eb; box-shadow: 0 4px 30px rgba(0,0,0,0.06);">
+      <div class="text-center mb-8">
+       <p class="font-sans text-xs tracking-[0.3em] uppercase mb-3" style="color:#8a7f72;">Community</p>
+       <h3 class="font-serif text-2xl mb-2" style="color:#3d3a36;">What would you invest?</h3>
+       <p class="font-sans text-sm" style="color:#6b6560;">Vote on your ideal retreat price point</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactions">
+      </div><!-- Price Options -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-10" id="priceVotes">
+      </div><!-- Comments -->
+      <div class="border-t pt-8" style="border-color:#e0d8ce;">
+       <h4 class="font-serif text-lg mb-6" style="color:#3d3a36;">Share your thoughts</h4>
+       <form id="commentForm" class="mb-6">
+        <div class="flex gap-3"><input type="text" id="commentInput" placeholder="Leave a thoughtful comment..." class="flex-1 font-sans text-sm px-4 py-3 rounded-xl border-0 outline-none" style="background-color:#ece7df;color:#3d3a36;"> <button type="submit" class="btn-primary px-5 py-3 rounded-xl" style="background-color:#3d3a36;color:#f5f1eb;"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+        </div>
+       </form>
+       <div id="commentsList" class="space-y-4 max-h-64 overflow-y-auto">
+       </div>
+      </div><!-- Embed note -->
+      <div class="text-center mt-8 pt-6 border-t" style="border-color:#e0d8ce;">
+       <p class="font-sans text-xs" style="color:#a99882;">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOOK -->
+   <section id="book" class="w-full" style="background-color:#3d3a36;">
+    <div class="max-w-2xl mx-auto px-6 py-24 md:py-32 text-center">
+     <div class="observe-anim">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase mb-4" style="color:#a99882;">Reserve Your Spot</p>
+      <h2 class="font-serif font-300 text-4xl md:text-5xl mb-8" style="color:#f5f1eb;">Book Your Retreat</h2>
+      <form id="bookingForm" class="space-y-4 text-left max-w-md mx-auto"><input type="text" placeholder="Full Name" class="w-full font-sans text-sm px-5 py-3.5 rounded-xl border-0 outline-none" style="background-color:rgba(245,241,235,0.1);color:#f5f1eb;" required> <input type="email" placeholder="Email Address" class="w-full font-sans text-sm px-5 py-3.5 rounded-xl border-0 outline-none" style="background-color:rgba(245,241,235,0.1);color:#f5f1eb;" required> <select class="w-full font-sans text-sm px-5 py-3.5 rounded-xl border-0 outline-none" style="background-color:rgba(245,241,235,0.1);color:#a99882;"> <option value="">Select Retreat</option> <option>Essential — 3-Day</option> <option>Extended — 7-Day</option> <option>Immersion — 14-Day</option> </select> <select class="w-full font-sans text-sm px-5 py-3.5 rounded-xl border-0 outline-none" style="background-color:rgba(245,241,235,0.1);color:#a99882;"> <option value="">Select Location</option> <option>Pacific Northwest, Oregon</option> <option>Desert Mesa, Utah</option> <option>Coastal Bluff, Maine</option> </select> <button type="submit" class="btn-primary w-full font-sans text-sm tracking-wider px-6 py-3.5 rounded-full mt-4" style="background-color:#f5f1eb;color:#3d3a36;">Reserve Now</button>
+      </form>
+      <div id="bookingSuccess" class="hidden mt-6">
+       <div class="flex items-center justify-center gap-2" style="color:#c4b5a3;"><i data-lucide="check-circle" style="width:20px;height:20px;"></i>
+        <p class="font-sans text-sm">Thank you. We'll be in touch soon.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-12 text-center" style="background-color:#3d3a36; border-top: 1px solid rgba(245,241,235,0.08);">
+    <p class="font-serif text-lg mb-2" style="color:#f5f1eb;">Unplug Retreats</p>
+    <p class="font-sans text-xs" style="color:#6b6560;">© 2025 Unplug Retreats. All rights reserved.</p>
+   </footer>
+  </div>
+  <script>
+// ---- CONFIG & SDK ----
+const defaultConfig = {
+  background_color: '#f5f1eb',
+  surface_color: '#ece7df',
+  text_color: '#3d3a36',
+  primary_action_color: '#3d3a36',
+  secondary_action_color: '#c4b5a3',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_title: 'Disconnect to reconnect.',
+  hero_subtitle: 'Experiences designed to reset your mind.',
+  tagline: 'Step away to come back clearer.',
+  essential_price: '$490',
+  extended_price: '$1,290',
+  immersion_price: '$2,890',
+  bottom_cta_text: 'Step out of noise.'
+};
+
+function applyConfig(c) {
+  const root = document.getElementById('appRoot');
+  const bg = c.background_color || defaultConfig.background_color;
+  const surface = c.surface_color || defaultConfig.surface_color;
+  const text = c.text_color || defaultConfig.text_color;
+  const primary = c.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = c.secondary_action_color || defaultConfig.secondary_action_color;
+  const ff = c.font_family || defaultConfig.font_family;
+  const fs = c.font_size || defaultConfig.font_size;
+  const serifStack = `${ff}, Georgia, serif`;
+  const sansStack = `Jost, Helvetica, sans-serif`;
+
+  // Hero
+  document.getElementById('heroTitle').textContent = c.hero_title || defaultConfig.hero_title;
+  document.getElementById('heroTitle').style.fontFamily = serifStack;
+  document.getElementById('heroTitle').style.color = text;
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('heroSubtitle').style.color = text + 'aa';
+  document.getElementById('heroTagline').textContent = c.tagline || defaultConfig.tagline;
+
+  // Prices
+  document.getElementById('priceEssential').textContent = c.essential_price || defaultConfig.essential_price;
+  document.getElementById('priceExtended').textContent = c.extended_price || defaultConfig.extended_price;
+  document.getElementById('priceImmersion').textContent = c.immersion_price || defaultConfig.immersion_price;
+
+  // Bottom CTA
+  document.getElementById('bottomCta').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  // Font sizing
+  document.querySelectorAll('.font-serif').forEach(el => {
+    el.style.fontFamily = serifStack;
+  });
+
+  // Apply background color to main sections
+  document.querySelectorAll('[style*="background-color:#f5f1eb"]').forEach(el => {
+    el.style.backgroundColor = bg;
+  });
+
+  // Nav
+  const nav = document.getElementById('mainNav');
+  nav.style.backgroundColor = bg + 'd9';
+  document.getElementById('navLogo').style.color = text;
+}
+
+// FAQ Data
+const faqData = [
+  { q: 'Do I really have to give up my phone?', a: 'Yes. All devices are securely stored upon arrival. This is the foundation of the experience — and what makes it transformative.' },
+  { q: 'What if there\'s an emergency?', a: 'Our staff has communication tools for genuine emergencies. Your emergency contacts receive our facility number before your retreat begins.' },
+  { q: 'Is this suitable for beginners?', a: 'Absolutely. Our Essential retreat is designed for first-timers. No meditation experience needed — just an open mind.' },
+  { q: 'What about dietary needs?', a: 'All meals are plant-based by default. We accommodate allergies and dietary requirements with advance notice.' },
+  { q: 'Can I come alone?', a: 'Most of our guests arrive solo. The retreat is designed for individual reflection, though you\'ll share communal meals with fellow participants.' }
+];
+
+function buildFAQ() {
+  const container = document.getElementById('faqContainer');
+  container.innerHTML = '';
+  faqData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'observe-anim rounded-xl overflow-hidden';
+    div.style.cssText = `background-color:#ece7df;animation-delay:${i*0.1}s;`;
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)">
+        <span class="font-sans text-sm font-medium pr-4" style="color:#3d3a36;">${item.q}</span>
+        <i data-lucide="plus" style="width:18px;height:18px;color:#8a7f72;flex-shrink:0;transition:transform 0.3s ease;"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="font-sans font-300 text-sm leading-relaxed" style="color:#6b6560;">${item.a}</p>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  lucide.createIcons();
+}
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('#faqContainer [data-lucide]').forEach(ic => ic.style.transform = 'rotate(0)');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(45deg)';
+  }
+}
+
+// Reactions
+const reactionsData = [
+  { emoji: '🧘', label: 'Peaceful', count: 42 },
+  { emoji: '🌿', label: 'Natural', count: 38 },
+  { emoji: '✨', label: 'Transformative', count: 56 },
+  { emoji: '🤫', label: 'Quiet', count: 29 },
+  { emoji: '❤️', label: 'Love it', count: 61 }
+];
+
+function buildReactions() {
+  const container = document.getElementById('reactions');
+  container.innerHTML = '';
+  reactionsData.forEach((r, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'flex items-center gap-2 px-4 py-2 rounded-full font-sans text-sm transition-all duration-300';
+    btn.style.cssText = 'background-color:#ece7df;color:#6b6560;';
+    btn.innerHTML = `<span>${r.emoji}</span><span class="reaction-count">${r.count}</span>`;
+    btn.addEventListener('click', () => {
+      if (!btn.dataset.voted) {
+        r.count++;
+        btn.querySelector('.reaction-count').textContent = r.count;
+        btn.dataset.voted = '1';
+        btn.style.backgroundColor = '#d4cdc2';
+      }
+    });
+    container.appendChild(btn);
+  });
+}
+
+// Price Votes
+const priceOptions = ['$99', '$199', '$349', '$499', '$749', '$999', '$1,499', '$1,999', '$2,499', '$3,499'];
+const priceVoteCounts = new Array(10).fill(0);
+
+function buildPriceVotes() {
+  const container = document.getElementById('priceVotes');
+  container.innerHTML = '';
+  priceOptions.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'font-sans text-sm py-3 rounded-xl transition-all duration-300 text-center';
+    btn.style.cssText = 'background-color:#ece7df;color:#6b6560;';
+    btn.innerHTML = `<span class="block font-medium">${p}</span><span class="block text-xs mt-1 vote-count" style="color:#a99882;">${priceVoteCounts[i]} votes</span>`;
+    btn.addEventListener('click', () => {
+      if (!btn.dataset.voted) {
+        priceVoteCounts[i]++;
+        btn.querySelector('.vote-count').textContent = priceVoteCounts[i] + ' votes';
+        btn.dataset.voted = '1';
+        btn.style.backgroundColor = '#d4cdc2';
+        // Remove voted from others
+        container.querySelectorAll('button').forEach((b, j) => {
+          if (j !== i && b.dataset.voted) {
+            priceVoteCounts[j]--;
+            b.querySelector('.vote-count').textContent = priceVoteCounts[j] + ' votes';
+            delete b.dataset.voted;
+            b.style.backgroundColor = '#ece7df';
+          }
+        });
+      }
+    });
+    container.appendChild(btn);
+  });
+}
+
+// Comments
+const comments = [];
+function buildComments() {
+  const list = document.getElementById('commentsList');
+  const form = document.getElementById('commentForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if (!text) return;
+    comments.unshift({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+    input.value = '';
+    renderComments();
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('commentsList');
+  list.innerHTML = '';
+  if (comments.length === 0) {
+    list.innerHTML = '<p class="font-sans text-sm text-center py-4" style="color:#a99882;">No comments yet. Be the first to share.</p>';
+    return;
+  }
+  comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'p-4 rounded-xl';
+    div.style.cssText = 'background-color:#ece7df;';
+    div.innerHTML = `
+      <p class="font-sans text-sm mb-1" style="color:#3d3a36;">${c.text}</p>
+      <p class="font-sans text-xs" style="color:#a99882;">${c.time}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// Booking Form
+document.getElementById('bookingForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('bookingForm').classList.add('hidden');
+  document.getElementById('bookingSuccess').classList.remove('hidden');
+});
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+// Nav scroll behavior
+const appRoot = document.getElementById('appRoot');
+appRoot.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  if (appRoot.scrollTop > 50) {
+    nav.classList.add('scrolled');
+    nav.style.paddingTop = '12px';
+    nav.style.paddingBottom = '12px';
+  } else {
+    nav.classList.remove('scrolled');
+    nav.style.paddingTop = '';
+    nav.style.paddingBottom = '';
+  }
+});
+
+// Active nav link
+const sections = ['home','retreats','experience','locations','pricing','faq','book'];
+appRoot.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 100 <= appRoot.scrollTop) current = id;
+  });
+  document.querySelectorAll('[data-nav]').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('[data-nav-mobile]').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// Smooth scroll for hash links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Init
+buildFAQ();
+buildReactions();
+buildPriceVotes();
+buildComments();
+renderComments();
+lucide.createIcons();
+
+document.querySelectorAll('.observe-anim').forEach(el => observer.observe(el));
+
+// Element SDK init
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['tagline', config.tagline || defaultConfig.tagline],
+      ['essential_price', config.essential_price || defaultConfig.essential_price],
+      ['extended_price', config.extended_price || defaultConfig.extended_price],
+      ['immersion_price', config.immersion_price || defaultConfig.immersion_price],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6fced53527c5',t:'MTc3NTU3OTYzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

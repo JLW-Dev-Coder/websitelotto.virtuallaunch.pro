@@ -1,1 +1,615 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/f5dcfdc0-280b-4ec5-9ca1-0c60bdcd1233 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseProof Fitness</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        charcoal: '#0d0d0d',
+        darkgray: '#1a1a1a',
+        midgray: '#2a2a2a',
+        lightgray: '#e8e8e8',
+        electric: '#00a8ff',
+        lime: '#c8ff00',
+      },
+      fontFamily: {
+        heading: ['Outfit', 'sans-serif'],
+        body: ['Space Grotesk', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'Space Grotesk', sans-serif; }
+h1,h2,h3,h4,h5,h6 { font-family: 'Outfit', sans-serif; }
+
+/* Glassmorphism */
+.glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+.glass-light { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.12); }
+
+/* Animations */
+@keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+@keyframes fadeUp { 0% { opacity:0; transform: translateY(40px); } 100% { opacity:1; transform: translateY(0); } }
+@keyframes fadeIn { 0% { opacity:0; } 100% { opacity:1; } }
+@keyframes pulse-glow { 0%,100% { box-shadow: 0 0 20px rgba(0,168,255,0.3); } 50% { box-shadow: 0 0 35px rgba(0,168,255,0.6); } }
+@keyframes slideRight { 0% { transform: translateX(-30px); opacity:0; } 100% { transform: translateX(0); opacity:1; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.anim-zoom { animation: slowZoom 20s ease-in-out infinite alternate; }
+.anim-fade-up { opacity:0; }
+.anim-fade-up.visible { animation: fadeUp 0.8s ease forwards; }
+.anim-fade-in { opacity:0; }
+.anim-fade-in.visible { animation: fadeIn 0.6s ease forwards; }
+.anim-slide-right { opacity:0; }
+.anim-slide-right.visible { animation: slideRight 0.7s ease forwards; }
+.pulse-cta { animation: pulse-glow 2.5s ease-in-out infinite; }
+.anim-float { animation: float 4s ease-in-out infinite; }
+
+.nav-active { color: #00a8ff !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0d0d0d; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+.ribbon { position: absolute; top: -1px; right: 20px; background: linear-gradient(135deg, #00a8ff, #c8ff00); color: #0d0d0d; font-weight: 700; font-size: 0.7rem; padding: 6px 12px; border-radius: 0 0 8px 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.metric-chip { transition: transform 0.3s ease; }
+.metric-chip:hover { transform: translateY(-4px); }
+
+.card-hover { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,168,255,0.15); }
+
+.star-filled { color: #c8ff00; }
+
+.mockup-frame { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-charcoal text-white overflow-auto">
+  <div id="app-wrapper" class="w-full h-full"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(13,13,13,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-heading font-800 text-xl tracking-tight"> <span class="text-electric">Pulse</span><span class="text-white">Proof</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm font-medium text-gray-400 hover:text-white transition-colors">Home</a> <a href="#program" class="nav-link text-sm font-medium text-gray-400 hover:text-white transition-colors">Program</a> <a href="#results" class="nav-link text-sm font-medium text-gray-400 hover:text-white transition-colors">Results</a> <a href="#included" class="nav-link text-sm font-medium text-gray-400 hover:text-white transition-colors">What You Get</a> <a href="#reviews" class="nav-link text-sm font-medium text-gray-400 hover:text-white transition-colors">Reviews</a> <a href="#book" class="bg-electric text-charcoal text-sm font-bold px-5 py-2.5 rounded-full hover:bg-lime transition-colors">Book</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Open menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="nav-link text-sm text-gray-400 hover:text-white py-1">Home</a> <a href="#program" class="nav-link text-sm text-gray-400 hover:text-white py-1">Program</a> <a href="#results" class="nav-link text-sm text-gray-400 hover:text-white py-1">Results</a> <a href="#included" class="nav-link text-sm text-gray-400 hover:text-white py-1">What You Get</a> <a href="#reviews" class="nav-link text-sm text-gray-400 hover:text-white py-1">Reviews</a> <a href="#book" class="bg-electric text-charcoal text-sm font-bold px-5 py-2 rounded-full text-center">Book</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&amp;q=80" alt="Gym interior" loading="lazy" class="w-full h-full object-cover anim-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1a1a,#0d0d0d)'; this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal"></div>
+    </div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20 flex flex-col justify-center" style="min-height: 100%;">
+     <div class="max-w-3xl">
+      <h1 id="el-hero-headline" class="font-heading font-900 text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight mb-6 anim-fade-up">Stronger in 30 days,<br>
+       starting today.</h1>
+      <p id="el-hero-subhead" class="text-lg md:text-xl text-gray-300 font-light mb-10 max-w-xl anim-fade-up" style="animation-delay:0.15s;">A coach-led plan built for real life, not perfection.</p>
+      <div class="flex flex-wrap gap-4 mb-12 anim-fade-up" style="animation-delay:0.3s;"><a href="#book" class="pulse-cta bg-electric text-charcoal font-bold text-base px-8 py-4 rounded-full hover:bg-lime transition-colors">Book a Free Consult</a> <a href="#program" class="glass text-white font-semibold text-base px-8 py-4 rounded-full hover:bg-white/10 transition-colors">View the Program</a>
+      </div>
+      <div class="flex flex-wrap gap-3 anim-fade-up" style="animation-delay:0.45s;">
+       <div class="glass px-4 py-2.5 rounded-full flex items-center gap-2 text-sm text-gray-300">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg> Beginner-Friendly
+       </div>
+       <div class="glass px-4 py-2.5 rounded-full flex items-center gap-2 text-sm text-gray-300">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg> No-Guesswork Plan
+       </div>
+       <div class="glass px-4 py-2.5 rounded-full flex items-center gap-2 text-sm text-gray-300">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
+        </svg> Mobile-First
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROGRAM -->
+   <section id="program" class="w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <h2 id="el-program-title" class="font-heading font-800 text-4xl md:text-6xl text-center mb-4 anim-fade-up">Choose your training path</h2>
+     <p class="text-gray-400 text-center mb-16 text-lg anim-fade-up" style="animation-delay:0.1s;">Three tiers. One goal: your strongest self.</p>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Card 1 -->
+      <div class="glass rounded-2xl p-8 card-hover anim-fade-up relative" style="animation-delay:0.1s;">
+       <div class="w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-6">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M6.5 6.5h11M6.5 17.5h11M2 12h4M18 12h4M6 6.5V4M6 20v-2.5M18 6.5V4M18 20v-2.5" />
+        </svg>
+       </div>
+       <h3 class="font-heading font-700 text-2xl mb-2 text-white">Start Strong</h3><span class="inline-block bg-midgray text-gray-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">Beginner</span>
+       <div class="text-gray-400 text-sm mb-4">
+        <p class="flex items-center gap-2 mb-1">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+         </svg> 3x per week / 35 min</p>
+       </div>
+       <p class="text-sm text-gray-400 font-medium mb-2">What you'll focus on:</p>
+       <ul class="text-sm text-gray-400 space-y-1.5 mb-6">
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Movement foundations</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Core stability</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Building consistency</li>
+       </ul><button class="w-full bg-midgray text-white font-semibold py-3 rounded-xl hover:bg-electric hover:text-charcoal transition-colors text-sm">See What's Included</button>
+      </div><!-- Card 2 Most Popular -->
+      <div class="glass-light rounded-2xl p-8 card-hover anim-fade-up relative border-electric/30" style="animation-delay:0.25s; border: 1px solid rgba(0,168,255,0.3);">
+       <div class="ribbon">
+        Most Popular
+       </div>
+       <div class="w-12 h-12 rounded-xl bg-lime/10 flex items-center justify-center mb-6">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg>
+       </div>
+       <h3 class="font-heading font-700 text-2xl mb-2 text-white">Build &amp; Burn</h3><span class="inline-block bg-electric/20 text-electric text-xs font-semibold px-3 py-1 rounded-full mb-4">Intermediate</span>
+       <div class="text-gray-400 text-sm mb-4">
+        <p class="flex items-center gap-2 mb-1">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+         </svg> 4x per week / 45 min</p>
+       </div>
+       <p class="text-sm text-gray-400 font-medium mb-2">What you'll focus on:</p>
+       <ul class="text-sm text-gray-400 space-y-1.5 mb-6">
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Progressive overload</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Fat loss &amp; muscle tone</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Conditioning circuits</li>
+       </ul><button class="w-full bg-electric text-charcoal font-bold py-3 rounded-xl hover:bg-lime transition-colors text-sm">See What's Included</button>
+      </div><!-- Card 3 -->
+      <div class="glass rounded-2xl p-8 card-hover anim-fade-up relative" style="animation-delay:0.4s;">
+       <div class="w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-6">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+        </svg>
+       </div>
+       <h3 class="font-heading font-700 text-2xl mb-2 text-white">Athlete Mode</h3><span class="inline-block bg-midgray text-gray-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">Advanced</span>
+       <div class="text-gray-400 text-sm mb-4">
+        <p class="flex items-center gap-2 mb-1">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+         </svg> 5x per week / 60 min</p>
+       </div>
+       <p class="text-sm text-gray-400 font-medium mb-2">What you'll focus on:</p>
+       <ul class="text-sm text-gray-400 space-y-1.5 mb-6">
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Strength programming</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Performance metrics</li>
+        <li class="flex items-start gap-2">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5" class="mt-0.5 shrink-0">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>Recovery protocols</li>
+       </ul><button class="w-full bg-midgray text-white font-semibold py-3 rounded-xl hover:bg-electric hover:text-charcoal transition-colors text-sm">See What's Included</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- RESULTS -->
+   <section id="results" class="w-full py-24 px-6 relative overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&amp;q=80" alt="Strength training" loading="lazy" class="w-full h-full object-cover opacity-15" onerror="this.style.background='#1a1a1a'; this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal/90 to-charcoal"></div>
+    </div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <h2 id="el-results-title" class="font-heading font-800 text-4xl md:text-6xl text-center mb-6 anim-fade-up">Results you can measure</h2>
+     <p class="text-gray-400 text-center mb-12 max-w-xl mx-auto anim-fade-up" style="animation-delay:0.1s;">Track what matters. Build habits that last.</p><!-- Image Collage -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-14 anim-fade-up" style="animation-delay:0.15s;">
+      <div class="rounded-xl overflow-hidden aspect-square"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&amp;q=80" alt="Kettlebell training" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='#2a2a2a'; this.alt='Image unavailable';">
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&amp;q=80" alt="Dumbbells workout" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='#2a2a2a'; this.alt='Image unavailable';">
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square"><img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&amp;q=80" alt="Running outdoors" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='#2a2a2a'; this.alt='Image unavailable';">
+      </div>
+      <div class="rounded-xl overflow-hidden aspect-square"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&amp;q=80" alt="Stretching mobility" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='#2a2a2a'; this.alt='Image unavailable';">
+      </div>
+     </div><!-- Metric Chips -->
+     <div class="flex flex-wrap justify-center gap-4 mb-10">
+      <div class="metric-chip glass px-6 py-4 rounded-2xl flex items-center gap-3 anim-fade-up" style="animation-delay:0.2s;">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+       </svg>
+       <div>
+        <p class="font-heading font-700 text-lg text-white">Consistency</p>
+        <p class="text-xs text-gray-400">Show up, level up</p>
+       </div>
+      </div>
+      <div class="metric-chip glass px-6 py-4 rounded-2xl flex items-center gap-3 anim-fade-up" style="animation-delay:0.3s;">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="2">
+        <path d="M6.5 6.5h11M6.5 17.5h11M2 12h4M18 12h4M6 6.5V4M6 20v-2.5M18 6.5V4M18 20v-2.5" />
+       </svg>
+       <div>
+        <p class="font-heading font-700 text-lg text-white">Strength</p>
+        <p class="text-xs text-gray-400">Progressive gains</p>
+       </div>
+      </div>
+      <div class="metric-chip glass px-6 py-4 rounded-2xl flex items-center gap-3 anim-fade-up" style="animation-delay:0.4s;">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+       </svg>
+       <div>
+        <p class="font-heading font-700 text-lg text-white">Energy</p>
+        <p class="text-xs text-gray-400">Sustained all day</p>
+       </div>
+      </div>
+      <div class="metric-chip glass px-6 py-4 rounded-2xl flex items-center gap-3 anim-fade-up" style="animation-delay:0.5s;">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+       </svg>
+       <div>
+        <p class="font-heading font-700 text-lg text-white">Confidence</p>
+        <p class="text-xs text-gray-400">Inside and out</p>
+       </div>
+      </div>
+     </div>
+     <p class="text-center text-gray-500 text-xs italic anim-fade-in" style="animation-delay:0.6s;">Results vary by person; consistency and recovery matter.</p>
+    </div>
+   </section><!-- WHAT YOU GET -->
+   <section id="included" class="w-full py-24 px-6 bg-darkgray">
+    <div class="max-w-6xl mx-auto">
+     <h2 id="el-included-title" class="font-heading font-800 text-4xl md:text-6xl text-center mb-4 anim-fade-up">Everything included</h2>
+     <p class="text-gray-400 text-center mb-16 text-lg anim-fade-up" style="animation-delay:0.1s;">Your complete digital toolkit, ready to go.</p>
+     <div class="grid md:grid-cols-2 gap-12 items-center"><!-- Checklist -->
+      <div class="space-y-5">
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.1s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">30-day training plan PDF</p>
+         <p class="text-sm text-gray-400">Beginner to Intermediate options</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.2s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">Habit tracker</p>
+         <p class="text-sm text-gray-400">Daily accountability made simple</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.3s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">Mobility warm-up cards</p>
+         <p class="text-sm text-gray-400">Prevent injury, move better</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.4s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">Meal-prep cheat sheet</p>
+         <p class="text-sm text-gray-400">General nutrition guidance</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.5s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">Testimonial &amp; transform templates</p>
+         <p class="text-sm text-gray-400">Showcase client wins beautifully</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 anim-slide-right" style="animation-delay:0.6s;">
+        <div class="w-8 h-8 rounded-lg bg-electric/15 flex items-center justify-center shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-semibold text-white">IG reel cover pack</p>
+         <p class="text-sm text-gray-400">On-brand social content</p>
+        </div>
+       </div>
+      </div><!-- Mockup Frames -->
+      <div class="grid grid-cols-2 gap-4 anim-fade-up" style="animation-delay:0.3s;">
+       <div class="mockup-frame p-4 anim-float" style="animation-delay:0s;">
+        <div class="bg-midgray rounded-lg aspect-[3/4] flex flex-col items-center justify-center p-4">
+         <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="1.5" class="mb-3">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
+         </svg>
+         <p class="text-xs text-gray-400 text-center font-medium">30-Day Plan</p>
+         <p class="text-[10px] text-gray-500 text-center mt-1">PDF Guide</p>
+        </div>
+       </div>
+       <div class="mockup-frame p-4 anim-float" style="animation-delay:0.5s;">
+        <div class="bg-midgray rounded-lg aspect-[3/4] flex flex-col items-center justify-center p-4">
+         <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" class="mb-3">
+          <polyline points="20 6 9 17 4 12" />
+         </svg>
+         <p class="text-xs text-gray-400 text-center font-medium">Habit Tracker</p>
+         <p class="text-[10px] text-gray-500 text-center mt-1">Daily Log</p>
+        </div>
+       </div>
+       <div class="mockup-frame p-4 anim-float" style="animation-delay:1s;">
+        <div class="bg-midgray rounded-lg aspect-[3/4] flex flex-col items-center justify-center p-4">
+         <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#00a8ff" stroke-width="1.5" class="mb-3">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
+         </svg>
+         <p class="text-xs text-gray-400 text-center font-medium">Meal Prep</p>
+         <p class="text-[10px] text-gray-500 text-center mt-1">Cheat Sheet</p>
+        </div>
+       </div>
+       <div class="mockup-frame p-4 anim-float" style="animation-delay:1.5s;">
+        <div class="bg-midgray rounded-lg aspect-[3/4] flex flex-col items-center justify-center p-4">
+         <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c8ff00" stroke-width="1.5" class="mb-3">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+         </svg>
+         <p class="text-xs text-gray-400 text-center font-medium">Reel Covers</p>
+         <p class="text-[10px] text-gray-500 text-center mt-1">IG Pack</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <h2 id="el-reviews-title" class="font-heading font-800 text-4xl md:text-6xl text-center mb-4 anim-fade-up">Client feedback</h2>
+     <p class="text-gray-400 text-center mb-16 text-lg anim-fade-up" style="animation-delay:0.1s;">Real words from real people.</p>
+     <div class="grid md:grid-cols-3 gap-6" id="reviews-grid">
+     </div>
+    </div>
+   </section><!-- BOOK / CTA -->
+   <section id="book" class="w-full py-24 px-6 relative overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&amp;q=80" alt="Gym" loading="lazy" class="w-full h-full object-cover opacity-10" onerror="this.style.background='#1a1a1a';">
+     <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/95 to-charcoal/80"></div>
+    </div>
+    <div class="max-w-3xl mx-auto relative z-10 text-center">
+     <h2 id="el-book-headline" class="font-heading font-800 text-4xl md:text-6xl mb-4 anim-fade-up">Ready for a plan that sticks?</h2>
+     <p class="text-gray-400 text-lg mb-10 anim-fade-up" style="animation-delay:0.1s;">Launch this fitness offer in Canva and start booking.</p>
+     <div class="flex flex-wrap justify-center gap-4 mb-16 anim-fade-up" style="animation-delay:0.2s;"><button class="pulse-cta bg-electric text-charcoal font-bold text-base px-8 py-4 rounded-full hover:bg-lime transition-colors">Get the Template + Commercial License + Digital Pack</button> <button class="glass text-white font-semibold text-base px-8 py-4 rounded-full hover:bg-white/10 transition-colors">Ask a Question</button>
+     </div><!-- Voting Panel -->
+     <div class="glass rounded-2xl p-8 max-w-2xl mx-auto anim-fade-up" style="animation-delay:0.35s;">
+      <h3 class="font-heading font-700 text-xl mb-2 text-white">Vote on this design</h3>
+      <p class="text-gray-400 text-sm mb-6">Voting is instant. Commenting requires a free account and sign-in.</p>
+      <div class="flex flex-wrap justify-center gap-3 mb-6" id="vote-buttons"><button onclick="vote(this)" class="vote-btn glass px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </svg> This is fire <span class="vote-count text-electric font-bold">0</span> </button> <button onclick="vote(this)" class="vote-btn glass px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg> Love it <span class="vote-count text-electric font-bold">0</span> </button> <button onclick="vote(this)" class="vote-btn glass px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" y1="9" x2="9.01" y2="9" /><line x1="15" y1="9" x2="15.01" y2="9" />
+        </svg> So clean <span class="vote-count text-electric font-bold">0</span> </button> <button onclick="vote(this)" class="vote-btn glass px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" />
+        </svg> Would use <span class="vote-count text-electric font-bold">0</span> </button> <button onclick="vote(this)" class="vote-btn glass px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <polyline points="20 6 9 17 4 12" />
+        </svg> Needs tweaks <span class="vote-count text-electric font-bold">0</span> </button>
+      </div>
+      <div class="glass rounded-xl p-6 text-center">
+       <p class="text-gray-500 text-sm">Embed Widget Here</p>
+       <p class="text-gray-600 text-xs mt-1">External voting/comment tool placeholder</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-heading font-700 text-sm"><span class="text-electric">Pulse</span>Proof Fitness</p>
+     <p class="text-gray-500 text-xs">Built with intention. Designed to convert.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Reviews data
+const reviews = [
+  { name: "A.R.", quote: "I finally stuck with a program for more than two weeks. The structure is simple and it just works.", stars: 5 },
+  { name: "M.K.", quote: "The meal prep guide alone saved me hours every week. Everything felt doable from day one.", stars: 5 },
+  { name: "J.T.", quote: "Build & Burn pushed me just enough without burning me out. Best balance I've found.", stars: 5 },
+  { name: "S.L.", quote: "As a complete beginner, Start Strong gave me the confidence to walk into any gym.", stars: 4 },
+  { name: "D.W.", quote: "The mobility cards are a game-changer. My back pain is practically gone.", stars: 5 },
+  { name: "R.P.", quote: "Athlete Mode is no joke. My lifts went up and my recovery improved dramatically.", stars: 5 }
+];
+
+function renderStars(count) {
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    const filled = i < count;
+    html += `<svg width="14" height="14" viewBox="0 0 24 24" fill="${filled ? '#c8ff00' : 'none'}" stroke="${filled ? '#c8ff00' : '#555'}" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  }
+  return html;
+}
+
+function renderReviews() {
+  const grid = document.getElementById('reviews-grid');
+  grid.innerHTML = reviews.map((r, i) => `
+    <div class="glass rounded-2xl p-6 card-hover anim-fade-up" style="animation-delay:${0.1 + i * 0.12}s;">
+      <div class="flex gap-1 mb-4">${renderStars(r.stars)}</div>
+      <p class="text-gray-300 text-sm leading-relaxed mb-4">"${r.quote}"</p>
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-electric/20 flex items-center justify-center text-electric font-bold text-sm">${r.name}</div>
+        <span class="text-gray-500 text-xs">Verified Client</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Vote
+function vote(btn) {
+  const countEl = btn.querySelector('.vote-count');
+  let c = parseInt(countEl.textContent);
+  countEl.textContent = c + 1;
+  btn.style.borderColor = 'rgba(0,168,255,0.4)';
+  btn.style.background = 'rgba(0,168,255,0.08)';
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+function observeAnimations() {
+  document.querySelectorAll('.anim-fade-up, .anim-fade-in, .anim-slide-right').forEach(el => observer.observe(el));
+}
+
+// Active nav
+function updateNav() {
+  const sections = ['home','program','results','included','reviews','book'];
+  const scrollY = document.getElementById('app-wrapper').scrollTop || window.scrollY;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrollY) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('nav-active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Init
+renderReviews();
+observeAnimations();
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', updateNav);
+window.addEventListener('scroll', updateNav);
+
+// Smooth scroll fix for wrapper
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Element SDK
+const defaultConfig = {
+  hero_headline: "Stronger in 30 days, starting today.",
+  hero_subhead: "A coach-led plan built for real life, not perfection.",
+  program_title: "Choose your training path",
+  results_title: "Results you can measure",
+  included_title: "Everything included",
+  reviews_title: "Client feedback",
+  book_headline: "Ready for a plan that sticks?",
+  background_color: "#0d0d0d",
+  surface_color: "#1a1a1a",
+  text_color: "#ffffff",
+  primary_action_color: "#00a8ff",
+  accent_color: "#c8ff00",
+  font_family: "Outfit",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const el = (id) => document.getElementById(id);
+
+  if (el('el-hero-headline')) el('el-hero-headline').textContent = c.hero_headline;
+  if (el('el-hero-subhead')) el('el-hero-subhead').textContent = c.hero_subhead;
+  if (el('el-program-title')) el('el-program-title').textContent = c.program_title;
+  if (el('el-results-title')) el('el-results-title').textContent = c.results_title;
+  if (el('el-included-title')) el('el-included-title').textContent = c.included_title;
+  if (el('el-reviews-title')) el('el-reviews-title').textContent = c.reviews_title;
+  if (el('el-book-headline')) el('el-book-headline').textContent = c.book_headline;
+
+  document.body.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.font-heading, h1, h2, h3').forEach(el => {
+    el.style.fontFamily = `${c.font_family}, Outfit, sans-serif`;
+    el.style.color = c.text_color;
+  });
+
+  const baseSize = c.font_size || 16;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('p, li, span, button, a').forEach(el => {
+    if (!el.closest('nav') && !el.classList.contains('vote-count')) {
+      // let CSS handle sizing, just apply font
+      el.style.fontFamily = `${c.font_family}, Space Grotesk, sans-serif`;
+    }
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); observeAnimations(); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+      fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["hero_headline", config.hero_headline || defaultConfig.hero_headline],
+      ["hero_subhead", config.hero_subhead || defaultConfig.hero_subhead],
+      ["program_title", config.program_title || defaultConfig.program_title],
+      ["results_title", config.results_title || defaultConfig.results_title],
+      ["included_title", config.included_title || defaultConfig.included_title],
+      ["reviews_title", config.reviews_title || defaultConfig.reviews_title],
+      ["book_headline", config.book_headline || defaultConfig.book_headline],
+    ])
+  });
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2dfcc55527c5',t:'MTc3NTU3NjkzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

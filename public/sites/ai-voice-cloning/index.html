@@ -1,1 +1,736 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a49e73b7-c26b-497e-a5c1-05aaf888ec06 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoClone Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+body { font-family: 'Outfit', sans-serif; background: #000; color: #e0e0e0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 3px; }
+
+/* Waveform animation */
+@keyframes waveMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes pulseGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes floatUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(6,182,212,0.2); }
+  50% { border-color: rgba(6,182,212,0.7); }
+}
+@keyframes barPulse {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.wave-container { overflow: hidden; position: relative; height: 80px; }
+.wave-svg { animation: waveMove 8s linear infinite; position: absolute; top: 0; left: 0; }
+
+.float-in { animation: floatUp 0.8s ease-out both; }
+.float-d1 { animation-delay: 0.1s; }
+.float-d2 { animation-delay: 0.2s; }
+.float-d3 { animation-delay: 0.3s; }
+.float-d4 { animation-delay: 0.4s; }
+
+.glow-card {
+  border: 1px solid rgba(6,182,212,0.15);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.glow-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(6,182,212,0.08), transparent 70%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.glow-card:hover { border-color: rgba(6,182,212,0.6); transform: translateY(-4px); box-shadow: 0 0 30px rgba(6,182,212,0.15); }
+.glow-card:hover::before { opacity: 1; }
+
+.pricing-card { animation: borderGlow 4s ease-in-out infinite; }
+.pricing-card:nth-child(2) { animation-delay: 1.3s; }
+.pricing-card:nth-child(3) { animation-delay: 2.6s; }
+
+.eq-bar { width: 3px; background: #06b6d4; border-radius: 2px; animation: barPulse 0.8s ease-in-out infinite; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
+  background: #06b6d4; transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+.cyan-btn {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.cyan-btn:hover { box-shadow: 0 0 25px rgba(6,182,212,0.4); transform: translateY(-1px); }
+.cyan-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%); transition: transform 0.5s;
+}
+.cyan-btn:hover::after { transform: translateX(100%); }
+
+.ghost-btn {
+  border: 1px solid rgba(6,182,212,0.4); color: #06b6d4; transition: all 0.3s;
+}
+.ghost-btn:hover { background: rgba(6,182,212,0.1); border-color: #06b6d4; }
+
+.section-grid {
+  background-image: radial-gradient(rgba(6,182,212,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Reaction buttons */
+.reaction-btn {
+  transition: all 0.2s; border: 1px solid rgba(6,182,212,0.15); cursor: pointer;
+}
+.reaction-btn:hover { border-color: rgba(6,182,212,0.5); background: rgba(6,182,212,0.1); }
+.reaction-btn.active { border-color: #06b6d4; background: rgba(6,182,212,0.2); }
+
+.comment-item {
+  border-left: 2px solid rgba(6,182,212,0.3);
+  animation: floatUp 0.4s ease-out both;
+}
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        cyan: { 500: '#06b6d4', 600: '#0891b2', 700: '#0e7490', 900: '#164e63' },
+        dark: { 800: '#0a0a0a', 900: '#000000' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="h-full w-full overflow-auto bg-black"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-black/70 border-b border-cyan-500/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2">
+      <div class="flex items-center gap-0.5 h-5">
+       <div class="eq-bar h-2" style="animation-delay:0s"></div>
+       <div class="eq-bar h-4" style="animation-delay:0.15s"></div>
+       <div class="eq-bar h-5" style="animation-delay:0.3s"></div>
+       <div class="eq-bar h-3" style="animation-delay:0.45s"></div>
+       <div class="eq-bar h-4" style="animation-delay:0.6s"></div>
+      </div><span class="text-white font-bold text-lg tracking-tight" style="font-family:'JetBrains Mono',monospace;">EchoClone</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm text-gray-400"><a href="#home" class="nav-link hover:text-cyan-500">Home</a> <a href="#voices" class="nav-link hover:text-cyan-500">Voices</a> <a href="#process" class="nav-link hover:text-cyan-500">Process</a> <a href="#usecases" class="nav-link hover:text-cyan-500">Use Cases</a> <a href="#pricing" class="nav-link hover:text-cyan-500">Pricing</a> <a href="#faq" class="nav-link hover:text-cyan-500">FAQ</a> <a href="#clone" class="cyan-btn text-white text-xs font-semibold px-4 py-2 rounded-full">Clone Voice</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-gray-400"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm text-gray-400"><a href="#home" class="block py-2 hover:text-cyan-500">Home</a> <a href="#voices" class="block py-2 hover:text-cyan-500">Voices</a> <a href="#process" class="block py-2 hover:text-cyan-500">Process</a> <a href="#usecases" class="block py-2 hover:text-cyan-500">Use Cases</a> <a href="#pricing" class="block py-2 hover:text-cyan-500">Pricing</a> <a href="#faq" class="block py-2 hover:text-cyan-500">FAQ</a> <a href="#clone" class="block py-2 text-cyan-500 font-semibold">Clone Voice</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative pt-32 pb-20 px-4 sm:px-6 overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+     <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-2xl"></div>
+    </div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/5 text-cyan-500 text-xs font-medium mb-8 float-in"><span class="w-1.5 h-1.5 rounded-full bg-cyan-500" style="animation: pulseGlow 2s infinite;"></span> Synthetic Voice Engine v3.0
+     </div>
+     <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 float-in float-d1">Your voice can exist<br><span class="text-cyan-500">anywhere.</span></h1>
+     <p id="hero-subtitle" class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 float-in float-d2">AI voice cloning built for scale.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 float-in float-d3"><a href="#clone" class="cyan-btn text-white font-semibold px-8 py-3 rounded-full inline-flex items-center gap-2"> <i data-lucide="mic" style="width:18px;height:18px;"></i> Clone Voice </a> <button id="hear-samples-btn" class="ghost-btn px-8 py-3 rounded-full inline-flex items-center gap-2 font-medium"> <i data-lucide="headphones" style="width:18px;height:18px;"></i> Hear Samples </button>
+     </div><!-- Waveform -->
+     <div class="wave-container mt-16 float-in float-d4">
+      <svg class="wave-svg" width="200%" height="80" viewbox="0 0 2400 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 40 Q30 10 60 40 Q90 70 120 40 Q150 10 180 40 Q210 70 240 40 Q270 10 300 40 Q330 70 360 40 Q390 10 420 40 Q450 70 480 40 Q510 10 540 40 Q570 70 600 40 Q630 10 660 40 Q690 70 720 40 Q750 10 780 40 Q810 70 840 40 Q870 10 900 40 Q930 70 960 40 Q990 10 1020 40 Q1050 70 1080 40 Q1110 10 1140 40 Q1170 70 1200 40 Q1230 10 1260 40 Q1290 70 1320 40 Q1350 10 1380 40 Q1410 70 1440 40 Q1470 10 1500 40 Q1530 70 1560 40 Q1590 10 1620 40 Q1650 70 1680 40 Q1710 10 1740 40 Q1770 70 1800 40 Q1830 10 1860 40 Q1890 70 1920 40 Q1950 10 1980 40 Q2010 70 2040 40 Q2070 10 2100 40 Q2130 70 2160 40 Q2190 10 2220 40 Q2250 70 2280 40 Q2310 10 2340 40 Q2370 70 2400 40" stroke="rgba(6,182,212,0.3)" stroke-width="2" fill="none" /> <path d="M0 40 Q30 20 60 40 Q90 60 120 40 Q150 20 180 40 Q210 60 240 40 Q270 20 300 40 Q330 60 360 40 Q390 20 420 40 Q450 60 480 40 Q510 20 540 40 Q570 60 600 40 Q630 20 660 40 Q690 60 720 40 Q750 20 780 40 Q810 60 840 40 Q870 20 900 40 Q930 60 960 40 Q990 20 1020 40 Q1050 60 1080 40 Q1110 20 1140 40 Q1170 60 1200 40 Q1230 20 1260 40 Q1290 60 1320 40 Q1350 20 1380 40 Q1410 60 1440 40 Q1470 20 1500 40 Q1530 60 1560 40 Q1590 20 1620 40 Q1650 60 1680 40 Q1710 20 1740 40 Q1770 60 1800 40 Q1830 20 1860 40 Q1890 60 1920 40 Q1950 20 1980 40 Q2010 60 2040 40 Q2070 20 2100 40 Q2130 60 2160 40 Q2190 20 2220 40 Q2250 60 2280 40 Q2310 20 2340 40 Q2370 60 2400 40" stroke="rgba(6,182,212,0.15)" stroke-width="1" fill="none" />
+      </svg>
+     </div>
+    </div>
+   </section><!-- Voices -->
+   <section id="voices" class="py-20 px-4 sm:px-6 section-grid">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-cyan-500 text-sm font-semibold tracking-widest uppercase mb-3">Voice Library</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Examples &amp; Styles</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="glow-card rounded-2xl bg-gray-950 p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
+         <i data-lucide="user" style="width:18px;height:18px;color:#06b6d4;"></i>
+        </div>
+        <div>
+         <p class="text-white font-semibold text-sm">Narrator — Male</p>
+         <p class="text-gray-500 text-xs">Deep, authoritative tone</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-1 h-8">
+        <div class="eq-bar h-3" style="animation-delay:0.1s;"></div>
+        <div class="eq-bar h-6" style="animation-delay:0.2s;"></div>
+        <div class="eq-bar h-8" style="animation-delay:0.3s;"></div>
+        <div class="eq-bar h-5" style="animation-delay:0.4s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:0.5s;"></div>
+        <div class="eq-bar h-4" style="animation-delay:0.6s;"></div>
+        <div class="eq-bar h-6" style="animation-delay:0.7s;"></div>
+        <div class="eq-bar h-3" style="animation-delay:0.8s;"></div>
+        <div class="eq-bar h-5" style="animation-delay:0.9s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:1.0s;"></div>
+       </div>
+       <p class="text-gray-500 text-xs mt-3">Ideal for documentaries, audiobooks, podcasts</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
+         <i data-lucide="user" style="width:18px;height:18px;color:#06b6d4;"></i>
+        </div>
+        <div>
+         <p class="text-white font-semibold text-sm">Conversational — Female</p>
+         <p class="text-gray-500 text-xs">Warm, natural cadence</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-1 h-8">
+        <div class="eq-bar h-5" style="animation-delay:0.05s;"></div>
+        <div class="eq-bar h-3" style="animation-delay:0.15s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:0.25s;"></div>
+        <div class="eq-bar h-4" style="animation-delay:0.35s;"></div>
+        <div class="eq-bar h-6" style="animation-delay:0.45s;"></div>
+        <div class="eq-bar h-8" style="animation-delay:0.55s;"></div>
+        <div class="eq-bar h-3" style="animation-delay:0.65s;"></div>
+        <div class="eq-bar h-5" style="animation-delay:0.75s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:0.85s;"></div>
+        <div class="eq-bar h-4" style="animation-delay:0.95s;"></div>
+       </div>
+       <p class="text-gray-500 text-xs mt-3">Great for explainers, tutorials, brand voice</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
+         <i data-lucide="bot" style="width:18px;height:18px;color:#06b6d4;"></i>
+        </div>
+        <div>
+         <p class="text-white font-semibold text-sm">AI Assistant</p>
+         <p class="text-gray-500 text-xs">Precise, neutral delivery</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-1 h-8">
+        <div class="eq-bar h-4" style="animation-delay:0.0s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:0.12s;"></div>
+        <div class="eq-bar h-5" style="animation-delay:0.24s;"></div>
+        <div class="eq-bar h-3" style="animation-delay:0.36s;"></div>
+        <div class="eq-bar h-8" style="animation-delay:0.48s;"></div>
+        <div class="eq-bar h-6" style="animation-delay:0.6s;"></div>
+        <div class="eq-bar h-4" style="animation-delay:0.72s;"></div>
+        <div class="eq-bar h-7" style="animation-delay:0.84s;"></div>
+        <div class="eq-bar h-5" style="animation-delay:0.96s;"></div>
+        <div class="eq-bar h-3" style="animation-delay:1.08s;"></div>
+       </div>
+       <p class="text-gray-500 text-xs mt-3">IVR systems, chatbots, product UX</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Process -->
+   <section id="process" class="py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-cyan-500 text-sm font-semibold tracking-widest uppercase mb-3">How It Works</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Recording → Output</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="glow-card rounded-2xl bg-gray-950 p-6 text-center">
+       <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="mic" style="width:22px;height:22px;color:#06b6d4;"></i>
+       </div>
+       <p class="text-white font-semibold mb-1">1. Record</p>
+       <p class="text-gray-500 text-xs">Upload 3–10 min of clean audio</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6 text-center">
+       <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="cpu" style="width:22px;height:22px;color:#06b6d4;"></i>
+       </div>
+       <p class="text-white font-semibold mb-1">2. Train</p>
+       <p class="text-gray-500 text-xs">AI engine builds your voice model</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6 text-center">
+       <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="sliders" style="width:22px;height:22px;color:#06b6d4;"></i>
+       </div>
+       <p class="text-white font-semibold mb-1">3. Refine</p>
+       <p class="text-gray-500 text-xs">Fine-tune emotion, pace, and style</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6 text-center">
+       <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="download" style="width:22px;height:22px;color:#06b6d4;"></i>
+       </div>
+       <p class="text-white font-semibold mb-1">4. Deploy</p>
+       <p class="text-gray-500 text-xs">Export or connect via API</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Use Cases -->
+   <section id="usecases" class="py-20 px-4 sm:px-6 section-grid">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-cyan-500 text-sm font-semibold tracking-widest uppercase mb-3">Applications</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Use Cases</h2>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-5">
+      <div class="glow-card rounded-2xl bg-gray-950 p-6"><i data-lucide="video" style="width:28px;height:28px;color:#06b6d4;" class="mb-4"></i>
+       <p class="text-white font-semibold mb-2">Content Creation</p>
+       <p class="text-gray-500 text-sm">YouTube, TikTok, podcasts — produce voiceovers at scale without being in front of a mic.</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6"><i data-lucide="megaphone" style="width:28px;height:28px;color:#06b6d4;" class="mb-4"></i>
+       <p class="text-white font-semibold mb-2">Ads &amp; Campaigns</p>
+       <p class="text-gray-500 text-sm">Generate localized ad reads in seconds. One voice, infinite markets.</p>
+      </div>
+      <div class="glow-card rounded-2xl bg-gray-950 p-6"><i data-lucide="zap" style="width:28px;height:28px;color:#06b6d4;" class="mb-4"></i>
+       <p class="text-white font-semibold mb-2">Automation</p>
+       <p class="text-gray-500 text-sm">IVR, customer support bots, notifications — your voice without your time.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-cyan-500 text-sm font-semibold tracking-widest uppercase mb-3">Pricing</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Choose Your Plan</h2>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-5"><!-- Basic -->
+      <div class="pricing-card glow-card rounded-2xl bg-gray-950 p-7 flex flex-col">
+       <p class="text-cyan-500 text-xs font-semibold tracking-widest uppercase mb-2">Basic</p>
+       <p class="text-white text-3xl font-bold mb-1">$49<span class="text-gray-500 text-base font-normal">/mo</span></p>
+       <p class="text-gray-500 text-sm mb-6">Single voice model</p>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> 1 custom voice clone</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> 60 min generation/mo</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> MP3 &amp; WAV export</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Email support</li>
+       </ul><a href="#clone" class="ghost-btn text-center py-3 rounded-full text-sm font-semibold block">Get Started</a>
+      </div><!-- Creator -->
+      <div class="pricing-card glow-card rounded-2xl bg-gray-950 p-7 flex flex-col ring-1 ring-cyan-500/30 relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-xs font-bold px-3 py-1 rounded-full">
+        Popular
+       </div>
+       <p class="text-cyan-500 text-xs font-semibold tracking-widest uppercase mb-2">Creator</p>
+       <p class="text-white text-3xl font-bold mb-1">$149<span class="text-gray-500 text-base font-normal">/mo</span></p>
+       <p class="text-gray-500 text-sm mb-6">Multi-use system</p>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> 5 voice clones</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> 300 min generation/mo</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Script templates included</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> API access</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Priority support</li>
+       </ul><a href="#clone" class="cyan-btn text-center text-white py-3 rounded-full text-sm font-semibold block">Get Started</a>
+      </div><!-- Studio -->
+      <div class="pricing-card glow-card rounded-2xl bg-gray-950 p-7 flex flex-col">
+       <p class="text-cyan-500 text-xs font-semibold tracking-widest uppercase mb-2">Studio</p>
+       <p class="text-white text-3xl font-bold mb-1">$499<span class="text-gray-500 text-base font-normal">/mo</span></p>
+       <p class="text-gray-500 text-sm mb-6">Full voice infrastructure</p>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Unlimited voice clones</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Unlimited generation</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Audio pipelines</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Branding systems</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#06b6d4;"></i> Dedicated engineer</li>
+       </ul><a href="#clone" class="ghost-btn text-center py-3 rounded-full text-sm font-semibold block">Contact Sales</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 sm:px-6 section-grid">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-cyan-500 text-sm font-semibold tracking-widest uppercase mb-3">FAQ</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white">Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-container">
+      <div class="faq-item glow-card rounded-xl bg-gray-950 overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">How long does voice cloning take?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;color:#06b6d4;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300" style="transition:max-height 0.3s ease, padding 0.3s ease;">
+        <p class="text-gray-400 text-sm pb-4">Training typically completes in under 30 minutes. Upload your audio, and we handle the rest.</p>
+       </div>
+      </div>
+      <div class="faq-item glow-card rounded-xl bg-gray-950 overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">What audio quality is required?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;color:#06b6d4;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300" style="transition:max-height 0.3s ease, padding 0.3s ease;">
+        <p class="text-gray-400 text-sm pb-4">We recommend 16-bit WAV at 44.1kHz minimum. A quiet room and consistent mic distance produce the best results.</p>
+       </div>
+      </div>
+      <div class="faq-item glow-card rounded-xl bg-gray-950 overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">Can I use cloned voices commercially?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;color:#06b6d4;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300" style="transition:max-height 0.3s ease, padding 0.3s ease;">
+        <p class="text-gray-400 text-sm pb-4">Yes. All plans include commercial usage rights for voices you own or have written consent to clone.</p>
+       </div>
+      </div>
+      <div class="faq-item glow-card rounded-xl bg-gray-950 overflow-hidden"><button class="faq-toggle w-full text-left px-6 py-4 flex items-center justify-between" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">Is my voice data secure?</span> <i data-lucide="chevron-down" style="width:16px;height:16px;color:#06b6d4;transition:transform 0.3s;"></i> </button>
+       <div class="faq-answer px-6 pb-0 max-h-0 overflow-hidden transition-all duration-300" style="transition:max-height 0.3s ease, padding 0.3s ease;">
+        <p class="text-gray-400 text-sm pb-4">Absolutely. All audio is encrypted at rest and in transit. We never share or use your data for training other models.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote & Comment -->
+   <section id="clone" class="py-20 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto"><!-- CTA -->
+     <div class="text-center mb-16 relative">
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+       <div class="w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl"></div>
+      </div>
+      <h2 id="bottom-cta" class="text-3xl sm:text-5xl font-bold text-white mb-6 relative z-10">Extend your voice<br><span class="text-cyan-500">beyond yourself.</span></h2><a href="#home" class="cyan-btn inline-flex items-center gap-2 text-white font-semibold px-10 py-4 rounded-full text-lg relative z-10"> <i data-lucide="mic" style="width:20px;height:20px;"></i> Start Cloning </a>
+     </div><!-- Vote + Comment Module -->
+     <div class="glow-card rounded-2xl bg-gray-950 p-6 sm:p-8">
+      <div class="flex items-center gap-2 mb-6"><i data-lucide="message-circle" style="width:20px;height:20px;color:#06b6d4;"></i>
+       <p class="text-white font-semibold">Vote &amp; Comment</p><span class="text-gray-600 text-xs ml-auto" style="font-family:'JetBrains Mono',monospace;">Embed Widget Here</span>
+      </div><!-- Reactions -->
+      <div class="mb-6">
+       <p class="text-gray-400 text-xs mb-3 uppercase tracking-wider">React</p>
+       <div id="reactions-row" class="flex flex-wrap gap-2"><!-- Populated by JS -->
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-6">
+       <p class="text-gray-400 text-xs mb-3 uppercase tracking-wider">What would you pay?</p>
+       <div id="price-row" class="flex flex-wrap gap-2"><!-- Populated by JS -->
+       </div>
+      </div><!-- Comment Input -->
+      <form id="comment-form" class="mb-6">
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 bg-black border border-cyan-500/15 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cyan-500/50"> <button type="submit" class="cyan-btn text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-1" id="comment-submit-btn"> <i data-lucide="send" style="width:14px;height:14px;"></i> Send </button>
+       </div>
+      </form><!-- Comments List -->
+      <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"><!-- Populated by JS -->
+      </div>
+      <p id="no-comments" class="text-gray-600 text-sm text-center py-4">No comments yet. Be the first!</p><!-- Loading indicator -->
+      <div id="widget-loading" class="hidden text-center py-3"><span class="text-cyan-500 text-sm">Saving...</span>
+      </div><!-- Limit warning -->
+      <div id="limit-warning" class="hidden bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 mt-3">
+       <p class="text-cyan-500 text-sm">Maximum entries reached (999). Please wait or try again later.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-cyan-500/10 py-8 px-4 sm:px-6 text-center">
+    <div class="flex items-center justify-center gap-2 mb-3">
+     <div class="flex items-center gap-0.5 h-4">
+      <div class="eq-bar h-2" style="animation-delay:0s;"></div>
+      <div class="eq-bar h-3" style="animation-delay:0.15s;"></div>
+      <div class="eq-bar h-4" style="animation-delay:0.3s;"></div>
+      <div class="eq-bar h-2" style="animation-delay:0.45s;"></div>
+     </div><span class="text-gray-500 text-sm" style="font-family:'JetBrains Mono',monospace;">EchoClone Studio</span>
+    </div>
+    <p class="text-gray-600 text-xs">Your voice, replicated perfectly. © 2025</p>
+   </footer>
+  </div>
+  <script>
+// ===== CONFIG & SDK INIT =====
+const REACTIONS = ['🔥','👏','🎙️','💡','⚡','🎧'];
+const PRICES = ['$9','$19','$29','$49','$79','$99','$149','$199','$299','$499'];
+
+const defaultConfig = {
+  background_color: '#000000',
+  surface_color: '#030712',
+  text_color: '#e0e0e0',
+  primary_action_color: '#06b6d4',
+  secondary_action_color: '#0e7490',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Your voice can exist anywhere.',
+  hero_subtitle: 'AI voice cloning built for scale.',
+  bottom_cta_text: 'Extend your voice beyond yourself.'
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// Build reaction counts from data
+function getReactionCounts() {
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+  return counts;
+}
+function getPriceCounts() {
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price').forEach(d => { if (counts[d.price] !== undefined) counts[d.price]++; });
+  return counts;
+}
+function getComments() {
+  return allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+}
+
+// Render reactions
+function renderReactions() {
+  const container = document.getElementById('reactions-row');
+  const counts = getReactionCounts();
+  if (!container.children.length) {
+    REACTIONS.forEach(r => {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-btn rounded-lg px-3 py-1.5 flex items-center gap-1.5 text-sm';
+      btn.dataset.reaction = r;
+      btn.innerHTML = `<span>${r}</span><span class="count text-gray-500 text-xs">0</span>`;
+      btn.addEventListener('click', () => handleReaction(r));
+      container.appendChild(btn);
+    });
+  }
+  container.querySelectorAll('.reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.count').textContent = counts[r] || 0;
+  });
+}
+
+function renderPrices() {
+  const container = document.getElementById('price-row');
+  const counts = getPriceCounts();
+  if (!container.children.length) {
+    PRICES.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-btn rounded-lg px-3 py-1.5 flex items-center gap-1.5 text-xs';
+      btn.dataset.price = p;
+      btn.style.fontFamily = "'JetBrains Mono', monospace";
+      btn.innerHTML = `<span>${p}</span><span class="count text-gray-500 text-xs">0</span>`;
+      btn.addEventListener('click', () => handlePrice(p));
+      container.appendChild(btn);
+    });
+  }
+  container.querySelectorAll('.reaction-btn').forEach(btn => {
+    const p = btn.dataset.price;
+    btn.querySelector('.count').textContent = counts[p] || 0;
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const noMsg = document.getElementById('no-comments');
+  const comments = getComments();
+  noMsg.classList.toggle('hidden', comments.length > 0);
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach((c, i) => {
+    if (existingMap.has(c.__backendId)) {
+      const el = existingMap.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.comment;
+    } else {
+      const div = document.createElement('div');
+      div.className = 'comment-item pl-4 py-2';
+      div.dataset.id = c.__backendId;
+      div.style.animationDelay = `${i * 0.05}s`;
+      const time = new Date(c.timestamp);
+      const timeStr = time.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p class="comment-text text-gray-300 text-sm">${escapeHtml(c.comment)}</p><p class="text-gray-600 text-xs mt-1">${timeStr}</p>`;
+      list.appendChild(div);
+    }
+  });
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div'); d.textContent = t; return d.innerHTML;
+}
+
+function showLoading(show) {
+  document.getElementById('widget-loading').classList.toggle('hidden', !show);
+}
+
+async function handleReaction(r) {
+  if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  showLoading(true);
+  const res = await window.dataSdk.create({ type: 'reaction', section_id: 'cta', reaction: r, price: '', comment: '', timestamp: new Date().toISOString() });
+  showLoading(false);
+  if (res.isError) console.error('Reaction failed');
+}
+
+async function handlePrice(p) {
+  if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  showLoading(true);
+  const res = await window.dataSdk.create({ type: 'price', section_id: 'cta', reaction: '', price: p, comment: '', timestamp: new Date().toISOString() });
+  showLoading(false);
+  if (res.isError) console.error('Price vote failed');
+}
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  showLoading(true);
+  const res = await window.dataSdk.create({ type: 'comment', section_id: 'cta', reaction: '', price: '', comment: text, timestamp: new Date().toISOString() });
+  showLoading(false);
+  btn.disabled = false; btn.style.opacity = '1';
+  if (res.isOk) input.value = '';
+});
+
+// Data handler
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    renderReactions();
+    renderPrices();
+    renderComments();
+    if (currentRecordCount < 999) document.getElementById('limit-warning').classList.add('hidden');
+  }
+};
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => { a.style.maxHeight = '0px'; a.style.paddingBottom = '0'; });
+  document.querySelectorAll('.faq-toggle i').forEach(ic => { ic.style.transform = 'rotate(0deg)'; });
+  if (!isOpen) {
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    answer.style.paddingBottom = '0';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// Hear Samples button scrolls to voices
+document.getElementById('hear-samples-btn').addEventListener('click', () => {
+  document.getElementById('voices').scrollIntoView({ behavior: 'smooth' });
+});
+
+// ===== ELEMENT SDK =====
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.body.style.background = bg;
+  document.getElementById('app-root').style.background = bg;
+
+  // Surface cards
+  document.querySelectorAll('.glow-card, .faq-item').forEach(el => { el.style.backgroundColor = surface; });
+
+  // Text
+  document.querySelectorAll('p, span, li').forEach(el => {
+    if (!el.classList.contains('text-white') && !el.closest('.cyan-btn')) {
+      // handled by specific classes
+    }
+  });
+
+  // Cyan accent → primary
+  const style = document.getElementById('dynamic-styles') || document.createElement('style');
+  style.id = 'dynamic-styles';
+  style.textContent = `
+    .cyan-btn { background: linear-gradient(135deg, ${primary}, ${secondary}) !important; }
+    .ghost-btn { border-color: ${primary}40 !important; color: ${primary} !important; }
+    .ghost-btn:hover { background: ${primary}15 !important; border-color: ${primary} !important; }
+    .eq-bar { background: ${primary} !important; }
+    .glow-card:hover { border-color: ${primary}99 !important; box-shadow: 0 0 30px ${primary}25 !important; }
+    .reaction-btn:hover { border-color: ${primary}80 !important; background: ${primary}15 !important; }
+    .reaction-btn.active { border-color: ${primary} !important; background: ${primary}30 !important; }
+    #comment-input:focus { border-color: ${primary}80 !important; }
+  `;
+  if (!document.getElementById('dynamic-styles')) document.head.appendChild(style);
+
+  // Font
+  const fontStack = `${font}, 'Outfit', sans-serif`;
+  document.body.style.fontFamily = fontStack;
+  document.querySelectorAll('h1,h2,h3,p,span,a,button,li,input').forEach(el => {
+    if (el.style.fontFamily && el.style.fontFamily.includes('JetBrains')) return;
+    el.style.fontFamily = fontStack;
+  });
+
+  // Font size
+  document.querySelectorAll('p, li, span').forEach(el => { el.style.fontSize = el.style.fontSize || ''; });
+  const heroTitle = document.getElementById('hero-title');
+  const heroSub = document.getElementById('hero-subtitle');
+  const bottomCta = document.getElementById('bottom-cta');
+
+  if (heroTitle) {
+    heroTitle.textContent = '';
+    const line1 = config.hero_title || defaultConfig.hero_title;
+    // Split at last word for accent
+    const words = line1.split(' ');
+    const last = words.pop();
+    heroTitle.innerHTML = `${words.join(' ')} <span class="text-cyan-500" style="color:${primary}">${last}</span>`;
+    heroTitle.style.fontSize = `${size * 3.5}px`;
+  }
+  if (heroSub) {
+    heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    heroSub.style.fontSize = `${size * 1.25}px`;
+  }
+  if (bottomCta) {
+    const ctaText = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+    const ctaWords = ctaText.split(' ');
+    const ctaLast = ctaWords.pop();
+    bottomCta.innerHTML = `${ctaWords.join(' ')} <span class="text-cyan-500" style="color:${primary}">${ctaLast}</span>`;
+    bottomCta.style.fontSize = `${size * 2.5}px`;
+  }
+}
+
+// Init SDKs
+(async () => {
+  // Element SDK
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => { applyConfig(config); },
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+
+  // Data SDK
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) console.error('Data SDK init failed');
+
+  // Initial render
+  renderReactions();
+  renderPrices();
+  renderComments();
+})();
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e89f4dc36e327c5',t:'MTc3NTU3NDU5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

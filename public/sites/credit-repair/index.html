@@ -1,1 +1,1140 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/61f6aa10-38d1-42a3-b8a1-70971beb8405 -->
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScoreShift Engine - Credit Transformation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #0a0e27 0%, #16213e 50%, #0f3460 100%);
+      color: #e0e7ff;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* Sticky Navigation */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 14, 39, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+      padding: 1.25rem 0;
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .nav-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981, #06f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo svg {
+      stroke: url(#grad1);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #10b981, #06f);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: #10b981;
+    }
+
+    /* Animated Score Counter */
+    .score-display {
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #10b981 0%, #06f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-variant-numeric: tabular-nums;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    @keyframes score-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { text-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
+      50% { text-shadow: 0 0 50px rgba(6, 102, 255, 0.6); }
+    }
+
+    .score-glow {
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    /* Before/After Card */
+    .score-before-after {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .score-arrow {
+      color: #10b981;
+      font-weight: 900;
+      font-size: 1.5rem;
+      animation: score-float 2s ease-in-out infinite;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #10b981, #06f);
+      color: #0a0e27;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-secondary {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 2px solid #10b981;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(16, 185, 129, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Section Spacing */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #10b981 0%, #06f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: -1px;
+      text-align: center;
+    }
+
+    .section-subtitle {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+      font-weight: 400;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      min-height: 85%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(6, 102, 255, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 3.8rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      color: #f8fafc;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      color: #cbd5e1;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Transformation Grid */
+    .transformation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .transformation-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(30, 58, 90, 0.3) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 16px;
+      padding: 2.5rem;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .transformation-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+    }
+
+    .transformation-card:hover {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(30, 58, 90, 0.5) 100%);
+      transform: translateY(-12px);
+      box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
+    }
+
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-animate {
+      animation: fade-in-up 0.7s ease forwards;
+    }
+
+    .card-animate:nth-child(1) { animation-delay: 0.1s; }
+    .card-animate:nth-child(2) { animation-delay: 0.2s; }
+    .card-animate:nth-child(3) { animation-delay: 0.3s; }
+    .card-animate:nth-child(4) { animation-delay: 0.4s; }
+    .card-animate:nth-child(5) { animation-delay: 0.5s; }
+    .card-animate:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Process Timeline */
+    .process-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .process-step {
+      display: flex;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      align-items: flex-start;
+    }
+
+    .process-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 70px;
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.3), transparent);
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #10b981, #06f);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #0a0e27;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    @keyframes step-check {
+      0% { transform: scale(0) rotate(-180deg); }
+      50% { transform: scale(1.15) rotate(-10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .step-complete .step-number {
+      animation: step-check 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .process-content {
+      padding-top: 0.5rem;
+    }
+
+    .process-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #f1f5f9;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .process-desc {
+      color: #a1a5b1;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Approval Items */
+    .approval-items-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .approval-item {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(30, 58, 90, 0.2) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 16px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .approval-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+    }
+
+    .approval-item:hover {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(30, 58, 90, 0.4) 100%);
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.1);
+    }
+
+    .approval-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .approval-icon svg {
+      width: 56px;
+      height: 56px;
+      stroke: url(#grad2);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    /* Approval Stamp */
+    @keyframes stamp-bounce {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .approval-stamp-container {
+      text-align: center;
+      padding: 4rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 102, 255, 0.08) 100%);
+      border: 2px solid rgba(16, 185, 129, 0.2);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .approval-stamp-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+    }
+
+    .approval-stamp {
+      display: inline-block;
+      width: 140px;
+      height: 140px;
+      border: 3px solid #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #10b981;
+      transform: rotate(-25deg);
+      font-size: 1.1rem;
+      animation: stamp-bounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-family: 'Poppins', sans-serif;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    .approval-text {
+      font-size: 1.4rem;
+      color: #f1f5f9;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .approval-subtext {
+      color: #a1a5b1;
+      font-size: 1rem;
+    }
+
+    /* FAQ Section */
+    .faq-centered {
+      text-align: center;
+    }
+
+    .faq-centered .section-title,
+    .faq-centered .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .faq-container {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(30, 58, 90, 0.2) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    }
+
+    .faq-question {
+      padding: 1.75rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      user-select: none;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .faq-question:hover {
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .faq-answer {
+      padding: 0 1.75rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      color: #a1a5b1;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .faq-answer.open {
+      padding: 0 1.75rem 1.75rem 1.75rem;
+      max-height: 500px;
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+      color: #10b981;
+      flex-shrink: 0;
+    }
+
+    .faq-icon.open {
+      transform: rotate(180deg);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+    }
+
+    .cta-section .section-title,
+    .cta-section .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-footer-text {
+      color: #a1a5b1;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .cta-footer-text a {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .cta-footer-text a:hover {
+      color: #06f;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.2rem;
+        letter-spacing: 0;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        letter-spacing: 0;
+      }
+
+      .nav-links {
+        gap: 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .score-display {
+        font-size: 2.8rem;
+      }
+
+      .hero-cta-group {
+        flex-direction: column;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+      }
+
+      .approval-items-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 4rem 1.5rem;
+      }
+
+      .hero-section {
+        padding: 4rem 1.5rem;
+      }
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body>
+  <svg width="0" height="0">
+   <defs>
+    <lineargradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+     <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+     <stop offset="100%" style="stop-color:#0666ff;stop-opacity:1" />
+    </lineargradient>
+    <lineargradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+     <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+     <stop offset="100%" style="stop-color:#0666ff;stop-opacity:1" />
+    </lineargradient>
+   </defs>
+  </svg>
+  <div class="app-wrapper">
+   <!-- Sticky Navigation -->
+   <nav class="sticky-nav">
+    <div class="nav-content">
+     <div class="nav-logo">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg> ScoreShift
+     </div>
+     <div class="nav-links">
+      <a href="#home">Home</a> <a href="#transformations">Transformations</a> <a href="#process">Process</a> <a href="#approvals">Approvals</a> <a href="#faq">FAQ</a> <a href="#start">Start Now</a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" class="hero-section">
+    <div class="hero-content">
+     <h1 class="hero-title">Your credit score isn't your destiny.</h1>
+     <p class="hero-subtitle">It's a starting point. Watch what happens when it's rebuilt the right way.</p>
+     <div class="hero-cta-group">
+      <button class="btn-primary" onclick="document.getElementById('start').scrollIntoView({ behavior: 'smooth' })">Start Your Transformation</button> <button class="btn-secondary" onclick="document.getElementById('transformations').scrollIntoView({ behavior: 'smooth' })">See Real Results</button>
+     </div>
+    </div>
+   </section><!-- Transformations Section -->
+   <section id="transformations" class="section">
+    <h2 class="section-title">Real Transformations</h2>
+    <p class="section-subtitle">Dramatic credit score improvements in 90 days or less.</p>
+    <div class="transformation-grid">
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: Sarah M.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         520
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         718
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+198 points in 60 days</p>
+     </div>
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: James R.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         584
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         741
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+157 points in 75 days</p>
+     </div>
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: Maria T.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         612
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         756
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+144 points in 90 days</p>
+     </div>
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: David K.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         548
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         729
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+181 points in 85 days</p>
+     </div>
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: Lisa N.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         595
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         764
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+169 points in 70 days</p>
+     </div>
+     <div class="transformation-card card-animate">
+      <p style="color: #a1a5b1; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500;">Case: Robert C.</p>
+      <div class="score-before-after">
+       <div style="text-align: center;">
+        <div style="color: #dc2626; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         Before
+        </div>
+        <div class="score-display">
+         631
+        </div>
+       </div>
+       <div class="score-arrow">
+        →
+       </div>
+       <div style="text-align: center;">
+        <div style="color: #10b981; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
+         After
+        </div>
+        <div class="score-display score-glow">
+         782
+        </div>
+       </div>
+      </div>
+      <p style="text-align: center; color: #a1a5b1; font-size: 0.9rem; margin-top: 1.5rem; font-weight: 500;">+151 points in 95 days</p>
+     </div>
+    </div>
+   </section><!-- Process Section -->
+   <section id="process" class="section">
+    <h2 class="section-title">The ScoreShift Process</h2>
+    <p class="section-subtitle">A proven 4-step framework to rebuild your credit.</p>
+    <div class="process-container">
+     <div class="process-step step-complete">
+      <div class="step-number">
+       1
+      </div>
+      <div class="process-content">
+       <div class="process-title">
+        Credit Analysis
+       </div>
+       <div class="process-desc">
+        We pull your full credit report and identify negative items, inaccuracies, and dispute opportunities.
+       </div>
+      </div>
+     </div>
+     <div class="process-step step-complete">
+      <div class="step-number">
+       2
+      </div>
+      <div class="process-content">
+       <div class="process-title">
+        Strategic Disputes
+       </div>
+       <div class="process-desc">
+        Using proven dispute templates and bureau protocols, we challenge inaccurate or old negative accounts.
+       </div>
+      </div>
+     </div>
+     <div class="process-step step-complete">
+      <div class="step-number">
+       3
+      </div>
+      <div class="process-content">
+       <div class="process-title">
+        Account Optimization
+       </div>
+       <div class="process-desc">
+        We guide you on credit utilization, payment patterns, and account tradelines to maximize your score.
+       </div>
+      </div>
+     </div>
+     <div class="process-step step-complete">
+      <div class="step-number">
+       4
+      </div>
+      <div class="process-content">
+       <div class="process-title">
+        Approval Ready
+       </div>
+       <div class="process-desc">
+        Your rebuilt credit qualifies you for better rates, higher limits, and financial opportunities.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Approvals Section -->
+   <section id="approvals" class="section">
+    <h2 class="section-title">What Unlocks</h2>
+    <p class="section-subtitle">From denied to approved. Here's what your rebuilt credit makes possible.</p>
+    <div class="approval-items-grid">
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <rect x="2" y="7" width="20" height="14" rx="2" /> <path d="M16 4V2M8 4V2M7 11h10M7 15h4" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Credit Cards
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Approved with premium rates and high limits.
+      </div>
+     </div>
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> <polyline points="9 22 9 12 15 12 15 22" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Mortgages
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Your path to homeownership with favorable terms.
+      </div>
+     </div>
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" /> <path d="M12 6v6l4 2" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Auto Loans
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Lower rates. Better financing options. Your car.
+      </div>
+     </div>
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19" /> <line x1="5" y1="12" x2="19" y2="12" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Personal Loans
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Flexible funding for what matters to you.
+      </div>
+     </div>
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" /> <polyline points="13 2 13 9 20 9" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Business Credit
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Qualify for better business financing options.
+      </div>
+     </div>
+     <div class="approval-item">
+      <div class="approval-icon">
+       <svg viewbox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+       </svg>
+      </div>
+      <div style="font-weight: 700; color: #f1f5f9; margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif;">
+       Peace of Mind
+      </div>
+      <div style="color: #a1a5b1; font-size: 0.9rem;">
+       Financial stability and opportunity ahead.
+      </div>
+     </div>
+    </div>
+    <div class="approval-stamp-container">
+     <div class="approval-stamp">
+      APPROVED
+     </div>
+     <p class="approval-text">Your transformation starts today.</p>
+     <p class="approval-subtext">Every point counts. Every account matters. You're ready.</p>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq" class="section faq-centered">
+    <h2 class="section-title">Common Questions</h2>
+    <p class="section-subtitle">Everything you need to know about credit repair.</p>
+    <div class="faq-container">
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>How long does credit repair take?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       Most clients see significant improvements within 30–90 days. Disputes can take 30–60 days to process with bureaus, but we work with proven strategies to accelerate results.
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>Is credit repair legal?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       Absolutely. The Credit Repair Organizations Act (CROA) allows consumers and professionals to dispute inaccurate items on credit reports. We follow all legal guidelines.
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>Will this hurt my credit further?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       No. Disputing errors doesn't damage your credit. In fact, removing inaccurate negative items helps your score recover.
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>What if I have recent late payments?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       We work with current situations. Recent lates reduce impact over time, and we focus on disputing errors and optimizing accounts to rebuild faster.
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>Can you remove accurate items?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       We dispute inaccurate or unverifiable items. Accurate negative accounts naturally age and reduce in impact over time per credit bureau rules.
+      </div>
+     </div>
+     <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+       <span>How much does this cost?</span> <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+      </div>
+      <div class="faq-answer">
+       Pricing varies based on complexity. We offer transparent, upfront costs with no hidden fees. Many clients recover the investment through better loan rates alone.
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section id="start" class="section cta-section">
+    <h2 class="section-title">Turn Your Score Into Leverage</h2>
+    <p class="section-subtitle" style="max-width: 700px;">Stop being limited by your past. Your credit can change. Your opportunities can expand. Your future starts now.</p><button class="btn-primary" style="font-size: 1.1rem; padding: 1.25rem 3.5rem; font-family: 'Poppins', sans-serif;">Start Your Transformation</button>
+    <p class="cta-footer-text">Questions? <a href="#faq">Read our FAQ</a> or reach out to our team.</p>
+   </section>
+  </div>
+  <script>
+    // Toggle FAQ
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const icon = element.querySelector('.faq-icon');
+      
+      document.querySelectorAll('.faq-answer').forEach(a => {
+        if (a !== answer) {
+          a.classList.remove('open');
+        }
+      });
+
+      document.querySelectorAll('.faq-icon').forEach(i => {
+        if (i !== icon) {
+          i.classList.remove('open');
+        }
+      });
+
+      answer.classList.toggle('open');
+      icon.classList.toggle('open');
+    }
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a164454e527c5',t:'MTc3NTU3NTk2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

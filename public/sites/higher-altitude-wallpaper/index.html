@@ -1,1 +1,644 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/d190ec89-3c38-4aba-8748-6785351941e8 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altitude Elite</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;family=Outfit:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0a1628',
+        navyLight: '#122040',
+        navyMid: '#1a2d52',
+        gold: '#c9a84c',
+        goldLight: '#e2c97e',
+        cream: '#f5f0e8',
+        slate: '#94a3b8'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+@keyframes cloudDrift {
+  0% { transform: translateX(-5%); }
+  50% { transform: translateX(5%); }
+  100% { transform: translateX(-5%); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
+  50% { box-shadow: 0 0 20px 6px rgba(201,168,76,0.15); }
+}
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.anim-fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.anim-fade-up.visible { opacity: 1; transform: translateY(0); }
+.cloud-drift { animation: cloudDrift 25s ease-in-out infinite; }
+.shimmer-text {
+  background: linear-gradient(90deg, #c9a84c 0%, #f5e6b8 40%, #c9a84c 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+.cta-pulse { animation: pulse-gold 2.5s ease-in-out infinite; }
+.glass-card {
+  background: rgba(18,32,64,0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(201,168,76,0.15);
+}
+.nav-glass {
+  background: rgba(10,22,40,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+.font-body { font-family: 'Outfit', system-ui, sans-serif; }
+.gold-line { height: 1px; background: linear-gradient(90deg, transparent, #c9a84c, transparent); }
+.float-anim { animation: subtleFloat 5s ease-in-out infinite; }
+
+.star-rating { display: flex; gap: 2px; }
+.star-rating svg { width: 14px; height: 14px; fill: #c9a84c; stroke: #c9a84c; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a1628; }
+::-webkit-scrollbar-thumb { background: #1a2d52; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-navy text-cream font-body overflow-x-hidden">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="main-nav" class="nav-glass fixed top-0 left-0 w-full z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="flex items-center gap-3">
+      <svg width="28" height="28" viewbox="0 0 32 32" fill="none" stroke="#c9a84c" stroke-width="1.2"><path d="M16 2L28 26H4L16 2Z" /> <line x1="16" y1="8" x2="16" y2="20" /> <line x1="10" y1="22" x2="22" y2="22" />
+      </svg><span class="font-display text-xl font-semibold tracking-wide text-gold">ALTITUDE ELITE</span> </a> <button id="mobile-toggle" class="md:hidden text-gold"><i data-lucide="menu" class="w-6 h-6"></i></button>
+     <ul id="nav-links" class="hidden md:flex items-center gap-8 text-sm font-light tracking-widest uppercase">
+      <li><a href="#home" class="text-slate hover:text-gold transition-colors duration-300">Home</a></li>
+      <li><a href="#wallpapers" class="text-slate hover:text-gold transition-colors duration-300">Wallpapers</a></li>
+      <li><a href="#planner" class="text-slate hover:text-gold transition-colors duration-300">Travel Planner</a></li>
+      <li><a href="#preview" class="text-slate hover:text-gold transition-colors duration-300">Preview</a></li>
+      <li><a href="#reviews" class="text-slate hover:text-gold transition-colors duration-300">Reviews</a></li>
+      <li><a href="#download" class="px-5 py-2 border border-gold text-gold hover:bg-gold hover:text-navy transition-all duration-300 rounded-sm">Download</a></li>
+     </ul>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+     <ul class="flex flex-col gap-3 text-sm tracking-widest uppercase">
+      <li><a href="#home" class="text-slate hover:text-gold transition-colors">Home</a></li>
+      <li><a href="#wallpapers" class="text-slate hover:text-gold transition-colors">Wallpapers</a></li>
+      <li><a href="#planner" class="text-slate hover:text-gold transition-colors">Travel Planner</a></li>
+      <li><a href="#preview" class="text-slate hover:text-gold transition-colors">Preview</a></li>
+      <li><a href="#reviews" class="text-slate hover:text-gold transition-colors">Reviews</a></li>
+      <li><a href="#download" class="text-gold">Download</a></li>
+     </ul>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden" style="min-height:100%;"><!-- Background layers -->
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1920&amp;q=80" alt="Private jet runway at sunset" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-30" onerror="this.style.background='linear-gradient(135deg,#0a1628,#1a2d52)';this.alt='Background unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/60 to-navy"></div>
+    </div><!-- Cloud overlay -->
+    <div class="absolute inset-0 cloud-drift opacity-10"><img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1920&amp;q=80" alt="Clouds" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none';">
+    </div>
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto" style="animation: fadeUp 1.2s ease forwards;">
+     <div class="flex items-center justify-center gap-3 mb-8">
+      <div class="w-16 gold-line"></div><span class="text-gold text-xs tracking-[0.4em] uppercase font-light">Private Aviation Aesthetics</span>
+      <div class="w-16 gold-line"></div>
+     </div>
+     <h1 id="hero-tagline" class="font-display text-6xl sm:text-7xl md:text-8xl font-light tracking-tight shimmer-text mb-6">Above everything.</h1>
+     <p id="hero-subhead" class="text-slate text-lg sm:text-xl font-extralight max-w-2xl mx-auto mb-12 leading-relaxed">Private aviation visuals and travel templates built from real photography.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#download" class="cta-pulse inline-flex items-center gap-3 bg-gold text-navy px-8 py-4 font-medium tracking-wider uppercase text-sm hover:bg-goldLight transition-colors duration-300 rounded-sm">
+       <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+       </svg> Download the Pack </a> <a href="#preview" class="inline-flex items-center gap-3 border border-gold/40 text-gold px-8 py-4 font-light tracking-wider uppercase text-sm hover:border-gold hover:bg-gold/5 transition-all duration-300 rounded-sm">
+       <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+       </svg> Preview Gallery </a>
+     </div>
+     <div class="mt-16 flex items-center justify-center gap-8 text-slate/60 text-xs tracking-widest uppercase"><span>120 Wallpapers</span> <span class="text-gold/30">|</span> <span>24 Posters</span> <span class="text-gold/30">|</span> <span>Travel Planner</span> <span class="text-gold/30">|</span> <span>Caption Pack</span>
+     </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+     <div class="w-5 h-9 border border-gold/30 rounded-full flex justify-center pt-2">
+      <div class="w-1 h-2 bg-gold rounded-full" style="animation: subtleFloat 2s ease-in-out infinite;"></div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">The Collection</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4 mb-4">120 Private Jet Wallpapers</h2>
+      <p class="text-slate font-extralight max-w-xl mx-auto">Curated from real aviation photography. Every frame designed for phones, desktops, and social feeds.</p>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 anim-fade-up">
+      <div class="row-span-2 rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=600&amp;q=80" alt="Luxury jet cabin interior" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase text-gold">Cabin Series</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&amp;q=80" alt="Airplane window sky view" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="aspect-ratio:1;" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-3"><span class="text-xs tracking-widest uppercase text-gold">Window Views</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?w=600&amp;q=80" alt="Jet wing above clouds" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="aspect-ratio:1;" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-3"><span class="text-xs tracking-widest uppercase text-gold">Wing Shots</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?w=600&amp;q=80" alt="Private aviation runway" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="aspect-ratio:1;" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-3"><span class="text-xs tracking-widest uppercase text-gold">Runway</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1583202702042-e28b72fbb885?w=600&amp;q=80" alt="Night runway lights" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="aspect-ratio:1;" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-3"><span class="text-xs tracking-widest uppercase text-gold">Night Flight</span>
+       </div>
+      </div>
+      <div class="rounded overflow-hidden relative group"><img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=600&amp;q=80" alt="Sunset clouds from above" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style="aspect-ratio:1;" onerror="this.style.background='#1a2d52';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-3"><span class="text-xs tracking-widest uppercase text-gold">Golden Hour</span>
+       </div>
+      </div>
+     </div>
+     <div class="text-center mt-10"><span class="text-slate/50 text-sm font-light">Showing 6 of 120 wallpapers</span>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="w-full py-24 px-6 bg-navyLight/50">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">What's Inside</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4">The Complete Pack</h2>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 anim-fade-up"><!-- Card 1 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">120 Wallpapers</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">Phone, desktop, and tablet resolutions. Real aviation photography, graded to perfection.</p>
+      </div><!-- Card 2 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="3" x2="9" y2="9" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">24 Posters</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">Print-ready poster designs with aviation quotes and editorial layouts.</p>
+      </div><!-- Card 3 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">Story Templates</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">Instagram and TikTok story templates. Aviation aesthetic, ready to post.</p>
+      </div><!-- Card 4 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">Travel Planner</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">Editable travel itinerary planner with luxury checklist. Plan like you fly private.</p>
+      </div><!-- Card 5 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">Luxury Checklist</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">Pre-flight essentials, packing guides, and travel prep styled for the jetset lifestyle.</p>
+      </div><!-- Card 6 -->
+      <div class="glass-card rounded-lg p-8 hover:border-gold/30 transition-all duration-500 group">
+       <div class="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center mb-6 group-hover:border-gold transition-colors">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl mb-2">Caption Pack</h3>
+       <p class="text-slate text-sm font-extralight leading-relaxed">150+ curated captions for travel content. Aviation quotes, luxury one-liners, story hooks.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- TRAVEL PLANNER PREVIEW -->
+   <section id="planner" class="w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">Plan Like You Fly Private</span>
+      <h2 id="planner-title" class="font-display text-4xl sm:text-5xl font-light mt-4">Your Elite Travel Planner</h2>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-8 anim-fade-up"><!-- Itinerary Preview -->
+      <div class="glass-card rounded-lg p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        <h3 class="font-display text-xl text-gold">Sample Itinerary</h3>
+       </div>
+       <div class="space-y-4">
+        <div class="flex gap-4 items-start">
+         <div class="w-px h-full bg-gold/20 ml-2 relative">
+          <div class="absolute top-1 -left-1 w-2.5 h-2.5 rounded-full bg-gold"></div>
+         </div>
+         <div class="pb-4">
+          <p class="text-xs text-gold tracking-wider uppercase">Day 1 — Departure</p>
+          <p class="text-cream/90 text-sm mt-1">Private terminal, Teterboro NJ</p>
+          <p class="text-slate text-xs mt-1">11:00 — Board &amp; depart for Nice Cote d'Azur</p>
+         </div>
+        </div>
+        <div class="flex gap-4 items-start">
+         <div class="w-px h-full bg-gold/20 ml-2 relative">
+          <div class="absolute top-1 -left-1 w-2.5 h-2.5 rounded-full bg-gold/60"></div>
+         </div>
+         <div class="pb-4">
+          <p class="text-xs text-gold tracking-wider uppercase">Day 2 — Arrival</p>
+          <p class="text-cream/90 text-sm mt-1">Hotel du Cap-Eden-Roc, Antibes</p>
+          <p class="text-slate text-xs mt-1">Private transfer, seaside suite check-in</p>
+         </div>
+        </div>
+        <div class="flex gap-4 items-start">
+         <div class="w-px bg-gold/20 ml-2 relative">
+          <div class="absolute top-1 -left-1 w-2.5 h-2.5 rounded-full bg-gold/40"></div>
+         </div>
+         <div>
+          <p class="text-xs text-gold tracking-wider uppercase">Day 3 — Experience</p>
+          <p class="text-cream/90 text-sm mt-1">Yacht charter, Monaco Grand Prix viewing</p>
+          <p class="text-slate text-xs mt-1">Evening — Le Louis XV dinner reservation</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Luxury Checklist Preview -->
+      <div class="glass-card rounded-lg p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.2">
+         <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+        </svg>
+        <h3 class="font-display text-xl text-gold">Luxury Checklist</h3>
+       </div>
+       <div class="space-y-3"><label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Passport &amp; travel documents</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">FBO terminal confirmation</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Hotel &amp; transfer reservations</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Luxury luggage packed</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Noise-cancelling headphones</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">In-flight skincare essentials</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Restaurant reservations confirmed</span> </label> <label class="flex items-center gap-3 cursor-pointer group checklist-item"> <input type="checkbox" class="w-4 h-4 rounded-sm border-gold/40 bg-transparent accent-gold cursor-pointer"> <span class="text-sm text-cream/80 group-hover:text-cream transition-colors">Return flight &amp; customs prep</span> </label>
+       </div>
+       <div class="mt-6 pt-4 border-t border-gold/10 flex items-center justify-between"><span class="text-xs text-slate" id="checklist-count">0 of 8 complete</span> <span class="text-xs text-gold/50">Included in pack</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW GALLERY -->
+   <section id="preview" class="w-full py-24 px-6 bg-navyLight/50">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">Gallery</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4">Preview the Pack</h2>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 anim-fade-up">
+      <div class="glass-card rounded-lg overflow-hidden group float-anim" style="animation-delay: 0s;">
+       <div class="aspect-[9/16] bg-navyMid flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=400&amp;q=80" alt="Phone wallpaper preview - runway sunset" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#1a2d52';this.alt='Preview unavailable';">
+        <div class="absolute inset-0 bg-navy/40 group-hover:bg-navy/20 transition-all duration-500"></div>
+        <div class="absolute bottom-4 left-4 right-4"><span class="text-xs tracking-widest uppercase text-gold/80">Phone Wallpaper</span>
+         <p class="text-cream/60 text-xs mt-1">1080 x 1920</p>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card rounded-lg overflow-hidden group float-anim" style="animation-delay: 0.3s;">
+       <div class="aspect-[9/16] bg-navyMid flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=400&amp;q=80" alt="Story template preview" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#1a2d52';this.alt='Preview unavailable';">
+        <div class="absolute inset-0 bg-navy/40 group-hover:bg-navy/20 transition-all duration-500"></div>
+        <div class="absolute top-4 left-4 right-4 text-center"><span class="font-display text-2xl text-cream/90 italic">"Fly different."</span>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4"><span class="text-xs tracking-widest uppercase text-gold/80">Story Template</span>
+         <p class="text-cream/60 text-xs mt-1">Instagram / TikTok</p>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card rounded-lg overflow-hidden group float-anim" style="animation-delay: 0.6s;">
+       <div class="aspect-[9/16] bg-navyMid flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400&amp;q=80" alt="Poster preview - golden clouds" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#1a2d52';this.alt='Preview unavailable';">
+        <div class="absolute inset-0 bg-navy/40 group-hover:bg-navy/20 transition-all duration-500"></div>
+        <div class="absolute top-6 left-4 right-4 text-center"><span class="font-display text-3xl shimmer-text">ALTITUDE</span>
+         <p class="text-cream/50 text-xs tracking-[0.3em] mt-1">ELITE</p>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4"><span class="text-xs tracking-widest uppercase text-gold/80">Print Poster</span>
+         <p class="text-cream/60 text-xs mt-1">A3 / A2 Ready</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section class="w-full py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">Pricing Angles</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4">Why This Pack Sells</h2>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-6 anim-fade-up">
+      <div class="glass-card rounded-lg p-8 text-center">
+       <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" /><path d="M12 6v6l4 2" />
+       </svg>
+       <h3 class="font-display text-lg text-gold mb-2">Aspirational Luxury</h3>
+       <p class="text-slate text-sm font-extralight">Premium aesthetic that commands premium pricing. Position as a luxury digital product.</p>
+      </div>
+      <div class="glass-card rounded-lg p-8 text-center">
+       <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
+       </svg>
+       <h3 class="font-display text-lg text-gold mb-2">Travel Evergreen</h3>
+       <p class="text-slate text-sm font-extralight">Travel never goes out of style. This pack sells year-round across every platform.</p>
+      </div>
+      <div class="glass-card rounded-lg p-8 text-center">
+       <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <h3 class="font-display text-lg text-gold mb-2">High-Status Aesthetic</h3>
+       <p class="text-slate text-sm font-extralight">The jetset look signals success. Buyers want to project status through their content.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-24 px-6 bg-navyLight/50">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.3em] uppercase">Testimonials</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-light mt-4">What Creators Say</h2>
+      <div class="w-24 gold-line mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 anim-fade-up">
+      <div class="glass-card rounded-lg p-8">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-cream/80 text-sm font-extralight leading-relaxed italic mb-4">"My feed went from average to aspirational overnight. The wallpapers alone are worth it."</p>
+       <p class="text-gold text-xs tracking-wider uppercase">-- Mia R., Travel Creator</p>
+      </div>
+      <div class="glass-card rounded-lg p-8">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-cream/80 text-sm font-extralight leading-relaxed italic mb-4">"The travel planner is genuinely useful. I use the checklist template before every trip now."</p>
+       <p class="text-gold text-xs tracking-wider uppercase">-- James K., Lifestyle Blogger</p>
+      </div>
+      <div class="glass-card rounded-lg p-8">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+       </div>
+       <p class="text-cream/80 text-sm font-extralight leading-relaxed italic mb-4">"Sold 200+ copies in my first month reselling this pack. The niche is incredibly underserved."</p>
+       <p class="text-gold text-xs tracking-wider uppercase">-- Aisha D., Digital Seller</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="w-full py-24 px-6 relative overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1559268950-2d7ceb2efa3a?w=1920&amp;q=80" alt="Jet wing above clouds" loading="lazy" class="w-full h-full object-cover opacity-15" onerror="this.style.background='#0a1628';">
+     <div class="absolute inset-0 bg-gradient-to-b from-navy via-navy/90 to-navy"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="anim-fade-up">
+      <svg class="mx-auto mb-8" width="48" height="48" viewbox="0 0 48 48" fill="none" stroke="#c9a84c" stroke-width="1"><path d="M24 4L44 38H4L24 4Z" /> <line x1="24" y1="14" x2="24" y2="30" /> <line x1="16" y1="34" x2="32" y2="34" />
+      </svg>
+      <h2 id="bottom-cta-heading" class="font-display text-4xl sm:text-5xl md:text-6xl font-light shimmer-text mb-6">Make every trip look elite.</h2>
+      <p class="text-slate text-lg font-extralight max-w-lg mx-auto mb-10">120 wallpapers. 24 posters. Travel planner. Luxury checklist. Story templates. Caption pack. One download.</p><a href="#" class="cta-pulse inline-flex items-center gap-3 bg-gold text-navy px-10 py-5 font-medium tracking-wider uppercase text-sm hover:bg-goldLight transition-colors duration-300 rounded-sm" onclick="event.preventDefault(); document.getElementById('download-toast').classList.remove('hidden'); setTimeout(()=>document.getElementById('download-toast').classList.add('hidden'),3000);">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+       </svg> Download the Pack Now </a>
+      <div id="download-toast" class="hidden mt-6 inline-block glass-card rounded px-6 py-3 text-sm text-gold">
+       Sample demo -- link your download here
+      </div><!-- Vote + Comment Widget -->
+      <div class="mt-16 glass-card rounded-lg p-8 max-w-md mx-auto">
+       <h3 class="font-display text-xl text-gold mb-6">Vote + Comment</h3>
+       <div class="flex items-center justify-center gap-6 mb-6"><button id="vote-up" class="flex items-center gap-2 text-slate hover:text-gold transition-colors group" onclick="handleVote(1)">
+         <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:stroke-current">
+          <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+         </svg><span id="vote-up-count" class="text-sm font-light">24</span> </button> <button id="vote-down" class="flex items-center gap-2 text-slate hover:text-gold transition-colors group" onclick="handleVote(-1)">
+         <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="group-hover:stroke-current rotate-180">
+          <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+         </svg><span id="vote-down-count" class="text-sm font-light">2</span> </button>
+       </div>
+       <form onsubmit="handleComment(event)" class="space-y-3"><textarea id="comment-input" rows="2" placeholder="Leave a comment..." class="w-full bg-navy/60 border border-gold/20 rounded px-4 py-3 text-sm text-cream placeholder-slate/50 focus:outline-none focus:border-gold/50 resize-none font-body"></textarea> <button type="submit" class="w-full py-2 border border-gold/40 text-gold text-xs tracking-widest uppercase hover:bg-gold/10 transition-colors rounded-sm">Post Comment</button>
+       </form>
+       <div id="comments-list" class="mt-4 space-y-3 max-h-40 overflow-y-auto"></div>
+       <p class="text-slate/30 text-xs mt-4 text-center">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-12 px-6 border-t border-gold/10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-3">
+      <svg width="20" height="20" viewbox="0 0 32 32" fill="none" stroke="#c9a84c" stroke-width="1.2"><path d="M16 2L28 26H4L16 2Z" />
+      </svg><span class="font-display text-sm tracking-wider text-gold/60">ALTITUDE ELITE</span>
+     </div>
+     <p class="text-slate/40 text-xs font-extralight">Aspirational luxury. Travel lifestyle evergreen. High-status aesthetic.</p>
+     <p class="text-slate/30 text-xs">2024 Altitude Elite. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  background_color: '#0a1628',
+  surface_color: '#122040',
+  text_color: '#f5f0e8',
+  primary_action_color: '#c9a84c',
+  secondary_action_color: '#94a3b8',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_tagline: 'Above everything.',
+  hero_subhead: 'Private aviation visuals and travel templates built from real photography.',
+  planner_title: 'Your Elite Travel Planner',
+  bottom_cta_text: 'Make every trip look elite.'
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = text;
+  document.body.style.fontFamily = `${font}, Outfit, Georgia, serif`;
+  document.body.style.fontSize = size + 'px';
+
+  // Text content
+  document.getElementById('hero-tagline').textContent = config.hero_tagline || defaultConfig.hero_tagline;
+  document.getElementById('hero-subhead').textContent = config.hero_subhead || defaultConfig.hero_subhead;
+  document.getElementById('planner-title').textContent = config.planner_title || defaultConfig.planner_title;
+  document.getElementById('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  // Colors
+  document.querySelectorAll('.glass-card').forEach(el => {
+    el.style.backgroundColor = surface + '99';
+    el.style.borderColor = primary + '26';
+  });
+  document.querySelectorAll('.nav-glass').forEach(el => {
+    el.style.backgroundColor = bg + 'd9';
+  });
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = `${font}, Georgia, serif`;
+  });
+
+  // Gold elements
+  const goldEls = document.querySelectorAll('.text-gold, [class*="text-gold"]');
+  goldEls.forEach(el => { if (!el.classList.contains('text-gold/50') && !el.classList.contains('text-gold/30')) el.style.color = primary; });
+
+  // Slate / secondary
+  document.querySelectorAll('.text-slate').forEach(el => el.style.color = secondary);
+
+  // Font sizing
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = (size * 4) + 'px');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = (size * 2.5) + 'px');
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = (size * 1.25) + 'px');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['planner_title', config.planner_title || defaultConfig.planner_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Mobile nav
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Close mobile on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim-fade-up').forEach(el => observer.observe(el));
+
+// Checklist counter
+document.querySelectorAll('.checklist-item input').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const checked = document.querySelectorAll('.checklist-item input:checked').length;
+    document.getElementById('checklist-count').textContent = `${checked} of 8 complete`;
+  });
+});
+
+// Vote
+let votes = { up: 24, down: 2 };
+function handleVote(dir) {
+  if (dir > 0) { votes.up++; document.getElementById('vote-up-count').textContent = votes.up; }
+  else { votes.down++; document.getElementById('vote-down-count').textContent = votes.down; }
+}
+
+// Comments
+function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'border-t border-gold/10 pt-3';
+  div.innerHTML = `<p class="text-cream/70 text-sm font-extralight">${text.replace(/</g,'&lt;')}</p><p class="text-slate/40 text-xs mt-1">Just now</p>`;
+  list.prepend(div);
+  input.value = '';
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a359d532727c5',t:'MTc3NTU3NzI1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

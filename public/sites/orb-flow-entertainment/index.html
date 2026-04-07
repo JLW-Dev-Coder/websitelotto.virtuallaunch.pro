@@ -1,1 +1,837 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/15b0561d-7b65-45bc-b5f4-1d5eccd12f83 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrbFlow Performances</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;family=Outfit:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a12;
+    --surface: #13131f;
+    --text: #e8e4f0;
+    --primary: #7b5ea7;
+    --secondary: #3a6b8a;
+  }
+
+  .font-display { font-family: 'Cormorant Garamond', serif; }
+  .font-body { font-family: 'Outfit', sans-serif; }
+
+  @keyframes float-orb {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.03); }
+  }
+  @keyframes float-orb-2 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-15px) translateX(10px); }
+    66% { transform: translateY(5px) translateX(-8px); }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.4; filter: blur(40px); }
+    50% { opacity: 0.7; filter: blur(60px); }
+  }
+  @keyframes trail {
+    0% { stroke-dashoffset: 1000; opacity: 0; }
+    20% { opacity: 0.6; }
+    100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes rotate-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .anim-float { animation: float-orb 6s ease-in-out infinite; }
+  .anim-float-2 { animation: float-orb-2 8s ease-in-out infinite; }
+  .anim-glow { animation: glow-pulse 4s ease-in-out infinite; }
+  .anim-trail { animation: trail 4s linear infinite; }
+  .anim-fade-up { animation: fade-up 0.8s ease-out both; }
+  .anim-rotate { animation: rotate-slow 30s linear infinite; }
+
+  .orb-svg {
+    filter: drop-shadow(0 0 20px rgba(123,94,167,0.5));
+  }
+
+  .card-glow {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(123,94,167,0.15);
+  }
+  .card-glow:hover {
+    transform: translateY(-8px);
+    border-color: rgba(123,94,167,0.5);
+    box-shadow: 0 0 40px rgba(123,94,167,0.15), 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .pricing-glow {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(123,94,167,0.2);
+  }
+  .pricing-glow:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 0 60px rgba(123,94,167,0.2), 0 25px 80px rgba(0,0,0,0.5);
+  }
+  .pricing-glow.featured {
+    border-color: rgba(123,94,167,0.5);
+    box-shadow: 0 0 30px rgba(123,94,167,0.15);
+  }
+  .pricing-glow.featured:hover {
+    box-shadow: 0 0 80px rgba(123,94,167,0.3), 0 25px 80px rgba(0,0,0,0.5);
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--primary);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), #5a3d8a);
+    transition: all 0.4s;
+    box-shadow: 0 0 20px rgba(123,94,167,0.2);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(123,94,167,0.4);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    border: 1px solid rgba(123,94,167,0.5);
+    transition: all 0.4s;
+  }
+  .btn-outline:hover {
+    background: rgba(123,94,167,0.15);
+    box-shadow: 0 0 30px rgba(123,94,167,0.15);
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(123,94,167,0.3), transparent);
+  }
+
+  .reaction-btn {
+    transition: all 0.3s;
+    border: 1px solid rgba(123,94,167,0.2);
+  }
+  .reaction-btn:hover {
+    border-color: rgba(123,94,167,0.5);
+    background: rgba(123,94,167,0.15);
+  }
+  .reaction-btn.active {
+    border-color: var(--primary);
+    background: rgba(123,94,167,0.25);
+  }
+
+  .scroll-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  .toast-msg {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    padding: 12px 24px; border-radius: 8px; z-index: 1000;
+    background: var(--surface); border: 1px solid rgba(123,94,167,0.4);
+    color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px;
+    opacity: 0; transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast-msg.show { opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background: var(--bg); color: var(--text);">
+  <div id="app-wrapper" class="scroll-wrapper font-body" style="background: var(--bg);">
+   <!-- Sticky Nav -->
+   <nav id="main-nav" style="position: sticky; top: 0; z-index: 50; background: rgba(10,10,18,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(123,94,167,0.1);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+     <a href="#home" class="font-display" style="font-size: 20px; font-weight: 600; color: var(--text); text-decoration: none; letter-spacing: 1px;" id="nav-brand">OrbFlow</a>
+     <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+      <a href="#home" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">Home</a> <a href="#performances" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">Performances</a> <a href="#flow" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">Flow</a> <a href="#visuals" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">Visuals</a> <a href="#pricing" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">Pricing</a> <a href="#faq" class="nav-link" style="color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase;">FAQ</a> <a href="#book" class="btn-primary" style="padding: 8px 20px; border-radius: 24px; color: white; text-decoration: none; font-size: 13px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase;">Book</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position: relative; min-height: 90%; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 80px 24px;">
+    <!-- Background glow blobs -->
+    <div style="position: absolute; top: 20%; left: 30%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(123,94,167,0.2), transparent 70%); border-radius: 50%;" class="anim-glow"></div>
+    <div style="position: absolute; bottom: 10%; right: 20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(58,107,138,0.2), transparent 70%); border-radius: 50%;" class="anim-glow" data-style="animation-delay: 2s;"></div><!-- Floating orbs -->
+    <div style="position: absolute; top: 15%; right: 15%;" class="anim-float">
+     <svg width="80" height="80" viewbox="0 0 80 80" class="orb-svg">
+      <defs>
+       <radialgradient id="orb1" cx="40%" cy="35%" r="50%">
+        <stop offset="0%" stop-color="#c4b5e0" />
+        <stop offset="50%" stop-color="#7b5ea7" />
+        <stop offset="100%" stop-color="#2a1f3d" />
+       </radialgradient>
+      </defs> <circle cx="40" cy="40" r="38" fill="url(#orb1)" /> <ellipse cx="32" cy="30" rx="12" ry="6" fill="rgba(255,255,255,0.15)" transform="rotate(-20 32 30)" />
+     </svg>
+    </div>
+    <div style="position: absolute; bottom: 20%; left: 10%;" class="anim-float-2">
+     <svg width="50" height="50" viewbox="0 0 50 50" class="orb-svg">
+      <defs>
+       <radialgradient id="orb2" cx="40%" cy="35%" r="50%">
+        <stop offset="0%" stop-color="#8fc0d8" />
+        <stop offset="50%" stop-color="#3a6b8a" />
+        <stop offset="100%" stop-color="#152535" />
+       </radialgradient>
+      </defs> <circle cx="25" cy="25" r="24" fill="url(#orb2)" /> <ellipse cx="20" cy="19" rx="7" ry="3.5" fill="rgba(255,255,255,0.15)" transform="rotate(-20 20 19)" />
+     </svg>
+    </div><!-- Light trails SVG -->
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewbox="0 0 1200 800" preserveaspectratio="none">
+     <path d="M100,400 Q400,200 600,400 T1100,350" fill="none" stroke="rgba(123,94,167,0.2)" stroke-width="1" stroke-dasharray="10 8" class="anim-trail" /> <path d="M0,500 Q300,300 600,500 T1200,450" fill="none" stroke="rgba(58,107,138,0.15)" stroke-width="1" stroke-dasharray="12 10" class="anim-trail" style="animation-delay: 1.5s;" />
+    </svg><!-- Central Orb -->
+    <div style="position: absolute;" class="anim-float">
+     <svg width="220" height="220" viewbox="0 0 220 220" class="orb-svg" style="filter: drop-shadow(0 0 40px rgba(123,94,167,0.4));">
+      <defs>
+       <radialgradient id="orbMain" cx="38%" cy="32%" r="55%">
+        <stop offset="0%" stop-color="#e0d4f5" />
+        <stop offset="30%" stop-color="#a78dc8" />
+        <stop offset="60%" stop-color="#7b5ea7" />
+        <stop offset="100%" stop-color="#1a1028" />
+       </radialgradient>
+      </defs> <circle cx="110" cy="110" r="105" fill="url(#orbMain)" opacity="0.25" /> <ellipse cx="90" cy="85" rx="35" ry="18" fill="rgba(255,255,255,0.06)" transform="rotate(-25 90 85)" />
+     </svg>
+    </div>
+    <div style="position: relative; z-index: 2; text-align: center; max-width: 700px;">
+     <p id="hero-tagline" class="font-body" style="font-size: 13px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: 24px; opacity: 0; animation: fade-up 0.8s 0.2s ease-out forwards;">Stillness that moves.</p>
+     <h1 id="hero-title" class="font-display" style="font-size: clamp(40px, 6vw, 72px); font-weight: 300; line-height: 1.1; margin: 0 0 20px; letter-spacing: -1px; opacity: 0; animation: fade-up 0.8s 0.4s ease-out forwards;">Control the illusion of motion.</h1>
+     <p id="hero-subtitle" class="font-body" style="font-size: 18px; font-weight: 200; color: rgba(232,228,240,0.7); margin-bottom: 40px; opacity: 0; animation: fade-up 0.8s 0.6s ease-out forwards;">Contact juggling as visual art.</p>
+     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: fade-up 0.8s 0.8s ease-out forwards;">
+      <a href="#book" id="hero-cta-primary" class="btn-primary" style="padding: 14px 36px; border-radius: 30px; color: white; text-decoration: none; font-size: 14px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase;">Book Performance</a> <a href="#visuals" id="hero-cta-secondary" class="btn-outline" style="padding: 14px 36px; border-radius: 30px; color: var(--text); text-decoration: none; font-size: 14px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;">See Visuals</a>
+     </div>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- PERFORMANCES -->
+   <section id="performances" style="padding: 100px 24px; max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px;">What We Offer</p>
+     <h2 id="performances-heading" class="font-display" style="font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin: 0;">Performance Formats</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 40px 32px; text-align: center;">
+      <div style="margin-bottom: 20px;">
+       <svg width="48" height="48" viewbox="0 0 48 48" class="orb-svg" style="margin: 0 auto;"><defs>
+         <radialgradient id="po1" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#c4b5e0" />
+          <stop offset="100%" stop-color="#7b5ea7" />
+         </radialgradient>
+        </defs><circle cx="24" cy="24" r="22" fill="url(#po1)" /><ellipse cx="19" cy="18" rx="7" ry="3" fill="rgba(255,255,255,0.2)" transform="rotate(-20 19 18)" />
+       </svg>
+      </div>
+      <h3 class="font-display" style="font-size: 24px; font-weight: 500; margin: 0 0 12px;">Solo Sphere</h3>
+      <p class="font-body" style="font-size: 14px; font-weight: 200; color: rgba(232,228,240,0.6); line-height: 1.7;">A single performer, one crystal sphere — hypnotic isolation work that defies gravity and captivates audiences in intimate settings.</p>
+     </div>
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 40px 32px; text-align: center;">
+      <div style="margin-bottom: 20px; display: flex; justify-content: center; gap: 8px;">
+       <svg width="36" height="36" viewbox="0 0 36 36" class="orb-svg"><circle cx="18" cy="18" r="16" fill="url(#po1)" /><ellipse cx="14" cy="13" rx="5" ry="2.5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 14 13)" />
+       </svg>
+       <svg width="36" height="36" viewbox="0 0 36 36" class="orb-svg"><defs>
+         <radialgradient id="po2" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#8fc0d8" />
+          <stop offset="100%" stop-color="#3a6b8a" />
+         </radialgradient>
+        </defs><circle cx="18" cy="18" r="16" fill="url(#po2)" /><ellipse cx="14" cy="13" rx="5" ry="2.5" fill="rgba(255,255,255,0.2)" transform="rotate(-20 14 13)" />
+       </svg>
+      </div>
+      <h3 class="font-display" style="font-size: 24px; font-weight: 500; margin: 0 0 12px;">Dual Flow</h3>
+      <p class="font-body" style="font-size: 14px; font-weight: 200; color: rgba(232,228,240,0.6); line-height: 1.7;">Two orbs, synchronized movement — multi-ball routines that create mesmerizing trails and impossible patterns of motion.</p>
+     </div>
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 40px 32px; text-align: center;">
+      <div style="margin-bottom: 20px; display: flex; justify-content: center; gap: 6px;">
+       <svg width="28" height="28" viewbox="0 0 28 28" class="orb-svg"><circle cx="14" cy="14" r="12" fill="url(#po1)" />
+       </svg>
+       <svg width="28" height="28" viewbox="0 0 28 28" class="orb-svg"><circle cx="14" cy="14" r="12" fill="url(#po2)" />
+       </svg>
+       <svg width="28" height="28" viewbox="0 0 28 28" class="orb-svg"><defs>
+         <radialgradient id="po3" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#d4a5c4" />
+          <stop offset="100%" stop-color="#8a4a6b" />
+         </radialgradient>
+        </defs><circle cx="14" cy="14" r="12" fill="url(#po3)" />
+       </svg>
+      </div>
+      <h3 class="font-display" style="font-size: 24px; font-weight: 500; margin: 0 0 12px;">Ensemble Immersion</h3>
+      <p class="font-body" style="font-size: 14px; font-weight: 200; color: rgba(232,228,240,0.6); line-height: 1.7;">Multiple performers creating a surreal stage experience with coordinated routines, UV lighting, and choreographed illusion.</p>
+     </div>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- FLOW -->
+   <section id="flow" style="padding: 100px 24px; max-width: 1100px; margin: 0 auto; position: relative;"><!-- Background glow blobs -->
+    <div style="position: absolute; top: 10%; left: -100px; width: 350px; height: 350px; background: radial-gradient(circle, rgba(58,107,138,0.15), transparent 70%); border-radius: 50%; pointer-events: none;" class="anim-glow"></div>
+    <div style="position: absolute; bottom: 15%; right: -80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(123,94,167,0.12), transparent 70%); border-radius: 50%; pointer-events: none;" class="anim-glow" data-style="animation-delay: 2.5s;"></div>
+    <div style="text-align: center; margin-bottom: 60px; position: relative; z-index: 2;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--secondary); margin-bottom: 12px;">Technique &amp; Artistry</p>
+     <h2 id="flow-heading" class="font-display" style="font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin: 0;">The Art of Flow</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; position: relative; z-index: 2;"><!-- Palm Isolation -->
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 32px 24px; text-align: center; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: -40px; right: -40px; width: 120px; height: 120px;" class="anim-float">
+       <svg width="80" height="80" viewbox="0 0 80 80" class="orb-svg" style="opacity: 0.4;"><defs>
+         <radialgradient id="flow1" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#c4b5e0" />
+          <stop offset="50%" stop-color="#7b5ea7" />
+          <stop offset="100%" stop-color="#2a1f3d" />
+         </radialgradient>
+        </defs> <circle cx="40" cy="40" r="38" fill="url(#flow1)" /> <ellipse cx="32" cy="30" rx="12" ry="6" fill="rgba(255,255,255,0.15)" transform="rotate(-20 32 30)" />
+       </svg>
+      </div>
+      <div style="width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: rgba(123,94,167,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(123,94,167,0.3); box-shadow: 0 0 30px rgba(123,94,167,0.1); position: relative; z-index: 1;">
+       <i data-lucide="hand" style="width: 28px; height: 28px; color: var(--primary);"></i>
+      </div>
+      <h3 class="font-display" style="font-size: 20px; font-weight: 500; margin: 0 0 10px; position: relative; z-index: 1;">Palm Isolation</h3>
+      <p class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.55); line-height: 1.7; position: relative; z-index: 1;">The sphere hovers motionless while the hand orbits around it — the foundational illusion of contact juggling.</p>
+     </div><!-- Body Rolling -->
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 32px 24px; text-align: center; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 20px; left: -30px; width: 100px; height: 100px;" class="anim-float-2">
+       <svg width="60" height="60" viewbox="0 0 60 60" class="orb-svg" style="opacity: 0.35;"><defs>
+         <radialgradient id="flow2" cx="40%" cy="35%" r="50%">
+          <stop offset="0%" stop-color="#8fc0d8" />
+          <stop offset="50%" stop-color="#3a6b8a" />
+          <stop offset="100%" stop-color="#152535" />
+         </radialgradient>
+        </defs> <circle cx="30" cy="30" r="28" fill="url(#flow2)" /> <ellipse cx="24" cy="22" rx="9" ry="4" fill="rgba(255,255,255,0.15)" transform="rotate(-20 24 22)" />
+       </svg>
+      </div>
+      <div style="width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: rgba(58,107,138,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(58,107,138,0.3); box-shadow: 0 0 30px rgba(58,107,138,0.1); position: relative; z-index: 1;">
+       <i data-lucide="wind" style="width: 28px; height: 28px; color: var(--secondary);"></i>
+      </div>
+      <h3 class="font-display" style="font-size: 20px; font-weight: 500; margin: 0 0 10px; position: relative; z-index: 1;">Body Rolling</h3>
+      <p class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.55); line-height: 1.7; position: relative; z-index: 1;">The orb flows seamlessly across arms, shoulders, and chest — a gravity-defying river of controlled momentum.</p>
+     </div><!-- Butterfly -->
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 32px 24px; text-align: center; position: relative; overflow: hidden;">
+      <div style="position: absolute; bottom: -20px; right: 10px; display: flex; gap: 15px;" class="anim-rotate">
+       <svg width="50" height="50" viewbox="0 0 50 50" class="orb-svg" style="opacity: 0.3;"><circle cx="25" cy="25" r="22" fill="url(#flow1)" />
+       </svg>
+       <svg width="50" height="50" viewbox="0 0 50 50" class="orb-svg" style="opacity: 0.3;"><circle cx="25" cy="25" r="22" fill="url(#flow2)" />
+       </svg>
+      </div>
+      <div style="width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: rgba(123,94,167,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(123,94,167,0.3); box-shadow: 0 0 30px rgba(123,94,167,0.1); position: relative; z-index: 1;">
+       <i data-lucide="sparkles" style="width: 28px; height: 28px; color: var(--primary);"></i>
+      </div>
+      <h3 class="font-display" style="font-size: 20px; font-weight: 500; margin: 0 0 10px; position: relative; z-index: 1;">Butterfly</h3>
+      <p class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.55); line-height: 1.7; position: relative; z-index: 1;">Multiple spheres pass between hands in a figure-eight pattern, creating a mesmerizing dance of light and glass.</p>
+     </div><!-- Enigma -->
+     <div class="card-glow" style="background: var(--surface); border-radius: 16px; padding: 32px 24px; text-align: center; position: relative; overflow: hidden;">
+      <div style="position: absolute; top: -50px; right: -50px; width: 140px; height: 140px;" class="anim-float" data-style="animation-delay: 1s;">
+       <svg width="90" height="90" viewbox="0 0 90 90" class="orb-svg" style="opacity: 0.25; filter: drop-shadow(0 0 15px rgba(123,94,167,0.3));"><circle cx="45" cy="45" r="42" fill="url(#flow1)" /> <circle cx="45" cy="45" r="42" fill="url(#flow2)" opacity="0.3" />
+       </svg>
+      </div>
+      <div style="width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: rgba(58,107,138,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(58,107,138,0.3); box-shadow: 0 0 30px rgba(58,107,138,0.1); position: relative; z-index: 1;">
+       <i data-lucide="eye" style="width: 28px; height: 28px; color: var(--secondary);"></i>
+      </div>
+      <h3 class="font-display" style="font-size: 20px; font-weight: 500; margin: 0 0 10px; position: relative; z-index: 1;">Enigma</h3>
+      <p class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.55); line-height: 1.7; position: relative; z-index: 1;">Advanced manipulation where the sphere appears to float, vanish, and reappear — pure visual magic.</p>
+     </div>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- VISUALS -->
+   <section id="visuals" style="padding: 100px 24px; max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px;">Captured Moments</p>
+     <h2 id="visuals-heading" class="font-display" style="font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin: 0;">Visual Moments</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+     <div style="position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/5; background: linear-gradient(135deg, #1a1028, #0d1520);" class="card-glow">
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+       <svg width="120" height="120" viewbox="0 0 120 120" class="anim-float"><defs>
+         <radialgradient id="vm1" cx="38%" cy="32%" r="50%">
+          <stop offset="0%" stop-color="#d4c4ed" />
+          <stop offset="50%" stop-color="#7b5ea7" />
+          <stop offset="100%" stop-color="#1a1028" />
+         </radialgradient>
+        </defs><circle cx="60" cy="60" r="55" fill="url(#vm1)" /><ellipse cx="48" cy="45" rx="18" ry="9" fill="rgba(255,255,255,0.12)" transform="rotate(-25 48 45)" />
+       </svg>
+      </div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: linear-gradient(transparent, rgba(10,10,18,0.9));">
+       <p class="font-display" style="font-size: 18px; margin: 0;">Isolation Study</p>
+       <p class="font-body" style="font-size: 12px; color: rgba(232,228,240,0.5); margin: 4px 0 0;">Single sphere, infinite stillness</p>
+      </div>
+     </div>
+     <div style="position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/5; background: linear-gradient(135deg, #0d1520, #1a1028);" class="card-glow">
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 20px;">
+       <svg width="70" height="70" viewbox="0 0 70 70" class="anim-float"><circle cx="35" cy="35" r="32" fill="url(#po1)" /><ellipse cx="28" cy="26" rx="10" ry="5" fill="rgba(255,255,255,0.12)" transform="rotate(-25 28 26)" />
+       </svg>
+       <svg width="70" height="70" viewbox="0 0 70 70" class="anim-float-2"><circle cx="35" cy="35" r="32" fill="url(#po2)" /><ellipse cx="28" cy="26" rx="10" ry="5" fill="rgba(255,255,255,0.12)" transform="rotate(-25 28 26)" />
+       </svg>
+      </div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: linear-gradient(transparent, rgba(10,10,18,0.9));">
+       <p class="font-display" style="font-size: 18px; margin: 0;">Dual Orbit</p>
+       <p class="font-body" style="font-size: 12px; color: rgba(232,228,240,0.5); margin: 4px 0 0;">Synchronized flow in motion</p>
+      </div>
+     </div>
+     <div style="position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/5; background: linear-gradient(135deg, #1a1028, #151520);" class="card-glow">
+      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+       <div class="anim-rotate" style="position: relative; width: 140px; height: 140px;">
+        <svg width="40" height="40" viewbox="0 0 40 40" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%);"><circle cx="20" cy="20" r="18" fill="url(#po1)" />
+        </svg>
+        <svg width="40" height="40" viewbox="0 0 40 40" style="position: absolute; bottom: 10px; left: 10px;"><circle cx="20" cy="20" r="18" fill="url(#po2)" />
+        </svg>
+        <svg width="40" height="40" viewbox="0 0 40 40" style="position: absolute; bottom: 10px; right: 10px;"><circle cx="20" cy="20" r="18" fill="url(#po3)" />
+        </svg>
+       </div>
+      </div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: linear-gradient(transparent, rgba(10,10,18,0.9));">
+       <p class="font-display" style="font-size: 18px; margin: 0;">Cascade Formation</p>
+       <p class="font-body" style="font-size: 12px; color: rgba(232,228,240,0.5); margin: 4px 0 0;">Multi-sphere choreography</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- PRICING -->
+   <section id="pricing" style="padding: 100px 24px; max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px;">Performance Packages</p>
+     <h2 id="pricing-heading" class="font-display" style="font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin: 0;">Choose Your Experience</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start;">
+     <!-- Basic -->
+     <div class="pricing-glow" style="background: var(--surface); border-radius: 20px; padding: 40px 32px; text-align: center;">
+      <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin: 0 0 8px;">Basic</p>
+      <h3 class="font-display" style="font-size: 44px; font-weight: 300; margin: 0; color: var(--text);">$800</h3>
+      <p class="font-body" style="font-size: 13px; color: rgba(232,228,240,0.4); margin: 4px 0 28px;">Short Performance</p>
+      <div style="text-align: left; margin-bottom: 32px;">
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">20-minute solo performance</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Single crystal sphere</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0;"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Background ambient music</span>
+       </div>
+      </div><a href="#book" class="btn-outline" style="display: block; padding: 14px; border-radius: 30px; color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;">Select</a>
+     </div><!-- Pro (Featured) -->
+     <div class="pricing-glow featured" style="background: linear-gradient(180deg, rgba(123,94,167,0.08), var(--surface)); border-radius: 20px; padding: 40px 32px; text-align: center; position: relative;">
+      <div style="position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 4px 20px; border-radius: 0 0 10px 10px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: white;">
+       Popular
+      </div>
+      <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin: 8px 0 8px;">Pro</p>
+      <h3 class="font-display" style="font-size: 44px; font-weight: 300; margin: 0; color: var(--text);">$2,200</h3>
+      <p class="font-body" style="font-size: 13px; color: rgba(232,228,240,0.4); margin: 4px 0 28px;">Extended Show</p>
+      <div style="text-align: left; margin-bottom: 32px;">
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">45-minute duo performance</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Multi-sphere routines</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">UV lighting &amp; sound design</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0;"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Choreography guide included</span>
+       </div>
+      </div><a href="#book" class="btn-primary" style="display: block; padding: 14px; border-radius: 30px; color: white; text-decoration: none; font-size: 13px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase;">Select</a>
+     </div><!-- Elite -->
+     <div class="pricing-glow" style="background: var(--surface); border-radius: 20px; padding: 40px 32px; text-align: center;">
+      <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin: 0 0 8px;">Elite</p>
+      <h3 class="font-display" style="font-size: 44px; font-weight: 300; margin: 0; color: var(--text);">$5,500</h3>
+      <p class="font-body" style="font-size: 13px; color: rgba(232,228,240,0.4); margin: 4px 0 28px;">Full Immersive Experience</p>
+      <div style="text-align: left; margin-bottom: 32px;">
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">90-minute ensemble show</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Full stage design &amp; fog effects</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Custom choreography &amp; music</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(123,94,167,0.08);"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Performance layouts package</span>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0;"><i data-lucide="check" style="width: 16px; height: 16px; color: var(--primary); flex-shrink: 0;"></i><span class="font-body" style="font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.65);">Booking system &amp; visual routines</span>
+       </div>
+      </div><a href="#book" class="btn-outline" style="display: block; padding: 14px; border-radius: 30px; color: var(--text); text-decoration: none; font-size: 13px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;">Select</a>
+     </div>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- FAQ -->
+   <section id="faq" style="padding: 100px 24px; max-width: 800px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 60px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--secondary); margin-bottom: 12px;">Common Questions</p>
+     <h2 class="font-display" style="font-size: clamp(32px, 4vw, 48px); font-weight: 300; margin: 0;">FAQ</h2>
+    </div>
+    <div id="faq-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+   </section>
+   <div class="section-divider"></div><!-- VOTE + COMMENT MODULE -->
+   <section id="vote-comment" style="padding: 80px 24px; max-width: 900px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 48px;">
+     <h2 id="bottom-cta-heading" class="font-display" style="font-size: clamp(28px, 4vw, 44px); font-weight: 300; margin: 0 0 12px;">Experience controlled illusion.</h2>
+     <p class="font-body" style="font-size: 14px; color: rgba(232,228,240,0.5);">React, vote on pricing, and share your thoughts.</p>
+    </div><!-- Reactions -->
+    <div style="margin-bottom: 40px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin-bottom: 16px; text-align: center;">Reactions</p>
+     <div id="reactions-container" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;"></div>
+    </div><!-- Price Vote -->
+    <div style="margin-bottom: 40px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--secondary); margin-bottom: 16px; text-align: center;">What would you pay for the digital package?</p>
+     <div id="price-votes-container" style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;"></div>
+     <p id="price-vote-status" class="font-body" style="text-align: center; margin-top: 10px; font-size: 12px; color: rgba(232,228,240,0.4);"></p>
+    </div><!-- Comments -->
+    <div style="margin-bottom: 40px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin-bottom: 16px; text-align: center;">Comments</p>
+     <form id="comment-form" style="display: flex; gap: 12px; margin-bottom: 20px;">
+      <input type="text" id="comment-input" placeholder="Share your thoughts..." style="flex: 1; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='rgba(123,94,167,0.5)'" onblur="this.style.borderColor='rgba(123,94,167,0.2)'"> <label for="comment-input" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Comment</label> <button type="submit" id="comment-submit" class="btn-primary" style="padding: 12px 24px; border-radius: 12px; border: none; color: white; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 14px;">Post</button>
+     </form>
+     <div id="comments-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div><!-- Embed placeholder -->
+    <div style="text-align: center; padding: 24px; border: 1px dashed rgba(123,94,167,0.2); border-radius: 12px; margin-top: 32px;">
+     <p class="font-body" style="font-size: 13px; color: rgba(232,228,240,0.3);">Embed Widget Here</p>
+    </div>
+   </section>
+   <div class="section-divider"></div><!-- BOOK PERFORMANCE -->
+   <section id="book" style="padding: 100px 24px; max-width: 600px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 48px;">
+     <p class="font-body" style="font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px;">Let's Create</p>
+     <h2 class="font-display" style="font-size: clamp(32px, 4vw, 48px); font-weight: 300; margin: 0;">Book a Performance</h2>
+    </div>
+    <form id="booking-form" style="display: flex; flex-direction: column; gap: 16px;">
+     <div>
+      <label for="book-name" class="font-body" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin-bottom: 6px; display: block;">Name</label> <input type="text" id="book-name" required style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='rgba(123,94,167,0.5)'" onblur="this.style.borderColor='rgba(123,94,167,0.2)'">
+     </div>
+     <div>
+      <label for="book-email" class="font-body" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin-bottom: 6px; display: block;">Email</label> <input type="email" id="book-email" required style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='rgba(123,94,167,0.5)'" onblur="this.style.borderColor='rgba(123,94,167,0.2)'">
+     </div>
+     <div>
+      <label for="book-package" class="font-body" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin-bottom: 6px; display: block;">Package</label> <select id="book-package" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; appearance: none;"> <option value="basic">Basic — $800</option> <option value="pro" selected>Pro — $2,200</option> <option value="elite">Elite — $5,500</option> </select>
+     </div>
+     <div>
+      <label for="book-date" class="font-body" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin-bottom: 6px; display: block;">Event Date</label> <input type="date" id="book-date" required style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.3s; color-scheme: dark;" onfocus="this.style.borderColor='rgba(123,94,167,0.5)'" onblur="this.style.borderColor='rgba(123,94,167,0.2)'">
+     </div>
+     <div>
+      <label for="book-message" class="font-body" style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,228,240,0.5); margin-bottom: 6px; display: block;">Message</label> <textarea id="book-message" rows="3" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(123,94,167,0.2); background: var(--surface); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; resize: vertical; transition: border-color 0.3s;" onfocus="this.style.borderColor='rgba(123,94,167,0.5)'" onblur="this.style.borderColor='rgba(123,94,167,0.2)'"></textarea>
+     </div><button type="submit" id="booking-submit" class="btn-primary" style="padding: 16px; border-radius: 30px; border: none; color: white; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px;">Send Inquiry</button>
+     <p id="booking-status" class="font-body" style="text-align: center; font-size: 13px; color: var(--primary); margin: 0; min-height: 20px;"></p>
+    </form>
+   </section><!-- Footer -->
+   <footer style="padding: 40px 24px; text-align: center; border-top: 1px solid rgba(123,94,167,0.1);">
+    <p id="footer-brand" class="font-display" style="font-size: 18px; font-weight: 500; margin: 0 0 6px;">OrbFlow Performances</p>
+    <p class="font-body" style="font-size: 12px; color: rgba(232,228,240,0.3); margin: 0;">Stillness that moves. © 2025</p>
+   </footer>
+  </div><!-- end scroll-wrapper -->
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// ========== CONFIG & DEFAULTS ==========
+const defaultConfig = {
+  background_color: '#0a0a12',
+  surface_color: '#13131f',
+  text_color: '#e8e4f0',
+  primary_color: '#7b5ea7',
+  secondary_color: '#3a6b8a',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_title: 'Control the illusion of motion.',
+  hero_subtitle: 'Contact juggling as visual art.',
+  brand_name: 'OrbFlow Performances',
+  tagline: 'Stillness that moves.',
+  cta_primary: 'Book Performance',
+  cta_secondary: 'See Visuals',
+  bottom_cta_text: 'Experience controlled illusion.',
+  performances_title: 'Performance Formats',
+  flow_title: 'The Art of Flow',
+  visuals_title: 'Visual Moments',
+  pricing_title: 'Choose Your Experience'
+};
+
+// ========== FAQ DATA ==========
+const faqData = [
+  { q: 'What is contact juggling?', a: 'Contact juggling is a form of object manipulation where the performer keeps one or more objects in constant contact with their body, creating illusions of floating, rolling, and defying gravity.' },
+  { q: 'How far in advance should I book?', a: 'We recommend booking at least 4–6 weeks ahead for standard performances and 8–12 weeks for custom Elite experiences.' },
+  { q: 'Do you travel for events?', a: 'Yes, OrbFlow performs worldwide. Travel costs are discussed during the booking consultation.' },
+  { q: 'Can performances be customized?', a: 'Absolutely. Music, choreography, lighting, and duration can all be tailored to your event's theme and atmosphere.' },
+  { q: 'What digital products are included?', a: 'Depending on your tier, you may receive performance layout guides, choreography breakdowns, visual routine documentation, and booking system access.' }
+];
+
+// ========== REACTIONS & PRICES ==========
+const reactions = ['✨','🔮','🌀','🎭','💎','👁️'];
+const priceOptions = ['$9','$19','$29','$39','$49','$59','$79','$99','$129','$149'];
+
+// ========== STATE ==========
+let allData = [];
+let userReaction = null;
+let userPriceVote = null;
+
+// ========== TOAST ==========
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ========== FAQ BUILD ==========
+function buildFAQ() {
+  const container = document.getElementById('faq-list');
+  container.innerHTML = '';
+  faqData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'border: 1px solid rgba(123,94,167,0.12); border-radius: 12px; overflow: hidden; transition: all 0.3s;';
+    div.innerHTML = `
+      <button onclick="toggleFaq(this)" style="width: 100%; padding: 18px 20px; background: var(--surface); border: none; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 300; text-align: left;">
+        <span>${item.q}</span>
+        <i data-lucide="chevron-down" style="width: 18px; height: 18px; transition: transform 0.3s; flex-shrink: 0; margin-left: 12px;"></i>
+      </button>
+      <div style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: rgba(19,19,31,0.6);">
+        <p style="padding: 0 20px 18px; margin: 0; font-size: 13px; font-weight: 200; color: rgba(232,228,240,0.55); line-height: 1.7;">${item.a}</p>
+      </div>`;
+    container.appendChild(div);
+  });
+  lucide.createIcons();
+}
+
+function toggleFaq(btn) {
+  const panel = btn.nextElementSibling;
+  const icon = btn.querySelector('i, svg');
+  const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
+  panel.style.maxHeight = isOpen ? '0px' : panel.scrollHeight + 'px';
+  if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
+// ========== REACTIONS BUILD ==========
+function buildReactions() {
+  const c = document.getElementById('reactions-container');
+  c.innerHTML = '';
+  const counts = {};
+  reactions.forEach(r => counts[r] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+
+  reactions.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (userReaction === r ? ' active' : '');
+    btn.style.cssText = 'padding: 8px 16px; border-radius: 20px; background: rgba(19,19,31,0.8); cursor: pointer; font-size: 18px; display: flex; align-items: center; gap: 6px; color: var(--text); font-family: "Outfit", sans-serif;';
+    btn.innerHTML = `${r} <span style="font-size: 12px; color: rgba(232,228,240,0.5);">${counts[r]}</span>`;
+    btn.addEventListener('click', () => handleReaction(r));
+    c.appendChild(btn);
+  });
+}
+
+async function handleReaction(r) {
+  if (userReaction) return;
+  userReaction = r;
+  const result = await window.dataSdk.create({ type: 'reaction', section_id: 'bottom', reaction: r, comment_text: '', price_vote: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) { userReaction = null; showToast('Could not save reaction'); }
+  buildReactions();
+}
+
+// ========== PRICE VOTES ==========
+function buildPriceVotes() {
+  const c = document.getElementById('price-votes-container');
+  c.innerHTML = '';
+  const counts = {};
+  priceOptions.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price_vote').forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+
+  const total = allData.filter(d => d.type === 'price_vote').length;
+
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (userPriceVote === p ? ' active' : '');
+    btn.style.cssText = 'padding: 8px 14px; border-radius: 10px; background: rgba(19,19,31,0.8); cursor: pointer; font-size: 13px; color: var(--text); font-family: "Outfit", sans-serif; display: flex; flex-direction: column; align-items: center; gap: 2px;';
+    const pct = total > 0 ? Math.round((counts[p] / total) * 100) : 0;
+    btn.innerHTML = `<span>${p}</span><span style="font-size: 10px; color: rgba(232,228,240,0.35);">${counts[p]} ${total > 0 ? '(' + pct + '%)' : ''}</span>`;
+    btn.addEventListener('click', () => handlePriceVote(p));
+    c.appendChild(btn);
+  });
+
+  document.getElementById('price-vote-status').textContent = userPriceVote ? `You voted ${userPriceVote}` : (total > 0 ? `${total} vote${total > 1 ? 's' : ''} so far` : '');
+}
+
+async function handlePriceVote(p) {
+  if (userPriceVote) return;
+  userPriceVote = p;
+  const result = await window.dataSdk.create({ type: 'price_vote', section_id: 'bottom', reaction: '', comment_text: '', price_vote: p, timestamp: new Date().toISOString() });
+  if (!result.isOk) { userPriceVote = null; showToast('Could not save vote'); }
+  buildPriceVotes();
+}
+
+// ========== COMMENTS ==========
+function buildComments() {
+  const c = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const existingMap = new Map([...c.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(cm => {
+    const id = cm.__backendId;
+    if (existingMap.has(id)) {
+      existingMap.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.style.cssText = 'padding: 14px 18px; background: var(--surface); border-radius: 12px; border: 1px solid rgba(123,94,167,0.1);';
+      const time = new Date(cm.timestamp);
+      const timeStr = time.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p style="margin: 0 0 4px; font-size: 14px; font-weight: 300; color: var(--text);">${escapeHtml(cm.comment_text)}</p><p style="margin: 0; font-size: 11px; color: rgba(232,228,240,0.3);">${timeStr}</p>`;
+      c.appendChild(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+// ========== COMMENT FORM ==========
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.textContent = '...';
+
+  if (allData.length >= 999) { showToast('Maximum entries reached'); btn.disabled = false; btn.textContent = 'Post'; return; }
+
+  const result = await window.dataSdk.create({ type: 'comment', section_id: 'bottom', reaction: '', comment_text: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment'); }
+});
+
+// ========== BOOKING FORM ==========
+document.getElementById('booking-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('booking-submit');
+  const status = document.getElementById('booking-status');
+  btn.disabled = true; btn.textContent = 'Sending...';
+
+  if (allData.length >= 999) { status.textContent = 'Maximum entries reached. Please try again later.'; btn.disabled = false; btn.textContent = 'Send Inquiry'; return; }
+
+  const result = await window.dataSdk.create({
+    type: 'booking',
+    section_id: 'book',
+    reaction: document.getElementById('book-name').value + ' | ' + document.getElementById('book-email').value,
+    comment_text: document.getElementById('book-message').value || '',
+    price_vote: document.getElementById('book-package').value + ' | ' + document.getElementById('book-date').value,
+    timestamp: new Date().toISOString()
+  });
+  btn.disabled = false; btn.textContent = 'Send Inquiry';
+  if (result.isOk) {
+    status.textContent = '✨ Inquiry sent! We\'ll be in touch soon.';
+    document.getElementById('booking-form').reset();
+  } else {
+    status.textContent = 'Something went wrong. Please try again.';
+  }
+});
+
+// ========== DATA SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    buildReactions();
+    buildPriceVotes();
+    buildComments();
+  }
+};
+
+// ========== ELEMENT SDK ==========
+function applyConfig(config) {
+  const root = document.documentElement;
+  root.style.setProperty('--bg', config.background_color || defaultConfig.background_color);
+  root.style.setProperty('--surface', config.surface_color || defaultConfig.surface_color);
+  root.style.setProperty('--text', config.text_color || defaultConfig.text_color);
+  root.style.setProperty('--primary', config.primary_color || defaultConfig.primary_color);
+  root.style.setProperty('--secondary', config.secondary_color || defaultConfig.secondary_color);
+
+  document.getElementById('app-wrapper').style.background = config.background_color || defaultConfig.background_color;
+
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+  const displayStack = `${font}, serif`;
+  const bodyStack = `Outfit, sans-serif`;
+
+  document.querySelectorAll('.font-display').forEach(el => { el.style.fontFamily = displayStack; });
+  document.querySelectorAll('.font-body').forEach(el => { el.style.fontFamily = bodyStack; });
+
+  // Text updates
+  const el = (id) => document.getElementById(id);
+  if (el('hero-title')) el('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  if (el('hero-subtitle')) el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  if (el('hero-tagline')) el('hero-tagline').textContent = config.tagline || defaultConfig.tagline;
+  if (el('hero-cta-primary')) el('hero-cta-primary').textContent = config.cta_primary || defaultConfig.cta_primary;
+  if (el('hero-cta-secondary')) el('hero-cta-secondary').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+  if (el('bottom-cta-heading')) el('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  if (el('performances-heading')) el('performances-heading').textContent = config.performances_title || defaultConfig.performances_title;
+  if (el('flow-heading')) el('flow-heading').textContent = config.flow_title || defaultConfig.flow_title;
+  if (el('visuals-heading')) el('visuals-heading').textContent = config.visuals_title || defaultConfig.visuals_title;
+  if (el('pricing-heading')) el('pricing-heading').textContent = config.pricing_title || defaultConfig.pricing_title;
+
+  const brandName = config.brand_name || defaultConfig.brand_name;
+  if (el('nav-brand')) el('nav-brand').textContent = brandName.split(' ')[0] || 'OrbFlow';
+  if (el('footer-brand')) el('footer-brand').textContent = brandName;
+
+  // Font sizing
+  if (el('hero-title')) el('hero-title').style.fontSize = `clamp(${baseSize * 2.5}px, 6vw, ${baseSize * 4.5}px)`;
+  if (el('hero-subtitle')) el('hero-subtitle').style.fontSize = `${baseSize * 1.125}px`;
+}
+
+(async () => {
+  buildFAQ();
+
+  // Init Element SDK
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      async onConfigChange(config) { applyConfig(config); },
+      mapToCapabilities(config) {
+        return {
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+            { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        };
+      },
+      mapToEditPanelValues(config) {
+        return new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['brand_name', config.brand_name || defaultConfig.brand_name],
+          ['tagline', config.tagline || defaultConfig.tagline],
+          ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+          ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+          ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+          ['performances_title', config.performances_title || defaultConfig.performances_title],
+          ['flow_title', config.flow_title || defaultConfig.flow_title],
+          ['visuals_title', config.visuals_title || defaultConfig.visuals_title],
+          ['pricing_title', config.pricing_title || defaultConfig.pricing_title]
+        ]);
+      }
+    });
+  }
+
+  // Init Data SDK
+  if (window.dataSdk) {
+    const r = await window.dataSdk.init(dataHandler);
+    if (!r.isOk) console.error('Data SDK init failed');
+  }
+
+  // Build initial interactive sections
+  buildReactions();
+  buildPriceVotes();
+
+  lucide.createIcons();
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5993032a27c5',t:'MTc3NTU3ODcyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

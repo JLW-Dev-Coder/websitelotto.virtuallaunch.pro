@@ -1,1 +1,558 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/e0e3781f-25d6-43c4-8aa3-e31ca8129230 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CollabGlow Kit</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Syne',sans-serif}
+:root{--bg:#0a0a0f;--surface:rgba(255,255,255,0.06);--text:#f0eef6;--primary:#c94cf6;--secondary:#39e5a7}
+
+.glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.08);border-radius:20px}
+.glass-sm{background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);border-radius:14px}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(201,76,246,0.3)}50%{box-shadow:0 0 40px rgba(201,76,246,0.6)}}
+@keyframes slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes counter-pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes ribbon-wave{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.anim-float{animation:float 4s ease-in-out infinite}
+.anim-float-d{animation:float 5s ease-in-out infinite 0.5s}
+.anim-pulse{animation:pulse-glow 2.5s ease-in-out infinite}
+.anim-gradient{background-size:200% 200%;animation:gradient-shift 4s ease infinite}
+
+.sparkle-dot{position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;animation:sparkle 2s ease-in-out infinite;pointer-events:none}
+
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.7s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.nav-link{position:relative;padding:6px 0}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--primary);transition:width 0.3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+
+.tier-card{transition:transform 0.4s,box-shadow 0.4s}
+.tier-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(201,76,246,0.15)}
+
+.logo-strip{animation:marquee 20s linear infinite}
+
+.vote-btn{transition:all 0.2s}
+.vote-btn:hover{transform:scale(1.05)}
+.vote-btn.voted{ring:2px solid var(--primary)}
+
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(201,76,246,0.25)}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background:var(--bg);color:var(--text)">
+  <div id="app" class="h-full w-full overflow-auto relative"><!-- Sparkles -->
+   <div id="sparkles" class="fixed inset-0 pointer-events-none z-0" aria-hidden="true"></div><!-- Sticky Nav -->
+   <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,10,15,0.7);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.05)">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3"><a href="#home" class="text-lg font-extrabold tracking-tight" style="font-family:'Space Mono',monospace"><span style="color:var(--primary)">Collab</span><span style="color:var(--secondary)">Glow</span></a>
+     <div class="hidden md:flex gap-6 text-sm font-semibold tracking-wide"><a href="#home" class="nav-link" data-section="home">Home</a> <a href="#stats" class="nav-link" data-section="stats">Stats</a> <a href="#audience" class="nav-link" data-section="audience">Audience</a> <a href="#packages" class="nav-link" data-section="packages">Packages</a> <a href="#proof" class="nav-link" data-section="proof">Proof</a> <a href="#book" class="nav-link" data-section="book">Book</a>
+     </div><button id="mobile-toggle" class="md:hidden p-2" aria-label="Toggle menu"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden flex-col gap-3 px-5 pb-4 text-sm font-semibold"><a href="#home" class="py-1">Home</a><a href="#stats" class="py-1">Stats</a><a href="#audience" class="py-1">Audience</a><a href="#packages" class="py-1">Packages</a><a href="#proof" class="py-1">Proof</a><a href="#book" class="py-1">Book</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-full flex items-center justify-center px-5 pt-24 pb-16 overflow-hidden">
+    <div class="absolute inset-0 z-0" style="background:radial-gradient(ellipse at 30% 20%,rgba(201,76,246,0.15),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(57,229,167,0.1),transparent 60%)"></div>
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+     <div class="reveal" data-delay="0">
+      <p class="text-xs font-bold tracking-[0.3em] uppercase mb-4" style="color:var(--secondary);font-family:'Space Mono',monospace">CollabGlow Kit</p>
+      <h1 id="heroTitle" class="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] mb-5" style="background:linear-gradient(135deg,#c94cf6,#39e5a7,#f0eef6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 200%;animation:gradient-shift 5s ease infinite">Brands, meet your next best collab.</h1>
+      <p id="heroSubtitle" class="text-lg md:text-xl mb-8 max-w-xl mx-auto" style="color:rgba(240,238,246,0.7)">One page that sells your value.</p>
+     </div>
+     <div class="flex flex-wrap gap-4 justify-center reveal" data-delay="200"><a href="#packages" id="ctaPrimary" class="px-7 py-3.5 rounded-full font-bold text-sm tracking-wide text-white anim-pulse" style="background:linear-gradient(135deg,#c94cf6,#8b3fd4)">Get Template + License</a> <a href="#packages" id="ctaSecondary" class="px-7 py-3.5 rounded-full font-bold text-sm tracking-wide glass" style="color:var(--secondary)">View Packages</a>
+     </div>
+     <div class="flex flex-wrap gap-3 justify-center mt-8 reveal" data-delay="400"><span class="glass-sm px-4 py-2 text-xs font-semibold" style="color:var(--secondary)">✦ Raise your rates instantly</span> <span class="glass-sm px-4 py-2 text-xs font-semibold" style="color:var(--primary)">✦ Pitch like a pro</span> <span class="glass-sm px-4 py-2 text-xs font-semibold" style="color:#f6c94c">✦ Commercial license included</span>
+     </div>
+    </div><!-- Floating Vote Widget -->
+    <div class="absolute right-4 top-28 md:right-8 md:top-32 z-20 anim-float-d hidden md:block" style="width:240px">
+     <div class="glass p-4" id="voteWidget">
+      <p class="text-[10px] font-bold tracking-[0.2em] uppercase mb-1" style="color:var(--secondary);font-family:'Space Mono',monospace">Embed Widget Here</p>
+      <p class="text-sm font-bold mb-3">Rate this template</p>
+      <div id="voteArea">
+       <div class="grid grid-cols-1 gap-1.5" id="voteButtons"><button class="vote-btn glass-sm px-3 py-1.5 text-xs text-left rounded-lg" data-vote="slaps">🔥 This slaps</button> <button class="vote-btn glass-sm px-3 py-1.5 text-xs text-left rounded-lg" data-vote="buy">💰 I'd buy it</button> <button class="vote-btn glass-sm px-3 py-1.5 text-xs text-left rounded-lg" data-vote="tweaks">🔧 Needs tweaks</button> <button class="vote-btn glass-sm px-3 py-1.5 text-xs text-left rounded-lg" data-vote="no">🙅 Not for me</button> <button class="vote-btn glass-sm px-3 py-1.5 text-xs text-left rounded-lg" data-vote="money">💸 Take my money</button>
+       </div>
+       <p class="text-[10px] mt-2" style="color:rgba(240,238,246,0.4)">Sign in to vote &amp; comment</p>
+      </div>
+      <div id="priceArea" class="hidden">
+       <p class="text-xs font-semibold mb-2" style="color:var(--primary)">What would you pay?</p>
+       <div class="flex flex-wrap gap-1.5" id="priceButtons"></div>
+       <div id="commentBox" class="mt-3"><textarea class="w-full rounded-lg p-2 text-xs glass-sm resize-none" rows="2" placeholder="Leave a comment..." style="background:rgba(255,255,255,0.03);color:var(--text);border:1px solid rgba(255,255,255,0.08)"></textarea> <button class="mt-1 w-full py-1.5 rounded-lg text-xs font-bold" style="background:var(--primary);color:#fff" onclick="this.textContent='Submitted ✓';this.disabled=true">Submit</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- STATS -->
+   <section id="stats" class="py-20 px-5 relative">
+    <div class="max-w-5xl mx-auto">
+     <p class="text-center text-xs font-bold tracking-[0.3em] uppercase mb-3 reveal" style="color:var(--primary);font-family:'Space Mono',monospace">The Numbers</p>
+     <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 reveal">Creator stats that <span style="color:var(--secondary)">convert</span></h2>
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+      <div class="glass text-center p-7 reveal" data-delay="0">
+       <p class="text-4xl md:text-5xl font-extrabold mb-1" style="color:var(--primary);font-family:'Space Mono',monospace" data-counter="247" data-suffix="K" id="counterFollowers">0</p>
+       <p class="text-sm" style="color:rgba(240,238,246,0.6)">Followers</p>
+      </div>
+      <div class="glass text-center p-7 reveal" data-delay="150">
+       <p class="text-4xl md:text-5xl font-extrabold mb-1" style="color:var(--secondary);font-family:'Space Mono',monospace" data-counter="1200" data-suffix="K" data-prefix="" id="counterViews">0</p>
+       <p class="text-sm" style="color:rgba(240,238,246,0.6)">Monthly Views</p>
+      </div>
+      <div class="glass text-center p-7 reveal" data-delay="300">
+       <p class="text-4xl md:text-5xl font-extrabold mb-1" style="color:#f6c94c;font-family:'Space Mono',monospace" data-counter="84" data-suffix="%" data-decimal="true" id="counterEng">0</p>
+       <p class="text-sm" style="color:rgba(240,238,246,0.6)">Engagement Rate</p>
+      </div>
+     </div>
+     <div class="flex flex-wrap gap-3 justify-center reveal"><span class="glass-sm px-4 py-2 text-xs font-semibold flex items-center gap-2"><i data-lucide="badge-check" style="width:14px;height:14px;color:var(--primary)"></i> Verified Creator</span> <span class="glass-sm px-4 py-2 text-xs font-semibold flex items-center gap-2"><i data-lucide="trending-up" style="width:14px;height:14px;color:var(--secondary)"></i> Top 3% Engagement</span> <span class="glass-sm px-4 py-2 text-xs font-semibold flex items-center gap-2"><i data-lucide="award" style="width:14px;height:14px;color:#f6c94c"></i> 50+ Brand Collabs</span> <span class="glass-sm px-4 py-2 text-xs font-semibold flex items-center gap-2"><i data-lucide="shield-check" style="width:14px;height:14px;color:var(--primary)"></i> Brand-Safe Content</span>
+     </div>
+    </div>
+   </section><!-- AUDIENCE -->
+   <section id="audience" class="py-20 px-5 relative">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%,rgba(57,229,167,0.06),transparent 60%)"></div>
+    <div class="max-w-5xl mx-auto relative z-10">
+     <p class="text-center text-xs font-bold tracking-[0.3em] uppercase mb-3 reveal" style="color:var(--secondary);font-family:'Space Mono',monospace">Audience Intel</p>
+     <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 reveal">Who's <span style="color:var(--primary)">watching</span> &amp; buying</h2>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div class="glass p-5 reveal" data-delay="0">
+       <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="users" style="width:18px;height:18px;color:var(--primary)"></i><span class="text-sm font-bold">Age Range</span>
+       </div>
+       <div class="space-y-2">
+        <div>
+         <div class="flex justify-between text-xs mb-1">
+          <span>18–24</span><span>38%</span>
+         </div>
+         <div class="h-1.5 rounded-full" style="background:rgba(255,255,255,0.08)">
+          <div class="h-full rounded-full" style="width:38%;background:var(--primary)"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs mb-1">
+          <span>25–34</span><span>42%</span>
+         </div>
+         <div class="h-1.5 rounded-full" style="background:rgba(255,255,255,0.08)">
+          <div class="h-full rounded-full" style="width:42%;background:var(--secondary)"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs mb-1">
+          <span>35–44</span><span>15%</span>
+         </div>
+         <div class="h-1.5 rounded-full" style="background:rgba(255,255,255,0.08)">
+          <div class="h-full rounded-full" style="width:15%;background:#f6c94c"></div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass p-5 reveal" data-delay="100">
+       <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="map-pin" style="width:18px;height:18px;color:var(--secondary)"></i><span class="text-sm font-bold">Top Locations</span>
+       </div>
+       <div class="space-y-2 text-xs">
+        <div class="flex justify-between">
+         <span>🇺🇸 United States</span><span>45%</span>
+        </div>
+        <div class="flex justify-between">
+         <span>🇬🇧 United Kingdom</span><span>18%</span>
+        </div>
+        <div class="flex justify-between">
+         <span>🇨🇦 Canada</span><span>12%</span>
+        </div>
+        <div class="flex justify-between">
+         <span>🇦🇺 Australia</span><span>9%</span>
+        </div>
+       </div>
+      </div>
+      <div class="glass p-5 reveal" data-delay="200">
+       <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="heart" style="width:18px;height:18px;color:#f6c94c"></i><span class="text-sm font-bold">Gender Split</span>
+       </div>
+       <div class="flex items-center gap-3 mt-4">
+        <div class="flex-1 text-center">
+         <div class="text-2xl font-extrabold" style="color:var(--primary)">
+          62%
+         </div>
+         <div class="text-xs mt-1" style="color:rgba(240,238,246,0.5)">
+          Women
+         </div>
+        </div>
+        <div class="w-px h-10" style="background:rgba(255,255,255,0.1)"></div>
+        <div class="flex-1 text-center">
+         <div class="text-2xl font-extrabold" style="color:var(--secondary)">
+          35%
+         </div>
+         <div class="text-xs mt-1" style="color:rgba(240,238,246,0.5)">
+          Men
+         </div>
+        </div>
+        <div class="w-px h-10" style="background:rgba(255,255,255,0.1)"></div>
+        <div class="flex-1 text-center">
+         <div class="text-2xl font-extrabold" style="color:#f6c94c">
+          3%
+         </div>
+         <div class="text-xs mt-1" style="color:rgba(240,238,246,0.5)">
+          Other
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass p-5 reveal" data-delay="300">
+       <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px;color:var(--primary)"></i><span class="text-sm font-bold">Why They Buy</span>
+       </div>
+       <ul class="space-y-2 text-xs" style="color:rgba(240,238,246,0.8)">
+        <li class="flex items-start gap-2"><span style="color:var(--secondary)">✓</span> Trust creator recommendations</li>
+        <li class="flex items-start gap-2"><span style="color:var(--secondary)">✓</span> High purchase intent (28%)</li>
+        <li class="flex items-start gap-2"><span style="color:var(--secondary)">✓</span> Active link-in-bio clickers</li>
+        <li class="flex items-start gap-2"><span style="color:var(--secondary)">✓</span> Avg. 3.2 saves per post</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- PACKAGES -->
+   <section id="packages" class="py-20 px-5 relative">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 100%,rgba(201,76,246,0.08),transparent 60%)"></div>
+    <div class="max-w-5xl mx-auto relative z-10">
+     <p class="text-center text-xs font-bold tracking-[0.3em] uppercase mb-3 reveal" style="color:var(--primary);font-family:'Space Mono',monospace">Rate Card</p>
+     <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-4 reveal">Packages built to <span style="color:var(--secondary)">perform</span></h2>
+     <p class="text-center text-sm mb-12 reveal" style="color:rgba(240,238,246,0.5)">All packages include usage rights, revisions, and analytics report</p>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><!-- Tier 1 -->
+      <div class="tier-card glass p-6 flex flex-col reveal" data-delay="0">
+       <p class="text-xs font-bold tracking-[0.2em] uppercase mb-2" style="color:var(--secondary);font-family:'Space Mono',monospace" id="pkg1Name">Spark</p>
+       <p class="text-3xl font-extrabold mb-1">$350</p>
+       <p class="text-xs mb-5" style="color:rgba(240,238,246,0.4)">Perfect for product launches</p>
+       <ul class="space-y-2 text-sm flex-1 mb-6" style="color:rgba(240,238,246,0.8)">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--secondary)"></i> 1 Instagram Reel or TikTok</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--secondary)"></i> 3 Story frames</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--secondary)"></i> 30-day usage rights</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--secondary)"></i> Analytics snapshot</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-xl font-bold text-sm glass" style="color:var(--secondary)">Get Started</a>
+      </div><!-- Tier 2 -->
+      <div class="tier-card glass p-6 flex flex-col relative overflow-hidden reveal" data-delay="150" style="border-color:rgba(201,76,246,0.3)">
+       <div class="absolute top-4 right-[-32px] px-10 py-1 text-[10px] font-bold tracking-wider uppercase" style="background:linear-gradient(135deg,#c94cf6,#8b3fd4);color:#fff;transform:rotate(40deg);animation:ribbon-wave 3s ease-in-out infinite">
+        Best Value
+       </div>
+       <p class="text-xs font-bold tracking-[0.2em] uppercase mb-2" style="color:var(--primary);font-family:'Space Mono',monospace" id="pkg2Name">Glow</p>
+       <p class="text-3xl font-extrabold mb-1">$850</p>
+       <p class="text-xs mb-5" style="color:rgba(240,238,246,0.4)">Full campaign coverage</p>
+       <ul class="space-y-2 text-sm flex-1 mb-6" style="color:rgba(240,238,246,0.8)">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> 2 Reels + 1 YouTube Short</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> 5 Story frames + highlight</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> 1 Static feed post</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> 90-day usage rights</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:var(--primary)"></i> Full analytics report</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-xl font-bold text-sm anim-pulse" style="background:linear-gradient(135deg,#c94cf6,#8b3fd4);color:#fff">Book Now</a>
+      </div><!-- Tier 3 -->
+      <div class="tier-card glass p-6 flex flex-col reveal" data-delay="300">
+       <p class="text-xs font-bold tracking-[0.2em] uppercase mb-2" style="color:#f6c94c;font-family:'Space Mono',monospace" id="pkg3Name">Supernova</p>
+       <p class="text-3xl font-extrabold mb-1">$2,000</p>
+       <p class="text-xs mb-5" style="color:rgba(240,238,246,0.4)">Ongoing brand partnership</p>
+       <ul class="space-y-2 text-sm flex-1 mb-6" style="color:rgba(240,238,246,0.8)">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> 4 Reels + 2 YouTube Shorts</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> 10 Stories + 2 highlights</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> 2 Static feed posts</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> Whitelisting / paid ads</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> Unlimited usage rights</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:14px;height:14px;color:#f6c94c"></i> Monthly performance call</li>
+       </ul><a href="#book" class="block text-center py-3 rounded-xl font-bold text-sm glass" style="color:#f6c94c">Let's Talk</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROOF -->
+   <section id="proof" class="py-20 px-5 relative overflow-hidden">
+    <div class="max-w-5xl mx-auto">
+     <p class="text-center text-xs font-bold tracking-[0.3em] uppercase mb-3 reveal" style="color:var(--secondary);font-family:'Space Mono',monospace">Social Proof</p>
+     <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 reveal">Trusted by brands that <span style="color:var(--primary)">matter</span></h2><!-- Logo strip -->
+     <div class="relative mb-12 reveal" style="overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)">
+      <div class="flex gap-10 items-center logo-strip" style="width:max-content"><span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">GLOSSIER</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">GYMSHARK</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">NOTION</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">CANVA</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">FENTY</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">ADOBE</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">SKILLSHARE</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">REVOLVE</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">GLOSSIER</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">GYMSHARK</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">NOTION</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">CANVA</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">FENTY</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">ADOBE</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">SKILLSHARE</span> <span class="text-2xl font-extrabold opacity-30" style="font-family:'Space Mono',monospace">REVOLVE</span>
+      </div>
+     </div><!-- Testimonial Carousel -->
+     <div class="relative max-w-2xl mx-auto reveal">
+      <div class="glass p-8 text-center" id="testimonialCard">
+       <div class="flex justify-center gap-1 mb-4" id="testimonialStars"></div>
+       <p class="text-base md:text-lg mb-5 italic leading-relaxed" id="testimonialText" style="color:rgba(240,238,246,0.85)"></p>
+       <p class="text-sm font-bold" id="testimonialAuthor"></p>
+       <p class="text-xs" id="testimonialRole" style="color:rgba(240,238,246,0.4)"></p>
+      </div>
+      <div class="flex justify-center gap-2 mt-5" id="testimonialDots"></div>
+     </div>
+    </div>
+   </section><!-- BOOK -->
+   <section id="book" class="py-20 px-5 relative">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 50%,rgba(201,76,246,0.08),transparent 50%)"></div>
+    <div class="max-w-xl mx-auto relative z-10">
+     <p class="text-center text-xs font-bold tracking-[0.3em] uppercase mb-3 reveal" style="color:var(--primary);font-family:'Space Mono',monospace">Book a Collab</p>
+     <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-10 reveal" id="bookHeading">Let's Create Magic Together</h2>
+     <form class="glass p-7 space-y-4 reveal" id="bookForm">
+      <div>
+       <label class="block text-xs font-semibold mb-1.5" for="brandName">Brand / Company</label><input type="text" id="brandName" class="w-full rounded-xl px-4 py-3 text-sm glass-sm" style="background:rgba(255,255,255,0.03);color:var(--text);border:1px solid rgba(255,255,255,0.08)" placeholder="e.g. Glossier">
+      </div>
+      <div>
+       <label class="block text-xs font-semibold mb-1.5" for="contactEmail">Email</label><input type="email" id="contactEmail" class="w-full rounded-xl px-4 py-3 text-sm glass-sm" style="background:rgba(255,255,255,0.03);color:var(--text);border:1px solid rgba(255,255,255,0.08)" placeholder="you@brand.com">
+      </div>
+      <div>
+       <label class="block text-xs font-semibold mb-1.5" for="packageSelect">Package Interest</label><select id="packageSelect" class="w-full rounded-xl px-4 py-3 text-sm glass-sm" style="background:rgba(15,15,20,0.9);color:var(--text);border:1px solid rgba(255,255,255,0.08)"><option>Spark — $350</option><option>Glow — $850</option><option>Supernova — $2,000</option><option>Custom</option></select>
+      </div>
+      <div>
+       <label class="block text-xs font-semibold mb-1.5" for="projectDetails">Project Details</label><textarea id="projectDetails" rows="3" class="w-full rounded-xl px-4 py-3 text-sm glass-sm resize-none" style="background:rgba(255,255,255,0.03);color:var(--text);border:1px solid rgba(255,255,255,0.08)" placeholder="Tell me about the campaign..."></textarea>
+      </div><button type="submit" class="w-full py-3.5 rounded-xl font-bold text-sm tracking-wide" style="background:linear-gradient(135deg,#c94cf6,#39e5a7);color:#fff">Send Inquiry ✨</button>
+      <div id="formSuccess" class="hidden text-center py-3 text-sm font-semibold" style="color:var(--secondary)">
+       ✓ Inquiry sent! I'll be in touch within 24 hours.
+      </div>
+     </form>
+     <p class="text-center text-xs mt-5 reveal" style="color:rgba(240,238,246,0.3)">Sample form — connect your own backend to go live</p>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 px-5 text-center" style="border-top:1px solid rgba(255,255,255,0.05)">
+    <p class="text-sm font-bold mb-2"><span style="color:var(--primary)">Collab</span><span style="color:var(--secondary)">Glow</span> <span style="color:rgba(240,238,246,0.3)">Kit</span></p>
+    <p class="text-xs" style="color:rgba(240,238,246,0.3)">Look brand-ready in one page. © 2025</p>
+   </footer>
+  </div>
+  <script>
+// === CONFIG & SDK ===
+const defaultConfig = {
+  hero_title: "Brands, meet your next best collab.",
+  hero_subtitle: "One page that sells your value.",
+  cta_primary: "Get Template + License",
+  cta_secondary: "View Packages",
+  stat_followers: "247K",
+  stat_views: "1.2M",
+  stat_engagement: "8.4%",
+  package_1_name: "Spark",
+  package_2_name: "Glow",
+  package_3_name: "Supernova",
+  book_heading: "Let's Create Magic Together",
+  background_color: "#0a0a0f",
+  surface_color: "rgba(255,255,255,0.05)",
+  text_color: "#f0eef6",
+  primary_color: "#c94cf6",
+  accent_color: "#39e5a7",
+  font_family: "Syne",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  const c = (k) => config[k] || defaultConfig[k];
+  const font = c('font_family');
+  const base = c('font_size');
+  const fontStack = `${font}, sans-serif`;
+
+  el('heroTitle').textContent = c('hero_title');
+  el('heroSubtitle').textContent = c('hero_subtitle');
+  el('ctaPrimary').textContent = c('cta_primary');
+  el('ctaSecondary').textContent = c('cta_secondary');
+  el('pkg1Name').textContent = c('package_1_name');
+  el('pkg2Name').textContent = c('package_2_name');
+  el('pkg3Name').textContent = c('package_3_name');
+  el('bookHeading').textContent = c('book_heading');
+
+  document.body.style.fontFamily = fontStack;
+  document.body.style.fontSize = base + 'px';
+  document.body.style.background = c('background_color');
+  document.body.style.color = c('text_color');
+
+  document.documentElement.style.setProperty('--bg', c('background_color'));
+  document.documentElement.style.setProperty('--text', c('text_color'));
+  document.documentElement.style.setProperty('--primary', c('primary_color'));
+  document.documentElement.style.setProperty('--secondary', c('accent_color'));
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const c = (k) => config[k] || defaultConfig[k];
+      const mkColor = (key) => ({
+        get: () => c(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [
+          mkColor('background_color'),
+          mkColor('surface_color'),
+          mkColor('text_color'),
+          mkColor('primary_color'),
+          mkColor('accent_color')
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c('font_family'),
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c('font_size'),
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = (k) => config[k] || defaultConfig[k];
+      return new Map([
+        ["hero_title", c('hero_title')],
+        ["hero_subtitle", c('hero_subtitle')],
+        ["cta_primary", c('cta_primary')],
+        ["cta_secondary", c('cta_secondary')],
+        ["stat_followers", c('stat_followers')],
+        ["stat_views", c('stat_views')],
+        ["stat_engagement", c('stat_engagement')],
+        ["package_1_name", c('package_1_name')],
+        ["package_2_name", c('package_2_name')],
+        ["package_3_name", c('package_3_name')],
+        ["book_heading", c('book_heading')]
+      ]);
+    }
+  });
+}
+
+// === SPARKLES ===
+(function(){
+  const container = document.getElementById('sparkles');
+  for(let i=0;i<30;i++){
+    const s = document.createElement('div');
+    s.className='sparkle-dot';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=Math.random()*4+'s';
+    s.style.animationDuration=(2+Math.random()*3)+'s';
+    container.appendChild(s);
+  }
+})();
+
+// === SCROLL REVEALS ===
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const delay = parseInt(e.target.dataset.delay||'0');
+      setTimeout(()=>e.target.classList.add('visible'), delay);
+    }
+  });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+// === ANIMATED COUNTERS ===
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !e.target.dataset.counted){
+      e.target.dataset.counted='true';
+      const target = parseInt(e.target.dataset.counter);
+      const suffix = e.target.dataset.suffix||'';
+      const isDecimal = e.target.dataset.decimal==='true';
+      let current = 0;
+      const step = Math.max(1, Math.floor(target/60));
+      const timer = setInterval(()=>{
+        current+=step;
+        if(current>=target){current=target;clearInterval(timer);e.target.style.animation='counter-pop 0.3s ease';}
+        if(isDecimal){
+          e.target.textContent=(current/10).toFixed(1)+suffix;
+        } else if(target>=1000){
+          e.target.textContent=(current/1000).toFixed(current>=target?1:0)+'M'.replace('M',suffix==='K'?'K':'M');
+          // simplified display
+          if(suffix==='K') e.target.textContent=current+suffix;
+        } else {
+          e.target.textContent=current+suffix;
+        }
+      },25);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('[data-counter]').forEach(el=>counterObserver.observe(el));
+
+// === NAV ACTIVE STATE ===
+const sections = ['home','stats','audience','packages','proof','book'];
+const navLinks = document.querySelectorAll('.nav-link');
+const sectionObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>{l.classList.toggle('active',l.dataset.section===e.target.id)});
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>{const el=document.getElementById(s);if(el)sectionObserver.observe(el);});
+
+// === MOBILE MENU ===
+document.getElementById('mobile-toggle').addEventListener('click',()=>{
+  const menu=document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');menu.classList.toggle('flex');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('mobile-menu').classList.add('hidden');
+  document.getElementById('mobile-menu').classList.remove('flex');
+}));
+
+// === TESTIMONIALS ===
+const testimonials = [
+  {text:"Working with this creator was a game-changer. Our campaign outperformed benchmarks by 340%. The content was authentic, creative, and drove real conversions.",author:"Sarah Kim",role:"Brand Partnerships @ Glossier",stars:5},
+  {text:"Incredible turnaround time and the analytics report was chef's kiss. We've booked three more campaigns already.",author:"Marcus Johnson",role:"Growth Lead @ Gymshark",stars:5},
+  {text:"The most professional creator we've worked with. Media kit was on point, deliverables exceeded expectations, and communication was flawless.",author:"Priya Patel",role:"Marketing Director @ Notion",stars:5}
+];
+let currentTestimonial = 0;
+function renderTestimonial(i){
+  const t=testimonials[i];
+  document.getElementById('testimonialText').textContent='"'+t.text+'"';
+  document.getElementById('testimonialAuthor').textContent=t.author;
+  document.getElementById('testimonialRole').textContent=t.role;
+  document.getElementById('testimonialStars').innerHTML=Array(t.stars).fill('<span style="color:#f6c94c">★</span>').join('');
+  const dots=document.getElementById('testimonialDots');
+  dots.innerHTML='';
+  testimonials.forEach((_,idx)=>{
+    const d=document.createElement('button');
+    d.className='w-2 h-2 rounded-full transition-all';
+    d.style.background=idx===i?'var(--primary)':'rgba(255,255,255,0.15)';
+    d.setAttribute('aria-label','Testimonial '+(idx+1));
+    d.addEventListener('click',()=>{currentTestimonial=idx;renderTestimonial(idx);});
+    dots.appendChild(d);
+  });
+}
+renderTestimonial(0);
+setInterval(()=>{currentTestimonial=(currentTestimonial+1)%testimonials.length;renderTestimonial(currentTestimonial);},5000);
+
+// === VOTE WIDGET ===
+document.querySelectorAll('#voteButtons .vote-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#voteButtons .vote-btn').forEach(b=>b.style.borderColor='rgba(255,255,255,0.06)');
+    btn.style.borderColor='var(--primary)';
+    document.getElementById('voteArea').querySelector('p').textContent='Signed in ✓';
+    setTimeout(()=>{
+      document.getElementById('priceArea').classList.remove('hidden');
+    },400);
+  });
+});
+const prices=[5,15,25,35,49,75,99,149,199,299];
+const priceContainer=document.getElementById('priceButtons');
+prices.forEach(p=>{
+  const b=document.createElement('button');
+  b.className='glass-sm px-2.5 py-1 text-xs rounded-lg transition-all';
+  b.textContent='$'+p;
+  b.addEventListener('click',()=>{
+    priceContainer.querySelectorAll('button').forEach(x=>x.style.borderColor='rgba(255,255,255,0.06)');
+    b.style.borderColor='var(--primary)';b.style.color='var(--primary)';
+  });
+  priceContainer.appendChild(b);
+});
+
+// === FORM ===
+document.getElementById('bookForm').addEventListener('submit',(e)=>{
+  e.preventDefault();
+  document.getElementById('formSuccess').classList.remove('hidden');
+  e.target.querySelector('button[type=submit]').textContent='Sent ✓';
+  e.target.querySelector('button[type=submit]').disabled=true;
+});
+
+// === INIT LUCIDE ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a65ef115b27c5',t:'MTc3NTU3OTIzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

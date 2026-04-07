@@ -1,1 +1,624 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/cf9a7ff9-0edf-44b9-b6cc-db894261fc24 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkyFest Poster Lab</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&amp;family=DM+Sans:wght@400;500;700&amp;family=Bangers&amp;display=swap" rel="stylesheet">
+  <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { font-family: 'DM Sans', sans-serif; }
+
+  @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+  @keyframes drift { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+  @keyframes popIn { 0%{opacity:0;transform:scale(.7) rotate(-3deg)} 100%{opacity:1;transform:scale(1) rotate(0)} }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  @keyframes sway { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+  @keyframes riseUp { 0%{opacity:0;transform:translateY(40px)} 100%{opacity:1;transform:translateY(0)} }
+
+  .anim-float { animation: floatUp 4s ease-in-out infinite; }
+  .anim-float-d1 { animation: floatUp 4.5s ease-in-out infinite .3s; }
+  .anim-float-d2 { animation: floatUp 5s ease-in-out infinite .6s; }
+  .anim-pop { animation: popIn .6s ease-out both; }
+  .anim-pop-d1 { animation: popIn .6s ease-out .15s both; }
+  .anim-pop-d2 { animation: popIn .6s ease-out .3s both; }
+  .anim-pop-d3 { animation: popIn .6s ease-out .45s both; }
+  .anim-pulse { animation: pulse 2s ease-in-out infinite; }
+  .anim-sway { animation: sway 3s ease-in-out infinite; }
+  .anim-rise { animation: riseUp .7s ease-out both; }
+  .anim-rise-d1 { animation: riseUp .7s ease-out .1s both; }
+  .anim-rise-d2 { animation: riseUp .7s ease-out .2s both; }
+  .anim-rise-d3 { animation: riseUp .7s ease-out .3s both; }
+
+  .marquee-track { display:flex; animation: marquee 20s linear infinite; width: max-content; }
+  .cloud-drift { animation: drift 30s linear infinite; position:absolute; opacity:.15; }
+  .cloud-drift-2 { animation: drift 45s linear infinite 10s; position:absolute; opacity:.1; }
+
+  .nav-link { position:relative; }
+  .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#FF6B35; transition:width .3s; }
+  .nav-link:hover::after { width:100%; }
+
+  .ticket-stub { border-right: 3px dashed rgba(255,255,255,.4); }
+  .badge { display:inline-block; padding: 4px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+  .poster-tile { transition: transform .3s, box-shadow .3s; cursor:pointer; }
+  .poster-tile:hover { transform: scale(1.04) rotate(1deg); box-shadow: 0 20px 40px rgba(0,0,0,.2); }
+
+  .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0B1628; }
+  ::-webkit-scrollbar-thumb { background: #FF6B35; border-radius: 4px; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sky0: '#0B1628',
+        sky1: '#1A2744',
+        accent: '#FF6B35',
+        sunny: '#FFD166',
+        kite: '#06D6A0',
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-sky0 text-white overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-sky0/90 backdrop-blur-md border-b border-white/10">
+   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2"> <span style="font-family:'Dela Gothic One',sans-serif" class="text-xl text-accent">SkyFest</span> <span class="text-white/70 text-sm font-medium">Poster Lab</span> </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="nav-link text-white/80 hover:text-white">Home</a> <a href="#posters" class="nav-link text-white/80 hover:text-white">Posters</a> <a href="#social-pack" class="nav-link text-white/80 hover:text-white">Social Pack</a> <a href="#preview" class="nav-link text-white/80 hover:text-white">Preview</a> <a href="#reviews" class="nav-link text-white/80 hover:text-white">Reviews</a> <a href="#download" class="nav-link text-white/80 hover:text-white">Download</a>
+    </div><button id="mobile-menu-btn" class="md:hidden text-white/80" aria-label="Menu"><i data-lucide="menu" style="width:24px;height:24px"></i></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-medium"><a href="#home" class="text-white/80 hover:text-white">Home</a> <a href="#posters" class="text-white/80 hover:text-white">Posters</a> <a href="#social-pack" class="text-white/80 hover:text-white">Social Pack</a> <a href="#preview" class="text-white/80 hover:text-white">Preview</a> <a href="#reviews" class="text-white/80 hover:text-white">Reviews</a> <a href="#download" class="text-white/80 hover:text-white">Download</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden pt-20" style="min-height:100%; background: linear-gradient(180deg, #0B1628 0%, #1A2744 30%, #2E4A7A 55%, #FF6B35 85%, #FFD166 100%);"><!-- Animated clouds -->
+   <div class="cloud-drift top-16 text-white" style="font-size:120px;">
+    ☁
+   </div>
+   <div class="cloud-drift-2 top-32 text-white" style="font-size:80px;">
+    ☁
+   </div>
+   <div class="cloud-drift top-48 text-white" style="font-size:60px; animation-duration:35s;">
+    ☁
+   </div><!-- Floating elements -->
+   <div class="absolute top-24 right-8 md:right-20 anim-float text-6xl md:text-8xl select-none" aria-hidden="true">
+    🪁
+   </div>
+   <div class="absolute top-40 left-6 md:left-16 anim-float-d1 text-5xl md:text-7xl select-none" aria-hidden="true">
+    🎈
+   </div>
+   <div class="absolute bottom-32 right-12 md:right-32 anim-float-d2 text-4xl md:text-6xl select-none" aria-hidden="true">
+    ✈️
+   </div>
+   <div class="absolute top-60 right-1/3 anim-sway text-4xl select-none hidden md:block" aria-hidden="true">
+    🎏
+   </div>
+   <div class="relative z-10 max-w-5xl mx-auto px-4 pt-16 md:pt-24 pb-12 text-center"><!-- Badges -->
+    <div class="flex flex-wrap justify-center gap-3 mb-6 anim-pop"><span class="badge bg-accent text-sky0">60 Posters</span> <span class="badge bg-sunny text-sky0">40 Story Templates</span> <span class="badge bg-kite text-sky0">20 Ticket Graphics</span>
+    </div>
+    <h1 id="hero-title" style="font-family:'Dela Gothic One',sans-serif; line-height:1.1" class="text-4xl sm:text-5xl md:text-7xl mb-5 anim-pop-d1">Make flyers people<br>
+     actually screenshot.</h1>
+    <p id="hero-subtitle" class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8 anim-pop-d2">Posters + social templates for sky lovers and events.</p>
+    <div class="flex flex-wrap justify-center gap-4 mb-12 anim-pop-d3"><a href="#download" id="cta-primary-btn" class="anim-pulse inline-flex items-center gap-2 bg-accent hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-full text-lg transition-colors shadow-lg shadow-accent/30"> <i data-lucide="download" style="width:20px;height:20px"></i> <span id="cta-primary-text">Get the Poster Lab</span> </a> <a href="#preview" id="cta-secondary-btn" class="inline-flex items-center gap-2 border-2 border-white/40 hover:border-white text-white font-bold px-8 py-4 rounded-full text-lg transition-colors"> <i data-lucide="eye" style="width:20px;height:20px"></i> <span id="cta-secondary-text">See Previews</span> </a>
+    </div><!-- VOTE + COMMENT MODULE -->
+    <div class="bg-sky0/60 backdrop-blur-lg rounded-2xl border border-white/10 p-5 md:p-8 max-w-2xl mx-auto text-left anim-rise">
+     <div class="flex items-center justify-between mb-4">
+      <h3 style="font-family:'Bangers',cursive; letter-spacing:1px" class="text-2xl text-sunny">🗳️ Vote the Coolest Theme</h3><span class="badge bg-white/10 text-white/60 text-xs">Embed Widget Here</span>
+     </div><!-- Sign In -->
+     <div id="vote-signin" class="mb-5"><label class="text-sm text-white/60 mb-1 block" for="vote-username">Enter a display name to vote &amp; comment:</label>
+      <div class="flex gap-2"><input id="vote-username" type="text" placeholder="Your name" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-accent text-sm"> <button id="vote-signin-btn" class="bg-accent hover:bg-orange-600 text-white font-bold px-5 py-2 rounded-lg text-sm transition-colors">Join</button>
+      </div>
+     </div>
+     <div id="vote-signedin" class="hidden mb-4 flex items-center gap-2 text-sm text-white/70"><i data-lucide="user" style="width:16px;height:16px"></i> <span>Signed in as <strong id="vote-display-name" class="text-white"></strong></span> <button id="vote-signout-btn" class="ml-auto text-accent hover:underline text-xs">Sign out</button>
+     </div><!-- Theme voting -->
+     <div class="grid grid-cols-3 gap-3 mb-5" id="theme-votes"><button data-theme="planes" class="theme-vote-btn group bg-sky1 hover:bg-sky1/80 border border-white/10 rounded-xl p-4 text-center transition-all">
+       <div class="text-3xl mb-1">
+        ✈️
+       </div>
+       <div class="font-bold text-sm">
+        Planes
+       </div>
+       <div class="text-accent text-xs font-bold mt-1" id="vote-count-planes">
+        0 votes
+       </div></button> <button data-theme="kites" class="theme-vote-btn group bg-sky1 hover:bg-sky1/80 border border-white/10 rounded-xl p-4 text-center transition-all">
+       <div class="text-3xl mb-1">
+        🪁
+       </div>
+       <div class="font-bold text-sm">
+        Kites
+       </div>
+       <div class="text-kite text-xs font-bold mt-1" id="vote-count-kites">
+        0 votes
+       </div></button> <button data-theme="balloons" class="theme-vote-btn group bg-sky1 hover:bg-sky1/80 border border-white/10 rounded-xl p-4 text-center transition-all">
+       <div class="text-3xl mb-1">
+        🎈
+       </div>
+       <div class="font-bold text-sm">
+        Balloons
+       </div>
+       <div class="text-sunny text-xs font-bold mt-1" id="vote-count-balloons">
+        0 votes
+       </div></button>
+     </div><!-- Reactions -->
+     <div class="flex gap-2 mb-5 flex-wrap"><span class="text-xs text-white/50 self-center mr-1">React:</span> <button data-reaction="🔥" class="react-btn bg-white/5 hover:bg-white/15 rounded-full px-3 py-1 text-sm transition-colors"><span>🔥</span> <span class="react-count">0</span></button> <button data-reaction="😍" class="react-btn bg-white/5 hover:bg-white/15 rounded-full px-3 py-1 text-sm transition-colors"><span>😍</span> <span class="react-count">0</span></button> <button data-reaction="🚀" class="react-btn bg-white/5 hover:bg-white/15 rounded-full px-3 py-1 text-sm transition-colors"><span>🚀</span> <span class="react-count">0</span></button> <button data-reaction="💯" class="react-btn bg-white/5 hover:bg-white/15 rounded-full px-3 py-1 text-sm transition-colors"><span>💯</span> <span class="react-count">0</span></button> <button data-reaction="✨" class="react-btn bg-white/5 hover:bg-white/15 rounded-full px-3 py-1 text-sm transition-colors"><span>✨</span> <span class="react-count">0</span></button>
+     </div><!-- Price vote -->
+     <div class="mb-5">
+      <p class="text-sm text-white/60 mb-2">What would you pay? 💰</p>
+      <div class="flex flex-wrap gap-2" id="price-votes"><button data-price="$5" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$5 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$9" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$9 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$15" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$15 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$19" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$19 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$25" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$25 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$29" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$29 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$35" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$35 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$39" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$39 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$45" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$45 <span class="price-count text-white/40 text-xs">(0)</span></button> <button data-price="$49" class="price-btn bg-white/5 hover:bg-accent/30 border border-white/10 rounded-lg px-3 py-1 text-sm transition-colors">$49 <span class="price-count text-white/40 text-xs">(0)</span></button>
+      </div>
+     </div><!-- Comment -->
+     <div id="comment-section" class="hidden">
+      <div class="flex gap-2 mb-3"><input id="comment-input" type="text" placeholder="Share your thoughts…" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-accent text-sm"> <button id="comment-submit" class="bg-kite hover:bg-emerald-600 text-sky0 font-bold px-4 py-2 rounded-lg text-sm transition-colors">Post</button>
+      </div>
+      <div id="comments-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
+     </div>
+     <div id="vote-toast" class="hidden mt-3 bg-kite/20 border border-kite/30 text-kite text-sm px-4 py-2 rounded-lg text-center"></div>
+    </div>
+   </div>
+  </section><!-- Marquee -->
+  <div class="w-full bg-accent py-3 overflow-hidden">
+   <div class="marquee-track"><span style="font-family:'Bangers',cursive; letter-spacing:2px" class="text-sky0 text-lg whitespace-nowrap mx-8">✈️ 60 EDITABLE POSTERS • 🪁 40 SOCIAL TEMPLATES • 🎈 20 TICKET GRAPHICS • 📋 EVENT PROMO COPY PACK • ✈️ PERFECT FOR LOCAL EVENTS • 🎯 TEMPLATE RESELLERS CAN NICHE DOWN • 🔥 VIBRANT VISUALS CONVERT •&nbsp;</span> <span style="font-family:'Bangers',cursive; letter-spacing:2px" class="text-sky0 text-lg whitespace-nowrap mx-8">✈️ 60 EDITABLE POSTERS • 🪁 40 SOCIAL TEMPLATES • 🎈 20 TICKET GRAPHICS • 📋 EVENT PROMO COPY PACK • ✈️ PERFECT FOR LOCAL EVENTS • 🎯 TEMPLATE RESELLERS CAN NICHE DOWN • 🔥 VIBRANT VISUALS CONVERT •&nbsp;</span>
+   </div>
+  </div><!-- POSTERS SECTION -->
+  <section id="posters" class="w-full py-20 px-4" style="background: linear-gradient(180deg, #1A2744 0%, #0B1628 100%);">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 scroll-reveal"><span class="badge bg-accent/20 text-accent mb-4">Poster Collection</span>
+     <h2 style="font-family:'Dela Gothic One',sans-serif" class="text-3xl md:text-5xl mb-3">3 Themed Sets, Infinite Vibes</h2>
+     <p class="text-white/60 max-w-xl mx-auto">Each set is fully editable. Drag, drop, rebrand. Done.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8"><!-- Planes -->
+     <div class="scroll-reveal poster-tile rounded-2xl overflow-hidden border border-white/10">
+      <div class="h-56 relative overflow-hidden" style="background: linear-gradient(135deg, #1A2744, #2E4A7A);">
+       <div class="absolute inset-0 flex items-center justify-center"><span class="text-8xl anim-float">✈️</span>
+       </div>
+       <div class="absolute top-3 left-3 badge bg-sky0/80 text-white text-xs">
+        20 Posters
+       </div>
+      </div>
+      <div class="p-5 bg-sky1">
+       <h3 style="font-family:'Bangers',cursive" class="text-2xl text-accent mb-1">Planes Pack</h3>
+       <p class="text-white/60 text-sm">Airshow flyers, jet formations, vintage prop planes. Bold type + runway energy.</p>
+      </div>
+     </div><!-- Kites -->
+     <div class="scroll-reveal poster-tile rounded-2xl overflow-hidden border border-white/10">
+      <div class="h-56 relative overflow-hidden" style="background: linear-gradient(135deg, #06D6A0, #048A65);">
+       <div class="absolute inset-0 flex items-center justify-center"><span class="text-8xl anim-sway">🪁</span>
+       </div>
+       <div class="absolute top-3 left-3 badge bg-sky0/80 text-white text-xs">
+        20 Posters
+       </div>
+      </div>
+      <div class="p-5 bg-sky1">
+       <h3 style="font-family:'Bangers',cursive" class="text-2xl text-kite mb-1">Kites Pack</h3>
+       <p class="text-white/60 text-sm">Festival banners, tangled strings, colorful diamond kites. Playful, whimsical design.</p>
+      </div>
+     </div><!-- Balloons -->
+     <div class="scroll-reveal poster-tile rounded-2xl overflow-hidden border border-white/10">
+      <div class="h-56 relative overflow-hidden" style="background: linear-gradient(135deg, #FFD166, #FF6B35);">
+       <div class="absolute inset-0 flex items-center justify-center"><span class="text-8xl anim-float-d2">🎈</span>
+       </div>
+       <div class="absolute top-3 left-3 badge bg-sky0/80 text-white text-xs">
+        20 Posters
+       </div>
+      </div>
+      <div class="p-5 bg-sky1">
+       <h3 style="font-family:'Bangers',cursive" class="text-2xl text-sunny mb-1">Balloons Pack</h3>
+       <p class="text-white/60 text-sm">Hot air balloon rides, festival floats, sunset launches. Warm, joyful, and dreamy.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- SOCIAL PACK -->
+  <section id="social-pack" class="w-full py-20 px-4 bg-sky0">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 scroll-reveal"><span class="badge bg-kite/20 text-kite mb-4">Social Story Pack</span>
+     <h2 style="font-family:'Dela Gothic One',sans-serif" class="text-3xl md:text-5xl mb-3">40 Story Templates</h2>
+     <p class="text-white/60 max-w-xl mx-auto">Instagram-ready. Tap, edit, post. Watch engagement take flight.</p>
+    </div>
+    <div class="flex gap-5 justify-center flex-wrap">
+     <div class="scroll-reveal w-36 md:w-44 h-64 md:h-80 rounded-2xl border-2 border-white/10 overflow-hidden poster-tile anim-rise" style="background: linear-gradient(180deg, #2E4A7A, #FF6B35);">
+      <div class="h-full flex flex-col items-center justify-center p-4 text-center"><span class="text-5xl mb-3">✈️</span>
+       <div style="font-family:'Bangers',cursive" class="text-lg text-white">
+        AIRSHOW<br>
+        2025
+       </div>
+       <div class="text-[10px] text-white/50 mt-2">
+        Story Template
+       </div>
+      </div>
+     </div>
+     <div class="scroll-reveal w-36 md:w-44 h-64 md:h-80 rounded-2xl border-2 border-white/10 overflow-hidden poster-tile anim-rise-d1" style="background: linear-gradient(180deg, #06D6A0, #1A2744);">
+      <div class="h-full flex flex-col items-center justify-center p-4 text-center"><span class="text-5xl mb-3">🪁</span>
+       <div style="font-family:'Bangers',cursive" class="text-lg text-white">
+        KITE<br>
+        FEST
+       </div>
+       <div class="text-[10px] text-white/50 mt-2">
+        Story Template
+       </div>
+      </div>
+     </div>
+     <div class="scroll-reveal w-36 md:w-44 h-64 md:h-80 rounded-2xl border-2 border-white/10 overflow-hidden poster-tile anim-rise-d2" style="background: linear-gradient(180deg, #FFD166, #FF6B35);">
+      <div class="h-full flex flex-col items-center justify-center p-4 text-center"><span class="text-5xl mb-3">🎈</span>
+       <div style="font-family:'Bangers',cursive" class="text-lg text-sky0">
+        BALLOON<br>
+        RIDE
+       </div>
+       <div class="text-[10px] text-sky0/50 mt-2">
+        Story Template
+       </div>
+      </div>
+     </div>
+     <div class="scroll-reveal w-36 md:w-44 h-64 md:h-80 rounded-2xl border-2 border-white/10 overflow-hidden poster-tile anim-rise-d3" style="background: linear-gradient(180deg, #0B1628, #2E4A7A);">
+      <div class="h-full flex flex-col items-center justify-center p-4 text-center"><span class="text-5xl mb-3">🌅</span>
+       <div style="font-family:'Bangers',cursive" class="text-lg text-accent">
+        SUNSET<br>
+        FLIGHT
+       </div>
+       <div class="text-[10px] text-white/50 mt-2">
+        Story Template
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PREVIEW -->
+  <section id="preview" class="w-full py-20 px-4" style="background: linear-gradient(180deg, #0B1628 0%, #1A2744 100%);">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 scroll-reveal"><span class="badge bg-sunny/20 text-sunny mb-4">Full Preview</span>
+     <h2 style="font-family:'Dela Gothic One',sans-serif" class="text-3xl md:text-5xl mb-3">12 Poster Mockups</h2>
+     <p class="text-white/60">Every poster looks print-ready and social-feed perfect.</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="preview-grid"></div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-20 px-4 bg-sky0">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 scroll-reveal"><span class="badge bg-accent/20 text-accent mb-4">Reviews</span>
+     <h2 style="font-family:'Dela Gothic One',sans-serif" class="text-3xl md:text-5xl mb-3">What People Say</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+     <div class="scroll-reveal bg-sky1 border border-white/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3 text-sunny">
+       ★★★★★
+      </div>
+      <p class="text-white/80 text-sm mb-4">"Used the Planes pack for our local airshow. Sold out in 3 days. The posters did the heavy lifting."</p>
+      <div class="text-xs text-white/50">
+       — Marcus T., Event Organizer
+      </div>
+     </div>
+     <div class="scroll-reveal bg-sky1 border border-white/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3 text-sunny">
+       ★★★★★
+      </div>
+      <p class="text-white/80 text-sm mb-4">"I resell templates on Etsy. This niche kit outsells my general packs 3:1. Sky events are underserved."</p>
+      <div class="text-xs text-white/50">
+       — Priya K., Template Reseller
+      </div>
+     </div>
+     <div class="scroll-reveal bg-sky1 border border-white/10 rounded-2xl p-6">
+      <div class="flex gap-1 mb-3 text-sunny">
+       ★★★★★
+      </div>
+      <p class="text-white/80 text-sm mb-4">"The ticket graphics alone are worth it. Printed them for our kite festival and people kept them as souvenirs."</p>
+      <div class="text-xs text-white/50">
+       — Leah W., Festival Director
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA / DOWNLOAD -->
+  <section id="download" class="w-full py-24 px-4 relative overflow-hidden" style="background: linear-gradient(180deg, #1A2744 0%, #FF6B35 50%, #FFD166 100%);">
+   <div class="absolute top-10 left-10 text-7xl anim-float select-none opacity-30" aria-hidden="true">
+    🎈
+   </div>
+   <div class="absolute top-20 right-16 text-6xl anim-sway select-none opacity-30" aria-hidden="true">
+    🪁
+   </div>
+   <div class="absolute bottom-10 left-1/3 text-5xl anim-float-d1 select-none opacity-30" aria-hidden="true">
+    ✈️
+   </div>
+   <div class="relative z-10 max-w-3xl mx-auto text-center scroll-reveal">
+    <h2 id="bottom-cta-title" style="font-family:'Dela Gothic One',sans-serif; line-height:1.1" class="text-4xl md:text-6xl mb-6 text-sky0">Turn the sky into your brand.</h2>
+    <p class="text-sky0/70 text-lg mb-8">60 posters. 40 stories. 20 tickets. 1 promo copy pack. Zero excuses.</p><!-- Ticket stub style pricing -->
+    <div class="inline-flex bg-sky0 rounded-2xl overflow-hidden border-2 border-sky0 shadow-2xl mb-8">
+     <div class="ticket-stub px-6 md:px-10 py-6 text-left">
+      <div class="text-xs text-white/50 uppercase tracking-widest mb-1">
+       SkyFest Poster Lab
+      </div>
+      <div style="font-family:'Bangers',cursive" class="text-4xl text-accent">
+       $29
+      </div>
+      <div class="text-xs text-white/40 mt-1">
+       One-time purchase
+      </div>
+     </div>
+     <div class="px-6 md:px-10 py-6 flex flex-col justify-center">
+      <div class="text-xs text-white/50 mb-2">
+       INCLUDES
+      </div>
+      <div class="text-sm text-white/80 space-y-1">
+       <div>
+        ✈️ 60 Posters
+       </div>
+       <div>
+        📱 40 Stories
+       </div>
+       <div>
+        🎫 20 Tickets
+       </div>
+       <div>
+        📋 Promo Copy
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="block"><a href="#" onclick="event.preventDefault()" class="anim-pulse inline-flex items-center gap-2 bg-sky0 hover:bg-sky1 text-accent font-bold px-10 py-5 rounded-full text-xl transition-colors shadow-2xl"> <i data-lucide="download" style="width:24px;height:24px"></i> Download Now </a>
+    </div>
+    <p class="text-sky0/50 text-sm mt-4">Instant download • Editable in Canva • Commercial license included</p>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full bg-sky0 border-t border-white/10 py-8 px-4 text-center">
+   <p style="font-family:'Dela Gothic One',sans-serif" class="text-accent text-lg mb-2">SkyFest Poster Lab</p>
+   <p class="text-white/40 text-sm">Airshow energy, printable design magic. ✈️🪁🎈</p>
+  </footer>
+  <script>
+// ============ CONFIG & SDK ============
+const defaultConfig = {
+  hero_title: 'Make flyers people<br>actually screenshot.',
+  hero_subtitle: 'Posters + social templates for sky lovers and events.',
+  cta_primary: 'Get the Poster Lab',
+  cta_secondary: 'See Previews',
+  bottom_cta_title: 'Turn the sky into your brand.',
+  background_color: '#0B1628',
+  surface_color: '#1A2744',
+  text_color: '#FFFFFF',
+  primary_action_color: '#FF6B35',
+  secondary_action_color: '#06D6A0',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+let currentUser = null;
+let allData = [];
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  const c = (k) => config[k] || defaultConfig[k];
+
+  el('hero-title').innerHTML = c('hero_title');
+  el('hero-subtitle').textContent = c('hero_subtitle');
+  el('cta-primary-text').textContent = c('cta_primary');
+  el('cta-secondary-text').textContent = c('cta_secondary');
+  el('bottom-cta-title').textContent = c('bottom_cta_title');
+
+  document.body.style.fontFamily = `${c('font_family')}, DM Sans, sans-serif`;
+  const bs = c('font_size');
+  document.querySelectorAll('p, span, div, a, button, input, label').forEach(e => {
+    if (!e.closest('[style*="font-family:\'Dela Gothic One"]') && !e.closest('[style*="font-family:\'Bangers"]')) {
+      // Don't override special fonts
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }},
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }},
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+  ])
+});
+
+// ============ DATA SDK ============
+function updateVoteCounts() {
+  const votes = allData.filter(d => d.type === 'vote');
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const prices = allData.filter(d => d.type === 'price');
+  const comments = allData.filter(d => d.type === 'comment');
+
+  ['planes','kites','balloons'].forEach(t => {
+    const ct = votes.filter(v => v.theme === t).length;
+    const el = document.getElementById('vote-count-' + t);
+    if (el) el.textContent = ct + ' vote' + (ct !== 1 ? 's' : '');
+  });
+
+  document.querySelectorAll('.react-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    const ct = reactions.filter(d => d.reaction === r).length;
+    btn.querySelector('.react-count').textContent = ct;
+  });
+
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    const p = btn.dataset.price;
+    const ct = prices.filter(d => d.price === p).length;
+    btn.querySelector('.price-count').textContent = '(' + ct + ')';
+  });
+
+  const list = document.getElementById('comments-list');
+  const existingIds = new Set([...list.children].map(el => el.dataset.id));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  // Remove deleted
+  [...list.children].forEach(el => { if (!newIds.has(el.dataset.id)) el.remove(); });
+
+  comments.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.className = 'bg-white/5 rounded-lg px-3 py-2 text-sm';
+    div.innerHTML = `<strong class="text-accent">${escapeHtml(c.username)}</strong> <span class="text-white/70">${escapeHtml(c.comment)}</span>`;
+    list.prepend(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('vote-toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), 2500);
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateVoteCounts();
+  }
+};
+
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+
+// ============ VOTE INTERACTIONS ============
+document.getElementById('vote-signin-btn').addEventListener('click', () => {
+  const name = document.getElementById('vote-username').value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('vote-display-name').textContent = name;
+  document.getElementById('vote-signin').classList.add('hidden');
+  document.getElementById('vote-signedin').classList.remove('hidden');
+  document.getElementById('comment-section').classList.remove('hidden');
+});
+
+document.getElementById('vote-signout-btn').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('vote-signin').classList.remove('hidden');
+  document.getElementById('vote-signedin').classList.add('hidden');
+  document.getElementById('comment-section').classList.add('hidden');
+  document.getElementById('vote-username').value = '';
+});
+
+document.querySelectorAll('.theme-vote-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!currentUser) { showToast('Please sign in first!'); return; }
+    if (allData.length >= 999) { showToast('Vote limit reached!'); return; }
+    btn.disabled = true;
+    const r = await window.dataSdk.create({ type: 'vote', theme: btn.dataset.theme, username: currentUser, comment: '', price: '', reaction: '', created_at: new Date().toISOString() });
+    btn.disabled = false;
+    if (r.isOk) showToast('Voted for ' + btn.dataset.theme + '!');
+    else showToast('Error voting. Try again.');
+  });
+});
+
+document.querySelectorAll('.react-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!currentUser) { showToast('Please sign in first!'); return; }
+    if (allData.length >= 999) { showToast('Reaction limit reached!'); return; }
+    btn.disabled = true;
+    const r = await window.dataSdk.create({ type: 'reaction', reaction: btn.dataset.reaction, username: currentUser, theme: '', comment: '', price: '', created_at: new Date().toISOString() });
+    btn.disabled = false;
+    if (!r.isOk) showToast('Error reacting.');
+  });
+});
+
+document.querySelectorAll('.price-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!currentUser) { showToast('Please sign in first!'); return; }
+    if (allData.length >= 999) { showToast('Price vote limit reached!'); return; }
+    btn.disabled = true;
+    const r = await window.dataSdk.create({ type: 'price', price: btn.dataset.price, username: currentUser, theme: '', comment: '', reaction: '', created_at: new Date().toISOString() });
+    btn.disabled = false;
+    if (r.isOk) showToast('Price vote recorded!');
+    else showToast('Error. Try again.');
+  });
+});
+
+document.getElementById('comment-submit').addEventListener('click', async () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || !currentUser) return;
+  if (allData.length >= 999) { showToast('Comment limit reached!'); return; }
+  document.getElementById('comment-submit').disabled = true;
+  const r = await window.dataSdk.create({ type: 'comment', comment: text, username: currentUser, theme: '', price: '', reaction: '', created_at: new Date().toISOString() });
+  document.getElementById('comment-submit').disabled = false;
+  if (r.isOk) input.value = '';
+  else showToast('Error posting comment.');
+});
+
+// ============ PREVIEW GRID ============
+const previewData = [
+  { emoji:'✈️', bg:'linear-gradient(135deg,#2E4A7A,#0B1628)', label:'Airshow Night' },
+  { emoji:'🪁', bg:'linear-gradient(135deg,#06D6A0,#048A65)', label:'Kite Carnival' },
+  { emoji:'🎈', bg:'linear-gradient(135deg,#FFD166,#FF6B35)', label:'Balloon Sunrise' },
+  { emoji:'✈️', bg:'linear-gradient(135deg,#FF6B35,#1A2744)', label:'Jet Formation' },
+  { emoji:'🌅', bg:'linear-gradient(135deg,#FF6B35,#FFD166)', label:'Golden Hour' },
+  { emoji:'🪁', bg:'linear-gradient(135deg,#1A2744,#06D6A0)', label:'Wind Dancer' },
+  { emoji:'🎈', bg:'linear-gradient(135deg,#FF6B35,#0B1628)', label:'Night Glow' },
+  { emoji:'✈️', bg:'linear-gradient(135deg,#0B1628,#2E4A7A)', label:'Vintage Prop' },
+  { emoji:'🪁', bg:'linear-gradient(135deg,#FFD166,#06D6A0)', label:'Rainbow Kites' },
+  { emoji:'🎈', bg:'linear-gradient(135deg,#2E4A7A,#FFD166)', label:'Festival Float' },
+  { emoji:'✈️', bg:'linear-gradient(135deg,#1A2744,#FF6B35)', label:'Sky Patrol' },
+  { emoji:'🎏', bg:'linear-gradient(135deg,#06D6A0,#FFD166)', label:'Windsock Party' },
+];
+const pg = document.getElementById('preview-grid');
+previewData.forEach((p, i) => {
+  const d = document.createElement('div');
+  d.className = 'scroll-reveal poster-tile rounded-xl overflow-hidden border border-white/10 aspect-[3/4] flex flex-col items-center justify-center text-center p-3';
+  d.style.background = p.bg;
+  d.style.animationDelay = (i * 0.08) + 's';
+  d.innerHTML = `<span class="text-5xl mb-2">${p.emoji}</span><div style="font-family:'Bangers',cursive" class="text-base text-white">${p.label}</div><div class="text-[9px] text-white/40 mt-1">Editable Template</div>`;
+  pg.appendChild(d);
+});
+
+// ============ MOBILE MENU ============
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ============ SCROLL REVEAL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// ============ LUCIDE ============
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a696c142127c5',t:'MTc3NTU3OTM3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

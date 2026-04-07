@@ -1,1 +1,578 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/8d8016ae-06e5-43f7-912f-91d0df94295e -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeKit Party Lab</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Outfit',sans-serif}
+
+/* Confetti */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti-piece{position:absolute;top:-20px;width:10px;height:10px;opacity:.85;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(120%) rotate(720deg) scale(.3);opacity:0}}
+
+/* Floating shapes */
+.float-shape{position:absolute;border-radius:50%;opacity:.12;animation:floatAround 8s ease-in-out infinite}
+@keyframes floatAround{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-30px) rotate(180deg)}}
+
+/* Vibe cards */
+.vibe-card{transition:all .4s cubic-bezier(.175,.885,.32,1.275);cursor:pointer;position:relative;overflow:hidden}
+.vibe-card:hover{transform:translateY(-12px) scale(1.04);box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.vibe-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
+.vibe-card .card-emoji{transition:transform .4s cubic-bezier(.175,.885,.32,1.275);display:inline-block}
+.vibe-card:hover .card-emoji{transform:scale(1.3) rotate(-10deg)}
+
+/* Shimmer */
+.shimmer{position:relative;overflow:hidden}
+.shimmer::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);animation:shimmerSlide 3s infinite}
+@keyframes shimmerSlide{0%{left:-100%}100%{left:200%}}
+
+/* Pulse ring */
+.pulse-ring{animation:pulseRing 2s ease-out infinite}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(255,107,107,.5)}70%{box-shadow:0 0 0 15px rgba(255,107,107,0)}100%{box-shadow:0 0 0 0 rgba(255,107,107,0)}}
+
+/* Check animation */
+.check-item{opacity:0;transform:translateX(-20px);animation:checkSlide .5s ease forwards}
+@keyframes checkSlide{to{opacity:1;transform:translateX(0)}}
+
+/* Stagger */
+.stagger-1{animation-delay:.1s}.stagger-2{animation-delay:.2s}.stagger-3{animation-delay:.3s}.stagger-4{animation-delay:.4s}
+.stagger-5{animation-delay:.5s}.stagger-6{animation-delay:.6s}.stagger-7{animation-delay:.7s}.stagger-8{animation-delay:.8s}
+
+/* Nav */
+.nav-link{position:relative;transition:color .3s}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;transition:width .3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+
+/* Vote btn */
+.vote-btn{transition:all .25s ease}
+.vote-btn:hover{transform:scale(1.15)}
+.vote-btn.voted{animation:popIn .3s ease}
+@keyframes popIn{0%{transform:scale(.8)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+/* Bounce CTA */
+.bounce-cta{animation:gentleBounce 2.5s ease-in-out infinite}
+@keyframes gentleBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* Mockup float */
+.mockup-card{animation:mockupFloat 4s ease-in-out infinite}
+@keyframes mockupFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.mockup-card:nth-child(2){animation-delay:.5s}
+.mockup-card:nth-child(3){animation-delay:1s}
+.mockup-card:nth-child(4){animation-delay:1.5s}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);opacity:0;transition:all .4s ease;z-index:10000;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* Section reveal */
+.reveal-section{opacity:0;transform:translateY(40px);transition:all .7s ease}
+.reveal-section.visible{opacity:1;transform:translateY(0)}
+
+/* Inline confirm */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9998}
+
+/* Star */
+.star-rating span{cursor:pointer;transition:transform .2s}
+.star-rating span:hover{transform:scale(1.3)}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:3px}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{
+bg:'var(--c-bg)',surface:'var(--c-surface)',txt:'var(--c-txt)',primary:'var(--c-primary)',secondary:'var(--c-secondary)'
+}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto" style="--c-bg:#0d0221;--c-surface:#1a0a3e;--c-txt:#f0e6ff;--c-primary:#ff6b6b;--c-secondary:#ffd93d"><!-- Confetti container -->
+   <div class="confetti-container" id="confettiContainer"></div><!-- Toast -->
+   <div class="toast rounded-2xl px-6 py-3 text-sm font-bold shadow-2xl" id="toast" style="background:var(--c-primary);color:#fff"></div><!-- Floating shapes bg -->
+   <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div class="float-shape w-64 h-64 top-[10%] left-[5%]" style="background:var(--c-primary)"></div>
+    <div class="float-shape w-48 h-48 top-[60%] right-[10%]" style="background:var(--c-secondary);animation-delay:2s"></div>
+    <div class="float-shape w-32 h-32 top-[30%] right-[30%]" style="background:#a855f7;animation-delay:4s"></div>
+    <div class="float-shape w-56 h-56 bottom-[5%] left-[40%]" style="background:var(--c-primary);animation-delay:6s"></div>
+   </div><!-- STICKY NAV -->
+   <nav class="sticky top-0 z-50 backdrop-blur-xl border-b" id="mainNav" style="background:rgba(13,2,33,.85);border-color:rgba(255,255,255,.08)">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 font-black text-lg" style="color:var(--c-primary)"> <span style="font-size:1.4rem">🎉</span><span id="navBrand">VibeKit</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-semibold" style="color:var(--c-txt)"><a href="#home" class="nav-link" style="--c:var(--c-primary)">Home</a> <a href="#vibes" class="nav-link" style="--c:var(--c-primary)">Pick a Vibe</a> <a href="#included" class="nav-link" style="--c:var(--c-primary)">What's Included</a> <a href="#preview" class="nav-link" style="--c:var(--c-primary)">Preview</a> <a href="#reviews" class="nav-link" style="--c:var(--c-primary)">Reviews</a> <a href="#download" class="nav-link" style="--c:var(--c-primary)">Download</a>
+     </div><button id="mobileMenuBtn" class="md:hidden p-2" style="color:var(--c-txt)"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
+    </div><!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-semibold" style="color:var(--c-txt)"><a href="#home" class="nav-link py-1">Home</a> <a href="#vibes" class="nav-link py-1">Pick a Vibe</a> <a href="#included" class="nav-link py-1">What's Included</a> <a href="#preview" class="nav-link py-1">Preview</a> <a href="#reviews" class="nav-link py-1">Reviews</a> <a href="#download" class="nav-link py-1">Download</a>
+    </div>
+   </nav><!-- ==================== HERO ==================== -->
+   <section id="home" class="relative min-h-[90%] flex items-center justify-center px-4 py-20">
+    <div class="relative z-10 text-center max-w-4xl mx-auto">
+     <div class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider mb-6 shimmer" style="background:rgba(255,107,107,.15);color:var(--c-primary);border:1px solid rgba(255,107,107,.3)">
+      ✨ 12 THEMES · 200+ ASSETS · INSTANT DOWNLOAD
+     </div>
+     <h1 id="heroTitle" class="text-4xl sm:text-5xl md:text-7xl font-black leading-tight mb-4" style="color:var(--c-txt)">Your party is a vibe.<br><span style="background:linear-gradient(135deg,var(--c-primary),var(--c-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Build it in seconds.</span></h1>
+     <p id="heroSub" class="text-lg md:text-xl mb-8 max-w-xl mx-auto" style="color:rgba(240,230,255,.65)">A full matching party pack, instantly.</p>
+     <div class="flex flex-wrap gap-4 justify-center mb-12"><a href="#vibes" id="ctaPrimary" class="bounce-cta inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-extrabold text-lg shadow-lg shadow-red-500/30 shimmer" style="background:linear-gradient(135deg,var(--c-primary),#ff8e53);color:#fff"> <i data-lucide="sparkles" style="width:20px;height:20px"></i> Pick a Vibe </a> <a href="#included" id="ctaSecondary" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-extrabold text-lg border-2" style="border-color:var(--c-secondary);color:var(--c-secondary)"> <i data-lucide="package" style="width:20px;height:20px"></i> See What's Inside </a>
+     </div><!-- VOTE MODULE -->
+     <div class="rounded-3xl p-6 md:p-8 max-w-2xl mx-auto text-left" style="background:rgba(26,10,62,.8);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(20px)">
+      <div class="flex items-center gap-3 mb-5"><span class="text-2xl">🗳️</span>
+       <h3 class="font-extrabold text-xl" style="color:var(--c-txt)">Vote the Best Vibe</h3>
+      </div><!-- Sign-in -->
+      <div id="signInArea">
+       <p class="text-sm mb-3" style="color:rgba(240,230,255,.5)">Enter a display name to vote &amp; comment</p>
+       <div class="flex gap-2"><input id="usernameInput" type="text" placeholder="Your name" maxlength="30" class="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold outline-none" style="background:rgba(255,255,255,.08);color:var(--c-txt);border:1px solid rgba(255,255,255,.1)"> <button id="signInBtn" class="px-5 py-2.5 rounded-xl font-bold text-sm" style="background:var(--c-primary);color:#fff">Join</button>
+       </div>
+      </div><!-- Voting area (hidden until signed in) -->
+      <div id="votingArea" class="hidden">
+       <p class="text-xs mb-3 font-semibold" style="color:rgba(240,230,255,.4)">Signed in as <span id="displayUsername" class="font-bold" style="color:var(--c-secondary)"></span></p><!-- Reaction row -->
+       <div class="flex flex-wrap gap-2 mb-4" id="reactionRow"></div><!-- Price vote -->
+       <div class="mb-4">
+        <p class="text-sm font-bold mb-2" style="color:var(--c-txt)">💰 What would you pay?</p>
+        <div class="flex flex-wrap gap-2" id="priceRow"></div>
+       </div><!-- Comment -->
+       <div class="flex gap-2 mb-4"><input id="commentInput" type="text" placeholder="Leave a comment..." maxlength="200" class="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none" style="background:rgba(255,255,255,.08);color:var(--c-txt);border:1px solid rgba(255,255,255,.1)"> <button id="commentBtn" class="px-4 py-2.5 rounded-xl font-bold text-sm" style="background:var(--c-secondary);color:#0d0221"><i data-lucide="send" style="width:16px;height:16px"></i></button>
+       </div><!-- Comments list -->
+       <div id="commentsList" class="space-y-2 max-h-48 overflow-auto"></div>
+      </div><!-- Embed note -->
+      <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,.06)">
+       <p class="text-xs font-mono" style="color:rgba(240,230,255,.25)">📎 Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ==================== PICK A VIBE ==================== -->
+   <section id="vibes" class="relative px-4 py-20 reveal-section">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12"><span class="text-4xl mb-3 inline-block">🎨</span>
+      <h2 class="text-3xl md:text-5xl font-black mb-3" style="color:var(--c-txt)">Pick a Vibe</h2>
+      <p class="text-base" style="color:rgba(240,230,255,.5)">8 wildly unique party themes — each with a full matching asset pack</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="vibeGrid">
+     </div>
+     <div id="selectedVibeMsg" class="hidden text-center mt-8">
+      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl font-bold" style="background:rgba(255,107,107,.15);color:var(--c-primary);border:1px solid rgba(255,107,107,.3)"><i data-lucide="check-circle" style="width:20px;height:20px"></i> <span id="selectedVibeText">Disco Night selected!</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- ==================== WHAT'S INCLUDED ==================== -->
+   <section id="included" class="relative px-4 py-20 reveal-section">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12"><span class="text-4xl mb-3 inline-block">📦</span>
+      <h2 class="text-3xl md:text-5xl font-black mb-3" style="color:var(--c-txt)">What's Included</h2>
+      <p class="text-base" style="color:rgba(240,230,255,.5)">Everything you need for the perfect party — designed to match</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8"><!-- Checklist -->
+      <div class="rounded-3xl p-6" style="background:var(--c-surface);border:1px solid rgba(255,255,255,.06)">
+       <h3 class="font-extrabold text-lg mb-5 flex items-center gap-2" style="color:var(--c-txt)"><i data-lucide="check-square" style="width:20px;height:20px;color:var(--c-secondary)"></i> Party Checklist</h3>
+       <div class="space-y-3" id="checklist"></div>
+      </div><!-- Asset grid -->
+      <div class="rounded-3xl p-6" style="background:var(--c-surface);border:1px solid rgba(255,255,255,.06)">
+       <h3 class="font-extrabold text-lg mb-5 flex items-center gap-2" style="color:var(--c-txt)"><i data-lucide="grid-3x3" style="width:20px;height:20px;color:var(--c-primary)"></i> 200+ Assets</h3>
+       <div class="grid grid-cols-3 gap-3" id="assetGrid"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ==================== PREVIEW ==================== -->
+   <section id="preview" class="relative px-4 py-20 reveal-section">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12"><span class="text-4xl mb-3 inline-block">👀</span>
+      <h2 class="text-3xl md:text-5xl font-black mb-3" style="color:var(--c-txt)">Preview</h2>
+      <p class="text-base" style="color:rgba(240,230,255,.5)">See what your party pack looks like — ready to print or share</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" id="previewGrid"></div>
+    </div>
+   </section><!-- ==================== REVIEWS ==================== -->
+   <section id="reviews" class="relative px-4 py-20 reveal-section">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-12"><span class="text-4xl mb-3 inline-block">⭐</span>
+      <h2 class="text-3xl md:text-5xl font-black mb-3" style="color:var(--c-txt)">Reviews</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5" id="reviewGrid"></div>
+    </div>
+   </section><!-- ==================== DOWNLOAD CTA ==================== -->
+   <section id="download" class="relative px-4 py-24 reveal-section">
+    <div class="max-w-3xl mx-auto text-center"><span class="text-6xl mb-4 inline-block">🚀</span>
+     <h2 id="bottomCta" class="text-3xl md:text-5xl font-black mb-4" style="color:var(--c-txt)">Theme locked.<br><span style="background:linear-gradient(135deg,var(--c-primary),var(--c-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Party legendary.</span></h2>
+     <p class="text-lg mb-8" style="color:rgba(240,230,255,.5)">12 theme bundles · 200 matching assets · Party checklist · Editable game cards</p><a href="#vibes" class="bounce-cta inline-flex items-center gap-2 px-10 py-5 rounded-2xl font-extrabold text-xl shadow-lg shadow-red-500/30 shimmer" style="background:linear-gradient(135deg,var(--c-primary),#ff8e53);color:#fff"> <i data-lucide="download" style="width:22px;height:22px"></i> Get the Full Pack </a>
+    </div>
+   </section><!-- Footer -->
+   <footer class="px-4 py-8 text-center" style="border-top:1px solid rgba(255,255,255,.06)">
+    <p class="text-xs" style="color:rgba(240,230,255,.25)">© 2024 VibeKit Party Lab. All vibes reserved. 🎉</p>
+   </footer>
+  </div>
+  <script>
+// ====== DATA ======
+const VIBES = [
+  {name:'Disco Night',emoji:'🪩',gradient:'linear-gradient(135deg,#a855f7,#ec4899)',desc:'Glitter, grooves & mirror balls'},
+  {name:'Neon Glow',emoji:'💡',gradient:'linear-gradient(135deg,#06b6d4,#8b5cf6)',desc:'Blacklight everything'},
+  {name:'Cottagecore Picnic',emoji:'🌸',gradient:'linear-gradient(135deg,#f9a8d4,#86efac)',desc:'Wildflowers & wicker baskets'},
+  {name:'Space Party',emoji:'🚀',gradient:'linear-gradient(135deg,#1e3a5f,#7c3aed)',desc:'Launch into the cosmos'},
+  {name:'Retro Arcade',emoji:'🕹️',gradient:'linear-gradient(135deg,#f59e0b,#ef4444)',desc:'Pixel-perfect party'},
+  {name:'Tropical Heat',emoji:'🌴',gradient:'linear-gradient(135deg,#10b981,#f59e0b)',desc:'Palm trees & pineapple punch'},
+  {name:'Spooky Cute',emoji:'👻',gradient:'linear-gradient(135deg,#7c3aed,#1f2937)',desc:'Friendly frights & candy'},
+  {name:'Luxe Minimal',emoji:'✨',gradient:'linear-gradient(135deg,#78716c,#f5f5f4)',desc:'Sophisticated & stunning'}
+];
+
+const CHECKLIST = [
+  {icon:'📨',text:'12 themed invitation designs'},
+  {icon:'🍽️',text:'Matching menu & table cards'},
+  {icon:'🪧',text:'Printable party signs & banners'},
+  {icon:'🎲',text:'Editable game cards (10 per theme)'},
+  {icon:'📋',text:'Full party planning checklist'},
+  {icon:'🎨',text:'200+ decorative assets & stickers'},
+  {icon:'🖼️',text:'Social media story templates'},
+  {icon:'🏷️',text:'Gift tags & thank you cards'}
+];
+
+const ASSETS = [
+  {emoji:'📨',label:'Invites'},{emoji:'🪧',label:'Signs'},{emoji:'🍽️',label:'Menus'},
+  {emoji:'🎲',label:'Games'},{emoji:'🏷️',label:'Tags'},{emoji:'🎨',label:'Stickers'},
+  {emoji:'📱',label:'Stories'},{emoji:'🎈',label:'Decor'},{emoji:'💌',label:'Cards'}
+];
+
+const PREVIEWS = [
+  {emoji:'📨',title:'Invitation',desc:'Matching themed invite'},
+  {emoji:'🪧',title:'Party Sign',desc:'Welcome & directional'},
+  {emoji:'🍽️',title:'Menu Card',desc:'Food & drink layout'},
+  {emoji:'🎲',title:'Game Card',desc:'Editable party games'}
+];
+
+const REVIEWS = [
+  {name:'Sarah K.',stars:5,text:'Used the Disco Night pack — my friends thought I hired a designer! 🪩',avatar:'👩‍🦰'},
+  {name:'Marcus T.',stars:5,text:'The Tropical Heat theme was PERFECT for our summer bash. So many assets!',avatar:'👨‍🦱'},
+  {name:'Priya M.',stars:5,text:'Cottagecore Picnic for my daughter\'s birthday was a dream. Worth every penny.',avatar:'👩'}
+];
+
+const REACTIONS = ['🔥','❤️','🎉','😍','🤩','👏','💯','✨'];
+const PRICES = ['$5','$10','$15','$20','$25','$30','$35','$40','$45','$50'];
+
+// ====== STATE ======
+let currentUser = null;
+let allRecords = [];
+let selectedVibe = null;
+
+// ====== DEFAULT CONFIG ======
+const defaultConfig = {
+  background_color:'#0d0221',
+  surface_color:'#1a0a3e',
+  text_color:'#f0e6ff',
+  primary_color:'#ff6b6b',
+  secondary_color:'#ffd93d',
+  font_family:'Outfit',
+  font_size:16,
+  hero_title:'Your party is a vibe. Build it in seconds.',
+  hero_subtitle:'A full matching party pack, instantly.',
+  cta_primary:'Pick a Vibe',
+  cta_secondary:"See What's Inside",
+  bottom_cta_text:'Theme locked. Party legendary.'
+};
+
+// ====== RENDER STATIC CONTENT ======
+function renderVibeGrid(){
+  const grid=document.getElementById('vibeGrid');
+  grid.innerHTML=VIBES.map((v,i)=>`
+    <div class="vibe-card rounded-3xl p-5 stagger-${i+1}" data-vibe="${v.name}" style="background:${v.gradient};animation:checkSlide .5s ease forwards;animation-delay:${i*.1}s;opacity:0" onclick="selectVibe('${v.name}')">
+      <span class="card-emoji text-4xl mb-3 block">${v.emoji}</span>
+      <h3 class="font-extrabold text-lg text-white mb-1">${v.name}</h3>
+      <p class="text-sm text-white/70">${v.desc}</p>
+      <div class="mt-3 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-white/20 text-white">
+        <i data-lucide="package" style="width:12px;height:12px"></i> Full Pack
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderChecklist(){
+  document.getElementById('checklist').innerHTML=CHECKLIST.map((c,i)=>`
+    <div class="check-item stagger-${i+1} flex items-center gap-3 p-3 rounded-xl" style="background:rgba(255,255,255,.04)">
+      <span class="text-xl">${c.icon}</span>
+      <span class="font-semibold text-sm" style="color:var(--c-txt)">${c.text}</span>
+      <span class="ml-auto" style="color:var(--c-secondary)"><i data-lucide="check" style="width:16px;height:16px"></i></span>
+    </div>
+  `).join('');
+}
+
+function renderAssetGrid(){
+  document.getElementById('assetGrid').innerHTML=ASSETS.map(a=>`
+    <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,.04)">
+      <span class="text-2xl block mb-1">${a.emoji}</span>
+      <span class="text-xs font-bold" style="color:rgba(240,230,255,.5)">${a.label}</span>
+    </div>
+  `).join('');
+}
+
+function renderPreviews(){
+  document.getElementById('previewGrid').innerHTML=PREVIEWS.map(p=>`
+    <div class="mockup-card rounded-3xl p-5 text-center" style="background:var(--c-surface);border:1px solid rgba(255,255,255,.06)">
+      <div class="w-full aspect-[3/4] rounded-2xl flex items-center justify-center mb-3" style="background:linear-gradient(135deg,rgba(255,107,107,.15),rgba(255,217,61,.1))">
+        <span class="text-5xl">${p.emoji}</span>
+      </div>
+      <h4 class="font-extrabold" style="color:var(--c-txt)">${p.title}</h4>
+      <p class="text-xs" style="color:rgba(240,230,255,.4)">${p.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderReviews(){
+  document.getElementById('reviewGrid').innerHTML=REVIEWS.map(r=>`
+    <div class="rounded-3xl p-5" style="background:var(--c-surface);border:1px solid rgba(255,255,255,.06)">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-2xl">${r.avatar}</span>
+        <div>
+          <p class="font-bold text-sm" style="color:var(--c-txt)">${r.name}</p>
+          <p style="color:var(--c-secondary)">${'★'.repeat(r.stars)}</p>
+        </div>
+      </div>
+      <p class="text-sm" style="color:rgba(240,230,255,.6)">${r.text}</p>
+    </div>
+  `).join('');
+}
+
+function renderReactionRow(){
+  document.getElementById('reactionRow').innerHTML=REACTIONS.map(r=>`
+    <button class="vote-btn text-2xl p-2 rounded-xl" style="background:rgba(255,255,255,.06)" onclick="castVote('reaction','${r}')" data-reaction="${r}">
+      ${r} <span class="text-xs font-bold" style="color:var(--c-txt)" data-count="${r}">0</span>
+    </button>
+  `).join('');
+}
+
+function renderPriceRow(){
+  document.getElementById('priceRow').innerHTML=PRICES.map(p=>`
+    <button class="vote-btn px-3 py-1.5 rounded-xl text-sm font-bold" style="background:rgba(255,255,255,.06);color:var(--c-txt)" onclick="castVote('price','${p}')" data-price="${p}">
+      ${p} <span class="text-xs" data-pcount="${p}">0</span>
+    </button>
+  `).join('');
+}
+
+// ====== INTERACTIVITY ======
+function selectVibe(name){
+  selectedVibe=name;
+  document.querySelectorAll('.vibe-card').forEach(c=>{
+    c.style.outline=c.dataset.vibe===name?'3px solid var(--c-secondary)':'none';
+  });
+  document.getElementById('selectedVibeMsg').classList.remove('hidden');
+  document.getElementById('selectedVibeText').textContent=name+' selected!';
+  spawnConfetti(20);
+  showToast('🎉 '+name+' vibe locked in!');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function spawnConfetti(count){
+  const c=document.getElementById('confettiContainer');
+  const colors=['#ff6b6b','#ffd93d','#a855f7','#06b6d4','#10b981','#ec4899'];
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.left=Math.random()*100+'%';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.width=(6+Math.random()*8)+'px';
+    p.style.height=(6+Math.random()*8)+'px';
+    p.style.borderRadius=Math.random()>.5?'50%':'2px';
+    p.style.animationDuration=(2+Math.random()*2)+'s';
+    p.style.animationDelay=(Math.random()*.5)+'s';
+    c.appendChild(p);
+    setTimeout(()=>p.remove(),4500);
+  }
+}
+
+// ====== SIGN IN ======
+document.getElementById('signInBtn').addEventListener('click',()=>{
+  const name=document.getElementById('usernameInput').value.trim();
+  if(!name)return;
+  currentUser=name;
+  document.getElementById('signInArea').classList.add('hidden');
+  document.getElementById('votingArea').classList.remove('hidden');
+  document.getElementById('displayUsername').textContent=name;
+  showToast('👋 Welcome, '+name+'!');
+});
+document.getElementById('usernameInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();document.getElementById('signInBtn').click()}
+});
+
+// ====== VOTING ======
+async function castVote(type,value){
+  if(!currentUser)return;
+  const btn=type==='reaction'
+    ?document.querySelector(`[data-reaction="${value}"]`)
+    :document.querySelector(`[data-price="${value}"]`);
+  if(btn){btn.classList.add('voted');setTimeout(()=>btn.classList.remove('voted'),300)}
+
+  const result=await window.dataSdk.create({
+    vibe_name:value,vote_type:type,comment:'',username:currentUser,created_at:new Date().toISOString()
+  });
+  if(!result.isOk)showToast('⚠️ Could not save vote');
+}
+
+// ====== COMMENT ======
+document.getElementById('commentBtn').addEventListener('click',submitComment);
+document.getElementById('commentInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();submitComment()}
+});
+
+async function submitComment(){
+  if(!currentUser)return;
+  const input=document.getElementById('commentInput');
+  const text=input.value.trim();
+  if(!text)return;
+  input.disabled=true;
+  document.getElementById('commentBtn').disabled=true;
+
+  if(allRecords.filter(r=>r.vote_type==='comment').length>=999){
+    showToast('⚠️ Comment limit reached');
+    input.disabled=false;document.getElementById('commentBtn').disabled=false;
+    return;
+  }
+
+  const result=await window.dataSdk.create({
+    vibe_name:'',vote_type:'comment',comment:text,username:currentUser,created_at:new Date().toISOString()
+  });
+  if(result.isOk){input.value='';showToast('💬 Comment added!')}
+  else showToast('⚠️ Could not save comment');
+  input.disabled=false;document.getElementById('commentBtn').disabled=false;
+}
+
+// ====== DATA HANDLER ======
+function updateVoteCounts(data){
+  allRecords=data;
+  // Reactions
+  REACTIONS.forEach(r=>{
+    const count=data.filter(d=>d.vote_type==='reaction'&&d.vibe_name===r).length;
+    const el=document.querySelector(`[data-count="${r}"]`);
+    if(el)el.textContent=count||'';
+  });
+  // Prices
+  PRICES.forEach(p=>{
+    const count=data.filter(d=>d.vote_type==='price'&&d.vibe_name===p).length;
+    const el=document.querySelector(`[data-pcount="${p}"]`);
+    if(el)el.textContent=count||'';
+  });
+  // Comments
+  const comments=data.filter(d=>d.vote_type==='comment').sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  const list=document.getElementById('commentsList');
+  const existingMap=new Map([...list.children].map(el=>[el.dataset.id,el]));
+  const newIds=new Set(comments.map(c=>c.__backendId));
+
+  existingMap.forEach((el,id)=>{if(!newIds.has(id))el.remove()});
+
+  comments.forEach(c=>{
+    if(existingMap.has(c.__backendId))return;
+    const div=document.createElement('div');
+    div.dataset.id=c.__backendId;
+    div.className='flex items-start gap-2 p-2 rounded-xl';
+    div.style.background='rgba(255,255,255,.04)';
+    div.innerHTML=`<span class="text-sm">💬</span><div><span class="text-xs font-bold" style="color:var(--c-secondary)">${escapeHtml(c.username)}</span><p class="text-sm" style="color:var(--c-txt)">${escapeHtml(c.comment)}</p></div>`;
+    list.prepend(div);
+  });
+}
+
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+// ====== MOBILE MENU ======
+document.getElementById('mobileMenuBtn').addEventListener('click',()=>{
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('mobileMenu').classList.add('hidden');
+}));
+
+// ====== SCROLL REVEAL ======
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal-section').forEach(s=>observer.observe(s));
+
+// ====== INIT ======
+renderVibeGrid();renderChecklist();renderAssetGrid();renderPreviews();renderReviews();renderReactionRow();renderPriceRow();
+
+// Init SDKs
+(async()=>{
+  // Data SDK
+  await window.dataSdk.init({
+    onDataChanged(data){updateVoteCounts(data)}
+  });
+
+  // Element SDK
+  window.elementSdk.init({
+    defaultConfig,
+    async onConfigChange(config){
+      const app=document.getElementById('app');
+      const bg=config.background_color||defaultConfig.background_color;
+      const sf=config.surface_color||defaultConfig.surface_color;
+      const tx=config.text_color||defaultConfig.text_color;
+      const pr=config.primary_color||defaultConfig.primary_color;
+      const sc=config.secondary_color||defaultConfig.secondary_color;
+      const ff=config.font_family||defaultConfig.font_family;
+      const fs=config.font_size||defaultConfig.font_size;
+
+      app.style.setProperty('--c-bg',bg);
+      app.style.setProperty('--c-surface',sf);
+      app.style.setProperty('--c-txt',tx);
+      app.style.setProperty('--c-primary',pr);
+      app.style.setProperty('--c-secondary',sc);
+      app.style.background=bg;
+
+      document.body.style.fontFamily=`${ff}, Outfit, sans-serif`;
+      document.body.style.fontSize=fs+'px';
+
+      // Text
+      const heroT=document.getElementById('heroTitle');
+      const t=config.hero_title||defaultConfig.hero_title;
+      const parts=t.split('.');
+      heroT.innerHTML=parts[0]+'.<br><span style="background:linear-gradient(135deg,var(--c-primary),var(--c-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">'+(parts[1]||'').trim()+'</span>';
+
+      document.getElementById('heroSub').textContent=config.hero_subtitle||defaultConfig.hero_subtitle;
+      document.getElementById('ctaPrimary').innerHTML='<i data-lucide="sparkles" style="width:20px;height:20px"></i> '+(config.cta_primary||defaultConfig.cta_primary);
+      document.getElementById('ctaSecondary').innerHTML='<i data-lucide="package" style="width:20px;height:20px"></i> '+(config.cta_secondary||defaultConfig.cta_secondary);
+
+      const bc=config.bottom_cta_text||defaultConfig.bottom_cta_text;
+      const bcParts=bc.split('.');
+      document.getElementById('bottomCta').innerHTML=bcParts[0]+'.<br><span style="background:linear-gradient(135deg,var(--c-primary),var(--c-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent">'+(bcParts[1]||'').trim()+'</span>';
+
+      if(typeof lucide!=='undefined')lucide.createIcons();
+    },
+    mapToCapabilities(config){
+      const m=(key,def)=>({
+        get:()=>config[key]||def,
+        set:v=>{config[key]=v;window.elementSdk.setConfig({[key]:v})}
+      });
+      return{
+        recolorables:[m('background_color',defaultConfig.background_color),m('surface_color',defaultConfig.surface_color),m('text_color',defaultConfig.text_color),m('primary_color',defaultConfig.primary_color),m('secondary_color',defaultConfig.secondary_color)],
+        borderables:[],
+        fontEditable:m('font_family',defaultConfig.font_family),
+        fontSizeable:{get:()=>config.font_size||defaultConfig.font_size,set:v=>{config.font_size=v;window.elementSdk.setConfig({font_size:v})}}
+      };
+    },
+    mapToEditPanelValues(config){
+      return new Map([
+        ['hero_title',config.hero_title||defaultConfig.hero_title],
+        ['hero_subtitle',config.hero_subtitle||defaultConfig.hero_subtitle],
+        ['cta_primary',config.cta_primary||defaultConfig.cta_primary],
+        ['cta_secondary',config.cta_secondary||defaultConfig.cta_secondary],
+        ['bottom_cta_text',config.bottom_cta_text||defaultConfig.bottom_cta_text]
+      ]);
+    }
+  });
+})();
+
+// Confetti on load
+setTimeout(()=>spawnConfetti(30),500);
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5a07954527c5',t:'MTc3NTU3ODc0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

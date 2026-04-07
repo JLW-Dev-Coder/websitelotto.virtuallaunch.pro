@@ -1,1 +1,545 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7a799234-b31d-4547-9135-a5c5e0935a7b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SlurpStreet Ramen</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Noto+Sans+JP:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --neon-red: #ff2d55;
+  --neon-magenta: #ff0080;
+  --neon-teal: #00e5cc;
+  --bg-dark: #0a0a0f;
+  --surface: #14141f;
+  --text-color: #f0e6d3;
+}
+
+.font-bebas { font-family: 'Bebas Neue', cursive; }
+.font-noto { font-family: 'Noto Sans JP', sans-serif; }
+
+/* Neon glow */
+.neon-glow-red { text-shadow: 0 0 10px var(--neon-red), 0 0 40px var(--neon-red), 0 0 80px rgba(255,45,85,0.3); }
+.neon-glow-teal { text-shadow: 0 0 10px var(--neon-teal), 0 0 40px var(--neon-teal), 0 0 80px rgba(0,229,204,0.3); }
+.neon-border-red { box-shadow: 0 0 8px var(--neon-red), 0 0 20px rgba(255,45,85,0.2), inset 0 0 8px rgba(255,45,85,0.1); border: 1px solid var(--neon-red); }
+.neon-border-teal { box-shadow: 0 0 8px var(--neon-teal), 0 0 20px rgba(0,229,204,0.2), inset 0 0 8px rgba(0,229,204,0.1); border: 1px solid var(--neon-teal); }
+
+/* Flicker animation */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.6; }
+}
+.neon-flicker { animation: flicker 3s infinite; }
+
+/* Steam animation */
+@keyframes steam {
+  0% { transform: translateY(0) scaleX(1); opacity: 0; }
+  15% { opacity: 0.6; }
+  50% { transform: translateY(-40px) scaleX(1.4); opacity: 0.3; }
+  100% { transform: translateY(-80px) scaleX(2); opacity: 0; }
+}
+.steam-particle {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: steam 2.5s ease-out infinite;
+  pointer-events: none;
+}
+
+/* Pulse CTA */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px var(--neon-red), 0 0 30px rgba(255,45,85,0.3); }
+  50% { box-shadow: 0 0 20px var(--neon-red), 0 0 60px rgba(255,45,85,0.5), 0 0 90px rgba(255,45,85,0.2); }
+}
+.pulse-cta { animation: pulse-glow 2s ease-in-out infinite; }
+
+/* Scroll reveal */
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.reveal { opacity: 0; transform: translateY(50px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Pop in for menu cards */
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.pop-in { opacity: 0; }
+.pop-in.visible { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* Badge styles */
+.badge-spicy { background: linear-gradient(135deg, #ff2d55, #ff6b35); }
+.badge-new { background: linear-gradient(135deg, #00e5cc, #00b4d8); }
+.badge-best { background: linear-gradient(135deg, #ff0080, #ff2d55); }
+
+/* Limited time pulse */
+@keyframes limitPulse {
+  0%, 100% { border-color: var(--neon-magenta); box-shadow: 0 0 15px rgba(255,0,128,0.3); }
+  50% { border-color: var(--neon-teal); box-shadow: 0 0 25px rgba(0,229,204,0.3); }
+}
+.limit-pulse { animation: limitPulse 3s ease-in-out infinite; border: 2px solid var(--neon-magenta); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Nav active */
+.nav-link { transition: color 0.3s; }
+.nav-link:hover, .nav-link.active { color: var(--neon-red); }
+
+/* Star rating */
+.star-btn { cursor: pointer; transition: transform 0.15s; }
+.star-btn:hover { transform: scale(1.2); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--neon-red); border-radius: 3px; }
+
+.menu-card {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.menu-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,45,85,0.3);
+  box-shadow: 0 8px 30px rgba(255,45,85,0.15);
+}
+
+/* Neon sign pseudo-Japanese */
+@keyframes signGlow {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 8px var(--neon-red)); }
+  50% { filter: brightness(1.3) drop-shadow(0 0 16px var(--neon-red)); }
+}
+
+.img-cover { object-fit: cover; width: 100%; height: 100%; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-noto" style="background: var(--bg-dark); color: var(--text-color);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14"><a href="#home" class="font-bebas text-2xl tracking-wider" style="color: var(--neon-red);"> 🍜 SLURPSTREET </a> <!-- Desktop Nav -->
+     <div class="hidden md:flex items-center gap-6 text-sm font-bold tracking-wide uppercase"><a href="#home" class="nav-link" style="color: var(--text-color);">Home</a> <a href="#menu" class="nav-link" style="color: var(--text-color);">Menu</a> <a href="#specials" class="nav-link" style="color: var(--text-color);">Specials</a> <a href="#location" class="nav-link" style="color: var(--text-color);">Location</a> <a href="#reviews" class="nav-link" style="color: var(--text-color);">Reviews</a> <a href="#order" class="nav-link px-4 py-2 rounded-full text-white text-xs pulse-cta" style="background: var(--neon-red);">Order Now</a>
+     </div><!-- Mobile toggle --> <button id="mobile-toggle" class="md:hidden p-2" style="color: var(--text-color);"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden flex-col items-center gap-4 py-4 text-sm font-bold tracking-wide uppercase" style="background: rgba(10,10,15,0.98);"><a href="#home" class="nav-link" style="color: var(--text-color);" onclick="closeMobileMenu()">Home</a> <a href="#menu" class="nav-link" style="color: var(--text-color);" onclick="closeMobileMenu()">Menu</a> <a href="#specials" class="nav-link" style="color: var(--text-color);" onclick="closeMobileMenu()">Specials</a> <a href="#location" class="nav-link" style="color: var(--text-color);" onclick="closeMobileMenu()">Location</a> <a href="#reviews" class="nav-link" style="color: var(--text-color);" onclick="closeMobileMenu()">Reviews</a> <a href="#order" class="nav-link px-4 py-2 rounded-full text-white" style="background: var(--neon-red);" onclick="closeMobileMenu()">Order Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 600px; padding-top: 56px;">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.95) 100%);"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1400&amp;q=80" alt="Neon street at night" class="img-cover absolute inset-0 opacity-40" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a0a1e,#0a0a0f)';this.alt='Background';">
+    </div><!-- Steam overlay -->
+    <div id="hero-steam" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center justify-center text-center" style="min-height: 540px;">
+     <p id="el-tagline" class="font-noto text-sm md:text-base tracking-widest uppercase mb-4 neon-flicker" style="color: var(--neon-teal);">Broth so good you'll dream about it.</p>
+     <h1 id="el-hero-title" class="font-bebas text-5xl sm:text-7xl md:text-8xl leading-none mb-4 neon-glow-red" style="color: var(--neon-red);">Meet your new<br>
+      comfort food addiction.</h1>
+     <p id="el-hero-subtitle" class="text-lg md:text-xl mb-8 max-w-xl" style="color: rgba(240,230,211,0.7);">Fast ordering. Clear menu. Big flavor.</p>
+     <div class="flex flex-wrap gap-4 justify-center"><a href="#order" class="font-bebas text-xl tracking-wider px-8 py-3 rounded-full text-white pulse-cta transition-transform hover:scale-105" style="background: var(--neon-red);">🔥 Order Now</a> <a href="#menu" class="font-bebas text-xl tracking-wider px-8 py-3 rounded-full transition-transform hover:scale-105 neon-border-teal" style="color: var(--neon-teal);">View Menu</a>
+     </div><!-- Noodle emoji deco -->
+     <div class="mt-10 text-4xl opacity-60 neon-flicker">
+      🍜🍜🍜
+     </div>
+    </div>
+   </section><!-- MENU -->
+   <section id="menu" class="w-full py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 reveal">
+      <p class="font-noto text-sm tracking-widest uppercase mb-2" style="color: var(--neon-teal);">Our Bowls</p>
+      <h2 class="font-bebas text-5xl md:text-6xl neon-glow-red" style="color: var(--neon-red);">Signature Ramen</h2>
+      <p class="mt-3 max-w-lg mx-auto" style="color: rgba(240,230,211,0.6);">8 bowls crafted to perfection. More orders, less confusion.</p>
+     </div>
+     <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+     </div>
+    </div>
+   </section><!-- SPECIALS -->
+   <section id="specials" class="w-full py-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10"><img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=1200&amp;q=70" alt="Steam food" class="img-cover" loading="lazy" onerror="this.style.background='#14141f';this.alt='bg';">
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto">
+     <div class="text-center mb-10 reveal">
+      <p class="font-noto text-sm tracking-widest uppercase mb-2" style="color: var(--neon-magenta);">⏰ Hurry Up</p>
+      <h2 id="el-specials-title" class="font-bebas text-5xl md:text-6xl neon-glow-red" style="color: var(--neon-red);">Limited Time Specials</h2>
+     </div>
+     <div class="limit-pulse rounded-2xl p-8 md:p-10 reveal" style="background: rgba(20,20,31,0.95);">
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+       <div class="flex-shrink-0 w-48 h-48 rounded-xl overflow-hidden relative"><img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=500&amp;q=80" alt="Special ramen bowl" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2a1a2e,#14141f)';this.alt='Special bowl';">
+        <div class="absolute top-2 right-2 badge-new text-white text-xs font-bold px-3 py-1 rounded-full">
+         NEW
+        </div><!-- Steam effect on special -->
+        <div class="steam-particle" style="left:30%;top:10%;animation-delay:0s;"></div>
+        <div class="steam-particle" style="left:50%;top:5%;animation-delay:0.8s;"></div>
+        <div class="steam-particle" style="left:70%;top:15%;animation-delay:1.5s;"></div>
+       </div>
+       <div class="flex-1 text-center md:text-left">
+        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 neon-flicker" style="background: rgba(255,0,128,0.15); color: var(--neon-magenta);">
+         🔥 THIS WEEK ONLY
+        </div>
+        <h3 class="font-bebas text-3xl md:text-4xl mb-2" style="color: var(--text-color);">Dragon's Breath Tantanmen</h3>
+        <p class="mb-4" style="color: rgba(240,230,211,0.6);">Szechuan peppercorn broth, ground pork, crispy chili oil, bok choy, soft egg. Not for the faint of heart. 🌶🌶🌶</p>
+        <div class="flex items-center gap-4 justify-center md:justify-start"><span class="font-bebas text-3xl" style="color: var(--neon-teal);">$18.99</span> <span class="line-through text-lg" style="color: rgba(240,230,211,0.3);">$23.99</span> <span class="badge-spicy text-white text-xs font-bold px-3 py-1 rounded-full">SAVE $5</span>
+        </div><a href="#order" class="inline-block mt-5 font-bebas text-lg tracking-wider px-6 py-2 rounded-full text-white pulse-cta" style="background: var(--neon-red);">Order This Bowl 🍜</a>
+       </div>
+      </div>
+     </div><!-- Second special -->
+     <div class="limit-pulse rounded-2xl p-8 md:p-10 mt-6 reveal" style="background: rgba(20,20,31,0.95);">
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+       <div class="flex-shrink-0 w-48 h-48 rounded-xl overflow-hidden relative"><img src="https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=500&amp;q=80" alt="Truffle ramen" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2a1a2e,#14141f)';this.alt='Special';">
+        <div class="absolute top-2 right-2 badge-best text-white text-xs font-bold px-3 py-1 rounded-full">
+         BEST SELLER
+        </div>
+       </div>
+       <div class="flex-1 text-center md:text-left">
+        <div class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3" style="background: rgba(0,229,204,0.12); color: var(--neon-teal);">
+         ⚡ SPECIALS SELL FAST
+        </div>
+        <h3 class="font-bebas text-3xl md:text-4xl mb-2" style="color: var(--text-color);">Truffle Shoyu Deluxe</h3>
+        <p class="mb-4" style="color: rgba(240,230,211,0.6);">Black truffle-infused shoyu broth, chashu pork belly, nori, ajitama egg, bamboo shoots.</p>
+        <div class="flex items-center gap-4 justify-center md:justify-start"><span class="font-bebas text-3xl" style="color: var(--neon-teal);">$21.99</span> <span class="line-through text-lg" style="color: rgba(240,230,211,0.3);">$26.99</span>
+        </div><a href="#order" class="inline-block mt-5 font-bebas text-lg tracking-wider px-6 py-2 rounded-full text-white pulse-cta" style="background: var(--neon-red);">Order This Bowl 🍜</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- LOCATION -->
+   <section id="location" class="w-full py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="font-noto text-sm tracking-widest uppercase mb-2" style="color: var(--neon-teal);">Find Us</p>
+      <h2 class="font-bebas text-5xl md:text-6xl neon-glow-red" style="color: var(--neon-red);">Our Location</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+      <div class="rounded-2xl overflow-hidden relative" style="min-height: 300px;"><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&amp;q=80" alt="Japanese restaurant interior" class="img-cover absolute inset-0" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2a1a2e,#14141f)';this.alt='Restaurant';">
+       <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,10,15,0.8) 0%, transparent 60%);"></div>
+       <div class="absolute bottom-6 left-6">
+        <div class="flex items-center gap-2 mb-2" style="color: var(--neon-teal);">
+         <i data-lucide="map-pin" style="width:18px;height:18px;"></i><span class="font-bold text-sm">Downtown District</span>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-2xl p-8 flex flex-col justify-center" style="background: var(--surface); border: 1px solid rgba(255,255,255,0.05);">
+       <div class="space-y-5">
+        <div class="flex items-start gap-4">
+         <div class="p-2 rounded-lg" style="background: rgba(255,45,85,0.1);">
+          <i data-lucide="map-pin" style="width:20px;height:20px;color:var(--neon-red);"></i>
+         </div>
+         <div>
+          <p class="font-bold text-sm mb-1">Address</p>
+          <p style="color: rgba(240,230,211,0.6);">123 Noodle Lane, Downtown District, Tokyo Tower Mall, 2F</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="p-2 rounded-lg" style="background: rgba(0,229,204,0.1);">
+          <i data-lucide="clock" style="width:20px;height:20px;color:var(--neon-teal);"></i>
+         </div>
+         <div>
+          <p class="font-bold text-sm mb-1">Hours</p>
+          <p style="color: rgba(240,230,211,0.6);">Mon–Fri: 11am – 10pm<br>
+           Sat–Sun: 11am – 11pm</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-4">
+         <div class="p-2 rounded-lg" style="background: rgba(255,0,128,0.1);">
+          <i data-lucide="phone" style="width:20px;height:20px;color:var(--neon-magenta);"></i>
+         </div>
+         <div>
+          <p class="font-bold text-sm mb-1">Phone</p>
+          <p style="color: rgba(240,230,211,0.6);">(555) 888-RAMEN</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4" style="background: var(--surface);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12 reveal">
+      <p class="font-noto text-sm tracking-widest uppercase mb-2" style="color: var(--neon-teal);">What They Say</p>
+      <h2 class="font-bebas text-5xl md:text-6xl neon-glow-red" style="color: var(--neon-red);">Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="rounded-xl p-6 reveal" style="background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="mb-4 text-sm leading-relaxed" style="color: rgba(240,230,211,0.7);">"Best ramen I've ever had outside Japan. The Tonkotsu Classique is life-changing. I dream about the broth."</p>
+       <p class="font-bold text-sm" style="color: var(--neon-teal);">— Sarah K.</p>
+      </div>
+      <div class="rounded-xl p-6 reveal" style="background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="mb-4 text-sm leading-relaxed" style="color: rgba(240,230,211,0.7);">"Ordered on my phone in 30 seconds. Mobile menu is so clean. Food was ready before I sat down. Incredible."</p>
+       <p class="font-bold text-sm" style="color: var(--neon-teal);">— Mike T.</p>
+      </div>
+      <div class="rounded-xl p-6 reveal" style="background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-3">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="mb-4 text-sm leading-relaxed" style="color: rgba(240,230,211,0.7);">"The specials board always has something new. Truffle Shoyu Deluxe was unreal. Already planning my next visit."</p>
+       <p class="font-bold text-sm" style="color: var(--neon-teal);">— Yuki M.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ORDER / CTA -->
+   <section id="order" class="w-full py-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-15"><img src="https://images.unsplash.com/photo-1552611052-33e04de1b100?w=1200&amp;q=70" alt="Chef cooking" class="img-cover" loading="lazy" onerror="this.style.background='#0a0a0f';this.alt='bg';">
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center reveal">
+     <div class="text-6xl mb-6">
+      🍜
+     </div>
+     <h2 id="el-bottom-cta" class="font-bebas text-6xl md:text-8xl neon-glow-red mb-4" style="color: var(--neon-red);">Slurp Now</h2>
+     <p class="text-lg mb-8 max-w-md mx-auto" style="color: rgba(240,230,211,0.6);">Mobile menu that converts. Your next obsession is one tap away.</p><a href="#menu" class="inline-block font-bebas text-2xl tracking-wider px-10 py-4 rounded-full text-white pulse-cta transition-transform hover:scale-105" style="background: var(--neon-red);">🔥 Order Now 🔥</a>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section id="vote" class="w-full py-16 px-4" style="background: var(--surface);">
+    <div class="max-w-2xl mx-auto reveal">
+     <div class="text-center mb-8">
+      <h2 class="font-bebas text-4xl md:text-5xl neon-glow-teal" style="color: var(--neon-teal);">Vote + Comment</h2>
+      <p class="mt-2 text-sm" style="color: rgba(240,230,211,0.5);">What's your favorite bowl? Let us know!</p>
+     </div>
+     <div class="rounded-2xl p-6 md:p-8" style="background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.08);"><!-- Vote -->
+      <div class="mb-6">
+       <p class="font-bold text-sm mb-3" style="color: var(--neon-teal);">Rate your experience</p>
+       <div id="star-rating" class="flex gap-2 mb-2"><button class="star-btn text-3xl" data-star="1" style="color: rgba(240,230,211,0.2);">★</button> <button class="star-btn text-3xl" data-star="2" style="color: rgba(240,230,211,0.2);">★</button> <button class="star-btn text-3xl" data-star="3" style="color: rgba(240,230,211,0.2);">★</button> <button class="star-btn text-3xl" data-star="4" style="color: rgba(240,230,211,0.2);">★</button> <button class="star-btn text-3xl" data-star="5" style="color: rgba(240,230,211,0.2);">★</button>
+       </div>
+       <p id="star-text" class="text-xs" style="color: rgba(240,230,211,0.4);">Tap a star to vote</p>
+      </div><!-- Favorite bowl poll -->
+      <div class="mb-6">
+       <p class="font-bold text-sm mb-3" style="color: var(--neon-teal);">Favorite bowl?</p>
+       <div id="poll-options" class="space-y-2"></div>
+      </div><!-- Comment -->
+      <div><label for="comment-input" class="font-bold text-sm mb-2 block" style="color: var(--neon-teal);">Leave a comment</label> <textarea id="comment-input" rows="3" placeholder="Tell us what you think..." class="w-full rounded-lg p-3 text-sm resize-none outline-none" style="background: rgba(255,255,255,0.05); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);"></textarea> <button id="submit-comment" class="mt-3 font-bebas text-lg tracking-wider px-6 py-2 rounded-full text-white transition-transform hover:scale-105" style="background: var(--neon-teal); color: var(--bg-dark);">Submit</button>
+       <div id="comment-success" class="hidden mt-3 text-sm font-bold" style="color: var(--neon-teal);">
+        ✅ Thanks for your feedback!
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-4 text-center" style="border-top: 1px solid rgba(255,255,255,0.05);">
+    <p class="font-bebas text-2xl tracking-wider mb-2 neon-flicker" style="color: var(--neon-red);">🍜 SLURPSTREET RAMEN</p>
+    <p class="text-xs" style="color: rgba(240,230,211,0.3);">© 2025 SlurpStreet Ramen. All rights reserved. Broth is life.</p>
+   </footer>
+  </div>
+  <script>
+// Menu data
+const menuItems = [
+  { name: "Tonkotsu Classique", desc: "18-hour pork bone broth, chashu, nori, ajitama egg, scallions", price: "$16.99", img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80", badge: "best", spice: 1, emoji: "🍜" },
+  { name: "Spicy Miso Blaze", desc: "Red miso base, ground pork, chili oil, corn, bean sprouts, butter", price: "$17.99", img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?w=400&q=80", badge: "spicy", spice: 3, emoji: "🌶" },
+  { name: "Shoyu Heritage", desc: "Soy-based clear broth, chicken, bamboo, nori, menma, egg", price: "$15.99", img: "https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=400&q=80", badge: null, spice: 0, emoji: "🥢" },
+  { name: "Veggie Zen Bowl", desc: "Kombu-shiitake dashi, tofu, seasonal vegetables, sesame, miso", price: "$14.99", img: "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=400&q=80", badge: "new", spice: 0, emoji: "🥬" },
+  { name: "Black Garlic Thunder", desc: "Black garlic oil, tonkotsu base, double chashu, egg, nori", price: "$18.99", img: "https://images.unsplash.com/photo-1614563637806-1d0e645e0940?w=400&q=80", badge: "best", spice: 1, emoji: "🧄" },
+  { name: "Yuzu Shio Fresh", desc: "Citrus salt broth, chicken, yuzu zest, watercress, light oil", price: "$16.49", img: "https://images.unsplash.com/photo-1552611052-33e04de1b100?w=400&q=80", badge: "new", spice: 0, emoji: "🍋" },
+  { name: "Tantanmen Fury", desc: "Sesame-chili broth, ground pork, bok choy, peanuts, soft egg", price: "$17.49", img: "https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&q=80", badge: "spicy", spice: 3, emoji: "🔥" },
+  { name: "Truffle Shoyu Deluxe", desc: "Black truffle-infused shoyu, pork belly, nori, egg, bamboo", price: "$22.99", img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80", badge: "best", spice: 0, emoji: "🍄" }
+];
+
+// Build menu
+const menuGrid = document.getElementById('menu-grid');
+menuItems.forEach((item, i) => {
+  const badgeHTML = item.badge ? `<div class="absolute top-2 right-2 badge-${item.badge} text-white text-xs font-bold px-2 py-1 rounded-full">${item.badge === 'spicy' ? '🌶 SPICY' : item.badge === 'new' ? '✨ NEW' : '⭐ BEST SELLER'}</div>` : '';
+  const spiceHTML = item.spice > 0 ? '<span class="text-xs ml-1">' + '🌶'.repeat(item.spice) + '</span>' : '';
+  const card = document.createElement('div');
+  card.className = 'menu-card rounded-xl overflow-hidden pop-in';
+  card.style.animationDelay = `${i * 0.08}s`;
+  card.innerHTML = `
+    <div class="relative h-44 overflow-hidden">
+      <img src="${item.img}" alt="${item.name}" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2a1a2e,#14141f)';this.alt='${item.name}';">
+      ${badgeHTML}
+      <div class="absolute bottom-0 left-0 right-0 h-16" style="background: linear-gradient(to top, var(--surface), transparent);"></div>
+    </div>
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-1">
+        <h3 class="font-bebas text-xl tracking-wide" style="color: var(--text-color);">${item.emoji} ${item.name}</h3>
+      </div>
+      <p class="text-xs mb-3 leading-relaxed" style="color: rgba(240,230,211,0.5);">${item.desc}${spiceHTML}</p>
+      <div class="flex items-center justify-between">
+        <span class="font-bebas text-2xl" style="color: var(--neon-teal);">${item.price}</span>
+        <button class="add-btn text-xs font-bold px-3 py-1.5 rounded-full text-white transition-transform hover:scale-105" style="background: var(--neon-red);">+ Add</button>
+      </div>
+    </div>`;
+  menuGrid.appendChild(card);
+});
+
+// Add button micro-interaction
+document.querySelectorAll('.add-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const orig = this.textContent;
+    this.textContent = '✓ Added!';
+    this.style.background = 'var(--neon-teal)';
+    this.style.color = 'var(--bg-dark)';
+    setTimeout(() => { this.textContent = orig; this.style.background = 'var(--neon-red)'; this.style.color = 'white'; }, 1200);
+  });
+});
+
+// Steam particles for hero
+const heroSteam = document.getElementById('hero-steam');
+for (let i = 0; i < 8; i++) {
+  const p = document.createElement('div');
+  p.className = 'steam-particle';
+  p.style.left = (20 + Math.random() * 60) + '%';
+  p.style.bottom = (5 + Math.random() * 15) + '%';
+  p.style.animationDelay = (Math.random() * 2.5) + 's';
+  p.style.width = (20 + Math.random() * 25) + 'px';
+  p.style.height = p.style.width;
+  heroSteam.appendChild(p);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .pop-in').forEach(el => observer.observe(el));
+
+// Mobile menu
+const mobileToggle = document.getElementById('mobile-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+mobileToggle.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); mobileMenu.classList.toggle('flex'); });
+function closeMobileMenu() { mobileMenu.classList.add('hidden'); mobileMenu.classList.remove('flex'); }
+
+// Star rating
+let currentRating = 0;
+const starBtns = document.querySelectorAll('.star-btn');
+const starText = document.getElementById('star-text');
+const starLabels = ['', 'Not great', 'Okay', 'Good', 'Great!', 'Amazing! 🔥'];
+starBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentRating = parseInt(btn.dataset.star);
+    starBtns.forEach(b => { b.style.color = parseInt(b.dataset.star) <= currentRating ? '#fbbf24' : 'rgba(240,230,211,0.2)'; });
+    starText.textContent = starLabels[currentRating];
+    starText.style.color = 'var(--neon-teal)';
+  });
+});
+
+// Poll
+const pollBowls = ['Tonkotsu Classique', 'Spicy Miso Blaze', 'Black Garlic Thunder', 'Truffle Shoyu Deluxe'];
+const pollVotes = [12, 8, 15, 10];
+const pollContainer = document.getElementById('poll-options');
+function renderPoll() {
+  const total = pollVotes.reduce((a, b) => a + b, 0);
+  pollContainer.innerHTML = '';
+  pollBowls.forEach((name, i) => {
+    const pct = Math.round((pollVotes[i] / total) * 100);
+    const div = document.createElement('div');
+    div.className = 'relative rounded-lg overflow-hidden cursor-pointer transition-transform hover:scale-[1.01]';
+    div.style.background = 'rgba(255,255,255,0.03)';
+    div.style.border = '1px solid rgba(255,255,255,0.06)';
+    div.innerHTML = `<div class="absolute inset-0 rounded-lg" style="width:${pct}%;background:rgba(255,45,85,0.12);transition:width 0.5s;"></div>
+      <div class="relative flex items-center justify-between px-4 py-3 text-sm">
+        <span>${name}</span><span class="font-bold" style="color:var(--neon-teal);">${pct}%</span>
+      </div>`;
+    div.addEventListener('click', () => { pollVotes[i]++; renderPoll(); });
+    pollContainer.appendChild(div);
+  });
+}
+renderPoll();
+
+// Comment submit
+document.getElementById('submit-comment').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  if (input.value.trim()) {
+    input.value = '';
+    document.getElementById('comment-success').classList.remove('hidden');
+    setTimeout(() => document.getElementById('comment-success').classList.add('hidden'), 3000);
+  }
+});
+
+// Active nav highlight
+const sections = ['home', 'menu', 'specials', 'location', 'reviews', 'order'];
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  const navLinks = document.querySelectorAll('.nav-link');
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 200) current = id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#14141f',
+  text_color: '#f0e6d3',
+  primary_action_color: '#ff2d55',
+  secondary_action_color: '#00e5cc',
+  font_family: 'Noto Sans JP',
+  font_size: 16,
+  hero_title: 'Meet your new\ncomfort food addiction.',
+  hero_subtitle: 'Fast ordering. Clear menu. Big flavor.',
+  tagline: 'Broth so good you\'ll dream about it.',
+  specials_title: 'Limited Time Specials',
+  bottom_cta_text: 'Slurp Now'
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const bg = config.background_color || defaultConfig.background_color;
+    const surface = config.surface_color || defaultConfig.surface_color;
+    const text = config.text_color || defaultConfig.text_color;
+    const primary = config.primary_action_color || defaultConfig.primary_action_color;
+    const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+    const font = config.font_family || defaultConfig.font_family;
+    const baseSize = config.font_size || defaultConfig.font_size;
+
+    document.documentElement.style.setProperty('--bg-dark', bg);
+    document.documentElement.style.setProperty('--surface', surface);
+    document.documentElement.style.setProperty('--text-color', text);
+    document.documentElement.style.setProperty('--neon-red', primary);
+    document.documentElement.style.setProperty('--neon-teal', secondary);
+
+    document.body.style.fontFamily = `${font}, 'Noto Sans JP', sans-serif`;
+    document.body.style.fontSize = `${baseSize}px`;
+
+    // Text content
+    const heroTitle = config.hero_title || defaultConfig.hero_title;
+    document.getElementById('el-hero-title').innerHTML = heroTitle.replace(/\n/g, '<br>');
+    document.getElementById('el-hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    document.getElementById('el-tagline').textContent = config.tagline || defaultConfig.tagline;
+    document.getElementById('el-specials-title').textContent = config.specials_title || defaultConfig.specials_title;
+    document.getElementById('el-bottom-cta').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['tagline', config.tagline || defaultConfig.tagline],
+    ['specials_title', config.specials_title || defaultConfig.specials_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a61c671d827c5',t:'MTc3NTU3OTA2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

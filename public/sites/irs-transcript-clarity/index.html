@@ -1,1 +1,926 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/451751ec-5552-48f5-b540-afd236432825 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TranscriptIQ Analyzer</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #0b0b0b; color: #e0e0e0; }
+
+.glass-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+}
+.glass-panel-strong {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+}
+.glow-edge {
+  box-shadow: 0 0 30px rgba(0,194,168,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.glow-accent {
+  box-shadow: 0 0 40px rgba(0,194,168,0.15), 0 0 80px rgba(0,194,168,0.05);
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+@keyframes lineGrow {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.animate-fade-up { animation: fadeUp 0.8s ease-out forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.stagger-init { opacity: 0; }
+
+.nav-link { position: relative; transition: color 0.3s; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  height: 2px; width: 0;
+  background: #00c2a8;
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+.nav-link:hover, .nav-link.active { color: #00c2a8; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #00c2a8, #00a892);
+  color: #0b0b0b;
+  font-weight: 700;
+  padding: 14px 32px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 15px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,194,168,0.3); }
+
+.btn-outline {
+  background: transparent;
+  color: #00c2a8;
+  font-weight: 600;
+  padding: 14px 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,194,168,0.4);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 15px;
+}
+.btn-outline:hover { background: rgba(0,194,168,0.1); border-color: #00c2a8; }
+
+.metric-card {
+  position: relative;
+  overflow: hidden;
+}
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00c2a8, transparent);
+  animation: lineGrow 2s ease-out forwards;
+}
+
+.code-panel { transition: all 0.3s; cursor: pointer; }
+.code-panel:hover { border-color: rgba(0,194,168,0.3); transform: translateY(-2px); }
+.code-panel .expand-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.code-panel.expanded .expand-content { max-height: 300px; }
+
+.report-preview {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+.vote-btn {
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.03);
+}
+.vote-btn:hover { border-color: rgba(0,194,168,0.4); background: rgba(0,194,168,0.08); }
+.vote-btn.selected { border-color: #00c2a8; background: rgba(0,194,168,0.15); }
+
+.reaction-btn {
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  transition: all 0.2s;
+  font-size: 20px;
+}
+.reaction-btn:hover { transform: scale(1.15); border-color: rgba(0,194,168,0.3); }
+.reaction-btn.selected { border-color: #00c2a8; background: rgba(0,194,168,0.12); }
+
+.comment-input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: #e0e0e0;
+  padding: 12px 16px;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  resize: none;
+  transition: border-color 0.3s;
+}
+.comment-input:focus { outline: none; border-color: rgba(0,194,168,0.5); }
+
+.toast-msg {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(0,194,168,0.95);
+  color: #0b0b0b;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 1000;
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+.toast-msg.show { transform: translateX(-50%) translateY(0); }
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 100;
+  background: linear-gradient(90deg, #00c2a8, #00e5c7);
+  transition: width 0.1s;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0b0b0b; }
+::-webkit-scrollbar-thumb { background: rgba(0,194,168,0.3); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#0b0b0b;">
+   <!-- Scroll Progress -->
+   <div id="scroll-progress" class="scroll-progress" style="width:0%;"></div><!-- Toast -->
+   <div id="toast" class="toast-msg"></div><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50" style="background:rgba(11,11,11,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between" style="height:64px;">
+     <div class="flex items-center gap-2">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#00c2a8,#00a892);display:flex;align-items:center;justify-content:center;">
+       <i data-lucide="scan-line" style="width:18px;height:18px;color:#0b0b0b;"></i>
+      </div><span class="font-bold text-white" style="font-size:17px;">TranscriptIQ</span>
+     </div>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link text-sm" style="color:#999;">Home</a> <a href="#insights" class="nav-link text-sm" style="color:#999;">Insights</a> <a href="#breakdown" class="nav-link text-sm" style="color:#999;">Breakdown</a> <a href="#reports" class="nav-link text-sm" style="color:#999;">Reports</a> <a href="#pricing" class="nav-link text-sm" style="color:#999;">Pricing</a> <a href="#faq" class="nav-link text-sm" style="color:#999;">FAQ</a> <a href="#analyze" class="btn-primary" style="padding:8px 20px;font-size:13px;border-radius:8px;">Analyze Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:#999;background:none;border:none;cursor:pointer;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+     <div class="flex flex-col gap-3 pt-3">
+      <a href="#home" class="nav-link text-sm" style="color:#999;">Home</a> <a href="#insights" class="nav-link text-sm" style="color:#999;">Insights</a> <a href="#breakdown" class="nav-link text-sm" style="color:#999;">Breakdown</a> <a href="#reports" class="nav-link text-sm" style="color:#999;">Reports</a> <a href="#pricing" class="nav-link text-sm" style="color:#999;">Pricing</a> <a href="#faq" class="nav-link text-sm" style="color:#999;">FAQ</a> <a href="#analyze" class="btn-primary text-center" style="padding:10px;font-size:13px;">Analyze Now</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative" style="padding-top:140px;padding-bottom:100px;">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%, rgba(0,194,168,0.06) 0%, transparent 60%);pointer-events:none;"></div>
+    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+     <div class="stagger-init animate-fade-up">
+      <div class="mono inline-block px-4 py-1.5 rounded-full text-xs mb-6" style="background:rgba(0,194,168,0.1);color:#00c2a8;border:1px solid rgba(0,194,168,0.2);">
+       INSTANT INSIGHT ENGINE
+      </div>
+     </div>
+     <h1 id="hero-title" class="stagger-init animate-fade-up delay-1 font-bold leading-tight" style="font-size:clamp(36px,6vw,72px);color:#fff;letter-spacing:-0.03em;">IRS transcripts decoded<br>
+       in seconds.</h1>
+     <p id="hero-subtitle" class="stagger-init animate-fade-up delay-2 mt-6 mx-auto" style="max-width:560px;font-size:18px;color:#888;line-height:1.7;">From raw codes to professional reports.</p>
+     <div class="stagger-init animate-fade-up delay-3 flex flex-wrap gap-4 justify-center mt-10">
+      <a href="#analyze" class="btn-primary">Analyze Transcript</a> <a href="#reports" class="btn-outline">See Sample Report</a>
+     </div>
+     <div class="stagger-init animate-fade-up delay-4 mt-16 glass-panel glow-edge p-1" style="max-width:800px;margin-left:auto;margin-right:auto;">
+      <div style="background:rgba(0,0,0,0.6);border-radius:12px;padding:24px;overflow:hidden;">
+       <div class="flex items-center gap-2 mb-4">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div><span class="mono text-xs ml-3" style="color:#555;">transcript_analysis.iq</span>
+       </div>
+       <div class="mono text-sm" style="color:#00c2a8;line-height:2;">
+        <span style="color:#555;">01</span> &nbsp;ACCOUNT TRANSCRIPT — 2024 &nbsp;<span style="color:#444;">▸</span><br><span style="color:#555;">02</span> &nbsp;TC 150 &nbsp;<span style="color:#888;">→ Return Filed</span> &nbsp;<span style="color:#28c840;">✓ Verified</span><br><span style="color:#555;">03</span> &nbsp;TC 806 &nbsp;<span style="color:#888;">→ W-2 Withholding</span> &nbsp;<span style="color:#febc2e;">$12,450.00</span><br><span style="color:#555;">04</span> &nbsp;TC 846 &nbsp;<span style="color:#888;">→ Refund Issued</span> &nbsp;<span style="color:#00c2a8;">$3,217.00</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- INSIGHTS -->
+   <section id="insights" style="padding:80px 0;">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16">
+      <p class="mono text-xs mb-3" style="color:#00c2a8;letter-spacing:2px;">ANALYTICS DASHBOARD</p>
+      <h2 id="insights-heading" class="font-bold" style="font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:-0.02em;">Real-Time Transcript Intelligence</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="metric-card glass-panel-strong glow-edge p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,194,168,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="file-search" style="width:20px;height:20px;color:#00c2a8;"></i>
+        </div><span class="text-xs" style="color:#666;">TRANSCRIPTS</span>
+       </div>
+       <div class="counter mono font-bold" style="font-size:36px;color:#fff;" data-target="14832">
+        0
+       </div>
+       <p class="text-xs mt-2" style="color:#555;">Analyzed this month</p>
+      </div>
+      <div class="metric-card glass-panel-strong glow-edge p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(254,188,46,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="dollar-sign" style="width:20px;height:20px;color:#febc2e;"></i>
+        </div><span class="text-xs" style="color:#666;">BALANCE IMPACT</span>
+       </div>
+       <div class="flex items-baseline gap-1">
+        <span class="mono text-sm" style="color:#888;">$</span> <span class="counter mono font-bold" style="font-size:36px;color:#fff;" data-target="2847500" data-prefix="">0</span>
+       </div>
+       <p class="text-xs mt-2" style="color:#555;">Total identified</p>
+      </div>
+      <div class="metric-card glass-panel-strong glow-edge p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(40,200,64,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="clock" style="width:20px;height:20px;color:#28c840;"></i>
+        </div><span class="text-xs" style="color:#666;">AVG DECODE TIME</span>
+       </div>
+       <div class="flex items-baseline gap-1">
+        <span class="counter mono font-bold" style="font-size:36px;color:#fff;" data-target="3">0</span> <span class="mono text-lg" style="color:#888;">sec</span>
+       </div>
+       <p class="text-xs mt-2" style="color:#555;">Per transcript</p>
+      </div>
+      <div class="metric-card glass-panel-strong glow-edge p-6">
+       <div class="flex items-center gap-3 mb-4">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,194,168,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="check-circle" style="width:20px;height:20px;color:#00c2a8;"></i>
+        </div><span class="text-xs" style="color:#666;">ACCURACY</span>
+       </div>
+       <div class="flex items-baseline gap-1">
+        <span class="counter mono font-bold" style="font-size:36px;color:#fff;" data-target="99">0</span> <span class="mono text-lg" style="color:#888;">.8%</span>
+       </div>
+       <p class="text-xs mt-2" style="color:#555;">Code recognition rate</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BREAKDOWN -->
+   <section id="breakdown" style="padding:80px 0;">
+    <div class="max-w-5xl mx-auto px-6">
+     <div class="text-center mb-16">
+      <p class="mono text-xs mb-3" style="color:#00c2a8;letter-spacing:2px;">TRANSCRIPT DECODER</p>
+      <h2 id="breakdown-heading" class="font-bold" style="font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:-0.02em;">Code-by-Code Breakdown</h2>
+      <p class="mt-4" style="color:#666;max-width:500px;margin:0 auto;">Click any transaction code to reveal its full analysis and client implications.</p>
+     </div>
+     <div class="flex flex-col gap-4" id="code-panels">
+      <!-- TC 150 -->
+      <div class="code-panel glass-panel-strong p-5" onclick="togglePanel(this)">
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+         <div class="mono font-bold px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.12);color:#00c2a8;font-size:14px;">
+          TC 150
+         </div>
+         <div>
+          <div class="font-semibold text-white text-sm">
+           Tax Return Filed
+          </div>
+          <div class="text-xs" style="color:#666;">
+           Return received and processed by IRS
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(40,200,64,0.12);color:#28c840;">NORMAL</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#555;transition:transform 0.3s;" class="panel-chevron"></i>
+        </div>
+       </div>
+       <div class="expand-content">
+        <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">WHAT IT MEANS</p>
+           <p class="text-sm" style="color:#bbb;">The taxpayer's return has been received and the tax liability has been assessed. This is the starting point of the account timeline.</p>
+          </div>
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">CLIENT TALKING POINT</p>
+           <p class="text-sm" style="color:#bbb;">"Your return was successfully filed and processed. The IRS has established your account for this tax year."</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- TC 806 -->
+      <div class="code-panel glass-panel-strong p-5" onclick="togglePanel(this)">
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+         <div class="mono font-bold px-3 py-1.5 rounded-lg" style="background:rgba(254,188,46,0.12);color:#febc2e;font-size:14px;">
+          TC 806
+         </div>
+         <div>
+          <div class="font-semibold text-white text-sm">
+           W-2 Withholding Credit
+          </div>
+          <div class="text-xs" style="color:#666;">
+           Federal tax withheld from wages
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(254,188,46,0.12);color:#febc2e;">CREDIT</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#555;transition:transform 0.3s;" class="panel-chevron"></i>
+        </div>
+       </div>
+       <div class="expand-content">
+        <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">WHAT IT MEANS</p>
+           <p class="text-sm" style="color:#bbb;">This credit reflects federal income tax withheld from the taxpayer's wages, as reported on their W-2.</p>
+          </div>
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">CLIENT TALKING POINT</p>
+           <p class="text-sm" style="color:#bbb;">"This shows the taxes your employer withheld from your paychecks throughout the year — it's applied as a credit toward what you owe."</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- TC 846 -->
+      <div class="code-panel glass-panel-strong p-5" onclick="togglePanel(this)">
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+         <div class="mono font-bold px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.12);color:#00c2a8;font-size:14px;">
+          TC 846
+         </div>
+         <div>
+          <div class="font-semibold text-white text-sm">
+           Refund Issued
+          </div>
+          <div class="text-xs" style="color:#666;">
+           Refund check or direct deposit sent
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,194,168,0.12);color:#00c2a8;">RESOLVED</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#555;transition:transform 0.3s;" class="panel-chevron"></i>
+        </div>
+       </div>
+       <div class="expand-content">
+        <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">WHAT IT MEANS</p>
+           <p class="text-sm" style="color:#bbb;">The IRS has issued the refund. Check the date associated with this code for when the deposit or check was sent.</p>
+          </div>
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">CLIENT TALKING POINT</p>
+           <p class="text-sm" style="color:#bbb;">"Great news — your refund has been issued. If sent via direct deposit, it should arrive within a few business days."</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- TC 971 -->
+      <div class="code-panel glass-panel-strong p-5" onclick="togglePanel(this)">
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+         <div class="mono font-bold px-3 py-1.5 rounded-lg" style="background:rgba(255,95,87,0.12);color:#ff5f57;font-size:14px;">
+          TC 971
+         </div>
+         <div>
+          <div class="font-semibold text-white text-sm">
+           Notice Issued
+          </div>
+          <div class="text-xs" style="color:#666;">
+           IRS communication or action code
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="mono text-xs px-2 py-1 rounded" style="background:rgba(255,95,87,0.12);color:#ff5f57;">REVIEW</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#555;transition:transform 0.3s;" class="panel-chevron"></i>
+        </div>
+       </div>
+       <div class="expand-content">
+        <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">WHAT IT MEANS</p>
+           <p class="text-sm" style="color:#bbb;">A notice has been generated. The action code following TC 971 specifies the type — it could range from an ID verification request to an amended return acknowledgment.</p>
+          </div>
+          <div class="p-3 rounded-lg" style="background:rgba(0,0,0,0.3);">
+           <p class="text-xs mb-1" style="color:#666;">CLIENT TALKING POINT</p>
+           <p class="text-sm" style="color:#bbb;">"The IRS sent you a notice — let's review the specific action code to determine exactly what they need from you."</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REPORTS -->
+   <section id="reports" style="padding:80px 0;">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="text-center mb-16">
+      <p class="mono text-xs mb-3" style="color:#00c2a8;letter-spacing:2px;">DELIVERABLES</p>
+      <h2 id="reports-heading" class="font-bold" style="font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:-0.02em;">Client-Ready Reports</h2>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Report Preview 1 -->
+      <div class="report-preview p-6">
+       <div class="flex items-center gap-3 mb-5">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,194,168,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="file-text" style="width:18px;height:18px;color:#00c2a8;"></i>
+        </div>
+        <div>
+         <div class="font-semibold text-white text-sm">
+          Account Summary Report
+         </div>
+         <div class="text-xs" style="color:#666;">
+          Complete transcript analysis
+         </div>
+        </div>
+       </div>
+       <div class="rounded-lg p-4" style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.05);">
+        <div class="flex justify-between items-center mb-3 pb-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+         <span class="mono text-xs" style="color:#00c2a8;">TranscriptIQ</span> <span class="mono text-xs" style="color:#555;">Report #TIQ-2024-0847</span>
+        </div>
+        <div class="space-y-2">
+         <div class="flex justify-between"><span class="text-xs" style="color:#888;">Filing Status</span><span class="mono text-xs text-white">MFJ</span>
+         </div>
+         <div class="flex justify-between"><span class="text-xs" style="color:#888;">Tax Period</span><span class="mono text-xs text-white">Dec 2024</span>
+         </div>
+         <div class="flex justify-between"><span class="text-xs" style="color:#888;">Balance Due</span><span class="mono text-xs" style="color:#28c840;">$0.00</span>
+         </div>
+         <div class="flex justify-between"><span class="text-xs" style="color:#888;">Refund Amount</span><span class="mono text-xs" style="color:#00c2a8;">$3,217.00</span>
+         </div>
+         <div class="flex justify-between"><span class="text-xs" style="color:#888;">Status</span><span class="mono text-xs" style="color:#28c840;">✓ Clean</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Report Preview 2 -->
+      <div class="report-preview p-6">
+       <div class="flex items-center gap-3 mb-5">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(254,188,46,0.12);display:flex;align-items:center;justify-content:center;">
+         <i data-lucide="bar-chart-3" style="width:18px;height:18px;color:#febc2e;"></i>
+        </div>
+        <div>
+         <div class="font-semibold text-white text-sm">
+          Timeline &amp; Action Log
+         </div>
+         <div class="text-xs" style="color:#666;">
+          Chronological activity report
+         </div>
+        </div>
+       </div>
+       <div class="rounded-lg p-4" style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.05);">
+        <div class="space-y-3">
+         <div class="flex items-center gap-3">
+          <div style="width:8px;height:8px;border-radius:50%;background:#00c2a8;"></div>
+          <div class="flex-1 flex justify-between"><span class="text-xs" style="color:#bbb;">Return Filed</span><span class="mono text-xs" style="color:#555;">02/15/2024</span>
+          </div>
+         </div>
+         <div style="margin-left:3px;width:2px;height:16px;background:rgba(255,255,255,0.06);"></div>
+         <div class="flex items-center gap-3">
+          <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;"></div>
+          <div class="flex-1 flex justify-between"><span class="text-xs" style="color:#bbb;">Withholding Applied</span><span class="mono text-xs" style="color:#555;">02/15/2024</span>
+          </div>
+         </div>
+         <div style="margin-left:3px;width:2px;height:16px;background:rgba(255,255,255,0.06);"></div>
+         <div class="flex items-center gap-3">
+          <div style="width:8px;height:8px;border-radius:50%;background:#28c840;"></div>
+          <div class="flex-1 flex justify-between"><span class="text-xs" style="color:#bbb;">Refund Issued</span><span class="mono text-xs" style="color:#555;">03/01/2024</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Digital Product -->
+     <div class="mt-12 glass-panel-strong glow-accent p-8 text-center">
+      <p class="mono text-xs mb-2" style="color:#00c2a8;letter-spacing:2px;">INCLUDED DIGITAL PRODUCT</p>
+      <h3 class="font-bold text-white text-xl mb-3">Transcript Decoding Toolkit</h3>
+      <p class="text-sm mb-6" style="color:#888;max-width:500px;margin:0 auto;">Decoding templates • Client report layouts • Code explanation blocks • Summary generators — everything you need to deliver premium advisory services.</p>
+      <div class="flex flex-wrap gap-3 justify-center">
+       <span class="mono text-xs px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.1);color:#00c2a8;border:1px solid rgba(0,194,168,0.2);">Templates</span> <span class="mono text-xs px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.1);color:#00c2a8;border:1px solid rgba(0,194,168,0.2);">Report Layouts</span> <span class="mono text-xs px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.1);color:#00c2a8;border:1px solid rgba(0,194,168,0.2);">Code Blocks</span> <span class="mono text-xs px-3 py-1.5 rounded-lg" style="background:rgba(0,194,168,0.1);color:#00c2a8;border:1px solid rgba(0,194,168,0.2);">Generators</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" style="padding:80px 0;background:radial-gradient(ellipse at 50% 100%, rgba(0,194,168,0.04) 0%, transparent 70%);">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="text-center mb-16">
+      <p class="mono text-xs mb-3" style="color:#00c2a8;letter-spacing:2px;">INVESTMENT OPTIONS</p>
+      <h2 id="pricing-heading" class="font-bold" style="font-size:clamp(28px,4vw,44px);color:#fff;letter-spacing:-0.02em;">Simple, Transparent Pricing</h2>
+      <p class="mt-4" style="color:#888;max-width:500px;margin:0 auto;">Choose the plan that fits your advisory practice. All tiers include core analytics and client reporting.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Tier 1: Essentials -->
+      <div class="glass-panel-strong p-8" style="border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;">
+       <div class="mb-6">
+        <div class="flex items-baseline gap-1 mb-3"><span class="mono font-bold" style="font-size:32px;color:#fff;">$79</span> <span class="mono text-sm" style="color:#666;">/month</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1">Essentials</h3>
+        <p class="text-xs" style="color:#666;">Perfect for solo practitioners</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Up to 50 transcripts/month</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Basic client reports</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Code explanations library</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Email support</span></li>
+       </ul><button class="btn-outline w-full" style="margin-top:auto;">Get Started</button>
+      </div><!-- Tier 2: Professional (Featured) -->
+      <div class="glass-panel-strong glow-accent p-8" style="border:2px solid #00c2a8;display:flex;flex-direction:column;transform:scale(1.05);">
+       <div class="inline-block w-fit px-3 py-1 rounded-full text-xs mb-4" style="background:rgba(0,194,168,0.15);color:#00c2a8;border:1px solid rgba(0,194,168,0.3);font-weight:600;">
+        MOST POPULAR
+       </div>
+       <div class="mb-6">
+        <div class="flex items-baseline gap-1 mb-3"><span class="mono font-bold" style="font-size:36px;color:#00c2a8;">$199</span> <span class="mono text-sm" style="color:#666;">/month</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1">Professional</h3>
+        <p class="text-xs" style="color:#888;">For growing advisory teams</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#e0e0e0;">Up to 500 transcripts/month</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#e0e0e0;">Premium client reports + branding</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#e0e0e0;">Full code library + templates</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#e0e0e0;">API access (3 users)</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#e0e0e0;">Priority email + chat support</span></li>
+       </ul><button class="btn-primary w-full" style="margin-top:auto;">Start Free Trial</button>
+      </div><!-- Tier 3: Enterprise -->
+      <div class="glass-panel-strong p-8" style="border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;">
+       <div class="mb-6">
+        <div class="flex items-baseline gap-1 mb-3"><span class="mono font-bold" style="font-size:32px;color:#fff;">Custom</span>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1">Enterprise</h3>
+        <p class="text-xs" style="color:#666;">For large practices &amp; firms</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Unlimited transcripts</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">White-label solution</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Dedicated account manager</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Custom integrations</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#00c2a8;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color:#bbb;">Priority phone support</span></li>
+       </ul><button class="btn-outline w-full" style="margin-top:auto;">Contact Sales</button>
+      </div>
+     </div><!-- Pricing Footer -->
+     <div class="mt-12 text-center">
+      <p class="text-sm" style="color:#666;">All plans include <span style="color:#00c2a8;font-weight:600;">7-day free trial</span>. No credit card required. Cancel anytime.</p>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" style="padding:80px 0;">
+    <div class="max-w-3xl mx-auto px-6">
+     <div class="text-center mb-12">
+      <p class="mono text-xs mb-3" style="color:#00c2a8;letter-spacing:2px;">SUPPORT</p>
+      <h2 class="font-bold" style="font-size:clamp(28px,4vw,36px);color:#fff;">Frequently Asked Questions</h2>
+     </div>
+     <div class="flex flex-col gap-3" id="faq-list">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="analyze" style="padding:80px 0;">
+    <div class="max-w-4xl mx-auto px-6">
+     <div class="glass-panel-strong glow-accent p-10 text-center mb-16">
+      <h2 id="bottom-cta-text" class="font-bold mb-4" style="font-size:clamp(24px,4vw,40px);color:#fff;letter-spacing:-0.02em;">Deliver clarity your clients can understand.</h2>
+      <p class="text-sm mb-8" style="color:#888;max-width:480px;margin:0 auto;">Turn IRS codes into client-ready clarity. Position yourself as a premium advisory service with TranscriptIQ.</p><a href="#home" class="btn-primary" style="font-size:16px;padding:16px 40px;">Analyze Transcript Now</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="glass-panel-strong p-8">
+      <div class="text-center mb-6">
+       <p class="mono text-xs mb-2" style="color:#00c2a8;letter-spacing:2px;">EMBED WIDGET HERE</p>
+       <h3 class="font-bold text-white text-lg">Vote &amp; Comment</h3>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactions-row">
+       <button class="reaction-btn" data-reaction="🔥" onclick="submitReaction(this)">🔥</button> <button class="reaction-btn" data-reaction="💡" onclick="submitReaction(this)">💡</button> <button class="reaction-btn" data-reaction="🚀" onclick="submitReaction(this)">🚀</button> <button class="reaction-btn" data-reaction="⭐" onclick="submitReaction(this)">⭐</button> <button class="reaction-btn" data-reaction="💎" onclick="submitReaction(this)">💎</button> <button class="reaction-btn" data-reaction="👏" onclick="submitReaction(this)">👏</button>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-sm text-center mb-4" style="color:#888;">What would you pay for this tool?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="price-votes">
+        <button class="vote-btn mono text-sm text-white" data-price="$9" onclick="submitVote(this)">$9</button> <button class="vote-btn mono text-sm text-white" data-price="$19" onclick="submitVote(this)">$19</button> <button class="vote-btn mono text-sm text-white" data-price="$29" onclick="submitVote(this)">$29</button> <button class="vote-btn mono text-sm text-white" data-price="$39" onclick="submitVote(this)">$39</button> <button class="vote-btn mono text-sm text-white" data-price="$49" onclick="submitVote(this)">$49</button> <button class="vote-btn mono text-sm text-white" data-price="$69" onclick="submitVote(this)">$69</button> <button class="vote-btn mono text-sm text-white" data-price="$99" onclick="submitVote(this)">$99</button> <button class="vote-btn mono text-sm text-white" data-price="$149" onclick="submitVote(this)">$149</button> <button class="vote-btn mono text-sm text-white" data-price="$199" onclick="submitVote(this)">$199</button> <button class="vote-btn mono text-sm text-white" data-price="$249" onclick="submitVote(this)">$249</button>
+       </div>
+      </div><!-- Comment -->
+      <div>
+       <label for="comment-input" class="text-sm block mb-2" style="color:#888;">Leave a comment</label> <textarea id="comment-input" class="comment-input" rows="3" placeholder="Share your thoughts..."></textarea>
+       <div class="flex justify-end mt-3">
+        <button id="submit-comment-btn" class="btn-primary" style="padding:10px 24px;font-size:13px;" onclick="submitComment()"> <span id="comment-btn-text">Submit</span> <span id="comment-btn-loading" class="hidden">Sending...</span> </button>
+       </div>
+      </div><!-- Comments Feed -->
+      <div id="comments-feed" class="mt-8" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;display:none;">
+       <p class="text-xs mb-4" style="color:#666;">RECENT COMMENTS</p>
+       <div id="comments-list" class="flex flex-col gap-3"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="text-center py-10" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <p class="text-xs" style="color:#444;">© 2025 TranscriptIQ Analyzer. Turn IRS codes into client-ready clarity.</p>
+   </footer>
+  </div>
+  <script>
+// --- Config + SDK ---
+const defaultConfig = {
+  hero_title: 'IRS transcripts decoded<br>in seconds.',
+  hero_subtitle: 'From raw codes to professional reports.',
+  insights_heading: 'Real-Time Transcript Intelligence',
+  breakdown_heading: 'Code-by-Code Breakdown',
+  reports_heading: 'Client-Ready Reports',
+  pricing_heading: 'Simple, Transparent Pricing',
+  bottom_cta_text: 'Deliver clarity your clients can understand.',
+  background_color: '#0b0b0b',
+  accent_color: '#00c2a8',
+  text_color: '#e0e0e0',
+  surface_color: 'rgba(255,255,255,0.04)',
+  secondary_action_color: '#febc2e',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  if (el('hero-title')) el('hero-title').innerHTML = config.hero_title || defaultConfig.hero_title;
+  if (el('hero-subtitle')) el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  if (el('insights-heading')) el('insights-heading').textContent = config.insights_heading || defaultConfig.insights_heading;
+  if (el('breakdown-heading')) el('breakdown-heading').textContent = config.breakdown_heading || defaultConfig.breakdown_heading;
+  if (el('reports-heading')) el('reports-heading').textContent = config.reports_heading || defaultConfig.reports_heading;
+  if (el('pricing-heading')) el('pricing-heading').textContent = config.pricing_heading || defaultConfig.pricing_heading;
+  if (el('bottom-cta-text')) el('bottom-cta-text').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const font = config.font_family || defaultConfig.font_family;
+  document.body.style.fontFamily = `${font}, sans-serif`;
+
+  const bg = config.background_color || defaultConfig.background_color;
+  document.body.style.background = bg;
+  if (el('app-wrapper')) el('app-wrapper').style.background = bg;
+
+  const accent = config.accent_color || defaultConfig.accent_color;
+  document.documentElement.style.setProperty('--accent', accent);
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['insights_heading', config.insights_heading || defaultConfig.insights_heading],
+    ['breakdown_heading', config.breakdown_heading || defaultConfig.breakdown_heading],
+    ['reports_heading', config.reports_heading || defaultConfig.reports_heading],
+    ['pricing_heading', config.pricing_heading || defaultConfig.pricing_heading],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// --- Data SDK ---
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    renderComments(data.filter(d => d.type === 'comment'));
+    updateReactionCounts(data.filter(d => d.type === 'reaction'));
+    updateVoteCounts(data.filter(d => d.type === 'vote'));
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// --- Reactions ---
+function updateReactionCounts(reactions) {
+  const counts = {};
+  reactions.forEach(r => { counts[r.reaction] = (counts[r.reaction] || 0) + 1; });
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const emoji = btn.dataset.reaction;
+    const count = counts[emoji] || 0;
+    const countSpan = btn.querySelector('.r-count');
+    if (count > 0) {
+      if (countSpan) { countSpan.textContent = count; }
+      else { const s = document.createElement('span'); s.className = 'r-count ml-1 text-xs'; s.style.color = '#aaa'; s.textContent = count; btn.appendChild(s); }
+    } else if (countSpan) { countSpan.remove(); }
+  });
+}
+
+async function submitReaction(btn) {
+  if (currentRecordCount >= 999) { showToast('Limit reached'); return; }
+  btn.classList.add('selected');
+  const result = await window.dataSdk.create({ type: 'reaction', reaction: btn.dataset.reaction, price: '', comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Error submitting reaction');
+  else showToast('Reaction added!');
+  setTimeout(() => btn.classList.remove('selected'), 600);
+}
+
+// --- Votes ---
+function updateVoteCounts(votes) {
+  const counts = {};
+  votes.forEach(v => { counts[v.price] = (counts[v.price] || 0) + 1; });
+  document.querySelectorAll('.vote-btn').forEach(btn => {
+    const price = btn.dataset.price;
+    const count = counts[price] || 0;
+    const countSpan = btn.querySelector('.v-count');
+    if (count > 0) {
+      if (countSpan) { countSpan.textContent = `(${count})`; }
+      else { const s = document.createElement('span'); s.className = 'v-count ml-1 text-xs'; s.style.color = '#888'; s.textContent = `(${count})`; btn.appendChild(s); }
+    } else if (countSpan) { countSpan.remove(); }
+  });
+}
+
+async function submitVote(btn) {
+  if (currentRecordCount >= 999) { showToast('Limit reached'); return; }
+  document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const result = await window.dataSdk.create({ type: 'vote', reaction: '', price: btn.dataset.price, comment: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Error submitting vote');
+  else showToast('Vote recorded!');
+}
+
+// --- Comments ---
+function renderComments(comments) {
+  const feed = document.getElementById('comments-feed');
+  const list = document.getElementById('comments-list');
+  if (comments.length === 0) { feed.style.display = 'none'; return; }
+  feed.style.display = 'block';
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const sorted = [...comments].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  sorted.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      existingMap.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'p-3 rounded-lg';
+      div.style.cssText = 'background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);';
+      const time = new Date(c.timestamp);
+      div.innerHTML = `<p class="text-sm" style="color:#ccc;">${escapeHtml(c.comment)}</p><p class="mono text-xs mt-2" style="color:#555;">${time.toLocaleDateString()} ${time.toLocaleTimeString()}</p>`;
+      list.appendChild(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+}
+
+async function submitComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { showToast('Limit reached'); return; }
+  const btn = document.getElementById('submit-comment-btn');
+  btn.disabled = true;
+  document.getElementById('comment-btn-text').classList.add('hidden');
+  document.getElementById('comment-btn-loading').classList.remove('hidden');
+  const result = await window.dataSdk.create({ type: 'comment', reaction: '', price: '', comment: text, timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  document.getElementById('comment-btn-text').classList.remove('hidden');
+  document.getElementById('comment-btn-loading').classList.add('hidden');
+  if (result.isOk) { input.value = ''; showToast('Comment posted!'); }
+  else showToast('Error posting comment');
+}
+
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// --- Toast ---
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// --- Panels ---
+function togglePanel(panel) {
+  const wasExpanded = panel.classList.contains('expanded');
+  document.querySelectorAll('.code-panel').forEach(p => {
+    p.classList.remove('expanded');
+    const chev = p.querySelector('.panel-chevron');
+    if (chev) chev.style.transform = 'rotate(0deg)';
+  });
+  if (!wasExpanded) {
+    panel.classList.add('expanded');
+    const chev = panel.querySelector('.panel-chevron');
+    if (chev) chev.style.transform = 'rotate(180deg)';
+  }
+}
+
+// --- Counter Animation ---
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(target * eased).toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// --- FAQ ---
+const faqs = [
+  { q: 'What types of transcripts can be analyzed?', a: 'Account transcripts, wage & income transcripts, record of account, and return transcripts for all standard tax years.' },
+  { q: 'How fast is the decoding process?', a: 'Most transcripts are decoded in under 3 seconds. Complex multi-year accounts may take slightly longer.' },
+  { q: 'Are the reports white-label ready?', a: 'Yes. All report templates can be customized with your firm branding, logo, and contact information.' },
+  { q: 'What transaction codes are supported?', a: 'We support 200+ IRS transaction codes including all common filing, payment, refund, penalty, and notice codes.' }
+];
+
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  faqs.forEach((faq, i) => {
+    const div = document.createElement('div');
+    div.className = 'glass-panel p-5 cursor-pointer';
+    div.style.transition = 'all 0.3s';
+    div.innerHTML = `
+      <div class="flex items-center justify-between" onclick="this.parentElement.querySelector('.faq-answer').classList.toggle('hidden');this.querySelector('.faq-chev').style.transform=this.parentElement.querySelector('.faq-answer').classList.contains('hidden')?'rotate(0deg)':'rotate(180deg)';">
+        <span class="text-sm font-semibold text-white">${faq.q}</span>
+        <i data-lucide="chevron-down" style="width:16px;height:16px;color:#555;transition:transform 0.3s;" class="faq-chev flex-shrink-0 ml-3"></i>
+      </div>
+      <div class="faq-answer hidden mt-3 pt-3 text-sm" style="color:#888;border-top:1px solid rgba(255,255,255,0.06);">${faq.a}</div>
+    `;
+    list.appendChild(div);
+  });
+  lucide.createIcons();
+}
+
+// --- Scroll Progress ---
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  const pct = (wrapper.scrollTop / (wrapper.scrollHeight - wrapper.clientHeight)) * 100;
+  document.getElementById('scroll-progress').style.width = pct + '%';
+});
+
+// --- Intersection Observer for Animations ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.remove('stagger-init');
+      if (e.target.closest('#insights')) animateCounters();
+    }
+  });
+}, { threshold: 0.1 });
+
+// --- Mobile menu ---
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// --- Nav highlight ---
+function updateNav() {
+  const sections = ['home','insights','breakdown','reports','pricing','faq','analyze'];
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+wrapper.addEventListener('scroll', updateNav);
+
+// --- Init ---
+buildFAQ();
+applyConfig(defaultConfig);
+lucide.createIcons();
+
+document.querySelectorAll('.stagger-init').forEach(el => observer.observe(el));
+document.querySelectorAll('.metric-card').forEach(el => observer.observe(el));
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4e5f820027c5',t:'MTc3NTU3ODI2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

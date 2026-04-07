@@ -1,1 +1,773 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/f8a69b5f-2f19-4148-856b-d3fb6d2d1970 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuarterPlan System</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+        dark: { 900: '#0f0f0f', 800: '#1a1a1a', 700: '#242424', 600: '#2e2e2e' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #0f0f0f; color: #e5e5e5; }
+.font-display { font-family: 'Playfair Display', serif; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes countUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); } 50% { box-shadow: 0 0 20px 4px rgba(245,158,11,0.15); } }
+@keyframes lineGrow { from { height: 0; } to { height: 100%; } }
+@keyframes dotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+.anim-fade-up { animation: fadeUp 0.7s ease both; }
+.anim-fade-up-d1 { animation: fadeUp 0.7s ease 0.15s both; }
+.anim-fade-up-d2 { animation: fadeUp 0.7s ease 0.3s both; }
+.anim-fade-up-d3 { animation: fadeUp 0.7s ease 0.45s both; }
+.anim-fade-up-d4 { animation: fadeUp 0.7s ease 0.6s both; }
+.anim-slide-in { animation: slideIn 0.6s ease both; }
+.anim-count { animation: countUp 0.5s ease both; }
+.anim-glow { animation: pulseGlow 3s ease-in-out infinite; }
+
+.timeline-line { position: relative; }
+.timeline-line::before {
+  content: ''; position: absolute; left: 23px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, #f59e0b, #d97706, transparent);
+  animation: lineGrow 1.5s ease both;
+}
+.timeline-dot { animation: dotPulse 2s ease-in-out infinite; }
+
+/* Observe animations */
+.observe { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+.observe.visible { opacity: 1; transform: translateY(0); }
+
+/* Nav */
+.nav-link { position: relative; padding-bottom: 2px; }
+.nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #f59e0b; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Counter */
+.counter-num { font-variant-numeric: tabular-nums; }
+
+/* Forecast bar */
+.forecast-bar { transition: width 1.2s cubic-bezier(0.25,1,0.5,1); }
+
+/* Vote/Comment module */
+.reaction-btn { transition: all 0.2s; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { background: rgba(245,158,11,0.2); border-color: #f59e0b; }
+
+.price-chip { transition: all 0.2s; cursor: pointer; }
+.price-chip:hover { background: rgba(245,158,11,0.15); }
+.price-chip.selected { background: #f59e0b; color: #0f0f0f; font-weight: 700; }
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #f59e0b; color: #0f0f0f; padding: 10px 24px; border-radius: 8px;
+  font-weight: 600; z-index: 999; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast-msg.show { opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="stickyNav" class="fixed top-0 left-0 w-full z-50 bg-dark-900/90 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 text-amber-500 font-bold text-lg">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <rect x="2" y="2" width="24" height="24" rx="4" stroke="#f59e0b" stroke-width="2" /><path d="M8 18V12M14 18V8M20 18V14" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" />
+      </svg><span>QuarterPlan</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm"><a href="#home" class="nav-link text-gray-300 hover:text-white">Home</a> <a href="#planning" class="nav-link text-gray-300 hover:text-white">Planning</a> <a href="#timeline" class="nav-link text-gray-300 hover:text-white">Timeline</a> <a href="#forecast" class="nav-link text-gray-300 hover:text-white">Forecast</a> <a href="#pricing" class="nav-link text-gray-300 hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-gray-300 hover:text-white">FAQ</a> <a href="#start" class="bg-amber-500 hover:bg-amber-600 text-dark-900 font-semibold px-4 py-2 rounded-lg transition">Start Planning</a>
+     </div><button id="mobileMenuBtn" class="md:hidden text-gray-300"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-2"><a href="#home" class="block text-gray-300 py-2">Home</a> <a href="#planning" class="block text-gray-300 py-2">Planning</a> <a href="#timeline" class="block text-gray-300 py-2">Timeline</a> <a href="#forecast" class="block text-gray-300 py-2">Forecast</a> <a href="#pricing" class="block text-gray-300 py-2">Pricing</a> <a href="#faq" class="block text-gray-300 py-2">FAQ</a> <a href="#start" class="block bg-amber-500 text-dark-900 font-semibold px-4 py-2 rounded-lg text-center">Start Planning</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative pt-32 pb-24 px-4 sm:px-6">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="absolute top-20 right-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl"></div>
+     <div class="absolute bottom-10 left-10 w-96 h-96 bg-amber-500/3 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="anim-fade-up inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-1.5 mb-8"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> <span class="text-amber-400 text-sm font-medium">No surprises. Just control.</span>
+     </div>
+     <h1 id="heroTitle" class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 anim-fade-up-d1">Quarterly taxes shouldn't catch you off guard.</h1>
+     <p id="heroSubtitle" class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 anim-fade-up-d2">Plan ahead and control your cash flow.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center anim-fade-up-d3"><a href="#start" class="bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold px-8 py-4 rounded-xl transition text-lg anim-glow">Start Planning</a> <a href="#timeline" class="border border-white/15 hover:border-amber-500/40 text-white font-semibold px-8 py-4 rounded-xl transition text-lg">See Timeline</a>
+     </div><!-- Stats -->
+     <div class="grid grid-cols-3 gap-6 mt-20 anim-fade-up-d4">
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6">
+       <div class="counter-num text-3xl sm:text-4xl font-bold text-amber-500" data-target="4">
+        0
+       </div>
+       <div class="text-sm text-gray-500 mt-1">
+        Quarterly Deadlines
+       </div>
+      </div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6">
+       <div class="counter-num text-3xl sm:text-4xl font-bold text-amber-500" data-target="92" data-suffix="%">
+        0
+       </div>
+       <div class="text-sm text-gray-500 mt-1">
+        Penalty Avoidance
+       </div>
+      </div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6">
+       <div class="counter-num text-3xl sm:text-4xl font-bold text-amber-500" data-target="3" data-suffix="x">
+        0
+       </div>
+       <div class="text-sm text-gray-500 mt-1">
+        Cash Flow Clarity
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PLANNING -->
+   <section id="planning" class="py-24 px-4 sm:px-6 bg-dark-800/50">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">How It Works</span>
+      <h2 id="planningTitle" class="font-display text-3xl sm:text-4xl font-bold text-white mt-3">How estimated taxes work</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">The IRS expects quarterly payments if you owe $1,000+ at filing. Here's your roadmap.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="observe bg-dark-700 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition group" style="transition-delay:0.1s">
+       <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500/20 transition"><i data-lucide="calculator" class="text-amber-500" style="width:24px;height:24px;"></i>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">1. Estimate Income</h3>
+       <p class="text-gray-400 text-sm">Project your annual income from all sources — wages, freelance, investments.</p>
+      </div>
+      <div class="observe bg-dark-700 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition group" style="transition-delay:0.2s">
+       <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500/20 transition"><i data-lucide="percent" class="text-amber-500" style="width:24px;height:24px;"></i>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">2. Calculate Tax</h3>
+       <p class="text-gray-400 text-sm">Apply your effective tax rate to find your total estimated liability.</p>
+      </div>
+      <div class="observe bg-dark-700 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition group" style="transition-delay:0.3s">
+       <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500/20 transition"><i data-lucide="divide" class="text-amber-500" style="width:24px;height:24px;"></i>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">3. Divide by Four</h3>
+       <p class="text-gray-400 text-sm">Split your annual tax into four equal quarterly payments.</p>
+      </div>
+      <div class="observe bg-dark-700 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition group" style="transition-delay:0.4s">
+       <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-500/20 transition"><i data-lucide="calendar-check" class="text-amber-500" style="width:24px;height:24px;"></i>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">4. Pay On Time</h3>
+       <p class="text-gray-400 text-sm">Submit each payment by its deadline to avoid penalties and interest.</p>
+      </div>
+     </div><!-- Mini Calculator -->
+     <div class="observe mt-16 bg-dark-700 border border-white/5 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
+      <h3 class="font-display text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="zap" class="text-amber-500" style="width:20px;height:20px;"></i> Quick Quarterly Estimator</h3>
+      <form id="calcForm" class="space-y-4" onsubmit="return false;">
+       <div><label for="annualIncome" class="text-sm text-gray-400 mb-1 block">Estimated Annual Income</label>
+        <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span> <input id="annualIncome" type="number" placeholder="120,000" class="w-full bg-dark-900 border border-white/10 rounded-xl pl-8 pr-4 py-3 text-white focus:border-amber-500 focus:outline-none transition">
+        </div>
+       </div>
+       <div><label for="taxRate" class="text-sm text-gray-400 mb-1 block">Effective Tax Rate (%)</label> <input id="taxRate" type="number" placeholder="25" class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:outline-none transition">
+       </div><button type="button" onclick="calculateTax()" class="w-full bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold py-3 rounded-xl transition">Calculate Quarterly Payment</button>
+      </form>
+      <div id="calcResult" class="hidden mt-6 bg-amber-500/10 border border-amber-500/20 rounded-xl p-5 text-center">
+       <div class="text-sm text-amber-400 mb-1">
+        Estimated Quarterly Payment
+       </div>
+       <div id="quarterlyAmount" class="text-4xl font-bold text-amber-500 counter-num">
+        $0
+       </div>
+       <div class="text-xs text-gray-500 mt-2">
+        4 payments per year × <span id="perPayment">$0</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TIMELINE -->
+   <section id="timeline" class="py-24 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">Payment Schedule</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-3">Quarterly Deadlines Visualized</h2>
+      <p class="text-gray-400 mt-4">Mark these dates. Never miss a payment again.</p>
+     </div>
+     <div class="timeline-line pl-12 space-y-10 observe"><!-- Q1 -->
+      <div class="relative">
+       <div class="absolute left-[-24px] top-1 w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center timeline-dot z-10"><span class="text-dark-900 font-bold text-sm">Q1</span>
+       </div>
+       <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 ml-4 hover:border-amber-500/20 transition">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+         <h3 class="text-white font-bold text-lg">April 15</h3><span class="text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full">Jan 1 – Mar 31</span>
+        </div>
+        <p class="text-gray-400 text-sm mt-2">First quarter estimated tax payment due. Covers income earned January through March.</p>
+       </div>
+      </div><!-- Q2 -->
+      <div class="relative">
+       <div class="absolute left-[-24px] top-1 w-12 h-12 bg-amber-500/80 rounded-full flex items-center justify-center timeline-dot z-10" style="animation-delay:0.5s"><span class="text-dark-900 font-bold text-sm">Q2</span>
+       </div>
+       <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 ml-4 hover:border-amber-500/20 transition">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+         <h3 class="text-white font-bold text-lg">June 15</h3><span class="text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full">Apr 1 – May 31</span>
+        </div>
+        <p class="text-gray-400 text-sm mt-2">Second quarter payment. Note: this quarter covers only 2 months of income.</p>
+       </div>
+      </div><!-- Q3 -->
+      <div class="relative">
+       <div class="absolute left-[-24px] top-1 w-12 h-12 bg-amber-500/60 rounded-full flex items-center justify-center timeline-dot z-10" style="animation-delay:1s"><span class="text-dark-900 font-bold text-sm">Q3</span>
+       </div>
+       <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 ml-4 hover:border-amber-500/20 transition">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+         <h3 class="text-white font-bold text-lg">September 15</h3><span class="text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full">Jun 1 – Aug 31</span>
+        </div>
+        <p class="text-gray-400 text-sm mt-2">Third quarter payment. Peak earning season for many — plan your reserves early.</p>
+       </div>
+      </div><!-- Q4 -->
+      <div class="relative">
+       <div class="absolute left-[-24px] top-1 w-12 h-12 bg-amber-500/40 rounded-full flex items-center justify-center timeline-dot z-10" style="animation-delay:1.5s"><span class="text-dark-900 font-bold text-sm">Q4</span>
+       </div>
+       <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 ml-4 hover:border-amber-500/20 transition">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+         <h3 class="text-white font-bold text-lg">January 15</h3><span class="text-xs bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full">Sep 1 – Dec 31</span>
+        </div>
+        <p class="text-gray-400 text-sm mt-2">Final quarter payment for the previous tax year. Alternatively, file your return by January 31.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FORECAST -->
+   <section id="forecast" class="py-24 px-4 sm:px-6 bg-dark-800/50">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">Projections</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-3">Income vs. Tax Projections</h2>
+      <p class="text-gray-400 mt-4">Visualize where your money goes each quarter.</p>
+     </div>
+     <div class="observe space-y-8"><!-- Q1 -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-6">
+       <div class="flex items-center justify-between mb-3"><span class="text-white font-bold">Q1 · Jan – Mar</span> <span class="text-amber-400 font-mono text-sm">$30,000 income</span>
+       </div>
+       <div class="w-full bg-dark-900 rounded-full h-6 overflow-hidden">
+        <div class="forecast-bar h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-end pr-3" style="width:0%" data-width="75%"><span class="text-xs text-dark-900 font-bold">$7,500 tax</span>
+        </div>
+       </div>
+       <div class="flex justify-between mt-2 text-xs text-gray-500">
+        <span>0%</span><span>Effective: 25%</span><span>100%</span>
+       </div>
+      </div><!-- Q2 -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-6">
+       <div class="flex items-center justify-between mb-3"><span class="text-white font-bold">Q2 · Apr – May</span> <span class="text-amber-400 font-mono text-sm">$22,000 income</span>
+       </div>
+       <div class="w-full bg-dark-900 rounded-full h-6 overflow-hidden">
+        <div class="forecast-bar h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-end pr-3" style="width:0%" data-width="55%"><span class="text-xs text-dark-900 font-bold">$5,500 tax</span>
+        </div>
+       </div>
+       <div class="flex justify-between mt-2 text-xs text-gray-500">
+        <span>0%</span><span>Effective: 25%</span><span>100%</span>
+       </div>
+      </div><!-- Q3 -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-6">
+       <div class="flex items-center justify-between mb-3"><span class="text-white font-bold">Q3 · Jun – Aug</span> <span class="text-amber-400 font-mono text-sm">$38,000 income</span>
+       </div>
+       <div class="w-full bg-dark-900 rounded-full h-6 overflow-hidden">
+        <div class="forecast-bar h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-end pr-3" style="width:0%" data-width="95%"><span class="text-xs text-dark-900 font-bold">$9,500 tax</span>
+        </div>
+       </div>
+       <div class="flex justify-between mt-2 text-xs text-gray-500">
+        <span>0%</span><span>Effective: 25%</span><span>100%</span>
+       </div>
+      </div><!-- Q4 -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-6">
+       <div class="flex items-center justify-between mb-3"><span class="text-white font-bold">Q4 · Sep – Dec</span> <span class="text-amber-400 font-mono text-sm">$30,000 income</span>
+       </div>
+       <div class="w-full bg-dark-900 rounded-full h-6 overflow-hidden">
+        <div class="forecast-bar h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-end pr-3" style="width:0%" data-width="75%"><span class="text-xs text-dark-900 font-bold">$7,500 tax</span>
+        </div>
+       </div>
+       <div class="flex justify-between mt-2 text-xs text-gray-500">
+        <span>0%</span><span>Effective: 25%</span><span>100%</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section id="vote-comment" class="py-24 px-4 sm:px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">Community</span>
+      <h2 class="font-display text-3xl font-bold text-white mt-3">What would you pay for this system?</h2>
+      <p class="text-gray-400 mt-3">React, vote on a price, and leave your thoughts below.</p>
+     </div>
+     <div class="observe bg-dark-800 border border-white/5 rounded-2xl p-6 sm:p-8 space-y-8"><!-- Reactions -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">Your Reaction</h4>
+       <div id="reactionsRow" class="flex flex-wrap gap-3"><button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🔥" onclick="selectReaction(this)">🔥 <span class="text-sm text-gray-400" id="count-🔥">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="💡" onclick="selectReaction(this)">💡 <span class="text-sm text-gray-400" id="count-💡">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🎯" onclick="selectReaction(this)">🎯 <span class="text-sm text-gray-400" id="count-🎯">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="💰" onclick="selectReaction(this)">💰 <span class="text-sm text-gray-400" id="count-💰">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🚀" onclick="selectReaction(this)">🚀 <span class="text-sm text-gray-400" id="count-🚀">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">What's it worth?</h4>
+       <div id="priceGrid" class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+       </div>
+      </div><!-- Comment -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">Leave a Comment</h4>
+       <form id="commentForm" onsubmit="return false;"><textarea id="commentText" rows="3" class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-amber-500 focus:outline-none transition resize-none" placeholder="Share your thoughts on the QuarterPlan System..."></textarea> <button type="button" id="submitComment" onclick="submitVote()" class="mt-3 bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold px-6 py-3 rounded-xl transition flex items-center gap-2"> <i data-lucide="send" style="width:16px;height:16px;"></i> Submit </button>
+       </form>
+      </div><!-- Comments List -->
+      <div id="commentsList" class="space-y-4"></div><!-- Embed note -->
+      <div class="text-center pt-4 border-t border-white/5"><span class="text-xs text-gray-600 italic">Embed Widget Here</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-4 sm:px-6 bg-dark-800/50">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">Plans</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-3">Choose Your QuarterPlan</h2>
+      <p class="text-gray-400 mt-4">From solo freelancers to growing agencies — we have a plan that scales with you.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8 observe">
+      <!-- Starter -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-8 relative hover:border-amber-500/20 transition group">
+       <h3 class="text-white font-bold text-xl mb-1">Starter</h3>
+       <p class="text-gray-500 text-sm mb-6">For solo self-employed</p>
+       <div class="mb-6">
+        <div class="text-4xl font-bold text-white"><span class="text-amber-500">$29</span><span class="text-lg text-gray-500">/year</span>
+        </div>
+        <p class="text-gray-400 text-xs mt-1">Billed annually</p>
+       </div><button onclick="selectPlan('Starter')" class="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-lg transition mb-8">Get Started</button>
+       <div class="space-y-3">
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Quarterly calculator</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Payment timelines</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Email support</span>
+        </div>
+        <div class="flex items-start gap-3 opacity-40">
+         <i data-lucide="x" class="text-gray-600 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-500 text-sm">Forecasting tools</span>
+        </div>
+        <div class="flex items-start gap-3 opacity-40">
+         <i data-lucide="x" class="text-gray-600 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-500 text-sm">Client reporting</span>
+        </div>
+       </div>
+      </div><!-- Professional (Featured) -->
+      <div class="bg-gradient-to-br from-dark-700 to-dark-800 border border-amber-500/40 rounded-2xl p-8 relative hover:border-amber-500/60 transition group transform md:scale-105">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-dark-900 text-xs font-bold px-4 py-1 rounded-full">
+        MOST POPULAR
+       </div>
+       <h3 class="text-white font-bold text-xl mb-1">Professional</h3>
+       <p class="text-gray-400 text-sm mb-6">For growing advisors</p>
+       <div class="mb-6">
+        <div class="text-4xl font-bold text-white"><span class="text-amber-500">$79</span><span class="text-lg text-gray-400">/year</span>
+        </div>
+        <p class="text-amber-400 text-xs mt-1">Save $20 vs. monthly</p>
+       </div><button onclick="selectPlan('Professional')" class="w-full bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold py-3 rounded-lg transition mb-8">Start Free Trial</button>
+       <div class="space-y-3">
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-white text-sm font-medium">Everything in Starter</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Income forecasting</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Tax projection reports</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Priority email support</span>
+        </div>
+        <div class="flex items-start gap-3 opacity-40">
+         <i data-lucide="x" class="text-gray-600 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-500 text-sm">Client portal access</span>
+        </div>
+       </div>
+      </div><!-- Agency -->
+      <div class="bg-dark-700 border border-white/5 rounded-2xl p-8 relative hover:border-amber-500/20 transition group">
+       <h3 class="text-white font-bold text-xl mb-1">Agency</h3>
+       <p class="text-gray-500 text-sm mb-6">For multi-person teams</p>
+       <div class="mb-6">
+        <div class="text-4xl font-bold text-white"><span class="text-amber-500">$199</span><span class="text-lg text-gray-500">/year</span>
+        </div>
+        <p class="text-gray-400 text-xs mt-1">Up to 10 users</p>
+       </div><button onclick="selectPlan('Agency')" class="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-lg transition mb-8">Contact Sales</button>
+       <div class="space-y-3">
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-white text-sm font-medium">Everything in Professional</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Client portal &amp; reporting</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Up to 10 team members</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">Dedicated account manager</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <i data-lucide="check" class="text-amber-500 flex-shrink-0 mt-0.5" style="width:18px;height:18px;"></i> <span class="text-gray-300 text-sm">API access</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section id="vote-comment" class="py-24 px-4 sm:px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12 observe"><span class="text-amber-500 font-medium text-sm uppercase tracking-widest">Community</span>
+      <h2 class="font-display text-3xl font-bold text-white mt-3">What would you pay for this system?</h2>
+      <p class="text-gray-400 mt-3">React, vote on a price, and leave your thoughts below.</p>
+     </div>
+     <div class="observe bg-dark-800 border border-white/5 rounded-2xl p-6 sm:p-8 space-y-8"><!-- Reactions -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">Your Reaction</h4>
+       <div id="reactionsRow" class="flex flex-wrap gap-3"><button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🔥" onclick="selectReaction(this)">🔥 <span class="text-sm text-gray-400" id="count-🔥">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="💡" onclick="selectReaction(this)">💡 <span class="text-sm text-gray-400" id="count-💡">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🎯" onclick="selectReaction(this)">🎯 <span class="text-sm text-gray-400" id="count-🎯">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="💰" onclick="selectReaction(this)">💰 <span class="text-sm text-gray-400" id="count-💰">0</span></button> <button class="reaction-btn border border-white/10 rounded-xl px-4 py-2 text-xl flex items-center gap-2" data-reaction="🚀" onclick="selectReaction(this)">🚀 <span class="text-sm text-gray-400" id="count-🚀">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">What's it worth?</h4>
+       <div id="priceGrid" class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+       </div>
+      </div><!-- Comment -->
+      <div>
+       <h4 class="text-white font-semibold mb-3">Leave a Comment</h4>
+       <form id="commentForm" onsubmit="return false;"><textarea id="commentText" rows="3" class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-amber-500 focus:outline-none transition resize-none" placeholder="Share your thoughts on the QuarterPlan System..."></textarea> <button type="button" id="submitComment" onclick="submitVote()" class="mt-3 bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold px-6 py-3 rounded-xl transition flex items-center gap-2"> <i data-lucide="send" style="width:16px;height:16px;"></i> Submit </button>
+       </form>
+      </div><!-- Comments List -->
+      <div id="commentsList" class="space-y-4"></div><!-- Embed note -->
+      <div class="text-center pt-4 border-t border-white/5"><span class="text-xs text-gray-600 italic">Embed Widget Here</span>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="faq-item bg-dark-700 border border-white/5 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 flex items-center justify-between"> <span class="text-white font-medium">Who needs to pay estimated taxes?</span> <i data-lucide="chevron-down" class="text-amber-500 transition-transform" style="width:20px;height:20px;"></i> </button>
+    <div class="faq-answer hidden px-6 pb-4 text-gray-400 text-sm">
+     Self-employed individuals, freelancers, and anyone who expects to owe $1,000 or more in taxes when their return is filed. This includes 1099 contractors, sole proprietors, and partners.
+    </div>
+   </div>
+   <div class="faq-item bg-dark-700 border border-white/5 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 flex items-center justify-between"> <span class="text-white font-medium">What happens if I miss a deadline?</span> <i data-lucide="chevron-down" class="text-amber-500 transition-transform" style="width:20px;height:20px;"></i> </button>
+    <div class="faq-answer hidden px-6 pb-4 text-gray-400 text-sm">
+     The IRS charges an underpayment penalty, typically around 0.5% per month on the unpaid amount. Interest also accrues daily from the due date.
+    </div>
+   </div>
+   <div class="faq-item bg-dark-700 border border-white/5 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 flex items-center justify-between"> <span class="text-white font-medium">Can I adjust my payments mid-year?</span> <i data-lucide="chevron-down" class="text-amber-500 transition-transform" style="width:20px;height:20px;"></i> </button>
+    <div class="faq-answer hidden px-6 pb-4 text-gray-400 text-sm">
+     Yes — if your income changes significantly, you can recalculate and adjust future quarterly payments. Use the annualized income installment method for uneven income.
+    </div>
+   </div>
+   <div class="faq-item bg-dark-700 border border-white/5 rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 flex items-center justify-between"> <span class="text-white font-medium">What's included in the QuarterPlan System?</span> <i data-lucide="chevron-down" class="text-amber-500 transition-transform" style="width:20px;height:20px;"></i> </button>
+    <div class="faq-answer hidden px-6 pb-4 text-gray-400 text-sm">
+     Quarterly calculators, payment timelines, forecasting tools, and reporting templates — everything you need to convert reactive tax management into proactive planning.
+    </div>
+   </div>
+  </div> <!-- BOTTOM CTA -->
+  <section id="start" class="py-24 px-4 sm:px-6">
+   <div class="max-w-3xl mx-auto text-center observe">
+    <div class="bg-gradient-to-br from-dark-700 to-dark-800 border border-amber-500/20 rounded-3xl p-10 sm:p-16 relative overflow-hidden">
+     <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none"></div>
+     <div class="relative z-10">
+      <svg class="mx-auto mb-6" width="48" height="48" viewbox="0 0 48 48" fill="none">
+       <circle cx="24" cy="24" r="22" stroke="#f59e0b" stroke-width="2" /><path d="M16 24l6 6 10-12" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <h2 id="bottomCtaText" class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">Stay ahead of every payment.</h2>
+      <p class="text-gray-400 mb-8 max-w-lg mx-auto">Join advisors who use QuarterPlan to turn tax season from chaos into a controlled, predictable system.</p><a href="#home" class="inline-block bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold px-10 py-4 rounded-xl text-lg transition anim-glow">Start Planning Now</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="border-t border-white/5 py-8 px-4 text-center">
+   <p class="text-gray-600 text-sm">© 2025 QuarterPlan System. No surprises. Just control.</p>
+  </footer><!-- Toast -->
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// === State ===
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+let selectedPlan = null;
+
+// === Price chips ===
+const prices = ['$9','$19','$29','$39','$49','$69','$99','$149','$199','$299'];
+const priceGrid = document.getElementById('priceGrid');
+prices.forEach(p => {
+  const chip = document.createElement('button');
+  chip.className = 'price-chip border border-white/10 rounded-lg py-2 text-sm text-gray-300';
+  chip.textContent = p;
+  chip.onclick = () => {
+    priceGrid.querySelectorAll('.price-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    selectedPrice = p;
+  };
+  priceGrid.appendChild(chip);
+});
+
+// === Reactions ===
+function selectReaction(btn) {
+  document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedReaction = btn.dataset.reaction;
+}
+
+// === Calculator ===
+function calculateTax() {
+  const income = parseFloat(document.getElementById('annualIncome').value);
+  const rate = parseFloat(document.getElementById('taxRate').value);
+  if (!income || !rate) return;
+  const annual = income * (rate / 100);
+  const quarterly = annual / 4;
+  document.getElementById('quarterlyAmount').textContent = '$' + quarterly.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  document.getElementById('perPayment').textContent = '$' + quarterly.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  document.getElementById('calcResult').classList.remove('hidden');
+}
+
+// === FAQ ===
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-item [data-lucide]').forEach(i => i.style.transform = '');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// === Plan Selection ===
+function selectPlan(plan) {
+  selectedPlan = plan;
+  showToast(`Selected: ${plan} plan`);
+}
+
+// === Toast ===
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// === Submit Vote ===
+async function submitVote() {
+  const comment = document.getElementById('commentText').value.trim();
+  if (!selectedReaction && !selectedPrice && !comment) {
+    showToast('Please react, vote, or comment first!');
+    return;
+  }
+  if (allData.length >= 999) {
+    showToast('Maximum entries reached!');
+    return;
+  }
+  const btn = document.getElementById('submitComment');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Submitting...</span>';
+  const record = {
+    type: 'vote',
+    reaction: selectedReaction || '',
+    price: selectedPrice || '',
+    comment: comment,
+    timestamp: new Date().toISOString()
+  };
+  const result = await window.dataSdk.create(record);
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" style="width:16px;height:16px;"></i> Submit';
+  lucide.createIcons();
+  if (result.isOk) {
+    showToast('Thanks for your input!');
+    document.getElementById('commentText').value = '';
+    selectedReaction = null;
+    selectedPrice = null;
+    document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('selected'));
+    priceGrid.querySelectorAll('.price-chip').forEach(c => c.classList.remove('selected'));
+  } else {
+    showToast('Something went wrong. Try again.');
+  }
+}
+
+// === Render comments & counts ===
+function renderVoteData(data) {
+  allData = data;
+  const votes = data.filter(d => d.type === 'vote');
+
+  // Reaction counts
+  const reactionCounts = {};
+  votes.forEach(v => { if (v.reaction) reactionCounts[v.reaction] = (reactionCounts[v.reaction] || 0) + 1; });
+  ['🔥','💡','🎯','💰','🚀'].forEach(r => {
+    const el = document.getElementById('count-' + r);
+    if (el) el.textContent = reactionCounts[r] || 0;
+  });
+
+  // Comments
+  const list = document.getElementById('commentsList');
+  const comments = votes.filter(v => v.comment);
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set();
+
+  comments.slice(-20).reverse().forEach(v => {
+    const id = v.__backendId;
+    newIds.add(id);
+    if (existingMap.has(id)) {
+      existingMap.delete(id);
+      return;
+    }
+    const div = document.createElement('div');
+    div.dataset.id = id;
+    div.className = 'bg-dark-700 border border-white/5 rounded-xl p-4';
+    const meta = [];
+    if (v.reaction) meta.push(v.reaction);
+    if (v.price) meta.push(v.price);
+    const date = new Date(v.timestamp);
+    const timeStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    div.innerHTML = `
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">${meta.map(m => `<span class="text-sm bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded">${m}</span>`).join('')}</div>
+        <span class="text-xs text-gray-600">${timeStr}</span>
+      </div>
+      <p class="text-gray-300 text-sm">${v.comment.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+    `;
+    list.prepend(div);
+  });
+
+  existingMap.forEach(el => el.remove());
+}
+
+// === Data SDK Init ===
+(async () => {
+  const initResult = await window.dataSdk.init({
+    onDataChanged(data) {
+      renderVoteData(data);
+    }
+  });
+  if (!initResult.isOk) console.error('Data SDK init failed');
+})();
+
+// === Element SDK ===
+const defaultConfig = {
+  background_color: '#0f0f0f',
+  surface_color: '#1a1a1a',
+  text_color: '#e5e5e5',
+  primary_action_color: '#f59e0b',
+  secondary_action_color: '#d97706',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: "Quarterly taxes shouldn't catch you off guard.",
+  hero_subtitle: 'Plan ahead and control your cash flow.',
+  planning_title: 'How estimated taxes work',
+  bottom_cta_text: 'Stay ahead of every payment.'
+};
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+
+  document.body.style.background = bg;
+  document.body.style.color = text;
+  document.body.style.fontFamily = `${font}, DM Sans, sans-serif`;
+
+  const root = document.getElementById('app-root');
+  if (root) root.style.background = bg;
+
+  // Text content
+  const ht = document.getElementById('heroTitle');
+  if (ht) { ht.textContent = config.hero_title || defaultConfig.hero_title; ht.style.fontSize = `${baseSize * 3}px`; }
+  const hs = document.getElementById('heroSubtitle');
+  if (hs) { hs.textContent = config.hero_subtitle || defaultConfig.hero_subtitle; hs.style.fontSize = `${baseSize * 1.25}px`; }
+  const pt = document.getElementById('planningTitle');
+  if (pt) { pt.textContent = config.planning_title || defaultConfig.planning_title; }
+  const bc = document.getElementById('bottomCtaText');
+  if (bc) { bc.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text; }
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['planning_title', config.planning_title || defaultConfig.planning_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// === Observers & Counters ===
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+
+  // Mobile menu
+  document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+
+  // Scroll observer
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.observe').forEach(el => obs.observe(el));
+
+  // Counter animation
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 30));
+        const interval = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(interval); }
+          el.textContent = current + suffix;
+        }, 40);
+        counterObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter-num[data-target]').forEach(el => counterObs.observe(el));
+
+  // Forecast bars
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => { e.target.style.width = e.target.dataset.width; }, 200);
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.forecast-bar').forEach(el => barObs.observe(el));
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a60f712f727c5',t:'MTc3NTU3OTAyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

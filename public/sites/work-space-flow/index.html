@@ -1,1 +1,777 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/b95c96f3-a7b4-4d63-a13b-42d56ed586c0 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkSpace Flow</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Instrument+Serif&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+:root {
+  --bg: #111111;
+  --surface: #1a1a1a;
+  --text: #e8e4de;
+  --accent: #c8956c;
+  --muted: #6b6560;
+}
+* { scrollbar-width: thin; scrollbar-color: var(--muted) var(--bg); }
+.font-display { font-family: 'Instrument Serif', serif; }
+.font-body { font-family: 'DM Sans', sans-serif; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(200,149,108,0.1); }
+  50% { box-shadow: 0 0 40px rgba(200,149,108,0.25); }
+}
+.anim-fade-up { animation: fadeUp 0.8s ease both; }
+.anim-fade-in { animation: fadeIn 0.6s ease both; }
+.anim-slide-down { animation: slideDown 0.5s ease both; }
+.anim-d1 { animation-delay: 0.1s; }
+.anim-d2 { animation-delay: 0.2s; }
+.anim-d3 { animation-delay: 0.3s; }
+.anim-d4 { animation-delay: 0.4s; }
+.anim-d5 { animation-delay: 0.5s; }
+.anim-d6 { animation-delay: 0.6s; }
+
+/* Intersection observer reveal */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Pricing hover */
+.price-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  border: 1px solid transparent;
+}
+.price-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  animation: pulse-glow 2s ease infinite;
+}
+
+/* Nav */
+.nav-link { position: relative; transition: color 0.3s ease; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+  height: 2px; background: var(--accent); transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+.nav-link:hover, .nav-link.active { color: var(--accent); }
+
+/* Sticky nav */
+.sticky-nav {
+  backdrop-filter: blur(16px); background: rgba(17,17,17,0.85);
+  transition: box-shadow 0.3s ease;
+}
+.sticky-nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.4); }
+
+/* Section separator */
+.section-sep { height: 1px; background: linear-gradient(90deg, transparent, var(--muted), transparent); opacity: 0.3; }
+
+/* Button styles */
+.btn-primary {
+  background: var(--accent); color: #111; font-weight: 700;
+  transition: all 0.3s ease; position: relative; overflow: hidden;
+}
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,149,108,0.3); }
+.btn-outline {
+  border: 1px solid var(--muted); color: var(--text);
+  transition: all 0.3s ease;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* SVG workspace diagrams */
+.desk-svg { transition: transform 0.4s ease, filter 0.4s ease; }
+.desk-svg:hover { transform: scale(1.03); filter: drop-shadow(0 0 20px rgba(200,149,108,0.2)); }
+
+/* Reaction btn */
+.reaction-btn {
+  transition: all 0.2s ease; border: 1px solid rgba(107,101,96,0.3);
+}
+.reaction-btn:hover { border-color: var(--accent); transform: scale(1.1); }
+.reaction-btn.selected { border-color: var(--accent); background: rgba(200,149,108,0.15); }
+
+/* Toast */
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: #111; padding: 10px 24px; border-radius: 8px;
+  font-weight: 700; z-index: 9999; animation: fadeUp 0.3s ease both;
+  pointer-events: none;
+}
+
+/* FAQ */
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-answer.open { max-height: 300px; padding-top: 12px; }
+.faq-chevron { transition: transform 0.3s ease; }
+.faq-chevron.rotated { transform: rotate(180deg); }
+
+/* Mobile nav */
+.mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.mobile-menu.open { max-height: 500px; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bg: '#111111', surface: '#1a1a1a', txt: '#e8e4de',
+        accent: '#c8956c', muted: '#6b6560'
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body" style="background:var(--bg);color:var(--text);">
+  <div id="app-root" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="main-nav" class="sticky-nav fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"><a href="#home" class="font-display text-xl sm:text-2xl tracking-tight" style="color:var(--accent);">WorkSpace Flow</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm" style="color:var(--text);">Home</a> <a href="#layouts" class="nav-link text-sm" style="color:var(--text);">Layouts</a> <a href="#setup" class="nav-link text-sm" style="color:var(--text);">Setup</a> <a href="#productivity" class="nav-link text-sm" style="color:var(--text);">Productivity</a> <a href="#pricing" class="nav-link text-sm" style="color:var(--text);">Pricing</a> <a href="#faq" class="nav-link text-sm" style="color:var(--text);">FAQ</a> <a href="#design-space" class="btn-primary px-5 py-2 rounded-lg text-sm">Design Space</a>
+     </div><button id="mobile-toggle" class="md:hidden p-2" style="color:var(--text);" aria-label="Toggle menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden px-6" style="background:rgba(17,17,17,0.95);">
+     <div class="flex flex-col gap-4 py-4"><a href="#home" class="nav-link text-sm mobile-link" style="color:var(--text);">Home</a> <a href="#layouts" class="nav-link text-sm mobile-link" style="color:var(--text);">Layouts</a> <a href="#setup" class="nav-link text-sm mobile-link" style="color:var(--text);">Setup</a> <a href="#productivity" class="nav-link text-sm mobile-link" style="color:var(--text);">Productivity</a> <a href="#pricing" class="nav-link text-sm mobile-link" style="color:var(--text);">Pricing</a> <a href="#faq" class="nav-link text-sm mobile-link" style="color:var(--text);">FAQ</a> <a href="#design-space" class="btn-primary px-5 py-2 rounded-lg text-sm text-center mobile-link">Design Space</a>
+     </div>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full flex items-center justify-center pt-32 pb-20 px-4 sm:px-6" style="min-height:600px;">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 0%, rgba(200,149,108,0.08) 0%, transparent 60%);"></div>
+    <div class="relative max-w-4xl mx-auto text-center">
+     <p class="anim-fade-up text-sm tracking-widest uppercase mb-6" style="color:var(--muted);">Your environment shapes your output.</p>
+     <h1 id="hero-title" class="anim-fade-up anim-d1 font-display text-4xl sm:text-5xl md:text-7xl leading-tight mb-6" style="color:var(--text);">Your space defines how you work.</h1>
+     <p id="hero-subtitle" class="anim-fade-up anim-d2 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10" style="color:var(--muted);">Design a workspace that supports focus, fuels creativity, and keeps you in flow — all day, every day.</p>
+     <div class="anim-fade-up anim-d3 flex flex-col sm:flex-row items-center justify-center gap-4"><a href="#design-space" id="cta-primary-btn" class="btn-primary px-8 py-3.5 rounded-xl text-base font-bold">Design Space</a> <a href="#layouts" id="cta-secondary-btn" class="btn-outline px-8 py-3.5 rounded-xl text-base">View Layouts</a>
+     </div><!-- Hero SVG Workspace Illustration -->
+     <div class="anim-fade-up anim-d5 mt-16 mx-auto max-w-2xl">
+      <svg viewbox="0 0 600 220" class="w-full desk-svg" style="filter:drop-shadow(0 4px 30px rgba(200,149,108,0.1));"><!-- Desk surface --> <rect x="50" y="120" width="500" height="12" rx="6" fill="#2a2520" /> <rect x="50" y="120" width="500" height="6" rx="3" fill="#332d27" /> <!-- Desk legs --> <rect x="80" y="132" width="8" height="70" rx="2" fill="#2a2520" /> <rect x="512" y="132" width="8" height="70" rx="2" fill="#2a2520" /> <!-- Monitor --> <rect x="210" y="30" width="180" height="85" rx="6" fill="#1a1a1a" stroke="#333" stroke-width="1.5" /> <rect x="218" y="38" width="164" height="69" rx="3" fill="#222" /> <line x1="240" y1="58" x2="360" y2="58" stroke="#c8956c" stroke-width="1" opacity="0.6" /> <line x1="240" y1="70" x2="330" y2="70" stroke="#6b6560" stroke-width="1" opacity="0.4" /> <line x1="240" y1="82" x2="350" y2="82" stroke="#6b6560" stroke-width="1" opacity="0.4" /> <line x1="240" y1="94" x2="310" y2="94" stroke="#6b6560" stroke-width="1" opacity="0.3" /> <rect x="290" y="115" width="20" height="6" rx="1" fill="#333" /> <!-- Keyboard --> <rect x="240" y="128" width="120" height="20" rx="4" fill="#222" stroke="#333" stroke-width="1" /> <rect x="248" y="133" width="40" height="3" rx="1" fill="#333" /> <rect x="294" y="133" width="20" height="3" rx="1" fill="#333" /> <rect x="320" y="133" width="32" height="3" rx="1" fill="#333" /> <rect x="248" y="140" width="60" height="3" rx="1" fill="#2a2520" /> <rect x="314" y="140" width="38" height="3" rx="1" fill="#2a2520" /> <!-- Mouse --> <rect x="380" y="130" width="20" height="14" rx="7" fill="#222" stroke="#333" stroke-width="1" /> <!-- Coffee mug --> <ellipse cx="140" cy="115" rx="18" ry="5" fill="#2a2520" /> <rect x="122" y="90" width="36" height="26" rx="4" fill="#2a2520" stroke="#333" stroke-width="1" /> <path d="M158 97 C168 97, 168 110, 158 110" stroke="#333" stroke-width="1.5" fill="none" /> <path d="M130 86 C132 78, 136 80, 134 86" stroke="#c8956c" stroke-width="1" opacity="0.4" fill="none" /> <path d="M140 84 C142 76, 146 78, 144 84" stroke="#c8956c" stroke-width="1" opacity="0.3" fill="none" /> <!-- Plant --> <rect x="460" y="100" width="24" height="20" rx="3" fill="#2a2520" stroke="#333" stroke-width="1" /> <path d="M472 100 C472 82, 460 78, 465 68" stroke="#5a7a5a" stroke-width="2" fill="none" /> <path d="M472 100 C472 85, 484 80, 480 70" stroke="#5a7a5a" stroke-width="2" fill="none" /> <path d="M472 95 C468 80, 475 72, 472 65" stroke="#6a8a6a" stroke-width="1.5" fill="none" /> <circle cx="465" cy="66" r="4" fill="#5a7a5a" opacity="0.7" /> <circle cx="480" cy="68" r="5" fill="#5a7a5a" opacity="0.6" /> <circle cx="472" cy="63" r="4" fill="#6a8a6a" opacity="0.5" /> <!-- Lamp --> <rect x="84" y="50" width="4" height="70" rx="2" fill="#333" /> <path d="M68 50 L102 50 L94 35 L76 35 Z" fill="#2a2520" stroke="#c8956c" stroke-width="0.5" opacity="0.6" /> <line x1="86" y1="50" x2="86" y2="55" stroke="#c8956c" stroke-width="1" opacity="0.3" />
+      </svg>
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- Layouts Section -->
+   <section id="layouts" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-sm tracking-widest uppercase mb-3" style="color:var(--accent);">Workspace Configurations</p>
+      <h2 class="font-display text-3xl sm:text-4xl md:text-5xl mb-4">Layouts Built for Focus</h2>
+      <p class="max-w-xl mx-auto" style="color:var(--muted);">Three proven workspace configurations, each designed for different work styles and spaces.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Layout 1: Minimal -->
+      <div class="reveal rounded-2xl p-6 group cursor-pointer" style="background:var(--surface);border:1px solid rgba(107,101,96,0.2);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.2)';this.style.transform='translateY(0)'">
+       <svg viewbox="0 0 300 180" class="w-full mb-5 desk-svg"><rect x="20" y="140" width="260" height="8" rx="4" fill="#2a2520" /> <rect x="100" y="40" width="100" height="60" rx="5" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <rect x="106" y="46" width="88" height="48" rx="3" fill="#222" /> <rect x="120" y="60" width="60" height="2" rx="1" fill="#c8956c" opacity="0.5" /> <rect x="120" y="68" width="45" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="120" y="76" width="52" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="130" y="105" width="40" height="12" rx="3" fill="#222" stroke="#333" stroke-width="0.5" /> <rect x="110" y="144" width="80" height="14" rx="3" fill="#222" stroke="#333" stroke-width="0.5" />
+       </svg>
+       <h3 class="font-display text-xl mb-2" style="color:var(--text);">Minimalist Desk</h3>
+       <p class="text-sm" style="color:var(--muted);">Single monitor, clean surface. Ideal for writers and deep-focus professionals.</p>
+      </div><!-- Layout 2: Command Center -->
+      <div class="reveal rounded-2xl p-6 group cursor-pointer" style="background:var(--surface);border:1px solid rgba(200,149,108,0.4);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform='translateY(0)'">
+       <div class="text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full inline-block" style="background:rgba(200,149,108,0.15);color:var(--accent);">
+        Popular
+       </div>
+       <svg viewbox="0 0 300 180" class="w-full mb-5 desk-svg"><rect x="10" y="140" width="280" height="8" rx="4" fill="#2a2520" /> <rect x="40" y="35" width="90" height="55" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <rect x="46" y="41" width="78" height="43" rx="2" fill="#222" /> <rect x="170" y="35" width="90" height="55" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <rect x="176" y="41" width="78" height="43" rx="2" fill="#222" /> <rect x="55" y="55" width="50" height="2" rx="1" fill="#c8956c" opacity="0.5" /> <rect x="55" y="62" width="35" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="185" y="55" width="50" height="2" rx="1" fill="#c8956c" opacity="0.5" /> <rect x="185" y="62" width="40" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="100" y="110" width="100" height="14" rx="3" fill="#222" stroke="#333" stroke-width="0.5" /> <rect x="80" y="144" width="50" height="12" rx="3" fill="#222" stroke="#333" stroke-width="0.5" /> <rect x="170" y="144" width="50" height="12" rx="3" fill="#222" stroke="#333" stroke-width="0.5" />
+       </svg>
+       <h3 class="font-display text-xl mb-2" style="color:var(--text);">Command Center</h3>
+       <p class="text-sm" style="color:var(--muted);">Dual monitor, multi-tasking layout. Perfect for developers and designers.</p>
+      </div><!-- Layout 3: Creative Studio -->
+      <div class="reveal rounded-2xl p-6 group cursor-pointer" style="background:var(--surface);border:1px solid rgba(107,101,96,0.2);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.2)';this.style.transform='translateY(0)'">
+       <svg viewbox="0 0 300 180" class="w-full mb-5 desk-svg"><rect x="10" y="140" width="280" height="8" rx="4" fill="#2a2520" /> <rect x="80" y="25" width="140" height="80" rx="5" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <rect x="88" y="33" width="124" height="64" rx="3" fill="#222" /> <rect x="100" y="50" width="80" height="2" rx="1" fill="#c8956c" opacity="0.5" /> <rect x="100" y="58" width="60" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="100" y="66" width="70" height="2" rx="1" fill="#6b6560" opacity="0.3" /> <rect x="40" y="120" width="50" height="30" rx="3" fill="#222" stroke="#333" stroke-width="0.5" transform="rotate(-5 65 135)" /> <rect x="210" y="118" width="60" height="16" rx="3" fill="#222" stroke="#333" stroke-width="0.5" /> <rect x="110" y="144" width="80" height="14" rx="3" fill="#222" stroke="#333" stroke-width="0.5" />
+       </svg>
+       <h3 class="font-display text-xl mb-2" style="color:var(--text);">Creative Studio</h3>
+       <p class="text-sm" style="color:var(--muted);">Ultrawide + tablet, open surface for sketching and creative workflows.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- Setup / Ergonomic Section -->
+   <section id="setup" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-sm tracking-widest uppercase mb-3" style="color:var(--accent);">Ergonomic Design</p>
+      <h2 class="font-display text-3xl sm:text-4xl md:text-5xl mb-4">Setup That Protects You</h2>
+      <p class="max-w-xl mx-auto" style="color:var(--muted);">Posture, lighting, and positioning — the invisible factors that define your long-term productivity.</p>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"><!-- Ergonomic SVG Diagram -->
+      <div class="reveal">
+       <svg viewbox="0 0 400 350" class="w-full desk-svg" style="max-width:450px;margin:0 auto;display:block;"><!-- Chair --> <ellipse cx="200" cy="320" rx="50" ry="8" fill="#2a2520" opacity="0.5" /> <rect x="170" y="220" width="60" height="90" rx="8" fill="#222" stroke="#333" stroke-width="1" /> <path d="M170 230 C170 180, 170 160, 200 140 C230 160, 230 180, 230 230" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <!-- Person silhouette --> <circle cx="200" cy="110" r="22" fill="#2a2520" stroke="#c8956c" stroke-width="1" opacity="0.8" /> <path d="M185 132 C185 155, 180 180, 180 220" stroke="#2a2520" stroke-width="12" stroke-linecap="round" fill="none" /> <path d="M215 132 C215 155, 220 180, 220 220" stroke="#2a2520" stroke-width="12" stroke-linecap="round" fill="none" /> <!-- Desk surface --> <rect x="60" y="210" width="120" height="6" rx="3" fill="#332d27" /> <rect x="280" y="210" width="60" height="6" rx="3" fill="#332d27" /> <!-- Monitor on desk --> <rect x="68" y="155" width="70" height="50" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1" /> <rect x="98" y="205" width="10" height="6" fill="#333" /> <!-- Annotation lines --> <line x1="20" y1="110" x2="75" y2="110" stroke="#c8956c" stroke-width="1" stroke-dasharray="4 3" opacity="0.7" /> <text x="8" y="106" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         Eye
+        </text> <text x="4" y="116" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         Level
+        </text> <line x1="290" y1="160" x2="340" y2="140" stroke="#c8956c" stroke-width="1" stroke-dasharray="4 3" opacity="0.7" /> <text x="342" y="137" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         20-26"
+        </text> <text x="342" y="148" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         Distance
+        </text> <line x1="240" y1="260" x2="290" y2="280" stroke="#c8956c" stroke-width="1" stroke-dasharray="4 3" opacity="0.7" /> <text x="292" y="278" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         90° Knee
+        </text> <text x="292" y="289" fill="#c8956c" font-size="9" class="font-body" opacity="0.8">
+         Angle
+        </text> <!-- Angle arc at elbow --> <path d="M170 185 A20 20 0 0 1 155 205" stroke="#c8956c" stroke-width="1" fill="none" opacity="0.6" /> <text x="140" y="198" fill="#c8956c" font-size="8" class="font-body" opacity="0.7">
+         90°
+        </text>
+       </svg>
+      </div><!-- Ergonomic Tips -->
+      <div class="reveal space-y-6">
+       <div class="flex gap-4 items-start p-4 rounded-xl" style="background:var(--surface);">
+        <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(200,149,108,0.1);">
+         <i data-lucide="monitor" style="width:20px;height:20px;color:var(--accent);"></i>
+        </div>
+        <div>
+         <h4 class="font-bold mb-1">Monitor Height</h4>
+         <p class="text-sm" style="color:var(--muted);">Top of screen at eye level. Tilt 10–20° back for a natural gaze angle.</p>
+        </div>
+       </div>
+       <div class="flex gap-4 items-start p-4 rounded-xl" style="background:var(--surface);">
+        <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(200,149,108,0.1);">
+         <i data-lucide="armchair" style="width:20px;height:20px;color:var(--accent);"></i>
+        </div>
+        <div>
+         <h4 class="font-bold mb-1">Chair Position</h4>
+         <p class="text-sm" style="color:var(--muted);">Feet flat on the floor, thighs parallel. Lumbar support aligned with your lower back curve.</p>
+        </div>
+       </div>
+       <div class="flex gap-4 items-start p-4 rounded-xl" style="background:var(--surface);">
+        <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(200,149,108,0.1);">
+         <i data-lucide="sun" style="width:20px;height:20px;color:var(--accent);"></i>
+        </div>
+        <div>
+         <h4 class="font-bold mb-1">Lighting Balance</h4>
+         <p class="text-sm" style="color:var(--muted);">Ambient + task lighting. No direct glare on screen. 4000K color temperature for sustained focus.</p>
+        </div>
+       </div>
+       <div class="flex gap-4 items-start p-4 rounded-xl" style="background:var(--surface);">
+        <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(200,149,108,0.1);">
+         <i data-lucide="ruler" style="width:20px;height:20px;color:var(--accent);"></i>
+        </div>
+        <div>
+         <h4 class="font-bold mb-1">Desk Depth</h4>
+         <p class="text-sm" style="color:var(--muted);">Minimum 24" depth. Elbows at 90° with wrists neutral on the keyboard surface.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- Productivity Section -->
+   <section id="productivity" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-sm tracking-widest uppercase mb-3" style="color:var(--accent);">Workflow Improvements</p>
+      <h2 class="font-display text-3xl sm:text-4xl md:text-5xl mb-4">Productivity Frameworks</h2>
+      <p class="max-w-xl mx-auto" style="color:var(--muted);">Environment-backed systems to structure your day and protect your best hours.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal rounded-2xl p-6 text-center" style="background:var(--surface);border:1px solid rgba(107,101,96,0.15);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.15)';this.style.transform='translateY(0)'">
+       <div class="mx-auto mb-4 w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(200,149,108,0.1);">
+        <i data-lucide="clock" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h4 class="font-bold mb-2">Time Blocking</h4>
+       <p class="text-xs" style="color:var(--muted);">Assign every hour a purpose. Batch similar tasks, protect deep work windows.</p>
+      </div>
+      <div class="reveal rounded-2xl p-6 text-center" style="background:var(--surface);border:1px solid rgba(107,101,96,0.15);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.15)';this.style.transform='translateY(0)'">
+       <div class="mx-auto mb-4 w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(200,149,108,0.1);">
+        <i data-lucide="layers" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h4 class="font-bold mb-2">Zone Mapping</h4>
+       <p class="text-xs" style="color:var(--muted);">Dedicate physical zones to specific activities — focus, calls, rest, creative.</p>
+      </div>
+      <div class="reveal rounded-2xl p-6 text-center" style="background:var(--surface);border:1px solid rgba(107,101,96,0.15);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.15)';this.style.transform='translateY(0)'">
+       <div class="mx-auto mb-4 w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(200,149,108,0.1);">
+        <i data-lucide="zap" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h4 class="font-bold mb-2">Energy Matching</h4>
+       <p class="text-xs" style="color:var(--muted);">Align task difficulty with your natural energy curve. High-impact work during peaks.</p>
+      </div>
+      <div class="reveal rounded-2xl p-6 text-center" style="background:var(--surface);border:1px solid rgba(107,101,96,0.15);transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='var(--accent)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(107,101,96,0.15)';this.style.transform='translateY(0)'">
+       <div class="mx-auto mb-4 w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(200,149,108,0.1);">
+        <i data-lucide="eye-off" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h4 class="font-bold mb-2">Distraction Audit</h4>
+       <p class="text-xs" style="color:var(--muted);">Identify and eliminate environmental triggers — sounds, sightlines, notifications.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- Pricing Section -->
+   <section id="pricing" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-sm tracking-widest uppercase mb-3" style="color:var(--accent);">Investment in Your Environment</p>
+      <h2 class="font-display text-3xl sm:text-4xl md:text-5xl mb-4">Choose Your Path</h2>
+      <p class="max-w-xl mx-auto" style="color:var(--muted);">Every plan includes our digital workspace toolkit: layouts, ergonomic guides, and productivity frameworks.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Basic -->
+      <div class="price-card reveal rounded-2xl p-8 flex flex-col" style="background:var(--surface);">
+       <p class="text-sm tracking-widest uppercase mb-2" style="color:var(--muted);">Basic</p>
+       <div class="font-display text-4xl mb-1" id="price-basic-display" style="color:var(--text);">
+        $49
+       </div>
+       <p class="text-sm mb-6" style="color:var(--muted);">one-time</p>
+       <div class="section-sep mb-6"></div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Personalized layout plan</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Desk configuration guide</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Basic lighting recommendations</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Digital toolkit access</span></li>
+       </ul><button class="btn-outline w-full py-3 rounded-xl text-sm font-bold">Get Started</button>
+      </div><!-- Pro -->
+      <div class="price-card reveal rounded-2xl p-8 flex flex-col relative" style="background:var(--surface);border:1px solid var(--accent);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full" style="background:var(--accent);color:#111;">
+        Recommended
+       </div>
+       <p class="text-sm tracking-widest uppercase mb-2 mt-2" style="color:var(--muted);">Pro</p>
+       <div class="font-display text-4xl mb-1" id="price-pro-display" style="color:var(--text);">
+        $129
+       </div>
+       <p class="text-sm mb-6" style="color:var(--muted);">one-time</p>
+       <div class="section-sep mb-6"></div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Everything in Basic</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Full ergonomic assessment</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Equipment recommendations</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Productivity framework setup</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>30-min consultation call</span></li>
+       </ul><button class="btn-primary w-full py-3 rounded-xl text-sm font-bold">Get Pro Access</button>
+      </div><!-- Elite -->
+      <div class="price-card reveal rounded-2xl p-8 flex flex-col" style="background:var(--surface);">
+       <p class="text-sm tracking-widest uppercase mb-2" style="color:var(--muted);">Elite</p>
+       <div class="font-display text-4xl mb-1" id="price-elite-display" style="color:var(--text);">
+        $299
+       </div>
+       <p class="text-sm mb-6" style="color:var(--muted);">one-time</p>
+       <div class="section-sep mb-6"></div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Everything in Pro</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Full workspace design</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>3D layout visualization</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Shopping list with links</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>2 follow-up consultations</span></li>
+        <li class="flex items-start gap-2 text-sm"><i data-lucide="check" style="width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i><span>Priority support (60 days)</span></li>
+       </ul><button class="btn-outline w-full py-3 rounded-xl text-sm font-bold">Go Elite</button>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- FAQ Section -->
+   <section id="faq" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="reveal text-center mb-12">
+      <p class="text-sm tracking-widest uppercase mb-3" style="color:var(--accent);">Questions</p>
+      <h2 class="font-display text-3xl sm:text-4xl md:text-5xl mb-4">Frequently Asked</h2>
+     </div>
+     <div id="faq-list" class="reveal space-y-3">
+     </div>
+    </div>
+   </section>
+   <div class="section-sep max-w-5xl mx-auto"></div><!-- Bottom CTA + Vote & Comment Module -->
+   <section id="design-space" class="w-full py-20 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto"><!-- Bottom CTA -->
+     <div class="reveal text-center mb-20">
+      <h2 id="bottom-cta-title" class="font-display text-3xl sm:text-4xl md:text-5xl mb-6">Work better by design.</h2>
+      <p class="max-w-lg mx-auto mb-8" style="color:var(--muted);">Transform your remote workspace from a place you sit into a system that works for you.</p><a href="#pricing" class="btn-primary inline-block px-10 py-4 rounded-xl text-base font-bold">Start Your Design</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="reveal rounded-2xl p-6 sm:p-8" style="background:var(--surface);border:1px solid rgba(107,101,96,0.2);">
+      <div class="text-center mb-8">
+       <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--muted);">Embed Widget Here</p>
+       <h3 class="font-display text-2xl mb-1">Vote &amp; Comment</h3>
+       <p class="text-sm" style="color:var(--muted);">React, suggest a price, or share your thoughts.</p>
+      </div><!-- Reactions -->
+      <div class="mb-8">
+       <p class="text-xs uppercase tracking-widest mb-3" style="color:var(--muted);">Reactions</p>
+       <div id="reactions-container" class="flex flex-wrap gap-3 justify-center">
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-xs uppercase tracking-widest mb-3" style="color:var(--muted);">What would you pay?</p>
+       <div id="price-votes-container" class="flex flex-wrap gap-2 justify-center">
+       </div>
+      </div>
+      <div class="section-sep mb-8"></div><!-- Comments -->
+      <div>
+       <p class="text-xs uppercase tracking-widest mb-4" style="color:var(--muted);">Comments</p>
+       <form id="comment-form" class="flex gap-3 mb-6"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-3 rounded-xl text-sm outline-none" style="background:var(--bg);color:var(--text);border:1px solid rgba(107,101,96,0.3);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(107,101,96,0.3)'"> <button type="submit" id="comment-submit-btn" class="btn-primary px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2"> <i data-lucide="send" style="width:14px;height:14px;"></i> Send </button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+       </div>
+       <p id="no-comments" class="text-center text-sm py-4" style="color:var(--muted);">No comments yet. Be the first!</p>
+      </div><!-- Data limit warning -->
+      <div id="data-limit-warning" class="hidden mt-4 p-3 rounded-xl text-center text-sm font-bold" style="background:rgba(200,100,100,0.15);color:#e88;border:1px solid rgba(200,100,100,0.3);">
+       Maximum entries reached. Some features may be limited.
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-10 px-4 sm:px-6 text-center" style="border-top:1px solid rgba(107,101,96,0.15);">
+    <p class="font-display text-lg mb-2" style="color:var(--accent);">WorkSpace Flow</p>
+    <p class="text-xs" style="color:var(--muted);">Your environment shapes your output. © 2024</p>
+   </footer>
+  </div><!-- end app-root --> <!-- Toast container -->
+  <div id="toast-container"></div>
+  <script>
+// ===== CONFIG & DEFAULTS =====
+const defaultConfig = {
+  background_color: '#111111',
+  surface_color: '#1a1a1a',
+  text_color: '#e8e4de',
+  accent_color: '#c8956c',
+  muted_color: '#6b6560',
+  font_family: 'DM Sans',
+  font_size: 16,
+  hero_title: 'Your space defines how you work.',
+  hero_subtitle: 'Design a workspace that supports focus, fuels creativity, and keeps you in flow — all day, every day.',
+  cta_primary: 'Design Space',
+  cta_secondary: 'View Layouts',
+  bottom_cta_text: 'Work better by design.',
+  price_basic: '$49',
+  price_pro: '$129',
+  price_elite: '$299'
+};
+
+// ===== FAQ DATA =====
+const faqs = [
+  { q: 'How does the workspace design process work?', a: 'You fill out a brief about your space, work style, and goals. We deliver a personalized layout plan with equipment recommendations, ergonomic guidelines, and a productivity framework tailored to your needs.' },
+  { q: 'Do I need to buy new furniture?', a: 'Not necessarily. Many improvements come from repositioning existing furniture, adjusting monitor height, and optimizing lighting. We always start with what you have.' },
+  { q: 'Is this only for home offices?', a: 'Primarily, yes — but the ergonomic and productivity principles apply to any workspace. Co-working setups and hybrid environments can benefit too.' },
+  { q: 'What\'s included in the digital toolkit?', a: 'Workspace layout templates, ergonomic setup checklists, lighting guides, a cable management plan, and our productivity framework worksheets — all downloadable PDFs.' },
+  { q: 'Can I upgrade my plan later?', a: 'Absolutely. You can upgrade at any time and only pay the difference between plans.' }
+];
+
+// ===== REACTIONS & PRICES =====
+const reactions = ['🔥','💡','🎯','✨','👏','💪'];
+const priceOptions = ['$19','$29','$39','$49','$69','$79','$99','$129','$199','$299'];
+
+// ===== STATE =====
+let allData = [];
+let reactionCounts = {};
+let priceVoteCounts = {};
+reactions.forEach(r => reactionCounts[r] = 0);
+priceOptions.forEach(p => priceVoteCounts[p] = 0);
+
+// ===== ELEMENT SDK =====
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+
+    // Colors
+    document.documentElement.style.setProperty('--bg', c.background_color);
+    document.documentElement.style.setProperty('--surface', c.surface_color);
+    document.documentElement.style.setProperty('--text', c.text_color);
+    document.documentElement.style.setProperty('--accent', c.accent_color);
+    document.documentElement.style.setProperty('--muted', c.muted_color);
+    document.body.style.background = c.background_color;
+    document.body.style.color = c.text_color;
+
+    // Font
+    const fontStack = `${c.font_family}, 'DM Sans', sans-serif`;
+    document.body.style.fontFamily = fontStack;
+    const base = c.font_size || 16;
+    document.querySelectorAll('.font-display').forEach(el => {
+      // Scale display fonts proportionally based on existing classes
+    });
+
+    // Text content
+    const heroT = document.getElementById('hero-title');
+    if (heroT) heroT.textContent = c.hero_title;
+    const heroS = document.getElementById('hero-subtitle');
+    if (heroS) heroS.textContent = c.hero_subtitle;
+    const ctaP = document.getElementById('cta-primary-btn');
+    if (ctaP) ctaP.textContent = c.cta_primary;
+    const ctaS = document.getElementById('cta-secondary-btn');
+    if (ctaS) ctaS.textContent = c.cta_secondary;
+    const bottomCta = document.getElementById('bottom-cta-title');
+    if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+    const pBasic = document.getElementById('price-basic-display');
+    if (pBasic) pBasic.textContent = c.price_basic;
+    const pPro = document.getElementById('price-pro-display');
+    if (pPro) pPro.textContent = c.price_pro;
+    const pElite = document.getElementById('price-elite-display');
+    if (pElite) pElite.textContent = c.price_elite;
+
+    // Nav Design Space buttons
+    document.querySelectorAll('a[href="#design-space"].btn-primary').forEach(a => a.textContent = c.cta_primary);
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    const make = (key) => ({
+      get: () => c[key] || defaultConfig[key],
+      set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [make('background_color'), make('surface_color'), make('text_color'), make('accent_color'), make('muted_color')],
+      borderables: [],
+      fontEditable: make('font_family'),
+      fontSizeable: make('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['cta_primary', c.cta_primary],
+      ['cta_secondary', c.cta_secondary],
+      ['bottom_cta_text', c.bottom_cta_text],
+      ['price_basic', c.price_basic],
+      ['price_pro', c.price_pro],
+      ['price_elite', c.price_elite]
+    ]);
+  }
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    // Reset counts
+    reactions.forEach(r => reactionCounts[r] = 0);
+    priceOptions.forEach(p => priceVoteCounts[p] = 0);
+    const comments = [];
+
+    data.forEach(item => {
+      if (item.type === 'reaction' && item.reaction) {
+        reactionCounts[item.reaction] = (reactionCounts[item.reaction] || 0) + 1;
+      } else if (item.type === 'price_vote' && item.price_vote) {
+        priceVoteCounts[item.price_vote] = (priceVoteCounts[item.price_vote] || 0) + 1;
+      } else if (item.type === 'comment' && item.comment_text) {
+        comments.push(item);
+      }
+    });
+
+    updateReactionUI();
+    updatePriceVoteUI();
+    updateCommentsUI(comments);
+
+    // Limit warning
+    const warn = document.getElementById('data-limit-warning');
+    if (warn) warn.classList.toggle('hidden', data.length < 999);
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== BUILD FAQ =====
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  faqs.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'rounded-xl overflow-hidden';
+    div.style.cssText = 'background:var(--surface);border:1px solid rgba(107,101,96,0.15);';
+    div.innerHTML = `
+      <button class="w-full flex items-center justify-between p-4 text-left text-sm font-bold" onclick="toggleFaq(${i})" aria-expanded="false">
+        <span>${f.q}</span>
+        <i data-lucide="chevron-down" class="faq-chevron faq-chev-${i}" style="width:18px;height:18px;color:var(--muted);flex-shrink:0;"></i>
+      </button>
+      <div class="faq-answer faq-ans-${i} px-4 pb-4 text-sm" style="color:var(--muted);">${f.a}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+function toggleFaq(i) {
+  const ans = document.querySelector(`.faq-ans-${i}`);
+  const chev = document.querySelector(`.faq-chev-${i}`);
+  ans.classList.toggle('open');
+  chev.classList.toggle('rotated');
+}
+
+// ===== BUILD REACTIONS =====
+function buildReactions() {
+  const c = document.getElementById('reactions-container');
+  reactions.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn px-4 py-2 rounded-xl flex items-center gap-2 text-sm';
+    btn.style.background = 'var(--bg)';
+    btn.dataset.reaction = r;
+    btn.innerHTML = `<span class="text-lg">${r}</span><span class="reaction-count-${r.codePointAt(0)}" style="color:var(--muted);">0</span>`;
+    btn.onclick = () => handleReaction(r);
+    c.appendChild(btn);
+  });
+}
+function updateReactionUI() {
+  reactions.forEach(r => {
+    const el = document.querySelector(`.reaction-count-${r.codePointAt(0)}`);
+    if (el) el.textContent = reactionCounts[r] || 0;
+  });
+}
+async function handleReaction(r) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const result = await window.dataSdk.create({ type: 'reaction', section_id: 'bottom', reaction: r, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Error saving reaction');
+}
+
+// ===== BUILD PRICE VOTES =====
+function buildPriceVotes() {
+  const c = document.getElementById('price-votes-container');
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn px-3 py-2 rounded-lg text-xs font-bold';
+    btn.style.background = 'var(--bg)';
+    btn.dataset.price = p;
+    btn.innerHTML = `${p} <span class="price-count-${p.replace('$','')}" style="color:var(--muted);font-weight:400;"> (0)</span>`;
+    btn.onclick = () => handlePriceVote(p);
+    c.appendChild(btn);
+  });
+}
+function updatePriceVoteUI() {
+  priceOptions.forEach(p => {
+    const el = document.querySelector(`.price-count-${p.replace('$','')}`);
+    if (el) el.textContent = ` (${priceVoteCounts[p] || 0})`;
+  });
+}
+async function handlePriceVote(p) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const result = await window.dataSdk.create({ type: 'price_vote', section_id: 'bottom', reaction: '', comment_text: '', price_vote: p, created_at: new Date().toISOString() });
+  if (!result.isOk) showToast('Error saving vote');
+}
+
+// ===== COMMENTS =====
+function updateCommentsUI(comments) {
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  const sorted = comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  const existingIds = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  sorted.forEach(item => {
+    const id = item.__backendId;
+    if (existingIds.has(id)) {
+      existingIds.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'p-3 rounded-xl text-sm anim-fade-in';
+      div.style.cssText = 'background:var(--bg);border:1px solid rgba(107,101,96,0.1);';
+      const date = new Date(item.created_at);
+      const timeStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' + date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p style="color:var(--text);">${escapeHTML(item.comment_text)}</p><p class="text-xs mt-1" style="color:var(--muted);">${timeStr}</p>`;
+      list.appendChild(div);
+    }
+  });
+
+  existingIds.forEach(el => el.remove());
+  if (noComments) noComments.classList.toggle('hidden', sorted.length > 0);
+}
+
+function escapeHTML(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  input.disabled = true;
+
+  const result = await window.dataSdk.create({ type: 'comment', section_id: 'bottom', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  input.disabled = false;
+
+  if (result.isOk) {
+    input.value = '';
+  } else {
+    showToast('Error posting comment');
+  }
+});
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ===== SCROLL REVEAL =====
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ===== NAV SCROLL =====
+function initNav() {
+  const nav = document.getElementById('main-nav');
+  const root = document.getElementById('app-root');
+  root.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', root.scrollTop > 50);
+    updateActiveNav(root.scrollTop);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close mobile menu
+        document.getElementById('mobile-menu').classList.remove('open');
+      }
+    });
+  });
+
+  // Mobile menu
+  document.getElementById('mobile-toggle').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  });
+}
+
+function updateActiveNav(scrollTop) {
+  const sections = ['home','layouts','setup','productivity','pricing','faq','design-space'];
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 100 <= scrollTop) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+  });
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  buildFAQ();
+  buildReactions();
+  buildPriceVotes();
+  initReveal();
+  initNav();
+  lucide.createIcons();
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a76ac816827c5',t:'MTc3NTU3OTkxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

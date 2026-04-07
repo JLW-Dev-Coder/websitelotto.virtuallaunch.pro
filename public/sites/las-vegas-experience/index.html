@@ -1,1 +1,750 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/b5bc1f7e-4bdd-4e2d-97c4-ac997fabd345 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonRush Vegas</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Exo+2:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --neon-pink: #ff2d95;
+    --neon-blue: #00d4ff;
+    --neon-purple: #b829dd;
+    --bg-dark: #0a0a12;
+    --surface: #12121f;
+  }
+
+  @keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 1; }
+    15% { opacity: 0.6; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    85% { opacity: 0.7; }
+    90% { opacity: 1; }
+  }
+
+  @keyframes lightStreak {
+    0% { transform: translateX(-100%) skewX(-15deg); }
+    100% { transform: translateX(400%) skewX(-15deg); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,45,149,0.3), 0 0 40px rgba(255,45,149,0.1); }
+    50% { box-shadow: 0 0 30px rgba(255,45,149,0.5), 0 0 60px rgba(255,45,149,0.2); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes borderGlow {
+    0%, 100% { border-color: var(--neon-pink); box-shadow: 0 0 15px rgba(255,45,149,0.3), inset 0 0 15px rgba(255,45,149,0.05); }
+    33% { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0,212,255,0.3), inset 0 0 15px rgba(0,212,255,0.05); }
+    66% { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(184,41,221,0.3), inset 0 0 15px rgba(184,41,221,0.05); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .neon-flicker { animation: neonFlicker 4s infinite; }
+  .glow-pulse { animation: glowPulse 3s infinite; }
+  .border-glow { animation: borderGlow 6s infinite; border-width: 1px; border-style: solid; }
+  .float-anim { animation: float 4s ease-in-out infinite; }
+
+  .light-streak {
+    position: absolute; top: 0; left: 0; width: 30%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,45,149,0.08), transparent);
+    animation: lightStreak 5s infinite;
+    pointer-events: none;
+  }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .neon-text-pink { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255,45,149,0.5), 0 0 30px rgba(255,45,149,0.3); }
+  .neon-text-blue { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0,212,255,0.5), 0 0 30px rgba(0,212,255,0.3); }
+  .neon-text-purple { color: var(--neon-purple); text-shadow: 0 0 10px rgba(184,41,221,0.5), 0 0 30px rgba(184,41,221,0.3); }
+
+  .btn-neon {
+    position: relative; overflow: hidden; transition: all 0.3s;
+    background: transparent; border: 1px solid var(--neon-pink);
+    color: var(--neon-pink); padding: 14px 36px; font-family: 'Orbitron', sans-serif;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  }
+  .btn-neon:hover {
+    background: var(--neon-pink); color: #0a0a12;
+    box-shadow: 0 0 30px rgba(255,45,149,0.5), 0 0 60px rgba(255,45,149,0.2);
+  }
+  .btn-neon-blue { border-color: var(--neon-blue); color: var(--neon-blue); }
+  .btn-neon-blue:hover {
+    background: var(--neon-blue); color: #0a0a12;
+    box-shadow: 0 0 30px rgba(0,212,255,0.5), 0 0 60px rgba(0,212,255,0.2);
+  }
+
+  .nav-link { position: relative; color: #888; transition: color 0.3s; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+  .nav-link:hover, .nav-link.active { color: var(--neon-pink); }
+  .nav-link::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--neon-pink); box-shadow:0 0 8px rgba(255,45,149,0.5); transition:width 0.3s; }
+  .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+  .pricing-card { background: var(--surface); border: 1px solid rgba(255,255,255,0.06); transition: all 0.4s; position: relative; overflow: hidden; }
+  .pricing-card:hover { transform: translateY(-6px); }
+  .pricing-card.featured { border-color: var(--neon-pink); box-shadow: 0 0 30px rgba(255,45,149,0.15); }
+
+  .experience-card { background: var(--surface); border: 1px solid rgba(255,255,255,0.06); transition: all 0.4s; overflow: hidden; position: relative; }
+  .experience-card:hover { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,45,149,0.15); transform: translateY(-4px); }
+
+  .neon-line { height: 1px; background: linear-gradient(90deg, transparent, var(--neon-pink), var(--neon-blue), var(--neon-purple), transparent); opacity: 0.4; }
+
+  .sticky-nav { backdrop-filter: blur(20px); background: rgba(10,10,18,0.85); border-bottom: 1px solid rgba(255,45,149,0.1); }
+
+  .reaction-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 6px; font-size: 14px; color: #aaa; }
+  .reaction-btn:hover { border-color: var(--neon-pink); background: rgba(255,45,149,0.1); }
+  .reaction-btn.active { border-color: var(--neon-pink); background: rgba(255,45,149,0.15); color: var(--neon-pink); }
+
+  .comment-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 16px; width: 100%; font-family: 'Exo 2', sans-serif; border-radius: 8px; outline: none; transition: border-color 0.3s; }
+  .comment-input:focus { border-color: var(--neon-pink); }
+
+  .toast-msg { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: #0a0a12; padding: 12px 28px; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast-msg.show { opacity: 1; }
+
+  .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-item.open .faq-answer { max-height: 300px; }
+  .faq-chevron { transition: transform 0.3s; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+  .spinner-sm { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--neon-pink); border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  body::-webkit-scrollbar { width: 6px; }
+  body::-webkit-scrollbar-track { background: var(--bg-dark); }
+  body::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg-dark); color:#fff; font-family:'Exo 2',sans-serif; overflow-x:hidden;">
+  <div id="app-root" class="w-full h-full overflow-auto" style="background:var(--bg-dark);"><!-- Toast -->
+   <div id="toast" class="toast-msg"></div><!-- Sticky Nav -->
+   <nav class="sticky-nav fixed top-0 left-0 w-full z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex items-center justify-between"><a href="#home" class="neon-text-pink font-bold text-lg" style="font-family:'Orbitron',sans-serif; text-decoration:none;">NEON<span style="color:var(--neon-blue);">RUSH</span></a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link active" data-nav>Home</a> <a href="#experiences" class="nav-link" data-nav>Experiences</a> <a href="#vip" class="nav-link" data-nav>VIP</a> <a href="#nights" class="nav-link" data-nav>Nights</a> <a href="#pricing" class="nav-link" data-nav>Pricing</a> <a href="#faq" class="nav-link" data-nav>FAQ</a> <a href="#book" class="btn-neon" style="padding:8px 20px; font-size:10px;">Book Now</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:var(--neon-pink); background:none; border:none; cursor:pointer;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden flex-col gap-3 pt-4 pb-2 px-2"><a href="#home" class="nav-link block py-2" data-nav>Home</a> <a href="#experiences" class="nav-link block py-2" data-nav>Experiences</a> <a href="#vip" class="nav-link block py-2" data-nav>VIP</a> <a href="#nights" class="nav-link block py-2" data-nav>Nights</a> <a href="#pricing" class="nav-link block py-2" data-nav>Pricing</a> <a href="#faq" class="nav-link block py-2" data-nav>FAQ</a> <a href="#book" class="nav-link block py-2" data-nav>Book Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full flex items-center justify-center text-center" style="min-height:100%; padding:120px 20px 80px; overflow:hidden;"><!-- BG layers -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, #0a0a12 0%, #1a0a2e 40%, #2a0a1e 70%, #0a0a12 100%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(255,45,149,0.08) 0%, transparent 60%);"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%, rgba(0,212,255,0.06) 0%, transparent 50%);"></div><!-- Neon SVG lines -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.15;" preserveaspectratio="none"><line x1="0" y1="30%" x2="100%" y2="25%" stroke="url(#g1)" stroke-width="1" /> <line x1="0" y1="70%" x2="100%" y2="75%" stroke="url(#g2)" stroke-width="1" /> <line x1="20%" y1="0" x2="25%" y2="100%" stroke="url(#g3)" stroke-width="0.5" /> <line x1="75%" y1="0" x2="80%" y2="100%" stroke="url(#g3)" stroke-width="0.5" /> <defs>
+      <lineargradient id="g1">
+       <stop offset="0%" stop-color="transparent" />
+       <stop offset="50%" stop-color="#ff2d95" />
+       <stop offset="100%" stop-color="transparent" />
+      </lineargradient>
+      <lineargradient id="g2">
+       <stop offset="0%" stop-color="transparent" />
+       <stop offset="50%" stop-color="#00d4ff" />
+       <stop offset="100%" stop-color="transparent" />
+      </lineargradient>
+      <lineargradient id="g3" x1="0" y1="0" x2="0" y2="1">
+       <stop offset="0%" stop-color="transparent" />
+       <stop offset="50%" stop-color="#b829dd" />
+       <stop offset="100%" stop-color="transparent" />
+      </lineargradient>
+     </defs>
+    </svg>
+    <div class="light-streak"></div>
+    <div style="position:relative;z-index:2;max-width:800px;">
+     <p class="neon-text-blue neon-flicker" style="font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:6px;margin-bottom:24px;">NEONRUSH VEGAS</p>
+     <h1 id="hero-title" style="font-family:'Orbitron',sans-serif;font-size:clamp(28px,5vw,56px);font-weight:900;line-height:1.1;margin:0 0 24px;">Vegas is not a place.<br><span class="neon-text-pink">It's a feeling.</span></h1>
+     <p id="hero-subtitle" style="color:#aaa;font-size:clamp(14px,2vw,18px);max-width:550px;margin:0 auto 40px;line-height:1.7;">Curated nightlife experiences designed to elevate your night.</p>
+     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#book" class="btn-neon" style="text-decoration:none;">Book Now</a> <a href="#experiences" class="btn-neon btn-neon-blue" style="text-decoration:none;">View Experiences</a>
+     </div>
+     <p style="color:#555;font-size:13px;margin-top:36px;font-style:italic;">"What happens here should feel unforgettable."</p>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- Experiences -->
+   <section id="experiences" class="w-full" style="padding:100px 20px;">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center" style="margin-bottom:60px;">
+      <p class="neon-text-pink" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;margin-bottom:12px;">CURATED FOR YOU</p>
+      <h2 id="experiences-title" style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin:0 0 16px;">The Experiences</h2>
+      <p style="color:#777;max-width:500px;margin:0 auto;">From world-class clubs to exclusive shows, every night is designed for maximum impact.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="experience-card reveal rounded-xl p-6" style="animation-delay:0.1s;">
+       <div style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,rgba(255,45,149,0.15),rgba(184,41,221,0.15));display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="music" style="color:var(--neon-pink);width:28px;height:28px;"></i>
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;margin:0 0 12px;">Club Experience</h3>
+       <p style="color:#888;font-size:14px;line-height:1.7;margin:0 0 16px;">Skip the lines. Hit the best clubs in Vegas with VIP entry and premium table service.</p><span class="neon-text-pink" style="font-size:13px;font-family:'Orbitron',sans-serif;">From $149 →</span>
+      </div>
+      <div class="experience-card reveal rounded-xl p-6" style="animation-delay:0.2s;">
+       <div style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(184,41,221,0.15));display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="star" style="color:var(--neon-blue);width:28px;height:28px;"></i>
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;margin:0 0 12px;">Show Package</h3>
+       <p style="color:#888;font-size:14px;line-height:1.7;margin:0 0 16px;">Front-row access to the hottest shows on the Strip with backstage meet-and-greet options.</p><span class="neon-text-blue" style="font-size:13px;font-family:'Orbitron',sans-serif;">From $199 →</span>
+      </div>
+      <div class="experience-card reveal rounded-xl p-6" style="animation-delay:0.3s;">
+       <div style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,rgba(184,41,221,0.15),rgba(255,45,149,0.15));display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="crown" style="color:var(--neon-purple);width:28px;height:28px;"></i>
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;margin:0 0 12px;">VIP Package</h3>
+       <p style="color:#888;font-size:14px;line-height:1.7;margin:0 0 16px;">The ultimate night out. Private transport, rooftop access, and a dedicated concierge.</p><span class="neon-text-purple" style="font-size:13px;font-family:'Orbitron',sans-serif;">From $349 →</span>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- VIP -->
+   <section id="vip" class="w-full relative" style="padding:100px 20px; overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%, rgba(184,41,221,0.06) 0%, transparent 60%);pointer-events:none;"></div>
+    <div class="max-w-6xl mx-auto relative" style="z-index:2;">
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+       <p class="neon-text-purple" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;margin-bottom:12px;">EXCLUSIVE ACCESS</p>
+       <h2 id="vip-title" style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin:0 0 20px;">VIP Access</h2>
+       <p style="color:#999;line-height:1.8;margin:0 0 28px;">Elevate beyond the velvet rope. Our VIP tier unlocks a Vegas most never see — private entrances, rooftop lounges, and a personal concierge who knows every doorman on the Strip.</p>
+       <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+         <i data-lucide="check-circle" style="color:var(--neon-pink);width:20px;height:20px;flex-shrink:0;"></i><span style="color:#bbb;">Priority entry at 12+ premier venues</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+         <i data-lucide="check-circle" style="color:var(--neon-pink);width:20px;height:20px;flex-shrink:0;"></i><span style="color:#bbb;">Private SUV transport all night</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+         <i data-lucide="check-circle" style="color:var(--neon-pink);width:20px;height:20px;flex-shrink:0;"></i><span style="color:#bbb;">Dedicated nightlife concierge</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+         <i data-lucide="check-circle" style="color:var(--neon-pink);width:20px;height:20px;flex-shrink:0;"></i><span style="color:#bbb;">Complimentary bottle service upgrades</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal" style="animation-delay:0.2s;">
+       <div class="border-glow rounded-2xl p-8" style="background:var(--surface);">
+        <div class="float-anim" style="text-align:center;">
+         <svg width="120" height="120" viewbox="0 0 120 120" style="margin:0 auto 24px;"><defs>
+           <lineargradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff2d95" />
+            <stop offset="100%" stop-color="#b829dd" />
+           </lineargradient>
+          </defs> <circle cx="60" cy="60" r="55" fill="none" stroke="url(#crownGrad)" stroke-width="1" opacity="0.3" /> <text x="60" y="72" text-anchor="middle" font-size="50">
+           👑
+          </text>
+         </svg>
+         <h3 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:0 0 8px;" class="neon-text-pink">VIP Elite</h3>
+         <p style="color:#666;font-size:14px;margin:0 0 20px;">The pinnacle of Vegas nightlife</p>
+         <div style="display:flex;gap:20px;justify-content:center;">
+          <div>
+           <span style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--neon-blue);">12+</span><br><span style="color:#666;font-size:12px;">Venues</span>
+          </div>
+          <div>
+           <span style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--neon-pink);">8hr</span><br><span style="color:#666;font-size:12px;">Duration</span>
+          </div>
+          <div>
+           <span style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--neon-purple);">24/7</span><br><span style="color:#666;font-size:12px;">Concierge</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- Nights -->
+   <section id="nights" class="w-full" style="padding:100px 20px;">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center" style="margin-bottom:60px;">
+      <p class="neon-text-blue" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;margin-bottom:12px;">SAMPLE ITINERARIES</p>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin:0 0 16px;">Your Night, Mapped</h2>
+      <p style="color:#777;max-width:500px;margin:0 auto;">Three signature itineraries crafted by our nightlife experts.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal rounded-xl p-6" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);">
+       <div style="font-size:32px;margin-bottom:12px;">
+        🌆
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;margin:0 0 6px;" class="neon-text-pink">The Sunset Starter</h3>
+       <p style="color:#555;font-size:12px;margin:0 0 16px;">7PM – 1AM</p>
+       <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-pink);font-size:11px;font-family:'Orbitron',sans-serif;">7PM</span><span style="color:#999;font-size:13px;">Rooftop cocktails at Skyfall</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-pink);font-size:11px;font-family:'Orbitron',sans-serif;">9PM</span><span style="color:#999;font-size:13px;">Dinner at Nobu</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-pink);font-size:11px;font-family:'Orbitron',sans-serif;">11PM</span><span style="color:#999;font-size:13px;">Club entry at Marquee</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-xl p-6" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);animation-delay:0.15s;">
+       <div style="font-size:32px;margin-bottom:12px;">
+        🎰
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;margin:0 0 6px;" class="neon-text-blue">The High Roller</h3>
+       <p style="color:#555;font-size:12px;margin:0 0 16px;">9PM – 3AM</p>
+       <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-blue);font-size:11px;font-family:'Orbitron',sans-serif;">9PM</span><span style="color:#999;font-size:13px;">Private poker lounge session</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-blue);font-size:11px;font-family:'Orbitron',sans-serif;">11PM</span><span style="color:#999;font-size:13px;">VIP table at Hakkasan</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-blue);font-size:11px;font-family:'Orbitron',sans-serif;">1AM</span><span style="color:#999;font-size:13px;">After-hours speakeasy</span>
+        </div>
+       </div>
+      </div>
+      <div class="reveal rounded-xl p-6" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);animation-delay:0.3s;">
+       <div style="font-size:32px;margin-bottom:12px;">
+        ✨
+       </div>
+       <h3 style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;margin:0 0 6px;" class="neon-text-purple">The Full Send</h3>
+       <p style="color:#555;font-size:12px;margin:0 0 16px;">6PM – 4AM</p>
+       <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-purple);font-size:11px;font-family:'Orbitron',sans-serif;">6PM</span><span style="color:#999;font-size:13px;">Helicopter tour of the Strip</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-purple);font-size:11px;font-family:'Orbitron',sans-serif;">9PM</span><span style="color:#999;font-size:13px;">Cirque du Soleil front row</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+         <span style="color:var(--neon-purple);font-size:11px;font-family:'Orbitron',sans-serif;">12AM</span><span style="color:#999;font-size:13px;">Omnia VIP with bottle service</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- Pricing -->
+   <section id="pricing" class="w-full relative" style="padding:100px 20px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%, rgba(255,45,149,0.04) 0%, transparent 60%);pointer-events:none;"></div>
+    <div class="max-w-6xl mx-auto relative" style="z-index:2;">
+     <div class="reveal text-center" style="margin-bottom:60px;">
+      <p class="neon-text-pink" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;margin-bottom:12px;">CHOOSE YOUR NIGHT</p>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin:0 0 16px;">Pricing</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Standard -->
+      <div class="pricing-card reveal rounded-2xl p-8 text-center">
+       <div class="light-streak" style="animation-delay:0s;"></div>
+       <p style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:#666;margin:0 0 12px;">STANDARD</p>
+       <div style="font-size:48px;margin-bottom:4px;font-family:'Orbitron',sans-serif;font-weight:900;" id="price-standard">
+        $149
+       </div>
+       <p style="color:#555;font-size:13px;margin:0 0 28px;">per person</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Guided nightlife experience</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Entry to 3 venues</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Welcome drink included</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Group photo package</span>
+        </div>
+       </div><a href="#book" class="btn-neon block text-center" style="text-decoration:none;font-size:12px;">Get Started</a>
+      </div><!-- VIP -->
+      <div class="pricing-card featured reveal rounded-2xl p-8 text-center" style="animation-delay:0.15s;">
+       <div class="light-streak" style="animation-delay:1.5s;"></div>
+       <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--neon-pink);color:#0a0a12;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:6px 20px;border-radius:0 0 8px 8px;">
+        POPULAR
+       </div>
+       <p style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--neon-pink);margin:16px 0 12px;">VIP</p>
+       <div style="font-size:48px;margin-bottom:4px;font-family:'Orbitron',sans-serif;font-weight:900;" class="neon-text-pink" id="price-vip">
+        $349
+       </div>
+       <p style="color:#555;font-size:13px;margin:0 0 28px;">per person</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Everything in Standard</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Priority access at all venues</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Private SUV transport</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Bottle service at 1 venue</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-pink);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Nightlife concierge</span>
+        </div>
+       </div><a href="#book" class="btn-neon block text-center" style="text-decoration:none;font-size:12px;background:var(--neon-pink);color:#0a0a12;">Book VIP</a>
+      </div><!-- Elite -->
+      <div class="pricing-card reveal rounded-2xl p-8 text-center" style="animation-delay:0.3s;">
+       <div class="light-streak" style="animation-delay:3s;"></div>
+       <p style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;color:var(--neon-purple);margin:0 0 12px;">ELITE</p>
+       <div style="font-size:48px;margin-bottom:4px;font-family:'Orbitron',sans-serif;font-weight:900;" class="neon-text-purple" id="price-elite">
+        $749
+       </div>
+       <p style="color:#555;font-size:13px;margin:0 0 28px;">per person</p>
+       <div style="text-align:left;display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Everything in VIP</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Full luxury package</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Helicopter Strip tour</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Premium bottle service all night</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Exclusive after-party access</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="color:var(--neon-purple);width:16px;height:16px;flex-shrink:0;"></i><span style="color:#aaa;font-size:14px;">Personal photographer</span>
+        </div>
+       </div><a href="#book" class="btn-neon block text-center" style="text-decoration:none;font-size:12px;border-color:var(--neon-purple);color:var(--neon-purple);">Go Elite</a>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- FAQ -->
+   <section id="faq" class="w-full" style="padding:100px 20px;">
+    <div class="max-w-3xl mx-auto">
+     <div class="reveal text-center" style="margin-bottom:60px;">
+      <p class="neon-text-blue" style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:5px;margin-bottom:12px;">QUESTIONS?</p>
+      <h2 style="font-family:'Orbitron',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:900;margin:0;">FAQ</h2>
+     </div>
+     <div class="reveal" id="faq-container">
+      <div class="faq-item" style="padding:20px 0;"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:16px;text-align:left;"> <span>What's included in the VIP package?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:var(--neon-pink);flex-shrink:0;"></i> </button>
+       <div class="faq-answer">
+        <p style="color:#888;padding:12px 0 4px;font-size:14px;line-height:1.7;">VIP includes priority venue entry, private SUV transport, a dedicated nightlife concierge, and bottle service at one venue of your choice.</p>
+       </div>
+      </div>
+      <div class="faq-item" style="padding:20px 0;"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:16px;text-align:left;"> <span>How many people per group?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:var(--neon-pink);flex-shrink:0;"></i> </button>
+       <div class="faq-answer">
+        <p style="color:#888;padding:12px 0 4px;font-size:14px;line-height:1.7;">Groups range from 2-20 people. Larger groups get exclusive pricing and dedicated hosts. Contact us for groups over 20.</p>
+       </div>
+      </div>
+      <div class="faq-item" style="padding:20px 0;"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:16px;text-align:left;"> <span>Can I customize my itinerary?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:var(--neon-pink);flex-shrink:0;"></i> </button>
+       <div class="faq-answer">
+        <p style="color:#888;padding:12px 0 4px;font-size:14px;line-height:1.7;">Absolutely. Every NeonRush experience can be tailored to your preferences. Our concierge will work with you to build the perfect night.</p>
+       </div>
+      </div>
+      <div class="faq-item" style="padding:20px 0;"><button onclick="toggleFaq(this)" style="width:100%;background:none;border:none;color:#fff;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Exo 2',sans-serif;font-size:16px;text-align:left;"> <span>What's the cancellation policy?</span> <i data-lucide="chevron-down" class="faq-chevron" style="width:18px;height:18px;color:var(--neon-pink);flex-shrink:0;"></i> </button>
+       <div class="faq-answer">
+        <p style="color:#888;padding:12px 0 4px;font-size:14px;line-height:1.7;">Full refund up to 48 hours before your experience. Within 48 hours, you'll receive credit toward a future booking.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line w-full"></div><!-- Vote + Comment + Bottom CTA -->
+   <section id="book" class="w-full relative" style="padding:100px 20px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%, rgba(255,45,149,0.06) 0%, transparent 60%);pointer-events:none;"></div>
+    <div class="max-w-3xl mx-auto relative" style="z-index:2;"><!-- Bottom CTA -->
+     <div class="reveal text-center" style="margin-bottom:60px;">
+      <h2 id="bottom-cta" style="font-family:'Orbitron',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:900;margin:0 0 20px;">Step into the <span class="neon-text-pink neon-flicker">night.</span></h2>
+      <p style="color:#777;font-size:16px;margin:0 0 32px;">Your unforgettable Vegas experience starts with one click.</p><a href="#home" class="btn-neon glow-pulse" style="text-decoration:none;display:inline-block;">Book Your Night</a>
+     </div>
+     <div class="neon-line" style="margin:40px 0;"></div><!-- Embed Widget: Vote + Comment -->
+     <div class="reveal" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;">
+      <p style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:4px;color:#555;text-align:center;margin:0 0 8px;">EMBED WIDGET HERE</p>
+      <h3 style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;text-align:center;margin:0 0 28px;">Rate &amp; React</h3><!-- Reactions -->
+      <div style="margin-bottom:24px;">
+       <p style="color:#777;font-size:13px;margin:0 0 12px;">Reactions</p>
+       <div id="reactions-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div><!-- Price Vote -->
+      <div style="margin-bottom:28px;">
+       <p style="color:#777;font-size:13px;margin:0 0 12px;">What would you pay for this experience?</p>
+       <div id="price-votes-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div><!-- Comments -->
+      <div>
+       <p style="color:#777;font-size:13px;margin:0 0 12px;">Comments</p>
+       <form id="comment-form" style="display:flex;gap:8px;margin-bottom:16px;"><input type="text" id="comment-input" class="comment-input" placeholder="Share your thoughts..." maxlength="280" aria-label="Comment"> <button type="submit" class="btn-neon" style="padding:10px 20px;font-size:11px;flex-shrink:0;" id="comment-submit"> <i data-lucide="send" style="width:16px;height:16px;"></i> </button>
+       </form>
+       <div id="comments-list" style="display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto;"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full text-center" style="padding:40px 20px;border-top:1px solid rgba(255,255,255,0.04);">
+    <p class="neon-text-pink" style="font-family:'Orbitron',sans-serif;font-size:14px;margin:0 0 8px;">NEON<span style="color:var(--neon-blue);">RUSH</span></p>
+    <p style="color:#444;font-size:12px;margin:0;">© 2025 NeonRush Vegas. All rights reserved.</p>
+   </footer>
+  </div>
+  <script>
+const defaultConfig = {
+  hero_title: "Vegas is not a place. It's a feeling.",
+  hero_subtitle: "Curated nightlife experiences designed to elevate your night.",
+  experiences_title: "The Experiences",
+  vip_title: "VIP Access",
+  standard_price: "$149",
+  vip_price: "$349",
+  elite_price: "$749",
+  bottom_cta_text: "Step into the night.",
+  background_color: "#0a0a12",
+  surface_color: "#12121f",
+  text_color: "#ffffff",
+  primary_action_color: "#ff2d95",
+  secondary_action_color: "#00d4ff",
+  font_family: "Orbitron",
+  font_size: 16
+};
+
+// Reactions & price options (reference data - Paradigm A)
+const REACTIONS = ['🔥','🎉','💜','🙌','👏','😍'];
+const PRICE_OPTIONS = ['$49','$99','$149','$199','$249','$349','$499','$749','$999','$1499'];
+
+// State
+let allData = [];
+let reactionCounts = {};
+let priceCounts = {};
+let userReaction = null;
+let userPriceVote = null;
+let isSubmitting = false;
+
+REACTIONS.forEach(r => reactionCounts[r] = 0);
+PRICE_OPTIONS.forEach(p => priceCounts[p] = 0);
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function renderReactions() {
+  const c = document.getElementById('reactions-container');
+  c.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (userReaction === r ? ' active' : '');
+    btn.innerHTML = `<span>${r}</span><span style="font-size:12px;">${reactionCounts[r] || 0}</span>`;
+    btn.onclick = () => submitReaction(r);
+    c.appendChild(btn);
+  });
+}
+
+function renderPriceVotes() {
+  const c = document.getElementById('price-votes-container');
+  c.innerHTML = '';
+  PRICE_OPTIONS.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn' + (userPriceVote === p ? ' active' : '');
+    btn.innerHTML = `<span style="font-size:12px;font-family:'Orbitron',sans-serif;">${p}</span><span style="font-size:11px;">${priceCounts[p] || 0}</span>`;
+    btn.onclick = () => submitPriceVote(p);
+    c.appendChild(btn);
+  });
+}
+
+function renderComments() {
+  const c = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  // Selective update
+  const existing = new Map([...c.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(cm => cm.__backendId));
+
+  existing.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(cm => {
+    if (existing.has(cm.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = cm.__backendId;
+    div.style.cssText = 'background:rgba(255,255,255,0.03);padding:12px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);';
+    const time = new Date(cm.timestamp);
+    const timeStr = time.toLocaleString(undefined, {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    div.innerHTML = `<p style="color:#ddd;font-size:14px;margin:0 0 4px;">${escapeHtml(cm.comment)}</p><p style="color:#555;font-size:11px;margin:0;">${timeStr}</p>`;
+    c.prepend(div);
+  });
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+function tally() {
+  REACTIONS.forEach(r => reactionCounts[r] = 0);
+  PRICE_OPTIONS.forEach(p => priceCounts[p] = 0);
+  allData.forEach(d => {
+    if (d.type === 'reaction' && d.reaction) reactionCounts[d.reaction] = (reactionCounts[d.reaction] || 0) + 1;
+    if (d.type === 'price_vote' && d.price_vote) priceCounts[d.price_vote] = (priceCounts[d.price_vote] || 0) + 1;
+  });
+}
+
+async function submitReaction(r) {
+  if (isSubmitting) return;
+  if (allData.filter(d => d.type !== 'comment').length >= 990) { showToast('Limit reached'); return; }
+  isSubmitting = true;
+  const res = await window.dataSdk.create({ type: 'reaction', section_id: 'bottom', reaction: r, comment: '', price_vote: '', timestamp: new Date().toISOString() });
+  isSubmitting = false;
+  if (!res.isOk) showToast('Error saving reaction');
+}
+
+async function submitPriceVote(p) {
+  if (isSubmitting) return;
+  if (allData.filter(d => d.type !== 'comment').length >= 990) { showToast('Limit reached'); return; }
+  isSubmitting = true;
+  const res = await window.dataSdk.create({ type: 'price_vote', section_id: 'bottom', reaction: '', comment: '', price_vote: p, timestamp: new Date().toISOString() });
+  isSubmitting = false;
+  if (!res.isOk) showToast('Error saving vote');
+}
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || isSubmitting) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached'); return; }
+  isSubmitting = true;
+  document.getElementById('comment-submit').innerHTML = '<span class="spinner-sm"></span>';
+  const res = await window.dataSdk.create({ type: 'comment', section_id: 'bottom', reaction: '', comment: text, price_vote: '', timestamp: new Date().toISOString() });
+  isSubmitting = false;
+  document.getElementById('comment-submit').innerHTML = '<i data-lucide="send" style="width:16px;height:16px;"></i>';
+  lucide.createIcons();
+  if (res.isOk) { input.value = ''; } else { showToast('Error posting comment'); }
+});
+
+// Data SDK init
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    tally();
+    renderReactions();
+    renderPriceVotes();
+    renderComments();
+  }
+};
+
+// Element SDK
+function applyConfig(config) {
+  const c = config;
+  document.getElementById('hero-title').innerHTML = (c.hero_title || defaultConfig.hero_title).replace(/It's a feeling\./, '<span class="neon-text-pink">It\'s a feeling.</span>');
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('experiences-title').textContent = c.experiences_title || defaultConfig.experiences_title;
+  document.getElementById('vip-title').textContent = c.vip_title || defaultConfig.vip_title;
+  document.getElementById('price-standard').textContent = c.standard_price || defaultConfig.standard_price;
+  document.getElementById('price-vip').textContent = c.vip_price || defaultConfig.vip_price;
+  document.getElementById('price-elite').textContent = c.elite_price || defaultConfig.elite_price;
+
+  const ctaText = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+  document.getElementById('bottom-cta').innerHTML = ctaText.replace(/night\.?/i, '<span class="neon-text-pink neon-flicker">night.</span>');
+
+  // Colors
+  const bg = c.background_color || defaultConfig.background_color;
+  const surface = c.surface_color || defaultConfig.surface_color;
+  const text = c.text_color || defaultConfig.text_color;
+  const primary = c.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = c.secondary_action_color || defaultConfig.secondary_action_color;
+
+  document.documentElement.style.setProperty('--bg-dark', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--neon-pink', primary);
+  document.documentElement.style.setProperty('--neon-blue', secondary);
+  document.body.style.background = bg;
+  document.getElementById('app-root').style.background = bg;
+  document.body.style.color = text;
+
+  // Font
+  const font = c.font_family || defaultConfig.font_family;
+  const baseSize = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('[style*="font-family:\'Orbitron\'"]').forEach(el => {
+    el.style.fontFamily = `'${font}', 'Orbitron', sans-serif`;
+  });
+  document.querySelectorAll('h1,h2,h3').forEach(el => {
+    el.style.fontFamily = `'${font}', 'Orbitron', sans-serif`;
+  });
+  document.body.style.fontSize = baseSize + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['experiences_title', config.experiences_title || defaultConfig.experiences_title],
+    ['vip_title', config.vip_title || defaultConfig.vip_title],
+    ['standard_price', config.standard_price || defaultConfig.standard_price],
+    ['vip_price', config.vip_price || defaultConfig.vip_price],
+    ['elite_price', config.elite_price || defaultConfig.elite_price],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// Scroll reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav active state
+const sections = ['home','experiences','vip','nights','pricing','faq','book'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  const scrollY = appRoot.scrollTop;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrollY) current = id;
+  });
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('mobile-menu').classList.add('hidden');
+  });
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// FAQ toggle
+function toggleFaq(btn) {
+  btn.closest('.faq-item').classList.toggle('open');
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5280055b27c5',t:'MTc3NTU3ODQzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

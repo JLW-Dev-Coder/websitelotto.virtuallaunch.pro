@@ -1,1 +1,498 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a6881514-281d-4112-a66a-436f7e139cd8 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal &amp; Scale</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        serif: ['DM Serif Display', 'Georgia', 'serif'],
+        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+.glass-card {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.pulse-cta { animation: pulse-ring 2.5s ease-in-out infinite; }
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(37,99,235,0); }
+}
+
+.nav-active { color: #2563eb; }
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #2563eb;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.nav-active::after { width: 100%; }
+
+.article-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+
+.sponsor-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.thin-rule { height: 1px; background: rgba(0,0,0,0.08); }
+
+.sticky-nav {
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.sticky-nav.scrolled {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+
+.hero-line {
+  display: inline;
+  background-image: linear-gradient(transparent 65%, rgba(37,99,235,0.1) 65%);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  transition: background-size 1.2s ease 0.5s;
+}
+.hero-line.visible { background-size: 100% 100%; }
+
+.vote-btn { transition: all 0.2s ease; }
+.vote-btn:hover { transform: scale(1.05); }
+.vote-btn.voted { background: #2563eb; color: #fff; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-white">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#fafafa;"><!-- Sticky Nav -->
+   <nav id="main-nav" class="sticky-nav fixed top-0 left-0 w-full z-50" style="background:rgba(255,255,255,0.8); backdrop-filter:blur(12px);">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between" style="height:56px;"><a href="#home" class="font-serif text-xl tracking-tight" style="color:#1a1a1a;">Signal <span style="color:#2563eb;">&amp;</span> Scale</a>
+     <div class="hidden md:flex items-center gap-7"><a href="#home" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Home</a> <a href="#startups" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Startups</a> <a href="#strategy" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Strategy</a> <a href="#tech" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Tech</a> <a href="#ideas" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Ideas</a> <a href="#subscribe" class="nav-link font-sans text-xs font-semibold tracking-widest uppercase" style="color:#555; letter-spacing:1.5px;">Subscribe</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" style="color:#333;"> <i data-lucide="menu" style="width:20px;height:20px;"></i> </button>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4" style="border-top:1px solid rgba(0,0,0,0.06);">
+     <div class="flex flex-col gap-3 pt-3"><a href="#home" class="font-sans text-sm font-medium" style="color:#555;">Home</a> <a href="#startups" class="font-sans text-sm font-medium" style="color:#555;">Startups</a> <a href="#strategy" class="font-sans text-sm font-medium" style="color:#555;">Strategy</a> <a href="#tech" class="font-sans text-sm font-medium" style="color:#555;">Tech</a> <a href="#ideas" class="font-sans text-sm font-medium" style="color:#555;">Ideas</a> <a href="#subscribe" class="font-sans text-sm font-medium" style="color:#555;">Subscribe</a>
+     </div>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="w-full" style="padding-top:56px;">
+    <div class="max-w-6xl mx-auto px-6 py-20 md:py-32">
+     <div class="flex flex-col md:flex-row gap-12 items-center">
+      <div class="flex-1 fade-in">
+       <div class="font-mono text-xs font-medium tracking-widest uppercase mb-6" style="color:#2563eb; letter-spacing:2px;">
+        Where ideas turn into leverage
+       </div>
+       <h1 id="hero-headline" class="font-serif text-4xl md:text-6xl leading-tight mb-6" style="color:#1a1a1a;"><span class="hero-line">The next generation of businesses won't look like companies.</span></h1>
+       <p id="hero-subhead" class="font-sans text-lg md:text-xl font-light leading-relaxed mb-8" style="color:#666; max-width:480px;">They'll look like systems.</p>
+       <div class="flex gap-4 items-center"><a href="#startups" class="pulse-cta inline-flex items-center gap-2 font-sans text-sm font-semibold px-6 py-3 rounded-full" style="background:#2563eb; color:#fff;"> Read the latest 
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+         </svg></a> <a href="#subscribe" class="font-sans text-sm font-medium" style="color:#2563eb;">Subscribe</a>
+       </div>
+      </div>
+      <div class="flex-1 fade-in" style="max-width:480px;">
+       <div class="relative rounded-2xl overflow-hidden" style="aspect-ratio:4/3;"><img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=800&amp;q=80" alt="Modern startup workspace" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#e5e7eb,#d1d5db)';this.alt='Image unavailable';">
+        <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.15), transparent);"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="thin-rule max-w-6xl mx-auto"></div><!-- Featured Articles / Startups -->
+   <section id="startups" class="w-full">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+     <div class="flex items-center gap-3 mb-10 fade-in">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      </svg>
+      <h2 class="font-serif text-2xl" style="color:#1a1a1a;">Featured</h2>
+      <div class="flex-1 thin-rule ml-4"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Article 1 -->
+      <div class="article-card glass-card rounded-xl overflow-hidden fade-in">
+       <div style="aspect-ratio:16/10;" class="overflow-hidden"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&amp;q=80" alt="Founder working at desk" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#e5e7eb';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-3"><span class="font-mono text-xs uppercase tracking-wider" style="color:#2563eb;">Startups</span> <span style="color:#ccc;">|</span> <span class="font-sans text-xs" style="color:#999;">6 min read</span>
+        </div>
+        <h3 class="font-serif text-lg leading-snug mb-2" style="color:#1a1a1a;">Why Solo Founders Are Outperforming Small Teams</h3>
+        <p class="font-sans text-sm font-light leading-relaxed" style="color:#777;">The myth of the co-founder is crumbling. Data shows lean operators are building faster, shipping more, and retaining equity.</p>
+        <div class="flex items-center gap-2 mt-4" style="color:#aaa;">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+         </svg><span class="font-sans text-xs">Dec 14, 2024</span>
+        </div>
+       </div>
+      </div><!-- Article 2 -->
+      <div class="article-card glass-card rounded-xl overflow-hidden fade-in">
+       <div style="aspect-ratio:16/10;" class="overflow-hidden"><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&amp;q=80" alt="Business strategy meeting" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#e5e7eb';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-3"><span class="font-mono text-xs uppercase tracking-wider" style="color:#2563eb;">Growth</span> <span style="color:#ccc;">|</span> <span class="font-sans text-xs" style="color:#999;">8 min read</span>
+        </div>
+        <h3 class="font-serif text-lg leading-snug mb-2" style="color:#1a1a1a;">The Real Reason Most Startups Stall After Launch</h3>
+        <p class="font-sans text-sm font-light leading-relaxed" style="color:#777;">It's not product-market fit. It's not funding. It's the invisible ceiling that founders hit when they confuse motion with progress.</p>
+        <div class="flex items-center gap-2 mt-4" style="color:#aaa;">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+         </svg><span class="font-sans text-xs">Dec 11, 2024</span>
+        </div>
+       </div>
+      </div><!-- Article 3 -->
+      <div class="article-card glass-card rounded-xl overflow-hidden fade-in">
+       <div style="aspect-ratio:16/10;" class="overflow-hidden"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&amp;q=80" alt="Automation and technology" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#e5e7eb';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <div class="flex items-center gap-2 mb-3"><span class="font-mono text-xs uppercase tracking-wider" style="color:#2563eb;">Tech</span> <span style="color:#ccc;">|</span> <span class="font-sans text-xs" style="color:#999;">5 min read</span>
+        </div>
+        <h3 class="font-serif text-lg leading-snug mb-2" style="color:#1a1a1a;">Automation Is Replacing Entire Job Functions</h3>
+        <p class="font-sans text-sm font-light leading-relaxed" style="color:#777;">Not just tasks. Entire roles are being absorbed by systems that never sleep, never negotiate, and never quit.</p>
+        <div class="flex items-center gap-2 mt-4" style="color:#aaa;">
+         <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+         </svg><span class="font-sans text-xs">Dec 8, 2024</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="thin-rule max-w-6xl mx-auto"></div><!-- Deep Dive / Strategy -->
+   <section id="strategy" class="w-full">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+     <div class="flex items-center gap-3 mb-10 fade-in">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+      <h2 class="font-serif text-2xl" style="color:#1a1a1a;">Deep Dive</h2>
+      <div class="flex-1 thin-rule ml-4"></div>
+     </div>
+     <div class="flex flex-col md:flex-row gap-8 fade-in">
+      <div class="flex-1 rounded-2xl overflow-hidden" style="aspect-ratio:16/9; max-height:400px;"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&amp;q=80" alt="Analytics dashboard and charts" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#e5e7eb,#d1d5db)';this.alt='Image unavailable';">
+      </div>
+      <div class="flex-1 flex flex-col justify-center"><span class="font-mono text-xs uppercase tracking-widest mb-4" style="color:#2563eb; letter-spacing:2px;">Strategy</span>
+       <h3 class="font-serif text-3xl md:text-4xl leading-tight mb-4" style="color:#1a1a1a;">From Idea to Revenue: A 30-Day Breakdown</h3>
+       <p class="font-sans text-base font-light leading-relaxed mb-6" style="color:#666;">A tactical, day-by-day framework for founders who want to stop planning and start earning. No fluff. No theory. Just the blueprint.</p>
+       <div class="flex flex-wrap gap-3 mb-6"><span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">30-day plan</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">Revenue focus</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">Solo founder</span>
+       </div><a href="#" class="inline-flex items-center gap-2 font-sans text-sm font-semibold" style="color:#2563eb;" onclick="event.preventDefault();"> Read the full breakdown 
+        <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </svg></a>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="thin-rule max-w-6xl mx-auto"></div><!-- Sponsored / Tech -->
+   <section id="tech" class="w-full" style="background:#f3f4f6;">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-20">
+     <div class="flex items-center gap-3 mb-8 fade-in">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      </svg>
+      <h2 class="font-serif text-2xl" style="color:#1a1a1a;">Partner Spotlights</h2>
+      <div class="flex-1 thin-rule ml-4"></div><span class="sponsor-tag" style="color:#999;">Sponsored</span>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass-card rounded-xl p-6 fade-in article-card"><span class="sponsor-tag inline-block px-2 py-1 rounded mb-4" style="background:rgba(37,99,235,0.06); color:#2563eb;">Ad</span>
+       <h3 class="font-serif text-lg mb-2" style="color:#1a1a1a;">Launch and Sell Websites with Website Lotto</h3>
+       <p class="font-sans text-sm font-light leading-relaxed mb-4" style="color:#777;">The fastest way to build, launch, and monetize websites without writing a single line of code.</p><a href="#" class="font-sans text-sm font-semibold" style="color:#2563eb;" onclick="event.preventDefault();">Learn more</a>
+      </div>
+      <div class="glass-card rounded-xl p-6 fade-in article-card"><span class="sponsor-tag inline-block px-2 py-1 rounded mb-4" style="background:rgba(37,99,235,0.06); color:#2563eb;">Ad</span>
+       <h3 class="font-serif text-lg mb-2" style="color:#1a1a1a;">Streamline Your Tax Workflow with Tax Tools</h3>
+       <p class="font-sans text-sm font-light leading-relaxed mb-4" style="color:#777;">Automate compliance, reduce errors, and reclaim hours of your week with intelligent tax software.</p><a href="#" class="font-sans text-sm font-semibold" style="color:#2563eb;" onclick="event.preventDefault();">Learn more</a>
+      </div>
+      <div class="glass-card rounded-xl p-6 fade-in article-card"><span class="sponsor-tag inline-block px-2 py-1 rounded mb-4" style="background:rgba(37,99,235,0.06); color:#2563eb;">Ad</span>
+       <h3 class="font-serif text-lg mb-2" style="color:#1a1a1a;">Build Once, Sell Forever with Digital Products</h3>
+       <p class="font-sans text-sm font-light leading-relaxed mb-4" style="color:#777;">Templates, courses, and tools that generate revenue while you sleep. The ultimate leverage play.</p><a href="#" class="font-sans text-sm font-semibold" style="color:#2563eb;" onclick="event.preventDefault();">Learn more</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- Insights / Ideas -->
+   <section id="ideas" class="w-full">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+     <div class="flex items-center gap-3 mb-10 fade-in">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
+      </svg>
+      <h2 class="font-serif text-2xl" style="color:#1a1a1a;">Insights</h2>
+      <div class="flex-1 thin-rule ml-4"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="fade-in flex gap-6 items-start p-6 rounded-xl" style="border:1px solid rgba(0,0,0,0.06);">
+       <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style="background:rgba(37,99,235,0.06);">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-serif text-xl mb-2" style="color:#1a1a1a;">Leverage Is the Only Strategy That Scales</h3>
+        <p class="font-sans text-sm font-light leading-relaxed" style="color:#777;">Time-for-money is a trap. The builders who win are the ones who create assets that compound: code, content, capital, and community.</p>
+        <div class="flex items-center gap-4 mt-4"><span class="font-sans text-xs" style="color:#aaa;">4 min read</span> <button class="flex items-center gap-1" style="color:#aaa;" onclick="event.preventDefault();">
+          <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg><span class="font-sans text-xs">Save</span> </button>
+        </div>
+       </div>
+      </div>
+      <div class="fade-in flex gap-6 items-start p-6 rounded-xl" style="border:1px solid rgba(0,0,0,0.06);">
+       <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style="background:rgba(37,99,235,0.06);">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </svg>
+       </div>
+       <div>
+        <h3 class="font-serif text-xl mb-2" style="color:#1a1a1a;">Speed Is the New Competitive Advantage</h3>
+        <p class="font-sans text-sm font-light leading-relaxed" style="color:#777;">In a world where AI levels the playing field, the differentiator isn't intelligence. It's velocity. Ship fast, learn faster, iterate fastest.</p>
+        <div class="flex items-center gap-4 mt-4"><span class="font-sans text-xs" style="color:#aaa;">3 min read</span> <button class="flex items-center gap-1" style="color:#aaa;" onclick="event.preventDefault();">
+          <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg><span class="font-sans text-xs">Save</span> </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="thin-rule max-w-6xl mx-auto"></div><!-- Digital Product CTA -->
+   <section class="w-full">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-20">
+     <div class="glass-card rounded-2xl p-8 md:p-12 text-center fade-in" style="border:1px solid rgba(37,99,235,0.1); background:linear-gradient(135deg, rgba(37,99,235,0.03), rgba(37,99,235,0.06));"><span class="font-mono text-xs uppercase tracking-widest" style="color:#2563eb; letter-spacing:2px;">Digital Product</span>
+      <h3 class="font-serif text-2xl md:text-3xl mt-4 mb-3" style="color:#1a1a1a;">28 Article Templates, Built for Revenue</h3>
+      <p class="font-sans text-base font-light leading-relaxed mx-auto mb-6" style="color:#666; max-width:520px;">Long-form layouts, ad placements, lead capture modules, and headline frameworks designed for the founder audience.</p>
+      <div class="flex flex-wrap justify-center gap-4 mb-6"><span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">Founder audience</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">High-value readers</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background:rgba(37,99,235,0.08); color:#2563eb;">Monetization-ready</span>
+      </div><a href="#" class="pulse-cta inline-flex items-center gap-2 font-sans text-sm font-semibold px-8 py-3 rounded-full" style="background:#2563eb; color:#fff;" onclick="event.preventDefault();"> Get the templates 
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+       </svg></a>
+     </div>
+    </div>
+   </section>
+   <div class="thin-rule max-w-6xl mx-auto"></div><!-- Subscribe + Vote -->
+   <section id="subscribe" class="w-full">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+     <div class="text-center fade-in">
+      <h2 id="bottom-cta" class="font-serif text-3xl md:text-5xl mb-4" style="color:#1a1a1a;">Build smarter. Move faster.</h2>
+      <p class="font-sans text-base font-light mb-8" style="color:#777;">Join thousands of founders getting the signal, not the noise.</p>
+      <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto mb-12" onsubmit="event.preventDefault(); handleSubscribe();"><label for="email-input" class="sr-only">Email address</label> <input id="email-input" type="email" placeholder="you@company.com" required class="flex-1 font-sans text-sm px-4 py-3 rounded-full outline-none" style="border:1px solid #ddd; background:#fff;" aria-label="Email address"> <button id="subscribe-btn" type="submit" class="font-sans text-sm font-semibold px-6 py-3 rounded-full" style="background:#1a1a1a; color:#fff;">Subscribe</button>
+      </form>
+      <div id="subscribe-success" class="hidden font-sans text-sm mb-8" style="color:#2563eb;">
+       Thanks for subscribing! Check your inbox.
+      </div>
+     </div><!-- Vote + Comment Widget -->
+     <div class="glass-card rounded-xl p-6 md:p-8 max-w-lg mx-auto fade-in" style="border:1px solid rgba(0,0,0,0.06);">
+      <h3 class="font-serif text-lg mb-4 text-center" style="color:#1a1a1a;">Vote + Comment</h3>
+      <div class="flex justify-center gap-4 mb-6"><button id="vote-up" class="vote-btn flex items-center gap-2 px-4 py-2 rounded-full font-sans text-sm font-medium" style="border:1px solid #ddd; color:#555; background:#fff;" onclick="handleVote('up')">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="m12 19V5" /><path d="m5 12 7-7 7 7" />
+        </svg> Upvote <span id="vote-up-count" class="font-mono text-xs">0</span> </button> <button id="vote-down" class="vote-btn flex items-center gap-2 px-4 py-2 rounded-full font-sans text-sm font-medium" style="border:1px solid #ddd; color:#555; background:#fff;" onclick="handleVote('down')">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+         <path d="m12 5v14" /><path d="m19 12-7 7-7-7" />
+        </svg> Downvote <span id="vote-down-count" class="font-mono text-xs">0</span> </button>
+      </div>
+      <form onsubmit="event.preventDefault(); handleComment();"><label for="comment-input" class="sr-only">Leave a comment</label> <textarea id="comment-input" rows="3" placeholder="Share your thoughts..." class="w-full font-sans text-sm p-4 rounded-lg outline-none resize-none mb-3" style="border:1px solid #ddd; background:#fff;" aria-label="Leave a comment"></textarea> <button type="submit" class="w-full font-sans text-sm font-semibold py-3 rounded-full" style="background:#1a1a1a; color:#fff;">Post Comment</button>
+      </form>
+      <div id="comments-list" class="mt-4"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full" style="background:#1a1a1a;">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="font-serif text-lg" style="color:#fff;">
+       Signal <span style="color:#2563eb;">&amp;</span> Scale
+      </div>
+      <p class="font-sans text-xs" style="color:#666;">Where ideas turn into leverage. All rights reserved.</p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Config and SDK init
+const defaultConfig = {
+  background_color: '#fafafa',
+  surface_color: '#ffffff',
+  text_color: '#1a1a1a',
+  primary_action_color: '#2563eb',
+  secondary_action_color: '#555555',
+  font_family: 'DM Serif Display',
+  font_size: 16,
+  hero_headline: "The next generation of businesses won't look like companies.",
+  hero_subhead: "They'll look like systems.",
+  bottom_cta_text: 'Build smarter. Move faster.',
+  subscribe_button_text: 'Subscribe'
+};
+
+function applyConfig(cfg) {
+  const bg = cfg.background_color || defaultConfig.background_color;
+  const surface = cfg.surface_color || defaultConfig.surface_color;
+  const text = cfg.text_color || defaultConfig.text_color;
+  const primary = cfg.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = cfg.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = cfg.font_family || defaultConfig.font_family;
+  const size = cfg.font_size || defaultConfig.font_size;
+
+  const wrapper = document.getElementById('app-wrapper');
+  wrapper.style.background = bg;
+
+  // Glass cards
+  document.querySelectorAll('.glass-card').forEach(el => {
+    el.style.background = surface + 'b8';
+  });
+
+  // Text color on headings
+  document.querySelectorAll('.font-serif').forEach(el => {
+    if (!el.closest('footer')) el.style.color = text;
+  });
+
+  // Primary action
+  document.querySelectorAll('.pulse-cta').forEach(el => el.style.background = primary);
+  document.querySelectorAll('[style*="color:#2563eb"]').forEach(el => {
+    if (el.tagName !== 'SPAN' || el.closest('.sponsor-tag')) return;
+  });
+
+  // Secondary nav links
+  document.querySelectorAll('.nav-link').forEach(el => el.style.color = secondary);
+
+  // Font
+  const stack = font + ', Georgia, serif';
+  document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = stack);
+
+  // Font size
+  const heroH = document.getElementById('hero-headline');
+  if (heroH) heroH.style.fontSize = (size * 3.5) + 'px';
+  const heroS = document.getElementById('hero-subhead');
+  if (heroS) heroS.style.fontSize = (size * 1.25) + 'px';
+
+  // Text content
+  const hl = document.getElementById('hero-headline');
+  if (hl) hl.querySelector('.hero-line').textContent = cfg.hero_headline || defaultConfig.hero_headline;
+  const hs = document.getElementById('hero-subhead');
+  if (hs) hs.textContent = cfg.hero_subhead || defaultConfig.hero_subhead;
+  const bc = document.getElementById('bottom-cta');
+  if (bc) bc.textContent = cfg.bottom_cta_text || defaultConfig.bottom_cta_text;
+  const sb = document.getElementById('subscribe-btn');
+  if (sb) sb.textContent = cfg.subscribe_button_text || defaultConfig.subscribe_button_text;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (cfg) => applyConfig(cfg),
+    mapToCapabilities: (cfg) => ({
+      recolorables: [
+        { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => cfg.primary_action_color || defaultConfig.primary_action_color, set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => cfg.font_family || defaultConfig.font_family,
+        set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => cfg.font_size || defaultConfig.font_size,
+        set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (cfg) => new Map([
+      ['hero_headline', cfg.hero_headline || defaultConfig.hero_headline],
+      ['hero_subhead', cfg.hero_subhead || defaultConfig.hero_subhead],
+      ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text],
+      ['subscribe_button_text', cfg.subscribe_button_text || defaultConfig.subscribe_button_text]
+    ])
+  });
+}
+
+// Scroll observer for fade-ins
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in, .hero-line').forEach(el => observer.observe(el));
+
+// Sticky nav scroll
+const nav = document.getElementById('main-nav');
+document.getElementById('app-wrapper').addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', this.scrollTop > 10);
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Subscribe
+function handleSubscribe() {
+  document.getElementById('subscribe-success').classList.remove('hidden');
+  document.getElementById('email-input').value = '';
+}
+
+// Voting
+let votes = { up: 0, down: 0 };
+let userVote = null;
+function handleVote(dir) {
+  if (userVote === dir) { votes[dir]--; userVote = null; }
+  else {
+    if (userVote) votes[userVote]--;
+    votes[dir]++;
+    userVote = dir;
+  }
+  document.getElementById('vote-up-count').textContent = votes.up;
+  document.getElementById('vote-down-count').textContent = votes.down;
+  document.getElementById('vote-up').classList.toggle('voted', userVote === 'up');
+  document.getElementById('vote-down').classList.toggle('voted', userVote === 'down');
+}
+
+// Comments
+function handleComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'flex gap-3 items-start py-3';
+  div.style.borderTop = '1px solid rgba(0,0,0,0.06)';
+  div.innerHTML = `<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#e5e7eb;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div><span class="font-sans text-xs font-medium" style="color:#999;">Just now</span><p class="font-sans text-sm mt-1" style="color:#333;">${text.replace(/</g,'&lt;')}</p></div>`;
+  list.appendChild(div);
+  input.value = '';
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a64d4701527c5',t:'MTc3NTU3OTE4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

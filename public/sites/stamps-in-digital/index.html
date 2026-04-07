@@ -1,1 +1,548 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/fe89ace4-ae44-4936-81be-2564568765ad -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassportPop Club</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        brand: ['Bricolage Grotesque', 'sans-serif'],
+        mono: ['DM Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-18px) rotate(6deg); } }
+@keyframes pop { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes stampSlam { 0% { transform: scale(2.5) rotate(-15deg); opacity: 0; } 40% { transform: scale(0.9) rotate(3deg); opacity: 1; } 60% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0deg); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes bounceIn { 0% { transform: translateY(40px); opacity: 0; } 60% { transform: translateY(-8px); opacity: 1; } 100% { transform: translateY(0); } }
+@keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes wiggle { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-float-d1 { animation: float 3.4s ease-in-out 0.3s infinite; }
+.anim-float-d2 { animation: float 2.8s ease-in-out 0.7s infinite; }
+.anim-pop { animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.anim-stamp { animation: stampSlam 0.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+.anim-bounce { animation: bounceIn 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.anim-wiggle { animation: wiggle 0.8s ease-in-out infinite; }
+.anim-slide-up { animation: slideUp 0.6s ease-out forwards; }
+
+.shimmer-bg {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+.stamp-card { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s; }
+.stamp-card:hover { transform: scale(1.08) rotate(-2deg); box-shadow: 0 12px 40px rgba(255,60,120,0.3); }
+
+.challenge-card { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+.challenge-card:hover { transform: translateY(-8px) scale(1.03); }
+
+.nav-link { position: relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#FF3C78; transition: width 0.3s; }
+.nav-link:hover::after { width:100%; }
+
+.scroll-reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.6s, transform 0.6s; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.btn-glow { position: relative; overflow: hidden; }
+.btn-glow::before { content:''; position:absolute; inset:-2px; background: linear-gradient(90deg,#FF3C78,#FFDE59,#00E5A0,#FF3C78); background-size:300% 100%; border-radius: inherit; animation: shimmer 2s linear infinite; z-index:-1; }
+
+.reaction-btn { transition: transform 0.2s; }
+.reaction-btn:hover { transform: scale(1.3); }
+.reaction-btn.active { transform: scale(1.2); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1028; }
+::-webkit-scrollbar-thumb { background: #FF3C78; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:#0D0A18; color:#F0ECF7; font-family:'Bricolage Grotesque',sans-serif;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position:sticky; top:0; z-index:50; background:rgba(13,10,24,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,60,120,0.15);">
+    <div style="max-width:1200px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+     <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:28px;" class="anim-wiggle">🛂</span> <span style="font-weight:800; font-size:20px; background:linear-gradient(135deg,#FF3C78,#FFDE59); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">PassportPop</span>
+     </div>
+     <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:center;"><a href="#home" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">Home</a> <a href="#how" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">How It Works</a> <a href="#stamps" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">Stamps</a> <a href="#challenges" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">Challenges</a> <a href="#reviews" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">Reviews</a> <a href="#join" class="nav-link" style="color:#F0ECF7; text-decoration:none; font-size:14px; font-weight:600;">Join</a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" style="min-height:90%; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:60px 24px;"><!-- Floating stamps background -->
+    <div style="position:absolute; inset:0; pointer-events:none; overflow:hidden;"><span class="anim-float" style="position:absolute; top:10%; left:8%; font-size:48px; opacity:0.6;">⭐</span> <span class="anim-float-d1" style="position:absolute; top:20%; right:12%; font-size:56px; opacity:0.5;">🎯</span> <span class="anim-float-d2" style="position:absolute; bottom:20%; left:15%; font-size:44px; opacity:0.5;">🔥</span> <span class="anim-float" style="position:absolute; top:60%; right:8%; font-size:40px; opacity:0.4;">💎</span> <span class="anim-float-d1" style="position:absolute; bottom:30%; right:25%; font-size:52px; opacity:0.4;">🏆</span> <span class="anim-float-d2" style="position:absolute; top:40%; left:5%; font-size:36px; opacity:0.5;">✨</span> <span class="anim-float" style="position:absolute; bottom:10%; left:40%; font-size:50px; opacity:0.35;">🎨</span> <span class="anim-float-d1" style="position:absolute; top:8%; left:50%; font-size:42px; opacity:0.3;">📌</span>
+    </div><!-- Gradient orbs -->
+    <div style="position:absolute; top:-20%; left:-10%; width:500px; height:500px; background:radial-gradient(circle, rgba(255,60,120,0.25) 0%, transparent 70%); border-radius:50%;"></div>
+    <div style="position:absolute; bottom:-15%; right:-10%; width:450px; height:450px; background:radial-gradient(circle, rgba(0,229,160,0.2) 0%, transparent 70%); border-radius:50%;"></div>
+    <div style="text-align:center; position:relative; z-index:2; max-width:700px;">
+     <div class="anim-stamp" style="display:inline-block; margin-bottom:24px; padding:10px 24px; border:3px solid #FF3C78; border-radius:12px; transform:rotate(-3deg); background:rgba(255,60,120,0.1);"><span style="font-family:'DM Mono',monospace; font-size:13px; color:#FF3C78; letter-spacing:2px; text-transform:uppercase;">Season 01 — Now Live</span>
+     </div>
+     <h1 id="hero-title" style="font-size:clamp(40px,8vw,80px); font-weight:800; line-height:1.05; margin:0 0 20px;">Collect your vibe<br>
+      in stamps.</h1>
+     <p id="hero-subtitle" style="font-size:clamp(16px,2.5vw,22px); color:#b8b0c8; margin:0 0 36px; line-height:1.5;">Challenges + collectibles + community.</p><a href="#join" id="hero-cta" class="btn-glow" style="display:inline-block; padding:16px 44px; background:#FF3C78; color:#fff; font-weight:700; font-size:18px; border-radius:60px; text-decoration:none; position:relative; z-index:1; letter-spacing:0.5px;">Join the Drop</a>
+     <div style="margin-top:32px; display:flex; justify-content:center; gap:24px; flex-wrap:wrap;"><span style="font-family:'DM Mono',monospace; font-size:13px; color:#00E5A0;">✦ 150 animated stamps</span> <span style="font-family:'DM Mono',monospace; font-size:13px; color:#FFDE59;">✦ Monthly challenges</span> <span style="font-family:'DM Mono',monospace; font-size:13px; color:#7C6FFF;">✦ Community leaderboard</span>
+     </div>
+    </div>
+   </section><!-- How It Works -->
+   <section id="how" class="scroll-reveal" style="padding:80px 24px; position:relative;">
+    <div style="max-width:1000px; margin:0 auto;">
+     <h2 style="text-align:center; font-size:clamp(28px,5vw,48px); font-weight:800; margin:0 0 12px;">How It Works</h2>
+     <p style="text-align:center; color:#b8b0c8; font-size:16px; margin:0 0 48px;">Four steps to stamp greatness.</p>
+     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:24px;">
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,60,120,0.2); border-radius:20px; padding:32px 24px; text-align:center;">
+       <div class="anim-float" style="font-size:48px; margin-bottom:16px;">
+        🎫
+       </div>
+       <div style="font-family:'DM Mono',monospace; font-size:12px; color:#FF3C78; margin-bottom:8px;">
+        STEP 01
+       </div>
+       <h3 style="font-weight:700; font-size:18px; margin:0 0 8px;">Pick a Season</h3>
+       <p style="color:#b8b0c8; font-size:14px; margin:0; line-height:1.5;">Choose your passport theme — sneakers, books, cats, or gym life.</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(0,229,160,0.2); border-radius:20px; padding:32px 24px; text-align:center;">
+       <div class="anim-float-d1" style="font-size:48px; margin-bottom:16px;">
+        📝
+       </div>
+       <div style="font-family:'DM Mono',monospace; font-size:12px; color:#00E5A0; margin-bottom:8px;">
+        STEP 02
+       </div>
+       <h3 style="font-weight:700; font-size:18px; margin:0 0 8px;">Complete Prompts</h3>
+       <p style="color:#b8b0c8; font-size:14px; margin:0; line-height:1.5;">Daily &amp; weekly challenges keep you engaged and creating.</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,222,89,0.2); border-radius:20px; padding:32px 24px; text-align:center;">
+       <div class="anim-float-d2" style="font-size:48px; margin-bottom:16px;">
+        🏅
+       </div>
+       <div style="font-family:'DM Mono',monospace; font-size:12px; color:#FFDE59; margin-bottom:8px;">
+        STEP 03
+       </div>
+       <h3 style="font-weight:700; font-size:18px; margin:0 0 8px;">Earn Stamps</h3>
+       <p style="color:#b8b0c8; font-size:14px; margin:0; line-height:1.5;">Animated collectibles unlock with each completed challenge.</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(124,111,255,0.2); border-radius:20px; padding:32px 24px; text-align:center;">
+       <div class="anim-float" style="font-size:48px; margin-bottom:16px;">
+        📱
+       </div>
+       <div style="font-family:'DM Mono',monospace; font-size:12px; color:#7C6FFF; margin-bottom:8px;">
+        STEP 04
+       </div>
+       <h3 style="font-weight:700; font-size:18px; margin:0 0 8px;">Share &amp; Flex</h3>
+       <p style="color:#b8b0c8; font-size:14px; margin:0; line-height:1.5;">Story templates &amp; leaderboard graphics built for virality.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Stamps Gallery -->
+   <section id="stamps" class="scroll-reveal" style="padding:80px 24px;">
+    <div style="max-width:1100px; margin:0 auto;">
+     <h2 style="text-align:center; font-size:clamp(28px,5vw,48px); font-weight:800; margin:0 0 12px;">Stamp Gallery</h2>
+     <p style="text-align:center; color:#b8b0c8; font-size:16px; margin:0 0 48px;">Preview 12 of 150+ animated collectibles.</p>
+     <div id="stamps-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:20px;"></div>
+    </div>
+   </section><!-- Challenges -->
+   <section id="challenges" class="scroll-reveal" style="padding:80px 24px;">
+    <div style="max-width:1000px; margin:0 auto;">
+     <h2 style="text-align:center; font-size:clamp(28px,5vw,48px); font-weight:800; margin:0 0 12px;">Monthly Challenges</h2>
+     <p style="text-align:center; color:#b8b0c8; font-size:16px; margin:0 0 48px;">Bold prompts. Big energy. New drops every month.</p>
+     <div id="challenges-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:24px;"></div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="scroll-reveal" style="padding:80px 24px;">
+    <div style="max-width:900px; margin:0 auto;">
+     <h2 style="text-align:center; font-size:clamp(28px,5vw,48px); font-weight:800; margin:0 0 48px;">What Collectors Say</h2>
+     <div id="reviews-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:24px;"></div>
+    </div>
+   </section><!-- Bottom CTA + Vote Module -->
+   <section id="join" class="scroll-reveal" style="padding:80px 24px 40px;">
+    <div style="max-width:800px; margin:0 auto; text-align:center;">
+     <div class="anim-stamp" style="display:inline-block; font-size:64px; margin-bottom:24px;">
+      🛂
+     </div>
+     <h2 id="bottom-cta-title" style="font-size:clamp(28px,5vw,48px); font-weight:800; margin:0 0 16px;">Turn fans into collectors.</h2>
+     <p style="color:#b8b0c8; font-size:18px; margin:0 0 32px;">Community-driven retention. Season drops. Perfect for subscriptions.</p>
+     <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:60px;"><a href="#join" class="btn-glow" style="display:inline-block; padding:16px 44px; background:#FF3C78; color:#fff; font-weight:700; font-size:18px; border-radius:60px; text-decoration:none; position:relative; z-index:1;">Join the Drop</a> <a href="#stamps" style="display:inline-block; padding:16px 44px; border:2px solid rgba(255,60,120,0.4); color:#FF3C78; font-weight:700; font-size:18px; border-radius:60px; text-decoration:none; transition: all 0.3s;">Preview Stamps</a>
+     </div><!-- Vote + Comment Module -->
+     <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(124,111,255,0.25); border-radius:24px; padding:40px 32px; text-align:left;">
+      <h3 id="vote-heading" style="font-size:24px; font-weight:800; margin:0 0 8px; text-align:center;">Vote the next stamp theme</h3>
+      <p style="color:#b8b0c8; font-size:14px; text-align:center; margin:0 0 24px;">Sign in to vote, react &amp; comment.</p><!-- Sign In -->
+      <div id="sign-in-area" style="text-align:center; margin-bottom:24px;">
+       <div id="signed-out-view"><label style="font-size:13px; color:#b8b0c8; display:block; margin-bottom:8px;">Enter your display name to participate</label>
+        <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;"><input id="username-input" type="text" placeholder="Your name..." style="padding:10px 16px; border-radius:12px; border:1px solid rgba(255,60,120,0.3); background:rgba(255,255,255,0.06); color:#F0ECF7; font-size:14px; outline:none; width:200px; font-family:'Bricolage Grotesque',sans-serif;"> <button onclick="signIn()" style="padding:10px 24px; background:#7C6FFF; color:#fff; border:none; border-radius:12px; font-weight:700; cursor:pointer; font-family:'Bricolage Grotesque',sans-serif; font-size:14px;">Join</button>
+        </div>
+       </div>
+       <div id="signed-in-view" style="display:none;"><span style="font-size:14px; color:#00E5A0;" id="welcome-msg">Welcome!</span>
+       </div>
+      </div><!-- Reactions (5 reactions) -->
+      <div style="margin-bottom:28px;">
+       <p style="font-size:13px; color:#b8b0c8; margin:0 0 12px; text-align:center;">React to this drop:</p>
+       <div id="reactions-area" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;"></div>
+      </div><!-- Price Vote (10 options) -->
+      <div style="margin-bottom:28px;">
+       <p style="font-size:13px; color:#b8b0c8; margin:0 0 12px; text-align:center;">What would you pay for a season pass?</p>
+       <div id="price-vote-area" style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;"></div>
+      </div><!-- Comments -->
+      <div>
+       <p style="font-size:13px; color:#b8b0c8; margin:0 0 12px;">Theme suggestions:</p>
+       <div style="display:flex; gap:8px; margin-bottom:16px;"><input id="comment-input" type="text" placeholder="Suggest a theme..." style="flex:1; padding:10px 16px; border-radius:12px; border:1px solid rgba(255,60,120,0.3); background:rgba(255,255,255,0.06); color:#F0ECF7; font-size:14px; outline:none; font-family:'Bricolage Grotesque',sans-serif;" disabled> <button id="comment-btn" onclick="submitComment()" style="padding:10px 20px; background:#FF3C78; color:#fff; border:none; border-radius:12px; font-weight:700; cursor:pointer; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; opacity:0.5;" disabled>Send</button>
+       </div>
+       <div id="comments-list" style="max-height:240px; overflow-y:auto;"></div>
+      </div>
+      <p style="font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.25); text-align:center; margin:20px 0 0;">Embed Widget Here</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="padding:40px 24px; text-align:center; border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="font-size:13px; color:#5a5270; margin:0;">© 2025 PassportPop Club · Collect, stamp, flex.</p>
+   </footer>
+  </div>
+  <script>
+// ---- CONFIG & SDK ----
+const defaultConfig = {
+  hero_title: 'Collect your vibe<br>in stamps.',
+  hero_subtitle: 'Challenges + collectibles + community.',
+  cta_text: 'Join the Drop',
+  bottom_cta_title: 'Turn fans into collectors.',
+  vote_heading: 'Vote the next stamp theme',
+  background_color: '#0D0A18',
+  surface_color: '#1A1530',
+  text_color: '#F0ECF7',
+  primary_action: '#FF3C78',
+  secondary_action: '#7C6FFF',
+  font_family: 'Bricolage Grotesque',
+  font_size: 16
+};
+
+// ---- STAMP DATA ----
+const stampData = [
+  { emoji:'👟', label:'Grail Kicks', color:'#FF3C78' },
+  { emoji:'📚', label:'Page Turner', color:'#7C6FFF' },
+  { emoji:'🐱', label:'Cat Mom', color:'#FFDE59' },
+  { emoji:'💪', label:'PR Crusher', color:'#00E5A0' },
+  { emoji:'🎧', label:'Vibe Check', color:'#FF8C42' },
+  { emoji:'🌮', label:'Foodie Pass', color:'#FF3C78' },
+  { emoji:'🎮', label:'Game Over', color:'#7C6FFF' },
+  { emoji:'✈️', label:'Wanderlust', color:'#00E5A0' },
+  { emoji:'🎨', label:'Art Drop', color:'#FFDE59' },
+  { emoji:'🧘', label:'Zen Mode', color:'#FF8C42' },
+  { emoji:'🎵', label:'Beat Stamp', color:'#FF3C78' },
+  { emoji:'☕', label:'Café Crawl', color:'#7C6FFF' }
+];
+
+const challengeData = [
+  { title:'Sneaker Spotlight', desc:'Post your top 3 rotation this week.', tag:'WEEK 1', color:'#FF3C78', emoji:'👟' },
+  { title:'Shelf Shuffle', desc:'Reorganize your shelf and snap it.', tag:'WEEK 2', color:'#7C6FFF', emoji:'📚' },
+  { title:'Cat Tax', desc:'Share your best cat photo this month.', tag:'WEEK 3', color:'#FFDE59', emoji:'🐱' },
+  { title:'Gym Check-in', desc:'Log 5 workouts to earn your badge.', tag:'WEEK 4', color:'#00E5A0', emoji:'💪' }
+];
+
+const reviewData = [
+  { name:'@sneakerJay', text:'I literally cannot stop collecting these. Season 1 stamps go SO hard.', stars:5 },
+  { name:'@bookish_maya', text:'The monthly challenges keep my reading on track. Love the community!', stars:5 },
+  { name:'@catmom_nina', text:'My cat passport is almost full 😭 Need Season 2 NOW.', stars:5 }
+];
+
+const reactions = ['🔥','❤️','🤯','👑','💀'];
+const priceOptions = ['$5','$9','$12','$15','$19','$25','$29','$35','$49','$79'];
+
+// ---- STATE ----
+let currentUser = null;
+let allVotes = [];
+let reactionCounts = {};
+let priceCounts = {};
+reactions.forEach(r => reactionCounts[r] = 0);
+priceOptions.forEach(p => priceCounts[p] = 0);
+
+// ---- RENDER STATIC CONTENT ----
+function renderStamps() {
+  const grid = document.getElementById('stamps-grid');
+  grid.innerHTML = '';
+  stampData.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'stamp-card';
+    el.style.cssText = `background:rgba(255,255,255,0.04); border:2px solid ${s.color}33; border-radius:20px; padding:24px 16px; text-align:center; cursor:pointer; animation-delay:${i*0.08}s;`;
+    el.innerHTML = `<div style="font-size:44px; margin-bottom:8px;">${s.emoji}</div><div style="font-family:'DM Mono',monospace; font-size:11px; color:${s.color}; letter-spacing:1px;">${s.label.toUpperCase()}</div>`;
+    el.addEventListener('click', () => {
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = 'stampSlam 0.6s cubic-bezier(0.22,1,0.36,1)';
+    });
+    grid.appendChild(el);
+  });
+}
+
+function renderChallenges() {
+  const grid = document.getElementById('challenges-grid');
+  grid.innerHTML = '';
+  challengeData.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'challenge-card';
+    el.style.cssText = `background:linear-gradient(135deg, ${c.color}15, ${c.color}08); border:1px solid ${c.color}33; border-radius:20px; padding:28px 24px; position:relative; overflow:hidden;`;
+    el.innerHTML = `
+      <div style="position:absolute; top:-10px; right:-10px; font-size:80px; opacity:0.08;">${c.emoji}</div>
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:${c.color}; letter-spacing:2px;">${c.tag}</span>
+      <h3 style="font-size:20px; font-weight:700; margin:8px 0;">${c.title}</h3>
+      <p style="color:#b8b0c8; font-size:14px; margin:0; line-height:1.5;">${c.desc}</p>
+      <div style="margin-top:16px; display:inline-block; padding:6px 16px; border:1px solid ${c.color}44; border-radius:20px; font-size:12px; color:${c.color}; font-weight:600;">Start Challenge →</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function renderReviews() {
+  const grid = document.getElementById('reviews-grid');
+  grid.innerHTML = '';
+  reviewData.forEach(r => {
+    const el = document.createElement('div');
+    el.style.cssText = `background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:28px 24px;`;
+    el.innerHTML = `
+      <div style="margin-bottom:12px;">${'⭐'.repeat(r.stars)}</div>
+      <p style="font-size:15px; line-height:1.6; margin:0 0 12px;">"${r.text}"</p>
+      <span style="font-family:'DM Mono',monospace; font-size:13px; color:#7C6FFF;">${r.name}</span>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function renderReactions() {
+  const area = document.getElementById('reactions-area');
+  area.innerHTML = '';
+  reactions.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'reaction-btn';
+    btn.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:8px 16px; cursor:pointer; font-size:20px; display:flex; align-items:center; gap:6px; color:#F0ECF7; font-family:"Bricolage Grotesque",sans-serif;';
+    btn.innerHTML = `${r} <span class="reaction-count" data-r="${r}" style="font-size:13px; color:#b8b0c8;">0</span>`;
+    btn.addEventListener('click', () => handleReaction(r));
+    area.appendChild(btn);
+  });
+}
+
+function renderPriceVotes() {
+  const area = document.getElementById('price-vote-area');
+  area.innerHTML = '';
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'price-btn';
+    btn.dataset.price = p;
+    btn.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:8px 14px; cursor:pointer; font-size:13px; color:#F0ECF7; font-family:"DM Mono",monospace; transition:all 0.2s;';
+    btn.innerHTML = `${p} <span class="price-count" data-p="${p}" style="font-size:11px; color:#b8b0c8; margin-left:4px;">0</span>`;
+    btn.addEventListener('click', () => handlePriceVote(p));
+    area.appendChild(btn);
+  });
+}
+
+// ---- VOTING HANDLERS ----
+async function handleReaction(r) {
+  if (!currentUser) { shakeInput(); return; }
+  const result = await window.dataSdk.create({ type:'reaction', theme_id:'', reaction:r, price_vote:'', comment:'', username:currentUser, timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction');
+}
+
+async function handlePriceVote(p) {
+  if (!currentUser) { shakeInput(); return; }
+  const result = await window.dataSdk.create({ type:'price_vote', theme_id:'', reaction:'', price_vote:p, comment:'', username:currentUser, timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote');
+}
+
+async function submitComment() {
+  if (!currentUser) return;
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('comment-btn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const result = await window.dataSdk.create({ type:'comment', theme_id:'', reaction:'', price_vote:'', comment:text, username:currentUser, timestamp: new Date().toISOString() });
+  if (result.isOk) { input.value = ''; }
+  else { showToast('Could not save comment'); }
+  btn.disabled = false; btn.style.opacity = '1';
+}
+
+function signIn() {
+  const input = document.getElementById('username-input');
+  const name = input.value.trim();
+  if (!name) { shakeInput(); return; }
+  currentUser = name;
+  document.getElementById('signed-out-view').style.display = 'none';
+  document.getElementById('signed-in-view').style.display = 'block';
+  document.getElementById('welcome-msg').textContent = `Welcome, ${name}! 🎉`;
+  document.getElementById('comment-input').disabled = false;
+  document.getElementById('comment-btn').disabled = false;
+  document.getElementById('comment-btn').style.opacity = '1';
+}
+
+function shakeInput() {
+  const el = document.getElementById('username-input');
+  el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'wiggle 0.4s ease-in-out';
+  el.style.borderColor = '#FF3C78';
+  setTimeout(() => { el.style.borderColor = 'rgba(255,60,120,0.3)'; }, 800);
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#FF3C78; color:#fff; padding:10px 24px; border-radius:12px; font-size:14px; z-index:999; animation: bounceIn 0.4s;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ---- DATA SDK ----
+function updateVoteCounts(data) {
+  reactions.forEach(r => reactionCounts[r] = 0);
+  priceOptions.forEach(p => priceCounts[p] = 0);
+  data.forEach(d => {
+    if (d.type === 'reaction' && d.reaction) reactionCounts[d.reaction] = (reactionCounts[d.reaction]||0)+1;
+    if (d.type === 'price_vote' && d.price_vote) priceCounts[d.price_vote] = (priceCounts[d.price_vote]||0)+1;
+  });
+  document.querySelectorAll('.reaction-count').forEach(el => {
+    el.textContent = reactionCounts[el.dataset.r] || 0;
+  });
+  document.querySelectorAll('.price-count').forEach(el => {
+    el.textContent = priceCounts[el.dataset.p] || 0;
+  });
+  // Highlight max price
+  let maxP = ''; let maxC = 0;
+  priceOptions.forEach(p => { if ((priceCounts[p]||0) > maxC) { maxC = priceCounts[p]; maxP = p; }});
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    if (btn.dataset.price === maxP && maxC > 0) {
+      btn.style.borderColor = '#00E5A0'; btn.style.background = 'rgba(0,229,160,0.12)';
+    } else {
+      btn.style.borderColor = 'rgba(255,255,255,0.1)'; btn.style.background = 'rgba(255,255,255,0.06)';
+    }
+  });
+}
+
+function updateComments(data) {
+  const comments = data.filter(d => d.type === 'comment').sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const list = document.getElementById('comments-list');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const el = document.createElement('div');
+      el.dataset.id = c.__backendId;
+      el.className = 'anim-slide-up';
+      el.style.cssText = 'padding:12px 16px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:8px;';
+      el.innerHTML = `<span style="font-weight:700; color:#FF3C78; font-size:13px;">${escapeHtml(c.username)}</span> <span style="font-size:14px; color:#d4cfe0; margin-left:8px;">${escapeHtml(c.comment)}</span>`;
+      list.prepend(el);
+    }
+  });
+  existing.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div'); d.textContent = t||''; return d.innerHTML;
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allVotes = data;
+    updateVoteCounts(data);
+    updateComments(data);
+  }
+};
+
+// ---- SCROLL REVEAL ----
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+}
+
+// ---- ELEMENT SDK ----
+async function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const font = c.font_family || defaultConfig.font_family;
+  const base = c.font_size || defaultConfig.font_size;
+  const baseFallback = font + ', sans-serif';
+
+  document.getElementById('app-wrapper').style.background = c.background_color;
+  document.getElementById('app-wrapper').style.color = c.text_color;
+  document.getElementById('app-wrapper').style.fontFamily = baseFallback;
+
+  const heroTitle = document.getElementById('hero-title');
+  heroTitle.innerHTML = c.hero_title;
+  heroTitle.style.fontFamily = baseFallback;
+  heroTitle.style.fontSize = `clamp(${base*2.2}px, 8vw, ${base*5}px)`;
+
+  const heroSub = document.getElementById('hero-subtitle');
+  heroSub.textContent = c.hero_subtitle;
+  heroSub.style.fontSize = `clamp(${base}px, 2.5vw, ${base*1.375}px)`;
+
+  const ctas = document.querySelectorAll('.btn-glow');
+  ctas.forEach(el => { el.style.background = c.primary_action; el.style.fontSize = base*1.125+'px'; });
+  document.getElementById('hero-cta').textContent = c.cta_text;
+
+  document.getElementById('bottom-cta-title').textContent = c.bottom_cta_title;
+  document.getElementById('bottom-cta-title').style.fontFamily = baseFallback;
+  document.getElementById('vote-heading').textContent = c.vote_heading;
+
+  document.getElementById('sticky-nav').style.background = `${c.background_color}ee`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: applyConfig,
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color=v; window.elementSdk.setConfig({background_color:v}); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color=v; window.elementSdk.setConfig({surface_color:v}); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color=v; window.elementSdk.setConfig({text_color:v}); }},
+      { get: () => config.primary_action || defaultConfig.primary_action, set: v => { config.primary_action=v; window.elementSdk.setConfig({primary_action:v}); }},
+      { get: () => config.secondary_action || defaultConfig.secondary_action, set: v => { config.secondary_action=v; window.elementSdk.setConfig({secondary_action:v}); }}
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family=v; window.elementSdk.setConfig({font_family:v}); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size=v; window.elementSdk.setConfig({font_size:v}); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_text', config.cta_text || defaultConfig.cta_text],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+    ['vote_heading', config.vote_heading || defaultConfig.vote_heading]
+  ])
+});
+
+// ---- INIT ----
+(async function init() {
+  renderStamps();
+  renderChallenges();
+  renderReviews();
+  renderReactions();
+  renderPriceVotes();
+  initScrollReveal();
+
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+
+  lucide.createIcons();
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6720c76527c5',t:'MTc3NTU3OTI3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,496 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/83281ac5-77a3-4c2d-a4fe-51a43f7f5612 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonMenu Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Syne:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #16161f;
+  --text: #f0ece4;
+  --primary: #e6ff00;
+  --secondary: #ff3d8b;
+}
+
+@keyframes neonPulse {
+  0%, 100% { text-shadow: 0 0 10px var(--primary), 0 0 40px var(--primary), 0 0 80px var(--primary); }
+  50% { text-shadow: 0 0 5px var(--primary), 0 0 20px var(--primary), 0 0 40px var(--primary); }
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes badgeBounce {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50% { transform: scale(1.1) rotate(2deg); }
+}
+
+@keyframes scanLine {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes tileGlow {
+  0%, 100% { box-shadow: 0 0 0px transparent; }
+  50% { box-shadow: 0 0 30px rgba(230,255,0,0.15); }
+}
+
+.neon-text { animation: neonPulse 3s ease-in-out infinite; }
+.float-in { animation: floatUp 0.8s ease-out both; }
+.badge-bounce { animation: badgeBounce 2s ease-in-out infinite; }
+.tile-glow { animation: tileGlow 4s ease-in-out infinite; }
+
+.shimmer-btn {
+  background: linear-gradient(90deg, var(--primary) 0%, #fff 50%, var(--primary) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  color: #0a0a0f;
+}
+
+.nav-blur {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.scroll-cue::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--primary);
+  animation: scanLine 2.5s ease-in-out infinite;
+}
+
+.card-hover { transition: transform 0.3s, box-shadow 0.3s; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(230,255,0,0.12); }
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+.stagger-9 { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.5s; }
+.stagger-11 { animation-delay: 0.55s; }
+.stagger-12 { animation-delay: 0.6s; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Syne', 'sans-serif'],
+        body: ['Outfit', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:var(--bg);"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="nav-blur fixed top-0 left-0 w-full z-50" style="background:rgba(10,10,15,0.85); border-bottom:1px solid rgba(230,255,0,0.1);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" id="nav-brand" class="font-display font-800 text-lg tracking-tight" style="color:var(--primary);">NeonMenu Studio</a>
+     <div class="hidden md:flex gap-6 text-sm font-medium"><a href="#home" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">Home</a> <a href="#menu-styles" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">Menu Styles</a> <a href="#best-sellers" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">Best Sellers</a> <a href="#qr-mobile" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">QR + Mobile</a> <a href="#reviews" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">Reviews</a> <a href="#get-template" class="hover:opacity-100 opacity-70 transition" style="color:var(--text);">Get Template</a>
+     </div><button id="mobile-toggle" class="md:hidden p-2" style="color:var(--primary);" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-medium"><a href="#home" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a> <a href="#menu-styles" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Menu Styles</a> <a href="#best-sellers" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Best Sellers</a> <a href="#qr-mobile" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">QR + Mobile</a> <a href="#reviews" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Reviews</a> <a href="#get-template" style="color:var(--text);" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Get Template</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="w-full pt-32 pb-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at 50% 0%, var(--primary) 0%, transparent 60%);"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <p class="text-sm font-semibold tracking-widest uppercase mb-4 float-in" style="color:var(--secondary);">Digital Product · Plug &amp; Play · Resell Ready</p>
+     <h1 id="hero-title" class="font-display font-900 text-4xl sm:text-5xl md:text-7xl leading-tight mb-6 float-in stagger-2 neon-text" style="color:var(--primary);">Your menu should sell like a homepage.</h1>
+     <p class="text-lg md:text-xl opacity-70 mb-10 max-w-2xl mx-auto float-in stagger-3" style="color:var(--text);">12 animated menu styles + QR template + seasonal promo kits + pricing psychology guide. Your menu becomes the marketing.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center float-in stagger-4"><a href="#get-template" id="hero-cta-primary" class="shimmer-btn px-8 py-4 rounded-full font-bold text-base tracking-wide">Get the Template + License</a> <a href="#menu-styles" id="hero-cta-secondary" class="px-8 py-4 rounded-full font-bold text-base tracking-wide border-2 hover:scale-105 transition" style="border-color:var(--primary); color:var(--primary);">See Menu Styles</a>
+     </div>
+     <div class="mt-12 flex flex-wrap justify-center gap-8 text-sm opacity-60 float-in stagger-5"><span>☕ Raise average order value</span> <span>📱 QR conversion optimized</span> <span>📸 Designed for social sharing</span>
+     </div>
+    </div>
+   </section><!-- MENU STYLES -->
+   <section id="menu-styles" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <h2 class="font-display font-800 text-3xl md:text-5xl text-center mb-4" style="color:var(--text);">12 Animated Menu Styles</h2>
+     <p class="text-center opacity-60 mb-12 max-w-xl mx-auto">Every style is plug-and-play. Pick one, customize, deploy. Each optimized for mobile ordering and social sharing.</p>
+     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="menu-tiles"></div>
+    </div>
+   </section><!-- BEST SELLERS -->
+   <section id="best-sellers" class="w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="font-display font-800 text-3xl md:text-5xl text-center mb-4" style="color:var(--text);">Best Seller Highlights</h2>
+     <p class="text-center opacity-60 mb-12 max-w-xl mx-auto">Pricing psychology built in. Highlight best sellers, use bundle naming, and guide customers to higher-margin items.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="best-seller-cards"></div>
+    </div>
+   </section><!-- QR + MOBILE -->
+   <section id="qr-mobile" class="w-full py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="font-display font-800 text-3xl md:text-5xl text-center mb-4" style="color:var(--text);">QR + Mobile Optimized</h2>
+     <p class="text-center opacity-60 mb-12 max-w-xl mx-auto">Customers scan, browse, and order — all from their phone. Animated scroll cues guide them through the menu.</p>
+     <div class="flex flex-wrap justify-center gap-8" id="phone-mocks"></div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="font-display font-800 text-3xl md:text-5xl text-center mb-4" style="color:var(--text);">What Buyers Say</h2>
+     <p class="text-center opacity-60 mb-12">From pop-ups to flagship cafes.</p>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-grid"></div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="get-template" class="w-full py-20 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background:radial-gradient(ellipse at 50% 100%, var(--secondary) 0%, transparent 60%);"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <h2 id="bottom-cta-title" class="font-display font-900 text-3xl md:text-5xl mb-6 neon-text" style="color:var(--primary);">Make customers order faster and spend more.</h2>
+     <p class="opacity-60 mb-8 max-w-xl mx-auto">12 animated styles · QR template · 4 seasonal kits · Pricing guide · Full resell license</p><a href="#get-template" class="shimmer-btn inline-block px-10 py-4 rounded-full font-bold text-lg tracking-wide mb-16">Get the Template + License</a> <!-- Rate this menu style module -->
+     <div class="mt-8 p-6 md:p-10 rounded-2xl text-left" style="background:var(--surface); border:1px solid rgba(230,255,0,0.12);">
+      <h3 class="font-display font-700 text-2xl mb-2" style="color:var(--primary);">Rate This Menu Style</h3>
+      <p class="opacity-50 text-sm mb-6">Sign in, react, vote on price, and leave a comment. Embed this widget anywhere.</p><!-- Sign-in -->
+      <div id="signin-area" class="mb-6"><label class="block text-sm font-medium mb-2 opacity-70">Your display name</label>
+       <div class="flex gap-3"><input id="display-name-input" type="text" placeholder="e.g. CafeOwner42" class="flex-1 px-4 py-3 rounded-lg text-sm font-medium focus:outline-none" style="background:rgba(240,236,228,0.08); color:var(--text); border:1px solid rgba(230,255,0,0.15);"> <button id="signin-btn" onclick="handleSignIn()" class="px-6 py-3 rounded-lg font-bold text-sm transition hover:scale-105" style="background:var(--primary); color:var(--bg);">Sign In</button>
+       </div>
+      </div><!-- Signed-in UI (hidden initially) -->
+      <div id="signed-in-ui" class="hidden">
+       <div class="flex items-center gap-2 mb-6"><span class="text-sm opacity-50">Signed in as</span> <span id="signed-name" class="font-bold text-sm" style="color:var(--primary);"></span>
+       </div><!-- 5 Reactions -->
+       <div class="mb-6">
+        <p class="text-sm font-medium mb-3 opacity-70">React:</p>
+        <div class="flex flex-wrap gap-3" id="reactions-bar"></div>
+       </div><!-- 10 Price Options -->
+       <div class="mb-6">
+        <p class="text-sm font-medium mb-3 opacity-70">What would you pay?</p>
+        <div class="flex flex-wrap gap-2" id="price-votes-bar"></div>
+       </div><!-- Comment -->
+       <div class="mb-6"><label class="block text-sm font-medium mb-2 opacity-70">Leave a comment</label>
+        <div class="flex gap-3"><input id="comment-input" type="text" placeholder="This menu is fire..." class="flex-1 px-4 py-3 rounded-lg text-sm focus:outline-none" style="background:rgba(240,236,228,0.08); color:var(--text); border:1px solid rgba(230,255,0,0.15);"> <button id="comment-btn" onclick="handleComment()" class="px-6 py-3 rounded-lg font-bold text-sm transition hover:scale-105" style="background:var(--secondary); color:#fff;">Post</button>
+        </div>
+       </div><!-- Feed -->
+       <div id="activity-feed" class="mt-6 space-y-3 max-h-80 overflow-auto"></div>
+      </div><!-- Embed note -->
+      <div class="mt-6 pt-4" style="border-top:1px solid rgba(230,255,0,0.08);">
+       <p class="text-xs opacity-30 flex items-center gap-2"><i data-lucide="code-2" style="width:14px;height:14px;"></i> Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-4 text-center text-sm opacity-30" style="border-top:1px solid rgba(240,236,228,0.05);">
+    NeonMenu Studio · Your menu becomes the marketing.
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// ============ CONFIG & SDK INIT ============
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#16161f',
+  text_color: '#f0ece4',
+  primary_color: '#e6ff00',
+  secondary_color: '#ff3d8b',
+  font_family: 'Syne',
+  font_size: 16,
+  hero_title: 'Your menu should sell like a homepage.',
+  hero_cta_primary: 'Get the Template + License',
+  hero_cta_secondary: 'See Menu Styles',
+  bottom_cta_title: 'Make customers order faster and spend more.',
+  brand_name: 'NeonMenu Studio'
+};
+
+let currentUser = null;
+let allRecords = [];
+
+// ============ STATIC DATA ============
+const menuStyles = [
+  { name: 'Minimal Clean', emoji: '🤍', accent: '#e6ff00' },
+  { name: 'Neon Glow', emoji: '💚', accent: '#39ff14' },
+  { name: 'Pastel Dream', emoji: '🌸', accent: '#ffb6c1' },
+  { name: 'Dark Luxe', emoji: '🖤', accent: '#c9a96e' },
+  { name: 'Retro Diner', emoji: '🍔', accent: '#ff6347' },
+  { name: 'Tropical Pop', emoji: '🌴', accent: '#00e5ff' },
+  { name: 'Monochrome', emoji: '⬛', accent: '#bbb' },
+  { name: 'Gradient Wave', emoji: '🌊', accent: '#7b68ee' },
+  { name: 'Brutalist', emoji: '🔲', accent: '#ff3d8b' },
+  { name: 'Japanese Zen', emoji: '🍵', accent: '#8fbc8f' },
+  { name: 'Candy Shop', emoji: '🍭', accent: '#ff69b4' },
+  { name: 'Industrial', emoji: '⚙️', accent: '#d4a850' }
+];
+
+const bestSellers = [
+  { name: 'Oat Matcha Latte', price: '$6.50', tag: '🔥 #1 Seller', emoji: '🍵' },
+  { name: 'Iced Caramel Cloud', price: '$7.00', tag: '⭐ Staff Pick', emoji: '☁️' },
+  { name: 'Espresso Tonic', price: '$5.50', tag: '📈 Trending', emoji: '🥤' },
+  { name: 'Croissant Bundle', price: '$12.00', tag: '💰 Best Value', emoji: '🥐' },
+  { name: 'Lavender Cold Brew', price: '$6.00', tag: '🆕 New', emoji: '💜' },
+  { name: 'Double Shot Affogato', price: '$8.50', tag: '👑 Premium', emoji: '🍨' }
+];
+
+const reactions = ['🔥', '😍', '💰', '🎯', '🤩'];
+const priceOptions = ['$19', '$29', '$39', '$49', '$59', '$69', '$79', '$89', '$99', '$149'];
+
+const reviews = [
+  { name: 'Mia K.', role: 'Pop-up Owner', text: 'Our average order went up 23% after switching to this menu. The neon style is pure magic.', stars: 5 },
+  { name: 'Jake T.', role: 'Cafe Consultant', text: 'I resell this to my clients at 5x. They love the seasonal kits — total no-brainer.', stars: 5 },
+  { name: 'Luna R.', role: 'Food Truck', text: 'QR scan-to-order changed everything. Customers browse the full menu before they even reach the window.', stars: 5 }
+];
+
+// ============ BUILD STATIC SECTIONS ============
+function buildMenuTiles() {
+  const container = document.getElementById('menu-tiles');
+  container.innerHTML = menuStyles.map((s, i) => `
+    <div class="card-hover tile-glow float-in stagger-${i+1} rounded-xl p-5 flex flex-col items-center justify-center text-center cursor-pointer" style="background:var(--surface); border:1px solid rgba(230,255,0,0.08); min-height:160px;">
+      <span class="text-4xl mb-3">${s.emoji}</span>
+      <span class="font-display font-700 text-sm" style="color:${s.accent};">${s.name}</span>
+      <span class="text-xs opacity-40 mt-1 flex items-center gap-1"><span style="color:var(--primary);">＋</span> Tap to preview</span>
+    </div>
+  `).join('');
+}
+
+function buildBestSellers() {
+  const container = document.getElementById('best-seller-cards');
+  container.innerHTML = bestSellers.map((item, i) => `
+    <div class="card-hover float-in stagger-${i+1} rounded-xl p-6 relative overflow-hidden" style="background:var(--surface); border:1px solid rgba(230,255,0,0.08);">
+      <div class="badge-bounce absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold" style="background:var(--secondary); color:#fff;">${item.tag}</div>
+      <span class="text-5xl">${item.emoji}</span>
+      <h3 class="font-display font-700 text-lg mt-4 mb-1" style="color:var(--text);">${item.name}</h3>
+      <p class="font-bold text-xl" style="color:var(--primary);">${item.price}</p>
+      <button class="mt-4 w-full py-2 rounded-lg text-sm font-bold transition hover:scale-105" style="background:rgba(230,255,0,0.1); color:var(--primary); border:1px solid rgba(230,255,0,0.2);">
+        <span style="color:var(--primary);">＋</span> Tap to Add
+      </button>
+    </div>
+  `).join('');
+}
+
+function buildPhoneMocks() {
+  const container = document.getElementById('phone-mocks');
+  const screens = [
+    { title: 'Scan & Browse', desc: 'QR code opens the full menu instantly', icon: 'qr-code' },
+    { title: 'Scroll & Choose', desc: 'Animated cards with pricing psychology', icon: 'smartphone' },
+    { title: 'Order & Share', desc: 'One-tap ordering + social share prompts', icon: 'share-2' }
+  ];
+  container.innerHTML = screens.map((s, i) => `
+    <div class="float-in stagger-${i+1} flex flex-col items-center" style="width:200px;">
+      <div class="scroll-cue relative rounded-3xl overflow-hidden flex flex-col items-center justify-center" style="width:180px; height:340px; background:var(--surface); border:3px solid rgba(230,255,0,0.15);">
+        <i data-lucide="${s.icon}" style="width:48px;height:48px;color:var(--primary);margin-bottom:12px;"></i>
+        <span class="font-display font-700 text-sm text-center px-4" style="color:var(--text);">${s.title}</span>
+        <span class="text-xs opacity-50 text-center px-4 mt-2">${s.desc}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildReviews() {
+  const container = document.getElementById('reviews-grid');
+  container.innerHTML = reviews.map((r, i) => `
+    <div class="float-in stagger-${i+1} rounded-xl p-6" style="background:rgba(230,255,0,0.03); border:1px solid rgba(230,255,0,0.08);">
+      <div class="mb-3">${'⭐'.repeat(r.stars)}</div>
+      <p class="text-sm mb-4 opacity-80 leading-relaxed">"${r.text}"</p>
+      <p class="font-bold text-sm" style="color:var(--primary);">${r.name}</p>
+      <p class="text-xs opacity-40">${r.role}</p>
+    </div>
+  `).join('');
+}
+
+// ============ VOTE/COMMENT MODULE ============
+function handleSignIn() {
+  const nameInput = document.getElementById('display-name-input');
+  const name = nameInput.value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('signed-name').textContent = name;
+  document.getElementById('signin-area').classList.add('hidden');
+  document.getElementById('signed-in-ui').classList.remove('hidden');
+  buildReactionsBar();
+  buildPriceBar();
+}
+
+function buildReactionsBar() {
+  const bar = document.getElementById('reactions-bar');
+  bar.innerHTML = reactions.map(r => {
+    const count = allRecords.filter(rec => rec.type === 'reaction' && rec.reaction === r).length;
+    const userReacted = allRecords.some(rec => rec.type === 'reaction' && rec.reaction === r && rec.display_name === currentUser);
+    return `<button onclick="handleReaction('${r}')" class="px-4 py-2 rounded-lg text-sm font-medium transition hover:scale-110" style="background:${userReacted ? 'rgba(230,255,0,0.2)' : 'rgba(240,236,228,0.06)'}; border:1px solid ${userReacted ? 'var(--primary)' : 'rgba(240,236,228,0.08)'};">
+      ${r} <span class="ml-1 opacity-60">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function buildPriceBar() {
+  const bar = document.getElementById('price-votes-bar');
+  bar.innerHTML = priceOptions.map(p => {
+    const count = allRecords.filter(rec => rec.type === 'price_vote' && rec.price_vote === p).length;
+    const userVoted = allRecords.some(rec => rec.type === 'price_vote' && rec.price_vote === p && rec.display_name === currentUser);
+    return `<button onclick="handlePriceVote('${p}')" class="px-3 py-2 rounded-lg text-xs font-bold transition hover:scale-105" style="background:${userVoted ? 'rgba(255,61,139,0.2)' : 'rgba(240,236,228,0.06)'}; color:${userVoted ? 'var(--secondary)' : 'var(--text)'}; border:1px solid ${userVoted ? 'var(--secondary)' : 'rgba(240,236,228,0.08)'};">
+      ${p} <span class="opacity-50">(${count})</span>
+    </button>`;
+  }).join('');
+}
+
+function buildActivityFeed() {
+  const feed = document.getElementById('activity-feed');
+  const sorted = [...allRecords].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  feed.innerHTML = sorted.slice(0, 30).map(rec => {
+    if (rec.type === 'reaction') return `<div class="flex items-center gap-2 text-sm opacity-70"><span class="font-bold" style="color:var(--primary);">${rec.display_name}</span> reacted ${rec.reaction}</div>`;
+    if (rec.type === 'price_vote') return `<div class="flex items-center gap-2 text-sm opacity-70"><span class="font-bold" style="color:var(--primary);">${rec.display_name}</span> voted <span style="color:var(--secondary);">${rec.price_vote}</span></div>`;
+    if (rec.type === 'comment') return `<div class="rounded-lg p-3" style="background:rgba(240,236,228,0.04);"><span class="font-bold text-sm" style="color:var(--primary);">${rec.display_name}</span><p class="text-sm opacity-80 mt-1">${rec.comment}</p></div>`;
+    return '';
+  }).join('');
+}
+
+async function handleReaction(emoji) {
+  if (!currentUser) return;
+  const existing = allRecords.find(r => r.type === 'reaction' && r.reaction === emoji && r.display_name === currentUser);
+  if (existing) {
+    await window.dataSdk.delete(existing);
+  } else {
+    if (allRecords.length >= 999) { showLimitMsg(); return; }
+    await window.dataSdk.create({ type: 'reaction', reaction: emoji, price_vote: '', comment: '', display_name: currentUser, created_at: new Date().toISOString() });
+  }
+}
+
+async function handlePriceVote(price) {
+  if (!currentUser) return;
+  const existing = allRecords.find(r => r.type === 'price_vote' && r.display_name === currentUser);
+  if (existing) {
+    if (existing.price_vote === price) {
+      await window.dataSdk.delete(existing);
+    } else {
+      await window.dataSdk.update({ ...existing, price_vote: price });
+    }
+  } else {
+    if (allRecords.length >= 999) { showLimitMsg(); return; }
+    await window.dataSdk.create({ type: 'price_vote', reaction: '', price_vote: price, comment: '', display_name: currentUser, created_at: new Date().toISOString() });
+  }
+}
+
+async function handleComment() {
+  if (!currentUser) return;
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allRecords.length >= 999) { showLimitMsg(); return; }
+  const btn = document.getElementById('comment-btn');
+  btn.disabled = true; btn.textContent = '...';
+  const result = await window.dataSdk.create({ type: 'comment', reaction: '', price_vote: '', comment: text, display_name: currentUser, created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (result.isOk) input.value = '';
+}
+
+function showLimitMsg() {
+  const feed = document.getElementById('activity-feed');
+  const msg = document.createElement('div');
+  msg.className = 'text-sm font-bold p-3 rounded-lg mb-3';
+  msg.style.cssText = 'background:rgba(255,61,139,0.15);color:var(--secondary);';
+  msg.textContent = 'Limit reached (999 entries). Please delete some to continue.';
+  feed.prepend(msg);
+  setTimeout(() => msg.remove(), 4000);
+}
+
+// ============ DATA SDK ============
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    if (currentUser) {
+      buildReactionsBar();
+      buildPriceBar();
+      buildActivityFeed();
+    }
+  }
+};
+
+// ============ ELEMENT SDK ============
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_color || defaultConfig.primary_color;
+  const secondary = config.secondary_color || defaultConfig.secondary_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--text', text);
+  document.documentElement.style.setProperty('--primary', primary);
+  document.documentElement.style.setProperty('--secondary', secondary);
+
+  document.body.style.background = bg;
+  document.body.style.color = text;
+  document.getElementById('app-wrapper').style.background = bg;
+
+  // Font
+  const fontStack = `${font}, Outfit, sans-serif`;
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = fontStack);
+  document.body.style.fontFamily = `Outfit, ${font}, sans-serif`;
+
+  // Font size
+  document.body.style.fontSize = `${size}px`;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${size * 3}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${size * 2.2}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${size * 1.4}px`);
+
+  // Text content
+  document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  document.getElementById('hero-cta-primary').textContent = config.hero_cta_primary || defaultConfig.hero_cta_primary;
+  document.getElementById('hero-cta-secondary').textContent = config.hero_cta_secondary || defaultConfig.hero_cta_secondary;
+  document.getElementById('bottom-cta-title').textContent = config.bottom_cta_title || defaultConfig.bottom_cta_title;
+  document.getElementById('nav-brand').textContent = config.brand_name || defaultConfig.brand_name;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_cta_primary', config.hero_cta_primary || defaultConfig.hero_cta_primary],
+    ['hero_cta_secondary', config.hero_cta_secondary || defaultConfig.hero_cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+    ['brand_name', config.brand_name || defaultConfig.brand_name]
+  ])
+});
+
+// ============ INIT ============
+(async () => {
+  buildMenuTiles();
+  buildBestSellers();
+  buildPhoneMocks();
+  buildReviews();
+  lucide.createIcons();
+
+  const initResult = await window.dataSdk.init(dataHandler);
+  if (!initResult.isOk) console.error('Data SDK init failed');
+})();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2c6727d427c5',t:'MTc3NTU3Njg3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

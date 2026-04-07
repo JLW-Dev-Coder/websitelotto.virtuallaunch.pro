@@ -1,1 +1,520 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/ec05cad8-6a60-4e59-a697-89f4185bd359 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpectrumFlow Studio</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html,body{margin:0;padding:0;height:100%;overflow-x:hidden}
+*{box-sizing:border-box}
+
+@keyframes gradientShift{
+0%{background-position:0% 50%}
+25%{background-position:50% 100%}
+50%{background-position:100% 50%}
+75%{background-position:50% 0%}
+100%{background-position:0% 50%}
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes pulse-glow{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes wave-move{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hue-rotate-bg{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@keyframes orb-float-1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(80px,-60px) scale(1.1)}66%{transform:translate(-40px,40px) scale(.9)}}
+@keyframes orb-float-2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-70px,50px) scale(.95)}66%{transform:translate(60px,-30px) scale(1.05)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+
+.gradient-bg{
+background:linear-gradient(135deg,#ff0040,#ff8c00,#ffef00,#00e676,#00b0ff,#7c4dff,#e040fb,#ff0040);
+background-size:800% 800%;
+animation:gradientShift 20s ease infinite;
+}
+.glass{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.12);
+}
+.glass-dark{
+background:rgba(0,0,0,.25);
+backdrop-filter:blur(24px);
+-webkit-backdrop-filter:blur(24px);
+border:1px solid rgba(255,255,255,.08);
+}
+.anim-fadein{animation:fadeInUp .8s ease both}
+.anim-d1{animation-delay:.1s}.anim-d2{animation-delay:.2s}.anim-d3{animation-delay:.3s}.anim-d4{animation-delay:.4s}
+
+.pricing-card{
+position:relative;
+transition:transform .4s ease,box-shadow .4s ease;
+}
+.pricing-card::before{
+content:'';position:absolute;inset:-2px;border-radius:inherit;
+background:linear-gradient(135deg,#ff0040,#ff8c00,#ffef00,#00e676,#00b0ff,#7c4dff,#e040fb);
+background-size:400% 400%;
+animation:gradientShift 6s ease infinite;
+z-index:-1;opacity:.5;transition:opacity .4s ease;
+}
+.pricing-card:hover::before{opacity:1}
+.pricing-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(124,77,255,.3)}
+
+.nav-link{position:relative;transition:color .3s ease}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;
+background:linear-gradient(90deg,#ff0040,#7c4dff);transition:width .3s ease}
+.nav-link:hover::after{width:100%}
+
+.ripple-btn{position:relative;overflow:hidden;transition:all .3s ease}
+.ripple-btn:hover{box-shadow:0 0 30px rgba(124,77,255,.4),0 0 60px rgba(255,0,64,.2)}
+
+.shimmer-text{
+background:linear-gradient(90deg,rgba(255,255,255,.6),rgba(255,255,255,1),rgba(255,255,255,.6));
+background-size:200% auto;
+-webkit-background-clip:text;
+background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:shimmer 3s linear infinite;
+}
+
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.section-reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.section-reveal.visible{opacity:1;transform:translateY(0)}
+
+.wave-container{overflow:hidden;position:relative;height:120px}
+.wave-path{animation:wave-move 8s linear infinite}
+
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease}
+.faq-answer.open{max-height:400px;padding-top:12px}
+
+.vote-btn{transition:all .3s ease}
+.vote-btn:hover{transform:scale(1.15)}
+.vote-btn.active{transform:scale(1.2)}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="font-family:'Syne',sans-serif">
+  <div id="app" class="w-full h-full overflow-auto gradient-bg" style="position:relative">
+   <!-- Floating Orbs -->
+   <div class="orb" style="width:500px;height:500px;background:rgba(255,0,64,.2);top:5%;left:-10%;animation:orb-float-1 18s ease-in-out infinite"></div>
+   <div class="orb" style="width:400px;height:400px;background:rgba(0,176,255,.2);top:30%;right:-8%;animation:orb-float-2 22s ease-in-out infinite"></div>
+   <div class="orb" style="width:350px;height:350px;background:rgba(124,77,255,.2);bottom:20%;left:20%;animation:orb-float-1 15s ease-in-out infinite"></div>
+   <div class="orb" style="width:300px;height:300px;background:rgba(0,230,118,.15);top:60%;right:15%;animation:orb-float-2 20s ease-in-out infinite"></div><!-- Sticky Nav -->
+   <nav id="navbar" class="glass sticky top-0 z-50 w-full" style="transition:all .3s ease">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
+     <a href="#home" class="text-white font-extrabold text-xl tracking-tight" style="font-family:'Space Mono',monospace"> <span style="background:linear-gradient(90deg,#ff0040,#ff8c00,#00e676,#00b0ff,#7c4dff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Spectrum</span><span class="text-white opacity-80">Flow</span> </a> <button id="mobile-toggle" class="sm:hidden text-white"><i data-lucide="menu" style="width:24px;height:24px"></i></button>
+     <div id="nav-links" class="hidden sm:flex items-center gap-6 text-sm text-white/70">
+      <a href="#home" class="nav-link hover:text-white">Home</a> <a href="#experience" class="nav-link hover:text-white">Experience</a> <a href="#layers" class="nav-link hover:text-white">Layers</a> <a href="#visuals" class="nav-link hover:text-white">Visuals</a> <a href="#pricing" class="nav-link hover:text-white">Pricing</a> <a href="#faq" class="nav-link hover:text-white">FAQ</a> <a href="#explore" class="nav-link hover:text-white">Explore</a>
+     </div>
+    </div>
+    <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4 flex flex-col gap-3 text-sm text-white/70">
+     <a href="#home" class="nav-link hover:text-white py-1">Home</a> <a href="#experience" class="nav-link hover:text-white py-1">Experience</a> <a href="#layers" class="nav-link hover:text-white py-1">Layers</a> <a href="#visuals" class="nav-link hover:text-white py-1">Visuals</a> <a href="#pricing" class="nav-link hover:text-white py-1">Pricing</a> <a href="#faq" class="nav-link hover:text-white py-1">FAQ</a> <a href="#explore" class="nav-link hover:text-white py-1">Explore</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="min-height:90%">
+    <div class="text-center px-4 sm:px-8 max-w-4xl mx-auto relative z-10">
+     <p class="text-white/50 text-sm tracking-[.3em] uppercase mb-6 anim-fadein anim-d1" style="font-family:'Space Mono',monospace">SpectrumFlow Studio</p>
+     <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6 anim-fadein anim-d2 shimmer-text">Color is not static. It flows.</h1>
+     <p id="hero-subtitle" class="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 anim-fadein anim-d3" style="line-height:1.7">An immersive visual experience built on light and movement.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center anim-fadein anim-d4">
+      <a href="#experience" class="ripple-btn glass px-8 py-4 rounded-full text-white font-semibold text-sm tracking-wide hover:bg-white/15">Explore Experience</a> <a href="#visuals" class="ripple-btn px-8 py-4 rounded-full text-white/80 font-semibold text-sm tracking-wide border border-white/20 hover:border-white/40 hover:text-white">View Visuals</a>
+     </div><!-- SVG Wave Arc -->
+     <svg class="mx-auto mt-16 anim-fadein" width="300" height="60" viewbox="0 0 300 60" fill="none" style="animation-delay:.6s;opacity:.3">
+      <path d="M0 30 Q75 0 150 30 Q225 60 300 30" stroke="url(#arc-grad)" stroke-width="2" fill="none" /> <defs>
+       <lineargradient id="arc-grad" x1="0" y1="0" x2="300" y2="0">
+        <stop offset="0%" stop-color="#ff0040" />
+        <stop offset="50%" stop-color="#00b0ff" />
+        <stop offset="100%" stop-color="#7c4dff" />
+       </lineargradient>
+      </defs>
+     </svg>
+    </div>
+   </section><!-- Wave Divider -->
+   <div class="wave-container" style="margin-top:-40px">
+    <svg class="wave-path" style="width:200%;height:120px" viewbox="0 0 2400 120" preserveaspectratio="none">
+     <path d="M0 60 Q300 0 600 60 Q900 120 1200 60 Q1500 0 1800 60 Q2100 120 2400 60" stroke="rgba(255,255,255,.1)" stroke-width="1.5" fill="none" /> <path d="M0 80 Q300 30 600 80 Q900 130 1200 80 Q1500 30 1800 80 Q2100 130 2400 80" stroke="rgba(255,255,255,.06)" stroke-width="1" fill="none" />
+    </svg>
+   </div><!-- Experience Section -->
+   <section id="experience" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-white/40 text-xs tracking-[.3em] uppercase mb-3" style="font-family:'Space Mono',monospace">01 / Experience</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-6">Full-spectrum immersion</h2>
+     <p class="text-white/50 max-w-xl text-base mb-12" style="line-height:1.8">Every color tells a story. Our gradient transitions move through the entire visible spectrum, creating environments that breathe and pulse with energy.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6 sm:p-8 group hover:bg-white/10 transition-all duration-500">
+       <div class="w-full h-40 rounded-xl mb-6 relative overflow-hidden" style="background:linear-gradient(135deg,#ff0040,#ff8c00,#ffef00);animation:hue-rotate-bg 10s linear infinite">
+        <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="sun" class="text-white/80" style="width:48px;height:48px"></i>
+        </div>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">Warm Spectrum</h3>
+       <p class="text-white/40 text-sm" style="line-height:1.6">Reds, oranges, and golds that evoke passion and energy in every pixel.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 sm:p-8 group hover:bg-white/10 transition-all duration-500">
+       <div class="w-full h-40 rounded-xl mb-6 relative overflow-hidden" style="background:linear-gradient(135deg,#00e676,#00b0ff,#7c4dff);animation:hue-rotate-bg 12s linear infinite">
+        <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="droplets" class="text-white/80" style="width:48px;height:48px"></i>
+        </div>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">Cool Spectrum</h3>
+       <p class="text-white/40 text-sm" style="line-height:1.6">Blues, teals, and violets that create depth and tranquility.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 sm:p-8 group hover:bg-white/10 transition-all duration-500">
+       <div class="w-full h-40 rounded-xl mb-6 relative overflow-hidden" style="background:linear-gradient(135deg,#e040fb,#ff0040,#ff8c00);animation:hue-rotate-bg 8s linear infinite">
+        <div class="absolute inset-0 flex items-center justify-center"><i data-lucide="sparkles" class="text-white/80" style="width:48px;height:48px"></i>
+        </div>
+       </div>
+       <h3 class="text-white font-bold text-lg mb-2">Vivid Spectrum</h3>
+       <p class="text-white/40 text-sm" style="line-height:1.6">Magentas and fuschias that push boundaries and demand attention.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Layers Section -->
+   <section id="layers" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-white/40 text-xs tracking-[.3em] uppercase mb-3" style="font-family:'Space Mono',monospace">02 / Layers</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-6">Overlay effects &amp; compositions</h2>
+     <p class="text-white/50 max-w-xl text-base mb-12" style="line-height:1.8">Stack, blend, and layer color fields to create complex visual narratives. Each layer interacts with light to produce unique results.</p>
+     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="aspect-square rounded-2xl relative overflow-hidden group cursor-pointer" style="background:linear-gradient(180deg,rgba(255,0,64,.6),rgba(124,77,255,.6))">
+       <div class="glass-dark absolute inset-4 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+        <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Multiply</span>
+       </div>
+      </div>
+      <div class="aspect-square rounded-2xl relative overflow-hidden group cursor-pointer" style="background:linear-gradient(180deg,rgba(0,230,118,.6),rgba(0,176,255,.6))">
+       <div class="glass-dark absolute inset-4 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+        <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Screen</span>
+       </div>
+      </div>
+      <div class="aspect-square rounded-2xl relative overflow-hidden group cursor-pointer" style="background:linear-gradient(180deg,rgba(255,140,0,.6),rgba(255,239,0,.6))">
+       <div class="glass-dark absolute inset-4 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+        <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Overlay</span>
+       </div>
+      </div>
+      <div class="aspect-square rounded-2xl relative overflow-hidden group cursor-pointer" style="background:linear-gradient(180deg,rgba(224,64,251,.6),rgba(255,0,64,.6))">
+       <div class="glass-dark absolute inset-4 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+        <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Soft Light</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Visuals Section -->
+   <section id="visuals" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+     <p class="text-white/40 text-xs tracking-[.3em] uppercase mb-3" style="font-family:'Space Mono',monospace">03 / Visuals</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-6">Applications &amp; scenes</h2>
+     <p class="text-white/50 max-w-xl text-base mb-12" style="line-height:1.8">See how SpectrumFlow assets transform digital spaces — from brand identities to immersive web experiences.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="glass rounded-2xl overflow-hidden group">
+       <div class="h-52 relative" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460,#533483);animation:hue-rotate-bg 15s linear infinite">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <svg width="120" height="80" viewbox="0 0 120 80" fill="none"><rect x="10" y="10" width="100" height="60" rx="8" stroke="rgba(255,255,255,.3)" stroke-width="1.5" fill="none" /><circle cx="40" cy="35" r="10" fill="rgba(255,0,64,.4)" /><circle cx="70" cy="45" r="14" fill="rgba(0,176,255,.3)" /><path d="M20 55 L50 30 L80 50 L110 25" stroke="rgba(0,230,118,.5)" stroke-width="1.5" fill="none" />
+         </svg>
+        </div>
+       </div>
+       <div class="p-6">
+        <h3 class="text-white font-bold mb-1">Brand Identity Systems</h3>
+        <p class="text-white/40 text-sm">Dynamic gradients for logos, cards, and digital touchpoints.</p>
+       </div>
+      </div>
+      <div class="glass rounded-2xl overflow-hidden group">
+       <div class="h-52 relative" style="background:linear-gradient(135deg,#0d0d0d,#1a0a2e,#2d1b69,#11998e);animation:hue-rotate-bg 18s linear infinite">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <svg width="120" height="80" viewbox="0 0 120 80" fill="none"><rect x="5" y="5" width="110" height="70" rx="6" stroke="rgba(255,255,255,.2)" stroke-width="1" /><rect x="15" y="15" width="40" height="8" rx="4" fill="rgba(255,140,0,.4)" /><rect x="15" y="30" width="90" height="4" rx="2" fill="rgba(255,255,255,.1)" /><rect x="15" y="40" width="70" height="4" rx="2" fill="rgba(255,255,255,.08)" /><rect x="15" y="55" width="30" height="12" rx="6" fill="rgba(124,77,255,.5)" />
+         </svg>
+        </div>
+       </div>
+       <div class="p-6">
+        <h3 class="text-white font-bold mb-1">Immersive Web Experiences</h3>
+        <p class="text-white/40 text-sm">Full-page gradient flows and interactive color environments.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-5xl mx-auto text-center">
+     <p class="text-white/40 text-xs tracking-[.3em] uppercase mb-3" style="font-family:'Space Mono',monospace">04 / Pricing</p>
+     <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-4">Choose your spectrum</h2>
+     <p class="text-white/50 max-w-lg mx-auto text-base mb-14" style="line-height:1.8">Every tier unlocks a deeper layer of the color experience.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <!-- Basic -->
+      <div class="pricing-card glass rounded-2xl p-8 text-left">
+       <p class="text-white/40 text-xs tracking-[.2em] uppercase mb-4" style="font-family:'Space Mono',monospace">Basic</p>
+       <p id="price-basic" class="text-4xl font-extrabold text-white mb-1">$29</p>
+       <p class="text-white/30 text-sm mb-6">One-time</p>
+       <ul class="space-y-3 mb-8 text-sm text-white/50">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>50 gradient presets</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>PNG + SVG export</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Commercial license</li>
+       </ul><button class="ripple-btn w-full glass rounded-full py-3 text-white text-sm font-semibold hover:bg-white/15">Get Basic</button>
+      </div><!-- Studio -->
+      <div class="pricing-card glass rounded-2xl p-8 text-left relative" style="transform:scale(1.03)">
+       <div class="absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-bold" style="background:linear-gradient(90deg,#ff0040,#7c4dff);color:white">
+        Popular
+       </div>
+       <p class="text-white/40 text-xs tracking-[.2em] uppercase mb-4" style="font-family:'Space Mono',monospace">Studio</p>
+       <p id="price-studio" class="text-4xl font-extrabold text-white mb-1">$79</p>
+       <p class="text-white/30 text-sm mb-6">One-time</p>
+       <ul class="space-y-3 mb-8 text-sm text-white/50">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>200 gradient presets</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Animated overlays</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Video-ready exports</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Figma plugin access</li>
+       </ul><button class="ripple-btn w-full rounded-full py-3 text-white text-sm font-bold" style="background:linear-gradient(90deg,#ff0040,#7c4dff)">Get Studio</button>
+      </div><!-- Premium -->
+      <div class="pricing-card glass rounded-2xl p-8 text-left">
+       <p class="text-white/40 text-xs tracking-[.2em] uppercase mb-4" style="font-family:'Space Mono',monospace">Premium</p>
+       <p id="price-premium" class="text-4xl font-extrabold text-white mb-1">$149</p>
+       <p class="text-white/30 text-sm mb-6">One-time</p>
+       <ul class="space-y-3 mb-8 text-sm text-white/50">
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Full visual system</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Composition templates</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Lifetime updates</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#00e676"></i>Priority support</li>
+       </ul><button class="ripple-btn w-full glass rounded-full py-3 text-white text-sm font-semibold hover:bg-white/15">Get Premium</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-3xl mx-auto">
+     <p class="text-white/40 text-xs tracking-[.3em] uppercase mb-3" style="font-family:'Space Mono',monospace">05 / FAQ</p>
+     <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-10">Common questions</h2>
+     <div class="space-y-3" id="faq-container">
+      <div class="faq-item glass rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full text-left px-6 py-5 flex items-center justify-between text-white font-semibold text-sm"> <span>What file formats are included?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s ease" class="text-white/40"></i> </button>
+       <div class="faq-answer px-6 pb-5 text-white/40 text-sm" style="line-height:1.7">
+        All packs include PNG, SVG, and CSS gradient code. Studio and Premium also include animated MP4/WebM overlays and After Effects project files.
+       </div>
+      </div>
+      <div class="faq-item glass rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full text-left px-6 py-5 flex items-center justify-between text-white font-semibold text-sm"> <span>Can I use these commercially?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s ease" class="text-white/40"></i> </button>
+       <div class="faq-answer px-6 pb-5 text-white/40 text-sm" style="line-height:1.7">
+        Yes. All tiers include a full commercial license. Use in client projects, products, and published works.
+       </div>
+      </div>
+      <div class="faq-item glass rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full text-left px-6 py-5 flex items-center justify-between text-white font-semibold text-sm"> <span>Do I get updates?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s ease" class="text-white/40"></i> </button>
+       <div class="faq-answer px-6 pb-5 text-white/40 text-sm" style="line-height:1.7">
+        Basic gets 6 months of updates. Studio gets 1 year. Premium gets lifetime updates as new gradient packs and overlays are released.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment -->
+   <section id="explore" class="section-reveal relative w-full py-20 sm:py-32 px-4 sm:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 id="bottom-cta-text" class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 shimmer-text">Step into the spectrum.</h2>
+     <p class="text-white/50 max-w-lg mx-auto text-base mb-10" style="line-height:1.8">Color that moves. Light that lives. Start your immersive journey today.</p><a href="#pricing" class="ripple-btn inline-block px-10 py-4 rounded-full text-white font-bold text-sm" style="background:linear-gradient(90deg,#ff0040,#ff8c00,#00e676,#00b0ff,#7c4dff);background-size:300% 100%;animation:gradientShift 6s ease infinite">Explore Pricing</a> <!-- Vote + Comment Module -->
+     <div class="mt-20 glass rounded-2xl p-6 sm:p-10 text-left max-w-2xl mx-auto">
+      <h3 class="text-white font-bold text-xl mb-2">Rate this experience</h3>
+      <p class="text-white/40 text-sm mb-6">Pick a reaction and tell us what you think.</p><!-- Reactions -->
+      <div class="flex flex-wrap gap-3 mb-6" id="reactions-container">
+       <button class="vote-btn glass rounded-full px-4 py-2 text-sm flex items-center gap-2" data-emoji="🔥" onclick="toggleReaction(this)"><span>🔥</span><span class="vote-count">0</span></button> <button class="vote-btn glass rounded-full px-4 py-2 text-sm flex items-center gap-2" data-emoji="🌈" onclick="toggleReaction(this)"><span>🌈</span><span class="vote-count">0</span></button> <button class="vote-btn glass rounded-full px-4 py-2 text-sm flex items-center gap-2" data-emoji="✨" onclick="toggleReaction(this)"><span>✨</span><span class="vote-count">0</span></button> <button class="vote-btn glass rounded-full px-4 py-2 text-sm flex items-center gap-2" data-emoji="💎" onclick="toggleReaction(this)"><span>💎</span><span class="vote-count">0</span></button> <button class="vote-btn glass rounded-full px-4 py-2 text-sm flex items-center gap-2" data-emoji="👏" onclick="toggleReaction(this)"><span>👏</span><span class="vote-count">0</span></button>
+      </div><!-- Price Vote -->
+      <p class="text-white/60 text-sm font-semibold mb-3">What would you pay for the full system?</p>
+      <div class="flex flex-wrap gap-2 mb-8" id="price-vote-container">
+      </div>
+      <div id="price-vote-result" class="text-white/40 text-xs mb-8 hidden">
+       You voted: <span id="price-vote-value" class="text-white font-semibold"></span>
+      </div><!-- Comments -->
+      <div class="border-t border-white/10 pt-6">
+       <p class="text-white font-semibold text-sm mb-4">Comments</p>
+       <form id="comment-form" class="flex gap-3 mb-6">
+        <input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 glass rounded-full px-5 py-3 text-white text-sm placeholder:text-white/30 outline-none focus:ring-1 focus:ring-white/20" style="background:rgba(255,255,255,.05)"> <button type="submit" class="ripple-btn glass rounded-full px-5 py-3 text-white text-sm font-semibold hover:bg-white/15"><i data-lucide="send" style="width:16px;height:16px"></i></button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-64 overflow-auto"></div>
+      </div>
+      <p class="text-white/20 text-xs mt-6 text-center" style="font-family:'Space Mono',monospace">Embed Widget Here</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-10 px-4 text-center border-t border-white/5">
+    <p class="text-white/20 text-xs" style="font-family:'Space Mono',monospace">© 2025 SpectrumFlow Studio · Color that moves. Light that lives.</p>
+   </footer>
+  </div>
+  <script>
+// Config & SDK
+const defaultConfig = {
+  hero_title: "Color is not static. It flows.",
+  hero_subtitle: "An immersive visual experience built on light and movement.",
+  basic_price: "$29",
+  studio_price: "$79",
+  premium_price: "$149",
+  bottom_cta_text: "Step into the spectrum.",
+  background_color: "#1a0a2e",
+  surface_color: "#ffffff14",
+  text_color: "#ffffff",
+  primary_action_color: "#7c4dff",
+  secondary_action_color: "#ff0040",
+  font_family: "Syne",
+  font_size: 16
+};
+
+function applyConfig(c) {
+  const el = (id) => document.getElementById(id);
+  el('hero-title').textContent = c.hero_title || defaultConfig.hero_title;
+  el('hero-subtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  el('price-basic').textContent = c.basic_price || defaultConfig.basic_price;
+  el('price-studio').textContent = c.studio_price || defaultConfig.studio_price;
+  el('price-premium').textContent = c.premium_price || defaultConfig.premium_price;
+  el('bottom-cta-text').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const font = c.font_family || defaultConfig.font_family;
+  const size = c.font_size || defaultConfig.font_size;
+  document.body.style.fontFamily = `${font}, Syne, sans-serif`;
+  el('hero-title').style.fontSize = `${size * 3.5}px`;
+  el('hero-subtitle').style.fontSize = `${size * 1.2}px`;
+
+  // Colors
+  const bg = c.background_color || defaultConfig.background_color;
+  const txt = c.text_color || defaultConfig.text_color;
+  const primary = c.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = c.secondary_action_color || defaultConfig.secondary_action_color;
+
+  document.querySelectorAll('h1,h2,h3').forEach(h => h.style.color = txt);
+  document.querySelectorAll('.ripple-btn').forEach(b => {
+    if (b.style.background && b.style.background.includes('linear-gradient')) return;
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        {get:()=>config.background_color||defaultConfig.background_color,set:(v)=>{config.background_color=v;window.elementSdk.setConfig({background_color:v})}},
+        {get:()=>config.surface_color||defaultConfig.surface_color,set:(v)=>{config.surface_color=v;window.elementSdk.setConfig({surface_color:v})}},
+        {get:()=>config.text_color||defaultConfig.text_color,set:(v)=>{config.text_color=v;window.elementSdk.setConfig({text_color:v})}},
+        {get:()=>config.primary_action_color||defaultConfig.primary_action_color,set:(v)=>{config.primary_action_color=v;window.elementSdk.setConfig({primary_action_color:v})}},
+        {get:()=>config.secondary_action_color||defaultConfig.secondary_action_color,set:(v)=>{config.secondary_action_color=v;window.elementSdk.setConfig({secondary_action_color:v})}},
+      ],
+      borderables: [],
+      fontEditable: {get:()=>config.font_family||defaultConfig.font_family,set:(v)=>{config.font_family=v;window.elementSdk.setConfig({font_family:v})}},
+      fontSizeable: {get:()=>config.font_size||defaultConfig.font_size,set:(v)=>{config.font_size=v;window.elementSdk.setConfig({font_size:v})}}
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ["header_section", ""],
+      ["hero_title", config.hero_title || defaultConfig.hero_title],
+      ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+      ["pricing_section", ""],
+      ["basic_price", config.basic_price || defaultConfig.basic_price],
+      ["studio_price", config.studio_price || defaultConfig.studio_price],
+      ["premium_price", config.premium_price || defaultConfig.premium_price],
+      ["cta_section", ""],
+      ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ])
+  });
+}
+
+// Mobile nav
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.section-reveal').forEach(s => observer.observe(s));
+
+// FAQ
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('[data-lucide]');
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-toggle [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+    if (!isOpen) {
+      answer.classList.add('open');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  });
+});
+
+// Reactions
+const reactionState = {};
+function toggleReaction(btn) {
+  const emoji = btn.dataset.emoji;
+  const countEl = btn.querySelector('.vote-count');
+  if (reactionState[emoji]) {
+    reactionState[emoji] = false;
+    btn.classList.remove('active');
+    countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+  } else {
+    reactionState[emoji] = true;
+    btn.classList.add('active');
+    countEl.textContent = parseInt(countEl.textContent) + 1;
+  }
+}
+
+// Price vote
+const prices = ['$19','$29','$49','$79','$99','$129','$149','$199','$249','$299'];
+const pvContainer = document.getElementById('price-vote-container');
+let selectedPrice = null;
+prices.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'vote-btn glass rounded-full px-3 py-1.5 text-xs text-white/60 hover:text-white';
+  btn.textContent = p;
+  btn.addEventListener('click', () => {
+    selectedPrice = p;
+    pvContainer.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    btn.style.background = 'linear-gradient(90deg,#ff0040,#7c4dff)';
+    btn.style.color = 'white';
+    document.getElementById('price-vote-result').classList.remove('hidden');
+    document.getElementById('price-vote-value').textContent = p;
+    pvContainer.querySelectorAll('button').forEach(b => {
+      if (b !== btn) { b.style.background = ''; b.style.color = ''; }
+    });
+  });
+  pvContainer.appendChild(btn);
+});
+
+// Comments
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.push({text, time: new Date()});
+  input.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = '';
+  comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'glass rounded-xl px-4 py-3';
+    const mins = Math.floor((Date.now() - c.time) / 60000);
+    div.innerHTML = `<p class="text-white/70 text-sm">${c.text.replace(/</g,'&lt;')}</p><p class="text-white/20 text-xs mt-1">${mins < 1 ? 'Just now' : mins + 'm ago'}</p>`;
+    list.appendChild(div);
+  });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6184152727c5',t:'MTc3NTU3OTA0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,812 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c9c63241-7503-4328-b703-68e8beed8f35 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BingoPulse Live</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Outfit', sans-serif; }
+  .mono { font-family: 'Space Mono', monospace; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(250, 204, 21, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(250, 204, 21, 0.6); }
+  }
+  @keyframes numberReveal {
+    0% { transform: scale(0) rotate(180deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(-10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes ballBounce {
+    0% { transform: translateY(-100%) scale(0.8); opacity: 0; }
+    50% { transform: translateY(10%) scale(1.05); }
+    70% { transform: translateY(-5%) scale(0.98); }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .anim-float { animation: float 3s ease-in-out infinite; }
+  .anim-glow { animation: pulseGlow 2s ease-in-out infinite; }
+  .anim-reveal { animation: numberReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .anim-slide-up { animation: slideUp 0.7s ease-out forwards; }
+  .anim-fade { animation: fadeIn 0.5s ease-out forwards; }
+  .anim-bounce { animation: ballBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .anim-shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  .anim-spin { animation: spinSlow 20s linear infinite; }
+
+  .bingo-ball {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .bingo-ball:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(255,255,255,0.3);
+  }
+  .bingo-ball::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 50%;
+    transform: translateX(-50%);
+    width: 18px; height: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+  }
+
+  .card-hover {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .pricing-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+  .pricing-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .grid-cell {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .grid-cell:hover {
+    transform: scale(1.1);
+    z-index: 2;
+  }
+  .grid-cell.marked {
+    transform: scale(0.95);
+  }
+
+  .reaction-btn {
+    transition: transform 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+  .reaction-btn:hover { transform: scale(1.15); }
+  .reaction-btn:active { transform: scale(0.9); }
+
+  .toast-msg {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+  }
+  .toast-msg.show { transform: translateX(-50%) translateY(0); }
+
+  .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0a0a1a; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        base: '#0a0a1a',
+        surface: '#141428',
+        accent: { yellow: '#facc15', red: '#ef4444', blue: '#3b82f6' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-base text-white overflow-auto">
+  <div id="app-wrapper" class="w-full h-full"><!-- Toast -->
+   <div id="toast" class="toast-msg bg-accent-yellow text-base"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(10,10,26,0.92); backdrop-filter: blur(12px);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-accent-yellow flex items-center justify-center"><span class="text-base font-black text-sm">B</span>
+      </div><span id="nav-brand" class="font-extrabold text-lg tracking-tight">BingoPulse <span class="text-accent-yellow">Live</span></span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow" style="--link-color: #facc15;">Home<span class="absolute bottom-[-4px] left-0 h-[2px]" style="background: #facc15;"></span></a> <a href="#games" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow">Games</a> <a href="#events" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow">Events</a> <a href="#prizes" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow">Prizes</a> <a href="#pricing" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow">Pricing</a> <a href="#faq" class="nav-link text-sm font-medium text-gray-300 hover:text-accent-yellow">FAQ</a> <a href="#join" class="px-4 py-2 rounded-full bg-accent-yellow text-base font-bold text-sm hover:bg-yellow-300 transition-colors">Join Game</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2 text-gray-300 hover:text-white" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3"><a href="#home" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">Home</a> <a href="#games" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">Games</a> <a href="#events" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">Events</a> <a href="#prizes" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">Prizes</a> <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">Pricing</a> <a href="#faq" class="text-sm font-medium text-gray-300 hover:text-accent-yellow py-1">FAQ</a> <a href="#join" class="px-4 py-2 rounded-full bg-accent-yellow text-base font-bold text-sm text-center hover:bg-yellow-300 transition-colors">Join Game</a>
+    </div>
+   </nav><!-- ===== HERO ===== -->
+   <section id="home" class="relative w-full pt-28 pb-20 px-4 overflow-hidden" style="min-height: 90%;"><!-- BG decorations -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+     <div class="absolute top-20 left-10 w-72 h-72 rounded-full opacity-20 blur-3xl" style="background: #facc15;"></div>
+     <div class="absolute bottom-10 right-10 w-64 h-64 rounded-full opacity-15 blur-3xl" style="background: #3b82f6;"></div>
+     <div class="absolute top-40 right-20 w-48 h-48 rounded-full opacity-10 blur-3xl" style="background: #ef4444;"></div><!-- Floating balls -->
+     <div class="bingo-ball absolute top-24 right-[15%] anim-float" style="background: linear-gradient(135deg, #ef4444, #dc2626); animation-delay: 0s; color: #fff; font-size:16px;">
+      7
+     </div>
+     <div class="bingo-ball absolute top-48 left-[10%] anim-float" style="background: linear-gradient(135deg, #3b82f6, #2563eb); animation-delay: 0.5s; color: #fff; font-size:16px;">
+      22
+     </div>
+     <div class="bingo-ball absolute bottom-32 right-[25%] anim-float" style="background: linear-gradient(135deg, #facc15, #eab308); animation-delay: 1s; color: #0a0a1a; font-size:16px;">
+      45
+     </div>
+     <div class="bingo-ball absolute bottom-20 left-[20%] anim-float hidden md:flex" style="background: linear-gradient(135deg, #a855f7, #7c3aed); animation-delay: 1.5s; color: #fff; font-size:16px;">
+      61
+     </div>
+     <div class="bingo-ball absolute top-60 right-[45%] anim-float hidden lg:flex" style="background: linear-gradient(135deg, #22c55e, #16a34a); animation-delay: 2s; color: #fff; font-size:16px;">
+      33
+     </div>
+    </div>
+    <div class="relative max-w-5xl mx-auto text-center z-10 flex flex-col items-center gap-8"><!-- Animated number display -->
+     <div class="relative mb-4">
+      <div class="w-32 h-32 rounded-full flex items-center justify-center anim-glow" style="background: linear-gradient(135deg, #facc15, #f59e0b);"><span id="hero-number" class="mono text-5xl font-black text-base anim-reveal">42</span>
+      </div>
+      <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-accent-red flex items-center justify-center anim-bounce" style="animation-delay:0.4s;"><i data-lucide="zap" style="width:16px;height:16px;color:#fff;"></i>
+      </div>
+     </div>
+     <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight" style="animation: slideUp 0.8s ease-out forwards;">The next number<br><span class="text-accent-yellow">changes everything.</span></h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl text-gray-400 max-w-xl" style="animation: slideUp 0.8s ease-out 0.2s forwards; opacity:0; animation-fill-mode:forwards;">Bingo experiences designed to keep players engaged.</p>
+     <div class="flex flex-wrap gap-4 justify-center" style="animation: slideUp 0.8s ease-out 0.4s forwards; opacity:0; animation-fill-mode:forwards;"><a href="#join" class="px-8 py-3 rounded-full bg-accent-yellow text-base font-bold text-lg hover:bg-yellow-300 transition-all hover:scale-105">Join Game</a> <a href="#events" class="px-8 py-3 rounded-full border-2 border-gray-600 text-gray-200 font-bold text-lg hover:border-accent-yellow hover:text-accent-yellow transition-all hover:scale-105">View Events</a>
+     </div><!-- Mini bingo card preview -->
+     <div class="mt-8 p-4 rounded-2xl bg-surface border border-gray-800 anim-shimmer" style="animation: slideUp 0.8s ease-out 0.6s forwards; opacity:0; animation-fill-mode:forwards;">
+      <div class="flex gap-1 mb-2 justify-center"><span class="mono text-xs font-bold text-accent-yellow px-2">B</span> <span class="mono text-xs font-bold text-accent-red px-2">I</span> <span class="mono text-xs font-bold text-accent-blue px-2">N</span> <span class="mono text-xs font-bold text-accent-yellow px-2">G</span> <span class="mono text-xs font-bold text-accent-red px-2">O</span>
+      </div>
+      <div id="hero-grid" class="grid grid-cols-5 gap-1"></div>
+     </div>
+     <p class="mono text-xs text-gray-500 mt-2">Every number builds the moment.</p>
+    </div>
+   </section><!-- ===== GAMES ===== -->
+   <section id="games" class="w-full py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="mono text-xs font-bold text-accent-blue tracking-widest uppercase">Play Your Way</span>
+      <h2 id="games-heading" class="text-3xl md:text-5xl font-black mt-3">Game Formats</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">From classic patterns to wild variations — every game brings something new.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Game 1 -->
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface">
+       <div class="w-14 h-14 rounded-xl bg-accent-yellow/15 flex items-center justify-center mb-4"><i data-lucide="grid-3x3" style="width:28px;height:28px;color:#facc15;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Classic 75-Ball</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">The traditional game — 5×5 card, free center space, line and full-house patterns. Timeless excitement for all ages.</p>
+       <div class="mt-4 flex gap-2 flex-wrap"><span class="text-xs px-3 py-1 rounded-full bg-accent-yellow/10 text-accent-yellow font-medium">Lines</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-yellow/10 text-accent-yellow font-medium">Patterns</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-yellow/10 text-accent-yellow font-medium">Blackout</span>
+       </div>
+      </div><!-- Game 2 -->
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface" style="transition-delay:0.1s;">
+       <div class="w-14 h-14 rounded-xl bg-accent-red/15 flex items-center justify-center mb-4"><i data-lucide="zap" style="width:28px;height:28px;color:#ef4444;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Speed Bingo</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">30-ball rapid-fire rounds with 3×3 cards. Fast calls, quick wins, maximum energy. Perfect for warm-ups.</p>
+       <div class="mt-4 flex gap-2 flex-wrap"><span class="text-xs px-3 py-1 rounded-full bg-accent-red/10 text-accent-red font-medium">30-Ball</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-red/10 text-accent-red font-medium">Fast</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-red/10 text-accent-red font-medium">3×3</span>
+       </div>
+      </div><!-- Game 3 -->
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface" style="transition-delay:0.2s;">
+       <div class="w-14 h-14 rounded-xl bg-accent-blue/15 flex items-center justify-center mb-4"><i data-lucide="sparkles" style="width:28px;height:28px;color:#3b82f6;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Pattern Bingo</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Custom shapes — letters, animals, symbols. The caller reveals the target pattern and players race to complete it.</p>
+       <div class="mt-4 flex gap-2 flex-wrap"><span class="text-xs px-3 py-1 rounded-full bg-accent-blue/10 text-accent-blue font-medium">Custom</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-blue/10 text-accent-blue font-medium">Creative</span> <span class="text-xs px-3 py-1 rounded-full bg-accent-blue/10 text-accent-blue font-medium">Themed</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ===== EVENTS ===== -->
+   <section id="events" class="w-full py-20 px-4" style="background: linear-gradient(180deg, #0a0a1a 0%, #0f0f2e 50%, #0a0a1a 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="mono text-xs font-bold text-accent-red tracking-widest uppercase">Join The Fun</span>
+      <h2 id="events-heading" class="text-3xl md:text-5xl font-black mt-3">Upcoming Events</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">Live-hosted sessions with real-time calling, chat, and instant prizes.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="card-hover scroll-reveal rounded-2xl overflow-hidden border border-gray-800 bg-surface">
+       <div class="h-2 w-full bg-gradient-to-r from-accent-yellow via-accent-red to-accent-blue"></div>
+       <div class="p-6">
+        <div class="flex items-center gap-3 mb-3">
+         <div class="px-3 py-1 rounded-full bg-accent-yellow/15 text-accent-yellow mono text-xs font-bold">
+          LIVE
+         </div><span class="text-gray-500 text-sm">Friday Night Blitz</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">🎉 Weekend Kickoff Bingo</h3>
+        <p class="text-gray-400 text-sm mb-4">Speed rounds with escalating jackpots. 3 games, 45 minutes of non-stop action.</p>
+        <div class="flex items-center gap-4 text-sm text-gray-500"><span class="flex items-center gap-1"><i data-lucide="calendar" style="width:14px;height:14px;"></i> Every Friday</span> <span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 8:00 PM</span> <span class="flex items-center gap-1"><i data-lucide="users" style="width:14px;height:14px;"></i> 120+ players</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-hover scroll-reveal rounded-2xl overflow-hidden border border-gray-800 bg-surface" style="transition-delay:0.1s;">
+       <div class="h-2 w-full bg-gradient-to-r from-accent-blue via-purple-500 to-accent-red"></div>
+       <div class="p-6">
+        <div class="flex items-center gap-3 mb-3">
+         <div class="px-3 py-1 rounded-full bg-accent-blue/15 text-accent-blue mono text-xs font-bold">
+          THEMED
+         </div><span class="text-gray-500 text-sm">Monthly Special</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">🌟 Mega Pattern Night</h3>
+        <p class="text-gray-400 text-sm mb-4">Custom pattern challenges with premium prizes. A new theme each month — trivia, music, and surprises.</p>
+        <div class="flex items-center gap-4 text-sm text-gray-500"><span class="flex items-center gap-1"><i data-lucide="calendar" style="width:14px;height:14px;"></i> 1st Saturday</span> <span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 7:00 PM</span> <span class="flex items-center gap-1"><i data-lucide="trophy" style="width:14px;height:14px;"></i> Grand Prize</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-hover scroll-reveal rounded-2xl overflow-hidden border border-gray-800 bg-surface">
+       <div class="h-2 w-full bg-gradient-to-r from-green-400 to-accent-yellow"></div>
+       <div class="p-6">
+        <div class="flex items-center gap-3 mb-3">
+         <div class="px-3 py-1 rounded-full bg-green-400/15 text-green-400 mono text-xs font-bold">
+          BEGINNER
+         </div><span class="text-gray-500 text-sm">Learn &amp; Play</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">🎲 Welcome Wednesday</h3>
+        <p class="text-gray-400 text-sm mb-4">Relaxed pace, guided play, and a welcoming host. Great for newcomers and casual players.</p>
+        <div class="flex items-center gap-4 text-sm text-gray-500"><span class="flex items-center gap-1"><i data-lucide="calendar" style="width:14px;height:14px;"></i> Wednesdays</span> <span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 6:00 PM</span> <span class="flex items-center gap-1"><i data-lucide="heart" style="width:14px;height:14px;"></i> Free entry</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-hover scroll-reveal rounded-2xl overflow-hidden border border-gray-800 bg-surface" style="transition-delay:0.1s;">
+       <div class="h-2 w-full bg-gradient-to-r from-accent-red via-orange-500 to-accent-yellow"></div>
+       <div class="p-6">
+        <div class="flex items-center gap-3 mb-3">
+         <div class="px-3 py-1 rounded-full bg-accent-red/15 text-accent-red mono text-xs font-bold">
+          VIP
+         </div><span class="text-gray-500 text-sm">Exclusive Access</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">💎 High Roller Showdown</h3>
+        <p class="text-gray-400 text-sm mb-4">Premium stakes, premium rewards. Smaller groups, bigger prizes, and an exclusive host experience.</p>
+        <div class="flex items-center gap-4 text-sm text-gray-500"><span class="flex items-center gap-1"><i data-lucide="calendar" style="width:14px;height:14px;"></i> Bi-weekly</span> <span class="flex items-center gap-1"><i data-lucide="clock" style="width:14px;height:14px;"></i> 9:00 PM</span> <span class="flex items-center gap-1"><i data-lucide="gem" style="width:14px;height:14px;"></i> VIP Only</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ===== PRIZES ===== -->
+   <section id="prizes" class="w-full py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="mono text-xs font-bold text-accent-yellow tracking-widest uppercase">Rewards</span>
+      <h2 id="prizes-heading" class="text-3xl md:text-5xl font-black mt-3">Prize Structures</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">Flexible reward systems that keep players coming back for more.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface text-center">
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-yellow to-orange-500 flex items-center justify-center mx-auto mb-4"><i data-lucide="trophy" style="width:30px;height:30px;color:#0a0a1a;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Instant Wins</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Per-game prizes awarded on the spot. Gift cards, credits, and digital goods delivered the moment you call "Bingo!"</p>
+      </div>
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface text-center" style="transition-delay:0.1s;">
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-blue to-cyan-400 flex items-center justify-center mx-auto mb-4"><i data-lucide="target" style="width:30px;height:30px;color:#0a0a1a;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Progressive Jackpots</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">The pot grows each round until someone hits the blackout pattern. Jackpots can reach $500+ on themed nights.</p>
+      </div>
+      <div class="card-hover scroll-reveal rounded-2xl p-6 border border-gray-800 bg-surface text-center" style="transition-delay:0.2s;">
+       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-accent-red to-pink-500 flex items-center justify-center mx-auto mb-4"><i data-lucide="gift" style="width:30px;height:30px;color:#0a0a1a;"></i>
+       </div>
+       <h3 class="text-xl font-bold mb-2">Loyalty Rewards</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Earn points every session. Redeem for premium cards, event access, and exclusive merchandise through our reward tiers.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ===== PRICING ===== -->
+   <section id="pricing" class="w-full py-20 px-4" style="background: linear-gradient(180deg, #0a0a1a 0%, #12122a 50%, #0a0a1a 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="mono text-xs font-bold text-accent-blue tracking-widest uppercase">Plans</span>
+      <h2 id="pricing-heading" class="text-3xl md:text-5xl font-black mt-3">Choose Your Play</h2>
+      <p class="text-gray-400 mt-3 max-w-lg mx-auto">Every plan includes live hosting. Pick the experience level that matches your vibe.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 items-start"><!-- Basic -->
+      <div class="pricing-card scroll-reveal rounded-2xl p-8 border border-gray-800 bg-surface"><span class="mono text-xs font-bold text-gray-500 tracking-widest uppercase">Basic</span>
+       <div class="mt-3 mb-6"><span class="text-4xl font-black">$19</span> <span class="text-gray-500 text-sm">/event</span>
+       </div>
+       <p class="text-gray-400 text-sm mb-6">Standard event access with classic gameplay.</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> 1 bingo card per game</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Classic 75-ball format</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Live chat access</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Instant win prizes</li>
+       </ul><a href="#join" class="block w-full py-3 rounded-full border-2 border-gray-700 text-center font-bold text-sm hover:border-accent-yellow hover:text-accent-yellow transition-all">Get Started</a>
+      </div><!-- Plus (featured) -->
+      <div class="pricing-card scroll-reveal rounded-2xl p-8 border-2 border-accent-yellow bg-surface relative" style="transition-delay:0.1s; box-shadow: 0 0 40px rgba(250,204,21,0.15);">
+       <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-accent-yellow text-base text-xs font-black">
+        POPULAR
+       </div><span class="mono text-xs font-bold text-accent-yellow tracking-widest uppercase">Plus</span>
+       <div class="mt-3 mb-6"><span class="text-4xl font-black text-accent-yellow">$39</span> <span class="text-gray-500 text-sm">/event</span>
+       </div>
+       <p class="text-gray-400 text-sm mb-6">Enhanced gameplay with multi-card action.</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Up to 4 cards per game</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> All game formats</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Priority chat + emojis</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Progressive jackpots</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#facc15;"></i> Loyalty points 2×</li>
+       </ul><a href="#join" class="block w-full py-3 rounded-full bg-accent-yellow text-base text-center font-bold text-sm hover:bg-yellow-300 transition-all">Choose Plus</a>
+      </div><!-- Premium -->
+      <div class="pricing-card scroll-reveal rounded-2xl p-8 border border-gray-800 bg-surface" style="transition-delay:0.2s;"><span class="mono text-xs font-bold text-accent-blue tracking-widest uppercase">Premium</span>
+       <div class="mt-3 mb-6"><span class="text-4xl font-black text-accent-blue">$79</span> <span class="text-gray-500 text-sm">/event</span>
+       </div>
+       <p class="text-gray-400 text-sm mb-6">Full hosted experience with VIP perks.</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Unlimited cards</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Private hosted events</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Custom themes &amp; patterns</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> VIP prizes + jackpots</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Loyalty points 5×</li>
+        <li class="flex items-center gap-2 text-sm text-gray-300"><i data-lucide="check" style="width:16px;height:16px;color:#3b82f6;"></i> Dedicated support</li>
+       </ul><a href="#join" class="block w-full py-3 rounded-full border-2 border-accent-blue text-accent-blue text-center font-bold text-sm hover:bg-accent-blue hover:text-white transition-all">Go Premium</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- ===== FAQ ===== -->
+   <section id="faq" class="w-full py-20 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14 scroll-reveal"><span class="mono text-xs font-bold text-accent-red tracking-widest uppercase">Questions</span>
+      <h2 class="text-3xl md:text-5xl font-black mt-3">FAQ</h2>
+     </div>
+     <div id="faq-list" class="space-y-3">
+     </div>
+    </div>
+   </section><!-- ===== VOTE + COMMENT MODULE ===== -->
+   <section id="join" class="w-full py-20 px-4" style="background: linear-gradient(180deg, #0a0a1a 0%, #151530 50%, #0a0a1a 100%);">
+    <div class="max-w-4xl mx-auto"><!-- Bottom CTA -->
+     <div class="text-center mb-16 scroll-reveal">
+      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-accent-yellow via-accent-red to-accent-blue flex items-center justify-center mx-auto mb-6 anim-glow"><span class="mono text-3xl font-black text-white">B!</span>
+      </div>
+      <h2 id="bottom-cta" class="text-3xl md:text-5xl font-black mb-4">Play for the moment.</h2>
+      <p class="text-gray-400 mb-6 max-w-md mx-auto">Join thousands of players in our next live session. Your lucky number is waiting.</p><a href="#home" class="inline-block px-10 py-4 rounded-full bg-accent-yellow text-base font-bold text-lg hover:bg-yellow-300 transition-all hover:scale-105">Join the Next Game</a>
+     </div><!-- Embed Widget -->
+     <div class="scroll-reveal rounded-2xl border border-gray-800 bg-surface p-6 md:p-8">
+      <div class="text-center mb-6"><span class="mono text-xs font-bold text-gray-500 tracking-widest uppercase">Embed Widget Here</span>
+       <h3 class="text-2xl font-bold mt-2">Vote &amp; Comment</h3>
+       <p class="text-gray-400 text-sm mt-1">React, vote on pricing, and share your thoughts.</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap gap-3 justify-center mb-8"><button class="reaction-btn flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800/80 border border-gray-700 hover:border-accent-yellow" data-reaction="🔥" onclick="handleReaction('🔥')"> <span class="text-lg">🔥</span><span id="react-🔥" class="mono text-xs text-gray-400">0</span> </button> <button class="reaction-btn flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800/80 border border-gray-700 hover:border-accent-yellow" data-reaction="🎉" onclick="handleReaction('🎉')"> <span class="text-lg">🎉</span><span id="react-🎉" class="mono text-xs text-gray-400">0</span> </button> <button class="reaction-btn flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800/80 border border-gray-700 hover:border-accent-yellow" data-reaction="❤️" onclick="handleReaction('❤️')"> <span class="text-lg">❤️</span><span id="react-❤️" class="mono text-xs text-gray-400">0</span> </button> <button class="reaction-btn flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800/80 border border-gray-700 hover:border-accent-yellow" data-reaction="👏" onclick="handleReaction('👏')"> <span class="text-lg">👏</span><span id="react-👏" class="mono text-xs text-gray-400">0</span> </button> <button class="reaction-btn flex items-center gap-2 px-4 py-2 rounded-full bg-gray-800/80 border border-gray-700 hover:border-accent-yellow" data-reaction="😍" onclick="handleReaction('😍')"> <span class="text-lg">😍</span><span id="react-😍" class="mono text-xs text-gray-400">0</span> </button>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <h4 class="text-sm font-bold text-gray-300 mb-3 text-center">What would you pay for a premium bingo event?</h4>
+       <div id="price-votes" class="flex flex-wrap gap-2 justify-center">
+       </div>
+      </div><!-- Comments -->
+      <div>
+       <h4 class="text-sm font-bold text-gray-300 mb-3">Comments</h4>
+       <form id="comment-form" class="flex gap-2 mb-4" onsubmit="handleComment(event)"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 px-4 py-2 rounded-full bg-gray-800 border border-gray-700 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-accent-yellow transition-colors" maxlength="200" aria-label="Comment"> <button type="submit" id="comment-submit" class="px-5 py-2 rounded-full bg-accent-yellow text-base font-bold text-sm hover:bg-yellow-300 transition-colors">Post</button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-72 overflow-y-auto pr-2">
+        <p class="text-gray-500 text-sm text-center py-4">No comments yet. Be the first!</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ===== FOOTER ===== -->
+   <footer class="w-full py-10 px-4 border-t border-gray-800/50">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-full bg-accent-yellow flex items-center justify-center"><span class="text-base font-black text-xs">B</span>
+      </div><span class="font-bold text-sm text-gray-400">BingoPulse Live</span>
+     </div>
+     <p class="text-gray-600 text-xs">© 2025 BingoPulse Live. Every number builds the moment.</p>
+    </div>
+   </footer>
+  </div><!-- /app-wrapper -->
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  background_color: '#0a0a1a',
+  surface_color: '#141428',
+  text_color: '#ffffff',
+  primary_action_color: '#facc15',
+  secondary_action_color: '#3b82f6',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'The next number changes everything.',
+  hero_subtitle: 'Bingo experiences designed to keep players engaged.',
+  games_title: 'Game Formats',
+  events_title: 'Upcoming Events',
+  prizes_title: 'Prize Structures',
+  pricing_title: 'Choose Your Play',
+  bottom_cta_text: 'Play for the moment.'
+};
+
+let allData = [];
+const PRICES = ['$9','$15','$19','$25','$29','$39','$49','$59','$69','$79'];
+
+// FAQ data
+const faqs = [
+  { q: 'How do I join a game?', a: 'Click "Join Game" and you\'ll be assigned a digital bingo card. The host calls numbers live and your card auto-marks.' },
+  { q: 'Can I play on mobile?', a: 'Absolutely! BingoPulse is fully responsive. Play from your phone, tablet, or desktop.' },
+  { q: 'Are the prizes real?', a: 'Yes! Prizes are delivered digitally — gift cards, credits, and event access — instantly after each win.' },
+  { q: 'Can I host a private event?', a: 'Premium plan includes private hosting. You choose the theme, format, and invite your own players.' },
+  { q: 'What payment methods do you accept?', a: 'We accept all major credit cards and digital wallets through our secure checkout.' }
+];
+
+// ===== ELEMENT SDK INIT =====
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+
+    // Colors
+    document.body.style.backgroundColor = c('background_color');
+    document.body.style.color = c('text_color');
+    document.querySelectorAll('.bg-surface, .card-hover .bg-surface').forEach(el => {
+      if (el.classList.contains('bg-surface')) el.style.backgroundColor = c('surface_color');
+    });
+
+    // Font
+    const font = c('font_family');
+    const baseSize = c('font_size');
+    document.body.style.fontFamily = `${font}, Outfit, sans-serif`;
+
+    // Text content
+    const heroEl = document.getElementById('hero-title');
+    if (heroEl) heroEl.innerHTML = c('hero_title').replace(/(changes everything\.|changes everything)/, '<span class="text-accent-yellow">$1</span>');
+    const heroSub = document.getElementById('hero-subtitle');
+    if (heroSub) heroSub.textContent = c('hero_subtitle');
+
+    const ids = { 'games-heading': 'games_title', 'events-heading': 'events_title', 'prizes-heading': 'prizes_title', 'pricing-heading': 'pricing_title', 'bottom-cta': 'bottom_cta_text' };
+    Object.entries(ids).forEach(([id, key]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = c(key);
+    });
+
+    // Font size scaling
+    document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2.2}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+    document.querySelectorAll('p').forEach(el => { if (!el.closest('.mono')) el.style.fontSize = `${baseSize}px`; });
+  },
+  mapToCapabilities: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    const mut = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('primary_action_color'), mut('secondary_action_color')],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = (k) => config[k] || defaultConfig[k];
+    return new Map([
+      ['hero_title', c('hero_title')],
+      ['hero_subtitle', c('hero_subtitle')],
+      ['games_title', c('games_title')],
+      ['events_title', c('events_title')],
+      ['prizes_title', c('prizes_title')],
+      ['pricing_title', c('pricing_title')],
+      ['bottom_cta_text', c('bottom_cta_text')]
+    ]);
+  }
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    updatePriceVotes();
+    updateComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => { counts[r.reaction] = (counts[r.reaction] || 0) + 1; });
+  ['🔥','🎉','❤️','👏','😍'].forEach(e => {
+    const el = document.getElementById(`react-${e}`);
+    if (el) el.textContent = counts[e] || 0;
+  });
+}
+
+function updatePriceVotes() {
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const counts = {};
+  let max = 0;
+  votes.forEach(v => {
+    counts[v.price_vote] = (counts[v.price_vote] || 0) + 1;
+    if (counts[v.price_vote] > max) max = counts[v.price_vote];
+  });
+  PRICES.forEach(p => {
+    const btn = document.querySelector(`[data-price="${p}"]`);
+    if (!btn) return;
+    const c = counts[p] || 0;
+    const bar = btn.querySelector('.vote-bar');
+    const cnt = btn.querySelector('.vote-count');
+    if (bar) bar.style.width = max > 0 ? `${(c / max) * 100}%` : '0%';
+    if (cnt) cnt.textContent = c;
+  });
+}
+
+function updateComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  if (!list) return;
+
+  if (comments.length === 0) {
+    list.innerHTML = '<p class="text-gray-500 text-sm text-center py-4">No comments yet. Be the first!</p>';
+    return;
+  }
+
+  const existingMap = new Map([...list.children].filter(el => el.dataset.id).map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach((comment, i) => {
+    const id = comment.__backendId;
+    if (existingMap.has(id)) return;
+    const div = document.createElement('div');
+    div.dataset.id = id;
+    div.className = 'flex gap-3 items-start p-3 rounded-xl bg-gray-800/50 border border-gray-700/50';
+    const timeAgo = getTimeAgo(new Date(comment.created_at));
+    div.innerHTML = `
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-yellow to-accent-red flex items-center justify-center flex-shrink-0">
+        <span class="text-xs font-bold text-base">🎲</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm text-gray-200 break-words">${escapeHtml(comment.comment_text)}</p>
+        <span class="text-xs text-gray-500 mt-1 block">${timeAgo}</span>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function getTimeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  const btn = document.querySelector(`[data-reaction="${emoji}"]`);
+  if (btn) btn.style.transform = 'scale(1.3)';
+  const res = await window.dataSdk.create({ type: 'reaction', section_id: 'bottom_cta', reaction: emoji, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  if (btn) setTimeout(() => btn.style.transform = '', 200);
+  if (!res.isOk) showToast('Could not save reaction');
+}
+
+async function handlePriceVote(price) {
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  const btn = document.querySelector(`[data-price="${price}"]`);
+  if (btn) btn.classList.add('ring-2', 'ring-accent-yellow');
+  const res = await window.dataSdk.create({ type: 'price_vote', section_id: 'bottom_cta', reaction: '', comment_text: '', price_vote: price, created_at: new Date().toISOString() });
+  if (btn) setTimeout(() => btn.classList.remove('ring-2', 'ring-accent-yellow'), 300);
+  if (!res.isOk) showToast('Could not save vote');
+}
+
+async function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const btn = document.getElementById('comment-submit');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Limit reached!'); return; }
+  btn.disabled = true; btn.textContent = '...';
+  const res = await window.dataSdk.create({ type: 'comment', section_id: 'bottom_cta', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (res.isOk) { input.value = ''; } else { showToast('Could not post comment'); }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== UI BUILDERS =====
+
+// Hero grid
+function buildHeroGrid() {
+  const grid = document.getElementById('hero-grid');
+  if (!grid) return;
+  const nums = [];
+  for (let col = 0; col < 5; col++) {
+    for (let row = 0; row < 5; row++) {
+      if (col === 2 && row === 2) { nums.push('★'); continue; }
+      nums.push(Math.floor(Math.random() * 15) + 1 + col * 15);
+    }
+  }
+  grid.innerHTML = '';
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 5; col++) {
+      const val = nums[col * 5 + row];
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell mono text-xs';
+      cell.style.background = val === '★' ? 'linear-gradient(135deg, #facc15, #f59e0b)' : 'rgba(255,255,255,0.05)';
+      cell.style.color = val === '★' ? '#0a0a1a' : '#9ca3af';
+      cell.style.border = '1px solid rgba(255,255,255,0.08)';
+      cell.textContent = val;
+      cell.addEventListener('click', () => {
+        cell.classList.toggle('marked');
+        if (cell.classList.contains('marked')) {
+          cell.style.background = 'rgba(250,204,21,0.2)';
+          cell.style.color = '#facc15';
+          cell.style.border = '1px solid rgba(250,204,21,0.4)';
+        } else {
+          cell.style.background = val === '★' ? 'linear-gradient(135deg, #facc15, #f59e0b)' : 'rgba(255,255,255,0.05)';
+          cell.style.color = val === '★' ? '#0a0a1a' : '#9ca3af';
+          cell.style.border = '1px solid rgba(255,255,255,0.08)';
+        }
+      });
+      grid.appendChild(cell);
+    }
+  }
+}
+
+// Hero number cycle
+function cycleHeroNumber() {
+  const el = document.getElementById('hero-number');
+  if (!el) return;
+  setInterval(() => {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.textContent = Math.floor(Math.random() * 75) + 1;
+    el.style.animation = 'numberReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+  }, 3000);
+}
+
+// Price vote buttons
+function buildPriceVotes() {
+  const container = document.getElementById('price-votes');
+  if (!container) return;
+  PRICES.forEach(p => {
+    const btn = document.createElement('button');
+    btn.dataset.price = p;
+    btn.className = 'relative px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:border-accent-yellow transition-all text-sm font-bold overflow-hidden cursor-pointer';
+    btn.onclick = () => handlePriceVote(p);
+    btn.innerHTML = `<div class="vote-bar absolute bottom-0 left-0 h-1 bg-accent-yellow transition-all duration-500" style="width:0%;"></div><span class="relative z-10">${p}</span><span class="vote-count relative z-10 ml-1 text-xs text-gray-500">0</span>`;
+    container.appendChild(btn);
+  });
+}
+
+// FAQ
+function buildFaq() {
+  const list = document.getElementById('faq-list');
+  if (!list) return;
+  faqs.forEach((faq, i) => {
+    const item = document.createElement('div');
+    item.className = 'scroll-reveal rounded-xl border border-gray-800 bg-surface overflow-hidden';
+    item.style.transitionDelay = `${i * 0.05}s`;
+    item.innerHTML = `
+      <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-800/30 transition-colors" onclick="toggleFaq(this)">
+        <span class="font-semibold text-sm pr-4">${faq.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;flex-shrink:0;" class="text-gray-500 transition-transform duration-300"></i>
+      </button>
+      <div class="faq-answer overflow-hidden transition-all duration-300" style="max-height:0;">
+        <p class="px-5 pb-5 text-gray-400 text-sm leading-relaxed">${faq.a}</p>
+      </div>`;
+    list.appendChild(item);
+  });
+  lucide.createIcons();
+}
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = answer.style.maxHeight !== '0px' && answer.style.maxHeight !== '';
+  if (isOpen) {
+    answer.style.maxHeight = '0';
+    if (icon) icon.style.transform = 'rotate(0deg)';
+  } else {
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    if (icon) icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+}
+
+// Init
+buildHeroGrid();
+cycleHeroNumber();
+buildPriceVotes();
+buildFaq();
+initScrollReveal();
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a00e2351427c5',t:'MTc3NTU3NTA5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

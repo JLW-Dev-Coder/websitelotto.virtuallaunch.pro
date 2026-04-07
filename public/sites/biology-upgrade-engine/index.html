@@ -1,1 +1,618 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/9b598cda-8936-44b9-bd55-1dad98f77676 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longevix Systems</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:#050505;color:#e0e0e0;}
+:root{--bg:#050505;--surface:rgba(255,255,255,0.04);--neon:#00ff88;--cyan:#00e5ff;--text:#e0e0e0;--text-dim:#888;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#111;}
+::-webkit-scrollbar-thumb{background:#333;border-radius:3px;}
+
+/* glass panel */
+.glass{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(12px);border-radius:16px;}
+
+/* glow */
+.glow-green{box-shadow:0 0 30px rgba(0,255,136,0.15),0 0 60px rgba(0,255,136,0.05);}
+.glow-cyan{box-shadow:0 0 30px rgba(0,229,255,0.15),0 0 60px rgba(0,229,255,0.05);}
+
+/* pulse keyframes */
+@keyframes pulse-line{0%,100%{opacity:0.3;transform:scaleX(1);}50%{opacity:1;transform:scaleX(1.02);}}
+@keyframes float-up{0%{opacity:0;transform:translateY(30px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes glow-border{0%,100%{border-color:rgba(0,255,136,0.2);}50%{border-color:rgba(0,255,136,0.6);}}
+@keyframes data-tick{0%{opacity:0.4;}50%{opacity:1;}100%{opacity:0.4;}}
+@keyframes heartbeat{0%,100%{transform:scale(1);}15%{transform:scale(1.08);}30%{transform:scale(1);}}
+
+.animate-float{animation:float-up 0.8s ease-out both;}
+.animate-float-d1{animation:float-up 0.8s ease-out 0.1s both;}
+.animate-float-d2{animation:float-up 0.8s ease-out 0.2s both;}
+.animate-float-d3{animation:float-up 0.8s ease-out 0.3s both;}
+.animate-float-d4{animation:float-up 0.8s ease-out 0.4s both;}
+.animate-glow-border{animation:glow-border 3s ease-in-out infinite;}
+.animate-heartbeat{animation:heartbeat 1.5s ease-in-out infinite;}
+.animate-data-tick{animation:data-tick 2s ease-in-out infinite;}
+
+.pricing-card{transition:all 0.4s cubic-bezier(0.4,0,0.2,1);}
+.pricing-card:hover{transform:translateY(-8px);box-shadow:0 0 40px rgba(0,255,136,0.2),0 0 80px rgba(0,255,136,0.05);}
+.pricing-card.featured{border:1px solid rgba(0,255,136,0.3);animation:glow-border 3s ease-in-out infinite;}
+
+/* SVG heartrate */
+.hr-line{stroke-dasharray:800;stroke-dashoffset:800;animation:draw-line 3s ease-in-out forwards;}
+@keyframes draw-line{to{stroke-dashoffset:0;}}
+
+/* nav */
+.nav-link{position:relative;transition:color 0.3s;}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--neon);transition:width 0.3s;}
+.nav-link:hover::after,.nav-link.active::after{width:100%;}
+.nav-link:hover,.nav-link.active{color:var(--neon);}
+
+/* btn */
+.btn-primary{background:linear-gradient(135deg,#00ff88,#00cc6a);color:#050505;font-weight:600;border:none;border-radius:10px;padding:14px 32px;cursor:pointer;transition:all 0.3s;font-family:'Outfit',sans-serif;}
+.btn-primary:hover{box-shadow:0 0 30px rgba(0,255,136,0.4);transform:translateY(-2px);}
+.btn-secondary{background:transparent;color:var(--neon);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:14px 32px;cursor:pointer;transition:all 0.3s;font-family:'Outfit',sans-serif;}
+.btn-secondary:hover{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.6);}
+
+/* reaction btn */
+.reaction-btn{transition:all 0.25s;cursor:pointer;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:8px 14px;background:rgba(255,255,255,0.03);}
+.reaction-btn:hover{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.3);}
+.reaction-btn.selected{background:rgba(0,255,136,0.15);border-color:rgba(0,255,136,0.5);}
+
+/* price vote */
+.price-chip{cursor:pointer;padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);font-size:13px;transition:all 0.25s;}
+.price-chip:hover{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.08);}
+.price-chip.selected{border-color:var(--cyan);background:rgba(0,229,255,0.15);color:var(--cyan);}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3);color:var(--neon);padding:12px 24px;border-radius:10px;font-size:14px;transition:all 0.4s;z-index:999;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.mono{font-family:'Space Mono',monospace;}
+</style>
+  <script>
+tailwind.config={theme:{extend:{colors:{neon:'#00ff88',cyan:'#00e5ff'}}}}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto" id="app-body"><!-- Toast -->
+  <div id="toast" class="toast"></div><!-- Sticky Nav -->
+  <nav id="main-nav" style="position:sticky;top:0;z-index:100;background:rgba(5,5,5,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.05);">
+   <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+     <div class="animate-heartbeat" style="width:28px;height:28px;border-radius:50%;border:2px solid #00ff88;display:flex;align-items:center;justify-content:center;">
+      <div style="width:10px;height:10px;background:#00ff88;border-radius:50%;"></div>
+     </div><span style="font-weight:700;font-size:18px;letter-spacing:1px;">LONGEVIX</span>
+    </div>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;" id="nav-links"><a href="#home" class="nav-link active" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">Home</a> <a href="#protocols" class="nav-link" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">Protocols</a> <a href="#metrics" class="nav-link" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">Metrics</a> <a href="#results" class="nav-link" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">Results</a> <a href="#pricing" class="nav-link" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">Pricing</a> <a href="#faq" class="nav-link" style="font-size:13px;text-decoration:none;color:#888;letter-spacing:0.5px;">FAQ</a> <a href="#upgrade" class="btn-primary" style="font-size:13px;text-decoration:none;padding:8px 20px;">Start Upgrade</a>
+    </div>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" style="min-height:90%;display:flex;align-items:center;position:relative;overflow:hidden;"><!-- SVG heartrate background -->
+   <svg style="position:absolute;top:50%;left:0;width:100%;height:120px;transform:translateY(-50%);opacity:0.08;" viewbox="0 0 1200 120" preserveaspectratio="none"><polyline class="hr-line" fill="none" stroke="#00ff88" stroke-width="2" points="0,60 150,60 180,20 210,100 240,40 270,80 300,60 500,60 530,15 560,105 590,35 620,85 650,60 900,60 930,25 960,95 990,60 1200,60" />
+   </svg>
+   <div style="max-width:1200px;margin:0 auto;padding:80px 24px;position:relative;z-index:2;">
+    <div class="mono animate-float" style="font-size:12px;color:#00ff88;margin-bottom:16px;letter-spacing:3px;">
+     BIOLOGICAL UPGRADE ENGINE v3.2
+    </div>
+    <h1 id="hero-title" class="animate-float-d1" style="font-size:clamp(36px,6vw,72px);font-weight:800;line-height:1.05;margin-bottom:20px;">Your biology is<br>
+     programmable.</h1>
+    <p id="hero-subtitle" class="animate-float-d2" style="font-size:clamp(16px,2vw,22px);color:#888;max-width:520px;line-height:1.6;margin-bottom:36px;">Optimize recovery, energy, and longevity.</p>
+    <div class="animate-float-d3" style="display:flex;gap:16px;flex-wrap:wrap;"><a href="#upgrade" class="btn-primary" style="text-decoration:none;font-size:15px;">Start Upgrade</a> <a href="#protocols" class="btn-secondary" style="text-decoration:none;font-size:15px;">View Protocols</a>
+    </div><!-- floating data chips -->
+    <div class="animate-float-d4" style="display:flex;gap:12px;margin-top:48px;flex-wrap:wrap;">
+     <div class="glass" style="padding:10px 18px;display:flex;align-items:center;gap:8px;">
+      <div class="animate-data-tick" style="width:8px;height:8px;border-radius:50%;background:#00ff88;"></div><span class="mono" style="font-size:12px;color:#888;">HRV: 68ms</span>
+     </div>
+     <div class="glass" style="padding:10px 18px;display:flex;align-items:center;gap:8px;">
+      <div class="animate-data-tick" style="width:8px;height:8px;border-radius:50%;background:#00e5ff;animation-delay:0.5s;"></div><span class="mono" style="font-size:12px;color:#888;">VO2: 52.1</span>
+     </div>
+     <div class="glass" style="padding:10px 18px;display:flex;align-items:center;gap:8px;">
+      <div class="animate-data-tick" style="width:8px;height:8px;border-radius:50%;background:#00ff88;animation-delay:1s;"></div><span class="mono" style="font-size:12px;color:#888;">REM: 94min</span>
+     </div>
+    </div>
+   </div>
+  </section><!-- PROTOCOLS -->
+  <section id="protocols" style="padding:100px 24px;">
+   <div style="max-width:1200px;margin:0 auto;">
+    <div class="mono" style="font-size:12px;color:#00e5ff;letter-spacing:3px;margin-bottom:12px;">
+     PROTOCOL LIBRARY
+    </div>
+    <h2 id="protocols-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;">Recovery &amp; Performance Protocols</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+     <div class="glass glow-green" style="padding:32px;">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,255,136,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+       <i data-lucide="zap" style="color:#00ff88;width:24px;height:24px;"></i>
+      </div>
+      <h3 style="font-size:20px;font-weight:600;margin-bottom:10px;">Neural Recovery</h3>
+      <p style="font-size:14px;color:#888;line-height:1.7;">Deep-sleep optimization, HRV biofeedback, and vagal tone protocols for CNS restoration.</p>
+     </div>
+     <div class="glass glow-cyan" style="padding:32px;">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,229,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+       <i data-lucide="flame" style="color:#00e5ff;width:24px;height:24px;"></i>
+      </div>
+      <h3 style="font-size:20px;font-weight:600;margin-bottom:10px;">Metabolic Tuning</h3>
+      <p style="font-size:14px;color:#888;line-height:1.7;">Zone-based metabolic protocols, glucose optimization, and mitochondrial support systems.</p>
+     </div>
+     <div class="glass" style="padding:32px;border-color:rgba(255,255,255,0.08);">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,255,136,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+       <i data-lucide="shield" style="color:#00ff88;width:24px;height:24px;"></i>
+      </div>
+      <h3 style="font-size:20px;font-weight:600;margin-bottom:10px;">Immune Architecture</h3>
+      <p style="font-size:14px;color:#888;line-height:1.7;">Cold exposure scheduling, supplement stacking, and inflammatory biomarker tracking.</p>
+     </div>
+     <div class="glass" style="padding:32px;border-color:rgba(255,255,255,0.08);">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,229,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+       <i data-lucide="activity" style="color:#00e5ff;width:24px;height:24px;"></i>
+      </div>
+      <h3 style="font-size:20px;font-weight:600;margin-bottom:10px;">Longevity Engine</h3>
+      <p style="font-size:14px;color:#888;line-height:1.7;">Epigenetic age reversal, telomere support, and NAD+ cycling protocols.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- METRICS -->
+  <section id="metrics" style="padding:100px 24px;background:rgba(255,255,255,0.015);">
+   <div style="max-width:1200px;margin:0 auto;">
+    <div class="mono" style="font-size:12px;color:#00ff88;letter-spacing:3px;margin-bottom:12px;">
+     ANALYTICS
+    </div>
+    <h2 id="metrics-heading" style="font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;">Real-Time Biometric Tracking</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+     <div class="glass" style="padding:28px;text-align:center;">
+      <div class="mono animate-data-tick" style="font-size:36px;font-weight:700;color:#00ff88;">
+       68<span style="font-size:16px;color:#888;">ms</span>
+      </div>
+      <div style="font-size:13px;color:#888;margin-top:8px;">
+       HRV Score
+      </div>
+      <svg viewbox="0 0 200 40" style="width:100%;margin-top:12px;">
+       <polyline fill="none" stroke="#00ff88" stroke-width="1.5" opacity="0.4" points="0,30 20,28 40,20 60,25 80,10 100,22 120,18 140,30 160,15 180,20 200,25" />
+      </svg>
+     </div>
+     <div class="glass" style="padding:28px;text-align:center;">
+      <div class="mono animate-data-tick" style="font-size:36px;font-weight:700;color:#00e5ff;animation-delay:0.3s;">
+       52.1
+      </div>
+      <div style="font-size:13px;color:#888;margin-top:8px;">
+       VO2 Max
+      </div>
+      <svg viewbox="0 0 200 40" style="width:100%;margin-top:12px;">
+       <polyline fill="none" stroke="#00e5ff" stroke-width="1.5" opacity="0.4" points="0,35 25,30 50,20 75,25 100,12 125,18 150,22 175,15 200,10" />
+      </svg>
+     </div>
+     <div class="glass" style="padding:28px;text-align:center;">
+      <div class="mono animate-data-tick" style="font-size:36px;font-weight:700;color:#00ff88;animation-delay:0.6s;">
+       94<span style="font-size:16px;color:#888;">min</span>
+      </div>
+      <div style="font-size:13px;color:#888;margin-top:8px;">
+       Deep Sleep
+      </div>
+      <svg viewbox="0 0 200 40" style="width:100%;margin-top:12px;">
+       <polyline fill="none" stroke="#00ff88" stroke-width="1.5" opacity="0.4" points="0,25 30,20 60,30 90,15 120,28 150,10 180,20 200,18" />
+      </svg>
+     </div>
+     <div class="glass" style="padding:28px;text-align:center;">
+      <div class="mono animate-data-tick" style="font-size:36px;font-weight:700;color:#00e5ff;animation-delay:0.9s;">
+       2.1<span style="font-size:16px;color:#888;">yr</span>
+      </div>
+      <div style="font-size:13px;color:#888;margin-top:8px;">
+       Bio Age Δ
+      </div>
+      <svg viewbox="0 0 200 40" style="width:100%;margin-top:12px;">
+       <polyline fill="none" stroke="#00e5ff" stroke-width="1.5" opacity="0.4" points="0,35 40,28 80,22 120,18 160,12 200,8" />
+      </svg>
+     </div>
+    </div>
+   </div>
+  </section><!-- RESULTS -->
+  <section id="results" style="padding:100px 24px;">
+   <div style="max-width:1200px;margin:0 auto;">
+    <div class="mono" style="font-size:12px;color:#00e5ff;letter-spacing:3px;margin-bottom:12px;">
+     PERFORMANCE DATA
+    </div>
+    <h2 style="font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;">Before → After</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+     <div class="glass" style="padding:32px;">
+      <h3 style="font-size:14px;color:#888;letter-spacing:1px;margin-bottom:20px;">RECOVERY TIME</h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;"><span style="font-size:28px;font-weight:300;color:#555;">72h</span> <i data-lucide="arrow-right" style="color:#00ff88;width:20px;height:20px;"></i> <span style="font-size:28px;font-weight:700;color:#00ff88;">38h</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+       <div style="width:47%;height:100%;background:linear-gradient(90deg,#00ff88,#00cc6a);border-radius:3px;"></div>
+      </div>
+      <div class="mono" style="font-size:11px;color:#00ff88;margin-top:8px;">
+       −47% reduction
+      </div>
+     </div>
+     <div class="glass" style="padding:32px;">
+      <h3 style="font-size:14px;color:#888;letter-spacing:1px;margin-bottom:20px;">ENERGY OUTPUT</h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;"><span style="font-size:28px;font-weight:300;color:#555;">6.2</span> <i data-lucide="arrow-right" style="color:#00e5ff;width:20px;height:20px;"></i> <span style="font-size:28px;font-weight:700;color:#00e5ff;">8.9</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+       <div style="width:44%;height:100%;background:linear-gradient(90deg,#00e5ff,#0099cc);border-radius:3px;"></div>
+      </div>
+      <div class="mono" style="font-size:11px;color:#00e5ff;margin-top:8px;">
+       +44% increase
+      </div>
+     </div>
+     <div class="glass" style="padding:32px;">
+      <h3 style="font-size:14px;color:#888;letter-spacing:1px;margin-bottom:20px;">BIOLOGICAL AGE</h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;"><span style="font-size:28px;font-weight:300;color:#555;">41yr</span> <i data-lucide="arrow-right" style="color:#00ff88;width:20px;height:20px;"></i> <span style="font-size:28px;font-weight:700;color:#00ff88;">36yr</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;">
+       <div style="width:12%;height:100%;background:linear-gradient(90deg,#00ff88,#00cc6a);border-radius:3px;"></div>
+      </div>
+      <div class="mono" style="font-size:11px;color:#00ff88;margin-top:8px;">
+       −5 years reversed
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRICING -->
+  <section id="pricing" style="padding:100px 24px;background:rgba(255,255,255,0.015);">
+   <div style="max-width:1200px;margin:0 auto;">
+    <div class="mono" style="font-size:12px;color:#00ff88;letter-spacing:3px;margin-bottom:12px;">
+     SELECT TIER
+    </div>
+    <h2 style="font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;">Pricing</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;"><!-- Core -->
+     <div class="glass pricing-card" style="padding:36px;">
+      <div style="font-size:13px;color:#888;letter-spacing:2px;margin-bottom:8px;">
+       CORE
+      </div>
+      <div style="font-size:42px;font-weight:800;margin-bottom:4px;">
+       $49<span style="font-size:16px;font-weight:400;color:#888;">/mo</span>
+      </div>
+      <div style="font-size:14px;color:#888;margin-bottom:28px;">
+       Baseline optimization
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Recovery protocols
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Sleep tracking
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Monthly report
+       </div>
+      </div><button class="btn-secondary" style="width:100%;font-size:14px;">Select Core</button>
+     </div><!-- Advanced (featured) -->
+     <div class="glass pricing-card featured" style="padding:36px;position:relative;">
+      <div style="position:absolute;top:-12px;right:20px;background:linear-gradient(135deg,#00ff88,#00cc6a);color:#050505;font-size:11px;font-weight:700;padding:4px 14px;border-radius:999px;letter-spacing:1px;">
+       POPULAR
+      </div>
+      <div style="font-size:13px;color:#00ff88;letter-spacing:2px;margin-bottom:8px;">
+       ADVANCED
+      </div>
+      <div style="font-size:42px;font-weight:800;margin-bottom:4px;">
+       $129<span style="font-size:16px;font-weight:400;color:#888;">/mo</span>
+      </div>
+      <div style="font-size:14px;color:#888;margin-bottom:28px;">
+       Full protocol system
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>All Core features
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Metabolic protocols
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Real-time dashboard
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00ff88;width:16px;height:16px;"></i>Weekly coaching
+       </div>
+      </div><button class="btn-primary" style="width:100%;font-size:14px;">Select Advanced</button>
+     </div><!-- Elite -->
+     <div class="glass pricing-card" style="padding:36px;">
+      <div style="font-size:13px;color:#00e5ff;letter-spacing:2px;margin-bottom:8px;">
+       ELITE
+      </div>
+      <div style="font-size:42px;font-weight:800;margin-bottom:4px;">
+       $299<span style="font-size:16px;font-weight:400;color:#888;">/mo</span>
+      </div>
+      <div style="font-size:14px;color:#888;margin-bottom:28px;">
+       Ongoing performance lab
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00e5ff;width:16px;height:16px;"></i>All Advanced features
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00e5ff;width:16px;height:16px;"></i>Bloodwork analysis
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00e5ff;width:16px;height:16px;"></i>Epigenetic tracking
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
+        <i data-lucide="check" style="color:#00e5ff;width:16px;height:16px;"></i>1-on-1 lab sessions
+       </div>
+      </div><button class="btn-secondary" style="width:100%;font-size:14px;border-color:rgba(0,229,255,0.3);color:#00e5ff;">Select Elite</button>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" style="padding:100px 24px;">
+   <div style="max-width:800px;margin:0 auto;">
+    <div class="mono" style="font-size:12px;color:#00e5ff;letter-spacing:3px;margin-bottom:12px;">
+     FAQ
+    </div>
+    <h2 style="font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:48px;">Common Questions</h2>
+    <div id="faq-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="upgrade" style="padding:100px 24px;background:rgba(255,255,255,0.015);">
+   <div style="max-width:800px;margin:0 auto;text-align:center;">
+    <h2 id="bottom-cta" style="font-size:clamp(28px,4vw,52px);font-weight:800;margin-bottom:16px;">Upgrade your baseline.</h2>
+    <p style="font-size:16px;color:#888;margin-bottom:36px;">Extend performance. Extend life.</p><a href="#pricing" class="btn-primary" style="text-decoration:none;font-size:16px;padding:16px 48px;">Start Upgrade</a> <!-- Vote + Comment Module -->
+    <div class="glass" style="margin-top:64px;padding:36px;text-align:left;">
+     <div style="font-size:18px;font-weight:600;margin-bottom:6px;">
+      Rate this experience
+     </div>
+     <div style="font-size:13px;color:#888;margin-bottom:20px;">
+      Your feedback shapes future protocols
+     </div><!-- Reactions -->
+     <div id="reactions-row" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;"></div><!-- Price vote -->
+     <div style="font-size:14px;font-weight:500;margin-bottom:10px;">
+      What would you pay for this?
+     </div>
+     <div id="price-row" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;"></div><!-- Comment --> <textarea id="comment-input" placeholder="Leave a comment..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;color:#e0e0e0;font-family:'Outfit',sans-serif;font-size:14px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='rgba(0,255,136,0.3)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea> <button id="submit-feedback" class="btn-primary" style="margin-top:14px;width:100%;font-size:14px;">Submit Feedback</button>
+     <div id="submit-loading" style="display:none;text-align:center;margin-top:14px;color:#888;font-size:13px;">
+      Submitting...
+     </div><!-- Embed note -->
+     <div style="margin-top:20px;text-align:center;font-size:12px;color:#555;border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
+      Embed Widget Here
+     </div><!-- Comments display -->
+     <div id="comments-list" style="margin-top:24px;display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer style="padding:40px 24px;border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
+   <div style="font-size:13px;color:#555;">
+    © 2025 Longevix Systems · Extend performance. Extend life.
+   </div>
+  </footer>
+  <script>
+// ── Config & SDK ──
+const defaultConfig = {
+  background_color: '#050505',
+  surface_color: 'rgba(255,255,255,0.04)',
+  text_color: '#e0e0e0',
+  primary_action_color: '#00ff88',
+  secondary_action_color: '#00e5ff',
+  font_family: 'Outfit',
+  font_size: 16,
+  hero_title: 'Your biology is programmable.',
+  hero_subtitle: 'Optimize recovery, energy, and longevity.',
+  protocols_title: 'Recovery & Performance Protocols',
+  metrics_title: 'Real-Time Biometric Tracking',
+  bottom_cta_text: 'Upgrade your baseline.'
+};
+
+let allFeedback = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+const reactions = ['🔥','⚡','💚','🧬','👏','🚀'];
+const prices = ['$9','$19','$29','$49','$79','$99','$149','$199','$249','$299'];
+
+const faqs = [
+  {q:'How quickly will I see results?',a:'Most users report noticeable improvements in sleep quality and recovery within 2–3 weeks. Full protocol benefits typically manifest in 8–12 weeks.'},
+  {q:'Is this backed by science?',a:'Every protocol is built on peer-reviewed research in longevity, sports science, and chronobiology. We cite all sources in your dashboard.'},
+  {q:'Can I cancel anytime?',a:'Yes. All plans are month-to-month with no contracts or cancellation fees.'},
+  {q:'What equipment do I need?',a:'A wearable (Whoop, Oura, Apple Watch) is recommended for biometric tracking. Protocols can be followed without one.'}
+];
+
+// Build FAQ
+const faqList = document.getElementById('faq-list');
+faqs.forEach((f,i) => {
+  const item = document.createElement('div');
+  item.className = 'glass';
+  item.style.cssText = 'padding:20px 24px;cursor:pointer;transition:all 0.3s;';
+  item.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:15px;font-weight:500;">${f.q}</span><i data-lucide="chevron-down" style="width:18px;height:18px;color:#888;transition:transform 0.3s;"></i></div><div style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;"><p style="font-size:14px;color:#888;line-height:1.7;padding-top:14px;">${f.a}</p></div>`;
+  item.addEventListener('click', () => {
+    const ans = item.querySelector('div:last-child');
+    const icon = item.querySelector('i');
+    if(ans.style.maxHeight && ans.style.maxHeight !== '0px'){ans.style.maxHeight='0px';icon.style.transform='rotate(0)';}
+    else{ans.style.maxHeight='200px';icon.style.transform='rotate(180deg)';}
+  });
+  faqList.appendChild(item);
+});
+
+// Build reactions
+const reactionsRow = document.getElementById('reactions-row');
+reactions.forEach(r => {
+  const btn = document.createElement('button');
+  btn.className = 'reaction-btn';
+  btn.textContent = r;
+  btn.style.fontSize = '20px';
+  btn.addEventListener('click', () => {
+    selectedReaction = r;
+    reactionsRow.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+  reactionsRow.appendChild(btn);
+});
+
+// Build price chips
+const priceRow = document.getElementById('price-row');
+prices.forEach(p => {
+  const chip = document.createElement('button');
+  chip.className = 'price-chip';
+  chip.textContent = p;
+  chip.addEventListener('click', () => {
+    selectedPrice = p;
+    priceRow.querySelectorAll('.price-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  });
+  priceRow.appendChild(chip);
+});
+
+// Toast
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// Submit feedback
+document.getElementById('submit-feedback').addEventListener('click', async () => {
+  const comment = document.getElementById('comment-input').value.trim();
+  if(!selectedReaction && !comment && !selectedPrice){showToast('Please add a reaction, comment, or vote');return;}
+  if(allFeedback.length >= 999){showToast('Feedback limit reached');return;}
+
+  const btn = document.getElementById('submit-feedback');
+  const loading = document.getElementById('submit-loading');
+  btn.style.display = 'none';
+  loading.style.display = 'block';
+
+  const result = await window.dataSdk.create({
+    type: 'feedback',
+    reaction: selectedReaction || '',
+    comment: comment,
+    price_vote: selectedPrice || '',
+    timestamp: new Date().toISOString()
+  });
+
+  btn.style.display = 'block';
+  loading.style.display = 'none';
+
+  if(result.isOk){
+    showToast('Feedback submitted!');
+    document.getElementById('comment-input').value = '';
+    selectedReaction = null;
+    selectedPrice = null;
+    reactionsRow.querySelectorAll('.reaction-btn').forEach(b=>b.classList.remove('selected'));
+    priceRow.querySelectorAll('.price-chip').forEach(c=>c.classList.remove('selected'));
+  } else {
+    showToast('Error submitting feedback');
+  }
+});
+
+// Render comments
+function renderComments(data){
+  const list = document.getElementById('comments-list');
+  const withComments = data.filter(d => d.comment);
+  const existingMap = new Map([...list.children].map(el=>[el.dataset.id,el]));
+
+  withComments.slice(-20).forEach(item => {
+    const id = item.__backendId;
+    if(existingMap.has(id)){
+      existingMap.delete(id);
+    } else {
+      const el = document.createElement('div');
+      el.dataset.id = id;
+      el.style.cssText = 'padding:14px 18px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.05);';
+      el.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">${item.reaction?'<span style="font-size:16px;">'+item.reaction+'</span>':''}<span class="mono" style="font-size:11px;color:#555;">${new Date(item.timestamp).toLocaleDateString()}</span>${item.price_vote?'<span style="font-size:11px;color:#00e5ff;margin-left:auto;">'+item.price_vote+'</span>':''}</div><div style="font-size:14px;color:#bbb;line-height:1.6;">${item.comment.replace(/</g,'&lt;')}</div>`;
+      list.appendChild(el);
+    }
+  });
+  existingMap.forEach(el=>el.remove());
+}
+
+// Data handler
+const dataHandler = {
+  onDataChanged(data){
+    allFeedback = data;
+    renderComments(data);
+  }
+};
+
+// Init SDKs
+(async () => {
+  // Element SDK
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      const c = key => config[key] || defaultConfig[key];
+      document.getElementById('hero-title').innerHTML = c('hero_title').replace(/\n/g,'<br>');
+      document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+      document.getElementById('protocols-heading').textContent = c('protocols_title');
+      document.getElementById('metrics-heading').textContent = c('metrics_title');
+      document.getElementById('bottom-cta').textContent = c('bottom_cta_text');
+
+      // colors
+      const bg = c('background_color');
+      const neon = c('primary_action_color');
+      const cyan = c('secondary_action_color');
+      const txt = c('text_color');
+
+      document.body.style.background = bg;
+      document.body.style.color = txt;
+
+      document.querySelectorAll('.btn-primary').forEach(el=>{
+        el.style.background = `linear-gradient(135deg,${neon},${neon}cc)`;
+      });
+      document.querySelectorAll('.btn-secondary').forEach(el=>{
+        el.style.borderColor = neon+'4d';
+        el.style.color = neon;
+      });
+
+      // font
+      const font = c('font_family');
+      const size = c('font_size');
+      document.body.style.fontFamily = `${font}, Outfit, sans-serif`;
+      document.getElementById('hero-title').style.fontSize = `clamp(36px,6vw,${size*4.5}px)`;
+      document.getElementById('hero-subtitle').style.fontSize = `${size*1.25}px`;
+    },
+    mapToCapabilities: (config) => {
+      const c = key => config[key] || defaultConfig[key];
+      const mut = (key) => ({
+        get: () => c(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({[key]:v}); }
+      });
+      return {
+        recolorables: [mut('background_color'),mut('surface_color'),mut('text_color'),mut('primary_action_color'),mut('secondary_action_color')],
+        borderables: [],
+        fontEditable: mut('font_family'),
+        fontSizeable: {
+          get: () => c('font_size'),
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({font_size:v}); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = key => config[key] || defaultConfig[key];
+      return new Map([
+        ['hero_title', c('hero_title')],
+        ['hero_subtitle', c('hero_subtitle')],
+        ['protocols_title', c('protocols_title')],
+        ['metrics_title', c('metrics_title')],
+        ['bottom_cta_text', c('bottom_cta_text')]
+      ]);
+    }
+  });
+
+  // Data SDK
+  const initResult = await window.dataSdk.init(dataHandler);
+  if(!initResult.isOk) console.error('Data SDK init failed');
+})();
+
+// Active nav highlight on scroll
+const sections = ['home','protocols','metrics','results','pricing','faq','upgrade'];
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if(link) link.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>{const el=document.getElementById(s);if(el)observer.observe(el);});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a015a25d927c5',t:'MTc3NTU3NTExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

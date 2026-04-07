@@ -1,1 +1,752 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c90ff52a-c544-4e4f-a2e8-c3a56b7df8ca -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FireGuard Systems</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        fire: '#ef4444',
+        fireDark: '#b91c1c',
+        ember: '#f97316',
+        charcoal: '#0f0f0f',
+        smoke: '#1a1a1a',
+        ash: '#2a2a2a',
+        steel: '#9ca3af',
+      },
+      fontFamily: {
+        heading: ['"Space Mono"', 'monospace'],
+        body: ['"DM Sans"', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(239,68,68,0.3); }
+  50% { box-shadow: 0 0 30px rgba(239,68,68,0.6); }
+}
+@keyframes smoke-drift {
+  0% { transform: translateY(0) scale(1); opacity: 0.03; }
+  50% { transform: translateY(-20px) scale(1.1); opacity: 0.06; }
+  100% { transform: translateY(0) scale(1); opacity: 0.03; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes alert-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fade-up { animation: fade-up 0.8s ease-out forwards; opacity: 0; }
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+.delay-5 { animation-delay: 0.75s; }
+
+.smoke-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(239,68,68,0.04) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(249,115,22,0.03) 0%, transparent 60%);
+  animation: smoke-drift 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.pricing-card:hover { animation: pulse-glow 2s ease-in-out infinite; }
+.alert-dot { animation: alert-pulse 1.5s ease-in-out infinite; }
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ef4444;
+  transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.scroll-reveal { opacity: 0; transform: translateY(24px); transition: all 0.7s ease-out; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f0f0f; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="bg-charcoal text-white font-body overflow-auto h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 bg-charcoal/90 backdrop-blur-md border-b border-ash/50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 text-fire font-heading font-bold text-lg">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <path d="M14 2C14 2 8 8 8 14c0 3.3 2.7 6 6 6s6-2.7 6-6C20 8 14 2 14 2z" fill="#ef4444" opacity="0.8" /><path d="M14 8c0 0-3 3-3 7 0 1.7 1.3 3 3 3s3-1.3 3-3c0-4-3-7-3-7z" fill="#f97316" />
+      </svg> FireGuard </a> <button id="mobile-toggle" class="lg:hidden text-steel hover:text-fire transition-colors"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+     <div id="nav-links" class="hidden lg:flex items-center gap-6 text-sm"><a href="#home" class="nav-link text-steel hover:text-white">Home</a> <a href="#risks" class="nav-link text-steel hover:text-white">Risks</a> <a href="#systems" class="nav-link text-steel hover:text-white">Systems</a> <a href="#inspections" class="nav-link text-steel hover:text-white">Inspections</a> <a href="#pricing" class="nav-link text-steel hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-steel hover:text-white">FAQ</a> <a href="#protect" class="bg-fire hover:bg-fireDark text-white px-4 py-2 rounded font-semibold text-xs tracking-wide transition-colors">PROTECT NOW</a>
+     </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-smoke border-t border-ash/50 px-4 py-3 space-y-2"><a href="#home" class="block text-steel hover:text-white text-sm py-1">Home</a> <a href="#risks" class="block text-steel hover:text-white text-sm py-1">Risks</a> <a href="#systems" class="block text-steel hover:text-white text-sm py-1">Systems</a> <a href="#inspections" class="block text-steel hover:text-white text-sm py-1">Inspections</a> <a href="#pricing" class="block text-steel hover:text-white text-sm py-1">Pricing</a> <a href="#faq" class="block text-steel hover:text-white text-sm py-1">FAQ</a> <a href="#protect" class="block bg-fire hover:bg-fireDark text-white px-4 py-2 rounded font-semibold text-xs text-center mt-2">PROTECT NOW</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center smoke-bg pt-14 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-charcoal via-smoke to-charcoal"></div><!-- Grid pattern -->
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(239,68,68,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(239,68,68,0.3) 1px, transparent 1px); background-size: 60px 60px;"></div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+     <div class="animate-fade-up flex items-center justify-center gap-2 mb-6"><span class="alert-dot w-2 h-2 rounded-full bg-fire inline-block"></span> <span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Critical Protection Active</span>
+     </div>
+     <h1 id="el-hero-title" class="animate-fade-up delay-1 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">Fire prevention is<br><span class="text-fire">not optional.</span></h1>
+     <p id="el-hero-subtitle" class="animate-fade-up delay-2 text-steel text-lg sm:text-xl mt-6 max-w-2xl mx-auto leading-relaxed">Protect what matters before it's too late.</p>
+     <div class="animate-fade-up delay-3 flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"><a href="#protect" id="el-cta-primary" class="bg-fire hover:bg-fireDark text-white px-8 py-3.5 rounded font-bold text-sm tracking-wide transition-all duration-300 hover:shadow-lg hover:shadow-fire/30">PROTECT NOW</a> <a href="#inspections" id="el-cta-secondary" class="border border-ash hover:border-fire text-steel hover:text-white px-8 py-3.5 rounded font-semibold text-sm tracking-wide transition-all duration-300">SCHEDULE INSPECTION</a>
+     </div>
+     <div class="animate-fade-up delay-4 mt-16 grid grid-cols-3 gap-8 max-w-md mx-auto">
+      <div class="text-center">
+       <div class="text-fire font-heading text-2xl font-bold">
+        15K+
+       </div>
+       <div class="text-steel text-xs mt-1">
+        Buildings Protected
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-fire font-heading text-2xl font-bold">
+        99.8%
+       </div>
+       <div class="text-steel text-xs mt-1">
+        Prevention Rate
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-fire font-heading text-2xl font-bold">
+        24/7
+       </div>
+       <div class="text-steel text-xs mt-1">
+        Monitoring
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"><i data-lucide="chevron-down" class="w-5 h-5 text-steel/50"></i>
+    </div>
+   </section><!-- RISKS -->
+   <section id="risks" class="py-24 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+     <div class="scroll-reveal text-center mb-16"><span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Threat Assessment</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3">Common Fire Hazards</h2>
+      <p class="text-steel mt-4 max-w-xl mx-auto">Most fires are preventable. Understanding the risks is the first step to eliminating them.</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="scroll-reveal bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-fire/10 flex items-center justify-center mb-4 group-hover:bg-fire/20 transition-colors">
+        <i data-lucide="zap" class="w-5 h-5 text-fire"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Electrical Failures</h3>
+       <p class="text-steel text-sm leading-relaxed">Faulty wiring, overloaded circuits, and damaged equipment cause 50,000+ structural fires annually.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="alert-dot w-1.5 h-1.5 rounded-full bg-fire inline-block"></span><span class="text-fire text-xs font-heading">HIGH RISK</span>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-1 bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-fire/10 flex items-center justify-center mb-4 group-hover:bg-fire/20 transition-colors">
+        <i data-lucide="flame" class="w-5 h-5 text-fire"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Heating Equipment</h3>
+       <p class="text-steel text-sm leading-relaxed">Unattended heaters, furnaces, and fireplaces are the second leading cause of residential fires.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="alert-dot w-1.5 h-1.5 rounded-full bg-fire inline-block"></span><span class="text-fire text-xs font-heading">HIGH RISK</span>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-2 bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-ember/10 flex items-center justify-center mb-4 group-hover:bg-ember/20 transition-colors">
+        <i data-lucide="cloud" class="w-5 h-5 text-ember"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Cooking Incidents</h3>
+       <p class="text-steel text-sm leading-relaxed">Unattended cooking is the #1 cause of home fires, accounting for nearly half of all incidents.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-ember inline-block"></span><span class="text-ember text-xs font-heading">MODERATE RISK</span>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-3 bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-ember/10 flex items-center justify-center mb-4 group-hover:bg-ember/20 transition-colors">
+        <i data-lucide="cigarette" class="w-5 h-5 text-ember"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Smoking Materials</h3>
+       <p class="text-steel text-sm leading-relaxed">Improperly discarded cigarettes and smoking materials remain a leading cause of fire deaths.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-ember inline-block"></span><span class="text-ember text-xs font-heading">MODERATE RISK</span>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-4 bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-fire/10 flex items-center justify-center mb-4 group-hover:bg-fire/20 transition-colors">
+        <i data-lucide="droplets" class="w-5 h-5 text-fire"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Flammable Liquids</h3>
+       <p class="text-steel text-sm leading-relaxed">Improper storage of chemicals, fuels, and solvents creates explosive risk in commercial buildings.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="alert-dot w-1.5 h-1.5 rounded-full bg-fire inline-block"></span><span class="text-fire text-xs font-heading">HIGH RISK</span>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-5 bg-smoke border border-ash/50 rounded-lg p-6 hover:border-fire/40 transition-all duration-500 group">
+       <div class="w-10 h-10 rounded bg-ember/10 flex items-center justify-center mb-4 group-hover:bg-ember/20 transition-colors">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-ember"></i>
+       </div>
+       <h3 class="font-heading font-bold text-sm mb-2">Outdated Systems</h3>
+       <p class="text-steel text-sm leading-relaxed">Non-compliant fire suppression systems and expired extinguishers leave buildings vulnerable.</p>
+       <div class="mt-4 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-ember inline-block"></span><span class="text-ember text-xs font-heading">MODERATE RISK</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SYSTEMS -->
+   <section id="systems" class="py-24 px-4 bg-smoke relative">
+    <div class="absolute inset-0 opacity-[0.02]" style="background-image: radial-gradient(circle at 1px 1px, rgba(239,68,68,0.5) 1px, transparent 0); background-size: 40px 40px;"></div>
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="scroll-reveal text-center mb-16"><span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Defense Systems</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3">Prevention &amp; Suppression</h2>
+      <p class="text-steel mt-4 max-w-xl mx-auto">Integrated fire safety solutions engineered for total protection.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="scroll-reveal bg-charcoal border border-ash/50 rounded-lg overflow-hidden group hover:border-fire/30 transition-all duration-500">
+       <div class="h-48 bg-gradient-to-br from-fire/10 to-ember/5 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none" class="relative z-10 opacity-60 group-hover:opacity-100 transition-opacity"><circle cx="40" cy="20" r="12" stroke="#ef4444" stroke-width="2" fill="none" /> <path d="M28 20h-8v40h40V20h-8" stroke="#ef4444" stroke-width="2" fill="none" /> <line x1="40" y1="32" x2="40" y2="50" stroke="#f97316" stroke-width="2" /> <circle cx="40" cy="54" r="3" fill="#f97316" /> <path d="M34 58 40 68 46 58" stroke="#ef4444" stroke-width="1.5" fill="none" opacity="0.5" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal to-transparent"></div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-3">
+         <span class="alert-dot w-2 h-2 rounded-full bg-fire"></span><span class="text-fire font-heading text-xs tracking-wider">ACTIVE SUPPRESSION</span>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">Sprinkler Systems</h3>
+        <p class="text-steel text-sm leading-relaxed">Automatic wet and dry pipe sprinkler systems with zone-specific activation. Heat-sensitive elements trigger within seconds of threshold breach.</p>
+        <ul class="mt-4 space-y-2">
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Wet &amp; dry pipe configurations</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Zone-specific activation</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>NFPA 13 compliant</li>
+        </ul>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-1 bg-charcoal border border-ash/50 rounded-lg overflow-hidden group hover:border-fire/30 transition-all duration-500">
+       <div class="h-48 bg-gradient-to-br from-fire/10 to-ember/5 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none" class="relative z-10 opacity-60 group-hover:opacity-100 transition-opacity"><rect x="20" y="15" width="40" height="50" rx="4" stroke="#ef4444" stroke-width="2" fill="none" /> <circle cx="40" cy="35" r="8" stroke="#f97316" stroke-width="2" fill="none" /> <path d="M40 27v-6M40 47v6M32 35h-6M48 35h6" stroke="#f97316" stroke-width="1.5" /> <rect x="30" y="50" width="20" height="6" rx="1" stroke="#ef4444" stroke-width="1.5" fill="none" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal to-transparent"></div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-3">
+         <span class="alert-dot w-2 h-2 rounded-full bg-ember"></span><span class="text-ember font-heading text-xs tracking-wider">EARLY DETECTION</span>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">Alarm &amp; Detection</h3>
+        <p class="text-steel text-sm leading-relaxed">Multi-sensor smoke and heat detection networks with centralized monitoring. Intelligent algorithms reduce false alarms by 94%.</p>
+        <ul class="mt-4 space-y-2">
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Photoelectric &amp; ionization</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>24/7 central monitoring</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Smart false-alarm reduction</li>
+        </ul>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-2 bg-charcoal border border-ash/50 rounded-lg overflow-hidden group hover:border-fire/30 transition-all duration-500">
+       <div class="h-48 bg-gradient-to-br from-fire/10 to-ember/5 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none" class="relative z-10 opacity-60 group-hover:opacity-100 transition-opacity"><path d="M15 65h50" stroke="#ef4444" stroke-width="2" /> <rect x="25" y="25" width="30" height="40" rx="2" stroke="#ef4444" stroke-width="2" fill="none" /> <path d="M35 25V15h10v10" stroke="#f97316" stroke-width="2" fill="none" /> <line x1="25" y1="45" x2="55" y2="45" stroke="#ef4444" stroke-width="1" opacity="0.5" /> <circle cx="40" cy="35" r="3" fill="#f97316" opacity="0.7" /> <path d="M37 55h6v10h-6z" stroke="#ef4444" stroke-width="1.5" fill="none" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal to-transparent"></div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-3">
+         <span class="w-2 h-2 rounded-full bg-fire"></span><span class="text-fire font-heading text-xs tracking-wider">CONTAINMENT</span>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">Fire Doors &amp; Barriers</h3>
+        <p class="text-steel text-sm leading-relaxed">Rated fire doors, fire-stop barriers, and compartmentalization systems that contain fire spread and protect evacuation routes.</p>
+        <ul class="mt-4 space-y-2">
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>60–120 min rated doors</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Intumescent seals</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Auto-close mechanisms</li>
+        </ul>
+       </div>
+      </div>
+      <div class="scroll-reveal delay-3 bg-charcoal border border-ash/50 rounded-lg overflow-hidden group hover:border-fire/30 transition-all duration-500">
+       <div class="h-48 bg-gradient-to-br from-fire/10 to-ember/5 flex items-center justify-center relative overflow-hidden">
+        <svg width="80" height="80" viewbox="0 0 80 80" fill="none" class="relative z-10 opacity-60 group-hover:opacity-100 transition-opacity"><path d="M20 60 40 15 60 60Z" stroke="#ef4444" stroke-width="2" fill="none" /> <line x1="40" y1="35" x2="40" y2="48" stroke="#f97316" stroke-width="2.5" /> <circle cx="40" cy="53" r="2" fill="#f97316" /> <path d="M10 65h60" stroke="#ef4444" stroke-width="1.5" opacity="0.4" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-charcoal to-transparent"></div>
+       </div>
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-3">
+         <span class="w-2 h-2 rounded-full bg-ember"></span><span class="text-ember font-heading text-xs tracking-wider">EVACUATION</span>
+        </div>
+        <h3 class="font-heading font-bold text-lg mb-2">Emergency Systems</h3>
+        <p class="text-steel text-sm leading-relaxed">Illuminated exit signage, emergency lighting, voice evacuation systems, and automated route guidance for safe egress.</p>
+        <ul class="mt-4 space-y-2">
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Photoluminescent pathways</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Voice evacuation PA</li>
+         <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Battery backup systems</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- INSPECTIONS -->
+   <section id="inspections" class="py-24 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+     <div class="scroll-reveal text-center mb-16"><span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Compliance Protocol</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3">Inspection Process</h2>
+      <p class="text-steel mt-4 max-w-xl mx-auto">Rigorous safety audits to ensure full regulatory compliance and operational readiness.</p>
+     </div>
+     <div class="relative"><!-- Timeline line -->
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-fire/50 via-fire/20 to-transparent"></div>
+      <div class="space-y-12 md:space-y-16">
+       <div class="scroll-reveal md:flex items-center">
+        <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-fire font-heading text-xs tracking-wider">PHASE 01</span>
+         <h3 class="font-heading font-bold text-xl mt-2">Site Assessment</h3>
+         <p class="text-steel text-sm mt-2 leading-relaxed">Complete survey of building layout, occupancy classification, existing systems, and structural fire ratings.</p>
+        </div>
+        <div class="hidden md:flex w-10 h-10 rounded-full bg-fire/20 border-2 border-fire items-center justify-center mx-auto shrink-0 relative z-10"><i data-lucide="search" class="w-4 h-4 text-fire"></i>
+        </div>
+        <div class="md:w-1/2 md:pl-12"></div>
+       </div>
+       <div class="scroll-reveal delay-1 md:flex items-center">
+        <div class="md:w-1/2 md:pr-12"></div>
+        <div class="hidden md:flex w-10 h-10 rounded-full bg-fire/20 border-2 border-fire items-center justify-center mx-auto shrink-0 relative z-10"><i data-lucide="clipboard-check" class="w-4 h-4 text-fire"></i>
+        </div>
+        <div class="md:w-1/2 md:pl-12"><span class="text-fire font-heading text-xs tracking-wider">PHASE 02</span>
+         <h3 class="font-heading font-bold text-xl mt-2">Risk Analysis</h3>
+         <p class="text-steel text-sm mt-2 leading-relaxed">Detailed hazard identification, risk scoring, and compliance gap analysis against NFPA and local fire codes.</p>
+        </div>
+       </div>
+       <div class="scroll-reveal delay-2 md:flex items-center">
+        <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-fire font-heading text-xs tracking-wider">PHASE 03</span>
+         <h3 class="font-heading font-bold text-xl mt-2">System Testing</h3>
+         <p class="text-steel text-sm mt-2 leading-relaxed">Functional testing of all detection, suppression, alarm, and emergency systems with documented results.</p>
+        </div>
+        <div class="hidden md:flex w-10 h-10 rounded-full bg-fire/20 border-2 border-fire items-center justify-center mx-auto shrink-0 relative z-10"><i data-lucide="settings" class="w-4 h-4 text-fire"></i>
+        </div>
+        <div class="md:w-1/2 md:pl-12"></div>
+       </div>
+       <div class="scroll-reveal delay-3 md:flex items-center">
+        <div class="md:w-1/2 md:pr-12"></div>
+        <div class="hidden md:flex w-10 h-10 rounded-full bg-fire/20 border-2 border-fire items-center justify-center mx-auto shrink-0 relative z-10"><i data-lucide="file-text" class="w-4 h-4 text-fire"></i>
+        </div>
+        <div class="md:w-1/2 md:pl-12"><span class="text-fire font-heading text-xs tracking-wider">PHASE 04</span>
+         <h3 class="font-heading font-bold text-xl mt-2">Certification &amp; Report</h3>
+         <p class="text-steel text-sm mt-2 leading-relaxed">Comprehensive inspection report, compliance certification, remediation plan, and scheduled re-inspection timeline.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-24 px-4 bg-smoke relative">
+    <div class="max-w-6xl mx-auto relative z-10">
+     <div class="scroll-reveal text-center mb-16"><span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Protection Plans</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3">Choose Your Shield</h2>
+      <p class="text-steel mt-4 max-w-xl mx-auto">Scalable fire safety solutions for every building and budget.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 lg:gap-8"><!-- Basic -->
+      <div class="scroll-reveal pricing-card bg-charcoal border border-ash/50 rounded-lg p-8 flex flex-col hover:border-fire/40 transition-all duration-500">
+       <div class="flex items-center gap-2 mb-1">
+        <span class="w-2 h-2 rounded-full bg-steel"></span><span class="text-steel font-heading text-xs tracking-wider">BASIC</span>
+       </div>
+       <h3 class="font-heading font-bold text-xl mt-2">Inspection</h3>
+       <div class="mt-4">
+        <span class="text-4xl font-heading font-bold">$299</span><span class="text-steel text-sm ml-1">/visit</span>
+       </div>
+       <p class="text-steel text-sm mt-3">Comprehensive fire safety inspection and compliance report.</p>
+       <ul class="mt-6 space-y-3 flex-1">
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Full site inspection</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Risk assessment report</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Code compliance check</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Digital safety checklist</li>
+       </ul><a href="#protect" class="mt-8 block text-center border border-fire text-fire hover:bg-fire hover:text-white py-3 rounded font-semibold text-sm transition-all duration-300">Get Started</a>
+      </div><!-- Pro -->
+      <div class="scroll-reveal delay-1 pricing-card bg-charcoal border-2 border-fire rounded-lg p-8 flex flex-col relative transition-all duration-500 scale-[1.02]">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-fire text-white text-xs font-heading font-bold px-4 py-1 rounded-full tracking-wider">
+        RECOMMENDED
+       </div>
+       <div class="flex items-center gap-2 mb-1">
+        <span class="alert-dot w-2 h-2 rounded-full bg-fire"></span><span class="text-fire font-heading text-xs tracking-wider">PRO</span>
+       </div>
+       <h3 class="font-heading font-bold text-xl mt-2">System Setup</h3>
+       <div class="mt-4">
+        <span class="text-4xl font-heading font-bold">$1,499</span><span class="text-steel text-sm ml-1">/system</span>
+       </div>
+       <p class="text-steel text-sm mt-3">Complete prevention system design, installation, and commissioning.</p>
+       <ul class="mt-6 space-y-3 flex-1">
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Everything in Basic</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>System design &amp; install</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>Alarm &amp; sprinkler setup</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>System diagrams included</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-fire"></i>1-year maintenance</li>
+       </ul><a href="#protect" class="mt-8 block text-center bg-fire hover:bg-fireDark text-white py-3 rounded font-bold text-sm transition-all duration-300 shadow-lg shadow-fire/20">Protect Now</a>
+      </div><!-- Enterprise -->
+      <div class="scroll-reveal delay-2 pricing-card bg-charcoal border border-ash/50 rounded-lg p-8 flex flex-col hover:border-fire/40 transition-all duration-500">
+       <div class="flex items-center gap-2 mb-1">
+        <span class="w-2 h-2 rounded-full bg-ember"></span><span class="text-ember font-heading text-xs tracking-wider">ENTERPRISE</span>
+       </div>
+       <h3 class="font-heading font-bold text-xl mt-2">Full Protection</h3>
+       <div class="mt-4">
+        <span class="text-4xl font-heading font-bold">Custom</span>
+       </div>
+       <p class="text-steel text-sm mt-3">End-to-end fire safety management for large-scale operations.</p>
+       <ul class="mt-6 space-y-3 flex-1">
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Everything in Pro</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>24/7 monitoring</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Dedicated safety officer</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Service workflows</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Multi-site coverage</li>
+        <li class="flex items-center gap-2 text-sm text-steel"><i data-lucide="check" class="w-4 h-4 text-ember"></i>Priority response SLA</li>
+       </ul><a href="#protect" class="mt-8 block text-center border border-ember text-ember hover:bg-ember hover:text-white py-3 rounded font-semibold text-sm transition-all duration-300">Contact Sales</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-4 relative">
+    <div class="max-w-3xl mx-auto">
+     <div class="scroll-reveal text-center mb-16"><span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Intelligence</span>
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-3">Frequently Asked</h2>
+     </div>
+     <div class="scroll-reveal space-y-3" id="faq-container">
+      <div class="faq-item bg-smoke border border-ash/50 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-ash/20 transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">How often should fire systems be inspected?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-steel shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-5 pb-5">
+        <p class="text-steel text-sm leading-relaxed">NFPA requires annual inspections for most systems. Sprinklers need quarterly visual checks and annual flow tests. We create a custom schedule based on your building type and local codes.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-smoke border border-ash/50 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-ash/20 transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">Do you handle permit and compliance paperwork?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-steel shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-5 pb-5">
+        <p class="text-steel text-sm leading-relaxed">Yes. We manage all documentation, permits, and code compliance reporting. Our Pro and Enterprise plans include full regulatory liaison services.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-smoke border border-ash/50 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-ash/20 transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">What's included in the digital safety toolkit?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-steel shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-5 pb-5">
+        <p class="text-steel text-sm leading-relaxed">Safety checklists, inspection templates, system diagrams, and service workflow documents — all digitally formatted for easy implementation and team distribution.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-smoke border border-ash/50 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-ash/20 transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">Can you retrofit existing buildings?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-steel shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-5 pb-5">
+        <p class="text-steel text-sm leading-relaxed">Absolutely. We specialize in retrofitting older structures with modern fire prevention and suppression systems while minimizing disruption to operations.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-smoke border border-ash/50 rounded-lg overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left hover:bg-ash/20 transition-colors" onclick="toggleFaq(this)"> <span class="font-semibold text-sm pr-4">What's your emergency response time?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-steel shrink-0 transition-transform duration-300"></i> </button>
+       <div class="faq-content hidden px-5 pb-5">
+        <p class="text-steel text-sm leading-relaxed">Enterprise clients receive priority SLA with under 2-hour response for critical system issues. Pro clients receive same-business-day support for all system-related concerns.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="protect" class="py-24 px-4 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-charcoal via-smoke to-charcoal"></div>
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(239,68,68,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(239,68,68,0.4) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+     <div class="scroll-reveal text-center mb-16">
+      <div class="flex items-center justify-center gap-2 mb-6"><span class="alert-dot w-2 h-2 rounded-full bg-fire"></span> <span class="text-fire font-heading text-xs tracking-[0.3em] uppercase">Take Action Now</span>
+      </div>
+      <h2 id="el-bottom-cta" class="font-heading text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">Eliminate the risk<br><span class="text-fire">before it starts.</span></h2>
+      <p class="text-steel text-lg mt-6 max-w-xl mx-auto">Every second without protection is a risk you don't need to take.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"><a href="#home" class="bg-fire hover:bg-fireDark text-white px-10 py-4 rounded font-bold text-sm tracking-wide transition-all duration-300 hover:shadow-lg hover:shadow-fire/30">PROTECT NOW</a> <a href="#inspections" class="border border-ash hover:border-fire text-steel hover:text-white px-10 py-4 rounded font-semibold text-sm tracking-wide transition-all duration-300">SCHEDULE INSPECTION</a>
+      </div>
+     </div><!-- Vote + Comment Module -->
+     <div class="scroll-reveal mt-8 bg-smoke border border-ash/50 rounded-lg p-6 sm:p-8">
+      <div class="text-center mb-6">
+       <h3 class="font-heading font-bold text-lg">Community Feedback</h3>
+       <p class="text-steel text-sm mt-1">React, vote on pricing, and share your thoughts.</p>
+      </div><!-- Reactions -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-8"><button onclick="submitReaction('🔥')" class="reaction-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105">🔥 <span id="react-🔥">0</span></button> <button onclick="submitReaction('🛡️')" class="reaction-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105">🛡️ <span id="react-🛡️">0</span></button> <button onclick="submitReaction('✅')" class="reaction-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105">✅ <span id="react-✅">0</span></button> <button onclick="submitReaction('⚠️')" class="reaction-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105">⚠️ <span id="react-⚠️">0</span></button> <button onclick="submitReaction('💯')" class="reaction-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105">💯 <span id="react-💯">0</span></button>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="text-center text-sm text-steel mb-3">What would you pay for a full fire safety audit?</p>
+       <div class="flex flex-wrap items-center justify-center gap-2" id="price-votes"><button onclick="submitPriceVote('$99')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$99</button> <button onclick="submitPriceVote('$199')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$199</button> <button onclick="submitPriceVote('$299')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$299</button> <button onclick="submitPriceVote('$399')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$399</button> <button onclick="submitPriceVote('$499')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$499</button> <button onclick="submitPriceVote('$599')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$599</button> <button onclick="submitPriceVote('$799')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$799</button> <button onclick="submitPriceVote('$999')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$999</button> <button onclick="submitPriceVote('$1,499')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$1,499</button> <button onclick="submitPriceVote('$2,000+')" class="price-btn bg-charcoal border border-ash/50 hover:border-fire/50 rounded px-3 py-1.5 text-xs font-heading transition-all duration-300">$2,000+</button>
+       </div>
+       <div id="price-results" class="mt-4 hidden">
+        <div class="space-y-2" id="price-bars"></div>
+       </div>
+      </div><!-- Comments -->
+      <div>
+       <form id="comment-form" class="flex gap-3 mb-4"><label for="comment-input" class="sr-only">Your comment</label> <input id="comment-input" type="text" placeholder="Share your thoughts on fire safety..." class="flex-1 bg-charcoal border border-ash/50 rounded px-4 py-2.5 text-sm text-white placeholder-steel/50 focus:border-fire/50 focus:outline-none transition-colors"> <button type="submit" id="comment-submit" class="bg-fire hover:bg-fireDark text-white px-5 py-2.5 rounded font-semibold text-sm transition-colors flex items-center gap-2"> <i data-lucide="send" class="w-4 h-4"></i> Send </button>
+       </form>
+       <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"></div>
+       <p id="no-comments" class="text-center text-steel/50 text-sm py-4">No comments yet. Be the first to share.</p>
+      </div><!-- Embed note -->
+      <div class="mt-6 pt-4 border-t border-ash/30 text-center"><span class="text-steel/40 text-xs font-heading tracking-wider">EMBED WIDGET HERE</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-12 px-4 border-t border-ash/30">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2 text-steel text-sm">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none">
+       <path d="M14 2C14 2 8 8 8 14c0 3.3 2.7 6 6 6s6-2.7 6-6C20 8 14 2 14 2z" fill="#ef4444" opacity="0.8" /><path d="M14 8c0 0-3 3-3 7 0 1.7 1.3 3 3 3s3-1.3 3-3c0-4-3-7-3-7z" fill="#f97316" />
+      </svg> © 2025 FireGuard Systems. All rights reserved.
+     </div>
+     <div class="flex items-center gap-6 text-steel text-xs"><span>Safety Checklists</span> <span>Inspection Templates</span> <span>System Diagrams</span> <span>Service Workflows</span>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// --- Data ---
+let allData = [];
+let isSubmitting = false;
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    updatePriceResults();
+    updateComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts() {
+  const counts = {};
+  allData.filter(d => d.type === 'reaction').forEach(d => {
+    counts[d.reaction] = (counts[d.reaction] || 0) + 1;
+  });
+  ['🔥','🛡️','✅','⚠️','💯'].forEach(e => {
+    const el = document.getElementById('react-' + e);
+    if (el) el.textContent = counts[e] || 0;
+  });
+}
+
+function updatePriceResults() {
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const resultsEl = document.getElementById('price-results');
+  const barsEl = document.getElementById('price-bars');
+  if (votes.length === 0) { resultsEl.classList.add('hidden'); return; }
+  resultsEl.classList.remove('hidden');
+  const counts = {};
+  votes.forEach(d => { counts[d.price_vote] = (counts[d.price_vote] || 0) + 1; });
+  const max = Math.max(...Object.values(counts), 1);
+  const prices = ['$99','$199','$299','$399','$499','$599','$799','$999','$1,499','$2,000+'];
+  barsEl.innerHTML = '';
+  prices.forEach(p => {
+    const c = counts[p] || 0;
+    if (c === 0) return;
+    const pct = Math.round((c / max) * 100);
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-3';
+    row.innerHTML = `<span class="w-14 text-xs font-heading text-steel text-right shrink-0">${p}</span><div class="flex-1 bg-charcoal rounded-full h-4 overflow-hidden"><div class="h-full bg-gradient-to-r from-fire to-ember rounded-full transition-all duration-500" style="width:${pct}%"></div></div><span class="text-xs text-steel w-8">${c}</span>`;
+    barsEl.appendChild(row);
+  });
+}
+
+function updateComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  if (comments.length === 0) { list.innerHTML = ''; noComments.classList.remove('hidden'); return; }
+  noComments.classList.add('hidden');
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const fragment = document.createDocumentFragment();
+  comments.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      fragment.appendChild(existingMap.get(c.__backendId));
+      existingMap.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'bg-charcoal border border-ash/30 rounded-lg p-4';
+      const time = new Date(c.timestamp);
+      const ts = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<p class="text-sm text-white/90">${escapeHtml(c.comment)}</p><span class="text-xs text-steel/50 mt-2 block">${ts}</span>`;
+      fragment.appendChild(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+  list.innerHTML = '';
+  list.appendChild(fragment);
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div'); d.textContent = t; return d.innerHTML;
+}
+
+async function submitReaction(emoji) {
+  if (isSubmitting || allData.length >= 999) return;
+  isSubmitting = true;
+  await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price_vote: '', timestamp: new Date().toISOString() });
+  isSubmitting = false;
+}
+
+async function submitPriceVote(price) {
+  if (isSubmitting || allData.length >= 999) return;
+  isSubmitting = true;
+  document.querySelectorAll('.price-btn').forEach(b => b.classList.add('opacity-50', 'pointer-events-none'));
+  const r = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', price_vote: price, timestamp: new Date().toISOString() });
+  document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('opacity-50', 'pointer-events-none'));
+  isSubmitting = false;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || isSubmitting || allData.length >= 999) return;
+  isSubmitting = true;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.classList.add('opacity-50');
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price_vote: '', timestamp: new Date().toISOString() });
+  if (r.isOk) input.value = '';
+  btn.disabled = false; btn.classList.remove('opacity-50');
+  isSubmitting = false;
+});
+
+// --- Element SDK ---
+const defaultConfig = {
+  hero_title: 'Fire prevention is not optional.',
+  hero_subtitle: 'Protect what matters before it\'s too late.',
+  cta_primary: 'Protect Now',
+  cta_secondary: 'Schedule Inspection',
+  bottom_cta_text: 'Eliminate the risk before it starts.',
+  background_color: '#0f0f0f',
+  surface_color: '#1a1a1a',
+  text_color: '#9ca3af',
+  primary_action_color: '#ef4444',
+  secondary_action_color: '#f97316',
+  font_family: 'Space Mono',
+  font_size: 16
+};
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const get = (k) => config[k] || defaultConfig[k];
+
+    // Text
+    const heroTitle = get('hero_title');
+    const parts = heroTitle.split(' ');
+    const last = parts.pop();
+    document.getElementById('el-hero-title').innerHTML = parts.join(' ') + '<br><span class="text-fire">' + escapeHtml(last) + '</span>';
+    document.getElementById('el-hero-subtitle').textContent = get('hero_subtitle');
+    document.getElementById('el-cta-primary').textContent = get('cta_primary').toUpperCase();
+    document.getElementById('el-cta-secondary').textContent = get('cta_secondary').toUpperCase();
+    const bottomText = get('bottom_cta_text');
+    const bParts = bottomText.split(' ');
+    const bLast = bParts.splice(-2).join(' ');
+    document.getElementById('el-bottom-cta').innerHTML = bParts.join(' ') + '<br><span class="text-fire">' + escapeHtml(bLast) + '</span>';
+
+    // Colors
+    const bg = get('background_color');
+    const surface = get('surface_color');
+    const text = get('text_color');
+    const primary = get('primary_action_color');
+    const secondary = get('secondary_action_color');
+
+    document.body.style.backgroundColor = bg;
+    document.querySelectorAll('.bg-smoke, [class*="bg-smoke"]').forEach(el => {
+      if (!el.classList.contains('pricing-card')) el.style.backgroundColor = surface;
+    });
+    document.querySelectorAll('.text-steel').forEach(el => el.style.color = text);
+    document.querySelectorAll('.bg-fire, [class*="bg-fire"]').forEach(el => {
+      if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.classList.contains('bg-fire')) el.style.backgroundColor = primary;
+    });
+    document.querySelectorAll('.text-fire').forEach(el => el.style.color = primary);
+    document.querySelectorAll('.text-ember').forEach(el => el.style.color = secondary);
+    document.querySelectorAll('.border-fire').forEach(el => el.style.borderColor = primary);
+
+    // Font
+    const font = get('font_family');
+    const baseSize = get('font_size');
+    document.querySelectorAll('.font-heading').forEach(el => {
+      el.style.fontFamily = `${font}, monospace`;
+    });
+    document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 3.5}px`);
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2.25}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+    document.querySelectorAll('p, li').forEach(el => {
+      if (!el.closest('h1, h2, h3')) el.style.fontSize = `${baseSize * 0.875}px`;
+    });
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// --- Navigation ---
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// --- FAQ ---
+function toggleFaq(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !content.classList.contains('hidden');
+  document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+  document.querySelectorAll('.faq-toggle [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    content.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// --- Scroll Reveal ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// --- Active Nav ---
+const sections = document.querySelectorAll('section[id]');
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (wrapper.scrollTop >= s.offsetTop - 100) current = s.getAttribute('id');
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2d39827f27c5',t:'MTc3NTU3NjkwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

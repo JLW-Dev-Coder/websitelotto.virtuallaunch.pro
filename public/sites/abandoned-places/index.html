@@ -1,1 +1,623 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/025a4257-bedf-4faf-a009-bd2f01d41189 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RustEcho Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['DM Sans', 'sans-serif']
+      },
+      colors: {
+        rust: { 50: '#faf5f0', 100: '#f0e6d8', 200: '#d9c4a8', 400: '#a8845c', 600: '#7a5c3a', 800: '#4a3520', 900: '#2d1f12' },
+        ash: { 50: '#f5f4f2', 100: '#e8e5e1', 200: '#d1ccc5', 400: '#9b9389', 500: '#7a7168', 600: '#5e564e', 800: '#363230', 900: '#1e1c1a' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, 5%); }
+  50% { transform: translate(-8%, 2%); }
+  70% { transform: translate(6%, -6%); }
+  90% { transform: translate(-3%, 8%); }
+}
+
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  animation: grainShift 8s steps(10) infinite;
+  opacity: 0.5;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.glass-card {
+  background: rgba(46, 40, 34, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168, 132, 92, 0.15);
+}
+
+.glow-cta {
+  box-shadow: 0 0 0px rgba(168, 132, 92, 0);
+  transition: box-shadow 0.6s ease, transform 0.3s ease;
+}
+.glow-cta:hover {
+  box-shadow: 0 0 30px rgba(168, 132, 92, 0.35), 0 0 60px rgba(168, 132, 92, 0.15);
+  transform: translateY(-2px);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #a8845c;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.hero-img {
+  animation: heroReveal 2s ease forwards;
+}
+@keyframes heroReveal {
+  from { opacity: 0; filter: blur(8px) saturate(0); }
+  to { opacity: 1; filter: blur(0) saturate(0.7); }
+}
+
+.scroll-wrapper {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.star-rating { display: inline-flex; gap: 2px; }
+.star-rating svg { width: 14px; height: 14px; fill: #a8845c; stroke: #a8845c; }
+
+img {
+  filter: saturate(0.55) contrast(1.05);
+  transition: filter 0.5s ease;
+}
+img:hover {
+  filter: saturate(0.75) contrast(1.1);
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-ash-900 text-ash-100 font-body grain-overlay">
+  <div class="scroll-wrapper" id="app-root"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(30,28,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(168,132,92,0.1);">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-14"><a href="#home" class="font-display text-lg tracking-wide" style="color: #a8845c;">RustEcho</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Home</a> <a href="#wallpapers" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Wallpapers</a> <a href="#explorer-kit" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Explorer Kit</a> <a href="#preview" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Preview</a> <a href="#reviews" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Reviews</a> <a href="#download" class="nav-link text-sm tracking-widest uppercase" style="color: #d1ccc5;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color: #d1ccc5;" aria-label="Menu">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+       <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+      </svg></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3" style="background: rgba(30,28,26,0.95);"><a href="#home" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Home</a> <a href="#wallpapers" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Wallpapers</a> <a href="#explorer-kit" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Explorer Kit</a> <a href="#preview" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Preview</a> <a href="#reviews" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Reviews</a> <a href="#download" class="text-sm tracking-widest uppercase py-1" style="color: #d1ccc5;">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=1600&amp;q=80" alt="Abandoned building interior" class="hero-img w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#2d1f12,#1e1c1a)'; this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(30,28,26,0.6) 0%, rgba(30,28,26,0.85) 60%, #1e1c1a 100%);"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-32 pb-24" style="min-height: 100%;">
+     <p class="fade-up text-xs tracking-[0.35em] uppercase mb-6" style="color: #a8845c;">Urban Exploration Aesthetic Vault</p>
+     <h1 id="hero-title" class="fade-up font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight max-w-4xl" style="color: #f0e6d8; transition-delay: 0.15s;">Beauty in what's left behind.</h1>
+     <p id="hero-subtitle" class="fade-up mt-6 text-base sm:text-lg max-w-2xl leading-relaxed" style="color: #9b9389; transition-delay: 0.3s;">Urban exploration visuals and planning templates built from real photography.</p>
+     <div class="fade-up flex flex-col sm:flex-row gap-4 mt-10" style="transition-delay: 0.45s;"><a href="#download" class="glow-cta inline-flex items-center gap-3 px-8 py-3.5 text-sm tracking-widest uppercase font-medium rounded-sm" style="background: #a8845c; color: #1e1c1a;">
+       <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+       </svg> Download the Pack </a> <a href="#preview" class="inline-flex items-center gap-3 px-8 py-3.5 text-sm tracking-widest uppercase font-medium rounded-sm border" style="border-color: rgba(168,132,92,0.4); color: #d1ccc5; transition: all 0.3s;" onmouseover="this.style.borderColor='#a8845c';this.style.color='#f0e6d8'" onmouseout="this.style.borderColor='rgba(168,132,92,0.4)';this.style.color='#d1ccc5'">
+       <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+       </svg> Preview Gallery </a>
+     </div>
+     <div class="fade-up mt-16 flex items-center gap-8 text-xs tracking-widest uppercase" style="color: #7a7168; transition-delay: 0.6s;"><span>130 Wallpapers</span> <span style="color: #a8845c;">|</span> <span>26 Posters</span> <span style="color: #a8845c;">|</span> <span>Planning Tools</span>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="w-full px-6 py-24" style="background: #1e1c1a;">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs tracking-[0.35em] uppercase mb-4" style="color: #a8845c;">The Collection</p>
+      <h2 id="wallpapers-title" class="font-display text-3xl sm:text-4xl md:text-5xl font-bold" style="color: #f0e6d8;">130 Abandoned Place Wallpapers</h2>
+      <p class="mt-4 max-w-xl mx-auto" style="color: #7a7168;">Cinematic shots from forgotten factories, hospitals, houses, and corridors. Each one tells a story of time passing.</p>
+     </div>
+     <div class="fade-up grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5]"><img src="https://images.unsplash.com/photo-1569058634588-fe01255d9498?w=600&amp;q=75" alt="Urban decay corridor" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Corridor Series</span>
+       </div>
+      </div>
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5]"><img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&amp;q=75" alt="Abandoned factory" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Factory Ruins</span>
+       </div>
+      </div>
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5]"><img src="https://images.unsplash.com/photo-1589802829985-817e51171b92?w=600&amp;q=75" alt="Broken windows" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Shattered Glass</span>
+       </div>
+      </div>
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5] hidden md:block"><img src="https://images.unsplash.com/photo-1565008576549-57569a49371d?w=600&amp;q=75" alt="Empty hallway" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Hollow Halls</span>
+       </div>
+      </div>
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5] hidden md:block"><img src="https://images.unsplash.com/photo-1494972308560-55e0a3e2e2bf?w=600&amp;q=75" alt="Rust texture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Rust &amp; Patina</span>
+       </div>
+      </div>
+      <div class="relative group overflow-hidden rounded-sm aspect-[4/5] hidden md:block"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&amp;q=75" alt="Derelict house" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4"><span class="text-xs tracking-widest uppercase" style="color: #d1ccc5;">Forgotten Homes</span>
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="fade-up mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="glass-card rounded-sm p-6 text-center">
+       <svg class="mx-auto mb-3" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2">
+        <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+       </svg>
+       <p class="text-sm font-medium" style="color: #f0e6d8;">Urban Exploration Niche</p>
+       <p class="text-xs mt-2" style="color: #7a7168;">A curated aesthetic for the decay community</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 text-center">
+       <svg class="mx-auto mb-3" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
+       </svg>
+       <p class="text-sm font-medium" style="color: #f0e6d8;">Photography-Driven</p>
+       <p class="text-xs mt-2" style="color: #7a7168;">Real shots, real locations, real atmosphere</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 text-center">
+       <svg class="mx-auto mb-3" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+       </svg>
+       <p class="text-sm font-medium" style="color: #f0e6d8;">Emotional Appeal</p>
+       <p class="text-xs mt-2" style="color: #7a7168;">Atmospheric content that resonates deeply</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="w-full px-6 py-24" style="background: linear-gradient(180deg, #1e1c1a 0%, #2d1f12 50%, #1e1c1a 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs tracking-[0.35em] uppercase mb-4" style="color: #a8845c;">What's Inside</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold" style="color: #f0e6d8;">The Complete Vault</h2>
+     </div>
+     <div class="fade-up grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <rect x="2" y="2" width="20" height="20" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
+       </svg>
+       <p class="text-2xl font-display font-bold" style="color: #f0e6d8;">130</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">Wallpapers</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" />
+       </svg>
+       <p class="text-2xl font-display font-bold" style="color: #f0e6d8;">26</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">Posters</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+       </svg>
+       <p class="text-2xl font-display font-bold" style="color: #f0e6d8;">1</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">Exploration Planner</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+       </svg>
+       <p class="text-2xl font-display font-bold" style="color: #f0e6d8;">1</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">Safety Checklist</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+       </svg>
+       <p class="text-sm font-display font-bold" style="color: #f0e6d8;">Story Templates</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">+ Caption Pack</p>
+      </div>
+      <div class="glass-card rounded-sm p-6 flex flex-col items-center text-center">
+       <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2" class="mb-4">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <p class="text-sm font-display font-bold" style="color: #f0e6d8;">Instant Access</p>
+       <p class="text-xs tracking-widest uppercase mt-1" style="color: #7a7168;">Download &amp; use today</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- EXPLORER KIT -->
+   <section id="explorer-kit" class="w-full px-6 py-24" style="background: #1e1c1a;">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs tracking-[0.35em] uppercase mb-4" style="color: #a8845c;">Plan Your Expedition</p>
+      <h2 id="kit-title" class="font-display text-3xl sm:text-4xl md:text-5xl font-bold" style="color: #f0e6d8;">The Explorer Kit</h2>
+      <p class="mt-4 max-w-xl mx-auto" style="color: #7a7168;">Route planning templates and a comprehensive safety checklist designed for real-world urban exploration.</p>
+     </div>
+     <div class="fade-up grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Route Planner -->
+      <div class="glass-card rounded-sm p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2">
+         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+        </svg>
+        <h3 class="font-display text-xl font-bold" style="color: #f0e6d8;">Route Planner</h3>
+       </div>
+       <div class="space-y-3">
+        <div class="flex items-start gap-3 p-3 rounded-sm" style="background: rgba(168,132,92,0.08); border-left: 2px solid #a8845c;"><span class="text-xs font-medium mt-0.5" style="color: #a8845c;">01</span>
+         <div>
+          <p class="text-sm font-medium" style="color: #d1ccc5;">Location Research</p>
+          <p class="text-xs mt-1" style="color: #7a7168;">Map coordinates, access points, satellite imagery</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-sm" style="background: rgba(168,132,92,0.06);"><span class="text-xs font-medium mt-0.5" style="color: #a8845c;">02</span>
+         <div>
+          <p class="text-sm font-medium" style="color: #d1ccc5;">Entry/Exit Mapping</p>
+          <p class="text-xs mt-1" style="color: #7a7168;">Primary and backup routes documented</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-sm" style="background: rgba(168,132,92,0.04);"><span class="text-xs font-medium mt-0.5" style="color: #a8845c;">03</span>
+         <div>
+          <p class="text-sm font-medium" style="color: #d1ccc5;">Time Window Planning</p>
+          <p class="text-xs mt-1" style="color: #7a7168;">Optimal light conditions and scheduling</p>
+         </div>
+        </div>
+        <div class="flex items-start gap-3 p-3 rounded-sm" style="background: rgba(168,132,92,0.03);"><span class="text-xs font-medium mt-0.5" style="color: #a8845c;">04</span>
+         <div>
+          <p class="text-sm font-medium" style="color: #d1ccc5;">Gear Checklist</p>
+          <p class="text-xs mt-1" style="color: #7a7168;">Camera, lighting, protective equipment</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Safety Checklist -->
+      <div class="glass-card rounded-sm p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1.2">
+         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+        <h3 class="font-display text-xl font-bold" style="color: #f0e6d8;">Safety Checklist</h3>
+       </div>
+       <div class="space-y-2.5" id="safety-checklist"><label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Tell someone your location and return time</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Carry flashlight with backup batteries</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Wear sturdy boots and protective gloves</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Check structural integrity before entering</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Bring dust mask or respirator</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Fully charged phone with emergency contacts</span> </label> <label class="flex items-center gap-3 p-2.5 rounded-sm cursor-pointer transition-colors hover:bg-white/5"> <input type="checkbox" class="accent-amber-700 w-4 h-4 rounded-sm flex-shrink-0"> <span class="text-sm" style="color: #d1ccc5;">Never explore alone</span> </label>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="w-full px-6 py-24" style="background: linear-gradient(180deg, #1e1c1a 0%, #2d1f12 40%, #1e1c1a 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs tracking-[0.35em] uppercase mb-4" style="color: #a8845c;">Preview</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold" style="color: #f0e6d8;">A Glimpse Inside the Vault</h2>
+     </div>
+     <div class="fade-up grid grid-cols-1 md:grid-cols-2 gap-6"><!-- Poster Preview -->
+      <div class="glass-card rounded-sm overflow-hidden">
+       <div class="aspect-[3/4] relative"><img src="https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=600&amp;q=75" alt="Poster preview - abandoned hospital" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='#363230';this.alt='Image unavailable';">
+        <div class="absolute inset-0 flex flex-col justify-end p-6" style="background: linear-gradient(0deg, rgba(30,28,26,0.9) 0%, transparent 60%);">
+         <p class="text-xs tracking-[0.3em] uppercase mb-2" style="color: #a8845c;">Poster 07 / 26</p>
+         <p class="font-display text-lg italic" style="color: #f0e6d8;">"Time takes everything eventually."</p>
+        </div>
+       </div>
+      </div><!-- Caption + Template Preview -->
+      <div class="flex flex-col gap-6">
+       <div class="glass-card rounded-sm p-6 flex-1">
+        <p class="text-xs tracking-[0.3em] uppercase mb-4" style="color: #a8845c;">Caption Pack Sample</p>
+        <div class="space-y-4">
+         <div class="p-3 rounded-sm" style="border-left: 2px solid #a8845c; background: rgba(168,132,92,0.06);">
+          <p class="text-sm italic" style="color: #d1ccc5;">"The walls remember what we've forgotten."</p>
+         </div>
+         <div class="p-3 rounded-sm" style="border-left: 2px solid rgba(168,132,92,0.5); background: rgba(168,132,92,0.04);">
+          <p class="text-sm italic" style="color: #d1ccc5;">"Every crack is a sentence in a story no one will finish."</p>
+         </div>
+         <div class="p-3 rounded-sm" style="border-left: 2px solid rgba(168,132,92,0.3); background: rgba(168,132,92,0.03);">
+          <p class="text-sm italic" style="color: #d1ccc5;">"Abandoned, not forgotten. Decayed, not gone."</p>
+         </div>
+        </div>
+       </div>
+       <div class="glass-card rounded-sm p-6">
+        <p class="text-xs tracking-[0.3em] uppercase mb-4" style="color: #a8845c;">Story Template Sample</p>
+        <div class="flex gap-3 overflow-x-auto pb-2">
+         <div class="flex-shrink-0 w-24 h-40 rounded-sm flex flex-col items-center justify-center text-center p-2" style="background: linear-gradient(180deg, #4a3520, #2d1f12); border: 1px solid rgba(168,132,92,0.2);">
+          <p class="text-[10px] tracking-widest uppercase" style="color: #a8845c;">Slide 1</p>
+          <p class="text-xs mt-2 font-display italic" style="color: #d1ccc5;">Location<br>
+           Revealed</p>
+         </div>
+         <div class="flex-shrink-0 w-24 h-40 rounded-sm flex flex-col items-center justify-center text-center p-2" style="background: linear-gradient(180deg, #363230, #1e1c1a); border: 1px solid rgba(168,132,92,0.15);">
+          <p class="text-[10px] tracking-widest uppercase" style="color: #a8845c;">Slide 2</p>
+          <p class="text-xs mt-2 font-display italic" style="color: #d1ccc5;">The<br>
+           Story</p>
+         </div>
+         <div class="flex-shrink-0 w-24 h-40 rounded-sm flex flex-col items-center justify-center text-center p-2" style="background: linear-gradient(180deg, #4a3520, #1e1c1a); border: 1px solid rgba(168,132,92,0.1);">
+          <p class="text-[10px] tracking-widest uppercase" style="color: #a8845c;">Slide 3</p>
+          <p class="text-xs mt-2 font-display italic" style="color: #d1ccc5;">Before<br>
+           &amp; After</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full px-6 py-24" style="background: #1e1c1a;">
+    <div class="max-w-5xl mx-auto">
+     <div class="fade-up text-center mb-16">
+      <p class="text-xs tracking-[0.35em] uppercase mb-4" style="color: #a8845c;">What Explorers Say</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold" style="color: #f0e6d8;">From the Community</h2>
+     </div>
+     <div class="fade-up grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="glass-card rounded-sm p-6">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #9b9389;">"The wallpapers alone are worth it. Every one feels like stepping into a forgotten world. My entire phone and desktop are set from this pack."</p>
+       <p class="text-xs tracking-widest uppercase" style="color: #a8845c;">- Mira T.</p>
+      </div>
+      <div class="glass-card rounded-sm p-6">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #9b9389;">"The safety checklist and route planner changed how I approach urbex. Professional-grade planning tools wrapped in a beautiful aesthetic."</p>
+       <p class="text-xs tracking-widest uppercase" style="color: #a8845c;">- Jake R.</p>
+      </div>
+      <div class="glass-card rounded-sm p-6">
+       <div class="star-rating mb-4">
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg viewbox="0 0 24 24">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color: #9b9389;">"Caption pack is incredible for my urbex Instagram. The posters look stunning printed out in my studio. Hauntingly beautiful work."</p>
+       <p class="text-xs tracking-widest uppercase" style="color: #a8845c;">- Leah K.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="w-full px-6 py-28 relative overflow-hidden" style="background: linear-gradient(180deg, #1e1c1a 0%, #2d1f12 50%, #1e1c1a 100%);">
+    <div class="absolute inset-0 opacity-10"><img src="https://images.unsplash.com/photo-1553451166-232112bda6f6?w=1200&amp;q=60" alt="" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none';" aria-hidden="true">
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="fade-up">
+      <svg class="mx-auto mb-6" width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="#a8845c" stroke-width="1">
+       <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
+      </svg>
+      <h2 id="bottom-cta-title" class="font-display text-4xl sm:text-5xl md:text-6xl font-bold" style="color: #f0e6d8;">Capture the forgotten.</h2>
+      <p class="mt-6 text-base max-w-lg mx-auto" style="color: #7a7168;">130 wallpapers. 26 posters. Planning tools. Caption packs. Story templates. Everything an urban explorer needs.</p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center"><button class="glow-cta inline-flex items-center justify-center gap-3 px-10 py-4 text-sm tracking-widest uppercase font-medium rounded-sm" style="background: #a8845c; color: #1e1c1a;">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+        </svg> Download the Full Pack </button>
+      </div><!-- Vote + Comment Widget -->
+      <div class="mt-16 glass-card rounded-sm p-6 max-w-md mx-auto">
+       <p class="text-xs tracking-[0.3em] uppercase mb-5" style="color: #a8845c;">Vote + Comment</p>
+       <div class="flex justify-center gap-6 mb-6"><button id="vote-up-btn" class="flex items-center gap-2 px-4 py-2 rounded-sm text-sm transition-all" style="border: 1px solid rgba(168,132,92,0.3); color: #d1ccc5;" onmouseover="this.style.borderColor='#a8845c'" onmouseout="this.style.borderColor='rgba(168,132,92,0.3)'">
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" /><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+         </svg><span id="vote-count">0</span> </button> <button id="vote-down-btn" class="flex items-center gap-2 px-4 py-2 rounded-sm text-sm transition-all" style="border: 1px solid rgba(168,132,92,0.3); color: #d1ccc5;" onmouseover="this.style.borderColor='#a8845c'" onmouseout="this.style.borderColor='rgba(168,132,92,0.3)'">
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z" /><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+         </svg></button>
+       </div>
+       <form id="comment-form" class="flex gap-2"><label for="comment-input" class="sr-only">Your comment</label> <input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 px-4 py-2.5 rounded-sm text-sm outline-none" style="background: rgba(30,28,26,0.8); border: 1px solid rgba(168,132,92,0.2); color: #d1ccc5;" onfocus="this.style.borderColor='#a8845c'" onblur="this.style.borderColor='rgba(168,132,92,0.2)'"> <button type="submit" class="px-4 py-2.5 rounded-sm text-sm tracking-widest uppercase" style="background: #a8845c; color: #1e1c1a;">Post</button>
+       </form>
+       <p class="text-[10px] mt-3 text-center" style="color: #5e564e;">Embed Widget Here</p>
+       <div id="comments-list" class="mt-4 space-y-2 max-h-40 overflow-y-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full px-6 py-10" style="background: #1e1c1a; border-top: 1px solid rgba(168,132,92,0.1);">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+     <div>
+      <p class="font-display text-lg" style="color: #a8845c;">RustEcho Studio</p>
+      <p class="text-xs mt-1" style="color: #5e564e;">Beauty in what's left behind.</p>
+     </div>
+     <p class="text-xs" style="color: #5e564e;">Urban exploration aesthetic vault. All photography rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Default config
+const defaultConfig = {
+  hero_title: "Beauty in what's left behind.",
+  hero_subtitle: "Urban exploration visuals and planning templates built from real photography.",
+  wallpapers_title: "130 Abandoned Place Wallpapers",
+  kit_title: "The Explorer Kit",
+  bottom_cta_title: "Capture the forgotten.",
+  background_color: "#1e1c1a",
+  surface_color: "#2d1f12",
+  text_color: "#f0e6d8",
+  accent_color: "#a8845c",
+  muted_color: "#7a7168",
+  font_family: "Playfair Display",
+  font_size: 16
+};
+
+// Element SDK init
+window.elementSdk.init({
+  defaultConfig,
+  async onConfigChange(config) {
+    const t = (key) => config[key] || defaultConfig[key];
+    document.getElementById('hero-title').textContent = t('hero_title');
+    document.getElementById('hero-subtitle').textContent = t('hero_subtitle');
+    document.getElementById('wallpapers-title').textContent = t('wallpapers_title');
+    document.getElementById('kit-title').textContent = t('kit_title');
+    document.getElementById('bottom-cta-title').textContent = t('bottom_cta_title');
+
+    // Colors
+    const bg = t('background_color');
+    const surface = t('surface_color');
+    const text = t('text_color');
+    const accent = t('accent_color');
+    const muted = t('muted_color');
+
+    document.body.style.backgroundColor = bg;
+    document.querySelectorAll('[style*="color: #f0e6d8"]').forEach(el => el.style.color = text);
+    document.querySelectorAll('[style*="color: #a8845c"]').forEach(el => el.style.color = accent);
+    document.querySelectorAll('[style*="color: #7a7168"]').forEach(el => el.style.color = muted);
+
+    // Font
+    const font = t('font_family');
+    const baseFontStack = 'Georgia, serif';
+    document.querySelectorAll('.font-display').forEach(el => {
+      el.style.fontFamily = `${font}, ${baseFontStack}`;
+    });
+
+    // Font size
+    const size = t('font_size');
+    document.getElementById('hero-title').style.fontSize = '';
+    document.getElementById('hero-subtitle').style.fontSize = `${size}px`;
+  },
+  mapToCapabilities(config) {
+    const c = (key) => ({ get: () => config[key] || defaultConfig[key], set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); } });
+    return {
+      recolorables: [c('background_color'), c('surface_color'), c('text_color'), c('accent_color'), c('muted_color')],
+      borderables: [],
+      fontEditable: c('font_family'),
+      fontSizeable: c('font_size')
+    };
+  },
+  mapToEditPanelValues(config) {
+    return new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+      ['kit_title', config.kit_title || defaultConfig.kit_title],
+      ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title]
+    ]);
+  }
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Vote widget
+let voteCount = 0;
+document.getElementById('vote-up-btn').addEventListener('click', () => {
+  voteCount++;
+  document.getElementById('vote-count').textContent = voteCount;
+});
+document.getElementById('vote-down-btn').addEventListener('click', () => {
+  voteCount = Math.max(0, voteCount - 1);
+  document.getElementById('vote-count').textContent = voteCount;
+});
+
+// Comment widget
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const comment = document.createElement('div');
+  comment.className = 'p-3 rounded-sm text-sm';
+  comment.style.cssText = 'background: rgba(168,132,92,0.06); border-left: 2px solid rgba(168,132,92,0.3); color: #d1ccc5;';
+  comment.textContent = text;
+  document.getElementById('comments-list').prepend(comment);
+  input.value = '';
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e89edea313827c5',t:'MTc3NTU3NDMxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

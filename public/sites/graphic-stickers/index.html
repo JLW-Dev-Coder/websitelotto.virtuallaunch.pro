@@ -1,1 +1,786 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5a0fa5a3-13a6-4f74-8fee-f6851de8b12c -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeckDrop Street Lab</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;family=Oswald:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        acid: '#AAFF00',
+        cyan: '#00F0FF',
+        horange: '#FF5722',
+        grit: '#1A1A1A',
+        asphalt: '#0D0D0D'
+      },
+      fontFamily: {
+        bebas: ['Bebas Neue', 'sans-serif'],
+        mono: ['Space Mono', 'monospace'],
+        oswald: ['Oswald', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes glitch1 {
+  0%, 100% { clip-path: inset(0 0 90% 0); transform: translate(-2px, 0); }
+  20% { clip-path: inset(30% 0 50% 0); transform: translate(2px, 0); }
+  40% { clip-path: inset(60% 0 10% 0); transform: translate(-1px, 0); }
+  60% { clip-path: inset(10% 0 70% 0); transform: translate(3px, 0); }
+  80% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 0); }
+}
+
+@keyframes glitch2 {
+  0%, 100% { clip-path: inset(85% 0 0 0); transform: translate(2px, 0); }
+  25% { clip-path: inset(0 0 60% 0); transform: translate(-3px, 0); }
+  50% { clip-path: inset(40% 0 30% 0); transform: translate(1px, 0); }
+  75% { clip-path: inset(20% 0 55% 0); transform: translate(-1px, 0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(170, 255, 0, 0.5); }
+  50% { box-shadow: 0 0 20px 8px rgba(170, 255, 0, 0.2); }
+}
+
+@keyframes tapeWiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes scanline {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes noiseBg {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
+
+.glitch-text { position: relative; }
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+}
+.glitch-text::before { color: #00F0FF; animation: glitch1 3s infinite; z-index: -1; }
+.glitch-text::after { color: #FF5722; animation: glitch2 3s infinite; z-index: -1; }
+
+.pop-in { animation: popIn 0.6s ease-out both; }
+.slide-up { animation: slideUp 0.7s ease-out both; }
+.pulse-cta { animation: pulse 2s infinite; }
+.tape-wiggle { animation: tapeWiggle 2s ease-in-out infinite; }
+.float-el { animation: float 4s ease-in-out infinite; }
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  animation: noiseBg 0.5s steps(5) infinite;
+}
+
+.scanline::after {
+  content: '';
+  position: absolute; left: 0; width: 100%; height: 4px;
+  background: rgba(170, 255, 0, 0.08);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+
+.sticker {
+  border: 2px solid #AAFF00;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+  transform: rotate(-2deg);
+}
+
+.deck-card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.deck-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(170,255,0,0.1) 100%);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; z-index: 1;
+}
+.deck-card:hover::before { opacity: 1; }
+.deck-card:hover { transform: translateY(-8px) rotate(-1deg); }
+
+.nav-link {
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 2px; background: #AAFF00;
+  transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: #AAFF00; }
+
+.scroll-reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.star-rating { color: #AAFF00; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0D0D0D; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #AAFF00; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-asphalt text-white overflow-auto">
+  <div id="app" class="w-full min-h-full relative noise-overlay">
+   <!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-asphalt/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+     <a href="#home" class="font-bebas text-2xl tracking-wider"> <span class="text-acid">DECK</span><span class="text-white">DROP</span> </a>
+     <div class="hidden md:flex items-center gap-6 font-mono text-xs uppercase tracking-widest">
+      <a href="#home" class="nav-link text-white/70">Home</a> <a href="#decks" class="nav-link text-white/70">Deck Graphics</a> <a href="#stickers" class="nav-link text-white/70">Stickers</a> <a href="#preview" class="nav-link text-white/70">Preview</a> <a href="#reviews" class="nav-link text-white/70">Reviews</a> <a href="#download" class="nav-link text-white/70">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-acid" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-grit border-t border-white/10 px-4 py-4 flex flex-col gap-3 font-mono text-xs uppercase tracking-widest">
+     <a href="#home" class="text-white/70 hover:text-acid py-1">Home</a> <a href="#decks" class="text-white/70 hover:text-acid py-1">Deck Graphics</a> <a href="#stickers" class="text-white/70 hover:text-acid py-1">Stickers</a> <a href="#preview" class="text-white/70 hover:text-acid py-1">Preview</a> <a href="#reviews" class="text-white/70 hover:text-acid py-1">Reviews</a> <a href="#download" class="text-white/70 hover:text-acid py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden scanline">
+    <div class="absolute inset-0 bg-gradient-to-br from-asphalt via-grit to-asphalt"></div><img src="https://images.unsplash.com/photo-1559163499-641a18621f65?w=1200&amp;h=600&amp;fit=crop" alt="Skateboard deck" class="absolute inset-0 w-full h-full object-cover opacity-20" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.display='none';">
+    <div class="absolute inset-0 bg-gradient-to-b from-asphalt/80 via-asphalt/60 to-asphalt/80"></div><!-- Decorative elements -->
+    <div class="absolute top-20 right-10 sticker text-acid float-el hidden md:block">
+     EST. 2024
+    </div>
+    <div class="absolute bottom-20 left-8 sticker text-horange tape-wiggle hidden md:block">
+     STREET READY
+    </div>
+    <div class="absolute top-40 left-20 w-20 h-20 border border-cyan/20 rotate-45 hidden lg:block"></div>
+    <div class="absolute bottom-32 right-32 w-16 h-16 border border-acid/20 rotate-12 hidden lg:block"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-4 flex flex-col items-center text-center">
+     <div class="mb-4 font-mono text-xs text-acid tracking-[0.3em] uppercase slide-up">
+      DeckDrop Street Lab
+     </div>
+     <h1 id="hero-title" class="font-bebas text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight glitch-text mb-6 pop-in" data-text="Drop a deck graphic that gets noticed.">Drop a deck graphic<br>
+       that gets noticed.</h1>
+     <p id="hero-subtitle" class="font-mono text-sm md:text-base text-white/60 max-w-xl mb-10 slide-up" style="animation-delay:0.2s">Skate templates built for brands, shops, and creators.</p>
+     <div class="flex flex-col sm:flex-row gap-4 slide-up" style="animation-delay:0.4s">
+      <a href="#download" id="cta-primary-btn" class="bg-acid text-asphalt font-oswald font-bold text-lg px-8 py-4 uppercase tracking-wider hover:bg-cyan transition-colors pulse-cta flex items-center gap-2"> <i data-lucide="download" style="width:20px;height:20px;"></i> <span>Get the Drop Pack</span> </a> <a href="#decks" id="cta-secondary-btn" class="border-2 border-white/30 text-white font-oswald font-bold text-lg px-8 py-4 uppercase tracking-wider hover:border-acid hover:text-acid transition-colors flex items-center gap-2"> <i data-lucide="eye" style="width:20px;height:20px;"></i> <span>See Decks</span> </a>
+     </div><!-- Stats bar -->
+     <div class="mt-16 flex flex-wrap justify-center gap-8 md:gap-16 font-mono text-xs text-white/40 uppercase tracking-widest slide-up" style="animation-delay:0.6s">
+      <div><span class="text-acid text-2xl font-bebas block">60+</span>Deck Templates
+      </div>
+      <div><span class="text-cyan text-2xl font-bebas block">40+</span>Sticker Elements
+      </div>
+      <div><span class="text-horange text-2xl font-bebas block">30+</span>Story Covers
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INSIDE -->
+   <section class="py-16 md:py-20 bg-grit border-y border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <div class="sticker text-cyan mb-4 inline-block">
+       Full Kit
+      </div>
+      <h2 class="font-bebas text-4xl md:text-6xl">What's In The Drop</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="scroll-reveal bg-asphalt border border-white/10 p-6 hover:border-acid/50 transition-colors group">
+       <div class="text-acid mb-4"><i data-lucide="layout" style="width:32px;height:32px;"></i>
+       </div>
+       <h3 class="font-oswald font-bold text-lg mb-2 group-hover:text-acid transition-colors">60 Deck Graphics</h3>
+       <p class="font-mono text-xs text-white/50 leading-relaxed">Full-wrap templates in 3 styles. Print-ready, editable, bold.</p>
+      </div>
+      <div class="scroll-reveal bg-asphalt border border-white/10 p-6 hover:border-cyan/50 transition-colors group" style="transition-delay:0.1s">
+       <div class="text-cyan mb-4"><i data-lucide="sticker" style="width:32px;height:32px;"></i>
+       </div>
+       <h3 class="font-oswald font-bold text-lg mb-2 group-hover:text-cyan transition-colors">40 Sticker Elements</h3>
+       <p class="font-mono text-xs text-white/50 leading-relaxed">Logos, badges, type lockups. Layer them anywhere.</p>
+      </div>
+      <div class="scroll-reveal bg-asphalt border border-white/10 p-6 hover:border-horange/50 transition-colors group" style="transition-delay:0.2s">
+       <div class="text-horange mb-4"><i data-lucide="smartphone" style="width:32px;height:32px;"></i>
+       </div>
+       <h3 class="font-oswald font-bold text-lg mb-2 group-hover:text-horange transition-colors">30 Story/Reel Covers</h3>
+       <p class="font-mono text-xs text-white/50 leading-relaxed">Vertical formats for IG, TikTok, and beyond.</p>
+      </div>
+      <div class="scroll-reveal bg-asphalt border border-white/10 p-6 hover:border-acid/50 transition-colors group" style="transition-delay:0.3s">
+       <div class="text-acid mb-4"><i data-lucide="book-open" style="width:32px;height:32px;"></i>
+       </div>
+       <h3 class="font-oswald font-bold text-lg mb-2 group-hover:text-acid transition-colors">Lookbook Templates</h3>
+       <p class="font-mono text-xs text-white/50 leading-relaxed">Multi-page layouts for your brand presentation.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DECK GRAPHICS -->
+   <section id="decks" class="py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <div class="font-mono text-xs text-acid tracking-[0.3em] uppercase mb-3">
+       Deck Graphics
+      </div>
+      <h2 class="font-bebas text-4xl md:text-6xl">3 Themed Sets</h2>
+      <p class="font-mono text-xs text-white/40 mt-3">Pick your vibe. Customize everything.</p>
+     </div><!-- Tabs -->
+     <div class="flex justify-center gap-2 mb-10 scroll-reveal">
+      <button class="deck-tab active-tab font-mono text-xs uppercase tracking-widest px-5 py-2 border border-acid text-acid bg-acid/10 transition-all" data-tab="retro">Retro</button> <button class="deck-tab font-mono text-xs uppercase tracking-widest px-5 py-2 border border-white/20 text-white/50 hover:border-white/40 transition-all" data-tab="minimal">Minimal</button> <button class="deck-tab font-mono text-xs uppercase tracking-widest px-5 py-2 border border-white/20 text-white/50 hover:border-white/40 transition-all" data-tab="chaos">Chaos</button>
+     </div><!-- Deck Grids -->
+     <div id="tab-retro" class="deck-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in">
+       <div class="h-64 bg-gradient-to-br from-horange via-amber-600 to-red-800 flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1606034655127-b1ffa6190d53?w=500&amp;h=300&amp;fit=crop" alt="Retro skateboard" class="absolute inset-0 w-full h-full object-cover opacity-20" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.display='none';">
+        <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);"></div>
+        <div class="text-center z-10">
+         <div class="font-bebas text-6xl text-white/90 leading-none">
+          70s
+         </div>
+         <div class="font-mono text-[10px] text-white/60 tracking-widest uppercase mt-1">
+          Sunset Cruiser
+         </div>
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Sunset Cruiser</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Warm gradients, retro type, old-school vibes</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.15s">
+       <div class="h-64 bg-gradient-to-br from-teal-600 via-emerald-700 to-green-900 flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=500&amp;h=300&amp;fit=crop" alt="Skatepark" class="absolute inset-0 w-full h-full object-cover opacity-20" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.display='none';">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px); background-size: 12px 12px;"></div>
+        <div class="text-center z-10">
+         <div class="font-bebas text-6xl text-white/90 leading-none">
+          POOL
+         </div>
+         <div class="font-mono text-[10px] text-white/60 tracking-widest uppercase mt-1">
+          Vert Classic
+         </div>
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Vert Classic</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Pool-session palettes with vintage textures</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.3s">
+       <div class="h-64 bg-gradient-to-br from-purple-700 via-fuchsia-700 to-pink-600 flex items-center justify-center relative overflow-hidden"><img src="https://images.unsplash.com/photo-1614613535308-eb5fbd8952e7?w=500&amp;h=300&amp;fit=crop" alt="Night city" class="absolute inset-0 w-full h-full object-cover opacity-20" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.display='none';">
+        <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%); background-size: 20px 20px;"></div>
+        <div class="text-center z-10">
+         <div class="font-bebas text-6xl text-white/90 leading-none">
+          VHS
+         </div>
+         <div class="font-mono text-[10px] text-white/60 tracking-widest uppercase mt-1">
+          Tape Deck
+         </div>
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Tape Deck</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">VHS glitch, neon bleed, analog warmth</p>
+       </div>
+      </div>
+     </div>
+     <div id="tab-minimal" class="deck-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in">
+       <div class="h-64 bg-gradient-to-b from-neutral-800 to-neutral-900 flex items-center justify-center">
+        <div class="w-16 h-16 border-2 border-white/40 rotate-45"></div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Void</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Negative space, sharp geometry</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.15s">
+       <div class="h-64 bg-white flex items-center justify-center">
+        <div class="font-bebas text-7xl text-black/10 leading-none">
+         CLEAN
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Blank Canvas</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">White-on-white with subtle shadow play</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.3s">
+       <div class="h-64 bg-gradient-to-b from-stone-300 to-stone-500 flex items-center justify-center">
+        <div class="w-px h-32 bg-black/30"></div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Mono Line</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Single stroke, maximum impact</p>
+       </div>
+      </div>
+     </div>
+     <div id="tab-chaos" class="deck-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in">
+       <div class="h-64 relative overflow-hidden" style="background: linear-gradient(135deg, #FF5722 0%, #AAFF00 30%, #00F0FF 60%, #FF5722 100%);">
+        <div class="absolute inset-0 flex items-center justify-center">
+         <div class="font-bebas text-8xl text-black/30 leading-none" style="transform: rotate(-20deg) scale(1.5);">
+          LOUD
+         </div>
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Acid Melt</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Gradient overload, maximum saturation</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.15s">
+       <div class="h-64 bg-black relative overflow-hidden">
+        <div class="absolute top-4 left-4 text-horange font-bebas text-3xl rotate-[-10deg]">
+         BREAK
+        </div>
+        <div class="absolute bottom-6 right-4 text-acid font-bebas text-4xl rotate-[5deg]">
+         RULES
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-cyan font-bebas text-5xl rotate-[-3deg]">
+         !!!
+        </div>
+        <div class="absolute inset-0 border-4 border-dashed border-white/10 m-3"></div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Type Wreck</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Colliding typography, anarchic layout</p>
+       </div>
+      </div>
+      <div class="deck-card bg-grit border border-white/10 overflow-hidden pop-in" style="animation-delay:0.3s">
+       <div class="h-64 relative overflow-hidden bg-grit">
+        <div class="absolute inset-0 grid grid-cols-4 grid-rows-4">
+         <div class="bg-acid"></div>
+         <div class="bg-horange"></div>
+         <div class="bg-cyan"></div>
+         <div class="bg-acid"></div>
+         <div class="bg-horange"></div>
+         <div class="bg-grit"></div>
+         <div class="bg-acid"></div>
+         <div class="bg-horange"></div>
+         <div class="bg-cyan"></div>
+         <div class="bg-acid"></div>
+         <div class="bg-horange"></div>
+         <div class="bg-grit"></div>
+         <div class="bg-acid"></div>
+         <div class="bg-cyan"></div>
+         <div class="bg-grit"></div>
+         <div class="bg-cyan"></div>
+        </div>
+       </div>
+       <div class="p-4">
+        <h3 class="font-oswald font-bold">Pixel Bomb</h3>
+        <p class="font-mono text-[10px] text-white/40 mt-1">Color block chaos, sticker-bomb energy</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- STICKERS -->
+   <section id="stickers" class="py-16 md:py-24 bg-grit border-y border-white/5">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <div class="font-mono text-xs text-cyan tracking-[0.3em] uppercase mb-3">
+       Sticker Elements
+      </div>
+      <h2 class="font-bebas text-4xl md:text-6xl">40 Stickers. Infinite Combos.</h2>
+     </div>
+     <div class="flex flex-wrap justify-center gap-4 md:gap-6 scroll-reveal">
+      <div class="sticker text-acid tape-wiggle">
+       Skate or Die
+      </div>
+      <div class="sticker text-cyan" style="transform: rotate(3deg);">
+       Push Mongo
+      </div>
+      <div class="sticker text-horange tape-wiggle" style="animation-delay: 0.3s;">
+       Grip It
+      </div>
+      <div class="sticker text-white" style="transform: rotate(-1deg);">
+       Ollie Gang
+      </div>
+      <div class="sticker text-acid" style="transform: rotate(5deg);">
+       Kickflip
+      </div>
+      <div class="sticker text-cyan tape-wiggle" style="animation-delay: 0.5s;">
+       No Comply
+      </div>
+      <div class="sticker text-horange" style="transform: rotate(-4deg);">
+       Thrasher
+      </div>
+      <div class="sticker text-acid" style="transform: rotate(2deg);">
+       Send It
+      </div>
+      <div class="sticker text-white tape-wiggle" style="animation-delay: 0.2s;">
+       Concrete Wave
+      </div>
+      <div class="sticker text-cyan" style="transform: rotate(-3deg);">
+       Rail Slide
+      </div>
+      <div class="sticker text-horange" style="transform: rotate(1deg);">
+       Drop In
+      </div>
+      <div class="sticker text-acid tape-wiggle" style="animation-delay: 0.7s;">
+       Full Send
+      </div>
+     </div>
+     <div class="text-center mt-10 scroll-reveal">
+      <p class="font-mono text-xs text-white/30">PNG + SVG formats • Transparent backgrounds • Drag &amp; drop ready</p>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <div class="font-mono text-xs text-horange tracking-[0.3em] uppercase mb-3">
+       Preview
+      </div>
+      <h2 class="font-bebas text-4xl md:text-6xl">See It In Action</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Mockup 1: Deck -->
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 text-center group hover:border-acid/40 transition-all">
+       <div class="w-24 h-56 mx-auto bg-gradient-to-b from-acid via-cyan to-horange rounded-xl shadow-2xl transform group-hover:rotate-[-5deg] transition-transform duration-500 relative">
+        <div class="absolute inset-2 border border-white/20 rounded-lg"></div>
+        <div class="absolute bottom-4 left-0 right-0 text-center font-bebas text-black/30 text-lg">
+         DECK
+        </div>
+       </div>
+       <p class="font-oswald font-bold mt-6">Deck Wrap</p>
+       <p class="font-mono text-[10px] text-white/40 mt-1">Full top/bottom graphics</p>
+      </div><!-- Mockup 2: Phone -->
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 text-center group hover:border-cyan/40 transition-all" style="transition-delay:0.1s">
+       <div class="w-32 h-56 mx-auto bg-asphalt rounded-2xl border-2 border-white/20 shadow-2xl transform group-hover:scale-105 transition-transform duration-500 relative overflow-hidden">
+        <div class="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-white/20 rounded-full"></div>
+        <div class="absolute inset-3 top-6 bg-gradient-to-b from-horange to-acid rounded-lg"></div>
+        <div class="absolute bottom-6 left-0 right-0 text-center font-bebas text-white/50 text-sm">
+         STORY
+        </div>
+       </div>
+       <p class="font-oswald font-bold mt-6">Story/Reel Cover</p>
+       <p class="font-mono text-[10px] text-white/40 mt-1">9:16 vertical format</p>
+      </div><!-- Mockup 3: Lookbook -->
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 text-center group hover:border-horange/40 transition-all" style="transition-delay:0.2s">
+       <div class="w-40 h-52 mx-auto bg-white rounded shadow-2xl transform group-hover:rotate-[3deg] transition-transform duration-500 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-br from-grit to-neutral-700"></div>
+        <div class="absolute bottom-4 left-4 right-4">
+         <div class="h-1 bg-black/10 mb-2 rounded"></div>
+         <div class="h-1 bg-black/10 mb-2 rounded w-3/4"></div>
+         <div class="h-1 bg-black/10 rounded w-1/2"></div>
+        </div>
+       </div>
+       <p class="font-oswald font-bold mt-6">Lookbook Page</p>
+       <p class="font-mono text-[10px] text-white/40 mt-1">Multi-page brand layouts</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section class="py-16 md:py-20 bg-grit border-y border-white/5">
+    <div class="max-w-4xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <h2 class="font-bebas text-4xl md:text-6xl">Why Brands Choose This</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 scroll-reveal">
+      <div class="text-center p-6">
+       <div class="text-acid mb-3"><i data-lucide="palette" style="width:36px;height:36px;margin:0 auto;"></i>
+       </div>
+       <h3 class="font-oswald font-bold mb-2">Streetwear Aesthetics Convert</h3>
+       <p class="font-mono text-[10px] text-white/40 leading-relaxed">Designs that look like they came from the scene, not a template library.</p>
+      </div>
+      <div class="text-center p-6">
+       <div class="text-cyan mb-3"><i data-lucide="target" style="width:36px;height:36px;margin:0 auto;"></i>
+       </div>
+       <h3 class="font-oswald font-bold mb-2">Perfect for Skaters &amp; Brands</h3>
+       <p class="font-mono text-[10px] text-white/40 leading-relaxed">Built for shops, independent skaters, and streetwear labels.</p>
+      </div>
+      <div class="text-center p-6">
+       <div class="text-horange mb-3"><i data-lucide="rocket" style="width:36px;height:36px;margin:0 auto;"></i>
+       </div>
+       <h3 class="font-oswald font-bold mb-2">Drop-Ready Layouts</h3>
+       <p class="font-mono text-[10px] text-white/40 leading-relaxed">Edit. Export. Drop. Every template is production-ready.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-4">
+     <div class="text-center mb-12 scroll-reveal">
+      <div class="font-mono text-xs text-acid tracking-[0.3em] uppercase mb-3">
+       Reviews
+      </div>
+      <h2 class="font-bebas text-4xl md:text-6xl">What The Scene Says</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 hover:border-acid/30 transition-colors">
+       <div class="star-rating font-mono text-sm mb-3">
+        ★★★★★
+       </div>
+       <p class="font-mono text-xs text-white/60 leading-relaxed mb-4">"Dropped a 5-board series for our shop using these. Sold out in 3 days. The retro set is insane."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-acid/20 flex items-center justify-center font-bebas text-acid text-sm">
+         M
+        </div>
+        <div>
+         <div class="font-oswald text-sm font-bold">
+          Marcus T.
+         </div>
+         <div class="font-mono text-[10px] text-white/30">
+          Shop Owner, LA
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 hover:border-cyan/30 transition-colors" style="transition-delay:0.1s">
+       <div class="star-rating font-mono text-sm mb-3">
+        ★★★★★
+       </div>
+       <p class="font-mono text-xs text-white/60 leading-relaxed mb-4">"Finally templates that don't look like corporate garbage. The chaos set matches our brand energy perfectly."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-cyan/20 flex items-center justify-center font-bebas text-cyan text-sm">
+         K
+        </div>
+        <div>
+         <div class="font-oswald text-sm font-bold">
+          Kai R.
+         </div>
+         <div class="font-mono text-[10px] text-white/30">
+          Brand Designer, NYC
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-reveal bg-grit border border-white/10 p-6 hover:border-horange/30 transition-colors" style="transition-delay:0.2s">
+       <div class="star-rating font-mono text-sm mb-3">
+        ★★★★★
+       </div>
+       <p class="font-mono text-xs text-white/60 leading-relaxed mb-4">"Used the sticker pack and story covers for our IG launch. Engagement went up 4x. Worth every cent."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-horange/20 flex items-center justify-center font-bebas text-horange text-sm">
+         J
+        </div>
+        <div>
+         <div class="font-oswald text-sm font-bold">
+          Jess W.
+         </div>
+         <div class="font-mono text-[10px] text-white/30">
+          Content Creator, ATX
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD CTA -->
+   <section id="download" class="py-16 md:py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-acid/5 via-transparent to-cyan/5"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 text-center scroll-reveal">
+     <div class="sticker text-acid mb-6 inline-block">
+      Limited Drop
+     </div>
+     <h2 id="bottom-cta-heading" class="font-bebas text-5xl md:text-7xl mb-4">Make your next drop sell out.</h2>
+     <p class="font-mono text-xs text-white/40 mb-8 max-w-lg mx-auto">60 deck graphics • 40 sticker elements • 30 story covers • lookbook templates. Everything you need in one pack.</p><a href="#" id="download-btn" class="inline-flex items-center gap-3 bg-acid text-asphalt font-oswald font-bold text-xl px-10 py-5 uppercase tracking-wider hover:bg-cyan transition-colors pulse-cta" onclick="event.preventDefault(); document.getElementById('download-toast').classList.remove('hidden'); setTimeout(() => document.getElementById('download-toast').classList.add('hidden'), 3000);"> <i data-lucide="download" style="width:24px;height:24px;"></i> <span>Get the Drop Pack — $29</span> </a>
+     <div id="download-toast" class="hidden mt-6 bg-acid/20 border border-acid/40 text-acid font-mono text-xs p-3 rounded inline-block">
+      ✓ This is a demo — link your checkout to go live!
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="py-16 md:py-20 bg-grit border-t border-white/5">
+    <div class="max-w-2xl mx-auto px-4">
+     <div class="text-center mb-8 scroll-reveal">
+      <h2 class="font-bebas text-3xl md:text-5xl">Vote + Comment</h2>
+      <p class="font-mono text-xs text-white/40 mt-2">Tell us what you want in the next drop</p>
+     </div><!-- Vote -->
+     <div class="scroll-reveal bg-asphalt border border-white/10 p-6 mb-6">
+      <h3 class="font-oswald font-bold mb-4">What style should we add next?</h3>
+      <div class="space-y-3" id="vote-options">
+       <button class="vote-btn w-full text-left p-3 border border-white/10 hover:border-acid/50 transition-all font-mono text-xs flex justify-between items-center group" data-vote="japanese"> <span class="group-hover:text-acid transition-colors">🇯🇵 Japanese Street</span> <span class="vote-count text-white/30 group-hover:text-acid">0 votes</span> </button> <button class="vote-btn w-full text-left p-3 border border-white/10 hover:border-cyan/50 transition-all font-mono text-xs flex justify-between items-center group" data-vote="punk"> <span class="group-hover:text-cyan transition-colors">🎸 Punk / DIY</span> <span class="vote-count text-white/30 group-hover:text-cyan">0 votes</span> </button> <button class="vote-btn w-full text-left p-3 border border-white/10 hover:border-horange/50 transition-all font-mono text-xs flex justify-between items-center group" data-vote="ysk"> <span class="group-hover:text-horange transition-colors">🌴 Y2K / Rave</span> <span class="vote-count text-white/30 group-hover:text-horange">0 votes</span> </button>
+      </div>
+     </div><!-- Comments -->
+     <div class="scroll-reveal bg-asphalt border border-white/10 p-6">
+      <h3 class="font-oswald font-bold mb-4">Drop a comment</h3>
+      <form id="comment-form" class="flex gap-3 mb-4">
+       <input type="text" id="comment-input" placeholder="What do you want to see?" class="flex-1 bg-grit border border-white/10 px-4 py-2 font-mono text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-acid/50" aria-label="Comment"> <button type="submit" class="bg-acid text-asphalt font-oswald font-bold px-4 py-2 text-sm uppercase hover:bg-cyan transition-colors">Post</button>
+      </form>
+      <div id="comments-list" class="space-y-3">
+       <div class="p-3 border border-white/5 font-mono text-xs text-white/50">
+        <span class="text-acid">@sk8fan:</span> More grunge textures please! 🤘
+       </div>
+       <div class="p-3 border border-white/5 font-mono text-xs text-white/50">
+        <span class="text-cyan">@deckbuilder:</span> Would love anime-style graphics next
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+     <div class="font-bebas text-xl tracking-wider">
+      <span class="text-acid">DECK</span><span class="text-white/50">DROP</span> <span class="font-mono text-[10px] text-white/20 ml-3">Street Lab © 2024</span>
+     </div>
+     <div class="font-mono text-[10px] text-white/20 italic">
+      "Skate culture, packaged to sell."
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Drop a deck graphic that gets noticed.',
+  hero_subtitle: 'Skate templates built for brands, shops, and creators.',
+  cta_primary: 'Get the Drop Pack',
+  cta_secondary: 'See Decks',
+  bottom_cta_text: 'Make your next drop sell out.',
+  background_color: '#0D0D0D',
+  surface_color: '#1A1A1A',
+  text_color: '#FFFFFF',
+  accent_color: '#AAFF00',
+  secondary_accent_color: '#00F0FF',
+  font_family: 'Bebas Neue',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = key => config[key] || defaultConfig[key];
+
+  // Text content
+  const heroEl = document.getElementById('hero-title');
+  const titleText = c('hero_title');
+  heroEl.textContent = titleText;
+  heroEl.setAttribute('data-text', titleText);
+
+  document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+  document.querySelector('#cta-primary-btn span').textContent = c('cta_primary');
+  document.querySelector('#cta-secondary-btn span').textContent = c('cta_secondary');
+  document.getElementById('bottom-cta-heading').textContent = c('bottom_cta_text');
+
+  // Colors
+  document.body.style.backgroundColor = c('background_color');
+  document.querySelectorAll('.bg-grit, .bg-asphalt').forEach(el => {
+    if (el.classList.contains('bg-asphalt')) el.style.backgroundColor = c('background_color');
+  });
+  document.querySelectorAll('.deck-card .p-4, section .bg-asphalt').forEach(el => {
+    el.style.backgroundColor = c('surface_color');
+  });
+
+  // Font
+  const ff = c('font_family');
+  const fs = c('font_size');
+  document.querySelectorAll('.font-bebas, h1, h2').forEach(el => {
+    el.style.fontFamily = `${ff}, sans-serif`;
+  });
+  document.querySelectorAll('p, .font-mono').forEach(el => {
+    el.style.fontSize = `${fs * 0.75}px`;
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const c = key => config[key] || defaultConfig[key];
+      const mut = (key) => ({
+        get: () => c(key),
+        set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('accent_color'), mut('secondary_accent_color')],
+        borderables: [],
+        fontEditable: mut('font_family'),
+        fontSizeable: mut('font_size')
+      };
+    },
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Deck tabs
+const tabs = document.querySelectorAll('.deck-tab');
+const panels = document.querySelectorAll('.deck-panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => { t.classList.remove('border-acid', 'text-acid', 'bg-acid/10'); t.classList.add('border-white/20', 'text-white/50'); });
+    tab.classList.add('border-acid', 'text-acid', 'bg-acid/10');
+    tab.classList.remove('border-white/20', 'text-white/50');
+    panels.forEach(p => p.classList.add('hidden'));
+    document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+  });
+});
+
+// Voting
+const votes = { japanese: 0, punk: 0, ysk: 0 };
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.vote;
+    votes[key]++;
+    btn.querySelector('.vote-count').textContent = votes[key] + ' vote' + (votes[key] !== 1 ? 's' : '');
+    btn.style.borderColor = 'rgba(170,255,0,0.5)';
+    btn.style.backgroundColor = 'rgba(170,255,0,0.05)';
+  });
+});
+
+// Comments
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const div = document.createElement('div');
+  div.className = 'p-3 border border-white/5 font-mono text-xs text-white/50';
+  div.innerHTML = `<span class="text-horange">@you:</span> ${text.replace(/</g, '&lt;')}`;
+  document.getElementById('comments-list').prepend(div);
+  input.value = '';
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3298f5dd27c5',t:'MTc3NTU3NzEyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

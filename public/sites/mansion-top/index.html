@@ -1,1 +1,670 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/2829a24a-551f-49c5-9a2c-7d5a43ba0b48 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstateCrown Showcase</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;family=Outfit:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: '#C9A96E',
+        charcoal: '#1A1A1A',
+        darkbg: '#0F0F0F',
+        softwhite: '#F5F3EF',
+        muted: '#8A8A8A'
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond', 'Georgia', 'serif'],
+        body: ['Outfit', 'Helvetica', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+/* Subtle animations */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes spotlightSweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(201,169,110,0.15); }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.anim-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.anim-fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-zoom {
+  animation: slowZoom 20s ease-in-out alternate infinite;
+}
+.spotlight-text {
+  background: linear-gradient(90deg, transparent 0%, rgba(201,169,110,0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: spotlightSweep 6s ease-in-out infinite;
+}
+.cta-pulse {
+  animation: ctaPulse 3s ease-in-out infinite;
+}
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201,169,110,0.12);
+}
+.glass-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(201,169,110,0.3);
+}
+.gallery-img {
+  transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.7s ease;
+}
+.gallery-img:hover {
+  transform: scale(1.04);
+  filter: brightness(1.1);
+}
+
+/* Nav */
+.nav-link {
+  position: relative;
+  color: #8A8A8A;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #C9A96E;
+  transition: width 0.3s ease;
+}
+.nav-link:hover, .nav-link.active {
+  color: #C9A96E;
+}
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* Lightbox */
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+.lightbox-overlay.open {
+  display: flex;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0F0F0F; }
+::-webkit-scrollbar-thumb { background: #C9A96E; border-radius: 3px; }
+
+/* Tour modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9998;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Star rating */
+.star-btn { cursor: pointer; transition: color 0.2s; }
+.star-btn:hover, .star-btn.active { color: #C9A96E; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto bg-darkbg text-softwhite font-body"><!-- Sticky Nav -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent;">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-display text-xl tracking-widest text-gold font-light">ESTATE<span class="font-semibold">CROWN</span></a>
+    <div class="hidden md:flex items-center gap-8 text-xs tracking-[0.2em] uppercase font-light"><a href="#home" class="nav-link active">Home</a> <a href="#highlights" class="nav-link">Highlights</a> <a href="#gallery" class="nav-link">Gallery</a> <a href="#location" class="nav-link">Location</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#tour" class="nav-link">Request Tour</a>
+    </div><button id="mobile-menu-btn" class="md:hidden text-gold"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div><!-- Mobile menu -->
+   <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex-col gap-3 text-xs tracking-[0.2em] uppercase font-light" style="background:rgba(15,15,15,0.95);"><a href="#home" class="nav-link py-2 block">Home</a> <a href="#highlights" class="nav-link py-2 block">Highlights</a> <a href="#gallery" class="nav-link py-2 block">Gallery</a> <a href="#location" class="nav-link py-2 block">Location</a> <a href="#reviews" class="nav-link py-2 block">Reviews</a> <a href="#tour" class="nav-link py-2 block">Request Tour</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden" style="height:100%;">
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1920&amp;q=80" alt="Luxury mansion exterior" class="w-full h-full object-cover hero-zoom" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1A1A1A,#2a2a2a)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-darkbg"></div>
+   </div>
+   <div class="relative h-full flex flex-col items-center justify-center text-center px-6">
+    <div class="mb-6" style="animation: fadeUp 1s ease 0.2s both;">
+     <div class="w-16 h-[1px] bg-gold mx-auto mb-6"></div>
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-2">EstateCrown Showcase</p>
+    </div>
+    <h1 id="hero-title" class="font-display text-4xl sm:text-5xl md:text-7xl font-light tracking-wide leading-tight spotlight-text py-2" style="animation: fadeUp 1s ease 0.5s both;">Luxury, presented like a brand.</h1>
+    <p id="hero-subtitle" class="mt-6 text-muted text-sm sm:text-base font-light max-w-xl tracking-wide" style="animation: fadeUp 1s ease 0.8s both;">A one-page showcase designed to convert inquiries.</p>
+    <div class="mt-10 flex flex-col sm:flex-row gap-4" style="animation: fadeUp 1s ease 1.1s both;"><button onclick="openTourModal()" class="cta-pulse px-8 py-3.5 bg-gold text-darkbg text-xs tracking-[0.2em] uppercase font-medium hover:bg-[#b8953f] transition-colors duration-300">Request a Tour</button> <a href="#gallery" class="px-8 py-3.5 border border-gold/30 text-gold text-xs tracking-[0.2em] uppercase font-light hover:bg-gold/10 transition-colors duration-300 text-center">View Gallery</a>
+    </div>
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2" style="animation: fadeUp 1s ease 1.4s both;">
+     <div class="w-[1px] h-12 bg-gradient-to-b from-gold/60 to-transparent mx-auto"></div>
+    </div>
+   </div>
+  </section><!-- HIGHLIGHTS -->
+  <section id="highlights" class="w-full py-24 px-6">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-4">What Defines This Estate</p>
+     <h2 id="highlights-heading" class="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">Estate Highlights</h2>
+     <div class="w-12 h-[1px] bg-gold mx-auto mt-6"></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"><!-- Feature 1: Smart Home -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /><circle cx="12" cy="15" r="1" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">Smart Home</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Full automation with integrated climate, lighting, and security systems.</p>
+     </div><!-- Feature 2: Panoramic Views -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">Panoramic Views</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Floor-to-ceiling windows framing breathtaking vistas from every room.</p>
+     </div><!-- Feature 3: Infinity Pool -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /><rect x="4" y="4" width="16" height="6" rx="1" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">Infinity Pool</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Heated infinity-edge pool with integrated spa and night lighting.</p>
+     </div><!-- Feature 4: Chef Kitchen -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M12 2a4 4 0 0 0-4 4v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-2V6a4 4 0 0 0-4-4z" /><line x1="12" y1="14" x2="12" y2="18" /><circle cx="12" cy="14" r="1" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">Chef Kitchen</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Restaurant-grade appliances, marble counters, and butler's pantry.</p>
+     </div><!-- Feature 5: Security -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">24/7 Security</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Gated entry, surveillance network, and dedicated concierge team.</p>
+     </div><!-- Feature 6: Guest Suite -->
+     <div class="glass-card rounded-lg p-6 sm:p-8 text-center transition-all duration-500 anim-fade-up">
+      <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 15h6" /><path d="M9 18h4" />
+      </svg>
+      <h3 class="font-display text-lg font-light text-softwhite mb-2">Guest Suite</h3>
+      <p class="text-muted text-xs font-light leading-relaxed">Private guest wing with en-suite bath, kitchenette, and terrace.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- GALLERY -->
+  <section id="gallery" class="w-full py-24 px-6 bg-charcoal/30">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-4">Visual Experience</p>
+     <h2 id="gallery-heading" class="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">The Gallery</h2>
+     <div class="w-12 h-[1px] bg-gold mx-auto mt-6"></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+     <div class="col-span-2 row-span-2 rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(0)"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&amp;q=80" alt="Modern villa exterior" class="w-full h-full object-cover gallery-img" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(1)"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&amp;q=80" alt="Luxury interior living room" class="w-full h-full object-cover gallery-img aspect-square" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(2)"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&amp;q=80" alt="Architectural details" class="w-full h-full object-cover gallery-img aspect-square" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(3)"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&amp;q=80" alt="Luxury driveway" class="w-full h-full object-cover gallery-img aspect-[4/3]" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(4)"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&amp;q=80" alt="Pool at night" class="w-full h-full object-cover gallery-img aspect-[4/3]" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="rounded-lg overflow-hidden cursor-pointer anim-fade-up" onclick="openLightbox(5)"><img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600&amp;q=80" alt="Chandelier and marble staircase" class="w-full h-full object-cover gallery-img aspect-[4/3]" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+    </div>
+   </div>
+  </section><!-- LOCATION -->
+  <section id="location" class="w-full py-24 px-6">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-4">Prime Positioning</p>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">The Location</h2>
+     <div class="w-12 h-[1px] bg-gold mx-auto mt-6"></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 items-center anim-fade-up">
+     <div class="rounded-lg overflow-hidden"><img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&amp;q=80" alt="Estate surroundings" class="w-full h-full object-cover rounded-lg" loading="lazy" onerror="this.style.background='#2a2a2a';this.alt='Image unavailable';">
+     </div>
+     <div class="space-y-6">
+      <div class="flex items-start gap-4">
+       <svg class="flex-shrink-0 mt-1" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+       </svg>
+       <div>
+        <h4 class="font-display text-lg text-softwhite font-light">Beverly Hills, California</h4>
+        <p class="text-muted text-sm font-light mt-1">Nestled in the most prestigious zip code, minutes from Rodeo Drive and world-class dining.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-4">
+       <svg class="flex-shrink-0 mt-1" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />
+       </svg>
+       <div>
+        <h4 class="font-display text-lg text-softwhite font-light">12,500 sq ft on 2.4 acres</h4>
+        <p class="text-muted text-sm font-light mt-1">Seven bedrooms, nine bathrooms, four-car garage, and private tennis court.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-4">
+       <svg class="flex-shrink-0 mt-1" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+       </svg>
+       <div>
+        <h4 class="font-display text-lg text-softwhite font-light">Built in 2022</h4>
+        <p class="text-muted text-sm font-light mt-1">Contemporary architecture by an internationally acclaimed design firm.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-24 px-6 bg-charcoal/30">
+   <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-4">Client Testimonials</p>
+     <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">Reviews</h2>
+     <div class="w-12 h-[1px] bg-gold mx-auto mt-6"></div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+     <div class="glass-card rounded-lg p-8 anim-fade-up">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="text-softwhite/80 text-sm font-light leading-relaxed italic mb-6">"The presentation alone elevated our listing. We received three offers within the first week, all above asking price. This is how luxury should be marketed."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-display text-gold text-sm">
+        JW
+       </div>
+       <div>
+        <p class="text-softwhite text-sm font-light">Jonathan Wells</p>
+        <p class="text-muted text-xs font-light">Luxury Real Estate Agent</p>
+       </div>
+      </div>
+     </div>
+     <div class="glass-card rounded-lg p-8 anim-fade-up">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24" fill="#C9A96E" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="text-softwhite/80 text-sm font-light leading-relaxed italic mb-6">"Absolutely stunning. The mobile experience was flawless and our international buyers were immediately captivated. Premium presentation increases leads, period."</p>
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-display text-gold text-sm">
+        SV
+       </div>
+       <div>
+        <p class="text-softwhite text-sm font-light">Sofia Vega</p>
+        <p class="text-muted text-xs font-light">Private Property Consultant</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA / REQUEST TOUR -->
+  <section id="tour" class="w-full py-24 px-6 relative overflow-hidden">
+   <div class="absolute inset-0 opacity-20"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&amp;q=60" alt="" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none';">
+   </div>
+   <div class="absolute inset-0 bg-gradient-to-b from-darkbg via-darkbg/90 to-darkbg"></div>
+   <div class="relative max-w-3xl mx-auto text-center">
+    <div class="anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.4em] uppercase font-light mb-4">Exclusive Access</p>
+     <h2 id="cta-heading" class="font-display text-3xl sm:text-4xl md:text-5xl font-light tracking-wide">Schedule a Private Showing</h2>
+     <p id="cta-subtext" class="text-muted text-sm font-light mt-4 mb-10">Experience this estate in person.</p><button onclick="openTourModal()" class="cta-pulse px-10 py-4 bg-gold text-darkbg text-xs tracking-[0.2em] uppercase font-medium hover:bg-[#b8953f] transition-colors duration-300">Request a Tour</button>
+    </div><!-- Vote + Comment Widget -->
+    <div class="mt-20 glass-card rounded-lg p-8 max-w-lg mx-auto anim-fade-up">
+     <p class="text-gold text-xs tracking-[0.3em] uppercase font-light mb-6">Vote + Comment</p><!-- Star Vote -->
+     <div class="flex items-center justify-center gap-2 mb-6" id="vote-stars"><button class="star-btn text-muted" onclick="setRating(1)">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg></button> <button class="star-btn text-muted" onclick="setRating(2)">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg></button> <button class="star-btn text-muted" onclick="setRating(3)">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg></button> <button class="star-btn text-muted" onclick="setRating(4)">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg></button> <button class="star-btn text-muted" onclick="setRating(5)">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="currentColor" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg></button>
+     </div>
+     <p id="vote-text" class="text-muted text-xs font-light mb-6">Tap a star to rate this listing</p><!-- Comment -->
+     <form id="comment-form" class="space-y-3"><textarea id="comment-input" rows="3" placeholder="Leave a comment..." class="w-full bg-white/5 border border-gold/15 rounded-lg px-4 py-3 text-softwhite text-sm font-light placeholder-muted/50 focus:outline-none focus:border-gold/40 resize-none transition-colors"></textarea> <button type="submit" class="w-full py-2.5 border border-gold/30 text-gold text-xs tracking-[0.15em] uppercase font-light hover:bg-gold/10 transition-colors rounded-lg">Submit Comment</button>
+     </form>
+     <div id="comments-list" class="mt-6 space-y-3 text-left"></div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full py-12 px-6 border-t border-white/5">
+   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="font-display text-sm tracking-widest text-gold/60 font-light">ESTATE<span class="font-medium">CROWN</span></p>
+    <p class="text-muted text-xs font-light">Luxury, presented like a brand. All rights reserved.</p>
+   </div>
+  </footer><!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox"><button onclick="closeLightbox()" class="absolute top-6 right-6 text-softwhite/70 hover:text-softwhite transition-colors z-10">
+    <svg width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+     <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+    </svg></button> <button onclick="prevImage()" class="absolute left-4 sm:left-8 text-softwhite/50 hover:text-gold transition-colors z-10">
+    <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+     <polyline points="15 18 9 12 15 6" />
+    </svg></button> <button onclick="nextImage()" class="absolute right-4 sm:right-8 text-softwhite/50 hover:text-gold transition-colors z-10">
+    <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+     <polyline points="9 18 15 12 9 6" />
+    </svg></button> <img id="lightbox-img" src="" alt="Gallery image" class="max-w-[90%] max-h-[85%] object-contain rounded-lg" loading="lazy">
+  </div><!-- Tour Modal -->
+  <div class="modal-overlay" id="tour-modal">
+   <div class="glass-card rounded-xl p-8 sm:p-10 max-w-md w-full mx-4 relative" style="background:rgba(26,26,26,0.95);backdrop-filter:blur(20px);"><button onclick="closeTourModal()" class="absolute top-4 right-4 text-muted hover:text-softwhite transition-colors">
+     <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+     </svg></button>
+    <h3 class="font-display text-2xl font-light text-softwhite mb-2">Request a Private Tour</h3>
+    <p class="text-muted text-xs font-light mb-6">We'll contact you within 24 hours to arrange your visit.</p>
+    <form id="tour-form" class="space-y-4">
+     <div><label for="tour-name" class="text-muted text-xs font-light block mb-1">Full Name</label> <input type="text" id="tour-name" required class="w-full bg-white/5 border border-gold/15 rounded-lg px-4 py-2.5 text-softwhite text-sm font-light placeholder-muted/50 focus:outline-none focus:border-gold/40 transition-colors" placeholder="Your name">
+     </div>
+     <div><label for="tour-email" class="text-muted text-xs font-light block mb-1">Email</label> <input type="email" id="tour-email" required class="w-full bg-white/5 border border-gold/15 rounded-lg px-4 py-2.5 text-softwhite text-sm font-light placeholder-muted/50 focus:outline-none focus:border-gold/40 transition-colors" placeholder="your@email.com">
+     </div>
+     <div><label for="tour-phone" class="text-muted text-xs font-light block mb-1">Phone</label> <input type="tel" id="tour-phone" class="w-full bg-white/5 border border-gold/15 rounded-lg px-4 py-2.5 text-softwhite text-sm font-light placeholder-muted/50 focus:outline-none focus:border-gold/40 transition-colors" placeholder="+1 (555) 000-0000">
+     </div>
+     <div><label for="tour-date" class="text-muted text-xs font-light block mb-1">Preferred Date</label> <input type="date" id="tour-date" class="w-full bg-white/5 border border-gold/15 rounded-lg px-4 py-2.5 text-softwhite text-sm font-light focus:outline-none focus:border-gold/40 transition-colors">
+     </div><button type="submit" id="tour-submit" class="w-full py-3 bg-gold text-darkbg text-xs tracking-[0.2em] uppercase font-medium hover:bg-[#b8953f] transition-colors rounded-lg mt-2">Submit Request</button>
+     <div id="tour-success" class="hidden text-center py-3">
+      <p class="text-gold text-sm font-light">Thank you! We'll be in touch shortly.</p>
+     </div>
+    </form>
+   </div>
+  </div>
+  <script>
+// Config and SDK
+const defaultConfig = {
+  hero_title: 'Luxury, presented like a brand.',
+  hero_subtitle: 'A one-page showcase designed to convert inquiries.',
+  highlights_heading: 'Estate Highlights',
+  gallery_heading: 'The Gallery',
+  cta_heading: 'Schedule a Private Showing',
+  cta_subtext: 'Experience this estate in person.',
+  background_color: '#0F0F0F',
+  surface_color: '#1A1A1A',
+  text_color: '#F5F3EF',
+  primary_action_color: '#C9A96E',
+  secondary_action_color: '#8A8A8A',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  el('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  el('highlights-heading').textContent = config.highlights_heading || defaultConfig.highlights_heading;
+  el('gallery-heading').textContent = config.gallery_heading || defaultConfig.gallery_heading;
+  el('cta-heading').textContent = config.cta_heading || defaultConfig.cta_heading;
+  el('cta-subtext').textContent = config.cta_subtext || defaultConfig.cta_subtext;
+
+  // Colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = text;
+
+  // Update gold elements
+  document.querySelectorAll('.text-gold').forEach(e => e.style.color = primary);
+  document.querySelectorAll('.bg-gold').forEach(e => { e.style.backgroundColor = primary; });
+  document.querySelectorAll('.border-gold\\/30').forEach(e => e.style.borderColor = primary + '4d');
+  document.querySelectorAll('.text-muted').forEach(e => e.style.color = secondary);
+  document.querySelectorAll('svg[stroke="#C9A96E"]').forEach(e => e.setAttribute('stroke', primary));
+  document.querySelectorAll('svg[fill="#C9A96E"]').forEach(e => e.setAttribute('fill', primary));
+
+  // Font
+  const font = config.font_family || defaultConfig.font_family;
+  const baseSize = config.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-display').forEach(e => {
+    e.style.fontFamily = `${font}, Georgia, serif`;
+  });
+  document.querySelectorAll('h1').forEach(e => e.style.fontSize = '');
+  document.querySelectorAll('h2').forEach(e => e.style.fontSize = `${baseSize * 2.5}px`);
+  document.querySelectorAll('p, span, a, button, label, input, textarea').forEach(e => {
+    if (!e.closest('h1') && !e.closest('h2')) {
+      // leave default scaling
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['highlights_heading', config.highlights_heading || defaultConfig.highlights_heading],
+    ['gallery_heading', config.gallery_heading || defaultConfig.gallery_heading],
+    ['cta_heading', config.cta_heading || defaultConfig.cta_heading],
+    ['cta_subtext', config.cta_subtext || defaultConfig.cta_subtext]
+  ])
+});
+
+// Gallery lightbox
+const galleryImages = [
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=85',
+  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85',
+  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85',
+  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=85',
+  'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1400&q=85'
+];
+let currentImg = 0;
+
+function openLightbox(i) {
+  currentImg = i;
+  document.getElementById('lightbox-img').src = galleryImages[i];
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function nextImage() { currentImg = (currentImg + 1) % galleryImages.length; document.getElementById('lightbox-img').src = galleryImages[currentImg]; }
+function prevImage() { currentImg = (currentImg - 1 + galleryImages.length) % galleryImages.length; document.getElementById('lightbox-img').src = galleryImages[currentImg]; }
+
+// Tour modal
+function openTourModal() { document.getElementById('tour-modal').classList.add('open'); }
+function closeTourModal() { document.getElementById('tour-modal').classList.remove('open'); }
+
+document.getElementById('tour-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('tour-success').classList.remove('hidden');
+  setTimeout(() => {
+    this.style.display = '';
+    this.reset();
+    document.getElementById('tour-success').classList.add('hidden');
+    closeTourModal();
+  }, 3000);
+});
+
+// Star rating
+let userRating = 0;
+function setRating(r) {
+  userRating = r;
+  const stars = document.querySelectorAll('#vote-stars .star-btn');
+  stars.forEach((s, i) => {
+    s.classList.toggle('active', i < r);
+    s.style.color = i < r ? '#C9A96E' : '';
+  });
+  document.getElementById('vote-text').textContent = `You rated this listing ${r} star${r > 1 ? 's' : ''}`;
+}
+
+// Comments
+const comments = [];
+document.getElementById('comment-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleString() });
+  input.value = '';
+  renderComments();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="border-t border-white/5 pt-3">
+      <p class="text-softwhite/80 text-sm font-light">${c.text.replace(/</g,'&lt;')}</p>
+      <p class="text-muted text-xs font-light mt-1">${c.time}</p>
+    </div>
+  `).join('');
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.anim-fade-up').forEach(el => observer.observe(el));
+
+// Sticky nav background
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 80) {
+    nav.style.background = 'rgba(15,15,15,0.92)';
+    nav.style.backdropFilter = 'blur(12px)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+  }
+});
+
+// Active nav link
+const sections = ['home','highlights','gallery','location','reviews','tour'];
+window.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+  menu.classList.toggle('flex');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.add('hidden');
+    document.getElementById('mobile-menu').classList.remove('flex');
+  });
+});
+
+// Keyboard lightbox
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextImage();
+  if (e.key === 'ArrowLeft') prevImage();
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a546d110d27c5',t:'MTc3NTU3ODUxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

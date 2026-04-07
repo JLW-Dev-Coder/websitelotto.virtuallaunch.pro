@@ -1,1 +1,717 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/13bb0226-b369-49b4-8ccc-25c27ebd131f -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WealthShield Strategy</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;family=Outfit:wght@200;300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        obsidian: '#050505',
+        gold: '#d4af37',
+        goldLight: '#e8c856',
+        goldDim: '#a08520',
+        slate: '#1a1a1a',
+        ash: '#2a2a2a',
+        silver: '#999999',
+        ivory: '#f0ece2'
+      },
+      fontFamily: {
+        editorial: ['Cormorant Garamond', 'Georgia', 'serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+body { background: #050505; color: #f0ece2; }
+
+/* Glow effects */
+.gold-glow { box-shadow: 0 0 40px rgba(212,175,55,0.15), 0 0 80px rgba(212,175,55,0.05); }
+.gold-glow-text { text-shadow: 0 0 30px rgba(212,175,55,0.3); }
+.gold-line { background: linear-gradient(90deg, transparent, #d4af37, transparent); height: 1px; }
+
+/* Animations */
+@keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes shimmer { 0%,100% { opacity:0.3; } 50% { opacity:0.8; } }
+@keyframes pulseGlow { 0%,100% { box-shadow: 0 0 20px rgba(212,175,55,0.1); } 50% { box-shadow: 0 0 40px rgba(212,175,55,0.25); } }
+@keyframes countUp { from { opacity: 0.5; } to { opacity: 1; } }
+@keyframes lineGrow { from { width: 0; } to { width: 100%; } }
+
+.anim-fade-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+.anim-fade { animation: fadeIn 1s ease-out forwards; opacity: 0; }
+.anim-delay-1 { animation-delay: 0.2s; }
+.anim-delay-2 { animation-delay: 0.4s; }
+.anim-delay-3 { animation-delay: 0.6s; }
+.anim-delay-4 { animation-delay: 0.8s; }
+.anim-delay-5 { animation-delay: 1s; }
+.shimmer { animation: shimmer 3s ease-in-out infinite; }
+.pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+
+/* Parallax-like scroll depth */
+.depth-layer { transition: transform 0.3s ease-out; }
+
+/* SVG decorative lines */
+.svg-line-decoration { position: absolute; pointer-events: none; opacity: 0.08; }
+
+/* Sticky nav */
+.nav-glass { background: rgba(5,5,5,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(212,175,55,0.1); }
+.nav-link { position: relative; transition: color 0.3s; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#d4af37; transition:width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+.nav-link:hover, .nav-link.active { color: #d4af37; }
+
+/* Cards */
+.strategy-card { background: linear-gradient(135deg, #1a1a1a, #111111); border: 1px solid rgba(212,175,55,0.1); transition: all 0.4s; }
+.strategy-card:hover { border-color: rgba(212,175,55,0.3); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.05); }
+
+/* Scenario bars */
+.scenario-bar { transition: width 1.2s cubic-bezier(0.25,0.46,0.45,0.94); }
+
+/* Button styles */
+.btn-gold { background: linear-gradient(135deg, #d4af37, #b8962e); color: #050505; font-weight: 500; transition: all 0.3s; }
+.btn-gold:hover { background: linear-gradient(135deg, #e8c856, #d4af37); box-shadow: 0 0 30px rgba(212,175,55,0.3); }
+.btn-outline { border: 1px solid rgba(212,175,55,0.4); color: #d4af37; transition: all 0.3s; }
+.btn-outline:hover { border-color: #d4af37; background: rgba(212,175,55,0.08); }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Number counter */
+.counter { display: inline-block; }
+
+/* FAQ */
+.faq-item { border-bottom: 1px solid rgba(212,175,55,0.08); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.open .faq-answer { max-height: 300px; }
+.faq-chevron { transition: transform 0.3s; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+/* Vote/Comment module */
+.reaction-btn { transition: all 0.2s; border: 1px solid rgba(212,175,55,0.15); }
+.reaction-btn:hover { border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.08); }
+.reaction-btn.selected { border-color: #d4af37; background: rgba(212,175,55,0.15); }
+.price-chip { transition: all 0.2s; border: 1px solid rgba(212,175,55,0.15); cursor: pointer; }
+.price-chip:hover { border-color: rgba(212,175,55,0.4); }
+.price-chip.selected { border-color: #d4af37; background: rgba(212,175,55,0.15); }
+
+/* Toast */
+.toast-msg { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 1px solid rgba(212,175,55,0.3); color: #f0ece2; padding: 12px 24px; border-radius: 8px; z-index: 1000; opacity: 0; transition: opacity 0.3s; pointer-events: none; font-family: 'Outfit', sans-serif; }
+.toast-msg.show { opacity: 1; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body">
+  <div id="app-wrapper" class="w-full h-full overflow-auto relative"><!-- SVG Decorative Elements -->
+   <svg class="svg-line-decoration" style="top:200px;right:0;width:300px;height:400px;" viewbox="0 0 300 400"><line x1="300" y1="0" x2="0" y2="400" stroke="#d4af37" stroke-width="0.5" /> <line x1="280" y1="0" x2="0" y2="350" stroke="#d4af37" stroke-width="0.3" /> <circle cx="150" cy="200" r="80" fill="none" stroke="#d4af37" stroke-width="0.3" />
+   </svg>
+   <svg class="svg-line-decoration" style="top:900px;left:0;width:250px;height:300px;" viewbox="0 0 250 300"><line x1="0" y1="0" x2="250" y2="300" stroke="#d4af37" stroke-width="0.5" /> <line x1="20" y1="0" x2="250" y2="250" stroke="#d4af37" stroke-width="0.3" />
+   </svg>
+   <svg class="svg-line-decoration" style="top:2000px;right:0;width:200px;height:300px;" viewbox="0 0 200 300"><path d="M200,0 Q100,150 200,300" fill="none" stroke="#d4af37" stroke-width="0.4" /> <path d="M180,0 Q80,150 180,300" fill="none" stroke="#d4af37" stroke-width="0.3" />
+   </svg><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+     <div class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <polygon points="14,2 26,26 2,26" fill="none" stroke="#d4af37" stroke-width="1.5" /><polygon points="14,8 21,22 7,22" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.5" />
+      </svg><span class="font-editorial text-lg tracking-wider text-gold" id="nav-brand">WealthShield</span>
+     </div>
+     <div class="hidden md:flex items-center gap-8 text-sm tracking-wide text-silver"><a href="#home" class="nav-link">Home</a> <a href="#strategy" class="nav-link">Strategy</a> <a href="#scenarios" class="nav-link">Scenarios</a> <a href="#savings" class="nav-link">Savings</a> <a href="#faq" class="nav-link">FAQ</a> <a href="#apply" class="nav-link">Apply</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-gold"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 flex flex-col gap-3 text-sm tracking-wide text-silver border-t border-gold/10 pt-4"><a href="#home" class="nav-link py-1">Home</a> <a href="#strategy" class="nav-link py-1">Strategy</a> <a href="#scenarios" class="nav-link py-1">Scenarios</a> <a href="#savings" class="nav-link py-1">Savings</a> <a href="#faq" class="nav-link py-1">FAQ</a> <a href="#apply" class="nav-link py-1">Apply</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-20" style="min-height:100%;">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.04) 0%, transparent 60%);"></div>
+    <div class="relative max-w-4xl mx-auto text-center">
+     <div class="anim-fade anim-delay-1 mb-6"><span class="inline-block px-4 py-1.5 text-xs tracking-[0.3em] uppercase text-gold border border-gold/20 rounded-full">Private Advisory</span>
+     </div>
+     <h1 id="hero-title" class="font-editorial text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.05] anim-fade-up anim-delay-2 gold-glow-text" style="color:#f0ece2;">Wealth is built by<br><span class="text-gold">what you keep.</span></h1>
+     <p id="hero-subtitle" class="mt-8 text-lg md:text-xl text-silver max-w-2xl mx-auto anim-fade-up anim-delay-3 font-light">Advanced tax strategy for high-income individuals.</p>
+     <div class="gold-line w-24 mx-auto mt-8 anim-fade anim-delay-4"></div>
+     <p class="mt-4 text-xs tracking-[0.25em] uppercase text-goldDim anim-fade anim-delay-4">Keep more · Protect more · Grow more</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12 anim-fade-up anim-delay-5"><a href="#apply" class="btn-gold px-8 py-3.5 rounded text-sm tracking-wider uppercase font-body inline-block text-center">Apply Now</a> <a href="#scenarios" class="btn-outline px-8 py-3.5 rounded text-sm tracking-wider uppercase font-body inline-block text-center">View Scenarios</a>
+     </div>
+    </div>
+   </section><!-- STRATEGY -->
+   <section id="strategy" class="px-6 py-24 md:py-32">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="text-xs tracking-[0.3em] uppercase text-goldDim">Our Framework</span>
+      <h2 id="strategy-heading" class="font-editorial text-4xl md:text-5xl mt-4 font-light">Core Planning <span class="text-gold">Pillars</span></h2>
+      <div class="gold-line w-16 mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="strategy-card rounded-lg p-8 reveal">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-6"><i data-lucide="shield" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 class="font-editorial text-2xl mb-3">Entity Architecture</h3>
+       <p class="text-silver text-sm leading-relaxed">Strategic entity structuring to optimize flow-through taxation, liability shielding, and multi-jurisdictional compliance.</p>
+      </div>
+      <div class="strategy-card rounded-lg p-8 reveal" style="transition-delay:0.15s;">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-6"><i data-lucide="trending-up" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 class="font-editorial text-2xl mb-3">Income Deferral</h3>
+       <p class="text-silver text-sm leading-relaxed">Systematic deferral mechanisms utilizing qualified plans, charitable vehicles, and installment strategies to shift recognition timing.</p>
+      </div>
+      <div class="strategy-card rounded-lg p-8 reveal" style="transition-delay:0.3s;">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-6"><i data-lucide="landmark" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 class="font-editorial text-2xl mb-3">Estate Transfer</h3>
+       <p class="text-silver text-sm leading-relaxed">Generational wealth transfer through irrevocable trusts, GRATs, and valuation discount strategies to minimize transfer taxes.</p>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6 mt-6">
+      <div class="strategy-card rounded-lg p-8 reveal">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-6"><i data-lucide="bar-chart-3" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 class="font-editorial text-2xl mb-3">Investment Tax Alpha</h3>
+       <p class="text-silver text-sm leading-relaxed">Tax-loss harvesting, asset location optimization, and opportunity zone strategies to generate after-tax alpha across portfolios.</p>
+      </div>
+      <div class="strategy-card rounded-lg p-8 reveal" style="transition-delay:0.15s;">
+       <div class="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-6"><i data-lucide="heart-handshake" style="width:22px;height:22px;color:#d4af37;"></i>
+       </div>
+       <h3 class="font-editorial text-2xl mb-3">Philanthropic Leverage</h3>
+       <p class="text-silver text-sm leading-relaxed">Donor-advised funds, charitable remainder trusts, and private foundations engineered for maximum deduction with sustained impact.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- SCENARIOS -->
+   <section id="scenarios" class="px-6 py-24 md:py-32" style="background:linear-gradient(180deg, rgba(26,26,26,0.3) 0%, transparent 100%);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="text-xs tracking-[0.3em] uppercase text-goldDim">Comparative Analysis</span>
+      <h2 class="font-editorial text-4xl md:text-5xl mt-4 font-light">Optimized vs <span class="text-gold">Unoptimized</span></h2>
+      <div class="gold-line w-16 mx-auto mt-6"></div>
+      <p class="text-silver mt-6 max-w-xl mx-auto text-sm">See the compounding impact of proactive tax strategy over conventional approaches.</p>
+     </div>
+     <div class="space-y-8"><!-- Scenario 1 -->
+      <div class="reveal">
+       <div class="flex justify-between items-baseline mb-3"><span class="text-sm text-ivory">Annual Income: $1.2M</span> <span class="text-xs text-silver">Year 1</span>
+       </div>
+       <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="text-xs text-silver w-24 shrink-0">Unoptimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-red-900/60 to-red-800/40 flex items-center px-3" data-width="47" style="width:0;"><span class="text-xs text-ivory/80">$564K tax burden</span>
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="text-xs text-gold w-24 shrink-0">Optimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-gold/40 to-gold/20 flex items-center px-3" data-width="31" style="width:0;"><span class="text-xs text-ivory/80">$372K tax burden</span>
+          </div>
+         </div>
+        </div>
+       </div>
+       <p class="text-gold text-sm mt-2 font-medium">→ $192K saved in Year 1</p>
+      </div><!-- Scenario 2 -->
+      <div class="reveal" style="transition-delay:0.15s;">
+       <div class="flex justify-between items-baseline mb-3"><span class="text-sm text-ivory">Annual Income: $2.5M</span> <span class="text-xs text-silver">Year 1</span>
+       </div>
+       <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="text-xs text-silver w-24 shrink-0">Unoptimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-red-900/60 to-red-800/40 flex items-center px-3" data-width="52" style="width:0;"><span class="text-xs text-ivory/80">$1.05M tax burden</span>
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="text-xs text-gold w-24 shrink-0">Optimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-gold/40 to-gold/20 flex items-center px-3" data-width="30" style="width:0;"><span class="text-xs text-ivory/80">$625K tax burden</span>
+          </div>
+         </div>
+        </div>
+       </div>
+       <p class="text-gold text-sm mt-2 font-medium">→ $425K saved in Year 1</p>
+      </div><!-- Scenario 3 -->
+      <div class="reveal" style="transition-delay:0.3s;">
+       <div class="flex justify-between items-baseline mb-3"><span class="text-sm text-ivory">Annual Income: $5M+</span> <span class="text-xs text-silver">Year 1</span>
+       </div>
+       <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="text-xs text-silver w-24 shrink-0">Unoptimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-red-900/60 to-red-800/40 flex items-center px-3" data-width="55" style="width:0;"><span class="text-xs text-ivory/80">$2.1M tax burden</span>
+          </div>
+         </div>
+        </div>
+        <div class="flex items-center gap-3"><span class="text-xs text-gold w-24 shrink-0">Optimized</span>
+         <div class="flex-1 h-8 rounded bg-ash overflow-hidden">
+          <div class="scenario-bar h-full rounded bg-gradient-to-r from-gold/40 to-gold/20 flex items-center px-3" data-width="26" style="width:0;"><span class="text-xs text-ivory/80">$1.15M tax burden</span>
+          </div>
+         </div>
+        </div>
+       </div>
+       <p class="text-gold text-sm mt-2 font-medium">→ $950K saved in Year 1</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- SAVINGS -->
+   <section id="savings" class="px-6 py-24 md:py-32">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="text-xs tracking-[0.3em] uppercase text-goldDim">Projected Outcomes</span>
+      <h2 class="font-editorial text-4xl md:text-5xl mt-4 font-light">Long-Term <span class="text-gold">Savings</span></h2>
+      <div class="gold-line w-16 mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 mb-16">
+      <div class="text-center p-8 rounded-lg border border-gold/10 pulse-glow reveal">
+       <div class="font-editorial text-5xl md:text-6xl text-gold font-light counter-el" data-target="2.4" data-suffix="M">
+        $0
+       </div>
+       <div class="gold-line w-12 mx-auto my-4"></div>
+       <p class="text-silver text-sm">5-Year Projected Savings</p>
+       <p class="text-xs text-goldDim mt-1">at $1.2M annual income</p>
+      </div>
+      <div class="text-center p-8 rounded-lg border border-gold/10 pulse-glow reveal" style="transition-delay:0.15s;">
+       <div class="font-editorial text-5xl md:text-6xl text-gold font-light counter-el" data-target="6.8" data-suffix="M">
+        $0
+       </div>
+       <div class="gold-line w-12 mx-auto my-4"></div>
+       <p class="text-silver text-sm">10-Year Projected Savings</p>
+       <p class="text-xs text-goldDim mt-1">compounded with reinvestment</p>
+      </div>
+      <div class="text-center p-8 rounded-lg border border-gold/10 pulse-glow reveal" style="transition-delay:0.3s;">
+       <div class="font-editorial text-5xl md:text-6xl text-gold font-light counter-el" data-target="18.5" data-suffix="M">
+        $0
+       </div>
+       <div class="gold-line w-12 mx-auto my-4"></div>
+       <p class="text-silver text-sm">20-Year Wealth Differential</p>
+       <p class="text-xs text-goldDim mt-1">optimized vs unoptimized</p>
+      </div>
+     </div><!-- Multi-year bar chart -->
+     <div class="rounded-lg border border-gold/10 p-6 md:p-8 reveal" style="background:linear-gradient(135deg, #1a1a1a, #111);">
+      <h3 class="font-editorial text-xl mb-6 text-center">Cumulative Tax Savings Trajectory</h3>
+      <div class="flex items-end justify-between gap-2 md:gap-4" style="height:200px;">
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/60 to-gold/30 savings-bar" data-height="15" style="height:0;transition:height 1s ease 0.2s;"></div><span class="text-xs text-silver mt-2">Yr 1</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/60 to-gold/30 savings-bar" data-height="30" style="height:0;transition:height 1s ease 0.4s;"></div><span class="text-xs text-silver mt-2">Yr 3</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/60 to-gold/30 savings-bar" data-height="48" style="height:0;transition:height 1s ease 0.6s;"></div><span class="text-xs text-silver mt-2">Yr 5</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/70 to-gold/40 savings-bar" data-height="65" style="height:0;transition:height 1s ease 0.8s;"></div><span class="text-xs text-silver mt-2">Yr 7</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/70 to-gold/40 savings-bar" data-height="78" style="height:0;transition:height 1s ease 1s;"></div><span class="text-xs text-silver mt-2">Yr 10</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold/80 to-gold/50 savings-bar" data-height="90" style="height:0;transition:height 1s ease 1.2s;"></div><span class="text-xs text-silver mt-2">Yr 15</span>
+       </div>
+       <div class="flex-1 flex flex-col items-center justify-end h-full">
+        <div class="w-full rounded-t bg-gradient-to-t from-gold to-gold/60 savings-bar" data-height="100" style="height:0;transition:height 1s ease 1.4s;"></div><span class="text-xs text-silver mt-2">Yr 20</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section id="community" class="px-6 py-24 md:py-32" style="background:linear-gradient(180deg, rgba(26,26,26,0.3) 0%, transparent 100%);">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12 reveal"><span class="text-xs tracking-[0.3em] uppercase text-goldDim">Community</span>
+      <h2 class="font-editorial text-4xl md:text-5xl mt-4 font-light">Vote &amp; <span class="text-gold">Comment</span></h2>
+      <div class="gold-line w-16 mx-auto mt-6"></div>
+      <p class="text-silver text-sm mt-4">What would you pay for this strategy framework?</p>
+     </div>
+     <div class="rounded-lg border border-gold/10 p-6 md:p-8 reveal" style="background:linear-gradient(135deg, #1a1a1a, #111);"><!-- Reactions -->
+      <div class="mb-6">
+       <p class="text-xs tracking-wider uppercase text-silver mb-3">Reactions</p>
+       <div id="reactions-row" class="flex flex-wrap gap-2"><button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="🔥" onclick="selectReaction(this)">🔥 <span class="count text-xs text-silver">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="💎" onclick="selectReaction(this)">💎 <span class="count text-xs text-silver">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="🚀" onclick="selectReaction(this)">🚀 <span class="count text-xs text-silver">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="💰" onclick="selectReaction(this)">💰 <span class="count text-xs text-silver">0</span></button> <button class="reaction-btn rounded-full px-3 py-1.5 text-sm flex items-center gap-1.5" data-reaction="👑" onclick="selectReaction(this)">👑 <span class="count text-xs text-silver">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-6">
+       <p class="text-xs tracking-wider uppercase text-silver mb-3">What would you pay?</p>
+       <div id="price-row" class="flex flex-wrap gap-2"><button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$97" onclick="selectPrice(this)">$97</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$197" onclick="selectPrice(this)">$197</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$497" onclick="selectPrice(this)">$497</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$997" onclick="selectPrice(this)">$997</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$1,497" onclick="selectPrice(this)">$1,497</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$2,497" onclick="selectPrice(this)">$2,497</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$4,997" onclick="selectPrice(this)">$4,997</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$7,500" onclick="selectPrice(this)">$7,500</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$10,000" onclick="selectPrice(this)">$10,000</button> <button class="price-chip rounded-full px-3 py-1.5 text-xs text-ivory" data-price="$15,000+" onclick="selectPrice(this)">$15,000+</button>
+       </div>
+      </div><!-- Comment -->
+      <div class="mb-4">
+       <p class="text-xs tracking-wider uppercase text-silver mb-3">Leave a Comment</p><input id="comment-author" type="text" placeholder="Your name (optional)" class="w-full bg-obsidian border border-gold/10 rounded px-4 py-2.5 text-sm text-ivory placeholder-silver/50 mb-2 focus:outline-none focus:border-gold/30"> <textarea id="comment-text" rows="3" placeholder="Share your thoughts..." class="w-full bg-obsidian border border-gold/10 rounded px-4 py-2.5 text-sm text-ivory placeholder-silver/50 resize-none focus:outline-none focus:border-gold/30"></textarea>
+      </div><button id="submit-btn" onclick="submitEntry()" class="btn-gold px-6 py-2.5 rounded text-sm tracking-wider uppercase w-full"> <span id="submit-text">Submit</span> <span id="submit-spinner" class="hidden">Submitting...</span> </button>
+      <p id="submit-status" class="text-xs text-center mt-3 hidden"></p><!-- Comments List -->
+      <div class="mt-8 border-t border-gold/10 pt-6">
+       <p class="text-xs tracking-wider uppercase text-silver mb-4">Recent Comments</p>
+       <div id="comments-list" class="space-y-4">
+        <p class="text-silver/50 text-sm italic">No comments yet. Be the first!</p>
+       </div>
+      </div>
+     </div>
+     <p class="text-center text-xs text-silver/30 mt-4 tracking-wider">— Embed Widget Here —</p>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="px-6 py-24 md:py-32">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16 reveal"><span class="text-xs tracking-[0.3em] uppercase text-goldDim">Questions</span>
+      <h2 class="font-editorial text-4xl md:text-5xl mt-4 font-light">Frequently <span class="text-gold">Asked</span></h2>
+      <div class="gold-line w-16 mx-auto mt-6"></div>
+     </div>
+     <div class="space-y-0 reveal">
+      <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center">
+        <h3 class="font-editorial text-lg pr-4">Who is WealthShield Strategy designed for?</h3><i data-lucide="chevron-down" class="faq-chevron text-gold shrink-0" style="width:18px;height:18px;"></i>
+       </div>
+       <div class="faq-answer">
+        <p class="text-silver text-sm leading-relaxed pt-3">WealthShield is designed for high-income individuals, business owners, and executives earning $500K+ annually who want to legally minimize their tax burden through advanced, multi-layered strategies.</p>
+       </div>
+      </div>
+      <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center">
+        <h3 class="font-editorial text-lg pr-4">How quickly can I expect results?</h3><i data-lucide="chevron-down" class="faq-chevron text-gold shrink-0" style="width:18px;height:18px;"></i>
+       </div>
+       <div class="faq-answer">
+        <p class="text-silver text-sm leading-relaxed pt-3">Most clients see measurable tax reduction within the first filing year. The full compounding benefit of our multi-year strategy typically becomes significant by Year 3-5.</p>
+       </div>
+      </div>
+      <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center">
+        <h3 class="font-editorial text-lg pr-4">Is this legal and IRS-compliant?</h3><i data-lucide="chevron-down" class="faq-chevron text-gold shrink-0" style="width:18px;height:18px;"></i>
+       </div>
+       <div class="faq-answer">
+        <p class="text-silver text-sm leading-relaxed pt-3">Absolutely. Every strategy in the WealthShield framework operates within established tax code provisions. We focus on proactive planning, not aggressive positions.</p>
+       </div>
+      </div>
+      <div class="faq-item py-5 cursor-pointer" onclick="toggleFaq(this)">
+       <div class="flex justify-between items-center">
+        <h3 class="font-editorial text-lg pr-4">What does the advisory relationship include?</h3><i data-lucide="chevron-down" class="faq-chevron text-gold shrink-0" style="width:18px;height:18px;"></i>
+       </div>
+       <div class="faq-answer">
+        <p class="text-silver text-sm leading-relaxed pt-3">You receive the complete strategy framework, personalized savings projections, multi-year planning dashboard, quarterly advisory check-ins, and ongoing optimization as tax law evolves.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="apply" class="px-6 py-24 md:py-32 relative">
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 50%, rgba(212,175,55,0.03) 0%, transparent 60%);"></div>
+    <div class="max-w-3xl mx-auto text-center relative reveal">
+     <svg width="48" height="48" viewbox="0 0 48 48" fill="none" class="mx-auto mb-8 shimmer">
+      <polygon points="24,4 44,44 4,44" fill="none" stroke="#d4af37" stroke-width="1.5" /><polygon points="24,14 36,38 12,38" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.4" />
+     </svg>
+     <h2 id="bottom-cta-heading" class="font-editorial text-4xl md:text-5xl lg:text-6xl font-light leading-tight gold-glow-text">Operate at a higher level<br>
+      of <span class="text-gold">strategy.</span></h2>
+     <div class="gold-line w-24 mx-auto mt-8"></div>
+     <p class="text-silver mt-6 max-w-lg mx-auto text-sm leading-relaxed">Applications are reviewed on a case-by-case basis. We work with a select number of clients each quarter to ensure dedicated attention and measurable outcomes.</p>
+     <div class="mt-10"><a href="#home" class="btn-gold px-10 py-4 rounded text-sm tracking-wider uppercase inline-block">Apply for Advisory</a>
+     </div>
+     <p class="text-xs text-silver/40 mt-6 tracking-wider">Limited quarterly availability · By application only</p>
+    </div>
+   </section><!-- Footer -->
+   <footer class="px-6 py-8 border-t border-gold/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none">
+       <polygon points="14,2 26,26 2,26" fill="none" stroke="#d4af37" stroke-width="1.5" />
+      </svg><span class="font-editorial text-sm text-gold/60">WealthShield Strategy</span>
+     </div>
+     <p class="text-xs text-silver/30">© 2024 WealthShield. All rights reserved. This is a strategic advisory framework.</p>
+    </div>
+   </footer>
+  </div>
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// ========== State ==========
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+const defaultConfig = {
+  hero_title: 'Wealth is built by<br><span class="text-gold">what you keep.</span>',
+  hero_subtitle: 'Advanced tax strategy for high-income individuals.',
+  strategy_title: 'Core Planning <span class="text-gold">Pillars</span>',
+  bottom_cta_text: 'Operate at a higher level<br>of <span class="text-gold">strategy.</span>',
+  background_color: '#050505',
+  surface_color: '#1a1a1a',
+  text_color: '#f0ece2',
+  accent_color: '#d4af37',
+  secondary_action_color: '#999999',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+// ========== Element SDK ==========
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = key => config[key] || defaultConfig[key];
+
+    document.getElementById('hero-title').innerHTML = c('hero_title');
+    document.getElementById('hero-subtitle').textContent = c('hero_subtitle');
+    document.getElementById('strategy-heading').innerHTML = c('strategy_title');
+    document.getElementById('bottom-cta-heading').innerHTML = c('bottom_cta_text');
+
+    // Colors
+    const bg = c('background_color');
+    const surface = c('surface_color');
+    const text = c('text_color');
+    const accent = c('accent_color');
+    const secondary = c('secondary_action_color');
+
+    document.body.style.background = bg;
+    document.body.style.color = text;
+
+    document.querySelectorAll('.strategy-card').forEach(el => {
+      el.style.background = `linear-gradient(135deg, ${surface}, ${bg})`;
+      el.style.borderColor = accent + '1a';
+    });
+    document.querySelectorAll('.text-gold').forEach(el => el.style.color = accent);
+    document.querySelectorAll('.text-silver').forEach(el => el.style.color = secondary);
+    document.querySelectorAll('.gold-line').forEach(el => el.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`);
+    document.querySelectorAll('.btn-gold').forEach(el => {
+      el.style.background = `linear-gradient(135deg, ${accent}, ${accent}cc)`;
+      el.style.color = bg;
+    });
+    document.querySelectorAll('.btn-outline').forEach(el => {
+      el.style.borderColor = accent + '66';
+      el.style.color = accent;
+    });
+
+    // Font
+    const font = c('font_family');
+    const baseSize = c('font_size');
+    document.querySelectorAll('.font-editorial').forEach(el => {
+      el.style.fontFamily = `${font}, Georgia, serif`;
+    });
+    document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${baseSize * 4}px`);
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 3}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.4}px`);
+    document.querySelectorAll('p, span').forEach(el => {
+      if (!el.closest('h1,h2,h3') && !el.classList.contains('counter-el')) {
+        // keep existing size unless body text
+      }
+    });
+  },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['strategy_title', config.strategy_title || defaultConfig.strategy_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ========== Data SDK ==========
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    updateReactionCounts();
+    renderComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+function updateReactionCounts() {
+  const counts = {};
+  allData.forEach(d => { if (d.type === 'reaction' && d.reaction) counts[d.reaction] = (counts[d.reaction] || 0) + 1; });
+  document.querySelectorAll('#reactions-row .reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.count').textContent = counts[r] || 0;
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment');
+  if (!comments.length) { list.innerHTML = '<p class="text-silver/50 text-sm italic">No comments yet. Be the first!</p>'; return; }
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const ids = new Set();
+
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(c => {
+    ids.add(c.__backendId);
+    if (existingMap.has(c.__backendId)) {
+      const el = existingMap.get(c.__backendId);
+      el.querySelector('.c-author').textContent = c.author || 'Anonymous';
+      el.querySelector('.c-text').textContent = c.comment;
+      el.querySelector('.c-price').textContent = c.price ? `Voted: ${c.price}` : '';
+      el.querySelector('.c-reaction').textContent = c.reaction || '';
+    } else {
+      const el = document.createElement('div');
+      el.dataset.id = c.__backendId;
+      el.className = 'border-b border-gold/5 pb-3';
+      el.innerHTML = `
+        <div class="flex items-center gap-2 mb-1">
+          <span class="c-author text-sm text-gold">${c.author || 'Anonymous'}</span>
+          <span class="c-reaction text-sm">${c.reaction || ''}</span>
+          <span class="c-price text-xs text-goldDim">${c.price ? 'Voted: ' + c.price : ''}</span>
+        </div>
+        <p class="c-text text-sm text-ivory/80">${c.comment}</p>
+      `;
+      list.appendChild(el);
+    }
+  });
+
+  existingMap.forEach((el, id) => { if (!ids.has(id)) el.remove(); });
+}
+
+function selectReaction(btn) {
+  document.querySelectorAll('#reactions-row .reaction-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedReaction = btn.dataset.reaction;
+}
+
+function selectPrice(btn) {
+  document.querySelectorAll('#price-row .price-chip').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedPrice = btn.dataset.price;
+}
+
+async function submitEntry() {
+  const comment = document.getElementById('comment-text').value.trim();
+  const author = document.getElementById('comment-author').value.trim();
+  if (!comment && !selectedReaction && !selectedPrice) { showToast('Please add a reaction, price vote, or comment.'); return; }
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  const txt = document.getElementById('submit-text');
+  const spin = document.getElementById('submit-spinner');
+  btn.disabled = true; txt.classList.add('hidden'); spin.classList.remove('hidden');
+
+  // Save reaction as separate entry if selected
+  if (selectedReaction) {
+    await window.dataSdk.create({ type: 'reaction', reaction: selectedReaction, comment: '', price: '', timestamp: new Date().toISOString(), author: '' });
+  }
+
+  // Save comment entry
+  if (comment || selectedPrice) {
+    const result = await window.dataSdk.create({
+      type: 'comment',
+      reaction: selectedReaction || '',
+      comment: comment,
+      price: selectedPrice || '',
+      timestamp: new Date().toISOString(),
+      author: author || 'Anonymous'
+    });
+    if (!result.isOk) { showToast('Something went wrong. Please try again.'); }
+  }
+
+  // Reset
+  document.getElementById('comment-text').value = '';
+  document.getElementById('comment-author').value = '';
+  document.querySelectorAll('.reaction-btn, .price-chip').forEach(b => b.classList.remove('selected'));
+  selectedReaction = null; selectedPrice = null;
+  btn.disabled = false; txt.classList.remove('hidden'); spin.classList.add('hidden');
+  showToast('Submitted successfully!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ========== FAQ ==========
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// ========== Mobile Menu ==========
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// ========== Scroll Reveal ==========
+const wrapper = document.getElementById('app-wrapper');
+function checkReveals() {
+  const wh = wrapper.clientHeight;
+  document.querySelectorAll('.reveal').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < wh * 0.88) el.classList.add('visible');
+  });
+  // Scenario bars
+  document.querySelectorAll('.scenario-bar').forEach(bar => {
+    const r = bar.getBoundingClientRect();
+    if (r.top < wh * 0.9 && bar.style.width === '0px') {
+      bar.style.width = bar.dataset.width + '%';
+    }
+  });
+  // Savings bars
+  document.querySelectorAll('.savings-bar').forEach(bar => {
+    const r = bar.getBoundingClientRect();
+    if (r.top < wh * 0.9 && bar.style.height === '0px') {
+      bar.style.height = bar.dataset.height + '%';
+    }
+  });
+  // Counters
+  document.querySelectorAll('.counter-el').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < wh * 0.9 && !el.dataset.done) {
+      el.dataset.done = '1';
+      animateCounter(el, parseFloat(el.dataset.target), el.dataset.suffix);
+    }
+  });
+  // Active nav
+  ['home','strategy','scenarios','savings','faq','apply'].forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec) {
+      const r = sec.getBoundingClientRect();
+      const link = document.querySelector(`a[href="#${id}"]`);
+      if (link) {
+        if (r.top <= 100 && r.bottom > 100) link.classList.add('active');
+        else link.classList.remove('active');
+      }
+    }
+  });
+}
+
+function animateCounter(el, target, suffix) {
+  let start = 0;
+  const dur = 1500;
+  const sTime = performance.now();
+  function step(now) {
+    const p = Math.min((now - sTime) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = (target * ease).toFixed(1);
+    el.textContent = '$' + val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+wrapper.addEventListener('scroll', checkReveals);
+setTimeout(checkReveals, 300);
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a748cd4a027c5',t:'MTc3NTU3OTgyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,430 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/b47af0ee-b7f0-4bbe-9555-80b7f85ce99d -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpinSpark Arcade</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Outfit:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+:root{--bg:#0a0a1a;--surface:#151530;--text:#f0e6ff;--primary:#ff2d95;--secondary:#00f0ff}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text)}
+.pixel-font{font-family:'Press Start 2P',monospace}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(255,45,149,.4),0 0 60px rgba(255,45,149,.1)}50%{box-shadow:0 0 30px rgba(255,45,149,.7),0 0 80px rgba(255,45,149,.2)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes spin-wheel{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+@keyframes slide-up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce-in{0%{transform:scale(0)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes beam{0%{opacity:.3;transform:scaleY(1)}50%{opacity:.7;transform:scaleY(1.3)}100%{opacity:.3;transform:scaleY(1)}}
+@keyframes drift{0%,100%{transform:translate(0,0)}25%{transform:translate(5px,-8px)}75%{transform:translate(-5px,5px)}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.animate-float{animation:float 3s ease-in-out infinite}
+.animate-glow{animation:glow-pulse 2s ease-in-out infinite}
+.animate-shimmer{background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);background-size:200% 100%;animation:shimmer 3s infinite}
+.animate-sparkle{animation:sparkle 1.5s ease-in-out infinite}
+.animate-slide-up{animation:slide-up .6s ease-out both}
+.animate-bounce-in{animation:bounce-in .5s ease-out both}
+.animate-drift{animation:drift 6s ease-in-out infinite}
+.animate-beam{animation:beam 2s ease-in-out infinite}
+
+.neon-text{text-shadow:0 0 10px var(--primary),0 0 40px var(--primary),0 0 80px rgba(255,45,149,.3)}
+.cyan-glow{text-shadow:0 0 10px var(--secondary),0 0 40px var(--secondary)}
+.card-glow{box-shadow:0 0 25px rgba(0,240,255,.15),inset 0 1px 0 rgba(255,255,255,.08)}
+.card-glow-pink{box-shadow:0 0 25px rgba(255,45,149,.2),inset 0 1px 0 rgba(255,255,255,.08)}
+
+.nav-link{position:relative;padding:.25rem 0}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--primary);transition:width .3s}
+.nav-link:hover::after{width:100%}
+
+.btn-primary{background:linear-gradient(135deg,#ff2d95,#ff6b35);border:none;color:#fff;font-weight:700;border-radius:999px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,45,149,.4)}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);background-size:200% 100%;animation:shimmer 2s infinite}
+
+.btn-secondary{background:transparent;border:2px solid var(--secondary);color:var(--secondary);font-weight:700;border-radius:999px;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{background:rgba(0,240,255,.1);transform:translateY(-2px)}
+
+.wheel-container{position:relative;width:280px;height:280px;margin:0 auto}
+@media(min-width:640px){.wheel-container{width:340px;height:340px}}
+
+.prize-badge{font-size:.6rem;padding:2px 8px;border-radius:999px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.badge-common{background:linear-gradient(135deg,#4a5568,#718096);color:#fff}
+.badge-rare{background:linear-gradient(135deg,#00f0ff,#0080ff);color:#0a0a1a}
+.badge-legendary{background:linear-gradient(135deg,#ff2d95,#ff6b35);color:#fff;animation:glow-pulse 2s infinite}
+
+.pricing-card{background:var(--surface);border:1px solid rgba(255,255,255,.06);border-radius:1.25rem;transition:all .3s;position:relative;overflow:hidden}
+.pricing-card:hover{transform:translateY(-4px)}
+.pricing-popular{border-color:var(--primary);animation:glow-pulse 3s infinite}
+.pricing-legendary{border-color:var(--secondary)}
+.pricing-legendary:hover{box-shadow:0 0 40px rgba(0,240,255,.3)}
+
+.testimonial-bubble{background:var(--surface);border:1px solid rgba(255,255,255,.06);border-radius:1rem;position:relative}
+.testimonial-bubble::after{content:'';position:absolute;bottom:-8px;left:24px;width:16px;height:16px;background:var(--surface);border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);transform:rotate(45deg)}
+
+.reaction-btn{background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:.75rem;padding:.5rem .75rem;cursor:pointer;transition:all .2s;font-size:.8rem;color:var(--text);display:flex;align-items:center;gap:.35rem}
+.reaction-btn:hover{border-color:var(--primary);background:rgba(255,45,149,.08)}
+.reaction-btn.active{border-color:var(--primary);background:rgba(255,45,149,.15)}
+
+.price-chip{background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:.5rem;padding:.35rem .75rem;cursor:pointer;transition:all .2s;font-size:.85rem;color:var(--text);font-weight:600}
+.price-chip:hover{border-color:var(--secondary)}
+.price-chip.active{border-color:var(--secondary);background:rgba(0,240,255,.12);color:var(--secondary)}
+
+.sparkle-dot{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;animation:sparkle 2s ease-in-out infinite}
+
+.scroll-section{opacity:0;transform:translateY(30px);transition:opacity .6s ease-out,transform .6s ease-out}
+.scroll-section.visible{opacity:1;transform:translateY(0)}
+
+.ticker-wrap{overflow:hidden;white-space:nowrap}.ticker-inner{display:inline-flex;animation:ticker 20s linear infinite}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav class="sticky top-0 z-50 backdrop-blur-xl bg-[#0a0a1a]/80 border-b border-white/5">
+   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="pixel-font text-xs sm:text-sm neon-text tracking-wider">SPINSPARK</a>
+    <div class="hidden md:flex gap-6 text-sm font-semibold"><a href="#home" class="nav-link">Home</a> <a href="#spin" class="nav-link">Spin Game</a> <a href="#prizes" class="nav-link">Prizes</a> <a href="#bundles" class="nav-link">Bundles</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+    </div><button id="mobile-menu-btn" class="md:hidden" aria-label="Menu"><i data-lucide="menu" style="width:24px;height:24px;color:var(--text)"></i></button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-semibold"><a href="#home" class="nav-link py-1">Home</a><a href="#spin" class="nav-link py-1">Spin Game</a><a href="#prizes" class="nav-link py-1">Prizes</a><a href="#bundles" class="nav-link py-1">Bundles</a><a href="#reviews" class="nav-link py-1">Reviews</a><a href="#download" class="nav-link py-1">Download</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative min-h-[90%] flex flex-col items-center justify-center text-center px-4 py-16 overflow-hidden"><!-- Animated beams -->
+   <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute top-0 left-1/4 w-1 h-full bg-gradient-to-b from-pink-500/20 to-transparent animate-beam"></div>
+    <div class="absolute top-0 left-1/2 w-1 h-full bg-gradient-to-b from-cyan-400/15 to-transparent animate-beam" style="animation-delay:.7s"></div>
+    <div class="absolute top-0 right-1/4 w-1 h-full bg-gradient-to-b from-pink-500/10 to-transparent animate-beam" style="animation-delay:1.4s"></div>
+   </div><!-- Sparkles -->
+   <div class="sparkle-dot" style="top:15%;left:20%;animation-delay:0s"></div>
+   <div class="sparkle-dot" style="top:30%;right:15%;animation-delay:.5s"></div>
+   <div class="sparkle-dot" style="top:60%;left:10%;animation-delay:1s"></div>
+   <div class="sparkle-dot" style="top:45%;right:25%;animation-delay:1.5s"></div>
+   <div class="sparkle-dot" style="bottom:20%;left:35%;animation-delay:.8s"></div>
+   <div class="relative z-10 animate-slide-up">
+    <p class="pixel-font text-[.6rem] sm:text-xs tracking-[.3em] text-pink-400 mb-4 uppercase">SpinSpark Arcade</p>
+    <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-4 neon-text" style="line-height:1.1">Spin it. Score it.<br>
+     Download it.</h1>
+    <p id="hero-subtitle" class="text-lg sm:text-xl text-purple-200/70 max-w-lg mx-auto mb-8">Digital prizes that hit instantly.</p>
+    <div class="flex flex-wrap gap-4 justify-center"><a href="#spin" class="btn-primary px-8 py-3 text-base">🎰 Spin the Drop</a> <a href="#prizes" class="btn-secondary px-8 py-3 text-base">See Prizes</a>
+    </div>
+   </div><!-- Rate the Arcade Module -->
+   <div class="relative z-10 mt-16 w-full max-w-xl animate-slide-up" style="animation-delay:.3s">
+    <div class="bg-[#151530] rounded-2xl border border-white/8 p-5 sm:p-6">
+     <h3 class="pixel-font text-[.65rem] cyan-glow mb-4">⭐ Rate the Arcade</h3>
+     <div id="vote-module">
+      <div id="signin-prompt">
+       <p class="text-sm text-purple-200/60 mb-3">Sign in to vote &amp; comment</p><button id="signin-btn" class="btn-primary px-6 py-2 text-sm">Sign In</button>
+      </div>
+      <div id="signed-in-area" class="hidden">
+       <div class="flex flex-wrap gap-2 mb-4" id="reactions-container"></div>
+       <div class="mb-4">
+        <p class="text-xs text-purple-200/50 mb-2">Pick your price tier:</p>
+        <div class="flex flex-wrap gap-2" id="price-chips"></div>
+       </div>
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Drop a comment..." class="flex-1 bg-[#0a0a1a] border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-pink-500 transition"> <button id="comment-submit" class="btn-primary px-4 py-2 text-sm">Send</button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-2 max-h-40 overflow-y-auto"></div>
+      </div>
+     </div>
+     <p class="text-[.6rem] text-purple-200/30 mt-4 border-t border-white/5 pt-3">📌 Embed Widget Here</p>
+    </div>
+   </div>
+  </section><!-- Ticker -->
+  <div class="ticker-wrap border-y border-white/5 py-2 bg-[#151530]/50">
+   <div class="ticker-inner"><span class="mx-8 text-sm font-bold text-pink-400">🎰 NEW DROP LIVE</span> <span class="mx-8 text-sm text-purple-200/50">★ 2,841 spins today</span> <span class="mx-8 text-sm font-bold text-cyan-400">🏆 LEGENDARY UNLOCKED</span> <span class="mx-8 text-sm text-purple-200/50">★ 97% satisfaction</span> <span class="mx-8 text-sm font-bold text-pink-400">🎰 NEW DROP LIVE</span> <span class="mx-8 text-sm text-purple-200/50">★ 2,841 spins today</span> <span class="mx-8 text-sm font-bold text-cyan-400">🏆 LEGENDARY UNLOCKED</span> <span class="mx-8 text-sm text-purple-200/50">★ 97% satisfaction</span>
+   </div>
+  </div><!-- SPIN GAME -->
+  <section id="spin" class="scroll-section py-20 px-4">
+   <div class="max-w-4xl mx-auto text-center">
+    <p class="pixel-font text-[.6rem] tracking-[.25em] text-cyan-400 mb-3">THE GAME</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold mb-3 cyan-glow">Spin the Wheel</h2>
+    <p class="text-purple-200/60 mb-10 max-w-md mx-auto">Spin reveals your bundle. Every wedge is a win.</p>
+    <div class="wheel-container animate-drift"><!-- Wheel SVG -->
+     <svg id="wheel-svg" viewbox="0 0 300 300" class="w-full h-full drop-shadow-2xl" style="filter:drop-shadow(0 0 30px rgba(255,45,149,.3))"><defs>
+       <lineargradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ff2d95" />
+        <stop offset="100%" stop-color="#ff6b35" />
+       </lineargradient>
+       <lineargradient id="g2" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#00f0ff" />
+        <stop offset="100%" stop-color="#0080ff" />
+       </lineargradient>
+       <lineargradient id="g3" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8b5cf6" />
+        <stop offset="100%" stop-color="#a855f7" />
+       </lineargradient>
+       <lineargradient id="g4" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f59e0b" />
+        <stop offset="100%" stop-color="#ef4444" />
+       </lineargradient>
+      </defs> <circle cx="150" cy="150" r="148" fill="#151530" stroke="url(#g1)" stroke-width="3" /> <!-- Wedges --> <path d="M150,150 L150,2 A148,148 0 0,1 278,76 Z" fill="url(#g1)" opacity=".85" /> <path d="M150,150 L278,76 A148,148 0 0,1 278,224 Z" fill="url(#g2)" opacity=".85" /> <path d="M150,150 L278,224 A148,148 0 0,1 150,298 Z" fill="url(#g3)" opacity=".85" /> <path d="M150,150 L150,298 A148,148 0 0,1 22,224 Z" fill="url(#g4)" opacity=".85" /> <path d="M150,150 L22,224 A148,148 0 0,1 22,76 Z" fill="url(#g1)" opacity=".6" /> <path d="M150,150 L22,76 A148,148 0 0,1 150,2 Z" fill="url(#g2)" opacity=".6" /> <!-- Labels --> <text x="190" y="60" fill="#fff" font-size="11" font-weight="800" transform="rotate(30,190,60)">
+       RARE
+      </text> <text x="245" y="150" fill="#fff" font-size="10" font-weight="800" transform="rotate(90,245,150)">
+       EPIC
+      </text> <text x="210" y="250" fill="#fff" font-size="9" font-weight="800" transform="rotate(150,210,250)">
+       LEGEND
+      </text> <text x="100" y="270" fill="#fff" font-size="11" font-weight="800" transform="rotate(210,100,270)">
+       BONUS
+      </text> <text x="50" y="175" fill="#fff" font-size="10" font-weight="800" transform="rotate(270,50,175)">
+       COMMON
+      </text> <text x="85" y="60" fill="#fff" font-size="10" font-weight="800" transform="rotate(330,85,60)">
+       RARE+
+      </text> <!-- Center --> <circle cx="150" cy="150" r="28" fill="#0a0a1a" stroke="#ff2d95" stroke-width="2" /> <text x="150" y="155" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">
+       SPIN
+      </text>
+     </svg><!-- Pointer -->
+     <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-10">
+      <div class="w-0 h-0 border-l-[14px] border-r-[14px] border-t-[28px] border-l-transparent border-r-transparent border-t-pink-500 drop-shadow-lg"></div>
+     </div>
+    </div><button id="spin-btn" class="btn-primary px-10 py-3 text-lg mt-8 animate-glow">🎰 SPIN NOW</button>
+    <p id="spin-result" class="mt-4 text-sm text-purple-200/50 h-6"></p>
+   </div>
+  </section><!-- PRIZES -->
+  <section id="prizes" class="scroll-section py-20 px-4 bg-gradient-to-b from-transparent via-[#151530]/30 to-transparent">
+   <div class="max-w-6xl mx-auto text-center">
+    <p class="pixel-font text-[.6rem] tracking-[.25em] text-pink-400 mb-3">THE LOOT</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold mb-3 neon-text">Prize Vault</h2>
+    <p class="text-purple-200/60 mb-10">40 spin cards. Every rarity. Instant download.</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" id="prizes-grid"></div>
+   </div>
+  </section><!-- BUNDLES -->
+  <section id="bundles" class="scroll-section py-20 px-4">
+   <div class="max-w-5xl mx-auto text-center">
+    <p class="pixel-font text-[.6rem] tracking-[.25em] text-cyan-400 mb-3">ARCADE PACKS</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold mb-3 cyan-glow">Pick Your Pack</h2>
+    <p class="text-purple-200/60 mb-12">Every pack includes spin cards, wheel mockups, badges &amp; copy.</p>
+    <div class="grid md:grid-cols-3 gap-6"><!-- Starter -->
+     <div class="pricing-card p-6 text-left card-glow">
+      <p class="text-xs font-bold text-purple-200/50 uppercase tracking-wider mb-2">Starter</p>
+      <div class="text-4xl font-extrabold mb-1">
+       $29
+      </div>
+      <p class="text-sm text-purple-200/40 mb-6">Perfect first spin</p>
+      <ul class="space-y-2 text-sm text-purple-200/70 mb-8">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>10 Spin Cards</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>3 Wheel Mockups</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>25 Prize Badges</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>Basic Copy Pack</li>
+      </ul><button class="btn-secondary w-full py-2.5 text-sm">Get Starter</button>
+     </div><!-- Pro (Popular) -->
+     <div class="pricing-card pricing-popular p-6 text-left relative">
+      <div class="absolute -top-3 right-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-[.6rem] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+       Most Popular
+      </div>
+      <p class="text-xs font-bold text-pink-400 uppercase tracking-wider mb-2">Pro</p>
+      <div class="text-4xl font-extrabold mb-1">
+       $59
+      </div>
+      <p class="text-sm text-purple-200/40 mb-6">The full arcade</p>
+      <ul class="space-y-2 text-sm text-purple-200/70 mb-8">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary)"></i>25 Spin Cards</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary)"></i>8 Wheel Mockups</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary)"></i>60 Prize Badges</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary)"></i>Full Copy Pack</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--primary)"></i>Upsell Templates</li>
+      </ul><button class="btn-primary w-full py-2.5 text-sm">Get Pro</button>
+     </div><!-- Legendary -->
+     <div class="pricing-card pricing-legendary p-6 text-left card-glow">
+      <p class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-2">Legendary</p>
+      <div class="text-4xl font-extrabold mb-1">
+       $99
+      </div>
+      <p class="text-sm text-purple-200/40 mb-6">Everything. Forever.</p>
+      <ul class="space-y-2 text-sm text-purple-200/70 mb-8">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>All 40 Spin Cards</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>12 Wheel Mockups</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>100 Prize Badges</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>Complete Copy Pack</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>Lifetime Updates</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:var(--secondary)"></i>Priority Support</li>
+      </ul><button class="btn-secondary w-full py-2.5 text-sm" style="border-color:var(--secondary);color:var(--secondary)">Get Legendary</button>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="scroll-section py-20 px-4 bg-gradient-to-b from-transparent via-[#151530]/30 to-transparent">
+   <div class="max-w-4xl mx-auto text-center">
+    <p class="pixel-font text-[.6rem] tracking-[.25em] text-pink-400 mb-3">PLAYER REVIEWS</p>
+    <h2 class="text-3xl sm:text-5xl font-extrabold mb-10 neon-text">What Spinners Say</h2>
+    <div class="relative overflow-hidden">
+     <div id="testimonial-track" class="flex transition-transform duration-500 ease-out"></div>
+    </div>
+    <div class="flex justify-center gap-3 mt-8"><button id="prev-review" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-pink-500 transition"><i data-lucide="chevron-left" style="width:18px;height:18px"></i></button> <button id="next-review" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-pink-500 transition"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></button>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA / DOWNLOAD -->
+  <section id="download" class="scroll-section py-24 px-4 text-center relative overflow-hidden">
+   <div class="sparkle-dot" style="top:20%;left:15%;animation-delay:.2s"></div>
+   <div class="sparkle-dot" style="top:40%;right:20%;animation-delay:.9s"></div>
+   <div class="sparkle-dot" style="bottom:30%;left:40%;animation-delay:1.3s"></div>
+   <div class="relative z-10 max-w-2xl mx-auto">
+    <div class="text-5xl mb-6 animate-float">
+     🎰
+    </div>
+    <h2 id="bottom-cta" class="text-3xl sm:text-5xl font-extrabold mb-4 neon-text">Pull the lever on your next best-seller.</h2>
+    <p class="text-purple-200/60 mb-8">One download. Infinite spins. Let's go.</p><button class="btn-primary px-10 py-4 text-lg animate-glow">⬇️ Download Now</button>
+   </div>
+  </section><!-- Footer -->
+  <footer class="border-t border-white/5 py-8 px-4 text-center">
+   <p class="pixel-font text-[.5rem] text-purple-200/30 tracking-wider">SPINSPARK ARCADE © 2025</p>
+  </footer>
+  <script>
+// === DATA ===
+const prizes = [
+  {name:'Neon Burst',rarity:'legendary',emoji:'🌟'},{name:'Pixel Crown',rarity:'rare',emoji:'👑'},
+  {name:'Retro Glow',rarity:'common',emoji:'✨'},{name:'Arcade Fire',rarity:'legendary',emoji:'🔥'},
+  {name:'Cyber Gem',rarity:'rare',emoji:'💎'},{name:'Star Spin',rarity:'common',emoji:'⭐'},
+  {name:'Gold Rush',rarity:'rare',emoji:'🥇'},{name:'Thunder Bolt',rarity:'legendary',emoji:'⚡'},
+  {name:'Cool Wave',rarity:'common',emoji:'🌊'},{name:'Prism Pop',rarity:'rare',emoji:'🌈'},
+  {name:'Lucky 7',rarity:'common',emoji:'🎲'},{name:'Mega Drop',rarity:'legendary',emoji:'💫'}
+];
+const testimonials = [
+  {text:"My conversion rate jumped 40% after adding spin mechanics. Absolute game-changer.",name:"@PixelQueen",avatar:"👩‍🎤"},
+  {text:"Ran a weekly spin drop and sold out in 2 hours. The FOMO is real.",name:"@ArcadeKing",avatar:"🕹️"},
+  {text:"The prize badges alone are worth the price. My customers screenshot them constantly.",name:"@NeonSeller",avatar:"🌟"},
+  {text:"Best digital product pack I've bought this year. Professional and fun.",name:"@DropMaster",avatar:"🎯"},
+  {text:"Take my money. Seriously. Already bought Legendary for my second shop.",name:"@SpinAddict",avatar:"🎰"}
+];
+const reactions = ['🔥 This slaps','💰 I\'d buy it','🔧 Needs tweaks','🤷 Not for me','💸 Take my money'];
+const prices = [5,15,25,35,49,75,99,149,199,299];
+
+// === ELEMENT SDK ===
+const defaultConfig = {
+  hero_title:'Spin it. Score it.<br>Download it.',
+  hero_subtitle:'Digital prizes that hit instantly.',
+  bottom_cta_text:'Pull the lever on your next best-seller.',
+  background_color:'#0a0a1a',
+  surface_color:'#151530',
+  text_color:'#f0e6ff',
+  primary_color:'#ff2d95',
+  secondary_color:'#00f0ff',
+  font_family:'Outfit',
+  font_size:16
+};
+
+function applyConfig(c){
+  const el=id=>document.getElementById(id);
+  el('hero-title').innerHTML=c.hero_title||defaultConfig.hero_title;
+  el('hero-subtitle').textContent=c.hero_subtitle||defaultConfig.hero_subtitle;
+  el('bottom-cta').textContent=c.bottom_cta_text||defaultConfig.bottom_cta_text;
+  const bg=c.background_color||defaultConfig.background_color;
+  const sf=c.surface_color||defaultConfig.surface_color;
+  const tx=c.text_color||defaultConfig.text_color;
+  const pr=c.primary_color||defaultConfig.primary_color;
+  const sc=c.secondary_color||defaultConfig.secondary_color;
+  document.documentElement.style.setProperty('--bg',bg);
+  document.documentElement.style.setProperty('--surface',sf);
+  document.documentElement.style.setProperty('--text',tx);
+  document.documentElement.style.setProperty('--primary',pr);
+  document.documentElement.style.setProperty('--secondary',sc);
+  document.body.style.background=bg;
+  document.body.style.color=tx;
+  const ff=c.font_family||defaultConfig.font_family;
+  const fs=c.font_size||defaultConfig.font_size;
+  document.body.style.fontFamily=`${ff}, Outfit, sans-serif`;
+  el('hero-title').style.fontSize=`${fs*3}px`;
+  el('hero-subtitle').style.fontSize=`${fs*1.2}px`;
+  el('bottom-cta').style.fontSize=`${fs*2.5}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange:async(c)=>applyConfig(c),
+  mapToCapabilities:(c)=>({
+    recolorables:[
+      {get:()=>c.background_color||defaultConfig.background_color,set:v=>{c.background_color=v;window.elementSdk.setConfig({background_color:v})}},
+      {get:()=>c.surface_color||defaultConfig.surface_color,set:v=>{c.surface_color=v;window.elementSdk.setConfig({surface_color:v})}},
+      {get:()=>c.text_color||defaultConfig.text_color,set:v=>{c.text_color=v;window.elementSdk.setConfig({text_color:v})}},
+      {get:()=>c.primary_color||defaultConfig.primary_color,set:v=>{c.primary_color=v;window.elementSdk.setConfig({primary_color:v})}},
+      {get:()=>c.secondary_color||defaultConfig.secondary_color,set:v=>{c.secondary_color=v;window.elementSdk.setConfig({secondary_color:v})}}
+    ],
+    borderables:[],
+    fontEditable:{get:()=>c.font_family||defaultConfig.font_family,set:v=>{c.font_family=v;window.elementSdk.setConfig({font_family:v})}},
+    fontSizeable:{get:()=>c.font_size||defaultConfig.font_size,set:v=>{c.font_size=v;window.elementSdk.setConfig({font_size:v})}}
+  }),
+  mapToEditPanelValues:(c)=>new Map([
+    ['hero_title',c.hero_title||defaultConfig.hero_title],
+    ['hero_subtitle',c.hero_subtitle||defaultConfig.hero_subtitle],
+    ['bottom_cta_text',c.bottom_cta_text||defaultConfig.bottom_cta_text]
+  ])
+});
+
+// === PRIZES GRID ===
+const grid=document.getElementById('prizes-grid');
+prizes.forEach((p,i)=>{
+  const bc=p.rarity==='legendary'?'badge-legendary':p.rarity==='rare'?'badge-rare':'badge-common';
+  const d=document.createElement('div');
+  d.className='bg-[#151530] rounded-xl border border-white/5 p-4 text-center hover:scale-105 transition-transform duration-300';
+  d.style.animationDelay=`${i*80}ms`;
+  d.innerHTML=`<div class="text-3xl mb-2">${p.emoji}</div><p class="text-sm font-bold mb-1">${p.name}</p><span class="prize-badge ${bc}">${p.rarity}</span>`;
+  grid.appendChild(d);
+});
+
+// === TESTIMONIALS ===
+const track=document.getElementById('testimonial-track');
+let reviewIdx=0;
+testimonials.forEach(t=>{
+  const d=document.createElement('div');
+  d.className='flex-shrink-0 w-full px-2';
+  d.innerHTML=`<div class="testimonial-bubble p-6 text-left max-w-lg mx-auto"><p class="text-sm sm:text-base mb-4 leading-relaxed">"${t.text}"</p><div class="flex items-center gap-2"><span class="text-2xl">${t.avatar}</span><span class="text-sm font-bold text-pink-400">${t.name}</span></div></div>`;
+  track.appendChild(d);
+});
+function slideReview(){track.style.transform=`translateX(-${reviewIdx*100}%)`}
+document.getElementById('prev-review').onclick=()=>{reviewIdx=(reviewIdx-1+testimonials.length)%testimonials.length;slideReview()};
+document.getElementById('next-review').onclick=()=>{reviewIdx=(reviewIdx+1)%testimonials.length;slideReview()};
+
+// === SPIN WHEEL ===
+let spinning=false;const wheelSvg=document.getElementById('wheel-svg');
+const results=['Common Pack','Rare Bundle','Epic Loot','Legendary Drop','Bonus Spin','Rare+ Mega'];
+document.getElementById('spin-btn').onclick=()=>{
+  if(spinning)return;spinning=true;
+  const deg=1800+Math.random()*1440;
+  wheelSvg.style.transition=`transform 4s cubic-bezier(.17,.67,.12,.99)`;
+  wheelSvg.style.transform=`rotate(${deg}deg)`;
+  document.getElementById('spin-result').textContent='Spinning...';
+  setTimeout(()=>{
+    const r=results[Math.floor(Math.random()*results.length)];
+    document.getElementById('spin-result').innerHTML=`🎉 You got: <strong class="text-pink-400">${r}</strong>!`;
+    spinning=false;
+    setTimeout(()=>{wheelSvg.style.transition='none';wheelSvg.style.transform='rotate(0deg)'},500);
+  },4200);
+};
+
+// === VOTE MODULE ===
+const rc=document.getElementById('reactions-container');
+const pc=document.getElementById('price-chips');
+let activeReaction=-1,activePrice=-1;
+reactions.forEach((r,i)=>{const b=document.createElement('button');b.className='reaction-btn';b.textContent=r;b.onclick=()=>{activeReaction=i;rc.querySelectorAll('.reaction-btn').forEach((x,j)=>x.classList.toggle('active',j===i))};rc.appendChild(b)});
+prices.forEach((p,i)=>{const b=document.createElement('button');b.className='price-chip';b.textContent='$'+p;b.onclick=()=>{activePrice=i;pc.querySelectorAll('.price-chip').forEach((x,j)=>x.classList.toggle('active',j===i))};pc.appendChild(b)});
+
+document.getElementById('signin-btn').onclick=()=>{document.getElementById('signin-prompt').classList.add('hidden');document.getElementById('signed-in-area').classList.remove('hidden')};
+document.getElementById('comment-submit').onclick=(e)=>{
+  e.preventDefault();
+  const inp=document.getElementById('comment-input');
+  if(!inp.value.trim())return;
+  const cl=document.getElementById('comments-list');
+  const d=document.createElement('div');
+  d.className='bg-[#0a0a1a] rounded-lg p-3 text-left text-sm border border-white/5 animate-bounce-in';
+  d.innerHTML=`<span class="text-pink-400 font-bold">You:</span> ${inp.value.trim().replace(/</g,'&lt;')}`;
+  cl.prepend(d);inp.value='';
+};
+
+// === MOBILE MENU ===
+document.getElementById('mobile-menu-btn').onclick=()=>{
+  const m=document.getElementById('mobile-menu');m.classList.toggle('hidden');
+};
+document.querySelectorAll('#mobile-menu a').forEach(a=>a.onclick=()=>document.getElementById('mobile-menu').classList.add('hidden'));
+
+// === SCROLL REVEAL ===
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.15});
+document.querySelectorAll('.scroll-section').forEach(s=>obs.observe(s));
+
+// === INIT ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6680641927c5',t:'MTc3NTU3OTI1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

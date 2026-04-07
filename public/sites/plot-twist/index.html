@@ -1,1 +1,841 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/58875fca-710d-478b-94a4-5e5815b751ce -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlotTwist Pages</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #16161f;
+  --text: #e8e4f0;
+  --primary: #ff3c6f;
+  --secondary: #7b5cff;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; filter: blur(40px); }
+  50% { opacity: 0.8; filter: blur(60px); }
+}
+@keyframes particle-drift {
+  0% { transform: translate(0, 0) scale(1); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+@keyframes text-reveal {
+  0% { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes card-flip-in {
+  0% { transform: perspective(800px) rotateY(90deg); opacity: 0; }
+  100% { transform: perspective(800px) rotateY(0); opacity: 1; }
+}
+@keyframes spotlight-sweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes choice-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.anim-reveal { animation: text-reveal 0.8s ease-out both; }
+.anim-reveal-d1 { animation: text-reveal 0.8s ease-out 0.15s both; }
+.anim-reveal-d2 { animation: text-reveal 0.8s ease-out 0.3s both; }
+.anim-reveal-d3 { animation: text-reveal 0.8s ease-out 0.45s both; }
+.anim-reveal-d4 { animation: text-reveal 0.8s ease-out 0.6s both; }
+
+.card-anim { animation: card-flip-in 0.6s ease-out both; }
+.card-d1 { animation-delay: 0.1s; }
+.card-d2 { animation-delay: 0.2s; }
+.card-d3 { animation-delay: 0.3s; }
+.card-d4 { animation-delay: 0.4s; }
+.card-d5 { animation-delay: 0.5s; }
+
+.glow-orb {
+  position: absolute; border-radius: 50%;
+  animation: glow-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.story-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+.story-card:hover {
+  transform: scale(1.05) translateY(-8px);
+  box-shadow: 0 20px 60px rgba(255,60,111,0.3);
+}
+.story-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.choice-btn {
+  animation: choice-bounce 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+.choice-btn:hover {
+  animation: none;
+  transform: scale(1.12);
+  box-shadow: 0 0 30px rgba(123,92,255,0.6);
+}
+
+.spotlight-text {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,60,111,0.3) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: spotlight-sweep 4s ease-in-out infinite;
+}
+
+.nav-link {
+  position: relative; transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+  background: var(--primary); transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover { color: var(--primary); }
+
+.particle {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--primary); animation: particle-drift 3s ease-out infinite;
+  pointer-events: none;
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.scroll-anim { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.scroll-anim.visible { opacity: 1; transform: translateY(0); }
+
+.reaction-btn { transition: all 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.2); }
+.reaction-btn.active { transform: scale(1.15); filter: brightness(1.3); }
+
+.signed-in-only { display: none; }
+.is-signed-in .signed-in-only { display: block; }
+.is-signed-in .sign-in-prompt { display: none; }
+
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 12px 24px; border-radius: 12px; z-index: 9999;
+  background: var(--surface); border: 1px solid var(--primary);
+  color: var(--text); font-family: 'Outfit', sans-serif;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+}
+.toast-msg.show { opacity: 1; }
+
+input, textarea, select {
+  font-family: 'Outfit', sans-serif;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full" style="background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background:var(--bg);"><!-- Floating Particles Container -->
+   <div id="particles" class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index:0;"></div><!-- STICKY NAV -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(10,10,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between" style="height:64px;"><a href="#home" class="flex items-center gap-2 text-lg font-bold" style="font-family:'Playfair Display',serif;color:var(--primary);"> <span style="font-size:1.4rem;">📖</span> PlotTwist Pages </a> <button id="mobile-menu-btn" class="sm:hidden p-2 rounded-lg" style="color:var(--text);" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+     <div id="nav-links" class="hidden sm:flex items-center gap-6 text-sm font-medium" style="color:rgba(232,228,240,0.7);"><a href="#home" class="nav-link">Home</a> <a href="#stories" class="nav-link">Choose a Story</a> <a href="#how-it-works" class="nav-link">How It Works</a> <a href="#preview" class="nav-link">Preview</a> <a href="#reviews" class="nav-link">Reviews</a> <a href="#download" class="nav-link">Download</a>
+     </div>
+    </div>
+    <div id="mobile-nav" class="sm:hidden hidden px-4 pb-4 flex-col gap-3 text-sm font-medium" style="color:rgba(232,228,240,0.7);"><a href="#home" class="nav-link py-2">Home</a> <a href="#stories" class="nav-link py-2">Choose a Story</a> <a href="#how-it-works" class="nav-link py-2">How It Works</a> <a href="#preview" class="nav-link py-2">Preview</a> <a href="#reviews" class="nav-link py-2">Reviews</a> <a href="#download" class="nav-link py-2">Download</a>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" class="relative w-full flex items-center justify-center overflow-hidden" style="min-height:100%;padding-top:80px;padding-bottom:60px;">
+    <div class="glow-orb" style="width:400px;height:400px;background:var(--primary);top:10%;left:-10%;opacity:0.3;"></div>
+    <div class="glow-orb" style="width:350px;height:350px;background:var(--secondary);bottom:10%;right:-5%;opacity:0.25;animation-delay:2s;"></div>
+    <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+     <p class="anim-reveal text-sm sm:text-base font-medium tracking-widest uppercase mb-4" style="color:var(--primary);letter-spacing:0.2em;">PlotTwist Pages</p>
+     <h1 id="hero-title" class="anim-reveal-d1 text-4xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6" style="font-family:'Playfair Display',serif;">Tonight, you choose the ending.</h1>
+     <p id="hero-subtitle" class="anim-reveal-d2 text-lg sm:text-xl font-light mb-10" style="color:rgba(232,228,240,0.65);max-width:540px;margin-left:auto;margin-right:auto;">Interactive stories you can download instantly.</p>
+     <div class="anim-reveal-d3 flex flex-col sm:flex-row gap-4 justify-center"><a href="#stories" id="cta-primary-btn" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 hover:scale-105" style="background:linear-gradient(135deg,var(--primary),#ff6b8a);color:#fff;box-shadow:0 8px 32px rgba(255,60,111,0.4);"> <i data-lucide="book-open" style="width:18px;height:18px;"></i> <span>Choose a Story</span> </a> <a href="#preview" id="cta-secondary-btn" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 hover:scale-105" style="background:transparent;color:var(--text);border:1.5px solid rgba(232,228,240,0.2);"> <i data-lucide="play" style="width:18px;height:18px;"></i> <span>Preview a Path</span> </a>
+     </div>
+     <div class="anim-reveal-d4 mt-12 flex items-center justify-center gap-6 text-sm" style="color:rgba(232,228,240,0.45);"><span class="flex items-center gap-1"><i data-lucide="download" style="width:14px;height:14px;"></i> Instant Download</span> <span class="flex items-center gap-1"><i data-lucide="smartphone" style="width:14px;height:14px;"></i> Any Device</span> <span class="flex items-center gap-1"><i data-lucide="gift" style="width:14px;height:14px;"></i> Perfect Gift</span>
+     </div>
+    </div>
+   </section><!-- CHOOSE A STORY -->
+   <section id="stories" class="relative w-full py-20 px-4">
+    <div class="glow-orb" style="width:300px;height:300px;background:var(--secondary);top:20%;right:10%;opacity:0.15;"></div>
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 scroll-anim">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--secondary);letter-spacing:0.15em;">Browse the Collection</p>
+      <h2 class="text-3xl sm:text-5xl font-black" style="font-family:'Playfair Display',serif;">Choose a Story</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Story Cards -->
+      <div class="story-card card-anim rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(255,60,111,0.08) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         💕
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Romance</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">Two paths diverge in a love letter. Choose wisely — or don't.</p>
+        <div class="flex items-center gap-2 text-xs" style="color:var(--primary);">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 12 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:var(--primary);color:#fff;">Read Now</span>
+       </div>
+      </div>
+      <div class="story-card card-anim card-d1 rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(123,92,255,0.08) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         🔍
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Mystery</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">The detective hands you the case file. Every clue leads somewhere.</p>
+        <div class="flex items-center gap-2 text-xs" style="color:var(--secondary);">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 18 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:var(--secondary);color:#fff;">Read Now</span>
+       </div>
+      </div>
+      <div class="story-card card-anim card-d2 rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(255,165,0,0.08) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         👻
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Horror-lite</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">Creepy, not cruel. The door creaks open — do you enter?</p>
+        <div class="flex items-center gap-2 text-xs" style="color:#ffa500;">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 9 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:#ffa500;color:#fff;">Read Now</span>
+       </div>
+      </div>
+      <div class="story-card card-anim card-d3 rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(0,210,150,0.08) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         😂
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Comedy</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">Your cat became mayor. Things escalate from there.</p>
+        <div class="flex items-center gap-2 text-xs" style="color:#00d296;">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 15 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:#00d296;color:#fff;">Read Now</span>
+       </div>
+      </div>
+      <div class="story-card card-anim card-d4 rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(0,180,255,0.08) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         🗺️
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Kids Quest</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">A dragon, a riddle, and a backpack. Adventure awaits.</p>
+        <div class="flex items-center gap-2 text-xs" style="color:#00b4ff;">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 20 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:#00b4ff;color:#fff;">Read Now</span>
+       </div>
+      </div>
+      <div class="story-card card-anim card-d5 rounded-2xl overflow-hidden relative" style="background:var(--surface);aspect-ratio:3/4;">
+       <div class="absolute inset-0 flex flex-col justify-end p-6" style="background:linear-gradient(180deg,rgba(255,60,111,0.12) 0%,rgba(22,22,31,0.95) 70%);">
+        <div class="text-4xl mb-3">
+         🌙
+        </div>
+        <h3 class="text-xl font-bold mb-1" style="font-family:'Playfair Display',serif;">Date Night</h3>
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.55);">Read together. Argue about choices. Fall in love again.</p>
+        <div class="flex items-center gap-2 text-xs" style="color:var(--primary);">
+         <i data-lucide="git-branch" style="width:14px;height:14px;"></i> 8 endings
+        </div>
+       </div>
+       <div class="card-overlay absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300" style="background:rgba(10,10,15,0.7);"><span class="px-6 py-3 rounded-full text-sm font-semibold" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;">Read Now</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- HOW IT WORKS -->
+   <section id="how-it-works" class="relative w-full py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-anim">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--primary);letter-spacing:0.15em;">Simple &amp; Magical</p>
+      <h2 class="text-3xl sm:text-5xl font-black" style="font-family:'Playfair Display',serif;">How It Works</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="scroll-anim text-center p-8 rounded-2xl shimmer-bg" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style="background:linear-gradient(135deg,var(--primary),#ff6b8a);font-size:1.8rem;">
+        📚
+       </div>
+       <h3 class="text-lg font-bold mb-3" style="font-family:'Playfair Display',serif;">1. Choose Your Path</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(232,228,240,0.55);">Browse genres and pick the story that speaks to you. Each one starts with a hook — the rest is up to you.</p>
+      </div>
+      <div class="scroll-anim text-center p-8 rounded-2xl shimmer-bg" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style="background:linear-gradient(135deg,var(--secondary),#9b7bff);font-size:1.8rem;">
+        👆
+       </div>
+       <h3 class="text-lg font-bold mb-3" style="font-family:'Playfair Display',serif;">2. Tap Your Choices</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(232,228,240,0.55);">At every turning point, two options appear. Tap one. The story bends to your will.</p>
+      </div>
+      <div class="scroll-anim text-center p-8 rounded-2xl shimmer-bg" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style="background:linear-gradient(135deg,#00d296,#00e6a8);font-size:1.8rem;">
+        🎁
+       </div>
+       <h3 class="text-lg font-bold mb-3" style="font-family:'Playfair Display',serif;">3. Read &amp; Share</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(232,228,240,0.55);">Enjoy your unique ending. Share it, gift it, or replay for a completely different story.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION -->
+   <section id="preview" class="relative w-full py-20 px-4 overflow-hidden">
+    <div class="glow-orb" style="width:350px;height:350px;background:var(--primary);bottom:0;left:20%;opacity:0.1;"></div>
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-anim">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--secondary);letter-spacing:0.15em;">See It In Action</p>
+      <h2 class="text-3xl sm:text-5xl font-black" style="font-family:'Playfair Display',serif;">Preview a Choice Moment</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Choice Moment 1 -->
+      <div class="scroll-anim rounded-2xl overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);">
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-4 text-xs font-medium" style="color:var(--primary);"><i data-lucide="bookmark" style="width:12px;height:12px;"></i> Chapter 3 · The Letter
+        </div>
+        <p class="text-sm leading-relaxed mb-6" style="color:rgba(232,228,240,0.7);"><em>"The envelope is sealed with wax. Your name is misspelled. Inside, a single photograph and a key. Do you..."</em></p>
+        <div class="flex flex-col gap-3"><button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(255,60,111,0.15),rgba(255,60,111,0.05));border:1px solid rgba(255,60,111,0.3);color:var(--text);"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:var(--primary);color:#fff;">A</span> Open the letter in private </button> <button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(123,92,255,0.15),rgba(123,92,255,0.05));border:1px solid rgba(123,92,255,0.3);color:var(--text);animation-delay:0.5s;"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:var(--secondary);color:#fff;">B</span> Burn it without reading </button>
+        </div>
+       </div>
+      </div><!-- Choice Moment 2 -->
+      <div class="scroll-anim rounded-2xl overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);">
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-4 text-xs font-medium" style="color:#00d296;"><i data-lucide="bookmark" style="width:12px;height:12px;"></i> Chapter 7 · The Forest
+        </div>
+        <p class="text-sm leading-relaxed mb-6" style="color:rgba(232,228,240,0.7);"><em>"The trail splits at an old oak. Left leads to laughter. Right leads to silence. Your companion tugs your sleeve..."</em></p>
+        <div class="flex flex-col gap-3"><button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(0,210,150,0.15),rgba(0,210,150,0.05));border:1px solid rgba(0,210,150,0.3);color:var(--text);animation-delay:1s;"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:#00d296;color:#fff;">A</span> Follow the laughter </button> <button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(255,165,0,0.15),rgba(255,165,0,0.05));border:1px solid rgba(255,165,0,0.3);color:var(--text);animation-delay:1.5s;"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:#ffa500;color:#fff;">B</span> Walk into the silence </button>
+        </div>
+       </div>
+      </div><!-- Choice Moment 3 -->
+      <div class="scroll-anim rounded-2xl overflow-hidden" style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);">
+       <div class="p-6">
+        <div class="flex items-center gap-2 mb-4 text-xs font-medium" style="color:#00b4ff;"><i data-lucide="bookmark" style="width:12px;height:12px;"></i> Chapter 11 · The Door
+        </div>
+        <p class="text-sm leading-relaxed mb-6" style="color:rgba(232,228,240,0.7);"><em>"Behind you, footsteps. Ahead, a door with no handle. The walls are narrowing. You have seconds to decide..."</em></p>
+        <div class="flex flex-col gap-3"><button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(0,180,255,0.15),rgba(0,180,255,0.05));border:1px solid rgba(0,180,255,0.3);color:var(--text);animation-delay:2s;"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:#00b4ff;color:#fff;">A</span> Push through the door </button> <button class="choice-btn w-full py-3 px-4 rounded-xl text-sm font-semibold text-left flex items-center gap-3" style="background:linear-gradient(135deg,rgba(255,60,111,0.15),rgba(255,60,111,0.05));border:1px solid rgba(255,60,111,0.3);color:var(--text);animation-delay:2.5s;"> <span class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style="background:var(--primary);color:#fff;">B</span> Turn and face what follows </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative w-full py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-anim">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--primary);letter-spacing:0.15em;">What Readers Say</p>
+      <h2 class="text-3xl sm:text-5xl font-black" style="font-family:'Playfair Display',serif;">Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-anim p-6 rounded-2xl" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-4">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:rgba(232,228,240,0.65);">"My partner and I did the Date Night pack and genuinely argued about which door to open. 10/10 would fight again."</p>
+       <p class="text-sm font-semibold" style="color:var(--primary);">— Mia &amp; Jordan</p>
+      </div>
+      <div class="scroll-anim p-6 rounded-2xl" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-4">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:rgba(232,228,240,0.65);">"Bought the Kids Quest for my niece. She's replayed it 14 times. I'm not exaggerating. Fourteen."</p>
+       <p class="text-sm font-semibold" style="color:var(--secondary);">— Uncle Dev</p>
+      </div>
+      <div class="scroll-anim p-6 rounded-2xl" style="background:var(--surface);border:1px solid rgba(255,255,255,0.05);">
+       <div class="flex gap-1 mb-4">
+        ⭐⭐⭐⭐⭐
+       </div>
+       <p class="text-sm leading-relaxed mb-4" style="color:rgba(232,228,240,0.65);">"I sell these at my Etsy shop. The branching templates are insanely easy to customize. Revenue up 40%."</p>
+       <p class="text-sm font-semibold" style="color:#00d296;">— Lena K., Seller</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="relative w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 scroll-anim">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--secondary);letter-spacing:0.15em;">Everything You Need</p>
+      <h2 class="text-3xl sm:text-5xl font-black" style="font-family:'Playfair Display',serif;">What's Included</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="scroll-anim p-5 rounded-xl text-center" style="background:rgba(255,60,111,0.06);border:1px solid rgba(255,60,111,0.15);">
+       <div class="text-3xl mb-3">
+        📝
+       </div>
+       <h4 class="font-bold text-lg mb-1">10 Story Templates</h4>
+       <p class="text-xs" style="color:rgba(232,228,240,0.5);">Branching narratives ready to customize</p>
+      </div>
+      <div class="scroll-anim p-5 rounded-xl text-center" style="background:rgba(123,92,255,0.06);border:1px solid rgba(123,92,255,0.15);">
+       <div class="text-3xl mb-3">
+        🔘
+       </div>
+       <h4 class="font-bold text-lg mb-1">50 Choice Buttons</h4>
+       <p class="text-xs" style="color:rgba(232,228,240,0.5);">Animated, styled, drag-and-drop</p>
+      </div>
+      <div class="scroll-anim p-5 rounded-xl text-center" style="background:rgba(0,210,150,0.06);border:1px solid rgba(0,210,150,0.15);">
+       <div class="text-3xl mb-3">
+        🎨
+       </div>
+       <h4 class="font-bold text-lg mb-1">30 Cover Designs</h4>
+       <p class="text-xs" style="color:rgba(232,228,240,0.5);">Cinematic covers for every genre</p>
+      </div>
+      <div class="scroll-anim p-5 rounded-xl text-center" style="background:rgba(0,180,255,0.06);border:1px solid rgba(0,180,255,0.15);">
+       <div class="text-3xl mb-3">
+        🌙
+       </div>
+       <h4 class="font-bold text-lg mb-1">Bonus: Date Night</h4>
+       <p class="text-xs" style="color:rgba(232,228,240,0.5);">Exclusive co-op story pack for two</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="relative w-full py-24 px-4 text-center overflow-hidden">
+    <div class="glow-orb" style="width:500px;height:500px;background:var(--primary);top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.12;"></div>
+    <div class="relative z-10 max-w-3xl mx-auto scroll-anim">
+     <h2 id="bottom-cta-text" class="text-3xl sm:text-5xl font-black mb-6 spotlight-text inline-block" style="font-family:'Playfair Display',serif;">Make reading feel like a game.</h2>
+     <p class="text-lg mb-10" style="color:rgba(232,228,240,0.55);">Download the full PlotTwist Pages bundle. Start creating, selling, and sharing interactive stories today.</p><a href="#download" class="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-full text-lg font-bold transition-all duration-300 hover:scale-105" style="background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 12px 40px rgba(255,60,111,0.35);"> <i data-lucide="download" style="width:20px;height:20px;"></i> Download Now </a>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section class="relative w-full py-20 px-4" style="background:var(--surface);">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-10 scroll-anim">
+      <h2 id="vote-title" class="text-3xl sm:text-4xl font-black mb-3" style="font-family:'Playfair Display',serif;">Vote the next genre</h2>
+      <p class="text-sm" style="color:rgba(232,228,240,0.5);">Sign in to vote, react, and comment.</p>
+     </div><!-- Sign In -->
+     <div id="auth-area" class="mb-8">
+      <div class="sign-in-prompt scroll-anim">
+       <div class="p-6 rounded-2xl text-center" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+        <p class="text-sm mb-4" style="color:rgba(232,228,240,0.6);">Enter a display name to participate</p>
+        <form id="sign-in-form" class="flex flex-col sm:flex-row gap-3 items-center justify-center"><label for="username-input" class="sr-only">Display name</label> <input id="username-input" type="text" placeholder="Your display name" maxlength="24" class="px-4 py-3 rounded-xl text-sm w-full sm:w-64" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text);outline:none;" required> <button type="submit" class="px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:scale-105" style="background:var(--primary);color:#fff;">Sign In</button>
+        </form>
+       </div>
+      </div>
+      <div class="signed-in-only">
+       <div class="flex items-center justify-between p-4 rounded-xl mb-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);"><span class="text-sm">Signed in as <strong id="display-username" style="color:var(--primary);"></strong></span> <button id="sign-out-btn" class="text-xs px-3 py-1 rounded-lg transition-all hover:scale-105" style="background:rgba(255,255,255,0.06);color:rgba(232,228,240,0.6);">Sign Out</button>
+       </div>
+      </div>
+     </div><!-- Genre Vote -->
+     <div class="signed-in-only scroll-anim mb-10">
+      <h3 class="text-lg font-bold mb-4" style="font-family:'Playfair Display',serif;">Pick Your Genre</h3>
+      <div id="genre-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-2"><!-- Genres rendered by JS -->
+      </div>
+      <p id="genre-vote-count" class="text-xs mt-3" style="color:rgba(232,228,240,0.4);"></p>
+     </div><!-- Price Vote -->
+     <div class="signed-in-only scroll-anim mb-10">
+      <h3 class="text-lg font-bold mb-4" style="font-family:'Playfair Display',serif;">What Would You Pay?</h3>
+      <div id="price-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-3"><!-- Prices rendered by JS -->
+      </div>
+      <p id="price-vote-count" class="text-xs mt-3" style="color:rgba(232,228,240,0.4);"></p>
+     </div><!-- Reactions -->
+     <div class="signed-in-only scroll-anim mb-10">
+      <h3 class="text-lg font-bold mb-4" style="font-family:'Playfair Display',serif;">Quick Reactions</h3>
+      <div id="reaction-bar" class="flex flex-wrap gap-3"><!-- Reactions rendered by JS -->
+      </div>
+     </div><!-- Comments -->
+     <div class="signed-in-only scroll-anim mb-8">
+      <h3 class="text-lg font-bold mb-4" style="font-family:'Playfair Display',serif;">Comments</h3>
+      <form id="comment-form" class="mb-6"><label for="comment-input" class="sr-only">Your comment</label> <textarea id="comment-input" rows="3" placeholder="Share your thoughts..." maxlength="500" class="w-full p-4 rounded-xl text-sm resize-none" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text);outline:none;" required></textarea>
+       <div class="flex justify-end mt-3"><button type="submit" id="comment-submit-btn" class="px-6 py-2 rounded-xl text-sm font-semibold transition-all hover:scale-105" style="background:var(--secondary);color:#fff;">Post Comment</button>
+       </div>
+      </form>
+      <div id="comments-list" class="flex flex-col gap-4"></div>
+     </div><!-- Embed Widget -->
+     <div class="scroll-anim text-center p-6 rounded-2xl" style="background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);">
+      <p class="text-xs mb-2" style="color:rgba(232,228,240,0.35);">📌 Embed Widget Here</p><code class="text-xs px-3 py-1 rounded" style="background:rgba(255,255,255,0.05);color:rgba(232,228,240,0.45);">&lt;div id="plottwist-vote-widget"&gt;&lt;/div&gt;</code>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-4 text-center" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <p class="text-sm font-bold mb-2" style="font-family:'Playfair Display',serif;color:var(--primary);">📖 PlotTwist Pages</p>
+    <p class="text-xs" style="color:rgba(232,228,240,0.3);">Pick a path, unlock the story. © 2025</p>
+   </footer>
+  </div><!-- /app-wrapper --> <!-- Toast -->
+  <div id="toast" class="toast-msg"></div>
+  <script>
+// ===== CONFIG & SDK INIT =====
+const GENRES = ['Sci-Fi','Thriller','Fantasy','True Crime','Mythology','Graphic Novel'];
+const PRICES = ['$4.99','$7.99','$9.99','$12.99','$14.99','$19.99','$24.99','$29.99','$34.99','$39.99'];
+const REACTIONS = ['🔥','❤️','😂','😱','🤯','👏','💀','✨'];
+
+const defaultConfig = {
+  background_color: '#0a0a0f',
+  surface_color: '#16161f',
+  text_color: '#e8e4f0',
+  primary_color: '#ff3c6f',
+  secondary_color: '#7b5cff',
+  font_family: 'Playfair Display',
+  font_size: 16,
+  hero_title: 'Tonight, you choose the ending.',
+  hero_subtitle: 'Interactive stories you can download instantly.',
+  cta_primary: 'Choose a Story',
+  cta_secondary: 'Preview a Path',
+  bottom_cta_text: 'Make reading feel like a game.',
+  vote_section_title: 'Vote the next genre'
+};
+
+let currentUser = null;
+let allData = [];
+
+// Toast helper
+function showToast(msg, dur=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// ===== ELEMENT SDK =====
+window.elementSdk.init({
+  defaultConfig,
+  async onConfigChange(c) {
+    // Colors
+    document.documentElement.style.setProperty('--bg', c.background_color || defaultConfig.background_color);
+    document.documentElement.style.setProperty('--surface', c.surface_color || defaultConfig.surface_color);
+    document.documentElement.style.setProperty('--text', c.text_color || defaultConfig.text_color);
+    document.documentElement.style.setProperty('--primary', c.primary_color || defaultConfig.primary_color);
+    document.documentElement.style.setProperty('--secondary', c.secondary_color || defaultConfig.secondary_color);
+
+    document.body.style.background = c.background_color || defaultConfig.background_color;
+    document.getElementById('app-wrapper').style.background = c.background_color || defaultConfig.background_color;
+
+    // Fonts
+    const ff = c.font_family || defaultConfig.font_family;
+    const fs = c.font_size || defaultConfig.font_size;
+    document.querySelectorAll('h1,h2,h3,h4').forEach(el => {
+      el.style.fontFamily = `${ff}, serif`;
+    });
+    document.body.style.fontSize = fs + 'px';
+
+    // Text
+    const ht = document.getElementById('hero-title');
+    if (ht) ht.textContent = c.hero_title || defaultConfig.hero_title;
+    const hs = document.getElementById('hero-subtitle');
+    if (hs) hs.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+    const cp = document.getElementById('cta-primary-btn');
+    if (cp) cp.querySelector('span').textContent = c.cta_primary || defaultConfig.cta_primary;
+    const cs = document.getElementById('cta-secondary-btn');
+    if (cs) cs.querySelector('span').textContent = c.cta_secondary || defaultConfig.cta_secondary;
+    const bc = document.getElementById('bottom-cta-text');
+    if (bc) bc.textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+    const vt = document.getElementById('vote-title');
+    if (vt) vt.textContent = c.vote_section_title || defaultConfig.vote_section_title;
+  },
+  mapToCapabilities(c) {
+    const makeColor = (key) => ({
+      get: () => c[key] || defaultConfig[key],
+      set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        makeColor('background_color'),
+        makeColor('surface_color'),
+        makeColor('text_color'),
+        makeColor('primary_color'),
+        makeColor('secondary_color')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues(c) {
+    return new Map([
+      ['hero_title', c.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', c.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', c.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', c.cta_secondary || defaultConfig.cta_secondary],
+      ['bottom_cta_text', c.bottom_cta_text || defaultConfig.bottom_cta_text],
+      ['vote_section_title', c.vote_section_title || defaultConfig.vote_section_title]
+    ]);
+  }
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderGenreVotes();
+    renderPriceVotes();
+    renderReactions();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== AUTH =====
+document.getElementById('sign-in-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('username-input').value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('display-username').textContent = name;
+  document.getElementById('auth-area').classList.add('is-signed-in');
+  renderGenreVotes();
+  renderPriceVotes();
+  renderReactions();
+});
+
+document.getElementById('sign-out-btn').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('auth-area').classList.remove('is-signed-in');
+  document.getElementById('username-input').value = '';
+});
+
+// ===== GENRE VOTES =====
+function renderGenreVotes() {
+  const grid = document.getElementById('genre-grid');
+  const votes = allData.filter(d => d.type === 'genre_vote');
+  const userVote = currentUser ? votes.find(d => d.username === currentUser) : null;
+
+  const counts = {};
+  GENRES.forEach(g => counts[g] = 0);
+  votes.forEach(v => { if (counts[v.genre_vote] !== undefined) counts[v.genre_vote]++; });
+
+  grid.innerHTML = '';
+  GENRES.forEach(g => {
+    const isActive = userVote && userVote.genre_vote === g;
+    const btn = document.createElement('button');
+    btn.className = 'py-3 px-4 rounded-xl text-sm font-semibold transition-all hover:scale-105';
+    btn.style.cssText = isActive
+      ? 'background:var(--primary);color:#fff;'
+      : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--text);';
+    btn.innerHTML = `${g} <span style="opacity:0.5;font-size:0.75rem;">(${counts[g]})</span>`;
+    btn.addEventListener('click', () => voteGenre(g, userVote));
+    grid.appendChild(btn);
+  });
+  document.getElementById('genre-vote-count').textContent = `${votes.length} total votes`;
+}
+
+async function voteGenre(genre, existing) {
+  if (!currentUser) return;
+  if (allData.length >= 999) { showToast('Max entries reached!'); return; }
+  if (existing) {
+    existing.genre_vote = genre;
+    const r = await window.dataSdk.update(existing);
+    if (!r.isOk) showToast('Error updating vote');
+  } else {
+    const r = await window.dataSdk.create({ type: 'genre_vote', username: currentUser, genre_vote: genre, content: '', reaction: '', price_vote: '', timestamp: new Date().toISOString() });
+    if (!r.isOk) showToast('Error saving vote');
+  }
+}
+
+// ===== PRICE VOTES =====
+function renderPriceVotes() {
+  const grid = document.getElementById('price-grid');
+  const votes = allData.filter(d => d.type === 'price_vote');
+  const userVote = currentUser ? votes.find(d => d.username === currentUser) : null;
+
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  votes.forEach(v => { if (counts[v.price_vote] !== undefined) counts[v.price_vote]++; });
+
+  grid.innerHTML = '';
+  PRICES.forEach(p => {
+    const isActive = userVote && userVote.price_vote === p;
+    const btn = document.createElement('button');
+    btn.className = 'py-2 px-3 rounded-lg text-sm font-medium transition-all hover:scale-105';
+    btn.style.cssText = isActive
+      ? 'background:var(--secondary);color:#fff;'
+      : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--text);';
+    btn.innerHTML = `${p} <span style="opacity:0.4;font-size:0.65rem;">${counts[p]}</span>`;
+    btn.addEventListener('click', () => votePrice(p, userVote));
+    grid.appendChild(btn);
+  });
+  document.getElementById('price-vote-count').textContent = `${votes.length} total votes`;
+}
+
+async function votePrice(price, existing) {
+  if (!currentUser) return;
+  if (allData.length >= 999) { showToast('Max entries reached!'); return; }
+  if (existing) {
+    existing.price_vote = price;
+    const r = await window.dataSdk.update(existing);
+    if (!r.isOk) showToast('Error updating vote');
+  } else {
+    const r = await window.dataSdk.create({ type: 'price_vote', username: currentUser, price_vote: price, content: '', genre_vote: '', reaction: '', timestamp: new Date().toISOString() });
+    if (!r.isOk) showToast('Error saving vote');
+  }
+}
+
+// ===== REACTIONS =====
+function renderReactions() {
+  const bar = document.getElementById('reaction-bar');
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  reactions.forEach(r => { if (counts[r.reaction] !== undefined) counts[r.reaction]++; });
+  const userReaction = currentUser ? reactions.find(d => d.username === currentUser) : null;
+
+  bar.innerHTML = '';
+  REACTIONS.forEach(r => {
+    const isActive = userReaction && userReaction.reaction === r;
+    const btn = document.createElement('button');
+    btn.className = `reaction-btn px-4 py-2 rounded-xl text-lg ${isActive ? 'active' : ''}`;
+    btn.style.cssText = isActive
+      ? 'background:rgba(255,60,111,0.2);border:1px solid var(--primary);'
+      : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);';
+    btn.innerHTML = `${r} <span class="text-xs" style="opacity:0.5;">${counts[r]}</span>`;
+    btn.addEventListener('click', () => reactWith(r, userReaction));
+    bar.appendChild(btn);
+  });
+}
+
+async function reactWith(emoji, existing) {
+  if (!currentUser) return;
+  if (allData.length >= 999) { showToast('Max entries reached!'); return; }
+  if (existing) {
+    existing.reaction = emoji;
+    const r = await window.dataSdk.update(existing);
+    if (!r.isOk) showToast('Error updating reaction');
+  } else {
+    const r = await window.dataSdk.create({ type: 'reaction', username: currentUser, reaction: emoji, content: '', genre_vote: '', price_vote: '', timestamp: new Date().toISOString() });
+    if (!r.isOk) showToast('Error saving reaction');
+  }
+}
+
+// ===== COMMENTS =====
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingEls.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingEls.has(c.__backendId)) {
+      const el = existingEls.get(c.__backendId);
+      el.querySelector('.comment-text').textContent = c.content;
+      return;
+    }
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.className = 'p-4 rounded-xl';
+    div.style.cssText = 'background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);';
+    const timeStr = new Date(c.timestamp).toLocaleDateString();
+    div.innerHTML = `
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-semibold" style="color:var(--primary);">${escHtml(c.username)}</span>
+        <span class="text-xs" style="color:rgba(232,228,240,0.3);">${timeStr}</span>
+      </div>
+      <p class="comment-text text-sm" style="color:rgba(232,228,240,0.65);">${escHtml(c.content)}</p>
+    `;
+    if (c.username === currentUser) {
+      const del = document.createElement('button');
+      del.className = 'text-xs mt-2 px-2 py-1 rounded transition-all hover:scale-105';
+      del.style.cssText = 'color:rgba(232,228,240,0.3);';
+      del.textContent = 'Delete';
+      del.addEventListener('click', async () => {
+        del.disabled = true; del.textContent = '...';
+        const r = await window.dataSdk.delete(c);
+        if (!r.isOk) { showToast('Error deleting'); del.disabled = false; del.textContent = 'Delete'; }
+      });
+      div.appendChild(del);
+    }
+    list.appendChild(div);
+  });
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Max entries reached!'); return; }
+
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.textContent = 'Posting...';
+  const r = await window.dataSdk.create({ type: 'comment', username: currentUser, content: text, genre_vote: '', price_vote: '', reaction: '', timestamp: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post Comment';
+  if (r.isOk) { input.value = ''; } else { showToast('Error posting comment'); }
+});
+
+// ===== PARTICLES =====
+function spawnParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.setProperty('--dx', (Math.random() * 200 - 100) + 'px');
+    p.style.setProperty('--dy', (Math.random() * -200 - 50) + 'px');
+    p.style.animationDelay = Math.random() * 5 + 's';
+    p.style.animationDuration = (3 + Math.random() * 4) + 's';
+    p.style.opacity = '0';
+    if (Math.random() > 0.5) p.style.background = 'var(--secondary)';
+    container.appendChild(p);
+  }
+}
+spawnParticles();
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-anim').forEach(el => observer.observe(el));
+
+// ===== MOBILE NAV =====
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  nav.classList.toggle('hidden');
+  nav.classList.toggle('flex');
+});
+document.querySelectorAll('#mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobile-nav').classList.add('hidden');
+    document.getElementById('mobile-nav').classList.remove('flex');
+  });
+});
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5c8b324627c5',t:'MTc3NTU3ODg0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

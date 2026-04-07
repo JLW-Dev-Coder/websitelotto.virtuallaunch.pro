@@ -1,1 +1,548 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c5dc3cc6-9c4c-40c1-87a5-e160b9358868 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeGuard Coverage</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html{scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden}
+.font-serif-display{font-family:'DM Serif Display',serif}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse-glow{0%,100%{opacity:.4}50%{opacity:.7}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.anim-fade-up{animation:fadeUp .8s ease both}
+.anim-fade-in{animation:fadeIn 1s ease both}
+.delay-1{animation-delay:.15s}
+.delay-2{animation-delay:.3s}
+.delay-3{animation-delay:.45s}
+.delay-4{animation-delay:.6s}
+.delay-5{animation-delay:.75s}
+.glow-orb{animation:pulse-glow 4s ease-in-out infinite}
+.float-anim{animation:float 6s ease-in-out infinite}
+.nav-link{position:relative;transition:color .3s}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;transition:width .3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.plan-card{transition:transform .4s ease,box-shadow .4s ease}
+.plan-card:hover{transform:translateY(-6px)}
+.reaction-btn{transition:all .2s ease}
+.reaction-btn:hover{transform:scale(1.15)}
+.reaction-btn.selected{transform:scale(1.2)}
+.toast-msg{animation:fadeUp .4s ease both}
+</style>
+  <script>
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        brand:{
+          bg:'#0f1419',
+          surface:'#1a2130',
+          text:'#e8e0d4',
+          accent:'#c9965a',
+          secondary:'#6b7a8d'
+        }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="w-full h-full overflow-auto" style="background:#0f1419;color:#e8e0d4;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="background:rgba(15,20,25,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,150,90,.12);z-index:50;" class="fixed top-0 left-0 w-full">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between" style="height:64px;"><a href="#home" class="flex items-center gap-2">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#c9965a,#a07840);border-radius:8px;" class="flex items-center justify-center"><i data-lucide="shield" style="width:18px;height:18px;color:#0f1419;"></i>
+      </div><span id="nav-brand" class="font-serif-display text-lg" style="color:#c9965a;">LifeGuard</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm" style="color:#e8e0d4;">Home</a> <a href="#coverage" class="nav-link text-sm" style="color:#e8e0d4;">Coverage</a> <a href="#plans" class="nav-link text-sm" style="color:#e8e0d4;">Plans</a> <a href="#scenarios" class="nav-link text-sm" style="color:#e8e0d4;">Scenarios</a> <a href="#faq" class="nav-link text-sm" style="color:#e8e0d4;">FAQ</a> <a href="#get-covered" class="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:opacity-90" style="background:#c9965a;color:#0f1419;">Get Covered</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:#e8e0d4;" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3"><a href="#home" class="text-sm py-2" style="color:#e8e0d4;" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#coverage" class="text-sm py-2" style="color:#e8e0d4;" onclick="this.parentElement.classList.add('hidden')">Coverage</a> <a href="#plans" class="text-sm py-2" style="color:#e8e0d4;" onclick="this.parentElement.classList.add('hidden')">Plans</a> <a href="#scenarios" class="text-sm py-2" style="color:#e8e0d4;" onclick="this.parentElement.classList.add('hidden')">Scenarios</a> <a href="#faq" class="text-sm py-2" style="color:#e8e0d4;" onclick="this.parentElement.classList.add('hidden')">FAQ</a> <a href="#get-covered" class="text-sm py-2 font-semibold" style="color:#c9965a;" onclick="this.parentElement.classList.add('hidden')">Get Covered</a>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" class="relative w-full flex items-center justify-center" style="padding:140px 24px 100px;min-height:600px;">
+    <div class="absolute inset-0 overflow-hidden" style="pointer-events:none;">
+     <div class="glow-orb absolute" style="width:500px;height:500px;background:radial-gradient(circle,rgba(201,150,90,.12) 0%,transparent 70%);top:-100px;right:-100px;border-radius:50%;"></div>
+     <div class="glow-orb absolute" style="width:400px;height:400px;background:radial-gradient(circle,rgba(107,122,141,.1) 0%,transparent 70%);bottom:-80px;left:-80px;border-radius:50%;animation-delay:2s;"></div>
+    </div>
+    <div class="max-w-3xl mx-auto text-center relative z-10">
+     <div class="anim-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style="background:rgba(201,150,90,.1);border:1px solid rgba(201,150,90,.2);"><i data-lucide="shield-check" style="width:14px;height:14px;color:#c9965a;"></i> <span class="text-xs font-medium tracking-wider uppercase" style="color:#c9965a;">Trusted by 50,000+ families</span>
+     </div>
+     <h1 id="hero-title" class="font-serif-display anim-fade-up delay-1" style="font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.12;color:#e8e0d4;">If something happened, would they be protected?</h1>
+     <p id="hero-subtitle" class="anim-fade-up delay-2 mt-6 text-lg" style="color:#6b7a8d;max-width:540px;margin-left:auto;margin-right:auto;">Life insurance built around your reality.</p>
+     <div class="anim-fade-up delay-3 flex flex-wrap items-center justify-center gap-4 mt-10"><a href="#get-covered" class="px-8 py-3.5 rounded-full font-semibold transition-all hover:opacity-90" style="background:#c9965a;color:#0f1419;font-size:15px;">Get Covered</a> <a href="#plans" class="px-8 py-3.5 rounded-full font-semibold transition-all hover:opacity-90" style="border:1px solid rgba(201,150,90,.4);color:#c9965a;font-size:15px;">View Plans</a>
+     </div>
+     <div class="anim-fade-up delay-4 flex items-center justify-center gap-8 mt-12">
+      <div class="text-center">
+       <div class="text-2xl font-bold" style="color:#c9965a;">
+        $1M+
+       </div>
+       <div class="text-xs mt-1" style="color:#6b7a8d;">
+        Coverage Options
+       </div>
+      </div>
+      <div style="width:1px;height:36px;background:rgba(107,122,141,.3);"></div>
+      <div class="text-center">
+       <div class="text-2xl font-bold" style="color:#c9965a;">
+        24hr
+       </div>
+       <div class="text-xs mt-1" style="color:#6b7a8d;">
+        Approval Time
+       </div>
+      </div>
+      <div style="width:1px;height:36px;background:rgba(107,122,141,.3);"></div>
+      <div class="text-center">
+       <div class="text-2xl font-bold" style="color:#c9965a;">
+        A+
+       </div>
+       <div class="text-xs mt-1" style="color:#6b7a8d;">
+        AM Best Rating
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Coverage Section -->
+   <section id="coverage" class="w-full" style="padding:80px 24px;">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14 anim-fade-up"><span class="text-xs font-semibold tracking-wider uppercase" style="color:#c9965a;">Coverage Types</span>
+      <h2 class="font-serif-display mt-3" style="font-size:clamp(1.8rem,3.5vw,2.6rem);color:#e8e0d4;">Term vs. Whole Life</h2>
+      <p class="mt-3" style="color:#6b7a8d;max-width:480px;margin:12px auto 0;">Understand the difference and choose the policy that fits your family's needs.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6"><!-- Term Life -->
+      <div class="rounded-2xl p-8 anim-fade-up delay-1" style="background:linear-gradient(135deg,#1a2130,#1e2738);border:1px solid rgba(201,150,90,.1);">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center justify-center rounded-xl" style="width:48px;height:48px;background:rgba(201,150,90,.12);"><i data-lucide="clock" style="width:22px;height:22px;color:#c9965a;"></i>
+        </div>
+        <h3 class="font-serif-display text-xl" style="color:#e8e0d4;">Term Life</h3>
+       </div>
+       <ul class="space-y-3">
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Coverage for 10, 20, or 30 years</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Lowest monthly premiums available</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Best for mortgages &amp; growing families</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Convertible to whole life later</span></li>
+       </ul>
+       <div class="mt-6 pt-5" style="border-top:1px solid rgba(107,122,141,.15);"><span class="text-xs" style="color:#6b7a8d;">Starting from</span>
+        <div class="flex items-baseline gap-1 mt-1">
+         <span class="text-3xl font-bold" style="color:#c9965a;">$18</span><span class="text-sm" style="color:#6b7a8d;">/month</span>
+        </div>
+       </div>
+      </div><!-- Whole Life -->
+      <div class="rounded-2xl p-8 anim-fade-up delay-2" style="background:linear-gradient(135deg,#1a2130,#1e2738);border:1px solid rgba(201,150,90,.1);">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="flex items-center justify-center rounded-xl" style="width:48px;height:48px;background:rgba(201,150,90,.12);"><i data-lucide="infinity" style="width:22px;height:22px;color:#c9965a;"></i>
+        </div>
+        <h3 class="font-serif-display text-xl" style="color:#e8e0d4;">Whole Life</h3>
+       </div>
+       <ul class="space-y-3">
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Lifetime coverage that never expires</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Builds tax-deferred cash value</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Fixed premiums that never increase</span></li>
+        <li class="flex items-start gap-3"><i data-lucide="check" style="width:16px;height:16px;color:#c9965a;margin-top:3px;flex-shrink:0;"></i><span style="color:#9aa3af;font-size:14px;">Estate planning &amp; wealth transfer</span></li>
+       </ul>
+       <div class="mt-6 pt-5" style="border-top:1px solid rgba(107,122,141,.15);"><span class="text-xs" style="color:#6b7a8d;">Starting from</span>
+        <div class="flex items-baseline gap-1 mt-1">
+         <span class="text-3xl font-bold" style="color:#c9965a;">$95</span><span class="text-sm" style="color:#6b7a8d;">/month</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Plans Section -->
+   <section id="plans" class="w-full" style="padding:80px 24px;">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-wider uppercase" style="color:#c9965a;">Policy Tiers</span>
+      <h2 id="plans-title" class="font-serif-display mt-3" style="font-size:clamp(1.8rem,3.5vw,2.6rem);color:#e8e0d4;">Choose Your Protection Level</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5"><!-- Essential -->
+      <div class="plan-card rounded-2xl p-7 flex flex-col" style="background:#1a2130;border:1px solid rgba(107,122,141,.15);">
+       <div class="mb-5"><i data-lucide="shield" style="width:28px;height:28px;color:#6b7a8d;"></i>
+       </div>
+       <h3 class="font-serif-display text-xl" style="color:#e8e0d4;">Essential</h3>
+       <p class="text-sm mt-2" style="color:#6b7a8d;">Foundational protection for individuals.</p>
+       <div class="flex items-baseline gap-1 mt-5">
+        <span class="text-3xl font-bold" style="color:#e8e0d4;">$250K</span><span class="text-sm" style="color:#6b7a8d;">coverage</span>
+       </div>
+       <div class="text-sm mt-1" style="color:#6b7a8d;">
+        From $18/mo
+       </div>
+       <ul class="mt-6 space-y-2.5 flex-1">
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>20-year term</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Death benefit payout</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Online management</li>
+       </ul><a href="#get-covered" class="block text-center mt-6 py-3 rounded-full font-semibold text-sm transition-all hover:opacity-90" style="border:1px solid rgba(201,150,90,.3);color:#c9965a;">Select Plan</a>
+      </div><!-- Guardian (Featured) -->
+      <div class="plan-card rounded-2xl p-7 flex flex-col relative" style="background:linear-gradient(160deg,#22302e,#1a2130);border:1px solid rgba(201,150,90,.3);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold" style="background:#c9965a;color:#0f1419;">
+        Most Popular
+       </div>
+       <div class="mb-5"><i data-lucide="shield-check" style="width:28px;height:28px;color:#c9965a;"></i>
+       </div>
+       <h3 class="font-serif-display text-xl" style="color:#e8e0d4;">Guardian</h3>
+       <p class="text-sm mt-2" style="color:#6b7a8d;">Comprehensive family coverage.</p>
+       <div class="flex items-baseline gap-1 mt-5">
+        <span class="text-3xl font-bold" style="color:#c9965a;">$500K</span><span class="text-sm" style="color:#6b7a8d;">coverage</span>
+       </div>
+       <div class="text-sm mt-1" style="color:#6b7a8d;">
+        From $34/mo
+       </div>
+       <ul class="mt-6 space-y-2.5 flex-1">
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>30-year term</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Accelerated death benefit</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Conversion option</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Waiver of premium rider</li>
+       </ul><a href="#get-covered" class="block text-center mt-6 py-3 rounded-full font-semibold text-sm transition-all hover:opacity-90" style="background:#c9965a;color:#0f1419;">Select Plan</a>
+      </div><!-- Legacy -->
+      <div class="plan-card rounded-2xl p-7 flex flex-col" style="background:#1a2130;border:1px solid rgba(107,122,141,.15);">
+       <div class="mb-5"><i data-lucide="crown" style="width:28px;height:28px;color:#6b7a8d;"></i>
+       </div>
+       <h3 class="font-serif-display text-xl" style="color:#e8e0d4;">Legacy</h3>
+       <p class="text-sm mt-2" style="color:#6b7a8d;">Ultimate wealth protection.</p>
+       <div class="flex items-baseline gap-1 mt-5">
+        <span class="text-3xl font-bold" style="color:#e8e0d4;">$1M+</span><span class="text-sm" style="color:#6b7a8d;">coverage</span>
+       </div>
+       <div class="text-sm mt-1" style="color:#6b7a8d;">
+        From $95/mo
+       </div>
+       <ul class="mt-6 space-y-2.5 flex-1">
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Whole life coverage</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Cash value accumulation</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Estate planning support</li>
+        <li class="flex items-center gap-2 text-sm" style="color:#9aa3af;"><i data-lucide="check-circle" style="width:14px;height:14px;color:#c9965a;flex-shrink:0;"></i>Dedicated advisor</li>
+       </ul><a href="#get-covered" class="block text-center mt-6 py-3 rounded-full font-semibold text-sm transition-all hover:opacity-90" style="border:1px solid rgba(201,150,90,.3);color:#c9965a;">Select Plan</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- Scenarios Section -->
+   <section id="scenarios" class="w-full" style="padding:80px 24px;">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-wider uppercase" style="color:#c9965a;">Real Scenarios</span>
+      <h2 class="font-serif-display mt-3" style="font-size:clamp(1.8rem,3.5vw,2.6rem);color:#e8e0d4;">Family Protection Outcomes</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5">
+      <div class="rounded-2xl p-7" style="background:#1a2130;border:1px solid rgba(107,122,141,.1);">
+       <div class="flex items-center justify-center rounded-xl mb-5" style="width:52px;height:52px;background:rgba(201,150,90,.08);"><span style="font-size:24px;">👨‍👩‍👧‍👦</span>
+       </div>
+       <h3 class="font-semibold text-lg" style="color:#e8e0d4;">The Young Family</h3>
+       <p class="text-sm mt-3" style="color:#6b7a8d;line-height:1.7;">Mark, 34, with a mortgage and two kids. A $500K Guardian plan ensures the mortgage is paid and kids' college is funded — for just $34/month.</p>
+       <div class="mt-5 pt-4 flex items-center gap-2" style="border-top:1px solid rgba(107,122,141,.1);"><i data-lucide="trending-up" style="width:14px;height:14px;color:#c9965a;"></i> <span class="text-xs font-medium" style="color:#c9965a;">$500K coverage → Family secured</span>
+       </div>
+      </div>
+      <div class="rounded-2xl p-7" style="background:#1a2130;border:1px solid rgba(107,122,141,.1);">
+       <div class="flex items-center justify-center rounded-xl mb-5" style="width:52px;height:52px;background:rgba(201,150,90,.08);"><span style="font-size:24px;">💼</span>
+       </div>
+       <h3 class="font-semibold text-lg" style="color:#e8e0d4;">The Business Owner</h3>
+       <p class="text-sm mt-3" style="color:#6b7a8d;line-height:1.7;">Sarah, 45, runs a growing agency. A $1M Legacy plan provides key-person insurance and ensures her business partners and family are protected.</p>
+       <div class="mt-5 pt-4 flex items-center gap-2" style="border-top:1px solid rgba(107,122,141,.1);"><i data-lucide="trending-up" style="width:14px;height:14px;color:#c9965a;"></i> <span class="text-xs font-medium" style="color:#c9965a;">$1M coverage → Business continuity</span>
+       </div>
+      </div>
+      <div class="rounded-2xl p-7" style="background:#1a2130;border:1px solid rgba(107,122,141,.1);">
+       <div class="flex items-center justify-center rounded-xl mb-5" style="width:52px;height:52px;background:rgba(201,150,90,.08);"><span style="font-size:24px;">🏡</span>
+       </div>
+       <h3 class="font-semibold text-lg" style="color:#e8e0d4;">The Empty Nester</h3>
+       <p class="text-sm mt-3" style="color:#6b7a8d;line-height:1.7;">David, 58, wants to leave a legacy. A whole life plan builds cash value he can borrow against while ensuring his estate passes tax-efficiently.</p>
+       <div class="mt-5 pt-4 flex items-center gap-2" style="border-top:1px solid rgba(107,122,141,.1);"><i data-lucide="trending-up" style="width:14px;height:14px;color:#c9965a;"></i> <span class="text-xs font-medium" style="color:#c9965a;">Whole life → Wealth transfer</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq" class="w-full" style="padding:80px 24px;">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14"><span class="text-xs font-semibold tracking-wider uppercase" style="color:#c9965a;">Questions</span>
+      <h2 class="font-serif-display mt-3" style="font-size:clamp(1.8rem,3.5vw,2.6rem);color:#e8e0d4;">Frequently Asked</h2>
+     </div>
+     <div id="faq-list" class="space-y-3"></div>
+    </div>
+   </section><!-- Vote + Comment Widget -->
+   <section class="w-full" style="padding:60px 24px 20px;">
+    <div class="max-w-2xl mx-auto rounded-2xl p-8" style="background:#1a2130;border:1px solid rgba(201,150,90,.12);">
+     <div class="text-center mb-6"><span class="text-xs font-semibold tracking-wider uppercase" style="color:#c9965a;">Community</span>
+      <h3 class="font-serif-display text-xl mt-2" style="color:#e8e0d4;">What do you think?</h3>
+      <p class="text-sm mt-1" style="color:#6b7a8d;">React, vote on pricing, and leave a comment.</p>
+     </div><!-- Reactions -->
+     <div class="flex items-center justify-center gap-3 flex-wrap mb-6"><button class="reaction-btn px-3 py-2 rounded-xl text-sm flex items-center gap-1.5" style="background:rgba(201,150,90,.08);border:1px solid rgba(201,150,90,.15);" data-reaction="❤️" onclick="submitReaction('❤️')"><span>❤️</span><span class="reaction-count" style="color:#6b7a8d;">0</span></button> <button class="reaction-btn px-3 py-2 rounded-xl text-sm flex items-center gap-1.5" style="background:rgba(201,150,90,.08);border:1px solid rgba(201,150,90,.15);" data-reaction="👍" onclick="submitReaction('👍')"><span>👍</span><span class="reaction-count" style="color:#6b7a8d;">0</span></button> <button class="reaction-btn px-3 py-2 rounded-xl text-sm flex items-center gap-1.5" style="background:rgba(201,150,90,.08);border:1px solid rgba(201,150,90,.15);" data-reaction="🔥" onclick="submitReaction('🔥')"><span>🔥</span><span class="reaction-count" style="color:#6b7a8d;">0</span></button> <button class="reaction-btn px-3 py-2 rounded-xl text-sm flex items-center gap-1.5" style="background:rgba(201,150,90,.08);border:1px solid rgba(201,150,90,.15);" data-reaction="🙌" onclick="submitReaction('🙌')"><span>🙌</span><span class="reaction-count" style="color:#6b7a8d;">0</span></button> <button class="reaction-btn px-3 py-2 rounded-xl text-sm flex items-center gap-1.5" style="background:rgba(201,150,90,.08);border:1px solid rgba(201,150,90,.15);" data-reaction="💡" onclick="submitReaction('💡')"><span>💡</span><span class="reaction-count" style="color:#6b7a8d;">0</span></button>
+     </div><!-- Price Vote -->
+     <div class="mb-6">
+      <p class="text-sm text-center mb-3" style="color:#6b7a8d;">What would you pay for this digital product?</p>
+      <div class="flex flex-wrap justify-center gap-2" id="price-votes"></div>
+     </div><!-- Comment -->
+     <form id="comment-form" class="flex gap-2"><label for="comment-input" class="sr-only">Your comment</label> <input id="comment-input" type="text" placeholder="Leave a comment..." class="flex-1 rounded-xl px-4 py-3 text-sm outline-none" style="background:rgba(107,122,141,.1);border:1px solid rgba(107,122,141,.15);color:#e8e0d4;"> <button type="submit" id="comment-submit-btn" class="px-5 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90" style="background:#c9965a;color:#0f1419;">Send</button>
+     </form>
+     <div id="comments-list" class="mt-5 space-y-2 max-h-48 overflow-auto"></div><!-- Toast -->
+     <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3 rounded-xl text-sm font-medium z-50" style="background:#c9965a;color:#0f1419;"></div>
+    </div>
+   </section><!-- Bottom CTA -->
+   <section id="get-covered" class="w-full" style="padding:80px 24px;">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="rounded-2xl p-12 relative overflow-hidden" style="background:linear-gradient(160deg,#1e2738,#1a2130);border:1px solid rgba(201,150,90,.15);">
+      <div class="glow-orb absolute" style="width:300px;height:300px;background:radial-gradient(circle,rgba(201,150,90,.1) 0%,transparent 70%);top:-80px;right:-80px;border-radius:50%;"></div><i data-lucide="shield-check" style="width:40px;height:40px;color:#c9965a;margin:0 auto 16px;display:block;"></i>
+      <h2 id="bottom-cta-heading" class="font-serif-display" style="font-size:clamp(1.6rem,3vw,2.4rem);color:#e8e0d4;">Secure their future today.</h2>
+      <p class="mt-3 text-sm" style="color:#6b7a8d;max-width:400px;margin:12px auto 0;">Schedule a free consultation and discover the right coverage for your family.</p><a href="#home" id="bottom-cta-btn" class="inline-block mt-8 px-10 py-4 rounded-full font-semibold transition-all hover:opacity-90" style="background:#c9965a;color:#0f1419;">Get Your Free Quote</a>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full" style="padding:40px 24px;border-top:1px solid rgba(107,122,141,.08);">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div style="width:24px;height:24px;background:linear-gradient(135deg,#c9965a,#a07840);border-radius:6px;" class="flex items-center justify-center"><i data-lucide="shield" style="width:12px;height:12px;color:#0f1419;"></i>
+      </div><span class="font-serif-display text-sm" style="color:#c9965a;">LifeGuard Coverage</span>
+     </div>
+     <p class="text-xs" style="color:#6b7a8d;">© 2025 LifeGuard Coverage. Protect what matters before it's too late.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// ── Config & SDK ────────────────────────────────────
+const defaultConfig = {
+  background_color: '#0f1419',
+  surface_color: '#1a2130',
+  text_color: '#e8e0d4',
+  accent_color: '#c9965a',
+  secondary_color: '#6b7a8d',
+  font_family: 'DM Serif Display',
+  font_size: 16,
+  hero_title: 'If something happened, would they be protected?',
+  hero_subtitle: 'Life insurance built around your reality.',
+  plans_title: 'Choose Your Protection Level',
+  bottom_cta_text: 'Secure their future today.',
+  cta_button_text: 'Get Your Free Quote'
+};
+
+// ── FAQ Data ────────────────────────────────────────
+const faqs = [
+  { q: 'How much life insurance do I need?', a: 'A common rule is 10-12x your annual income, but it depends on debts, dependents, and future goals. Our calculator can help you find the right amount.' },
+  { q: 'Can I get covered if I have health issues?', a: 'Yes. We offer guaranteed-issue and simplified-issue policies that don\'t require a medical exam. Premiums may vary based on health history.' },
+  { q: 'What happens if I outlive my term policy?', a: 'You can renew at a higher rate, convert to whole life, or let the policy expire. We recommend reviewing your needs before the term ends.' },
+  { q: 'How quickly can I get approved?', a: 'Many of our term policies offer same-day or 24-hour approval. Whole life policies with higher coverage may take 2-4 weeks.' },
+  { q: 'Are the premiums tax-deductible?', a: 'Personal life insurance premiums are generally not tax-deductible, but the death benefit is typically income-tax-free for beneficiaries.' }
+];
+
+const priceOptions = ['$9','$19','$29','$39','$49','$59','$79','$99','$149','$199'];
+let allData = [];
+let submittingReaction = false;
+let submittingComment = false;
+let submittingPrice = false;
+
+// ── Build FAQ ───────────────────────────────────────
+function buildFAQ() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  faqs.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'rounded-xl overflow-hidden';
+    div.style.cssText = 'background:#1a2130;border:1px solid rgba(107,122,141,.1);';
+    div.innerHTML = `
+      <button onclick="this.parentElement.classList.toggle('open');this.querySelector('.faq-arrow').classList.toggle('rotate-180')" class="w-full flex items-center justify-between p-5 text-left" style="color:#e8e0d4;">
+        <span class="text-sm font-medium pr-4">${f.q}</span>
+        <i data-lucide="chevron-down" class="faq-arrow transition-transform duration-300" style="width:16px;height:16px;color:#c9965a;flex-shrink:0;"></i>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm" style="color:#6b7a8d;line-height:1.7;">${f.a}</p>
+      </div>`;
+    list.appendChild(div);
+  });
+  // CSS toggle for FAQ open state
+  const style = document.createElement('style');
+  style.textContent = `.open .faq-answer{display:block!important}`;
+  document.head.appendChild(style);
+}
+
+// ── Build Price Votes ───────────────────────────────
+function buildPriceVotes() {
+  const container = document.getElementById('price-votes');
+  container.innerHTML = '';
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:opacity-80';
+    btn.style.cssText = 'background:rgba(107,122,141,.1);border:1px solid rgba(107,122,141,.15);color:#6b7a8d;';
+    btn.dataset.price = p;
+    btn.textContent = p;
+    btn.onclick = () => submitPrice(p);
+    container.appendChild(btn);
+  });
+}
+
+// ── Toast ───────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.remove('hidden');
+  t.classList.add('toast-msg');
+  setTimeout(() => { t.classList.add('hidden'); t.classList.remove('toast-msg'); }, 2500);
+}
+
+// ── Data SDK Handlers ───────────────────────────────
+async function submitReaction(emoji) {
+  if (submittingReaction) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  submittingReaction = true;
+  const result = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price: '', timestamp: new Date().toISOString() });
+  submittingReaction = false;
+  if (result.isOk) showToast('Thanks for your reaction!');
+  else showToast('Something went wrong.');
+}
+
+async function submitPrice(price) {
+  if (submittingPrice) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  submittingPrice = true;
+  const result = await window.dataSdk.create({ type: 'price', reaction: '', comment: '', price: price, timestamp: new Date().toISOString() });
+  submittingPrice = false;
+  if (result.isOk) showToast('Vote recorded!');
+  else showToast('Something went wrong.');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text || submittingComment) return;
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  submittingComment = true;
+  const btn = document.getElementById('comment-submit-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
+  const result = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price: '', timestamp: new Date().toISOString() });
+  submittingComment = false;
+  btn.textContent = 'Send';
+  btn.disabled = false;
+  if (result.isOk) { input.value = ''; showToast('Comment posted!'); }
+  else showToast('Something went wrong.');
+});
+
+function updateWidget(data) {
+  allData = data;
+  // Reaction counts
+  const reactionCounts = {};
+  const priceCounts = {};
+  const comments = [];
+  data.forEach(d => {
+    if (d.type === 'reaction' && d.reaction) reactionCounts[d.reaction] = (reactionCounts[d.reaction] || 0) + 1;
+    if (d.type === 'price' && d.price) priceCounts[d.price] = (priceCounts[d.price] || 0) + 1;
+    if (d.type === 'comment' && d.comment) comments.push(d);
+  });
+  // Update reaction buttons
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    const count = reactionCounts[r] || 0;
+    btn.querySelector('.reaction-count').textContent = count;
+  });
+  // Update price buttons
+  document.querySelectorAll('#price-votes button').forEach(btn => {
+    const p = btn.dataset.price;
+    const count = priceCounts[p] || 0;
+    btn.textContent = count > 0 ? `${p} (${count})` : p;
+    if (count > 0) btn.style.borderColor = 'rgba(201,150,90,.4)';
+    else btn.style.borderColor = 'rgba(107,122,141,.15)';
+  });
+  // Update comments
+  const list = document.getElementById('comments-list');
+  const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  comments.forEach(c => {
+    const id = c.__backendId;
+    if (existingEls.has(id)) {
+      existingEls.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'flex items-start gap-3 p-3 rounded-xl';
+      div.style.cssText = 'background:rgba(107,122,141,.06);';
+      div.innerHTML = `<div class="flex items-center justify-center rounded-full flex-shrink-0" style="width:28px;height:28px;background:rgba(201,150,90,.12);"><i data-lucide="user" style="width:14px;height:14px;color:#c9965a;"></i></div><p class="text-sm" style="color:#9aa3af;">${c.comment.replace(/</g,'&lt;')}</p>`;
+      list.appendChild(div);
+      lucide.createIcons();
+    }
+  });
+  existingEls.forEach(el => el.remove());
+}
+
+// ── Element SDK ─────────────────────────────────────
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+  const secondary = config.secondary_color || defaultConfig.secondary_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.getElementById('app-root').style.background = bg;
+  document.getElementById('app-root').style.color = text;
+
+  // Text content
+  document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('plans-title').textContent = config.plans_title || defaultConfig.plans_title;
+  document.getElementById('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  document.getElementById('bottom-cta-btn').textContent = config.cta_button_text || defaultConfig.cta_button_text;
+
+  // Fonts
+  document.querySelectorAll('.font-serif-display').forEach(el => {
+    el.style.fontFamily = `${font}, serif`;
+  });
+  document.getElementById('app-root').style.fontSize = `${size}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: v => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['plans_title', config.plans_title || defaultConfig.plans_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
+  ])
+});
+
+// ── Data SDK Init ───────────────────────────────────
+(async () => {
+  const result = await window.dataSdk.init({
+    onDataChanged(data) { updateWidget(data); }
+  });
+  if (!result.isOk) console.error('Data SDK init failed');
+})();
+
+// ── Build UI ────────────────────────────────────────
+buildFAQ();
+buildPriceVotes();
+lucide.createIcons();
+
+// Active nav highlighting
+const sections = ['home','coverage','plans','scenarios','faq','get-covered'];
+const root = document.getElementById('app-root');
+root.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    a.querySelector('.nav-link::after') // just toggle class
+  });
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a52fa537627c5',t:'MTc3NTU3ODQ1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,701 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/7505b771-8d52-466f-9933-cd2401fd3041 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarStatic Nights</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+
+    .font-display { font-family: 'Playfair Display', Georgia, serif; }
+    .font-body { font-family: 'DM Sans', sans-serif; }
+
+    /* Star particles */
+    .star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--duration) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.1; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Glow pulse for CTAs */
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.1); }
+      50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.2); }
+    }
+    .cta-glow { animation: glowPulse 2.5s ease-in-out infinite; }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero slow zoom */
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    .hero-bg { animation: slowZoom 20s ease-in-out infinite alternate; }
+
+    /* Gallery hover */
+    .gallery-card img {
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+    .gallery-card:hover img {
+      transform: scale(1.08);
+      filter: brightness(1.2);
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Nav active */
+    .nav-link { position: relative; transition: color 0.3s; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #a78bfa;
+      transition: all 0.3s;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Shooting star */
+    @keyframes shoot {
+      0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+      100% { transform: translate(300px, 300px) rotate(-45deg); opacity: 0; }
+    }
+    .shooting-star {
+      position: fixed;
+      width: 2px;
+      height: 80px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Constellation line drawing */
+    @keyframes drawLine {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .checklist-card { transition: transform 0.3s, box-shadow 0.3s; }
+    .checklist-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15); }
+
+    /* Review marquee */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track { animation: marquee 30s linear infinite; }
+
+    .app-wrapper { overflow-x: hidden; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            midnight: '#070B1A',
+            deepspace: '#0C1233',
+            nebula: '#1A1145',
+            starglow: '#A78BFA',
+            starwhite: '#E8E0F0',
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body text-starwhite" style="background: #070B1A;">
+  <div class="app-wrapper w-full h-full overflow-auto" id="app-wrapper" style="background: linear-gradient(180deg, #070B1A 0%, #0C1233 30%, #1A1145 60%, #0C1233 85%, #070B1A 100%);"><!-- Star Field -->
+   <div class="star-field" id="starField"></div><!-- Shooting Stars -->
+   <div class="shooting-star" id="shootingStar1"></div>
+   <div class="shooting-star" id="shootingStar2"></div><!-- Sticky Nav -->
+   <nav class="fixed top-0 left-0 w-full z-50 glass" id="mainNav" style="background: rgba(7, 11, 26, 0.8);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16"><a href="#home" class="font-display font-bold text-xl tracking-wide" id="navLogo" style="color: #A78BFA;"> ✦ StarStatic </a> <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Home</a> <a href="#wallpapers" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Wallpapers</a> <a href="#constellations" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Constellations</a> <a href="#preview" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Preview</a> <a href="#reviews" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Reviews</a> <a href="#download" class="nav-link text-sm font-medium tracking-wider uppercase" style="color: #E8E0F0;">Download</a>
+      </div><!-- Mobile Menu Button --> <button class="md:hidden p-2" id="mobileMenuBtn" style="color: #E8E0F0;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div class="hidden md:hidden" id="mobileMenu" style="background: rgba(7, 11, 26, 0.95);">
+     <div class="px-4 py-4 flex flex-col gap-4"><a href="#home" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Home</a> <a href="#wallpapers" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Wallpapers</a> <a href="#constellations" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Constellations</a> <a href="#preview" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Preview</a> <a href="#reviews" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Reviews</a> <a href="#download" class="text-sm font-medium uppercase tracking-wider mobile-nav-link" style="color: #E8E0F0;">Download</a>
+     </div>
+    </div>
+   </nav><!-- ═══════════════════ HERO ═══════════════════ -->
+   <section id="home" class="relative w-full flex items-center justify-center text-center" style="min-height: 100%; padding-top: 80px; padding-bottom: 80px;"><!-- Hero BG image with slow zoom -->
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&amp;q=80" alt="Starry mountain night sky" loading="lazy" class="hero-bg w-full h-full object-cover opacity-40" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg, #0C1233, #1A1145)'; this.alt='Night sky';">
+     <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(7,11,26,0.6) 0%, rgba(7,11,26,0.3) 50%, rgba(7,11,26,0.9) 100%);"></div>
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+     <p class="uppercase tracking-[0.3em] text-xs mb-6 font-medium" style="color: #A78BFA;">Bring the night sky closer</p>
+     <h1 class="font-display font-900 text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight mb-6" id="heroTitle" style="color: #E8E0F0;">The universe,<br>
+      on your screen.</h1>
+     <p class="text-lg sm:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed" id="heroSubtitle" style="color: rgba(232,224,240,0.7);">180 starry-sky wallpapers, 30 constellation posters &amp; 12 stargazing checklists — instant download.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4"><a href="#download" class="cta-glow px-8 py-4 rounded-full font-bold text-base tracking-wide transition-all hover:scale-105" id="ctaPrimary" style="background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #E8E0F0;"> Get the Collection </a> <a href="#preview" class="glass px-8 py-4 rounded-full font-medium text-base tracking-wide transition-all hover:scale-105" id="ctaSecondary" style="color: #E8E0F0;"> See Preview </a>
+     </div><!-- Stats -->
+     <div class="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+      <div class="text-center">
+       <div class="font-display font-bold text-3xl" style="color: #A78BFA;">
+        180+
+       </div>
+       <div class="text-xs uppercase tracking-widest mt-1" style="color: rgba(232,224,240,0.5);">
+        Wallpapers
+       </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(167,139,250,0.3);"></div>
+      <div class="text-center">
+       <div class="font-display font-bold text-3xl" style="color: #A78BFA;">
+        30
+       </div>
+       <div class="text-xs uppercase tracking-widest mt-1" style="color: rgba(232,224,240,0.5);">
+        Posters
+       </div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(167,139,250,0.3);"></div>
+      <div class="text-center">
+       <div class="font-display font-bold text-3xl" style="color: #A78BFA;">
+        12
+       </div>
+       <div class="text-xs uppercase tracking-widest mt-1" style="color: rgba(232,224,240,0.5);">
+        Checklists
+       </div>
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="animation: twinkle 2s ease-in-out infinite alternate; --duration: 2s;"><span class="text-xs uppercase tracking-widest" style="color: rgba(232,224,240,0.4);">Scroll</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:rgba(167,139,250,0.6);"></i>
+    </div>
+   </section><!-- ═══════════════════ WALLPAPERS ═══════════════════ -->
+   <section id="wallpapers" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="uppercase tracking-[0.25em] text-xs mb-4 font-medium" style="color: #A78BFA;">The Collection</p>
+      <h2 class="font-display font-bold text-4xl sm:text-5xl mb-4" id="wallpapersTitle" style="color: #E8E0F0;">Wallpapers by Vibe</h2>
+      <p class="max-w-xl mx-auto font-light" style="color: rgba(232,224,240,0.6);">Mobile + desktop sizes. Curated for instant calm and wonder.</p>
+     </div><!-- Vibe Filter Tabs -->
+     <div class="reveal flex flex-wrap items-center justify-center gap-3 mb-12" id="vibeTabs"><button class="vibe-tab glass px-5 py-2 rounded-full text-sm font-medium transition-all active" data-vibe="all" style="color: #E8E0F0;">All Vibes</button> <button class="vibe-tab glass px-5 py-2 rounded-full text-sm font-medium transition-all" data-vibe="milky" style="color: rgba(232,224,240,0.6);">✦ Milky Way</button> <button class="vibe-tab glass px-5 py-2 rounded-full text-sm font-medium transition-all" data-vibe="desert" style="color: rgba(232,224,240,0.6);">🏜 Desert Stars</button> <button class="vibe-tab glass px-5 py-2 rounded-full text-sm font-medium transition-all" data-vibe="mountain" style="color: rgba(232,224,240,0.6);">⛰ Mountain Night</button> <button class="vibe-tab glass px-5 py-2 rounded-full text-sm font-medium transition-all" data-vibe="city" style="color: rgba(232,224,240,0.6);">🌃 City Stars</button>
+     </div><!-- Gallery Grid -->
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="wallpaperGrid"><!-- Milky Way -->
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="milky" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&amp;q=80" alt="Milky Way galaxy" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Milky Way';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Milky Way</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Galactic Core</p>
+       </div>
+      </div><!-- Desert Stars -->
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="desert" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1532978379173-523e16f371f2?w=600&amp;q=80" alt="Desert night sky with stars" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Desert stars';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Desert Stars</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Sand &amp; Cosmos</p>
+       </div>
+      </div><!-- Mountain Night -->
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="mountain" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?w=600&amp;q=80" alt="Mountains under starry sky" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Mountain night';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Mountain Night</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Alpine Glow</p>
+       </div>
+      </div><!-- City Stars -->
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="city" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&amp;q=80" alt="City skyline at night with stars" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='City stars';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">City Stars</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Urban Nights</p>
+       </div>
+      </div><!-- Extra cards -->
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="milky" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=600&amp;q=80" alt="Stars and nebula" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Nebula';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Milky Way</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Deep Nebula</p>
+       </div>
+      </div>
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="desert" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1505506874110-6a7a69069a08?w=600&amp;q=80" alt="Starry desert landscape" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Desert landscape';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Desert Stars</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Dune Horizon</p>
+       </div>
+      </div>
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="mountain" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1475274047050-1d0c55b0f8d4?w=600&amp;q=80" alt="Stargazing from mountain peak" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Mountain peak';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">Mountain Night</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Summit Silence</p>
+       </div>
+      </div>
+      <div class="gallery-card reveal rounded-2xl overflow-hidden relative group" data-vibe="city" style="aspect-ratio:3/4;"><img src="https://images.unsplash.com/photo-1514897575457-c4db467cf78e?w=600&amp;q=80" alt="Night city with starry sky" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#1A1145,#0C1233)';this.alt='Night city';">
+       <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+       <div class="absolute bottom-4 left-4"><span class="text-xs uppercase tracking-widest font-medium" style="color: #A78BFA;">City Stars</span>
+        <p class="font-display font-bold text-lg mt-1" style="color: #E8E0F0;">Rooftop Views</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ CONSTELLATIONS ═══════════════════ -->
+   <section id="constellations" class="relative w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="uppercase tracking-[0.25em] text-xs mb-4 font-medium" style="color: #A78BFA;">Printable Art</p>
+      <h2 class="font-display font-bold text-4xl sm:text-5xl mb-4" id="constellationsTitle" style="color: #E8E0F0;">Constellation Print Collection</h2>
+      <p class="max-w-xl mx-auto font-light" style="color: rgba(232,224,240,0.6);">30 minimal constellation posters. Frame-ready, aesthetic that always sells.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Poster Mockup 1 -->
+      <div class="reveal glass rounded-3xl p-6 text-center group">
+       <div class="rounded-2xl overflow-hidden mb-5" style="aspect-ratio:3/4; background: linear-gradient(135deg, #0C1233, #1A1145);">
+        <div class="w-full h-full flex flex-col items-center justify-center p-8">
+         <svg viewbox="0 0 200 200" class="w-32 h-32 mb-4" style="opacity:0.9;"><circle cx="60" cy="40" r="3" fill="#A78BFA" /> <circle cx="100" cy="30" r="2.5" fill="#A78BFA" /> <circle cx="140" cy="50" r="3" fill="#A78BFA" /> <circle cx="130" cy="90" r="2.5" fill="#A78BFA" /> <circle cx="80" cy="100" r="3" fill="#A78BFA" /> <circle cx="50" cy="80" r="2" fill="#A78BFA" /> <circle cx="110" cy="140" r="3" fill="#A78BFA" /> <line x1="60" y1="40" x2="100" y2="30" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="100" y1="30" x2="140" y2="50" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="140" y1="50" x2="130" y2="90" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="130" y1="90" x2="80" y2="100" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="80" y1="100" x2="50" y2="80" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="50" y1="80" x2="60" y2="40" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="80" y1="100" x2="110" y2="140" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" />
+         </svg>
+         <p class="font-display text-2xl font-bold" style="color: #E8E0F0;">Orion</p>
+         <p class="text-xs uppercase tracking-widest mt-2" style="color: rgba(232,224,240,0.4);">The Hunter</p>
+        </div>
+       </div>
+       <p class="font-display font-bold text-lg" style="color: #E8E0F0;">Classic Series</p>
+       <p class="text-sm mt-1" style="color: rgba(232,224,240,0.5);">10 iconic constellations</p>
+      </div><!-- Poster Mockup 2 -->
+      <div class="reveal glass rounded-3xl p-6 text-center group" style="animation-delay: 0.15s;">
+       <div class="rounded-2xl overflow-hidden mb-5" style="aspect-ratio:3/4; background: linear-gradient(135deg, #1A1145, #2D1B69);">
+        <div class="w-full h-full flex flex-col items-center justify-center p-8">
+         <svg viewbox="0 0 200 200" class="w-32 h-32 mb-4" style="opacity:0.9;"><circle cx="100" cy="40" r="3" fill="#E8E0F0" /> <circle cx="70" cy="70" r="2.5" fill="#E8E0F0" /> <circle cx="130" cy="70" r="2.5" fill="#E8E0F0" /> <circle cx="60" cy="110" r="3" fill="#E8E0F0" /> <circle cx="140" cy="110" r="3" fill="#E8E0F0" /> <circle cx="80" cy="150" r="2" fill="#E8E0F0" /> <circle cx="120" cy="150" r="2" fill="#E8E0F0" /> <line x1="100" y1="40" x2="70" y2="70" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" /> <line x1="100" y1="40" x2="130" y2="70" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" /> <line x1="70" y1="70" x2="60" y2="110" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" /> <line x1="130" y1="70" x2="140" y2="110" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" /> <line x1="60" y1="110" x2="80" y2="150" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" /> <line x1="140" y1="110" x2="120" y2="150" stroke="#E8E0F0" stroke-width="0.8" opacity="0.4" />
+         </svg>
+         <p class="font-display text-2xl font-bold" style="color: #E8E0F0;">Cassiopeia</p>
+         <p class="text-xs uppercase tracking-widest mt-2" style="color: rgba(232,224,240,0.4);">The Queen</p>
+        </div>
+       </div>
+       <p class="font-display font-bold text-lg" style="color: #E8E0F0;">Zodiac Series</p>
+       <p class="text-sm mt-1" style="color: rgba(232,224,240,0.5);">12 zodiac constellations</p>
+      </div><!-- Poster Mockup 3 -->
+      <div class="reveal glass rounded-3xl p-6 text-center group" style="animation-delay: 0.3s;">
+       <div class="rounded-2xl overflow-hidden mb-5" style="aspect-ratio:3/4; background: linear-gradient(135deg, #0C1233, #071128);">
+        <div class="w-full h-full flex flex-col items-center justify-center p-8">
+         <svg viewbox="0 0 200 200" class="w-32 h-32 mb-4" style="opacity:0.9;"><circle cx="40" cy="60" r="4" fill="#A78BFA" /> <circle cx="70" cy="50" r="3" fill="#A78BFA" /> <circle cx="100" cy="60" r="3.5" fill="#A78BFA" /> <circle cx="130" cy="55" r="3" fill="#A78BFA" /> <circle cx="160" cy="65" r="4" fill="#A78BFA" /> <circle cx="90" cy="90" r="2.5" fill="#A78BFA" /> <circle cx="110" cy="120" r="3" fill="#A78BFA" /> <line x1="40" y1="60" x2="70" y2="50" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="70" y1="50" x2="100" y2="60" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="100" y1="60" x2="130" y2="55" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="130" y1="55" x2="160" y2="65" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="100" y1="60" x2="90" y2="90" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" /> <line x1="90" y1="90" x2="110" y2="120" stroke="#A78BFA" stroke-width="0.8" opacity="0.5" />
+         </svg>
+         <p class="font-display text-2xl font-bold" style="color: #E8E0F0;">Ursa Major</p>
+         <p class="text-xs uppercase tracking-widest mt-2" style="color: rgba(232,224,240,0.4);">The Great Bear</p>
+        </div>
+       </div>
+       <p class="font-display font-bold text-lg" style="color: #E8E0F0;">Explorer Series</p>
+       <p class="text-sm mt-1" style="color: rgba(232,224,240,0.5);">8 rare sky gems</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ PREVIEW ═══════════════════ -->
+   <section id="preview" class="relative w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="uppercase tracking-[0.25em] text-xs mb-4 font-medium" style="color: #A78BFA;">Bonus Included</p>
+      <h2 class="font-display font-bold text-4xl sm:text-5xl mb-4" style="color: #E8E0F0;">Stargazing Checklist Cards</h2>
+      <p class="max-w-xl mx-auto font-light" style="color: rgba(232,224,240,0.6);">12 printable cards — perfect for gifting, journaling, or your next clear-sky night.</p>
+     </div>
+     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🌌
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Spot the Milky Way</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🔭
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Find Andromeda</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🌠
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Catch a Meteor</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        ⭐
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Trace Orion's Belt</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🌙
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Full Moon Night</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🪐
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Spot Saturn</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        💫
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">Northern Lights</p>
+      </div>
+      <div class="checklist-card reveal glass rounded-2xl p-5 text-center">
+       <div class="text-3xl mb-3">
+        🌍
+       </div>
+       <p class="font-display font-bold text-sm" style="color:#E8E0F0;">ISS Flyover</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ REVIEWS ═══════════════════ -->
+   <section id="reviews" class="relative w-full py-24 overflow-hidden">
+    <div class="reveal text-center mb-12 px-6">
+     <p class="uppercase tracking-[0.25em] text-xs mb-4 font-medium" style="color: #A78BFA;">Night Sky Lovers</p>
+     <h2 class="font-display font-bold text-4xl sm:text-5xl" style="color: #E8E0F0;">What They're Saying</h2>
+    </div><!-- Marquee Reviews -->
+    <div class="relative w-full overflow-hidden">
+     <div class="marquee-track flex gap-6" style="width: max-content;">
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"My phone has never looked this beautiful. The Milky Way set is insane."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Sarah K.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Framed three constellation prints. My living room looks like a planetarium."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Marcus T.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Gifted this to my partner. Best reaction ever. The checklists are such a cute touch."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Priya L.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"I sell these aesthetics on my shop. Instant bestseller. Thank you!"</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Jordan M.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Worth every penny. The quality of these wallpapers is stunning on my 4K monitor."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Alex R.</p>
+      </div><!-- Duplicate for seamless loop -->
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"My phone has never looked this beautiful. The Milky Way set is insane."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Sarah K.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Framed three constellation prints. My living room looks like a planetarium."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Marcus T.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Gifted this to my partner. Best reaction ever. The checklists are such a cute touch."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Priya L.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"I sell these aesthetics on my shop. Instant bestseller. Thank you!"</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Jordan M.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 flex-shrink-0" style="width:320px;">
+       <div class="flex gap-1 mb-3">
+        ★★★★★
+       </div>
+       <p class="text-sm mb-4 font-light" style="color: rgba(232,224,240,0.8);">"Worth every penny. The quality of these wallpapers is stunning on my 4K monitor."</p>
+       <p class="text-xs font-bold" style="color: #A78BFA;">— Alex R.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ DOWNLOAD CTA ═══════════════════ -->
+   <section id="download" class="relative w-full py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="reveal glass rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden"><!-- Decorative glow -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full" style="background: radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%); filter: blur(60px);"></div>
+      <div class="relative z-10">
+       <p class="uppercase tracking-[0.25em] text-xs mb-4 font-medium" style="color: #A78BFA;">Instant Download</p>
+       <h2 class="font-display font-bold text-4xl sm:text-5xl mb-6" id="bottomCtaText" style="color: #E8E0F0;">Turn your screen into a night sky.</h2><!-- What's included -->
+       <div class="flex flex-wrap items-center justify-center gap-6 mb-10">
+        <div class="flex items-center gap-2"><i data-lucide="image" style="width:18px;height:18px;color:#A78BFA;"></i> <span class="text-sm" style="color: rgba(232,224,240,0.7);">180 Wallpapers</span>
+        </div>
+        <div class="flex items-center gap-2"><i data-lucide="file-text" style="width:18px;height:18px;color:#A78BFA;"></i> <span class="text-sm" style="color: rgba(232,224,240,0.7);">30 Posters</span>
+        </div>
+        <div class="flex items-center gap-2"><i data-lucide="check-square" style="width:18px;height:18px;color:#A78BFA;"></i> <span class="text-sm" style="color: rgba(232,224,240,0.7);">12 Checklists</span>
+        </div>
+       </div><!-- Pricing -->
+       <div class="mb-8"><span class="font-display text-5xl font-bold" style="color: #E8E0F0;">$19</span> <span class="text-lg ml-1" style="color: rgba(232,224,240,0.4);">one-time</span>
+       </div><a href="#" class="cta-glow inline-block px-10 py-5 rounded-full font-bold text-lg tracking-wide transition-all hover:scale-105" id="finalCta" style="background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #E8E0F0;" onclick="event.preventDefault();"> Get the Collection ✦ </a>
+       <p class="text-xs mt-6" style="color: rgba(232,224,240,0.35);">Instant delivery • Lifetime access • No subscription</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ VOTE + COMMENT ═══════════════════ -->
+   <section class="relative w-full py-16 px-6">
+    <div class="max-w-2xl mx-auto">
+     <div class="reveal glass rounded-3xl p-8 sm:p-10 text-center">
+      <h3 class="font-display font-bold text-2xl mb-2" style="color: #E8E0F0;">Vote + Comment</h3>
+      <p class="text-sm mb-6" style="color: rgba(232,224,240,0.5);">Love StarStatic Nights? Let us know!</p><!-- Vote buttons -->
+      <div class="flex items-center justify-center gap-4 mb-8"><button class="glass px-6 py-3 rounded-full flex items-center gap-2 font-medium transition-all hover:scale-105" id="upvoteBtn" style="color: #A78BFA;"> <i data-lucide="thumbs-up" style="width:18px;height:18px;"></i> <span id="upvoteCount">127</span> </button> <button class="glass px-6 py-3 rounded-full flex items-center gap-2 font-medium transition-all hover:scale-105" id="downvoteBtn" style="color: rgba(232,224,240,0.5);"> <i data-lucide="thumbs-down" style="width:18px;height:18px;"></i> <span id="downvoteCount">3</span> </button>
+      </div><!-- Comment form -->
+      <form id="commentForm" class="text-left"><label for="commentInput" class="text-xs uppercase tracking-widest font-medium block mb-2" style="color: rgba(232,224,240,0.5);">Leave a Comment</label> <textarea id="commentInput" rows="3" class="w-full rounded-xl p-4 text-sm resize-none focus:outline-none focus:ring-2" placeholder="What do you love about the night sky?" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #E8E0F0; --tw-ring-color: #A78BFA;"></textarea> <button type="submit" class="mt-3 px-6 py-3 rounded-full font-medium text-sm transition-all hover:scale-105" style="background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #E8E0F0;"> Post Comment </button>
+      </form><!-- Comments List -->
+      <div id="commentsContainer" class="mt-6 space-y-3 text-left"></div>
+     </div>
+    </div>
+   </section><!-- ═══════════════════ FOOTER ═══════════════════ -->
+   <footer class="relative w-full py-12 px-6 text-center" style="border-top: 1px solid rgba(167,139,250,0.1);">
+    <p class="font-display font-bold text-lg mb-2" style="color: #A78BFA;">✦ StarStatic Nights</p>
+    <p class="text-xs" style="color: rgba(232,224,240,0.3);">Bring the night sky closer. © 2024</p>
+   </footer>
+  </div>
+  <script>
+    // ═══════ CONFIG & SDK INIT ═══════
+    const defaultConfig = {
+      hero_title: 'The universe,<br>on your screen.',
+      hero_subtitle: '180 starry-sky wallpapers, 30 constellation posters & 12 stargazing checklists — instant download.',
+      cta_primary: 'Get the Collection',
+      cta_secondary: 'See Preview',
+      wallpapers_title: 'Wallpapers by Vibe',
+      constellations_title: 'Constellation Print Collection',
+      bottom_cta_text: 'Turn your screen into a night sky.',
+      background_color: '#070B1A',
+      surface_color: 'rgba(255, 255, 255, 0.05)',
+      text_color: '#E8E0F0',
+      primary_action_color: '#7C3AED',
+      accent_color: '#A78BFA',
+      font_family: 'Playfair Display',
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+      const baseSize = c.font_size || defaultConfig.font_size;
+      const fontStack = `${c.font_family || defaultConfig.font_family}, Georgia, serif`;
+
+      // Text content
+      document.getElementById('heroTitle').innerHTML = c.hero_title;
+      document.getElementById('heroSubtitle').textContent = c.hero_subtitle;
+      document.getElementById('ctaPrimary').textContent = c.cta_primary;
+      document.getElementById('ctaSecondary').textContent = c.cta_secondary;
+      document.getElementById('wallpapersTitle').textContent = c.wallpapers_title;
+      document.getElementById('constellationsTitle').textContent = c.constellations_title;
+      document.getElementById('bottomCtaText').textContent = c.bottom_cta_text;
+      document.getElementById('finalCta').innerHTML = c.cta_primary + ' ✦';
+
+      // Colors
+      const bg = c.background_color || defaultConfig.background_color;
+      const accent = c.accent_color || defaultConfig.accent_color;
+      const textCol = c.text_color || defaultConfig.text_color;
+      const primary = c.primary_action_color || defaultConfig.primary_action_color;
+
+      document.getElementById('app-wrapper').style.background = `linear-gradient(180deg, ${bg} 0%, ${adjustAlpha(bg, 0.9)} 30%, ${accent}15 60%, ${adjustAlpha(bg, 0.9)} 85%, ${bg} 100%)`;
+      document.body.style.background = bg;
+
+      // Apply accent to labeled elements
+      document.querySelectorAll('[style*="color: #A78BFA"]').forEach(el => el.style.color = accent);
+      document.getElementById('navLogo').style.color = accent;
+
+      // Apply text color
+      document.querySelectorAll('.font-display').forEach(el => {
+        if (!el.style.color || el.style.color === '#E8E0F0' || el.style.color === 'rgb(232, 224, 240)') {
+          el.style.color = textCol;
+        }
+      });
+
+      // CTA gradients
+      const ctaGrad = `linear-gradient(135deg, ${primary}, ${accent})`;
+      document.getElementById('ctaPrimary').style.background = ctaGrad;
+      document.getElementById('finalCta').style.background = ctaGrad;
+
+      // Font
+      document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = fontStack);
+
+      // Font size scaling
+      document.getElementById('heroTitle').style.fontSize = `${baseSize * 3.5}px`;
+      document.getElementById('heroSubtitle').style.fontSize = `${baseSize * 1.2}px`;
+    }
+
+    function adjustAlpha(hex, alpha) {
+      return hex; // simplified - keeps gradient working
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => applyConfig(config),
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+            { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+          ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+          ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+          ['constellations_title', config.constellations_title || defaultConfig.constellations_title],
+          ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+        ])
+      });
+    }
+
+    // ═══════ STAR FIELD ═══════
+    (function createStars() {
+      const field = document.getElementById('starField');
+      for (let i = 0; i < 120; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.5 + 0.5;
+        s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--duration:${Math.random()*3+1.5}s;animation-delay:${Math.random()*3}s;`;
+        field.appendChild(s);
+      }
+    })();
+
+    // ═══════ SHOOTING STARS ═══════
+    function triggerShootingStar() {
+      const el = document.getElementById('shootingStar1');
+      el.style.top = Math.random() * 40 + '%';
+      el.style.left = Math.random() * 60 + '%';
+      el.style.opacity = '1';
+      el.style.animation = 'shoot 1s linear forwards';
+      setTimeout(() => { el.style.opacity = '0'; el.style.animation = 'none'; }, 1200);
+    }
+    setInterval(triggerShootingStar, 6000);
+    setTimeout(triggerShootingStar, 2000);
+
+    // ═══════ SCROLL REVEAL ═══════
+    const wrapper = document.getElementById('app-wrapper');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1, root: wrapper });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ═══════ VIBE FILTER ═══════
+    document.querySelectorAll('.vibe-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.vibe-tab').forEach(t => {
+          t.classList.remove('active');
+          t.style.color = 'rgba(232,224,240,0.6)';
+          t.style.background = 'rgba(255,255,255,0.05)';
+        });
+        tab.classList.add('active');
+        tab.style.color = '#E8E0F0';
+        tab.style.background = 'rgba(167,139,250,0.2)';
+
+        const vibe = tab.dataset.vibe;
+        document.querySelectorAll('.gallery-card').forEach(card => {
+          if (vibe === 'all' || card.dataset.vibe === vibe) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+    // Initialize first tab
+    document.querySelector('.vibe-tab.active').click();
+
+    // ═══════ MOBILE MENU ═══════
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+    });
+
+    // ═══════ VOTES ═══════
+    let upvotes = 127, downvotes = 3, voted = null;
+    document.getElementById('upvoteBtn').addEventListener('click', () => {
+      if (voted === 'up') return;
+      if (voted === 'down') { downvotes--; document.getElementById('downvoteCount').textContent = downvotes; }
+      upvotes++; voted = 'up';
+      document.getElementById('upvoteCount').textContent = upvotes;
+      document.getElementById('upvoteBtn').style.background = 'rgba(167,139,250,0.2)';
+      document.getElementById('downvoteBtn').style.background = '';
+    });
+    document.getElementById('downvoteBtn').addEventListener('click', () => {
+      if (voted === 'down') return;
+      if (voted === 'up') { upvotes--; document.getElementById('upvoteCount').textContent = upvotes; }
+      downvotes++; voted = 'down';
+      document.getElementById('downvoteCount').textContent = downvotes;
+      document.getElementById('downvoteBtn').style.background = 'rgba(232,224,240,0.1)';
+      document.getElementById('upvoteBtn').style.background = '';
+    });
+
+    // ═══════ COMMENTS ═══════
+    const comments = [];
+    document.getElementById('commentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (!text) return;
+      comments.unshift({ text, time: new Date().toLocaleString() });
+      input.value = '';
+      renderComments();
+    });
+    function renderComments() {
+      const container = document.getElementById('commentsContainer');
+      container.innerHTML = comments.map(c =>
+        `<div class="glass rounded-xl p-4"><p class="text-sm" style="color: rgba(232,224,240,0.8);">${escapeHtml(c.text)}</p><p class="text-xs mt-2" style="color: rgba(232,224,240,0.3);">${c.time}</p></div>`
+      ).join('');
+    }
+    function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    // ═══════ INIT ICONS ═══════
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a676464c627c5',t:'MTc3NTU3OTI5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

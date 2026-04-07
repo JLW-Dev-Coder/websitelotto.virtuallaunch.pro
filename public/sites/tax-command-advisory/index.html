@@ -1,1 +1,816 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/125e25bd-1b28-4a1c-a1d1-295a9228307a -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaxCommand Advisory</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['DM Sans', 'sans-serif'],
+        mono: ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.05); }
+  50% { box-shadow: 0 0 35px rgba(59,130,246,0.25), inset 0 1px 0 rgba(255,255,255,0.08); }
+}
+
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes data-refresh {
+  0% { opacity: 0.5; transform: scaleX(0.3); }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(400%); }
+}
+
+@keyframes counter-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glow-panel {
+  animation: pulse-glow 4s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(10,10,10,0.95) 100%);
+  border: 1px solid rgba(59,130,246,0.15);
+}
+
+.float-anim { animation: float-up 6s ease-in-out infinite; }
+.float-anim-delay { animation: float-up 6s ease-in-out 2s infinite; }
+.float-anim-delay2 { animation: float-up 6s ease-in-out 4s infinite; }
+
+.data-bar {
+  animation: data-refresh 1.5s ease-out forwards;
+  transform-origin: left;
+}
+
+.fade-section {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.scan-effect {
+  position: relative;
+  overflow: hidden;
+}
+.scan-effect::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent);
+  animation: scan-line 3s linear infinite;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.nav-glass {
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(59,130,246,0.1);
+}
+
+.tier-card {
+  background: linear-gradient(180deg, rgba(20,20,25,1) 0%, rgba(12,12,15,1) 100%);
+  border: 1px solid rgba(59,130,246,0.12);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tier-card:hover {
+  border-color: rgba(59,130,246,0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(59,130,246,0.1);
+}
+
+.tier-popular {
+  border-color: rgba(59,130,246,0.5);
+  background: linear-gradient(180deg, rgba(59,130,246,0.08) 0%, rgba(12,12,15,1) 40%);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(59,130,246,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  border: 1px solid rgba(59,130,246,0.3);
+  transition: all 0.3s ease;
+}
+.btn-ghost:hover {
+  border-color: rgba(59,130,246,0.6);
+  background: rgba(59,130,246,0.08);
+}
+
+.metric-card {
+  background: rgba(15,15,20,0.8);
+  border: 1px solid rgba(59,130,246,0.1);
+}
+
+.widget-panel {
+  background: linear-gradient(135deg, rgba(15,15,20,0.95) 0%, rgba(10,10,14,0.98) 100%);
+  border: 1px solid rgba(59,130,246,0.12);
+}
+
+.reaction-btn {
+  transition: all 0.2s ease;
+  border: 1px solid rgba(59,130,246,0.15);
+  background: rgba(59,130,246,0.05);
+}
+.reaction-btn:hover {
+  border-color: rgba(59,130,246,0.4);
+  background: rgba(59,130,246,0.12);
+}
+.reaction-btn.active {
+  border-color: #3b82f6;
+  background: rgba(59,130,246,0.2);
+}
+
+.smooth-scroll { scroll-behavior: smooth; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-[#0a0a0a] text-white font-sans smooth-scroll overflow-auto"><!-- NAV -->
+  <nav class="nav-glass fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between">
+   <div class="flex items-center gap-2">
+    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center"><i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+    </div><span class="font-bold text-lg tracking-tight" id="nav-brand">TaxCommand</span>
+   </div>
+   <div class="hidden md:flex items-center gap-6 text-sm text-gray-400"><a href="#home" class="hover:text-white transition-colors">Home</a> <a href="#membership" class="hover:text-white transition-colors">Membership</a> <a href="#dashboard" class="hover:text-white transition-colors">Dashboard</a> <a href="#benefits" class="hover:text-white transition-colors">Benefits</a> <a href="#faq" class="hover:text-white transition-colors">FAQ</a> <a href="#join" class="btn-primary px-4 py-2 rounded-lg text-white font-medium text-sm">Join Now</a>
+   </div><button class="md:hidden text-gray-400" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
+  </nav>
+  <div id="mobile-menu" class="hidden fixed top-14 left-0 w-full bg-[#0a0a0a] z-40 border-b border-blue-500/10 p-4 flex flex-col gap-3 text-sm text-gray-400 md:hidden"><a href="#home" class="hover:text-white py-2" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#membership" class="hover:text-white py-2" onclick="this.parentElement.classList.add('hidden')">Membership</a> <a href="#dashboard" class="hover:text-white py-2" onclick="this.parentElement.classList.add('hidden')">Dashboard</a> <a href="#benefits" class="hover:text-white py-2" onclick="this.parentElement.classList.add('hidden')">Benefits</a> <a href="#faq" class="hover:text-white py-2" onclick="this.parentElement.classList.add('hidden')">FAQ</a> <a href="#join" class="btn-primary px-4 py-2 rounded-lg text-white font-medium text-center" onclick="this.parentElement.classList.add('hidden')">Join Now</a>
+  </div>
+  <main class="w-full"><!-- HERO -->
+   <section id="home" class="relative min-h-[600px] grid-bg flex items-center justify-center px-4 pt-24 pb-16 md:pt-32 md:pb-24"><!-- Decorative orbs -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl float-anim"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-600/4 rounded-full blur-3xl float-anim-delay"></div>
+    <div class="relative z-10 max-w-4xl mx-auto text-center fade-section" style="animation-delay:0.2s">
+     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-medium mb-6"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span> Always-On Advisory — Active Now
+     </div>
+     <h1 id="hero-title" class="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight mb-5">Tax strategy shouldn't<br>
+      happen <span class="text-blue-400">once a year.</span></h1>
+     <p id="hero-subtitle" class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">Stay ahead with continuous advisory and insights. Proactive planning, real-time alerts, and strategic guidance—delivered monthly.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-3"><a href="#join" class="btn-primary px-7 py-3.5 rounded-xl text-white font-semibold text-sm inline-flex items-center gap-2"> Join Membership <i data-lucide="arrow-right" class="w-4 h-4"></i> </a> <a href="#dashboard" class="btn-ghost px-7 py-3.5 rounded-xl text-gray-300 font-medium text-sm inline-flex items-center gap-2"> <i data-lucide="layout-dashboard" class="w-4 h-4"></i> View Dashboard </a>
+     </div><!-- Floating metric pills -->
+     <div class="mt-14 flex flex-wrap items-center justify-center gap-4">
+      <div class="metric-card rounded-xl px-5 py-3 flex items-center gap-3 float-anim" style="animation-delay:0.5s">
+       <div class="w-9 h-9 rounded-lg bg-green-500/10 flex items-center justify-center"><i data-lucide="trending-up" class="w-4 h-4 text-green-400"></i>
+       </div>
+       <div class="text-left">
+        <div class="text-white font-bold font-mono text-sm">
+         $47K
+        </div>
+        <div class="text-gray-500 text-xs">
+         Avg. Saved/Client
+        </div>
+       </div>
+      </div>
+      <div class="metric-card rounded-xl px-5 py-3 flex items-center gap-3 float-anim-delay">
+       <div class="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center"><i data-lucide="users" class="w-4 h-4 text-blue-400"></i>
+       </div>
+       <div class="text-left">
+        <div class="text-white font-bold font-mono text-sm">
+         2,400+
+        </div>
+        <div class="text-gray-500 text-xs">
+         Active Members
+        </div>
+       </div>
+      </div>
+      <div class="metric-card rounded-xl px-5 py-3 flex items-center gap-3 float-anim-delay2">
+       <div class="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center"><i data-lucide="zap" class="w-4 h-4 text-purple-400"></i>
+       </div>
+       <div class="text-left">
+        <div class="text-white font-bold font-mono text-sm">
+         98%
+        </div>
+        <div class="text-gray-500 text-xs">
+         Retention Rate
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- MEMBERSHIP -->
+   <section id="membership" class="relative px-4 py-20 md:py-28">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14 fade-section" style="animation-delay:0.1s">
+      <p class="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">Membership Tiers</p>
+      <h2 id="membership-title" class="text-3xl md:text-5xl font-bold tracking-tight">Choose your advisory level.</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto"><!-- Tier 1 -->
+      <div class="tier-card rounded-2xl p-7 flex flex-col">
+       <div class="text-gray-400 text-sm font-medium mb-1">
+        Essentials
+       </div>
+       <div class="flex items-baseline gap-1 mb-4"><span class="text-3xl font-bold font-mono">$199</span> <span class="text-gray-500 text-sm">/mo</span>
+       </div>
+       <p class="text-gray-500 text-sm mb-6 leading-relaxed">Monthly tax insights and quarterly reviews for individuals.</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Monthly tax health report</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Quarterly strategy call</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Legislative alert emails</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Member resource library</li>
+       </ul><a href="#join" class="btn-ghost w-full py-3 rounded-xl text-center text-sm font-medium text-gray-300">Get Started</a>
+      </div><!-- Tier 2 Popular -->
+      <div class="tier-card tier-popular rounded-2xl p-7 flex flex-col relative">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-semibold">
+        Most Popular
+       </div>
+       <div class="text-blue-400 text-sm font-medium mb-1">
+        Professional
+       </div>
+       <div class="flex items-baseline gap-1 mb-4"><span class="text-3xl font-bold font-mono">$499</span> <span class="text-gray-500 text-sm">/mo</span>
+       </div>
+       <p class="text-gray-500 text-sm mb-6 leading-relaxed">Proactive planning with a dedicated advisor for growing businesses.</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Everything in Essentials</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Dedicated tax advisor</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Monthly strategy sessions</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Real-time dashboard access</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Entity structuring guidance</li>
+       </ul><a href="#join" class="btn-primary w-full py-3 rounded-xl text-center text-sm font-semibold text-white">Get Started</a>
+      </div><!-- Tier 3 -->
+      <div class="tier-card rounded-2xl p-7 flex flex-col">
+       <div class="text-gray-400 text-sm font-medium mb-1">
+        Enterprise
+       </div>
+       <div class="flex items-baseline gap-1 mb-4"><span class="text-3xl font-bold font-mono">$1,299</span> <span class="text-gray-500 text-sm">/mo</span>
+       </div>
+       <p class="text-gray-500 text-sm mb-6 leading-relaxed">Full-service advisory with CFO-level tax strategy for enterprises.</p>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Everything in Professional</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>CFO-level tax planning</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Multi-entity optimization</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Priority compliance alerts</li>
+        <li class="flex items-start gap-2 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>Annual audit preparation</li>
+       </ul><a href="#join" class="btn-ghost w-full py-3 rounded-xl text-center text-sm font-medium text-gray-300">Contact Sales</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- DASHBOARD -->
+   <section id="dashboard" class="relative px-4 py-20 md:py-28">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">Member Dashboard</p>
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight">Your command center.</h2>
+     </div><!-- Dashboard Preview -->
+     <div class="glow-panel rounded-2xl p-5 md:p-8 scan-effect"><!-- Top metrics row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+       <div class="metric-card rounded-xl p-4">
+        <div class="text-gray-500 text-xs mb-1">
+         Estimated Tax Liability
+        </div>
+        <div class="text-xl font-bold font-mono text-white">
+         $32,450
+        </div>
+        <div class="flex items-center gap-1 mt-1">
+         <i data-lucide="trending-down" class="w-3 h-3 text-green-400"></i><span class="text-green-400 text-xs">-12.3%</span>
+        </div>
+       </div>
+       <div class="metric-card rounded-xl p-4">
+        <div class="text-gray-500 text-xs mb-1">
+         Deductions Found
+        </div>
+        <div class="text-xl font-bold font-mono text-white">
+         $18,920
+        </div>
+        <div class="flex items-center gap-1 mt-1">
+         <i data-lucide="trending-up" class="w-3 h-3 text-green-400"></i><span class="text-green-400 text-xs">+8.7%</span>
+        </div>
+       </div>
+       <div class="metric-card rounded-xl p-4">
+        <div class="text-gray-500 text-xs mb-1">
+         Next Review
+        </div>
+        <div class="text-xl font-bold font-mono text-white">
+         Jun 14
+        </div>
+        <div class="text-blue-400 text-xs mt-1">
+         12 days
+        </div>
+       </div>
+       <div class="metric-card rounded-xl p-4">
+        <div class="text-gray-500 text-xs mb-1">
+         Compliance Score
+        </div>
+        <div class="text-xl font-bold font-mono text-white">
+         96/100
+        </div>
+        <div class="flex items-center gap-1 mt-1">
+         <span class="text-green-400 text-xs">Excellent</span>
+        </div>
+       </div>
+      </div><!-- Chart area -->
+      <div class="grid md:grid-cols-3 gap-4">
+       <div class="md:col-span-2 metric-card rounded-xl p-5">
+        <div class="flex items-center justify-between mb-4"><span class="text-sm font-medium text-gray-300">Tax Liability Trend</span> <span class="text-xs text-gray-500 font-mono">Last 6 months</span>
+        </div>
+        <div class="flex items-end gap-2 h-32">
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500/30 rounded-t" style="height:60%; animation-delay:0.1s"></div>
+         </div>
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500/40 rounded-t" style="height:75%; animation-delay:0.2s"></div>
+         </div>
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500/50 rounded-t" style="height:65%; animation-delay:0.3s"></div>
+         </div>
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500/60 rounded-t" style="height:80%; animation-delay:0.4s"></div>
+         </div>
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500/70 rounded-t" style="height:55%; animation-delay:0.5s"></div>
+         </div>
+         <div class="flex-1 flex flex-col justify-end">
+          <div class="data-bar bg-blue-500 rounded-t" style="height:45%; animation-delay:0.6s"></div>
+         </div>
+        </div>
+        <div class="flex justify-between mt-2 text-xs text-gray-600 font-mono"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+        </div>
+       </div><!-- Alerts panel -->
+       <div class="metric-card rounded-xl p-5">
+        <div class="text-sm font-medium text-gray-300 mb-4 flex items-center gap-2"><i data-lucide="bell" class="w-4 h-4 text-blue-400"></i> Recent Alerts
+        </div>
+        <div class="space-y-3">
+         <div class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-yellow-400 mt-1.5 shrink-0"></span>
+          <div>
+           <div class="text-xs text-gray-300">
+            Q2 estimated payment due
+           </div>
+           <div class="text-xs text-gray-600">
+            2 days ago
+           </div>
+          </div>
+         </div>
+         <div class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 shrink-0"></span>
+          <div>
+           <div class="text-xs text-gray-300">
+            New deduction identified
+           </div>
+           <div class="text-xs text-gray-600">
+            5 days ago
+           </div>
+          </div>
+         </div>
+         <div class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shrink-0"></span>
+          <div>
+           <div class="text-xs text-gray-300">
+            Legislative update: §179
+           </div>
+           <div class="text-xs text-gray-600">
+            1 week ago
+           </div>
+          </div>
+         </div>
+         <div class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 shrink-0"></span>
+          <div>
+           <div class="text-xs text-gray-300">
+            Strategy report ready
+           </div>
+           <div class="text-xs text-gray-600">
+            2 weeks ago
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BENEFITS -->
+   <section id="benefits" class="relative px-4 py-20 md:py-28">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">Why Advisory</p>
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight">The continuous advantage.</h2>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4"><i data-lucide="piggy-bank" class="w-5 h-5 text-blue-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Ongoing Savings</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Continuous monitoring uncovers deductions and credits throughout the year, not just at filing time.</p>
+      </div>
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-green-500/10 flex items-center justify-center mb-4"><i data-lucide="calendar-check" class="w-5 h-5 text-green-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Proactive Planning</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Year-round strategy means you're always positioned for optimal outcomes—no last-minute scrambles.</p>
+      </div>
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4"><i data-lucide="shield" class="w-5 h-5 text-purple-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Compliance Confidence</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Real-time legislative monitoring and automated compliance scoring keep you audit-ready at all times.</p>
+      </div>
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4"><i data-lucide="headphones" class="w-5 h-5 text-yellow-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Always-On Support</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Direct access to your dedicated advisor when questions arise—not just during tax season.</p>
+      </div>
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-red-500/10 flex items-center justify-center mb-4"><i data-lucide="bar-chart-3" class="w-5 h-5 text-red-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Live Reporting</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Interactive dashboards with real-time data visualization so you always know where you stand.</p>
+      </div>
+      <div class="glow-panel rounded-2xl p-7">
+       <div class="w-11 h-11 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-4"><i data-lucide="repeat" class="w-5 h-5 text-cyan-400"></i>
+       </div>
+       <h3 class="font-bold text-lg mb-2">Retention Engine</h3>
+       <p class="text-gray-400 text-sm leading-relaxed">Structured cadence frameworks and touchpoints that keep clients engaged and subscribed long-term.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="relative px-4 py-20 md:py-28">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14">
+      <p class="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">FAQ</p>
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight">Common questions.</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="faq-item widget-panel rounded-xl overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="text-sm font-medium text-gray-200">What's included in the monthly membership?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-gray-400 leading-relaxed">Each tier includes access to your member dashboard, regular strategy sessions, compliance alerts, and resource libraries. Higher tiers add dedicated advisors and CFO-level planning.</p>
+       </div>
+      </div>
+      <div class="faq-item widget-panel rounded-xl overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="text-sm font-medium text-gray-200">Can I cancel my membership anytime?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-gray-400 leading-relaxed">Absolutely. There are no long-term contracts. Cancel anytime from your dashboard and retain access through your current billing period.</p>
+       </div>
+      </div>
+      <div class="faq-item widget-panel rounded-xl overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="text-sm font-medium text-gray-200">How is this different from filing with a CPA?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-gray-400 leading-relaxed">Traditional CPA engagements are reactive—focused on filing. TaxCommand is proactive: continuous monitoring, strategic planning, and real-time insights throughout the entire year.</p>
+       </div>
+      </div>
+      <div class="faq-item widget-panel rounded-xl overflow-hidden"><button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFaq(this)"> <span class="text-sm font-medium text-gray-200">Is my financial data secure?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-gray-400 leading-relaxed">Your data is encrypted end-to-end with SOC 2 Type II compliance. We use bank-level security protocols and never share information with third parties.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE & COMMENT WIDGET -->
+   <section id="join" class="relative px-4 py-20 md:py-28">
+    <div class="max-w-4xl mx-auto"><!-- CTA -->
+     <div class="glow-panel rounded-3xl p-8 md:p-14 text-center mb-16 relative overflow-hidden">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-blue-500/10 blur-3xl rounded-full"></div>
+      <div class="relative z-10">
+       <h2 id="bottom-cta" class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Turn tax into a<br><span class="text-blue-400">continuous advantage.</span></h2>
+       <p class="text-gray-400 text-lg max-w-xl mx-auto mb-8">Stop reacting. Start commanding. Join TaxCommand Advisory and make tax strategy work for you year-round.</p><a href="#membership" class="btn-primary px-8 py-4 rounded-xl text-white font-semibold inline-flex items-center gap-2"> Start Your Membership <i data-lucide="arrow-right" class="w-4 h-4"></i> </a>
+      </div>
+     </div><!-- Vote + Comment Widget -->
+     <div class="widget-panel rounded-2xl p-6 md:p-8">
+      <div class="flex items-center gap-2 mb-6"><i data-lucide="message-circle" class="w-5 h-5 text-blue-400"></i>
+       <h3 class="text-lg font-bold">Vote &amp; Comment</h3><span class="text-xs text-gray-500 ml-auto">Embed Widget Here</span>
+      </div><!-- Reactions -->
+      <div class="mb-6">
+       <p class="text-sm text-gray-400 mb-3">What would you pay for this advisory package?</p>
+       <div class="flex flex-wrap gap-2" id="reaction-buttons"><!-- Populated by JS -->
+       </div>
+      </div><!-- Comment form -->
+      <form id="comment-form" class="mb-6"><label for="comment-input" class="text-sm text-gray-400 mb-2 block">Leave a comment</label>
+       <div class="flex gap-2"><input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-white/5 border border-blue-500/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none focus:border-blue-500/40 transition-colors"> <button type="submit" id="comment-submit-btn" class="btn-primary px-5 py-3 rounded-xl text-sm font-medium text-white flex items-center gap-2"> <i data-lucide="send" class="w-4 h-4"></i> Post </button>
+       </div>
+      </form><!-- Comments list -->
+      <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"><!-- Populated by SDK -->
+      </div>
+      <div id="empty-comments" class="text-center py-6 text-gray-600 text-sm hidden">
+       No comments yet. Be the first!
+      </div>
+      <div id="limit-warning" class="hidden text-center py-3 text-yellow-400 text-xs rounded-lg bg-yellow-500/10 mt-3">
+       Maximum entries reached (999). Please remove some before adding more.
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-white/5 px-4 py-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center"><i data-lucide="shield-check" class="w-3 h-3 text-white"></i>
+      </div><span>TaxCommand Advisory</span>
+     </div>
+     <p>Your tax strategy, always active.</p>
+    </div>
+   </footer>
+  </main>
+  <script>
+// === CONFIG & SDK ===
+const PRICE_OPTIONS = [
+  { emoji: '💰', price: '$49/mo' },
+  { emoji: '💵', price: '$99/mo' },
+  { emoji: '💎', price: '$149/mo' },
+  { emoji: '🏦', price: '$199/mo' },
+  { emoji: '📊', price: '$299/mo' },
+  { emoji: '🚀', price: '$499/mo' },
+  { emoji: '⚡', price: '$799/mo' },
+  { emoji: '🏆', price: '$999/mo' },
+  { emoji: '👑', price: '$1,499/mo' },
+  { emoji: '🔥', price: '$1,999/mo' }
+];
+
+const defaultConfig = {
+  hero_title: 'Tax strategy shouldn\'t<br>happen <span class="text-blue-400">once a year.</span>',
+  hero_subtitle: 'Stay ahead with continuous advisory and insights. Proactive planning, real-time alerts, and strategic guidance—delivered monthly.',
+  membership_title: 'Choose your advisory level.',
+  bottom_cta_text: 'Turn tax into a<br><span class="text-blue-400">continuous advantage.</span>',
+  background_color: '#0a0a0a',
+  surface_color: '#0f0f14',
+  text_color: '#e5e7eb',
+  primary_action_color: '#3b82f6',
+  secondary_action_color: '#6b7280',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+let allRecords = [];
+let reactionCounts = {};
+
+// Render reaction buttons
+function renderReactions() {
+  const container = document.getElementById('reaction-buttons');
+  container.innerHTML = '';
+  PRICE_OPTIONS.forEach((opt, i) => {
+    const count = reactionCounts[opt.price] || 0;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'reaction-btn rounded-xl px-3 py-2 flex items-center gap-1.5 text-sm';
+    btn.innerHTML = `<span>${opt.emoji}</span><span class="text-gray-400 text-xs">${opt.price}</span><span class="text-blue-400 font-mono text-xs font-bold">${count}</span>`;
+    btn.addEventListener('click', () => handleVote(opt.emoji, opt.price));
+    container.appendChild(btn);
+  });
+}
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  const empty = document.getElementById('empty-comments');
+  const comments = allRecords.filter(r => r.type === 'comment');
+
+  if (comments.length === 0) {
+    empty.classList.remove('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  empty.classList.add('hidden');
+
+  const existingEls = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const sortedComments = [...comments].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  sortedComments.forEach(c => {
+    const id = c.__backendId;
+    if (existingEls.has(id)) {
+      existingEls.delete(id);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = id;
+      div.className = 'metric-card rounded-xl p-4 flex items-start justify-between gap-3';
+      const time = new Date(c.created_at);
+      const timeStr = time.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      div.innerHTML = `
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-gray-200 break-words">${escapeHtml(c.comment)}</p>
+          <span class="text-xs text-gray-600 mt-1 block">${timeStr}</span>
+        </div>
+        <button class="text-gray-600 hover:text-red-400 transition-colors shrink-0 delete-btn" title="Delete">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>`;
+      div.querySelector('.delete-btn').addEventListener('click', () => handleDelete(c));
+      list.appendChild(div);
+    }
+  });
+
+  existingEls.forEach(el => el.remove());
+  lucide.createIcons();
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+async function handleVote(emoji, price) {
+  if (allRecords.length >= 999) {
+    document.getElementById('limit-warning').classList.remove('hidden');
+    return;
+  }
+  const result = await window.dataSdk.create({
+    type: 'vote',
+    emoji: emoji,
+    price: price,
+    comment: '',
+    created_at: new Date().toISOString()
+  });
+  if (!result.isOk) {
+    // Silently fail for votes
+  }
+}
+
+async function handleComment(text) {
+  if (allRecords.length >= 999) {
+    document.getElementById('limit-warning').classList.remove('hidden');
+    return;
+  }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Posting...</span>';
+
+  const result = await window.dataSdk.create({
+    type: 'comment',
+    emoji: '',
+    price: '',
+    comment: text,
+    created_at: new Date().toISOString()
+  });
+
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Post';
+  lucide.createIcons();
+
+  if (result.isOk) {
+    document.getElementById('comment-input').value = '';
+  }
+}
+
+async function handleDelete(record) {
+  const result = await window.dataSdk.delete(record);
+  // UI updates via onDataChanged
+}
+
+// Data handler
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    // Count votes
+    reactionCounts = {};
+    data.filter(r => r.type === 'vote').forEach(r => {
+      reactionCounts[r.price] = (reactionCounts[r.price] || 0) + 1;
+    });
+    renderReactions();
+    renderComments();
+
+    if (data.length >= 999) {
+      document.getElementById('limit-warning').classList.remove('hidden');
+    } else {
+      document.getElementById('limit-warning').classList.add('hidden');
+    }
+  }
+};
+
+// Form handler
+document.getElementById('comment-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const val = document.getElementById('comment-input').value.trim();
+  if (val) handleComment(val);
+});
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-item button [data-lucide]').forEach(i => i.style.transform = '');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Element SDK
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.getElementById('hero-title').innerHTML = c.hero_title;
+  document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+  document.getElementById('membership-title').textContent = c.membership_title;
+  document.getElementById('bottom-cta').innerHTML = c.bottom_cta_text;
+
+  document.body.style.backgroundColor = c.background_color;
+  document.body.style.color = c.text_color;
+
+  const font = c.font_family || defaultConfig.font_family;
+  const stack = `${font}, DM Sans, sans-serif`;
+  document.body.style.fontFamily = stack;
+
+  const size = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${size * 3.5}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${size * 2.5}px`);
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${size * 1.15}px`);
+  document.querySelectorAll('p, li, span, a, button, input, label, div').forEach(el => {
+    // Only set if not heading
+    if (!el.closest('h1, h2, h3')) {
+      // keep existing
+    }
+  });
+
+  // Colors on action buttons
+  document.querySelectorAll('.btn-primary').forEach(el => {
+    el.style.background = `linear-gradient(135deg, ${c.primary_action_color}, ${c.primary_action_color}dd)`;
+  });
+
+  document.querySelectorAll('.btn-ghost').forEach(el => {
+    el.style.borderColor = `${c.primary_action_color}4d`;
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['membership_title', config.membership_title || defaultConfig.membership_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Init Data SDK
+(async () => {
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) {
+    console.error('Data SDK init failed');
+  }
+  renderReactions();
+})();
+
+// Init icons
+lucide.createIcons();
+
+// Intersection observer for fade animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.animationPlayState = 'running';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-section').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6afa464127c5',t:'MTc3NTU3OTQzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

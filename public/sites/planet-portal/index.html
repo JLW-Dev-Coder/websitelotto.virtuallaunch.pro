@@ -1,1 +1,578 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/9c6b1469-204f-4c06-adca-a6d9e4dab07f -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PortalPop Worlds</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Syne', sans-serif; }
+    .mono { font-family: 'Space Mono', monospace; }
+
+    @keyframes portalPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(139,92,246,0.4), 0 0 60px rgba(139,92,246,0.2), inset 0 0 30px rgba(139,92,246,0.1); }
+      50% { box-shadow: 0 0 50px rgba(139,92,246,0.6), 0 0 100px rgba(139,92,246,0.3), inset 0 0 50px rgba(139,92,246,0.2); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-12px) rotate(1deg); }
+      66% { transform: translateY(-6px) rotate(-1deg); }
+    }
+    @keyframes driftUp {
+      0% { transform: translateY(100%) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-100%) scale(1); opacity: 0; }
+    }
+    @keyframes slideReveal {
+      0% { transform: translateY(40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes glowRing {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(20px, -30px); }
+      50% { transform: translate(-10px, -50px); }
+      75% { transform: translate(-30px, -20px); }
+    }
+    .portal-card { animation: portalPulse 3s ease-in-out infinite; }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+    .reveal { animation: slideReveal 0.8s ease-out forwards; }
+    .glow-ring { animation: glowRing 2s ease-in-out infinite; }
+    .shimmer-text {
+      background: linear-gradient(90deg, #e2e8f0, #ffffff, #c4b5fd, #ffffff, #e2e8f0);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: driftUp linear infinite;
+      pointer-events: none;
+    }
+
+    .portal-frame {
+      position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+    .portal-frame::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .portal-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .portal-frame:hover img {
+      transform: scale(1.15);
+    }
+
+    .world-card {
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      cursor: pointer;
+    }
+    .world-card:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+
+    .nav-link {
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .before-after-slider { position: relative; overflow: hidden; border-radius: 16px; cursor: ew-resize; }
+    .before-after-slider .ba-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ba-overlay {
+      position: absolute; top: 0; left: 0; height: 100%; overflow: hidden;
+      border-right: 3px solid rgba(255,255,255,0.8);
+    }
+    .ba-handle {
+      position: absolute; top: 50%; transform: translate(-50%, -50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10; cursor: ew-resize;
+    }
+
+    .vote-card { backdrop-filter: blur(16px); }
+
+    .scroll-hidden { opacity: 0; transform: translateY(30px); }
+    .scroll-visible { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: orbFloat 15s ease-in-out infinite;
+      pointer-events: none;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto" style="background: #0a0a0f;">
+  <div id="app-wrapper" class="w-full" style="min-height: 100%; position: relative;"><!-- Floating orbs -->
+   <div class="orb" style="width:500px;height:500px;background:#7c3aed;top:5%;left:-10%;animation-delay:0s;"></div>
+   <div class="orb" style="width:400px;height:400px;background:#2563eb;top:30%;right:-8%;animation-delay:-5s;"></div>
+   <div class="orb" style="width:350px;height:350px;background:#ec4899;top:60%;left:10%;animation-delay:-10s;"></div>
+   <div class="orb" style="width:300px;height:300px;background:#06b6d4;top:80%;right:15%;animation-delay:-7s;"></div><!-- Particles container -->
+   <div id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;"></div><!-- NAV -->
+   <nav id="main-nav" style="position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);background:rgba(10,10,15,0.7);border-bottom:1px solid rgba(139,92,246,0.15);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;"><a href="#home" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;"><i data-lucide="sparkles" style="width:18px;height:18px;color:#fff;"></i>
+      </div><span class="mono" style="color:#e2e8f0;font-weight:700;font-size:14px;letter-spacing:1px;">PORTALPOP</span> </a>
+     <div style="display:flex;gap:28px;align-items:center;" id="nav-links"><a href="#home" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">HOME</a> <a href="#worlds" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">WORLDS</a> <a href="#templates" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">TEMPLATES</a> <a href="#preview" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">PREVIEW</a> <a href="#reviews" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">REVIEWS</a> <a href="#download" class="nav-link mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;">DOWNLOAD</a>
+     </div><button id="mobile-menu-btn" style="display:none;background:none;border:none;color:#e2e8f0;cursor:pointer;"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" style="display:none;padding:0 24px 16px;flex-direction:column;gap:12px;"><a href="#home" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">HOME</a> <a href="#worlds" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">WORLDS</a> <a href="#templates" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">TEMPLATES</a> <a href="#preview" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">PREVIEW</a> <a href="#reviews" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">REVIEWS</a> <a href="#download" class="mono" style="color:#94a3b8;font-size:12px;letter-spacing:1px;text-decoration:none;padding:8px 0;">DOWNLOAD</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;z-index:2;padding:80px 24px 60px;text-align:center;max-width:1200px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll>
+     <div class="mono" style="color:#7c3aed;font-size:12px;letter-spacing:3px;margin-bottom:24px;">
+      ✦ REAL PLACES. LIVING WORLDS. ✦
+     </div>
+     <h1 id="hero-title" class="shimmer-text" style="font-size:clamp(40px,7vw,80px);font-weight:800;line-height:1.05;margin:0 0 24px;">Open a portal to a real place.</h1>
+     <p id="hero-subtitle" style="color:#94a3b8;font-size:clamp(16px,2.2vw,22px);max-width:600px;margin:0 auto 40px;line-height:1.6;">Animated world templates built from real photography.</p>
+     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#download" id="hero-cta-primary" style="display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-weight:700;border-radius:50px;text-decoration:none;font-size:16px;transition:transform 0.3s,box-shadow 0.3s;box-shadow:0 0 30px rgba(124,58,237,0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"> <i data-lucide="zap" style="width:18px;height:18px;"></i> Get the Portal Pack </a> <a href="#worlds" id="hero-cta-secondary" style="display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border:1px solid rgba(139,92,246,0.4);color:#c4b5fd;font-weight:600;border-radius:50px;text-decoration:none;font-size:16px;transition:transform 0.3s,border-color 0.3s;" onmouseover="this.style.transform='scale(1.05)';this.style.borderColor='rgba(139,92,246,0.8)'" onmouseout="this.style.transform='scale(1)';this.style.borderColor='rgba(139,92,246,0.4)'"> <i data-lucide="eye" style="width:18px;height:18px;"></i> See the Worlds </a>
+     </div>
+    </div><!-- Hero Portal Visual -->
+    <div style="margin:60px auto 0;position:relative;max-width:420px;">
+     <div class="portal-frame portal-card float-anim" style="width:100%;max-width:350px;margin:0 auto;"><img src="https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?w=600&amp;h=600&amp;fit=crop" alt="Portal world gateway" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e1b4b,#312e81)';this.alt='Portal world';">
+     </div><!-- Glow rings -->
+     <div class="glow-ring" style="position:absolute;inset:-20px;border-radius:50%;border:2px solid rgba(139,92,246,0.3);pointer-events:none;"></div>
+     <div class="glow-ring" style="position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(37,99,235,0.2);pointer-events:none;animation-delay:1s;"></div>
+    </div><!-- Vote Card -->
+    <div class="vote-card float-anim" style="position:absolute;top:120px;right:5%;background:rgba(30,27,75,0.6);border:1px solid rgba(139,92,246,0.3);border-radius:16px;padding:20px;max-width:200px;animation-delay:-2s;text-align:left;">
+     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;"><i data-lucide="message-circle" style="width:14px;height:14px;color:#fff;"></i>
+      </div><span class="mono" style="color:#c4b5fd;font-size:11px;letter-spacing:1px;">COMMUNITY</span>
+     </div>
+     <div style="color:#e2e8f0;font-size:13px;margin-bottom:12px;">
+      Vote + Comment
+     </div>
+     <div style="display:flex;gap:8px;"><button onclick="this.querySelector('span').textContent=parseInt(this.querySelector('span').textContent)+1" style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);border-radius:8px;color:#c4b5fd;font-size:12px;cursor:pointer;transition:background 0.3s;" onmouseover="this.style.background='rgba(139,92,246,0.4)'" onmouseout="this.style.background='rgba(139,92,246,0.2)'"> <i data-lucide="heart" style="width:12px;height:12px;"></i> <span>247</span> </button> <button style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(37,99,235,0.2);border:1px solid rgba(37,99,235,0.3);border-radius:8px;color:#93c5fd;font-size:12px;cursor:pointer;transition:background 0.3s;" onmouseover="this.style.background='rgba(37,99,235,0.4)'" onmouseout="this.style.background='rgba(37,99,235,0.2)'"> <i data-lucide="message-circle" style="width:12px;height:12px;"></i> 53 </button>
+     </div>
+     <div class="mono" style="color:#64748b;font-size:9px;margin-top:8px;">
+      Embed Widget Here
+     </div>
+    </div><!-- Stats row -->
+    <div style="display:flex;justify-content:center;gap:40px;margin-top:60px;flex-wrap:wrap;" class="scroll-hidden" data-scroll>
+     <div style="text-align:center;">
+      <div style="color:#7c3aed;font-size:32px;font-weight:800;">
+       40
+      </div>
+      <div class="mono" style="color:#64748b;font-size:11px;letter-spacing:1px;">
+       PORTAL TEMPLATES
+      </div>
+     </div>
+     <div style="text-align:center;">
+      <div style="color:#2563eb;font-size:32px;font-weight:800;">
+       100
+      </div>
+      <div class="mono" style="color:#64748b;font-size:11px;letter-spacing:1px;">
+       MOTION OVERLAYS
+      </div>
+     </div>
+     <div style="text-align:center;">
+      <div style="color:#ec4899;font-size:32px;font-weight:800;">
+       30
+      </div>
+      <div class="mono" style="color:#64748b;font-size:11px;letter-spacing:1px;">
+       SURREAL FRAMES
+      </div>
+     </div>
+     <div style="text-align:center;">
+      <div style="color:#06b6d4;font-size:32px;font-weight:800;">
+       ∞
+      </div>
+      <div class="mono" style="color:#64748b;font-size:11px;letter-spacing:1px;">
+       STORY TEMPLATES
+      </div>
+     </div>
+    </div>
+   </section><!-- WORLDS -->
+   <section id="worlds" style="position:relative;z-index:2;padding:80px 24px;max-width:1200px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll style="text-align:center;margin-bottom:60px;">
+     <div class="mono" style="color:#7c3aed;font-size:12px;letter-spacing:3px;margin-bottom:16px;">
+      ✦ EXPLORE ✦
+     </div>
+     <h2 style="color:#e2e8f0;font-size:clamp(32px,5vw,52px);font-weight:800;margin:0 0 16px;">The Worlds</h2>
+     <p style="color:#64748b;font-size:16px;max-width:500px;margin:0 auto;">Six immersive portals. Each built from a real Unsplash photograph, transformed into a living, breathing world.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;" id="worlds-grid">
+    </div>
+   </section><!-- TEMPLATES -->
+   <section id="templates" style="position:relative;z-index:2;padding:80px 24px;max-width:1200px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll style="text-align:center;margin-bottom:60px;">
+     <div class="mono" style="color:#ec4899;font-size:12px;letter-spacing:3px;margin-bottom:16px;">
+      ✦ WHAT'S INSIDE ✦
+     </div>
+     <h2 style="color:#e2e8f0;font-size:clamp(32px,5vw,52px);font-weight:800;margin:0 0 16px;">The Portal Pack</h2>
+     <p style="color:#64748b;font-size:16px;max-width:500px;margin:0 auto;">Everything you need to create scroll-stopping, portal-style content.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(139,92,246,0.15);border-radius:20px;padding:32px;animation-delay:0s;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="layers" style="width:28px;height:28px;color:#fff;"></i>
+      </div>
+      <h3 style="color:#e2e8f0;font-size:20px;font-weight:700;margin:0 0 8px;">40 Portal Templates</h3>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0;">Drag-and-drop animated world frames ready for your photos.</p>
+     </div>
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(37,99,235,0.15);border-radius:20px;padding:32px;animation-delay:0.1s;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#0ea5e9);display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="wind" style="width:28px;height:28px;color:#fff;"></i>
+      </div>
+      <h3 style="color:#e2e8f0;font-size:20px;font-weight:700;margin:0 0 8px;">100 Motion Overlays</h3>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0;">Particles, light streaks, fog drifts, and glowing edges.</p>
+     </div>
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(236,72,153,0.15);border-radius:20px;padding:32px;animation-delay:0.2s;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#ec4899,#f43f5e);display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="frame" style="width:28px;height:28px;color:#fff;"></i>
+      </div>
+      <h3 style="color:#e2e8f0;font-size:20px;font-weight:700;margin:0 0 8px;">30 Surreal Frames</h3>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0;">Portal rings, dimensional cracks, and glowing archways.</p>
+     </div>
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(6,182,212,0.15);border-radius:20px;padding:32px;animation-delay:0.3s;">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#06b6d4,#14b8a6);display:flex;align-items:center;justify-content:center;margin-bottom:20px;"><i data-lucide="smartphone" style="width:28px;height:28px;color:#fff;"></i>
+      </div>
+      <h3 style="color:#e2e8f0;font-size:20px;font-weight:700;margin:0 0 8px;">Story Templates</h3>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0;">Vertical story formats optimized for Instagram and TikTok.</p>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" style="position:relative;z-index:2;padding:80px 24px;max-width:900px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll style="text-align:center;margin-bottom:60px;">
+     <div class="mono" style="color:#06b6d4;font-size:12px;letter-spacing:3px;margin-bottom:16px;">
+      ✦ BEFORE &amp; AFTER ✦
+     </div>
+     <h2 style="color:#e2e8f0;font-size:clamp(32px,5vw,52px);font-weight:800;margin:0 0 16px;">See the Magic</h2>
+     <p style="color:#64748b;font-size:16px;max-width:500px;margin:0 auto;">Drag the slider to reveal how real photos transform into portal worlds.</p>
+    </div>
+    <div class="scroll-hidden" data-scroll>
+     <div class="before-after-slider" id="ba-slider" style="width:100%;aspect-ratio:16/9;border:1px solid rgba(139,92,246,0.2);box-shadow:0 0 60px rgba(139,92,246,0.15);"><img class="ba-img" id="ba-after" src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=900&amp;h=506&amp;fit=crop" alt="Forest world - after portal effect" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1e1b4b,#7c3aed)';this.alt='Portal world';">
+      <div class="ba-overlay" id="ba-overlay" style="width:50%;"><img class="ba-img" src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&amp;h=506&amp;fit=crop" alt="Forest - before portal effect" style="width:900px;max-width:none;" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#16213e)';this.alt='Original photo';">
+      </div>
+      <div class="ba-handle" id="ba-handle" style="left:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);box-shadow:0 0 20px rgba(139,92,246,0.5);"><i data-lucide="move-horizontal" style="width:18px;height:18px;color:#fff;"></i>
+      </div>
+      <div class="mono" style="position:absolute;top:16px;left:16px;background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:8px;color:#94a3b8;font-size:10px;letter-spacing:1px;z-index:5;">
+       PHOTO
+      </div>
+      <div class="mono" style="position:absolute;top:16px;right:16px;background:rgba(124,58,237,0.6);padding:6px 12px;border-radius:8px;color:#e2e8f0;font-size:10px;letter-spacing:1px;z-index:5;">
+       PORTAL WORLD
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" style="position:relative;z-index:2;padding:80px 24px;max-width:1200px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll style="text-align:center;margin-bottom:60px;">
+     <div class="mono" style="color:#f59e0b;font-size:12px;letter-spacing:3px;margin-bottom:16px;">
+      ✦ CREATOR GOLD ✦
+     </div>
+     <h2 style="color:#e2e8f0;font-size:clamp(32px,5vw,52px);font-weight:800;margin:0 0 16px;">What Creators Say</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(139,92,246,0.15);border-radius:20px;padding:28px;">
+      <div style="display:flex;gap:4px;margin-bottom:16px;"><span style="color:#f59e0b;font-size:16px;">★★★★★</span>
+      </div>
+      <p style="color:#cbd5e1;font-size:15px;line-height:1.7;margin:0 0 20px;">"These portal templates stopped my entire feed. People kept asking how I made my content look so cinematic."</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+       <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">
+        A
+       </div>
+       <div>
+        <div style="color:#e2e8f0;font-size:14px;font-weight:600;">
+         Alex Rivera
+        </div>
+        <div class="mono" style="color:#64748b;font-size:11px;">
+         Content Creator · 120K
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(37,99,235,0.15);border-radius:20px;padding:28px;animation-delay:0.1s;">
+      <div style="display:flex;gap:4px;margin-bottom:16px;"><span style="color:#f59e0b;font-size:16px;">★★★★★</span>
+      </div>
+      <p style="color:#cbd5e1;font-size:15px;line-height:1.7;margin:0 0 20px;">"Never seen anything like this. The world-building effect on real photos is absolute magic. High shareability is an understatement."</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+       <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">
+        M
+       </div>
+       <div>
+        <div style="color:#e2e8f0;font-size:14px;font-weight:600;">
+         Maya Chen
+        </div>
+        <div class="mono" style="color:#64748b;font-size:11px;">
+         Brand Designer · Agency
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="scroll-hidden world-card" data-scroll style="background:rgba(30,27,75,0.4);border:1px solid rgba(236,72,153,0.15);border-radius:20px;padding:28px;animation-delay:0.2s;">
+      <div style="display:flex;gap:4px;margin-bottom:16px;"><span style="color:#f59e0b;font-size:16px;">★★★★★</span>
+      </div>
+      <p style="color:#cbd5e1;font-size:15px;line-height:1.7;margin:0 0 20px;">"I used the Cave World and Galaxy World templates for a client pitch. They literally gasped. Best purchase this year."</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+       <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#f43f5e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">
+        J
+       </div>
+       <div>
+        <div style="color:#e2e8f0;font-size:14px;font-weight:600;">
+         Jordan Blake
+        </div>
+        <div class="mono" style="color:#64748b;font-size:11px;">
+         Freelance Motion Designer
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="download" style="position:relative;z-index:2;padding:80px 24px;max-width:700px;margin:0 auto;">
+    <div class="scroll-hidden" data-scroll style="text-align:center;">
+     <div class="mono" style="color:#7c3aed;font-size:12px;letter-spacing:3px;margin-bottom:16px;">
+      ✦ NEVER-SEEN-BEFORE STYLE ✦
+     </div>
+     <h2 id="bottom-cta-heading" style="color:#e2e8f0;font-size:clamp(32px,5vw,52px);font-weight:800;margin:0 0 24px;">Make your designs feel alive.</h2>
+     <div class="world-card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(37,99,235,0.15));border:1px solid rgba(139,92,246,0.3);border-radius:24px;padding:40px;margin:0 auto 32px;">
+      <div class="mono" style="color:#7c3aed;font-size:12px;letter-spacing:2px;margin-bottom:16px;">
+       PORTAL PACK — FULL BUNDLE
+      </div>
+      <div style="display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:24px;"><span style="color:#e2e8f0;font-size:48px;font-weight:800;">$29</span> <span style="color:#64748b;font-size:16px;text-decoration:line-through;">$79</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:320px;margin:0 auto 32px;">
+       <div style="display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:14px;"><i data-lucide="check-circle" style="width:18px;height:18px;color:#7c3aed;flex-shrink:0;"></i> 40 Photo Portal Templates
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:14px;"><i data-lucide="check-circle" style="width:18px;height:18px;color:#2563eb;flex-shrink:0;"></i> 100 Motion Overlays
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:14px;"><i data-lucide="check-circle" style="width:18px;height:18px;color:#ec4899;flex-shrink:0;"></i> 30 Surreal Scene Frames
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:14px;"><i data-lucide="check-circle" style="width:18px;height:18px;color:#06b6d4;flex-shrink:0;"></i> Story Templates Included
+       </div>
+       <div style="display:flex;align-items:center;gap:10px;color:#cbd5e1;font-size:14px;"><i data-lucide="check-circle" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0;"></i> Lifetime Access + Updates
+       </div>
+      </div><a href="#" onclick="event.preventDefault();document.getElementById('download-toast').style.display='flex';setTimeout(()=>document.getElementById('download-toast').style.display='none',3000)" style="display:inline-flex;align-items:center;gap:8px;padding:18px 40px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-weight:700;border-radius:50px;text-decoration:none;font-size:18px;transition:transform 0.3s,box-shadow 0.3s;box-shadow:0 0 40px rgba(124,58,237,0.4);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Portal Pack </a>
+      <div class="mono" style="color:#64748b;font-size:11px;margin-top:16px;">
+       One-time payment · No subscription
+      </div>
+     </div>
+    </div>
+   </section><!-- Toast -->
+   <div id="download-toast" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:100;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;padding:16px 28px;border-radius:16px;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(124,58,237,0.4);font-weight:600;"><i data-lucide="check-circle" style="width:20px;height:20px;"></i> <span>Portal Pack ready! Check your downloads.</span>
+   </div><!-- FOOTER -->
+   <footer style="position:relative;z-index:2;padding:40px 24px;text-align:center;border-top:1px solid rgba(139,92,246,0.1);">
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;">
+     <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);display:flex;align-items:center;justify-content:center;"><i data-lucide="sparkles" style="width:14px;height:14px;color:#fff;"></i>
+     </div><span class="mono" style="color:#64748b;font-size:12px;letter-spacing:1px;">PORTALPOP WORLDS</span>
+    </div>
+    <p style="color:#475569;font-size:13px;margin:0;">Real places, turned into living worlds. © 2025</p>
+   </footer>
+  </div>
+  <script>
+    // World data
+    const worlds = [
+      { name: "Cave World", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&h=400&fit=crop", color: "#7c3aed", accent: "rgba(139,92,246,0.2)", desc: "Deep underground crystal caverns" },
+      { name: "Heights World", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop", color: "#2563eb", accent: "rgba(37,99,235,0.2)", desc: "Towering cliffs above the clouds" },
+      { name: "Rapid World", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&h=400&fit=crop", color: "#06b6d4", accent: "rgba(6,182,212,0.2)", desc: "Rushing rivers through wild canyons" },
+      { name: "Double Dutch World", img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop", color: "#f59e0b", accent: "rgba(245,158,11,0.2)", desc: "Urban energy and rhythmic motion" },
+      { name: "Neon Club World", img: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop", color: "#ec4899", accent: "rgba(236,72,153,0.2)", desc: "Pulsing lights and electric nights" },
+      { name: "Galaxy World", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop", color: "#8b5cf6", accent: "rgba(139,92,246,0.2)", desc: "Infinite starscapes and cosmic dust" }
+    ];
+
+    const grid = document.getElementById('worlds-grid');
+    worlds.forEach((w, i) => {
+      const card = document.createElement('div');
+      card.className = 'scroll-hidden world-card';
+      card.setAttribute('data-scroll', '');
+      card.style.cssText = `background:rgba(30,27,75,0.4);border:1px solid ${w.accent.replace('0.2','0.25')};border-radius:20px;overflow:hidden;animation-delay:${i*0.1}s;`;
+      card.innerHTML = `
+        <div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;">
+          <img src="${w.img}" alt="${w.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" onerror="this.style.background='linear-gradient(135deg,#1e1b4b,${w.color})';this.alt='${w.name}';"
+            onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,15,0.8) 0%,transparent 60%);"></div>
+          <div style="position:absolute;bottom:16px;left:16px;right:16px;">
+            <div class="mono" style="color:${w.color};font-size:10px;letter-spacing:2px;margin-bottom:4px;">PORTAL</div>
+            <div style="color:#e2e8f0;font-size:20px;font-weight:700;">${w.name}</div>
+            <div style="color:#64748b;font-size:13px;margin-top:4px;">${w.desc}</div>
+          </div>
+          <div style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:${w.accent};border:1px solid ${w.color}40;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="maximize-2" style="width:14px;height:14px;color:${w.color};"></i>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Particles
+    const particleContainer = document.getElementById('particles');
+    const colors = ['#7c3aed','#2563eb','#ec4899','#06b6d4','#f59e0b'];
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDuration = (8 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.width = (2 + Math.random() * 4) + 'px';
+      p.style.height = p.style.width;
+      p.style.opacity = 0.4 + Math.random() * 0.4;
+      particleContainer.appendChild(p);
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.remove('scroll-hidden');
+          e.target.classList.add('scroll-visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('[data-scroll]').forEach(el => observer.observe(el));
+
+    // Before/after slider
+    const slider = document.getElementById('ba-slider');
+    const overlay = document.getElementById('ba-overlay');
+    const handle = document.getElementById('ba-handle');
+    let dragging = false;
+    function updateSlider(x) {
+      const rect = slider.getBoundingClientRect();
+      let pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      overlay.style.width = (pct * 100) + '%';
+      handle.style.left = (pct * 100) + '%';
+    }
+    slider.addEventListener('mousedown', (e) => { dragging = true; updateSlider(e.clientX); });
+    window.addEventListener('mousemove', (e) => { if (dragging) updateSlider(e.clientX); });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    slider.addEventListener('touchstart', (e) => { dragging = true; updateSlider(e.touches[0].clientX); }, {passive:true});
+    window.addEventListener('touchmove', (e) => { if (dragging) updateSlider(e.touches[0].clientX); }, {passive:true});
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    // Mobile nav
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+    function checkMobile() {
+      if (window.innerWidth < 768) {
+        navLinks.style.display = 'none';
+        mobileBtn.style.display = 'block';
+      } else {
+        navLinks.style.display = 'flex';
+        mobileBtn.style.display = 'none';
+        mobileMenu.style.display = 'none';
+      }
+    }
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
+    window.addEventListener('resize', checkMobile);
+    checkMobile();
+
+    // Nav link styling
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.style.cssText += 'position:relative;';
+      const after = document.createElement('span');
+      after.style.cssText = 'position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,#7c3aed,#2563eb);transition:width 0.3s;display:block;';
+      link.appendChild(after);
+      link.addEventListener('mouseover', () => { after.style.width = '100%'; link.style.color = '#e2e8f0'; });
+      link.addEventListener('mouseout', () => { after.style.width = '0'; link.style.color = '#94a3b8'; });
+    });
+
+    // Element SDK
+    const defaultConfig = {
+      hero_title: "Open a portal to a real place.",
+      hero_subtitle: "Animated world templates built from real photography.",
+      cta_primary: "Get the Portal Pack",
+      cta_secondary: "See the Worlds",
+      bottom_cta_text: "Make your designs feel alive.",
+      background_color: "#0a0a0f",
+      surface_color: "#1e1b4b",
+      text_color: "#e2e8f0",
+      primary_action: "#7c3aed",
+      secondary_action: "#2563eb",
+      font_family: "Syne",
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      const c = Object.assign({}, defaultConfig, config);
+      document.getElementById('hero-title').textContent = c.hero_title;
+      document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+      document.getElementById('hero-cta-primary').innerHTML = `<i data-lucide="zap" style="width:18px;height:18px;"></i> ${c.cta_primary}`;
+      document.getElementById('hero-cta-secondary').innerHTML = `<i data-lucide="eye" style="width:18px;height:18px;"></i> ${c.cta_secondary}`;
+      document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+      document.body.style.fontFamily = `${c.font_family}, Syne, sans-serif`;
+      document.getElementById('app-wrapper').style.background = c.background_color;
+
+      const baseSize = c.font_size;
+      document.getElementById('hero-title').style.fontSize = `clamp(${baseSize*2.5}px,7vw,${baseSize*5}px)`;
+      document.getElementById('hero-subtitle').style.fontSize = `clamp(${baseSize}px,2.2vw,${baseSize*1.375}px)`;
+
+      lucide.createIcons();
+    }
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => { applyConfig(config); },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+          { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ["hero_title", config.hero_title || defaultConfig.hero_title],
+        ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+        ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+        ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+        ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+      ])
+    });
+
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5baec45127c5',t:'MTc3NTU3ODgxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

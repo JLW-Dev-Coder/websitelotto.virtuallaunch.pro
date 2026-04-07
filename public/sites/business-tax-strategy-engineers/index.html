@@ -1,1 +1,880 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/17153627-bf72-4b1d-9dbb-29195ef17f01 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProfitMap Strategy</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        midnight: '#0a0a0a',
+        emerald: '#10b981',
+        emeraldDark: '#059669',
+        surface: '#141414',
+        surfaceLight: '#1a1a1a',
+        border: '#262626'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+.app-root { height: 100%; overflow-y: auto; overflow-x: hidden; background: #0a0a0a; }
+
+/* Glass morphism */
+.glass-panel {
+  background: rgba(20,20,20,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.glass-panel-hover:hover {
+  border-color: rgba(16,185,129,0.3);
+  box-shadow: 0 0 30px rgba(16,185,129,0.05);
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
+@keyframes drawLine {
+  from { stroke-dashoffset: 400; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(16,185,129,0.1); }
+  50% { box-shadow: 0 0 40px rgba(16,185,129,0.2); }
+}
+.animate-reveal { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+.graph-line { stroke-dasharray: 400; stroke-dashoffset: 400; }
+.graph-line.animated { animation: drawLine 2s ease forwards; }
+
+/* Nav */
+.nav-glass {
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: #10b981;
+  transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Glow button */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-glow:hover::before { opacity: 1; }
+.btn-glow:hover { transform: translateY(-1px); }
+
+/* Allocation bar */
+.alloc-bar { transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
+
+/* Scroll reveal */
+.sr { opacity: 0; transform: translateY(24px); transition: all 0.7s cubic-bezier(0.4,0,0.2,1); }
+.sr.visible { opacity: 1; transform: translateY(0); }
+
+/* Reactions */
+.reaction-btn {
+  transition: all 0.2s;
+  cursor: pointer;
+  user-select: none;
+}
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.active { background: rgba(16,185,129,0.15); border-color: #10b981; }
+
+/* Price vote */
+.price-chip {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.price-chip:hover { border-color: #10b981; background: rgba(16,185,129,0.1); }
+.price-chip.selected { background: #10b981; color: #0a0a0a; border-color: #10b981; font-weight: 700; }
+
+/* Custom scrollbar */
+.app-root::-webkit-scrollbar { width: 6px; }
+.app-root::-webkit-scrollbar-track { background: #0a0a0a; }
+.app-root::-webkit-scrollbar-thumb { background: #262626; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-root w-full" id="appRoot">
+   <!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-border">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+     <a href="#home" class="flex items-center gap-2">
+      <svg width="28" height="28" viewbox="0 0 28 28" fill="none">
+       <rect x="2" y="2" width="24" height="24" rx="4" stroke="#10b981" stroke-width="1.5" /> <path d="M8 18 L14 8 L20 18" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" /> <line x1="10" y1="15" x2="18" y2="15" stroke="#10b981" stroke-width="1" stroke-linecap="round" />
+      </svg><span class="text-white font-bold text-lg tracking-tight" id="navBrand">ProfitMap</span> </a>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link text-sm text-gray-400 hover:text-white transition">Home</a> <a href="#strategy" class="nav-link text-sm text-gray-400 hover:text-white transition">Strategy</a> <a href="#allocation" class="nav-link text-sm text-gray-400 hover:text-white transition">Allocation</a> <a href="#results" class="nav-link text-sm text-gray-400 hover:text-white transition">Results</a> <a href="#pricing" class="nav-link text-sm text-gray-400 hover:text-white transition">Pricing</a> <a href="#faq" class="nav-link text-sm text-gray-400 hover:text-white transition">FAQ</a> <a href="#cta" class="bg-emerald hover:bg-emeraldDark text-midnight text-sm font-bold px-5 py-2 rounded-lg transition">Get Strategy</a>
+     </div><button id="mobileMenuBtn" class="md:hidden text-white"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-border px-6 pb-4 flex flex-col gap-3">
+     <a href="#home" class="text-sm text-gray-400 py-2">Home</a> <a href="#strategy" class="text-sm text-gray-400 py-2">Strategy</a> <a href="#allocation" class="text-sm text-gray-400 py-2">Allocation</a> <a href="#results" class="text-sm text-gray-400 py-2">Results</a> <a href="#pricing" class="text-sm text-gray-400 py-2">Pricing</a> <a href="#faq" class="text-sm text-gray-400 py-2">FAQ</a> <a href="#cta" class="bg-emerald text-midnight text-sm font-bold px-5 py-2 rounded-lg text-center">Get Strategy</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative pt-32 pb-24 md:pt-44 md:pb-36 px-6 overflow-hidden">
+    <!-- Background grid -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;"></div>
+    <div class="absolute top-20 right-10 w-[400px] h-[400px] bg-emerald/5 rounded-full blur-[120px]"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="animate-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border text-xs text-gray-500 mb-8 tracking-widest uppercase">
+      <span class="w-1.5 h-1.5 bg-emerald rounded-full"></span> Tax Strategy System
+     </div>
+     <h1 id="heroTitle" class="animate-reveal delay-1 text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.08] tracking-tight" style="font-family:'Instrument Serif',serif;">Profit without strategy is<br><span class="text-emerald">wasted potential.</span></h1>
+     <p id="heroSubtitle" class="animate-reveal delay-2 mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">Design how your business keeps more of what it earns.</p>
+     <div class="animate-reveal delay-3 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#cta" class="btn-glow bg-emerald text-midnight font-bold px-8 py-3.5 rounded-lg text-sm z-10">Get Strategy</a> <a href="#strategy" class="border border-border text-white font-medium px-8 py-3.5 rounded-lg text-sm hover:border-gray-600 transition">See Framework</a>
+     </div><!-- Animated stat counters -->
+     <div class="animate-reveal delay-4 mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto">
+      <div class="text-center">
+       <div class="text-2xl md:text-3xl font-bold text-white counter" data-target="37">
+        0
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Avg. % Tax Saved
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-2xl md:text-3xl font-bold text-white counter" data-target="240">
+        0
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Strategies Mapped
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-2xl md:text-3xl font-bold text-white">
+        $<span class="counter" data-target="2">0</span>M+
+       </div>
+       <div class="text-xs text-gray-500 mt-1">
+        Client Savings
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Strategy -->
+   <section id="strategy" class="py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-3">The Framework</p>
+      <h2 id="strategyTitle" class="text-3xl md:text-5xl font-bold text-white" style="font-family:'Instrument Serif',serif;">Three pillars of profit retention</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto">A systematic approach to ensuring every dollar earned has a designated purpose within your business ecosystem.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <!-- Pillar 1 -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr">
+       <div class="w-12 h-12 rounded-xl bg-emerald/10 flex items-center justify-center mb-6">
+        <i data-lucide="scan" class="w-5 h-5 text-emerald"></i>
+       </div>
+       <div class="text-emerald text-xs font-bold tracking-widest mb-2">
+        01
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Revenue Architecture</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Map every income stream and structure it for optimal tax classification. Identify entity-level advantages before filing season.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Income stream mapping</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Entity optimization</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Classification audit</li>
+       </ul>
+      </div><!-- Pillar 2 -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr">
+       <div class="w-12 h-12 rounded-xl bg-emerald/10 flex items-center justify-center mb-6">
+        <i data-lucide="git-branch" class="w-5 h-5 text-emerald"></i>
+       </div>
+       <div class="text-emerald text-xs font-bold tracking-widest mb-2">
+        02
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Expense Engineering</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Transform passive spending into active deductions. Every operational cost becomes a strategic tax advantage point.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Deduction maximization</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Timing strategies</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Depreciation planning</li>
+       </ul>
+      </div><!-- Pillar 3 -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr">
+       <div class="w-12 h-12 rounded-xl bg-emerald/10 flex items-center justify-center mb-6">
+        <i data-lucide="shield" class="w-5 h-5 text-emerald"></i>
+       </div>
+       <div class="text-emerald text-xs font-bold tracking-widest mb-2">
+        03
+       </div>
+       <h3 class="text-xl font-bold text-white mb-3">Retention Shield</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Build a multi-layer protection system that legally minimizes tax exposure while maximizing reinvestment capacity.</p>
+       <ul class="mt-5 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Retirement vehicles</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Asset protection</li>
+        <li class="flex items-center gap-2 text-xs text-gray-400"><i data-lucide="check" class="w-3 h-3 text-emerald"></i> Compliance framework</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- Allocation -->
+   <section id="allocation" class="py-20 md:py-28 px-6 relative">
+    <div class="absolute left-0 top-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-3">Allocation Map</p>
+      <h2 class="text-3xl md:text-5xl font-bold text-white" style="font-family:'Instrument Serif',serif;">Where your revenue actually goes</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto">Visualize the breakdown between revenue, expenses, taxes, and retained profit — then optimize every layer.</p>
+     </div>
+     <div class="glass-panel rounded-2xl p-8 md:p-12 sr">
+      <!-- Animated Graph -->
+      <div class="mb-10">
+       <svg id="allocGraph" viewbox="0 0 600 200" class="w-full" style="max-height:200px;">
+        <defs>
+         <lineargradient id="graphGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#10b981" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+         </lineargradient>
+        </defs> <path d="M0,180 Q50,170 100,150 T200,120 T300,90 T400,60 T500,40 T600,20" fill="none" stroke="#10b981" stroke-width="2" class="graph-line" id="graphLine" /> <path d="M0,180 Q50,170 100,150 T200,120 T300,90 T400,60 T500,40 T600,20 L600,200 L0,200 Z" fill="url(#graphGrad)" opacity="0" id="graphFill" /> <text x="10" y="190" fill="#666" font-size="10" font-family="DM Sans">
+         Before
+        </text> <text x="540" y="30" fill="#10b981" font-size="10" font-family="DM Sans">
+         After Optimization
+        </text>
+       </svg>
+      </div><!-- Bars -->
+      <div class="space-y-6">
+       <div>
+        <div class="flex justify-between text-sm mb-2"><span class="text-gray-400">Revenue</span><span class="text-white font-bold">$500K</span>
+        </div>
+        <div class="h-3 bg-surfaceLight rounded-full overflow-hidden">
+         <div class="alloc-bar h-full bg-emerald rounded-full" style="width:0%" data-width="100"></div>
+        </div>
+       </div>
+       <div>
+        <div class="flex justify-between text-sm mb-2"><span class="text-gray-400">Operating Expenses</span><span class="text-white font-bold">$210K</span>
+        </div>
+        <div class="h-3 bg-surfaceLight rounded-full overflow-hidden">
+         <div class="alloc-bar h-full bg-gray-600 rounded-full" style="width:0%" data-width="42"></div>
+        </div>
+       </div>
+       <div>
+        <div class="flex justify-between text-sm mb-2"><span class="text-gray-400">Tax (Before Strategy)</span><span class="text-red-400 font-bold line-through">$101K</span>
+        </div>
+        <div class="h-3 bg-surfaceLight rounded-full overflow-hidden">
+         <div class="alloc-bar h-full bg-red-500/50 rounded-full" style="width:0%" data-width="20"></div>
+        </div>
+       </div>
+       <div>
+        <div class="flex justify-between text-sm mb-2"><span class="text-gray-400">Tax (After Strategy)</span><span class="text-emerald font-bold">$64K</span>
+        </div>
+        <div class="h-3 bg-surfaceLight rounded-full overflow-hidden">
+         <div class="alloc-bar h-full bg-emerald/50 rounded-full" style="width:0%" data-width="13"></div>
+        </div>
+       </div>
+       <div>
+        <div class="flex justify-between text-sm mb-2"><span class="text-gray-400">Retained Profit</span><span class="text-emerald font-bold">$226K</span>
+        </div>
+        <div class="h-3 bg-surfaceLight rounded-full overflow-hidden">
+         <div class="alloc-bar h-full rounded-full" style="width:0%; background: linear-gradient(90deg, #10b981, #059669)" data-width="45"></div>
+        </div>
+       </div>
+      </div>
+      <div class="mt-8 p-4 rounded-xl bg-emerald/5 border border-emerald/10 flex items-center gap-3">
+       <i data-lucide="trending-up" class="w-5 h-5 text-emerald flex-shrink-0"></i>
+       <p class="text-sm text-gray-400"><span class="text-emerald font-bold">$37K saved</span> through strategic allocation — that's a 37% reduction in tax liability.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Results -->
+   <section id="results" class="py-20 md:py-28 px-6">
+    <div class="absolute left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-3">Results</p>
+      <h2 class="text-3xl md:text-5xl font-bold text-white" style="font-family:'Instrument Serif',serif;">Before &amp; after transformation</h2>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <!-- Before -->
+      <div class="glass-panel rounded-2xl p-8 border-red-500/10 sr">
+       <div class="flex items-center gap-2 mb-6">
+        <div class="w-3 h-3 rounded-full bg-red-500/50"></div><span class="text-sm text-red-400 font-medium">Before Strategy</span>
+       </div>
+       <div class="space-y-5">
+        <div class="flex justify-between items-baseline border-b border-border pb-3">
+         <span class="text-gray-500 text-sm">Gross Revenue</span> <span class="text-white font-bold">$500,000</span>
+        </div>
+        <div class="flex justify-between items-baseline border-b border-border pb-3">
+         <span class="text-gray-500 text-sm">Total Tax Paid</span> <span class="text-red-400 font-bold">$101,200</span>
+        </div>
+        <div class="flex justify-between items-baseline border-b border-border pb-3">
+         <span class="text-gray-500 text-sm">Effective Rate</span> <span class="text-red-400 font-bold">34.9%</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+         <span class="text-gray-500 text-sm">Net Retained</span> <span class="text-white font-bold">$188,800</span>
+        </div>
+       </div>
+      </div><!-- After -->
+      <div class="rounded-2xl p-8 sr relative overflow-hidden" style="background: rgba(16,185,129,0.04); border: 1px solid rgba(16,185,129,0.15);">
+       <div class="absolute top-0 right-0 w-32 h-32 bg-emerald/5 rounded-full blur-[60px]"></div>
+       <div class="flex items-center gap-2 mb-6 relative">
+        <div class="w-3 h-3 rounded-full bg-emerald"></div><span class="text-sm text-emerald font-medium">After ProfitMap</span>
+       </div>
+       <div class="space-y-5 relative">
+        <div class="flex justify-between items-baseline border-b border-emerald/10 pb-3">
+         <span class="text-gray-500 text-sm">Gross Revenue</span> <span class="text-white font-bold">$500,000</span>
+        </div>
+        <div class="flex justify-between items-baseline border-b border-emerald/10 pb-3">
+         <span class="text-gray-500 text-sm">Total Tax Paid</span> <span class="text-emerald font-bold">$64,100</span>
+        </div>
+        <div class="flex justify-between items-baseline border-b border-emerald/10 pb-3">
+         <span class="text-gray-500 text-sm">Effective Rate</span> <span class="text-emerald font-bold">22.1%</span>
+        </div>
+        <div class="flex justify-between items-baseline">
+         <span class="text-gray-500 text-sm">Net Retained</span> <span class="text-emerald font-bold text-xl">$225,900</span>
+        </div>
+       </div>
+       <div class="mt-6 text-center p-3 rounded-lg bg-emerald/10">
+        <span class="text-emerald font-bold text-lg">+$37,100</span> <span class="text-gray-400 text-sm ml-2">more profit retained</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 md:py-28 px-6 relative">
+    <div class="absolute left-0 top-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-3">Pricing</p>
+      <h2 class="text-3xl md:text-5xl font-bold text-white" style="font-family:'Instrument Serif',serif;">Choose your profit strategy</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto">Select the framework that matches your business scale and complexity.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <!-- Tier 1: Foundation -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr flex flex-col">
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Foundation</h3>
+        <p class="text-gray-500 text-xs">Essential tax strategies</p>
+       </div>
+       <div class="mb-8">
+        <div class="text-4xl font-bold text-white">
+         $297
+        </div>
+        <p class="text-gray-500 text-xs mt-1">One-time access</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Revenue architecture framework</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Basic tax savings map</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Expense optimization checklist</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>PDF implementation guide</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Email support (30 days)</span></li>
+       </ul><button class="w-full bg-surfaceLight border border-border text-white font-bold px-6 py-3 rounded-lg hover:border-emerald/50 transition text-sm">Get Foundation</button>
+      </div><!-- Tier 2: Pro (Featured) -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr flex flex-col relative" style="border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.02);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex px-3 py-1 rounded-full bg-emerald text-midnight text-xs font-bold">
+        RECOMMENDED
+       </div>
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Professional</h3>
+        <p class="text-emerald text-xs font-medium">Complete system + scripts</p>
+       </div>
+       <div class="mb-8">
+        <div class="text-4xl font-bold text-emerald">
+         $697
+        </div>
+        <p class="text-gray-500 text-xs mt-1">One-time access</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>All Foundation features</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>3-pillar profit strategy system</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Advanced allocation visuals</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Advisory client scripts (10+)</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Spreadsheet templates</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Email + chat support (90 days)</span></li>
+       </ul><button class="w-full bg-emerald hover:bg-emeraldDark text-midnight font-bold px-6 py-3 rounded-lg transition text-sm">Get Professional</button>
+      </div><!-- Tier 3: Enterprise -->
+      <div class="glass-panel glass-panel-hover rounded-2xl p-8 sr flex flex-col">
+       <div class="mb-6">
+        <h3 class="text-xl font-bold text-white mb-1">Enterprise</h3>
+        <p class="text-gray-500 text-xs">Full system + 1:1 setup</p>
+       </div>
+       <div class="mb-8">
+        <div class="text-4xl font-bold text-white">
+         $1,997
+        </div>
+        <p class="text-gray-500 text-xs mt-1">One-time + 90-day support</p>
+       </div>
+       <ul class="space-y-3 mb-8 flex-1">
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>All Professional features</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Custom business audit</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>1:1 implementation call</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Personalized tax roadmap</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Monthly strategy reviews (3x)</span></li>
+        <li class="flex items-start gap-3 text-sm text-gray-400"><i data-lucide="check" class="w-4 h-4 text-emerald flex-shrink-0 mt-0.5"></i> <span>Direct access + priority support</span></li>
+       </ul><button class="w-full border border-emerald text-emerald font-bold px-6 py-3 rounded-lg hover:bg-emerald/5 transition text-sm">Get Enterprise</button>
+      </div>
+     </div>
+     <div class="mt-12 text-center sr">
+      <p class="text-gray-500 text-sm">All tiers include 30-day money-back guarantee · Instant digital delivery · Lifetime framework updates</p>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 md:py-28 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12 sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-3">FAQ</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-white" style="font-family:'Instrument Serif',serif;">Common questions</h2>
+     </div>
+     <div class="space-y-3 sr" id="faqList">
+      <div class="faq-item glass-panel rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full flex justify-between items-center p-5 text-left" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">Is this legal tax optimization or aggressive avoidance?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-gray-500 text-sm leading-relaxed">Every strategy within ProfitMap operates within established IRS guidelines and tax code provisions. We optimize using legal deductions, credits, and entity structuring — never aggressive or questionable positions.</p>
+       </div>
+      </div>
+      <div class="faq-item glass-panel rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full flex justify-between items-center p-5 text-left" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">What types of businesses benefit most?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-gray-500 text-sm leading-relaxed">Service-based businesses, consultancies, agencies, and professional practices with $250K+ annual revenue see the most significant impact. The framework scales from solopreneurs to mid-market companies.</p>
+       </div>
+      </div>
+      <div class="faq-item glass-panel rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full flex justify-between items-center p-5 text-left" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">How quickly can I expect to see results?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-gray-500 text-sm leading-relaxed">Many clients see measurable tax savings within the first quarter of implementation. The full framework typically yields maximum results within the first full tax year.</p>
+       </div>
+      </div>
+      <div class="faq-item glass-panel rounded-xl overflow-hidden">
+       <button class="faq-toggle w-full flex justify-between items-center p-5 text-left" onclick="toggleFaq(this)"> <span class="text-white text-sm font-medium">What's included in the strategy package?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-gray-500 text-sm leading-relaxed">Strategy frameworks, tax savings maps, profit allocation visuals, advisory scripts, and implementation guides. Everything you need to transform your tax position from reactive to strategic.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA -->
+   <section id="cta" class="py-20 md:py-28 px-6 relative">
+    <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="absolute left-1/2 top-0 -translate-x-1/2 w-[500px] h-[300px] bg-emerald/5 rounded-full blur-[150px]"></div>
+    <div class="max-w-2xl mx-auto text-center relative z-10">
+     <div class="sr">
+      <p class="text-emerald text-xs tracking-widest uppercase mb-4">Take Control</p>
+      <h2 id="bottomCtaText" class="text-3xl md:text-5xl font-bold text-white mb-4" style="font-family:'Instrument Serif',serif;">Control where your money goes.</h2>
+      <p class="text-gray-500 mb-8 max-w-md mx-auto">Stop leaving profit on the table. Get the complete strategy system and start retaining more of what you earn.</p><a href="#cta" class="btn-glow inline-block bg-emerald text-midnight font-bold px-10 py-4 rounded-lg text-sm z-10">Get the ProfitMap Strategy</a>
+      <p class="text-gray-600 text-xs mt-4">Instant access · Frameworks included · Advisory scripts ready</p>
+     </div>
+    </div>
+   </section><!-- Vote + Comment Widget -->
+   <section class="py-16 px-6 border-t border-border">
+    <div class="max-w-2xl mx-auto">
+     <div class="sr">
+      <div class="text-center mb-8">
+       <p class="text-emerald text-xs tracking-widest uppercase mb-2">Community</p>
+       <h3 class="text-2xl font-bold text-white" style="font-family:'Instrument Serif',serif;">What's this worth to you?</h3>
+       <p class="text-gray-500 text-sm mt-2">Vote on pricing, react, and leave your thoughts below.</p>
+      </div><!-- Reactions -->
+      <div class="glass-panel rounded-2xl p-6 mb-4">
+       <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">React</p>
+       <div class="flex flex-wrap gap-2" id="reactionsContainer">
+        <!-- Populated by JS -->
+       </div>
+      </div><!-- Price Vote -->
+      <div class="glass-panel rounded-2xl p-6 mb-4">
+       <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">What would you pay?</p>
+       <div class="flex flex-wrap gap-2" id="priceVoteContainer">
+        <!-- Populated by JS -->
+       </div>
+       <div id="priceResults" class="mt-4 hidden">
+        <div class="text-xs text-gray-500 mb-2">
+         Community votes
+        </div>
+        <div id="priceResultsBars" class="space-y-2"></div>
+       </div>
+      </div><!-- Comments -->
+      <div class="glass-panel rounded-2xl p-6">
+       <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Comments</p>
+       <form id="commentForm" class="mb-6">
+        <textarea id="commentInput" rows="3" placeholder="Share your thoughts..." class="w-full bg-surfaceLight border border-border rounded-xl p-4 text-sm text-white placeholder-gray-600 resize-none focus:outline-none focus:border-emerald/50 transition"></textarea>
+        <div class="flex justify-end mt-3">
+         <button type="submit" id="commentSubmitBtn" class="bg-emerald hover:bg-emeraldDark text-midnight font-bold px-6 py-2 rounded-lg text-sm transition flex items-center gap-2"> <i data-lucide="send" class="w-3 h-3"></i> Post </button>
+        </div>
+       </form>
+       <div id="commentsList" class="space-y-3"></div>
+       <div id="noComments" class="text-center py-6 text-gray-600 text-sm">
+        No comments yet. Be the first!
+       </div>
+      </div><!-- Embed note -->
+      <div class="text-center mt-6 py-3 px-4 rounded-lg border border-dashed border-border">
+       <p class="text-xs text-gray-600">Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-10 px-6 border-t border-border">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="20" height="20" viewbox="0 0 28 28" fill="none"><rect x="2" y="2" width="24" height="24" rx="4" stroke="#10b981" stroke-width="1.5" /><path d="M8 18 L14 8 L20 18" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      </svg><span class="text-gray-500 text-sm">ProfitMap Strategy</span>
+     </div>
+     <p class="text-gray-600 text-xs">Every dollar should have a plan.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// === Config & SDK ===
+const defaultConfig = {
+  background_color: '#0a0a0a',
+  surface_color: '#141414',
+  text_color: '#ffffff',
+  primary_action_color: '#10b981',
+  secondary_action_color: '#6b7280',
+  font_family: 'Instrument Serif',
+  font_size: 16,
+  hero_title: 'Profit without strategy is wasted potential.',
+  hero_subtitle: 'Design how your business keeps more of what it earns.',
+  strategy_title: 'Three pillars of profit retention',
+  bottom_cta_text: 'Control where your money goes.'
+};
+
+function applyConfig(config) {
+  const c = key => config[key] || defaultConfig[key];
+  const root = document.documentElement;
+
+  // Colors
+  document.getElementById('appRoot').style.background = c('background_color');
+
+  document.querySelectorAll('.glass-panel').forEach(el => {
+    el.style.borderColor = `${c('secondary_action_color')}22`;
+  });
+
+  // Fonts
+  const ff = c('font_family');
+  const baseSize = c('font_size');
+  document.querySelectorAll('h1, h2, h3').forEach(el => {
+    el.style.fontFamily = `${ff}, serif`;
+  });
+  document.getElementById('heroTitle').style.fontSize = '';
+  document.body.style.fontSize = baseSize + 'px';
+
+  // Text
+  const heroEl = document.getElementById('heroTitle');
+  const titleText = c('hero_title');
+  if (titleText.includes('wasted potential')) {
+    heroEl.innerHTML = titleText.replace('wasted potential', '<br><span class="text-emerald">wasted potential.</span>');
+  } else {
+    heroEl.textContent = titleText;
+  }
+  document.getElementById('heroSubtitle').textContent = c('hero_subtitle');
+  document.getElementById('strategyTitle').textContent = c('strategy_title');
+  document.getElementById('bottomCtaText').textContent = c('bottom_cta_text');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    const make = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [make('background_color'), make('surface_color'), make('text_color'), make('primary_action_color'), make('secondary_action_color')],
+      borderables: [],
+      fontEditable: make('font_family'),
+      fontSizeable: make('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = key => config[key] || defaultConfig[key];
+    return new Map([
+      ['hero_title', c('hero_title')],
+      ['hero_subtitle', c('hero_subtitle')],
+      ['strategy_title', c('strategy_title')],
+      ['bottom_cta_text', c('bottom_cta_text')]
+    ]);
+  }
+});
+
+// === Data SDK ===
+const REACTIONS = ['🔥','💡','🎯','💰','📈','⭐'];
+const PRICES = ['$27','$47','$67','$97','$127','$147','$197','$247','$297','$497'];
+
+let allData = [];
+let userReaction = null;
+let userPriceVote = null;
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions(data);
+    renderPriceVotes(data);
+    renderComments(data);
+  }
+};
+
+window.dataSdk.init(dataHandler);
+
+// --- Reactions ---
+function renderReactions(data) {
+  const container = document.getElementById('reactionsContainer');
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  data.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+
+  if (!container.children.length) {
+    container.innerHTML = '';
+    REACTIONS.forEach(r => {
+      const btn = document.createElement('button');
+      btn.className = 'reaction-btn flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm';
+      btn.dataset.reaction = r;
+      btn.innerHTML = `<span class="text-lg">${r}</span><span class="count text-gray-500 text-xs">${counts[r]}</span>`;
+      btn.onclick = () => handleReaction(r);
+      container.appendChild(btn);
+    });
+  } else {
+    container.querySelectorAll('.reaction-btn').forEach(btn => {
+      const r = btn.dataset.reaction;
+      btn.querySelector('.count').textContent = counts[r];
+      btn.classList.toggle('active', userReaction === r);
+    });
+  }
+}
+
+async function handleReaction(emoji) {
+  if (userReaction === emoji) return;
+  // Remove old reaction
+  const old = allData.find(d => d.type === 'reaction' && d.item_id === 'user_local');
+  if (old) await window.dataSdk.delete(old);
+  userReaction = emoji;
+  const result = await window.dataSdk.create({ type: 'reaction', item_id: 'user_local', reaction: emoji, comment: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!result.isOk) userReaction = null;
+}
+
+// --- Price Votes ---
+function renderPriceVotes(data) {
+  const container = document.getElementById('priceVoteContainer');
+  const votes = data.filter(d => d.type === 'price_vote');
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  votes.forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+  const total = votes.length;
+
+  if (!container.children.length) {
+    PRICES.forEach(p => {
+      const chip = document.createElement('button');
+      chip.className = 'price-chip px-4 py-2 rounded-lg border border-border text-sm text-gray-400';
+      chip.dataset.price = p;
+      chip.textContent = p;
+      chip.onclick = () => handlePriceVote(p);
+      container.appendChild(chip);
+    });
+  } else {
+    container.querySelectorAll('.price-chip').forEach(chip => {
+      chip.classList.toggle('selected', userPriceVote === chip.dataset.price);
+    });
+  }
+
+  // Results
+  const resultsEl = document.getElementById('priceResults');
+  const barsEl = document.getElementById('priceResultsBars');
+  if (total > 0) {
+    resultsEl.classList.remove('hidden');
+    barsEl.innerHTML = '';
+    PRICES.forEach(p => {
+      if (counts[p] === 0) return;
+      const pct = Math.round((counts[p] / total) * 100);
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-3';
+      row.innerHTML = `<span class="text-xs text-gray-500 w-12">${p}</span><div class="flex-1 h-2 bg-surfaceLight rounded-full overflow-hidden"><div class="h-full bg-emerald rounded-full transition-all" style="width:${pct}%"></div></div><span class="text-xs text-gray-500 w-8 text-right">${counts[p]}</span>`;
+      barsEl.appendChild(row);
+    });
+  } else {
+    resultsEl.classList.add('hidden');
+  }
+}
+
+async function handlePriceVote(price) {
+  if (userPriceVote === price) return;
+  const old = allData.find(d => d.type === 'price_vote' && d.item_id === 'user_local_price');
+  if (old) await window.dataSdk.delete(old);
+  userPriceVote = price;
+  const result = await window.dataSdk.create({ type: 'price_vote', item_id: 'user_local_price', reaction: '', comment: '', price_vote: price, created_at: new Date().toISOString() });
+  if (!result.isOk) userPriceVote = null;
+}
+
+// --- Comments ---
+function renderComments(data) {
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('commentsList');
+  const noComments = document.getElementById('noComments');
+
+  if (comments.length === 0) {
+    list.innerHTML = '';
+    noComments.classList.remove('hidden');
+    return;
+  }
+  noComments.classList.add('hidden');
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  comments.forEach(c => {
+    const id = c.__backendId;
+    if (existingMap.has(id)) {
+      existingMap.delete(id);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'p-4 rounded-xl bg-surfaceLight border border-border';
+      el.dataset.id = id;
+      const date = new Date(c.created_at);
+      const timeStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      el.innerHTML = `<p class="text-sm text-gray-300 leading-relaxed">${escapeHtml(c.comment)}</p><p class="text-xs text-gray-600 mt-2">${timeStr}</p>`;
+      list.appendChild(el);
+    }
+  });
+
+  existingMap.forEach(el => el.remove());
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Posting...</span>';
+
+  if (allData.length >= 999) {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="send" class="w-3 h-3"></i> Post';
+    lucide.createIcons();
+    return;
+  }
+
+  const result = await window.dataSdk.create({ type: 'comment', item_id: '', reaction: '', comment: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" class="w-3 h-3"></i> Post';
+  lucide.createIcons();
+  if (result.isOk) input.value = '';
+});
+
+// === Animations ===
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    let current = 0;
+    const step = Math.max(1, Math.floor(target / 40));
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(interval); }
+      el.textContent = current;
+    }, 30);
+  });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Allocation bars
+      entry.target.querySelectorAll('.alloc-bar').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+      });
+      // Graph line
+      const line = entry.target.querySelector('#graphLine');
+      if (line) {
+        line.classList.add('animated');
+        setTimeout(() => {
+          const fill = document.getElementById('graphFill');
+          if (fill) fill.style.opacity = '1';
+          fill.style.transition = 'opacity 1s';
+        }, 1500);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+
+// Counter trigger
+const heroObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateCounters(); heroObs.disconnect(); }
+}, { threshold: 0.3 });
+heroObs.observe(document.getElementById('home'));
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = !answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-toggle i').forEach(i => i.style.transform = '');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a02ec66bb27c5',t:'MTc3NTU3NTE3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

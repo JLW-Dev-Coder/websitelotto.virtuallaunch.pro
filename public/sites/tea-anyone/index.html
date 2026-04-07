@@ -1,1 +1,489 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/010d773b-560c-4ff7-9577-814737a5fa2a -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dip &amp; Sip Tea Co.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['DM Sans', 'Arial', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Steam animation */
+@keyframes steamRise {
+  0% { transform: translateY(0) scaleX(1); opacity: 0.6; }
+  50% { transform: translateY(-30px) scaleX(1.3); opacity: 0.3; }
+  100% { transform: translateY(-60px) scaleX(0.8); opacity: 0; }
+}
+@keyframes steamRise2 {
+  0% { transform: translateY(0) scaleX(0.8); opacity: 0.5; }
+  50% { transform: translateY(-40px) scaleX(1.1); opacity: 0.2; }
+  100% { transform: translateY(-70px) scaleX(0.6); opacity: 0; }
+}
+.steam-particle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: steamRise 3s ease-out infinite;
+}
+.steam-particle:nth-child(2) { animation: steamRise2 3.5s ease-out infinite 0.5s; left: 15px; }
+.steam-particle:nth-child(3) { animation: steamRise 4s ease-out infinite 1s; left: 30px; }
+.steam-particle:nth-child(4) { animation: steamRise2 3s ease-out infinite 1.5s; left: -10px; }
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.glass-solid {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* Reveal animations */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.85); }
+  70% { transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(198,93,53,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(198,93,53,0); }
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(-1deg); }
+}
+@keyframes gentlePan {
+  0% { transform: scale(1.05) translate(0,0); }
+  50% { transform: scale(1.1) translate(-2%, -1%); }
+  100% { transform: scale(1.05) translate(0,0); }
+}
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.pop-in { opacity: 0; transform: scale(0.85); }
+.pop-in.visible { animation: popIn 0.5s ease forwards; }
+.cta-pulse { animation: ctaPulse 2.5s ease-in-out infinite; }
+.float-card { animation: floatCard 4s ease-in-out infinite; }
+.hero-img { animation: gentlePan 12s ease-in-out infinite; }
+
+/* Texture overlay */
+.texture-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #C65D35;
+  transition: width 0.3s, left 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #FDF6EE; }
+::-webkit-scrollbar-thumb { background: #C65D35; border-radius: 3px; }
+
+/* Flavor card hover */
+.flavor-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.flavor-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+
+/* Star rating */
+.star-filled { color: #D4A03C; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: #FDF6EE; font-family: 'DM Sans', sans-serif;"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position:sticky;top:0;z-index:50;background:rgba(253,246,238,0.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(198,93,53,0.1);">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;"><a href="#home" style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#3B2417;text-decoration:none;"> 🍵 Dip &amp; Sip </a> <button id="mobile-menu-btn" class="md:hidden" style="background:none;border:none;cursor:pointer;"> <i data-lucide="menu" style="width:24px;height:24px;color:#3B2417;"></i> </button>
+     <div id="nav-links" class="hidden md:flex" style="gap:28px;align-items:center;"><a href="#home" class="nav-link" style="color:#5A3E2B;text-decoration:none;font-size:14px;font-weight:500;">Home</a> <a href="#flavors" class="nav-link" style="color:#5A3E2B;text-decoration:none;font-size:14px;font-weight:500;">Flavors</a> <a href="#bundles" class="nav-link" style="color:#5A3E2B;text-decoration:none;font-size:14px;font-weight:500;">Bundles</a> <a href="#how-it-works" class="nav-link" style="color:#5A3E2B;text-decoration:none;font-size:14px;font-weight:500;">How It Works</a> <a href="#reviews" class="nav-link" style="color:#5A3E2B;text-decoration:none;font-size:14px;font-weight:500;">Reviews</a> <a href="#buy-now" style="background:#C65D35;color:#fff;padding:8px 20px;border-radius:24px;text-decoration:none;font-size:14px;font-weight:600;transition:background 0.3s;">Buy Now</a>
+     </div>
+    </div><!-- Mobile menu -->
+    <div id="mobile-nav" style="display:none;padding:12px 24px 20px;flex-direction:column;gap:12px;"><a href="#home" style="color:#5A3E2B;text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid rgba(90,62,43,0.1);">Home</a> <a href="#flavors" style="color:#5A3E2B;text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid rgba(90,62,43,0.1);">Flavors</a> <a href="#bundles" style="color:#5A3E2B;text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid rgba(90,62,43,0.1);">Bundles</a> <a href="#how-it-works" style="color:#5A3E2B;text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid rgba(90,62,43,0.1);">How It Works</a> <a href="#reviews" style="color:#5A3E2B;text-decoration:none;font-size:15px;padding:8px 0;border-bottom:1px solid rgba(90,62,43,0.1);">Reviews</a> <a href="#buy-now" style="display:inline-block;background:#C65D35;color:#fff;padding:10px 24px;border-radius:24px;text-decoration:none;font-size:15px;font-weight:600;text-align:center;">Buy Now</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="texture-overlay" style="position:relative;overflow:hidden;min-height:600px;display:flex;align-items:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#FDF6EE 0%,#F5E6D3 40%,#E8D5C0 100%);z-index:0;"></div><!-- Decorative circles -->
+    <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(198,93,53,0.08);z-index:0;"></div>
+    <div style="position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(107,142,35,0.08);z-index:0;"></div>
+    <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:60px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:48px;width:100%;"><!-- Left content -->
+     <div style="flex:1;min-width:300px;">
+      <div style="display:inline-block;background:rgba(198,93,53,0.12);padding:6px 16px;border-radius:20px;margin-bottom:20px;"><span style="color:#C65D35;font-size:13px;font-weight:600;letter-spacing:1px;">✨ NEW COLLECTION</span>
+      </div>
+      <h1 id="hero-title" style="font-family:'Playfair Display',serif;font-size:clamp(42px,6vw,72px);font-weight:700;color:#3B2417;line-height:1.05;margin:0 0 20px;">Dip. Sip.<br>
+       Repeat.</h1>
+      <p id="hero-subtitle" style="font-size:18px;color:#6B5B4E;line-height:1.6;margin:0 0 32px;max-width:460px;">Dipping teas made for gifting and daily rituals. Tea that looks as good as it tastes.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;"><a href="#bundles" class="cta-pulse" style="background:#C65D35;color:#fff;padding:14px 32px;border-radius:28px;text-decoration:none;font-weight:600;font-size:16px;transition:background 0.3s;">Shop Bundles</a> <a href="#flavors" style="background:transparent;color:#C65D35;padding:14px 32px;border-radius:28px;text-decoration:none;font-weight:600;font-size:16px;border:2px solid #C65D35;transition:all 0.3s;">See Flavors</a>
+      </div><!-- Social proof -->
+      <div style="display:flex;align-items:center;gap:12px;margin-top:32px;">
+       <div style="display:flex;">
+        <div style="width:32px;height:32px;border-radius:50%;background:#E8C4A0;border:2px solid #FDF6EE;display:flex;align-items:center;justify-content:center;font-size:14px;">
+         🧑
+        </div>
+        <div style="width:32px;height:32px;border-radius:50%;background:#D4A03C;border:2px solid #FDF6EE;margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:14px;">
+         👩
+        </div>
+        <div style="width:32px;height:32px;border-radius:50%;background:#8B9F5A;border:2px solid #FDF6EE;margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:14px;">
+         🧑‍🦱
+        </div>
+       </div><span style="font-size:13px;color:#6B5B4E;"><strong style="color:#3B2417;">2,400+</strong> happy sippers</span>
+      </div>
+     </div><!-- Right hero image area -->
+     <div style="flex:1;min-width:300px;position:relative;display:flex;justify-content:center;">
+      <div style="width:340px;height:400px;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(59,36,23,0.15);"><img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600&amp;h=800&amp;fit=crop" alt="Beautiful tea cup with herbal tea" loading="lazy" class="hero-img" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.background='linear-gradient(135deg,#E8D5C0,#C65D35)';this.alt='Tea image';"> <!-- Steam effect -->
+       <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);">
+        <div class="steam-particle"></div>
+        <div class="steam-particle"></div>
+        <div class="steam-particle"></div>
+        <div class="steam-particle"></div>
+       </div>
+      </div><!-- Floating vote card -->
+      <div class="float-card glass-solid" style="position:absolute;bottom:20px;left:-20px;padding:16px 20px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.1);max-width:200px;">
+       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><i data-lucide="message-circle" style="width:16px;height:16px;color:#C65D35;"></i> <span style="font-size:12px;font-weight:600;color:#3B2417;">Vote + Comment</span>
+       </div>
+       <div style="display:flex;gap:6px;"><button onclick="this.style.background='#C65D35';this.style.color='#fff'" style="padding:4px 12px;border-radius:12px;border:1.5px solid #C65D35;background:transparent;color:#C65D35;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.3s;">👍 Vote</button> <button onclick="document.getElementById('comment-input').style.display='block'" style="padding:4px 12px;border-radius:12px;border:1.5px solid #8B9F5A;background:transparent;color:#5A3E2B;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.3s;">💬 Say Hi</button>
+       </div><input id="comment-input" type="text" placeholder="Love it!" style="display:none;margin-top:8px;width:100%;padding:6px 10px;border-radius:8px;border:1px solid #E8D5C0;font-size:11px;box-sizing:border-box;outline:none;">
+      </div><!-- Floating badge -->
+      <div class="float-card glass-solid" style="position:absolute;top:20px;right:-10px;padding:10px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);animation-delay:1s;"><span style="font-size:20px;">🎁</span> <span style="font-size:12px;font-weight:600;color:#3B2417;display:block;">Giftable</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FLAVORS -->
+   <section id="flavors" class="texture-overlay" style="position:relative;padding:80px 24px;background:linear-gradient(180deg,#FDF6EE 0%,#F9F0E4 100%);">
+    <div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;">
+     <div class="reveal" style="text-align:center;margin-bottom:48px;"><span style="color:#C65D35;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">Our Collection</span>
+      <h2 id="flavors-heading" style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);color:#3B2417;margin:12px 0 8px;">Explore Our Flavors</h2>
+      <p style="color:#6B5B4E;font-size:16px;max-width:500px;margin:0 auto;">Each dipping tea is crafted for a unique, vibrant taste experience.</p>
+     </div>
+     <div id="flavors-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;">
+     </div>
+    </div>
+   </section><!-- BUNDLES -->
+   <section id="bundles" style="position:relative;padding:80px 24px;background:linear-gradient(135deg,#3B2417 0%,#5A3E2B 50%,#3B2417 100%);overflow:hidden;">
+    <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(198,93,53,0.1);"></div>
+    <div style="position:relative;z-index:1;max-width:1100px;margin:0 auto;">
+     <div class="reveal" style="text-align:center;margin-bottom:48px;"><span style="color:#D4A03C;font-size:13px;font-weight:600;letter-spacing:2px;">SAVE MORE</span>
+      <h2 id="bundles-heading" style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);color:#FDF6EE;margin:12px 0 8px;">Bundle Up &amp; Save</h2>
+      <p style="color:rgba(253,246,238,0.7);font-size:16px;">Higher AOV, happier customers. Everyone wins.</p>
+     </div>
+     <div id="bundles-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;align-items:start;">
+     </div>
+    </div>
+   </section><!-- HOW IT WORKS -->
+   <section id="how-it-works" class="texture-overlay" style="position:relative;padding:80px 24px;background:#FDF6EE;">
+    <div style="position:relative;z-index:1;max-width:1000px;margin:0 auto;">
+     <div class="reveal" style="text-align:center;margin-bottom:48px;"><span style="color:#C65D35;font-size:13px;font-weight:600;letter-spacing:2px;">SIMPLE &amp; DELIGHTFUL</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);color:#3B2417;margin:12px 0;">How It Works</h2>
+     </div>
+     <div id="steps-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:32px;text-align:center;">
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" style="padding:80px 24px;background:linear-gradient(180deg,#F9F0E4,#FDF6EE);">
+    <div style="max-width:1100px;margin:0 auto;">
+     <div class="reveal" style="text-align:center;margin-bottom:48px;"><span style="color:#C65D35;font-size:13px;font-weight:600;letter-spacing:2px;">TESTIMONIALS</span>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,48px);color:#3B2417;margin:12px 0;">What Sippers Say</h2>
+     </div>
+     <div id="reviews-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA -->
+   <section id="buy-now" style="position:relative;padding:80px 24px;background:linear-gradient(135deg,#C65D35,#D4763F,#C65D35);overflow:hidden;text-align:center;">
+    <div style="position:absolute;inset:0;background-image:url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'20\' cy=\'20\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');"></div>
+    <div style="position:relative;z-index:1;max-width:700px;margin:0 auto;">
+     <div class="reveal"><span style="font-size:48px;">🍵</span>
+      <h2 id="bottom-cta" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,44px);color:#fff;margin:16px 0 12px;">Make tea your new favorite ritual.</h2>
+      <p style="color:rgba(255,255,255,0.85);font-size:17px;margin-bottom:32px;">Subscription-ready bundles, giftable packaging, and flavors that keep them coming back.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;"><a href="#bundles" class="cta-pulse" style="background:#fff;color:#C65D35;padding:16px 36px;border-radius:28px;text-decoration:none;font-weight:700;font-size:16px;transition:all 0.3s;">Shop Now →</a> <a href="#flavors" style="background:transparent;color:#fff;padding:16px 36px;border-radius:28px;text-decoration:none;font-weight:600;font-size:16px;border:2px solid rgba(255,255,255,0.5);transition:all 0.3s;">Explore Flavors</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer style="background:#3B2417;padding:40px 24px;text-align:center;">
+    <div style="max-width:1000px;margin:0 auto;"><span style="font-family:'Playfair Display',serif;font-size:20px;color:#FDF6EE;font-weight:700;">🍵 Dip &amp; Sip Tea Co.</span>
+     <p style="color:rgba(253,246,238,0.5);font-size:13px;margin:12px 0 20px;">Tea that looks as good as it tastes.</p>
+     <div style="display:flex;justify-content:center;gap:20px;margin-bottom:20px;"><a href="#" style="color:rgba(253,246,238,0.6);transition:color 0.3s;" onmouseover="this.style.color='#D4A03C'" onmouseout="this.style.color='rgba(253,246,238,0.6)'"><i data-lucide="instagram" style="width:20px;height:20px;"></i></a> <a href="#" style="color:rgba(253,246,238,0.6);transition:color 0.3s;" onmouseover="this.style.color='#D4A03C'" onmouseout="this.style.color='rgba(253,246,238,0.6)'"><i data-lucide="twitter" style="width:20px;height:20px;"></i></a> <a href="#" style="color:rgba(253,246,238,0.6);transition:color 0.3s;" onmouseover="this.style.color='#D4A03C'" onmouseout="this.style.color='rgba(253,246,238,0.6)'"><i data-lucide="mail" style="width:20px;height:20px;"></i></a>
+     </div>
+     <p style="color:rgba(253,246,238,0.3);font-size:12px;">© 2024 Dip &amp; Sip Tea Co. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Data
+const flavors = [
+  { name: 'Berry Blush', desc: 'Wild berries meet hibiscus', color: '#C44569', emoji: '🫐', accent: 'rgba(196,69,105,0.12)' },
+  { name: 'Citrus Sunrise', desc: 'Orange peel & lemon zest', color: '#E8853D', emoji: '🍊', accent: 'rgba(232,133,61,0.12)' },
+  { name: 'Matcha Zen', desc: 'Ceremonial grade calm', color: '#6B8F3C', emoji: '🍃', accent: 'rgba(107,143,60,0.12)' },
+  { name: 'Honey Chamomile', desc: 'Sweet golden comfort', color: '#D4A03C', emoji: '🍯', accent: 'rgba(212,160,60,0.12)' },
+  { name: 'Lavender Dream', desc: 'Floral & soothing', color: '#8B6CAE', emoji: '💜', accent: 'rgba(139,108,174,0.12)' },
+  { name: 'Ginger Spice', desc: 'Warm & invigorating', color: '#C65D35', emoji: '🫚', accent: 'rgba(198,93,53,0.12)' },
+  { name: 'Mint Frost', desc: 'Cool & refreshing', color: '#3D9B8F', emoji: '🌿', accent: 'rgba(61,155,143,0.12)' },
+  { name: 'Rose Petal', desc: 'Delicate & romantic', color: '#D4708A', emoji: '🌹', accent: 'rgba(212,112,138,0.12)' }
+];
+
+const bundles = [
+  { name: 'Starter Pack', price: '$24', perMonth: '$8/tea', count: '3 Flavors', features: ['Choose any 3 flavors', 'Gift-ready box', 'Tasting guide included'], badge: null },
+  { name: 'Best Seller', price: '$42', perMonth: '$7/tea', count: '6 Flavors', features: ['Choose any 6 flavors', 'Premium gift box', 'Tasting guide + stickers', 'Free shipping'], badge: 'Best Value' },
+  { name: 'Gift Box', price: '$58', perMonth: '$7.25/tea', count: 'All 8 Flavors', features: ['All 8 flavors included', 'Luxury gift packaging', 'Full tasting guide', 'Handwritten note option'], badge: '🎁 Perfect Gift' }
+];
+
+const steps = [
+  { emoji: '📦', title: 'Choose Your Bundle', desc: 'Pick your flavors or go all-in with the full collection.' },
+  { emoji: '💧', title: 'Dip & Steep', desc: 'Dip your tea stick into hot water for 2-3 minutes.' },
+  { emoji: '☕', title: 'Sip & Savor', desc: 'Enjoy the rich, vibrant flavor of artisan dipping tea.' },
+  { emoji: '🔁', title: 'Repeat & Share', desc: 'Subscribe monthly or gift to your favorite tea lover.' }
+];
+
+const reviews = [
+  { name: 'Sarah M.', text: 'The Berry Blush is unreal. I\'ve gifted this to three friends already!', stars: 5, avatar: '👩‍🦰' },
+  { name: 'James K.', text: 'Subscription-worthy. The packaging alone is worth it. My morning ritual now.', stars: 5, avatar: '🧔' },
+  { name: 'Priya L.', text: 'Matcha Zen changed my afternoons. So calming, so delicious.', stars: 5, avatar: '👩' }
+];
+
+// Render flavors
+const flavorsGrid = document.getElementById('flavors-grid');
+flavors.forEach((f, i) => {
+  const card = document.createElement('div');
+  card.className = 'flavor-card pop-in glass-solid';
+  card.style.cssText = `border-radius:16px;padding:24px;text-align:center;cursor:pointer;animation-delay:${i*0.08}s;`;
+  card.innerHTML = `
+    <div style="width:60px;height:60px;border-radius:50%;background:${f.accent};display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">${f.emoji}</div>
+    <div style="display:inline-block;background:${f.color};color:#fff;padding:4px 14px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:10px;">${f.name}</div>
+    <p style="color:#6B5B4E;font-size:14px;margin:0;">${f.desc}</p>
+  `;
+  flavorsGrid.appendChild(card);
+});
+
+// Render bundles
+const bundlesGrid = document.getElementById('bundles-grid');
+bundles.forEach((b, i) => {
+  const isBest = i === 1;
+  const card = document.createElement('div');
+  card.className = 'pop-in';
+  card.style.cssText = `position:relative;background:${isBest ? 'linear-gradient(135deg,#FDF6EE,#F5E6D3)' : 'rgba(253,246,238,0.08)'};border-radius:20px;padding:32px 24px;border:${isBest ? '2px solid #D4A03C' : '1px solid rgba(253,246,238,0.12)'};animation-delay:${i*0.12}s;${isBest ? 'transform:scale(1.03);' : ''}`;
+  card.innerHTML = `
+    ${b.badge ? `<div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:${isBest?'#D4A03C':'#C65D35'};color:#fff;padding:5px 16px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;">${b.badge}</div>` : ''}
+    <div style="text-align:center;margin-bottom:20px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:${isBest?'#3B2417':'#FDF6EE'};margin:0 0 4px;">${b.name}</h3>
+      <span style="color:${isBest?'#6B5B4E':'rgba(253,246,238,0.5)'};font-size:14px;">${b.count}</span>
+    </div>
+    <div style="text-align:center;margin-bottom:20px;">
+      <span style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:${isBest?'#C65D35':'#D4A03C'};">${b.price}</span>
+      <span style="color:${isBest?'#6B5B4E':'rgba(253,246,238,0.4)'};font-size:13px;display:block;">${b.perMonth}</span>
+    </div>
+    <ul style="list-style:none;padding:0;margin:0 0 24px;">
+      ${b.features.map(f => `<li style="display:flex;align-items:center;gap:8px;padding:6px 0;color:${isBest?'#5A3E2B':'rgba(253,246,238,0.75)'};font-size:14px;"><i data-lucide="check" style="width:16px;height:16px;color:${isBest?'#6B8F3C':'#D4A03C'};flex-shrink:0;"></i>${f}</li>`).join('')}
+    </ul>
+    <button style="width:100%;padding:14px;border-radius:24px;border:none;background:${isBest?'#C65D35':'rgba(253,246,238,0.12)'};color:${isBest?'#fff':'#FDF6EE'};font-weight:600;font-size:15px;cursor:pointer;transition:all 0.3s;${isBest?'':'border:1px solid rgba(253,246,238,0.2);'}" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      ${isBest ? 'Get Best Seller →' : `Get ${b.name} →`}
+    </button>
+  `;
+  bundlesGrid.appendChild(card);
+});
+
+// Render steps
+const stepsGrid = document.getElementById('steps-grid');
+steps.forEach((s, i) => {
+  const step = document.createElement('div');
+  step.className = 'reveal';
+  step.style.animationDelay = `${i*0.15}s`;
+  step.innerHTML = `
+    <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(198,93,53,0.1),rgba(212,160,60,0.1));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;">${s.emoji}</div>
+    <div style="width:24px;height:24px;border-radius:50%;background:#C65D35;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">${i+1}</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:#3B2417;margin:0 0 8px;">${s.title}</h3>
+    <p style="color:#6B5B4E;font-size:14px;line-height:1.5;margin:0;">${s.desc}</p>
+  `;
+  stepsGrid.appendChild(step);
+});
+
+// Render reviews
+const reviewsGrid = document.getElementById('reviews-grid');
+reviews.forEach((r, i) => {
+  const card = document.createElement('div');
+  card.className = 'pop-in glass-solid';
+  card.style.cssText = `border-radius:16px;padding:24px;animation-delay:${i*0.1}s;`;
+  card.innerHTML = `
+    <div style="display:flex;margin-bottom:8px;">${'★'.repeat(r.stars).split('').map(()=>'<span class="star-filled" style="font-size:16px;">★</span>').join('')}</div>
+    <p style="color:#5A3E2B;font-size:15px;line-height:1.6;margin:0 0 16px;font-style:italic;">"${r.text}"</p>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:24px;">${r.avatar}</span>
+      <span style="font-size:14px;font-weight:600;color:#3B2417;">${r.name}</span>
+    </div>
+  `;
+  reviewsGrid.appendChild(card);
+});
+
+// Intersection Observer for reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .pop-in').forEach(el => observer.observe(el));
+
+// Mobile nav toggle
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+});
+// Close mobile nav on link click
+document.querySelectorAll('#mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => { document.getElementById('mobile-nav').style.display = 'none'; });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const appWrapper = document.getElementById('app-wrapper');
+appWrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (appWrapper.scrollTop >= s.offsetTop - 100) current = s.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Dip. Sip.<br>Repeat.',
+  hero_subtitle: 'Dipping teas made for gifting and daily rituals. Tea that looks as good as it tastes.',
+  flavors_heading: 'Explore Our Flavors',
+  bundles_heading: 'Bundle Up & Save',
+  bottom_cta_text: 'Make tea your new favorite ritual.',
+  background_color: '#FDF6EE',
+  surface_color: '#FFFFFF',
+  text_color: '#3B2417',
+  primary_action_color: '#C65D35',
+  secondary_action_color: '#D4A03C',
+  font_family: 'Playfair Display',
+  font_size: 16
+};
+
+async function initSDK() {
+  if (!window.elementSdk) return;
+  await window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => {
+      const c = { ...defaultConfig, ...config };
+      const el = (id) => document.getElementById(id);
+      if (el('hero-title')) el('hero-title').innerHTML = c.hero_title;
+      if (el('hero-subtitle')) el('hero-subtitle').textContent = c.hero_subtitle;
+      if (el('flavors-heading')) el('flavors-heading').textContent = c.flavors_heading;
+      if (el('bundles-heading')) el('bundles-heading').textContent = c.bundles_heading;
+      if (el('bottom-cta')) el('bottom-cta').textContent = c.bottom_cta_text;
+
+      // Apply font
+      const font = c.font_family || defaultConfig.font_family;
+      document.querySelectorAll('[style*="font-family"]').forEach(el => {
+        if (el.style.fontFamily.includes('Playfair') || el.style.fontFamily.includes('serif')) {
+          el.style.fontFamily = `${font}, Georgia, serif`;
+        }
+      });
+      document.querySelectorAll('h1,h2,h3').forEach(el => {
+        el.style.fontFamily = `${font}, Georgia, serif`;
+      });
+
+      // Apply font size scaling
+      const base = c.font_size || defaultConfig.font_size;
+      document.querySelectorAll('p').forEach(p => { p.style.fontSize = `${base}px`; });
+      document.querySelectorAll('h1').forEach(h => { h.style.fontSize = `${base * 3.5}px`; });
+      document.querySelectorAll('h2').forEach(h => { h.style.fontSize = `${base * 2.5}px`; });
+      document.querySelectorAll('h3').forEach(h => { h.style.fontSize = `${base * 1.3}px`; });
+    },
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      const makeColor = (key) => ({
+        get: () => c[key] || defaultConfig[key],
+        set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      });
+      return {
+        recolorables: [
+          makeColor('background_color'),
+          makeColor('surface_color'),
+          makeColor('text_color'),
+          makeColor('primary_action_color'),
+          makeColor('secondary_action_color')
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family || defaultConfig.font_family,
+          set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size || defaultConfig.font_size,
+          set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['hero_title', c.hero_title],
+        ['hero_subtitle', c.hero_subtitle],
+        ['flavors_heading', c.flavors_heading],
+        ['bundles_heading', c.bundles_heading],
+        ['bottom_cta_text', c.bottom_cta_text]
+      ]);
+    }
+  });
+}
+initSDK();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6d29b18d27c5',t:'MTc3NTU3OTUyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

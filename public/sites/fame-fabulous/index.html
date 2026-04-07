@@ -1,1 +1,710 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/5db997e4-02fc-4110-bfe3-de90234508a1 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedCarpet Remix</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --gold: #D4A843;
+    --magenta: #E91E8C;
+    --bg: #0A0A0A;
+    --surface: #151515;
+    --text: #F0ECE3;
+  }
+
+  .font-display { font-family: 'Playfair Display', Georgia, serif; }
+  .font-body { font-family: 'Outfit', sans-serif; }
+
+  @keyframes flare {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.7; transform: scale(1.2); }
+  }
+  @keyframes streakLeft {
+    0% { transform: translateX(-100%) rotate(-15deg); opacity: 0; }
+    30% { opacity: 0.6; }
+    100% { transform: translateX(200%) rotate(-15deg); opacity: 0; }
+  }
+  @keyframes streakRight {
+    0% { transform: translateX(200%) rotate(15deg); opacity: 0; }
+    30% { opacity: 0.5; }
+    100% { transform: translateX(-100%) rotate(15deg); opacity: 0; }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: translateY(60px) scale(0.85); }
+    60% { transform: translateY(-8px) scale(1.02); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212,168,67,0.3), 0 0 60px rgba(233,30,140,0.1); }
+    50% { box-shadow: 0 0 30px rgba(212,168,67,0.6), 0 0 80px rgba(233,30,140,0.3); }
+  }
+  @keyframes floatCard {
+    0%, 100% { transform: translateY(0) rotate(2deg); }
+    50% { transform: translateY(-12px) rotate(1deg); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes flashBurst {
+    0% { opacity: 0; transform: scale(0); }
+    20% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2); }
+  }
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes starPulse {
+    0%,100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  .anim-flare { animation: flare 4s ease-in-out infinite; }
+  .anim-flare-delay { animation: flare 5s ease-in-out 1.5s infinite; }
+  .anim-streak-l { animation: streakLeft 6s linear infinite; }
+  .anim-streak-r { animation: streakRight 7s linear 2s infinite; }
+  .anim-pop { animation: popIn 0.8s ease-out forwards; opacity: 0; }
+  .anim-marquee { animation: marquee 20s linear infinite; }
+  .anim-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  .anim-float { animation: floatCard 4s ease-in-out infinite; }
+  .anim-shimmer {
+    background: linear-gradient(90deg, transparent 30%, rgba(212,168,67,0.15) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  .anim-flash { animation: flashBurst 3s ease-out infinite; }
+  .anim-flash-2 { animation: flashBurst 4s ease-out 1.2s infinite; }
+  .anim-fade-up { animation: fadeUp 0.8s ease-out forwards; opacity: 0; }
+  .anim-star { animation: starPulse 2s ease-in-out infinite; }
+
+  .glossy-overlay {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.03) 100%);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #D4A843, #F5D98C, #D4A843);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .magenta-gradient {
+    background: linear-gradient(135deg, #E91E8C, #FF6EB4, #E91E8C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-gloss {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-gloss::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, rgba(255,255,255,0.02) 100%);
+    pointer-events: none;
+  }
+
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 50%; width: 0; height: 2px;
+    background: var(--gold);
+    transition: all 0.3s;
+    transform: translateX(-50%);
+  }
+  .nav-link:hover::after { width: 80%; }
+
+  .scroll-reveal { opacity: 0; transform: translateY(40px); transition: all 0.7s ease-out; }
+  .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .poster-card { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+  .poster-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 20px 60px rgba(233,30,140,0.3); }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0A0A0A; }
+  ::-webkit-scrollbar-thumb { background: #D4A843; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background: var(--bg); color: var(--text);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: var(--bg);"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(10,10,10,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(212,168,67,0.15);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="font-display font-bold text-xl" style="color: var(--gold);">RedCarpet <span style="color: var(--magenta);">Remix</span></a>
+     <div class="hidden md:flex gap-6 items-center text-sm font-medium"><a href="#home" class="nav-link hover:text-white transition" style="color: var(--text);">Home</a> <a href="#posters" class="nav-link hover:text-white transition" style="color: var(--text);">Posters</a> <a href="#captions" class="nav-link hover:text-white transition" style="color: var(--text);">Captions</a> <a href="#preview" class="nav-link hover:text-white transition" style="color: var(--text);">Preview</a> <a href="#reviews" class="nav-link hover:text-white transition" style="color: var(--text);">Reviews</a> <a href="#download" class="nav-link hover:text-white transition px-4 py-2 rounded-full text-sm" style="background: var(--gold); color: #0A0A0A; font-weight: 600;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" style="color: var(--gold);"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-3 text-sm"><a href="#home" class="block py-2" style="color: var(--text);">Home</a> <a href="#posters" class="block py-2" style="color: var(--text);">Posters</a> <a href="#captions" class="block py-2" style="color: var(--text);">Captions</a> <a href="#preview" class="block py-2" style="color: var(--text);">Preview</a> <a href="#reviews" class="block py-2" style="color: var(--text);">Reviews</a> <a href="#download" class="block py-2 text-center rounded-full" style="background: var(--gold); color: #0A0A0A; font-weight: 600;">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%; padding-top: 80px;"><!-- Flare effects -->
+    <div class="absolute top-20 right-10 w-40 h-40 rounded-full anim-flare" style="background: radial-gradient(circle, rgba(233,30,140,0.5), transparent 70%);"></div>
+    <div class="absolute top-40 left-20 w-32 h-32 rounded-full anim-flare-delay" style="background: radial-gradient(circle, rgba(212,168,67,0.5), transparent 70%);"></div>
+    <div class="absolute bottom-20 right-1/4 w-24 h-24 rounded-full anim-flash" style="background: radial-gradient(circle, rgba(255,255,255,0.8), transparent 60%);"></div>
+    <div class="absolute top-1/3 left-1/3 w-16 h-16 rounded-full anim-flash-2" style="background: radial-gradient(circle, rgba(212,168,67,0.9), transparent 60%);"></div><!-- Light streaks -->
+    <div class="absolute top-0 left-0 w-full h-2 anim-streak-l" style="background: linear-gradient(90deg, transparent, rgba(212,168,67,0.6), transparent); filter: blur(2px);"></div>
+    <div class="absolute bottom-40 left-0 w-full h-1 anim-streak-r" style="background: linear-gradient(90deg, transparent, rgba(233,30,140,0.4), transparent); filter: blur(2px);"></div><!-- Shimmer overlay -->
+    <div class="absolute inset-0 anim-shimmer pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 flex flex-col lg:flex-row items-center gap-12 relative z-10">
+     <div class="flex-1 text-center lg:text-left"><!-- Marquee bar -->
+      <div class="overflow-hidden mb-6 rounded-full py-2 px-1" style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.2);">
+       <div class="anim-marquee whitespace-nowrap text-xs font-medium tracking-widest" style="color: var(--gold); width: max-content;">
+        ★ 80 POSTER TEMPLATES ★ 200 CAPTIONS ★ STORY TEMPLATES ★ FRAME OVERLAYS ★ ENTERTAINMENT CREATORS ★ FAN PAGES ★ POP CULTURE ★ WEEKLY DROP POTENTIAL ★ 80 POSTER TEMPLATES ★ 200 CAPTIONS ★ STORY TEMPLATES ★ FRAME OVERLAYS ★ ENTERTAINMENT CREATORS ★ FAN PAGES ★ POP CULTURE ★ WEEKLY DROP POTENTIAL ★
+       </div>
+      </div>
+      <p class="text-sm font-medium tracking-widest uppercase mb-4 magenta-gradient">Celebrity energy, content-ready.</p>
+      <h1 id="hero-title" class="font-display font-black text-5xl md:text-7xl lg:text-8xl leading-none mb-6 anim-fade-up" style="color: var(--text);">Make your content look <span class="gold-gradient">famous.</span></h1>
+      <p id="hero-subtitle" class="text-lg md:text-xl mb-8 max-w-xl mx-auto lg:mx-0 anim-fade-up" style="color: rgba(240,236,227,0.7); animation-delay: 0.2s;">Red carpet templates + captions designed to blow up.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start anim-fade-up" style="animation-delay: 0.4s;"><a href="#download" id="cta-primary-btn" class="px-8 py-4 rounded-full font-semibold text-lg anim-pulse-glow transition-transform hover:scale-105" style="background: linear-gradient(135deg, #D4A843, #F5D98C); color: #0A0A0A;"> Get the Kit </a> <a href="#posters" id="cta-secondary-btn" class="px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105" style="border: 2px solid var(--magenta); color: var(--magenta);"> View Posters </a>
+      </div><!-- Stats -->
+      <div class="flex gap-8 mt-10 justify-center lg:justify-start">
+       <div class="text-center">
+        <div class="font-display font-bold text-2xl gold-gradient">
+         80+
+        </div>
+        <div class="text-xs uppercase tracking-wider" style="color: rgba(240,236,227,0.5);">
+         Templates
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="font-display font-bold text-2xl gold-gradient">
+         200+
+        </div>
+        <div class="text-xs uppercase tracking-wider" style="color: rgba(240,236,227,0.5);">
+         Captions
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="font-display font-bold text-2xl gold-gradient">
+         4.9
+        </div>
+        <div class="text-xs uppercase tracking-wider" style="color: rgba(240,236,227,0.5);">
+         Rating
+        </div>
+       </div>
+      </div>
+     </div><!-- Hero right: Floating card + poster mockup -->
+     <div class="flex-1 relative flex justify-center items-center" style="min-height: 400px;"><!-- Glow behind -->
+      <div class="absolute w-72 h-72 rounded-full" style="background: radial-gradient(circle, rgba(233,30,140,0.2), transparent 70%); filter: blur(40px);"></div><!-- Main poster mockup -->
+      <div class="relative w-64 md:w-72 rounded-2xl overflow-hidden card-gloss anim-pop" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.3); box-shadow: 0 30px 80px rgba(0,0,0,0.6);">
+       <div class="w-full aspect-[3/4] relative" style="background: linear-gradient(180deg, #1a0a1e, #0a0a0a);">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+         <div class="w-16 h-16 rounded-full mb-4 flex items-center justify-center anim-star" style="background: linear-gradient(135deg, var(--gold), var(--magenta));"><i data-lucide="star" style="width:28px;height:28px;color:#0A0A0A;"></i>
+         </div>
+         <div class="font-display font-black text-2xl mb-2 gold-gradient">
+          TONIGHT'S
+         </div>
+         <div class="font-display font-black text-3xl mb-3" style="color: var(--magenta);">
+          HEADLINE
+         </div>
+         <div class="w-16 h-0.5 mb-3" style="background: var(--gold);"></div>
+         <div class="text-xs tracking-widest uppercase" style="color: rgba(240,236,227,0.5);">
+          RedCarpet Remix Template
+         </div>
+        </div><!-- Glossy overlay -->
+        <div class="absolute inset-0 glossy-overlay"></div>
+       </div>
+      </div><!-- Floating engagement card -->
+      <div class="absolute -bottom-4 -left-4 md:left-0 p-4 rounded-xl anim-float card-gloss" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.3); box-shadow: 0 10px 40px rgba(233,30,140,0.15); animation-delay: 0.5s;">
+       <div class="flex items-center gap-3 mb-2">
+        <div class="flex -space-x-2">
+         <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--gold); color: #0A0A0A;">
+          A
+         </div>
+         <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--magenta); color: white;">
+          K
+         </div>
+         <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background: #444; color: white;">
+          +5
+         </div>
+        </div><span class="text-xs font-medium" style="color: var(--gold);">Vote + Comment</span>
+       </div>
+       <div class="text-xs" style="color: rgba(240,236,227,0.5);">
+        Embed Widget Here
+       </div>
+       <div class="flex gap-2 mt-2"><button class="px-3 py-1 rounded-full text-xs font-medium transition hover:scale-105" style="background: rgba(212,168,67,0.15); color: var(--gold); border: 1px solid rgba(212,168,67,0.3);"> <i data-lucide="thumbs-up" style="width:12px;height:12px;display:inline;vertical-align:middle;"></i> 247 </button> <button class="px-3 py-1 rounded-full text-xs font-medium transition hover:scale-105" style="background: rgba(233,30,140,0.15); color: var(--magenta); border: 1px solid rgba(233,30,140,0.3);"> <i data-lucide="message-circle" style="width:12px;height:12px;display:inline;vertical-align:middle;"></i> 89 </button>
+       </div>
+      </div><!-- Small floating star -->
+      <div class="absolute top-0 right-4 anim-star" style="animation-delay: 0.7s;"><i data-lucide="sparkles" style="width:24px;height:24px;color:var(--gold);"></i>
+      </div>
+     </div>
+    </div>
+   </section><!-- POSTERS SECTION -->
+   <section id="posters" class="relative w-full py-20 overflow-hidden">
+    <div class="absolute top-10 left-10 w-32 h-32 rounded-full anim-flare" style="background: radial-gradient(circle, rgba(212,168,67,0.3), transparent 70%);"></div>
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-16 scroll-reveal">
+      <p class="text-sm tracking-widest uppercase mb-3 magenta-gradient font-medium">Award-Night Aesthetics</p>
+      <h2 id="posters-heading" class="font-display font-black text-4xl md:text-6xl mb-4" style="color: var(--text);">80 Poster Templates</h2>
+      <p class="text-lg max-w-2xl mx-auto" style="color: rgba(240,236,227,0.6);">Celebrity-style poster designs ready for your content. No real names, all the glam.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"><!-- Poster 1 -->
+      <div class="poster-card rounded-2xl overflow-hidden card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.2);">
+       <div class="aspect-[3/4] relative" style="background: linear-gradient(135deg, #1a0520, #0d0a15);">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-5 text-center"><i data-lucide="award" style="width:36px;height:36px;color:var(--gold);margin-bottom:12px;"></i>
+         <div class="font-display font-bold text-lg gold-gradient mb-1">
+          BEST
+         </div>
+         <div class="font-display font-black text-2xl" style="color: var(--text);">
+          DRESSED
+         </div>
+         <div class="w-12 h-0.5 my-3" style="background: var(--magenta);"></div>
+         <div class="text-xs tracking-wider" style="color: rgba(240,236,227,0.4);">
+          AWARD SEASON 2025
+         </div>
+        </div>
+        <div class="absolute inset-0 glossy-overlay"></div>
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold" style="color: var(--text);">
+         Best Dressed Template
+        </div>
+        <div class="text-xs mt-1" style="color: var(--gold);">
+         Award Category
+        </div>
+       </div>
+      </div><!-- Poster 2 -->
+      <div class="poster-card rounded-2xl overflow-hidden card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.1s;">
+       <div class="aspect-[3/4] relative" style="background: linear-gradient(135deg, #1a0a0a, #150505);">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-5 text-center"><i data-lucide="film" style="width:36px;height:36px;color:var(--magenta);margin-bottom:12px;"></i>
+         <div class="font-display font-bold text-sm tracking-widest" style="color: var(--magenta);">
+          TONIGHT'S
+         </div>
+         <div class="font-display font-black text-2xl gold-gradient">
+          HEADLINE
+         </div>
+         <div class="w-12 h-0.5 my-3" style="background: var(--gold);"></div>
+         <div class="text-xs tracking-wider" style="color: rgba(240,236,227,0.4);">
+          BREAKING NEWS
+         </div>
+        </div>
+        <div class="absolute inset-0 glossy-overlay"></div>
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold" style="color: var(--text);">
+         Tonight's Headline
+        </div>
+        <div class="text-xs mt-1" style="color: var(--magenta);">
+         Entertainment News
+        </div>
+       </div>
+      </div><!-- Poster 3 -->
+      <div class="poster-card rounded-2xl overflow-hidden card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.2); animation-delay: 0.2s;">
+       <div class="aspect-[3/4] relative" style="background: linear-gradient(135deg, #0a0a1a, #050510);">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-5 text-center"><i data-lucide="camera" style="width:36px;height:36px;color:var(--gold);margin-bottom:12px;"></i>
+         <div class="font-display font-black text-xl" style="color: var(--text);">
+          RED
+         </div>
+         <div class="font-display font-black text-3xl magenta-gradient">
+          CARPET
+         </div>
+         <div class="w-12 h-0.5 my-3" style="background: var(--gold);"></div>
+         <div class="text-xs tracking-wider" style="color: rgba(240,236,227,0.4);">
+          EXCLUSIVE ACCESS
+         </div>
+        </div>
+        <div class="absolute inset-0 glossy-overlay"></div>
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold" style="color: var(--text);">
+         Red Carpet Access
+        </div>
+        <div class="text-xs mt-1" style="color: var(--gold);">
+         Paparazzi Style
+        </div>
+       </div>
+      </div><!-- Poster 4 -->
+      <div class="poster-card rounded-2xl overflow-hidden card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.3s;">
+       <div class="aspect-[3/4] relative" style="background: linear-gradient(135deg, #15100a, #0d0805);">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-5 text-center"><i data-lucide="crown" style="width:36px;height:36px;color:var(--gold);margin-bottom:12px;"></i>
+         <div class="font-display font-bold text-sm tracking-widest" style="color: var(--gold);">
+          THE
+         </div>
+         <div class="font-display font-black text-2xl" style="color: var(--text);">
+          ICON
+         </div>
+         <div class="font-display font-bold text-sm tracking-widest magenta-gradient">
+          COLLECTION
+         </div>
+         <div class="w-12 h-0.5 my-3" style="background: var(--magenta);"></div>
+         <div class="text-xs tracking-wider" style="color: rgba(240,236,227,0.4);">
+          LIMITED DROP
+         </div>
+        </div>
+        <div class="absolute inset-0 glossy-overlay"></div>
+       </div>
+       <div class="p-4">
+        <div class="text-sm font-semibold" style="color: var(--text);">
+         The Icon Collection
+        </div>
+        <div class="text-xs mt-1" style="color: var(--magenta);">
+         Weekly Drop
+        </div>
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="flex flex-wrap justify-center gap-4 mt-12 scroll-reveal">
+      <div class="px-5 py-2 rounded-full text-sm font-medium" style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.3); color: var(--gold);"><i data-lucide="tv" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Perfect for entertainment creators
+      </div>
+      <div class="px-5 py-2 rounded-full text-sm font-medium" style="background: rgba(233,30,140,0.1); border: 1px solid rgba(233,30,140,0.3); color: var(--magenta);"><i data-lucide="users" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Fan pages &amp; pop culture accounts
+      </div>
+      <div class="px-5 py-2 rounded-full text-sm font-medium" style="background: rgba(212,168,67,0.1); border: 1px solid rgba(212,168,67,0.3); color: var(--gold);"><i data-lucide="refresh-cw" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i> Weekly drop potential
+      </div>
+     </div>
+    </div>
+   </section><!-- CAPTIONS SECTION -->
+   <section id="captions" class="relative w-full py-20 overflow-hidden" style="background: var(--surface);">
+    <div class="absolute inset-0 anim-shimmer pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+     <div class="text-center mb-16 scroll-reveal">
+      <p class="text-sm tracking-widest uppercase mb-3 gold-gradient font-medium">Copy That Converts</p>
+      <h2 id="captions-heading" class="font-display font-black text-4xl md:text-6xl mb-4" style="color: var(--text);">200 Award Night Captions</h2>
+      <p class="text-lg max-w-2xl mx-auto" style="color: rgba(240,236,227,0.6);">Pre-written caption styles for every vibe — hype, classy, mysterious, viral.</p>
+     </div><!-- Caption carousel -->
+     <div id="caption-carousel" class="relative">
+      <div class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;" id="caption-track"><!-- Caption cards generated by JS -->
+      </div>
+      <div class="flex justify-center gap-3 mt-6"><button onclick="scrollCarousel(-1)" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110" style="background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.3); color: var(--gold);"> <i data-lucide="chevron-left" style="width:18px;height:18px;"></i> </button> <button onclick="scrollCarousel(1)" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110" style="background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.3); color: var(--gold);"> <i data-lucide="chevron-right" style="width:18px;height:18px;"></i> </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW SECTION -->
+   <section id="preview" class="relative w-full py-20 overflow-hidden">
+    <div class="absolute bottom-10 right-10 w-40 h-40 rounded-full anim-flare-delay" style="background: radial-gradient(circle, rgba(233,30,140,0.3), transparent 70%);"></div>
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-16 scroll-reveal">
+      <p class="text-sm tracking-widest uppercase mb-3 magenta-gradient font-medium">What's Inside</p>
+      <h2 class="font-display font-black text-4xl md:text-6xl mb-4" style="color: var(--text);">Full Kit Preview</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.2);">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(212,168,67,0.05));"><i data-lucide="layout" style="width:28px;height:28px;color:var(--gold);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">80 Poster Templates</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">Award show, premiere night, red carpet — every poster theme you need to make heads turn.</p>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.1s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(233,30,140,0.2), rgba(233,30,140,0.05));"><i data-lucide="message-square" style="width:28px;height:28px;color:var(--magenta);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">200 Captions</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">Hype, mysterious, classy, viral — pre-written captions for every mood and moment.</p>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.2); animation-delay: 0.2s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(212,168,67,0.05));"><i data-lucide="smartphone" style="width:28px;height:28px;color:var(--gold);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">Story Templates</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">9:16 story designs with paparazzi frames and velvet-rope aesthetics built in.</p>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.3s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(233,30,140,0.2), rgba(233,30,140,0.05));"><i data-lucide="image" style="width:28px;height:28px;color:var(--magenta);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">Frame Overlays</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">Paparazzi flash, spotlight, and lens flare overlays to drop onto any content.</p>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(212,168,67,0.2); animation-delay: 0.4s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(212,168,67,0.05));"><i data-lucide="palette" style="width:28px;height:28px;color:var(--gold);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">Color Palettes</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">Curated award-night palettes — black &amp; gold, midnight magenta, velvet blush.</p>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: var(--surface); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.5s;">
+       <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(233,30,140,0.2), rgba(233,30,140,0.05));"><i data-lucide="zap" style="width:28px;height:28px;color:var(--magenta);"></i>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-2" style="color: var(--text);">Drag &amp; Drop</h3>
+       <p class="text-sm" style="color: rgba(240,236,227,0.6);">Everything works in Canva. No design skills needed — just swap and post.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="relative w-full py-20 overflow-hidden" style="background: var(--surface);">
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-16 scroll-reveal">
+      <p class="text-sm tracking-widest uppercase mb-3 gold-gradient font-medium">What Creators Say</p>
+      <h2 class="font-display font-black text-4xl md:text-6xl mb-4" style="color: var(--text);">Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: rgba(212,168,67,0.05); border: 1px solid rgba(212,168,67,0.2);">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i>
+       </div>
+       <p class="text-sm mb-4" style="color: rgba(240,236,227,0.8);">"My fan page went from 2k to 18k in a month using these templates. The aesthetic is unmatched."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm" style="background: var(--gold); color: #0A0A0A;">
+         J
+        </div>
+        <div>
+         <div class="text-sm font-semibold" style="color: var(--text);">
+          Jasmine R.
+         </div>
+         <div class="text-xs" style="color: rgba(240,236,227,0.4);">
+          Entertainment Creator
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: rgba(233,30,140,0.05); border: 1px solid rgba(233,30,140,0.2); animation-delay: 0.1s;">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i>
+       </div>
+       <p class="text-sm mb-4" style="color: rgba(240,236,227,0.8);">"I run a weekly pop culture drop and this kit is my secret weapon. Captions save me hours."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm" style="background: var(--magenta); color: white;">
+         M
+        </div>
+        <div>
+         <div class="text-sm font-semibold" style="color: var(--text);">
+          Marcus T.
+         </div>
+         <div class="text-xs" style="color: rgba(240,236,227,0.4);">
+          Pop Culture Blogger
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="rounded-2xl p-6 card-gloss scroll-reveal" style="background: rgba(212,168,67,0.05); border: 1px solid rgba(212,168,67,0.2); animation-delay: 0.2s;">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--gold);fill:var(--gold);"></i>
+       </div>
+       <p class="text-sm mb-4" style="color: rgba(240,236,227,0.8);">"The frame overlays alone are worth it. Every post looks like a magazine cover now."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm" style="background: var(--gold); color: #0A0A0A;">
+         S
+        </div>
+        <div>
+         <div class="text-sm font-semibold" style="color: var(--text);">
+          Sofia L.
+         </div>
+         <div class="text-xs" style="color: rgba(240,236,227,0.4);">
+          Fan Page Admin
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="relative w-full py-24 overflow-hidden">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, var(--bg), #0d0515, var(--bg));"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full" style="background: radial-gradient(circle, rgba(233,30,140,0.15), transparent 70%); filter: blur(60px);"></div>
+    <div class="absolute top-20 right-20 w-20 h-20 rounded-full anim-flash" style="background: radial-gradient(circle, rgba(212,168,67,0.8), transparent 60%);"></div>
+    <div class="absolute bottom-20 left-20 w-16 h-16 rounded-full anim-flash-2" style="background: radial-gradient(circle, rgba(233,30,140,0.8), transparent 60%);"></div>
+    <div class="absolute top-0 left-0 w-full h-1 anim-streak-l" style="background: linear-gradient(90deg, transparent, rgba(212,168,67,0.5), transparent);"></div>
+    <div class="max-w-3xl mx-auto px-4 text-center relative z-10 scroll-reveal">
+     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background: rgba(233,30,140,0.1); border: 1px solid rgba(233,30,140,0.3);"><i data-lucide="sparkles" style="width:14px;height:14px;color:var(--magenta);"></i> <span class="text-xs font-medium tracking-wider uppercase" style="color: var(--magenta);">Limited Time Offer</span>
+     </div>
+     <h2 id="bottom-cta-heading" class="font-display font-black text-4xl md:text-6xl lg:text-7xl mb-6" style="color: var(--text);">Turn attention into a <span class="gold-gradient">brand.</span></h2>
+     <p class="text-lg mb-10 max-w-xl mx-auto" style="color: rgba(240,236,227,0.6);">80 templates. 200 captions. Story designs. Frame overlays. Everything you need to own the feed.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8"><button class="px-10 py-5 rounded-full font-bold text-lg anim-pulse-glow transition-transform hover:scale-105" style="background: linear-gradient(135deg, #D4A843, #F5D98C); color: #0A0A0A;"> <i data-lucide="download" style="width:20px;height:20px;display:inline;vertical-align:middle;margin-right:6px;"></i> Get the Full Kit </button> <button class="px-10 py-5 rounded-full font-bold text-lg transition-all hover:scale-105" style="border: 2px solid var(--magenta); color: var(--magenta);"> <i data-lucide="eye" style="width:20px;height:20px;display:inline;vertical-align:middle;margin-right:6px;"></i> Preview All Templates </button>
+     </div>
+     <div class="flex justify-center gap-6 text-sm" style="color: rgba(240,236,227,0.4);"><span><i data-lucide="check" style="width:14px;height:14px;display:inline;vertical-align:middle;color:var(--gold);margin-right:4px;"></i>Instant download</span> <span><i data-lucide="check" style="width:14px;height:14px;display:inline;vertical-align:middle;color:var(--gold);margin-right:4px;"></i>Works in Canva</span> <span><i data-lucide="check" style="width:14px;height:14px;display:inline;vertical-align:middle;color:var(--gold);margin-right:4px;"></i>Commercial license</span>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-8 px-4" style="background: var(--surface); border-top: 1px solid rgba(212,168,67,0.1);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="font-display font-bold text-lg" style="color: var(--gold);">
+      RedCarpet <span style="color: var(--magenta);">Remix</span>
+     </div>
+     <div class="text-xs" style="color: rgba(240,236,227,0.3);">
+      © 2025 RedCarpet Remix. Celebrity energy, content-ready.
+     </div>
+     <div class="flex gap-4"><a href="#" class="transition hover:scale-110" style="color: rgba(240,236,227,0.4);"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" class="transition hover:scale-110" style="color: rgba(240,236,227,0.4);"><i data-lucide="twitter" style="width:18px;height:18px;"></i></a> <a href="#" class="transition hover:scale-110" style="color: rgba(240,236,227,0.4);"><i data-lucide="youtube" style="width:18px;height:18px;"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Caption data
+const captions = [
+  { category: "Hype", emoji: "🔥", text: "They're not ready for this level of main character energy.", color: "var(--magenta)" },
+  { category: "Classy", emoji: "🥂", text: "Elegance is the only beauty that never fades.", color: "var(--gold)" },
+  { category: "Mysterious", emoji: "🌙", text: "They'll talk about tonight for years. Let them wonder.", color: "var(--magenta)" },
+  { category: "Viral", emoji: "⚡", text: "POV: You just dropped the content of the century.", color: "var(--gold)" },
+  { category: "Red Carpet", emoji: "📸", text: "Flash. Pose. Repeat. This is what icons are made of.", color: "var(--magenta)" },
+  { category: "Award Night", emoji: "🏆", text: "And the award for Most Iconic Feed goes to…", color: "var(--gold)" },
+  { category: "Fan Page", emoji: "💎", text: "Stan culture built different when the content hits this hard.", color: "var(--magenta)" },
+  { category: "Spotlight", emoji: "✨", text: "Step into the light. The algorithm is watching.", color: "var(--gold)" }
+];
+
+// Build caption cards
+const captionTrack = document.getElementById('caption-track');
+captions.forEach((c, i) => {
+  const card = document.createElement('div');
+  card.className = 'flex-shrink-0 w-72 snap-center rounded-2xl p-6 card-gloss transition-transform hover:scale-105';
+  card.style.cssText = `background: var(--surface); border: 1px solid ${c.color}33;`;
+  card.innerHTML = `
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-2xl">${c.emoji}</span>
+      <span class="text-xs font-semibold tracking-wider uppercase" style="color: ${c.color};">${c.category}</span>
+    </div>
+    <p class="text-sm leading-relaxed" style="color: var(--text);">"${c.text}"</p>
+    <button class="mt-4 px-4 py-2 rounded-full text-xs font-medium transition hover:scale-105" style="background: ${c.color}15; border: 1px solid ${c.color}40; color: ${c.color};">
+      <i data-lucide="copy" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i>Copy
+    </button>
+  `;
+  // Copy functionality
+  card.querySelector('button').addEventListener('click', function() {
+    navigator.clipboard.writeText(c.text).catch(() => {});
+    this.textContent = '✓ Copied!';
+    setTimeout(() => {
+      this.innerHTML = `<i data-lucide="copy" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:4px;"></i>Copy`;
+      lucide.createIcons();
+    }, 1500);
+  });
+  captionTrack.appendChild(card);
+});
+
+function scrollCarousel(dir) {
+  const track = document.getElementById('caption-track');
+  track.scrollBy({ left: dir * 300, behavior: 'smooth' });
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Init Lucide
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  background_color: '#0A0A0A',
+  surface_color: '#151515',
+  text_color: '#F0ECE3',
+  primary_color: '#D4A843',
+  secondary_color: '#E91E8C',
+  font_family: 'Playfair Display',
+  font_size: 16,
+  hero_title: 'Make your content look famous.',
+  hero_subtitle: 'Red carpet templates + captions designed to blow up.',
+  cta_primary: 'Get the Kit',
+  cta_secondary: 'View Posters',
+  posters_title: '80 Poster Templates',
+  captions_title: '200 Award Night Captions',
+  bottom_cta_text: 'Turn attention into a brand.'
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--gold', c.primary_color);
+  document.documentElement.style.setProperty('--magenta', c.secondary_color);
+
+  document.body.style.background = c.background_color;
+  document.getElementById('app-wrapper').style.background = c.background_color;
+
+  // Font
+  const ff = `${c.font_family}, Playfair Display, Georgia, serif`;
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = ff);
+  const bodyFf = `${c.font_family}, Outfit, sans-serif`;
+  document.body.style.fontFamily = bodyFf;
+
+  // Font size
+  const base = c.font_size || 16;
+  document.body.style.fontSize = `${base}px`;
+
+  // Text content
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    const words = c.hero_title.split(' ');
+    const last = words.pop();
+    heroTitle.innerHTML = `${words.join(' ')} <span class="gold-gradient">${last}</span>`;
+  }
+
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) heroSub.textContent = c.hero_subtitle;
+
+  const ctaPrimary = document.getElementById('cta-primary-btn');
+  if (ctaPrimary) ctaPrimary.textContent = c.cta_primary;
+
+  const ctaSecondary = document.getElementById('cta-secondary-btn');
+  if (ctaSecondary) ctaSecondary.textContent = c.cta_secondary;
+
+  const postersH = document.getElementById('posters-heading');
+  if (postersH) postersH.textContent = c.posters_title;
+
+  const captionsH = document.getElementById('captions-heading');
+  if (captionsH) captionsH.textContent = c.captions_title;
+
+  const bottomCta = document.getElementById('bottom-cta-heading');
+  if (bottomCta) {
+    const words = c.bottom_cta_text.split(' ');
+    const last = words.pop();
+    bottomCta.innerHTML = `${words.join(' ')} <span class="gold-gradient">${last}</span>`;
+  }
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+        { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['posters_title', config.posters_title || defaultConfig.posters_title],
+      ['captions_title', config.captions_title || defaultConfig.captions_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a2b97741a27c5',t:'MTc3NTU3Njg0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

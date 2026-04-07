@@ -1,1 +1,670 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/72e4ab04-3e35-4151-911a-e8d583eaa765 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeGuard Sitting</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+.font-display { font-family: 'DM Serif Display', serif; }
+.font-body { font-family: 'Outfit', sans-serif; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-up { animation: fadeUp 0.8s ease forwards; }
+.animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* Section reveal */
+.reveal-section { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-section.visible { opacity: 1; transform: translateY(0); }
+
+/* Pricing hover */
+.pricing-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.pricing-card:hover { transform: translateY(-6px); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Nav active */
+.nav-link { position: relative; transition: color 0.3s; }
+.nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f5f0eb; }
+::-webkit-scrollbar-thumb { background: #c4b5a4; border-radius: 4px; }
+
+/* Reaction btn */
+.reaction-btn { transition: all 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { transform: scale(1.1); }
+</style>
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        warm: { 50: '#faf8f5', 100: '#f5f0eb', 200: '#e8dfd4', 300: '#d4c5b0', 400: '#c4b5a4', 500: '#a89279', 600: '#8b7560', 700: '#6d5a48', 800: '#4a3d30', 900: '#2d2520' }
+      }
+    }
+  }
+}
+</script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body bg-warm-50 text-warm-800 overflow-auto" id="app-body"><!-- Sticky Nav -->
+  <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(250,248,245,0.92);backdrop-filter:blur(12px);">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#home" class="font-display text-xl tracking-tight" id="nav-logo" style="color:#6d5a48;">HomeGuard</a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="nav-link" style="color:#6d5a48;">Home</a> <a href="#services" class="nav-link" style="color:#6d5a48;">Services</a> <a href="#care" class="nav-link" style="color:#6d5a48;">Care</a> <a href="#trust" class="nav-link" style="color:#6d5a48;">Trust</a> <a href="#pricing" class="nav-link" style="color:#6d5a48;">Pricing</a> <a href="#faq" class="nav-link" style="color:#6d5a48;">FAQ</a> <a href="#book" class="nav-link px-4 py-2 rounded-full text-white text-sm" style="background:#8b7560;">Book Service</a>
+    </div><button id="mobile-toggle" class="md:hidden p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;color:#6d5a48;"></i> </button>
+   </div>
+   <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+    <div class="flex flex-col gap-3 text-sm font-medium"><a href="#home" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">Home</a> <a href="#services" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">Services</a> <a href="#care" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">Care</a> <a href="#trust" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">Trust</a> <a href="#pricing" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">Pricing</a> <a href="#faq" class="py-2" style="color:#6d5a48;" onclick="closeMobile()">FAQ</a> <a href="#book" class="py-2 text-center rounded-full text-white" style="background:#8b7560;" onclick="closeMobile()">Book Service</a>
+    </div>
+   </div>
+  </nav><!-- Hero -->
+  <section id="home" class="relative w-full overflow-hidden" style="min-height:600px;padding-top:80px;">
+   <div class="absolute inset-0" style="background:linear-gradient(135deg,#f5f0eb 0%,#e8dfd4 50%,#d4c5b0 100%);"></div><!-- Decorative shapes -->
+   <div class="absolute top-20 right-10 w-64 h-64 rounded-full opacity-20" style="background:#c4b5a4;filter:blur(60px);"></div>
+   <div class="absolute bottom-10 left-10 w-48 h-48 rounded-full opacity-15" style="background:#a89279;filter:blur(50px);"></div>
+   <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center" style="min-height:520px;">
+    <div class="opacity-0 animate-fade-up">
+     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-medium" style="background:rgba(139,117,96,0.15);color:#6d5a48;"><i data-lucide="shield-check" style="width:16px;height:16px;"></i> Trusted Home Care Since 2018
+     </div>
+    </div>
+    <h1 id="hero-title" class="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-6 opacity-0 animate-fade-up delay-1" style="color:#2d2520;">Peace of mind while you're away.</h1>
+    <p id="hero-subtitle" class="text-lg sm:text-xl max-w-xl mb-10 opacity-0 animate-fade-up delay-2" style="color:#6d5a48;">Reliable home care you can trust.</p>
+    <div class="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up delay-3"><a href="#book" class="px-8 py-3.5 rounded-full text-white font-medium text-base shadow-lg transition-all hover:shadow-xl" id="hero-cta1" style="background:#8b7560;">Book Service</a> <a href="#services" class="px-8 py-3.5 rounded-full font-medium text-base border-2 transition-all hover:shadow-md" id="hero-cta2" style="border-color:#c4b5a4;color:#6d5a48;">See Services</a>
+    </div><!-- House SVG -->
+    <div class="mt-12 opacity-0 animate-fade-up delay-4">
+     <svg width="120" height="100" viewbox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M60 10L10 50H25V90H50V65H70V90H95V50H110L60 10Z" fill="#d4c5b0" stroke="#8b7560" stroke-width="2" /> <rect x="52" y="68" width="16" height="22" rx="2" fill="#a89279" /> <rect x="35" y="55" width="14" height="12" rx="2" fill="#f5f0eb" stroke="#c4b5a4" stroke-width="1.5" /> <rect x="71" y="55" width="14" height="12" rx="2" fill="#f5f0eb" stroke="#c4b5a4" stroke-width="1.5" /> <path d="M55 10L55 25H70L70 18" stroke="#8b7560" stroke-width="2" />
+     </svg>
+    </div>
+   </div>
+  </section><!-- Services -->
+  <section id="services" class="w-full py-20 reveal-section" style="background:#faf8f5;">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#a89279;">Our Services</p>
+     <h2 id="services-title" class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">What's Included</h2>
+     <p class="max-w-lg mx-auto" style="color:#8b7560;">Comprehensive care tailored to your home's unique needs.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="key-round" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Property Security</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">Regular perimeter checks, alarm monitoring, and secure lock management for complete peace of mind.</p>
+     </div>
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="droplets" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Plant &amp; Garden Care</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">Watering schedules, garden maintenance, and indoor plant care to keep everything thriving.</p>
+     </div>
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="mail" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Mail &amp; Packages</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">Daily mail collection, package acceptance, and forwarding of important correspondence.</p>
+     </div>
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="thermometer" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Climate Control</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">HVAC monitoring, thermostat adjustments, and seasonal climate management.</p>
+     </div>
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="dog" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Pet Companionship</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">Feeding, walking, playtime, and loving attention for your furry family members.</p>
+     </div>
+     <div class="p-6 rounded-2xl transition-all hover:shadow-lg" style="background:#f5f0eb;">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:#e8dfd4;"><i data-lucide="camera" style="width:22px;height:22px;color:#8b7560;"></i>
+      </div>
+      <h3 class="font-display text-xl mb-2" style="color:#2d2520;">Photo Updates</h3>
+      <p class="text-sm leading-relaxed" style="color:#8b7560;">Regular photo and video updates so you can see your home is safe and well-cared for.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Care Routines -->
+  <section id="care" class="w-full py-20 reveal-section" style="background:#f5f0eb;">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#a89279;">Daily Care</p>
+     <h2 id="care-title" class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">Daily Routines &amp; Checks</h2>
+     <p class="max-w-lg mx-auto" style="color:#8b7560;">A structured approach to home care, morning to evening.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8"><!-- Morning -->
+     <div class="rounded-2xl p-6 shadow-sm" style="background:#faf8f5;">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:#e8dfd4;"><i data-lucide="sunrise" style="width:18px;height:18px;color:#a89279;"></i>
+       </div>
+       <h3 class="font-display text-lg" style="color:#2d2520;">Morning</h3>
+      </div>
+      <ul class="space-y-3 text-sm" style="color:#6d5a48;">
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Exterior walkthrough &amp; security check</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Water indoor &amp; outdoor plants</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Collect mail &amp; packages</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Pet feeding &amp; morning walk</li>
+      </ul>
+     </div><!-- Afternoon -->
+     <div class="rounded-2xl p-6 shadow-sm" style="background:#faf8f5;">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:#e8dfd4;"><i data-lucide="sun" style="width:18px;height:18px;color:#a89279;"></i>
+       </div>
+       <h3 class="font-display text-lg" style="color:#2d2520;">Afternoon</h3>
+      </div>
+      <ul class="space-y-3 text-sm" style="color:#6d5a48;">
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Interior inspection &amp; ventilation</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Thermostat &amp; system checks</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Photo update sent to owner</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Light housekeeping tasks</li>
+      </ul>
+     </div><!-- Evening -->
+     <div class="rounded-2xl p-6 shadow-sm" style="background:#faf8f5;">
+      <div class="flex items-center gap-3 mb-5">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:#e8dfd4;"><i data-lucide="moon" style="width:18px;height:18px;color:#a89279;"></i>
+       </div>
+       <h3 class="font-display text-lg" style="color:#2d2520;">Evening</h3>
+      </div>
+      <ul class="space-y-3 text-sm" style="color:#6d5a48;">
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Final security perimeter walk</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Lock all entry points</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Set lighting &amp; alarm timers</li>
+       <li class="flex items-start gap-2"><i data-lucide="check-circle" style="width:16px;height:16px;color:#a89279;flex-shrink:0;margin-top:2px;"></i>Evening pet care &amp; settle</li>
+      </ul>
+     </div>
+    </div>
+   </div>
+  </section><!-- Trust -->
+  <section id="trust" class="w-full py-20 reveal-section" style="background:#faf8f5;">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#a89279;">Testimonials</p>
+     <h2 id="trust-title" class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">Why Families Trust Us</h2>
+    </div><!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-14">
+     <div class="text-center p-5 rounded-2xl" style="background:#f5f0eb;">
+      <p class="font-display text-3xl mb-1" style="color:#8b7560;">500+</p>
+      <p class="text-xs uppercase tracking-wider" style="color:#a89279;">Homes Cared For</p>
+     </div>
+     <div class="text-center p-5 rounded-2xl" style="background:#f5f0eb;">
+      <p class="font-display text-3xl mb-1" style="color:#8b7560;">98%</p>
+      <p class="text-xs uppercase tracking-wider" style="color:#a89279;">Client Retention</p>
+     </div>
+     <div class="text-center p-5 rounded-2xl" style="background:#f5f0eb;">
+      <p class="font-display text-3xl mb-1" style="color:#8b7560;">6+</p>
+      <p class="text-xs uppercase tracking-wider" style="color:#a89279;">Years Experience</p>
+     </div>
+     <div class="text-center p-5 rounded-2xl" style="background:#f5f0eb;">
+      <p class="font-display text-3xl mb-1" style="color:#8b7560;">4.9★</p>
+      <p class="text-xs uppercase tracking-wider" style="color:#a89279;">Average Rating</p>
+     </div>
+    </div><!-- Testimonials -->
+    <div class="grid md:grid-cols-3 gap-6">
+     <div class="p-6 rounded-2xl" style="background:#f5f0eb;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i>
+      </div>
+      <p class="text-sm italic mb-4" style="color:#6d5a48;">"We traveled for three weeks and came home to a spotless house with thriving plants. HomeGuard is exceptional."</p>
+      <p class="text-sm font-semibold" style="color:#2d2520;">— Sarah &amp; James T.</p>
+     </div>
+     <div class="p-6 rounded-2xl" style="background:#f5f0eb;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i>
+      </div>
+      <p class="text-sm italic mb-4" style="color:#6d5a48;">"Our dog Max loved his sitter. The daily photos gave us such peace of mind while we were abroad."</p>
+      <p class="text-sm font-semibold" style="color:#2d2520;">— Linda M.</p>
+     </div>
+     <div class="p-6 rounded-2xl" style="background:#f5f0eb;">
+      <div class="flex gap-1 mb-3"><i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#a89279;fill:#a89279;"></i>
+      </div>
+      <p class="text-sm italic mb-4" style="color:#6d5a48;">"Professional, communicative, and genuinely caring. We've used HomeGuard five times now — wouldn't go anywhere else."</p>
+      <p class="text-sm font-semibold" style="color:#2d2520;">— David &amp; Karen R.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Pricing -->
+  <section id="pricing" class="w-full py-20 reveal-section" style="background:#f5f0eb;">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#a89279;">Plans</p>
+     <h2 id="pricing-title" class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">Simple, Transparent Pricing</h2>
+     <p class="max-w-lg mx-auto" style="color:#8b7560;">Choose the level of care that fits your needs.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"><!-- Basic -->
+     <div class="pricing-card rounded-2xl p-7 shadow-sm" style="background:#faf8f5;">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#a89279;">Basic</p>
+      <p class="font-display text-4xl mb-1" style="color:#2d2520;">$45<span class="text-lg font-body" style="color:#a89279;">/day</span></p>
+      <p class="text-sm mb-6" style="color:#8b7560;">Essential care</p>
+      <ul class="space-y-3 text-sm mb-8" style="color:#6d5a48;">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Daily security check</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Mail &amp; package collection</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Basic plant watering</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Photo update (3x/week)</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full font-medium text-sm border-2 transition-all hover:shadow-md" style="border-color:#c4b5a4;color:#6d5a48;">Get Started</a>
+     </div><!-- Plus (featured) -->
+     <div class="pricing-card rounded-2xl p-7 shadow-lg relative" style="background:#8b7560;">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold" style="background:#2d2520;color:#f5f0eb;">
+       Most Popular
+      </div>
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#d4c5b0;">Plus</p>
+      <p class="font-display text-4xl mb-1" style="color:#faf8f5;">$75<span class="text-lg font-body" style="color:#d4c5b0;">/day</span></p>
+      <p class="text-sm mb-6" style="color:#d4c5b0;">Extended services</p>
+      <ul class="space-y-3 text-sm mb-8" style="color:#e8dfd4;">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#d4c5b0;"></i>Everything in Basic</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#d4c5b0;"></i>Pet care (1 pet)</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#d4c5b0;"></i>Light housekeeping</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#d4c5b0;"></i>Daily photo updates</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#d4c5b0;"></i>Garden maintenance</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full font-medium text-sm transition-all hover:shadow-md" style="background:#faf8f5;color:#6d5a48;">Get Started</a>
+     </div><!-- Premium -->
+     <div class="pricing-card rounded-2xl p-7 shadow-sm" style="background:#faf8f5;">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#a89279;">Premium</p>
+      <p class="font-display text-4xl mb-1" style="color:#2d2520;">$120<span class="text-lg font-body" style="color:#a89279;">/day</span></p>
+      <p class="text-sm mb-6" style="color:#8b7560;">Full home management</p>
+      <ul class="space-y-3 text-sm mb-8" style="color:#6d5a48;">
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Everything in Plus</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Multiple pet care</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Contractor coordination</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>Grocery &amp; errands</li>
+       <li class="flex items-center gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#a89279;"></i>24/7 availability</li>
+      </ul><a href="#book" class="block text-center py-3 rounded-full font-medium text-sm border-2 transition-all hover:shadow-md" style="border-color:#c4b5a4;color:#6d5a48;">Get Started</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" class="w-full py-20 reveal-section" style="background:#faf8f5;">
+   <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#a89279;">FAQ</p>
+     <h2 class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">Common Questions</h2>
+    </div>
+    <div class="space-y-3" id="faq-list">
+     <div class="faq-item rounded-xl overflow-hidden" style="background:#f5f0eb;"><button class="w-full flex items-center justify-between p-5 text-left font-medium text-sm" style="color:#2d2520;" onclick="toggleFaq(this)"> How far in advance should I book? <i data-lucide="chevron-down" style="width:18px;height:18px;color:#a89279;transition:transform 0.3s;"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5 text-sm" style="color:#6d5a48;">
+       We recommend booking at least 2 weeks in advance, especially during peak travel seasons. However, we accommodate last-minute requests when possible.
+      </div>
+     </div>
+     <div class="faq-item rounded-xl overflow-hidden" style="background:#f5f0eb;"><button class="w-full flex items-center justify-between p-5 text-left font-medium text-sm" style="color:#2d2520;" onclick="toggleFaq(this)"> Are your sitters background-checked? <i data-lucide="chevron-down" style="width:18px;height:18px;color:#a89279;transition:transform 0.3s;"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5 text-sm" style="color:#6d5a48;">
+       Yes, every HomeGuard sitter undergoes a comprehensive background check, reference verification, and in-person interview before joining our team.
+      </div>
+     </div>
+     <div class="faq-item rounded-xl overflow-hidden" style="background:#f5f0eb;"><button class="w-full flex items-center justify-between p-5 text-left font-medium text-sm" style="color:#2d2520;" onclick="toggleFaq(this)"> What if there's an emergency? <i data-lucide="chevron-down" style="width:18px;height:18px;color:#a89279;transition:transform 0.3s;"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5 text-sm" style="color:#6d5a48;">
+       Our sitters are trained in emergency protocols. We'll contact you immediately and coordinate with local services as needed. Premium clients have 24/7 direct line access.
+      </div>
+     </div>
+     <div class="faq-item rounded-xl overflow-hidden" style="background:#f5f0eb;"><button class="w-full flex items-center justify-between p-5 text-left font-medium text-sm" style="color:#2d2520;" onclick="toggleFaq(this)"> Can I meet my sitter beforehand? <i data-lucide="chevron-down" style="width:18px;height:18px;color:#a89279;transition:transform 0.3s;"></i> </button>
+      <div class="faq-answer hidden px-5 pb-5 text-sm" style="color:#6d5a48;">
+       Absolutely. We arrange a complimentary meet-and-greet at your home so you can walk through your routines and get comfortable with your sitter.
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- Bottom CTA + Vote & Comment -->
+  <section id="book" class="w-full py-20 reveal-section" style="background:linear-gradient(135deg,#e8dfd4 0%,#d4c5b0 100%);">
+   <div class="max-w-4xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-14">
+     <h2 id="bottom-cta-text" class="font-display text-3xl sm:text-4xl mb-4" style="color:#2d2520;">Leave with confidence.</h2>
+     <p class="text-lg mb-8" style="color:#6d5a48;">Your home, cared for as if you never left.</p><a href="#book-form" class="inline-block px-10 py-4 rounded-full text-white font-medium shadow-lg transition-all hover:shadow-xl" id="bottom-cta-btn" style="background:#8b7560;">Book Your Service</a>
+    </div><!-- Booking Form -->
+    <div id="book-form" class="rounded-2xl p-8 shadow-sm mb-16" style="background:#faf8f5;">
+     <h3 class="font-display text-2xl mb-6 text-center" style="color:#2d2520;">Request a Booking</h3>
+     <form id="booking-form" class="grid sm:grid-cols-2 gap-5" onsubmit="return false;">
+      <div><label for="b-name" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">Full Name</label> <input id="b-name" type="text" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;" placeholder="Your name">
+      </div>
+      <div><label for="b-email" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">Email</label> <input id="b-email" type="email" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;" placeholder="you@email.com">
+      </div>
+      <div><label for="b-start" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">Start Date</label> <input id="b-start" type="date" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;">
+      </div>
+      <div><label for="b-end" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">End Date</label> <input id="b-end" type="date" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;">
+      </div>
+      <div class="sm:col-span-2"><label for="b-plan" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">Preferred Plan</label> <select id="b-plan" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;"> <option>Basic — $45/day</option> <option>Plus — $75/day</option> <option>Premium — $120/day</option> </select>
+      </div>
+      <div class="sm:col-span-2"><label for="b-notes" class="block text-xs font-semibold uppercase tracking-wider mb-2" style="color:#a89279;">Special Requests</label> <textarea id="b-notes" rows="3" class="w-full px-4 py-3 rounded-xl border text-sm outline-none focus:ring-2 resize-none" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;" placeholder="Pets, special instructions, etc."></textarea>
+      </div>
+      <div class="sm:col-span-2"><button type="submit" id="submit-booking" class="w-full py-3.5 rounded-full text-white font-medium transition-all hover:shadow-lg" style="background:#8b7560;">Submit Booking Request</button>
+       <div id="booking-success" class="hidden mt-4 p-4 rounded-xl text-center text-sm font-medium" style="background:#e8dfd4;color:#6d5a48;"><i data-lucide="check-circle" style="width:20px;height:20px;display:inline;vertical-align:middle;color:#8b7560;"></i> Thank you! We'll be in touch within 24 hours.
+       </div>
+      </div>
+     </form>
+    </div><!-- Vote & Comment Widget -->
+    <div class="rounded-2xl p-8 shadow-sm" style="background:#faf8f5;">
+     <div class="text-center mb-6">
+      <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:#a89279;">Embed Widget Here</p>
+      <h3 class="font-display text-2xl mb-2" style="color:#2d2520;">Rate &amp; Comment</h3>
+      <p class="text-sm" style="color:#8b7560;">What would you pay for this service?</p>
+     </div><!-- Reactions -->
+     <div class="flex flex-wrap justify-center gap-3 mb-6" id="reactions-container"><button class="reaction-btn px-4 py-2 rounded-full text-sm font-medium border" style="border-color:#e8dfd4;color:#6d5a48;background:#faf8f5;" data-reaction="love" onclick="handleReaction('love')">❤️ Love <span class="reaction-count" data-count="love">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full text-sm font-medium border" style="border-color:#e8dfd4;color:#6d5a48;background:#faf8f5;" data-reaction="fire" onclick="handleReaction('fire')">🔥 Fire <span class="reaction-count" data-count="fire">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full text-sm font-medium border" style="border-color:#e8dfd4;color:#6d5a48;background:#faf8f5;" data-reaction="star" onclick="handleReaction('star')">⭐ Great <span class="reaction-count" data-count="star">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full text-sm font-medium border" style="border-color:#e8dfd4;color:#6d5a48;background:#faf8f5;" data-reaction="clap" onclick="handleReaction('clap')">👏 Clap <span class="reaction-count" data-count="clap">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full text-sm font-medium border" style="border-color:#e8dfd4;color:#6d5a48;background:#faf8f5;" data-reaction="think" onclick="handleReaction('think')">🤔 Hmm <span class="reaction-count" data-count="think">0</span></button>
+     </div><!-- Price Vote -->
+     <div class="mb-8">
+      <p class="text-center text-sm font-medium mb-3" style="color:#6d5a48;">What would you pay?</p>
+      <div class="flex flex-wrap justify-center gap-2" id="price-votes"><button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$9')" data-price="$9">$9 <span class="price-count" data-pcount="$9">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$19')" data-price="$19">$19 <span class="price-count" data-pcount="$19">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$29')" data-price="$29">$29 <span class="price-count" data-pcount="$29">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$39')" data-price="$39">$39 <span class="price-count" data-pcount="$39">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$49')" data-price="$49">$49 <span class="price-count" data-pcount="$49">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$59')" data-price="$59">$59 <span class="price-count" data-pcount="$59">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$79')" data-price="$79">$79 <span class="price-count" data-pcount="$79">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$99')" data-price="$99">$99 <span class="price-count" data-pcount="$99">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$149')" data-price="$149">$149 <span class="price-count" data-pcount="$149">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full text-xs font-medium border" style="border-color:#e8dfd4;color:#6d5a48;" onclick="handlePrice('$199')" data-price="$199">$199 <span class="price-count" data-pcount="$199">0</span></button>
+      </div>
+     </div><!-- Comments -->
+     <div>
+      <h4 class="font-display text-lg mb-4" style="color:#2d2520;">Comments</h4>
+      <form id="comment-form" onsubmit="return false;" class="mb-6">
+       <div class="flex gap-3 mb-3">
+        <div class="flex-1"><label for="c-name" class="sr-only">Your name</label> <input id="c-name" type="text" placeholder="Your name" class="w-full px-4 py-2.5 rounded-xl border text-sm outline-none" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;">
+        </div>
+       </div>
+       <div class="flex gap-3">
+        <div class="flex-1"><label for="c-text" class="sr-only">Your comment</label> <input id="c-text" type="text" placeholder="Leave a comment..." class="w-full px-4 py-2.5 rounded-xl border text-sm outline-none" style="border-color:#e8dfd4;background:#faf8f5;color:#2d2520;">
+        </div><button type="submit" id="comment-submit" class="px-5 py-2.5 rounded-xl text-white text-sm font-medium transition-all" style="background:#8b7560;">Post</button>
+       </div>
+      </form>
+      <div id="comments-list" class="space-y-3"></div>
+      <p id="no-comments" class="text-center text-sm py-4" style="color:#a89279;">No comments yet. Be the first!</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full py-10" style="background:#2d2520;">
+   <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+    <p class="font-display text-lg mb-2" style="color:#d4c5b0;">HomeGuard Sitting</p>
+    <p class="text-xs" style="color:#a89279;">Your home, cared for as if you never left. © 2024</p>
+   </div>
+  </footer>
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  background_color: '#faf8f5',
+  surface_color: '#f5f0eb',
+  text_color: '#2d2520',
+  primary_action_color: '#8b7560',
+  secondary_action_color: '#a89279',
+  font_family: 'DM Serif Display',
+  font_size: 16,
+  hero_title: 'Peace of mind while you\'re away.',
+  hero_subtitle: 'Reliable home care you can trust.',
+  services_title: 'What\'s Included',
+  care_title: 'Daily Routines & Checks',
+  trust_title: 'Why Families Trust Us',
+  pricing_title: 'Simple, Transparent Pricing',
+  bottom_cta_text: 'Leave with confidence.'
+};
+
+let allData = [];
+
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  // Body
+  document.getElementById('app-body').style.background = bg;
+  document.getElementById('app-body').style.color = text;
+
+  // Nav
+  const nav = document.getElementById('main-nav');
+  nav.style.background = `${bg}ee`;
+  document.getElementById('nav-logo').style.color = text;
+  document.querySelectorAll('.nav-link').forEach(l => { l.style.color = text; });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    if (l.classList.contains('text-white')) l.style.background = primary;
+    l.querySelector('::after') && (l.style.setProperty('--after-bg', primary));
+  });
+
+  // Hero
+  const ht = document.getElementById('hero-title');
+  ht.textContent = config.hero_title || defaultConfig.hero_title;
+  ht.style.color = text;
+  ht.style.fontFamily = `${font}, serif`;
+  ht.style.fontSize = `${size * 3}px`;
+
+  const hs = document.getElementById('hero-subtitle');
+  hs.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  hs.style.color = secondary;
+
+  document.getElementById('hero-cta1').style.background = primary;
+  document.getElementById('hero-cta2').style.borderColor = secondary;
+  document.getElementById('hero-cta2').style.color = text;
+
+  // Section titles
+  const st = document.getElementById('services-title');
+  st.textContent = config.services_title || defaultConfig.services_title;
+  st.style.color = text;
+  st.style.fontFamily = `${font}, serif`;
+
+  const ct = document.getElementById('care-title');
+  ct.textContent = config.care_title || defaultConfig.care_title;
+  ct.style.color = text;
+  ct.style.fontFamily = `${font}, serif`;
+
+  const tt = document.getElementById('trust-title');
+  tt.textContent = config.trust_title || defaultConfig.trust_title;
+  tt.style.color = text;
+  tt.style.fontFamily = `${font}, serif`;
+
+  const pt = document.getElementById('pricing-title');
+  pt.textContent = config.pricing_title || defaultConfig.pricing_title;
+  pt.style.color = text;
+  pt.style.fontFamily = `${font}, serif`;
+
+  const bc = document.getElementById('bottom-cta-text');
+  bc.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  bc.style.color = text;
+  bc.style.fontFamily = `${font}, serif`;
+
+  document.getElementById('bottom-cta-btn').style.background = primary;
+  document.getElementById('submit-booking').style.background = primary;
+  document.getElementById('comment-submit').style.background = primary;
+
+  // Font display elements
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = `${font}, serif`;
+  });
+
+  // Base font size
+  document.getElementById('app-body').style.fontSize = `${size}px`;
+}
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['services_title', config.services_title || defaultConfig.services_title],
+    ['care_title', config.care_title || defaultConfig.care_title],
+    ['trust_title', config.trust_title || defaultConfig.trust_title],
+    ['pricing_title', config.pricing_title || defaultConfig.pricing_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactionCounts();
+    renderPriceCounts();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ===== REACTIONS =====
+function renderReactionCounts() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => { counts[r.reaction] = (counts[r.reaction] || 0) + 1; });
+  document.querySelectorAll('.reaction-count').forEach(el => {
+    const key = el.dataset.count;
+    el.textContent = counts[key] || 0;
+  });
+}
+
+async function handleReaction(reaction) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.querySelector(`[data-reaction="${reaction}"]`);
+  btn.disabled = true; btn.style.opacity = '0.6';
+  const res = await window.dataSdk.create({ type: 'reaction', item_id: '', reaction, comment_text: '', comment_name: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (!res.isOk) showToast('Could not save reaction');
+}
+
+// ===== PRICE VOTES =====
+function renderPriceCounts() {
+  const prices = allData.filter(d => d.type === 'price');
+  const counts = {};
+  prices.forEach(p => { counts[p.reaction] = (counts[p.reaction] || 0) + 1; });
+  document.querySelectorAll('.price-count').forEach(el => {
+    const key = el.dataset.pcount;
+    el.textContent = counts[key] || 0;
+  });
+}
+
+async function handlePrice(price) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const btn = document.querySelector(`[data-price="${price}"]`);
+  btn.disabled = true; btn.style.opacity = '0.6';
+  const res = await window.dataSdk.create({ type: 'price', item_id: '', reaction: price, comment_text: '', comment_name: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.style.opacity = '1';
+  if (!res.isOk) showToast('Could not save vote');
+}
+
+// ===== COMMENTS =====
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'p-4 rounded-xl';
+      div.style.background = '#f5f0eb';
+      const ago = timeAgo(new Date(c.created_at));
+      div.innerHTML = `<div class="flex items-center gap-2 mb-1"><span class="text-sm font-semibold" style="color:#2d2520;">${escapeHtml(c.comment_name || 'Anonymous')}</span><span class="text-xs" style="color:#a89279;">${ago}</span></div><p class="text-sm" style="color:#6d5a48;">${escapeHtml(c.comment_text)}</p>`;
+      list.appendChild(div);
+    }
+  });
+  existing.forEach(el => el.remove());
+  noComments.style.display = comments.length ? 'none' : 'block';
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const name = document.getElementById('c-name').value.trim();
+  const text = document.getElementById('c-text').value.trim();
+  if (!text) return;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.textContent = '...';
+  const res = await window.dataSdk.create({ type: 'comment', item_id: '', reaction: '', comment_text: text, comment_name: name || 'Anonymous', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (res.isOk) { document.getElementById('c-name').value = ''; document.getElementById('c-text').value = ''; }
+  else showToast('Could not post comment');
+});
+
+// ===== BOOKING FORM =====
+document.getElementById('booking-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('booking-success').classList.remove('hidden');
+  lucide.createIcons();
+  setTimeout(() => document.getElementById('booking-success').classList.add('hidden'), 4000);
+});
+
+// ===== HELPERS =====
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full text-sm font-medium text-white z-50 animate-fade-in';
+  t.style.background = '#8b7560';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function closeMobile() { document.getElementById('mobile-menu').classList.add('hidden'); }
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = !answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-item button i').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Section reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal-section').forEach(s => observer.observe(s));
+
+// Nav shadow on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  nav.style.boxShadow = window.scrollY > 50 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a38e100a827c5',t:'MTc3NTU3NzM4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

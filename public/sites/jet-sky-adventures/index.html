@@ -1,1 +1,564 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/e0d53067-b5ae-478e-873a-9e3ad65645c1 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WakeRush Jet Ski Kit</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&amp;family=Bebas+Neue&amp;family=Barlow+Condensed:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        heading: ['Bebas Neue', 'sans-serif'],
+        body: ['Barlow Condensed', 'sans-serif'],
+        accent: ['Rajdhani', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { scroll-behavior: smooth; }
+
+@keyframes splashIn {
+  0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255,106,0,0.4), 0 0 40px rgba(255,106,0,0.1); }
+  50% { box-shadow: 0 0 30px rgba(255,106,0,0.7), 0 0 60px rgba(255,106,0,0.3); }
+}
+@keyframes speedLines {
+  0% { transform: translateX(100%); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(-200%); opacity: 0; }
+}
+@keyframes wave {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes gaugeNeedle {
+  0% { transform: rotate(-90deg); }
+  60% { transform: rotate(70deg); }
+  100% { transform: rotate(55deg); }
+}
+@keyframes popIn {
+  0% { transform: scale(0.5) translateY(30px); opacity: 0; }
+  70% { transform: scale(1.03) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes badgeBounce {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  50% { transform: rotate(-12deg) scale(1.1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-12px) rotate(1deg); }
+  66% { transform: translateY(-6px) rotate(-1deg); }
+}
+@keyframes splashDrop {
+  0% { transform: translateY(-20px) scale(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(40px) scale(1.2); opacity: 0; }
+}
+
+.animate-splash { animation: splashIn 0.7s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
+.animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.animate-pop { animation: popIn 0.6s ease-out forwards; }
+.animate-badge { animation: badgeBounce 2s ease-in-out infinite; }
+.animate-float { animation: float 4s ease-in-out infinite; }
+
+.speed-line {
+  position: absolute; height: 2px; width: 80px; border-radius: 2px;
+  animation: speedLines 1.5s linear infinite;
+}
+.splash-particle {
+  position: absolute; width: 6px; height: 6px; border-radius: 50%;
+  animation: splashDrop 2s ease-in infinite;
+}
+
+.sticker-badge {
+  display: inline-block; padding: 6px 16px; font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+  border: 2px solid; border-radius: 4px; transform: rotate(-12deg);
+  animation: badgeBounce 3s ease-in-out infinite;
+}
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.gauge-container { position: relative; width: 120px; height: 60px; overflow: hidden; }
+.gauge-bg {
+  width: 120px; height: 120px; border-radius: 50%;
+  border: 8px solid; border-bottom-color: transparent; border-left-color: transparent;
+  transform: rotate(225deg); position: absolute; top: 0;
+}
+.gauge-needle {
+  position: absolute; bottom: 0; left: 50%; width: 3px; height: 50px;
+  transform-origin: bottom center; animation: gaugeNeedle 2s ease-out forwards;
+  border-radius: 2px;
+}
+
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover:hover { transform: translateY(-8px); }
+
+.shimmer-text {
+  background: linear-gradient(90deg, currentColor 30%, rgba(255,255,255,0.8) 50%, currentColor 70%);
+  background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; animation: shimmer 3s linear infinite;
+}
+
+.hero-img { 
+  transition: transform 8s ease-out; 
+}
+.hero-img:hover { transform: scale(1.05); }
+
+.section-reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+.section-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.gallery-item { overflow: hidden; border-radius: 12px; }
+.gallery-item img { transition: transform 0.5s ease; }
+.gallery-item:hover img { transform: scale(1.1); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto" style="background: #021B2A; font-family: 'Barlow Condensed', sans-serif;"><!-- STICKY NAV -->
+  <nav id="main-nav" style="position:sticky;top:0;z-index:999;background:rgba(2,27,42,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,224,224,0.15);" class="w-full">
+   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+     <div style="background:linear-gradient(135deg,#00E0E0,#FF6A00);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i data-lucide="zap" style="width:20px;height:20px;color:#021B2A;"></i>
+     </div><span class="font-heading text-2xl tracking-wider" style="color:#00E0E0;">WAKE<span style="color:#FF6A00;">RUSH</span></span> </a> <button id="mobile-menu-btn" class="md:hidden" style="color:#00E0E0;"> <i data-lucide="menu" style="width:28px;height:28px;"></i> </button>
+    <div id="nav-links" class="hidden md:flex items-center gap-6 font-accent font-600 text-sm tracking-widest uppercase"><a href="#home" class="nav-link" style="color:#00E0E0;">Home</a> <a href="#packages" class="nav-link" style="color:#ccc;">Packages</a> <a href="#safety" class="nav-link" style="color:#ccc;">Safety</a> <a href="#gallery" class="nav-link" style="color:#ccc;">Gallery</a> <a href="#reviews" class="nav-link" style="color:#ccc;">Reviews</a> <a href="#book" class="nav-link px-4 py-2 rounded" style="background:#FF6A00;color:#021B2A;font-weight:700;">Book Now</a>
+    </div>
+   </div>
+   <div id="mobile-nav" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 font-accent font-600 text-sm tracking-widest uppercase"><a href="#home" style="color:#00E0E0;" class="py-2 border-b border-white/10">Home</a> <a href="#packages" style="color:#ccc;" class="py-2 border-b border-white/10">Packages</a> <a href="#safety" style="color:#ccc;" class="py-2 border-b border-white/10">Safety</a> <a href="#gallery" style="color:#ccc;" class="py-2 border-b border-white/10">Gallery</a> <a href="#reviews" style="color:#ccc;" class="py-2 border-b border-white/10">Reviews</a> <a href="#book" class="py-2 text-center rounded" style="background:#FF6A00;color:#021B2A;font-weight:700;">Book Now</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden" style="min-height:600px;"><!-- Speed lines -->
+   <div class="speed-line" style="top:20%;left:10%;background:#00E0E0;animation-delay:0s;"></div>
+   <div class="speed-line" style="top:35%;left:30%;background:#FF6A00;animation-delay:0.4s;width:60px;"></div>
+   <div class="speed-line" style="top:55%;left:5%;background:#00E0E0;animation-delay:0.8s;width:100px;"></div>
+   <div class="speed-line" style="top:70%;left:20%;background:#FF6A00;animation-delay:1.2s;width:50px;"></div><!-- Splash particles -->
+   <div class="splash-particle" style="top:15%;right:15%;background:#00E0E0;animation-delay:0s;"></div>
+   <div class="splash-particle" style="top:25%;right:25%;background:#fff;animation-delay:0.6s;"></div>
+   <div class="splash-particle" style="top:40%;right:10%;background:#00E0E0;animation-delay:1.2s;"></div><!-- Hero BG image -->
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1626173820779-290af8d4b5e9?w=1400&amp;q=80" alt="Jet ski on water" class="w-full h-full object-cover hero-img" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='linear-gradient(135deg,#021B2A,#064E6E)'; this.alt='Image unavailable';">
+    <div class="absolute inset-0" style="background:linear-gradient(135deg,rgba(2,27,42,0.85) 40%,rgba(0,224,224,0.15) 100%);"></div>
+   </div>
+   <div class="relative z-10 max-w-7xl mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center gap-10">
+    <div class="flex-1 text-center md:text-left"><!-- Sticker badges -->
+     <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6"><span class="sticker-badge" style="color:#FF6A00;border-color:#FF6A00;animation-delay:0s;">⚡ Fast</span> <span class="sticker-badge" style="color:#00E0E0;border-color:#00E0E0;animation-delay:0.5s;">☀️ Summer</span> <span class="sticker-badge" style="color:#FFD700;border-color:#FFD700;animation-delay:1s;">🔥 Fuel the Fun</span>
+     </div>
+     <h1 id="hero-title" class="font-heading animate-splash" style="font-size:clamp(3rem,8vw,6rem);line-height:0.95;color:#fff;letter-spacing:2px;">FUEL THE FUN<br><span class="shimmer-text" style="color:#00E0E0;">IN SECONDS.</span></h1>
+     <p id="hero-subtitle" class="mt-4 text-lg md:text-xl font-body animate-slide-up" style="color:rgba(255,255,255,0.75);max-width:500px;animation-delay:0.3s;opacity:0;">High-converting promo templates for jet ski rental offers. Built for mobile. Designed to sell.</p>
+     <div class="flex flex-wrap gap-4 mt-8 justify-center md:justify-start animate-slide-up" style="animation-delay:0.5s;opacity:0;"><a href="#book" class="inline-flex items-center gap-2 px-7 py-3 rounded-lg font-accent font-700 text-lg tracking-wide animate-pulse-glow" style="background:#FF6A00;color:#021B2A;"> <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Template + License </a> <a href="#packages" class="inline-flex items-center gap-2 px-7 py-3 rounded-lg font-accent font-700 text-lg tracking-wide border-2" style="border-color:#00E0E0;color:#00E0E0;"> <i data-lucide="eye" style="width:20px;height:20px;"></i> See Packages </a>
+     </div>
+    </div><!-- Speed Gauge -->
+    <div class="flex-shrink-0 animate-float hidden md:flex flex-col items-center">
+     <div class="gauge-container">
+      <div class="gauge-bg" style="border-top-color:#00E0E0;border-right-color:#FF6A00;"></div>
+      <div class="gauge-needle" style="background:linear-gradient(to top,#FF6A00,#FFD700);"></div>
+      <div class="absolute bottom-0 left-1/2 w-8 h-8 -ml-4 rounded-full" style="background:#FF6A00;border:3px solid #021B2A;"></div>
+     </div><span class="font-heading text-3xl mt-2" style="color:#FF6A00;">MAX THRILL</span> <span class="font-accent text-sm" style="color:#00E0E0;">BOOKING VELOCITY</span>
+    </div>
+   </div><!-- Wave SVG divider -->
+   <div class="absolute bottom-0 left-0 w-full">
+    <svg viewbox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveaspectratio="none" style="display:block;width:100%;height:60px;"><path d="M0,60 C360,100 720,20 1080,60 C1260,80 1380,50 1440,40 L1440,100 L0,100 Z" fill="#041F30" />
+    </svg>
+   </div>
+  </section><!-- WHAT'S INCLUDED -->
+  <section class="w-full section-reveal" style="background:#041F30;">
+   <div class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-center text-4xl md:text-5xl tracking-wider" style="color:#00E0E0;">WHAT'S <span style="color:#FF6A00;">INCLUDED</span></h2>
+    <p class="text-center mt-2 font-body text-lg" style="color:rgba(255,255,255,0.6);">Everything you need to launch, promote, and book jet ski adventures.</p>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-10">
+     <div class="flex flex-col items-center text-center p-4 rounded-xl" style="background:rgba(0,224,224,0.06);border:1px solid rgba(0,224,224,0.15);">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="layout-template" style="width:28px;height:28px;color:#FF6A00;"></i>
+      </div><span class="font-accent font-700 text-sm" style="color:#fff;">Rental Promo Template</span>
+     </div>
+     <div class="flex flex-col items-center text-center p-4 rounded-xl" style="background:rgba(0,224,224,0.06);border:1px solid rgba(0,224,224,0.15);">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3" style="background:rgba(0,224,224,0.15);">
+       <i data-lucide="dollar-sign" style="width:28px;height:28px;color:#00E0E0;"></i>
+      </div><span class="font-accent font-700 text-sm" style="color:#fff;">Pricing Sheet</span>
+     </div>
+     <div class="flex flex-col items-center text-center p-4 rounded-xl" style="background:rgba(0,224,224,0.06);border:1px solid rgba(0,224,224,0.15);">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="shield-check" style="width:28px;height:28px;color:#FF6A00;"></i>
+      </div><span class="font-accent font-700 text-sm" style="color:#fff;">Waiver Checklist</span>
+     </div>
+     <div class="flex flex-col items-center text-center p-4 rounded-xl" style="background:rgba(0,224,224,0.06);border:1px solid rgba(0,224,224,0.15);">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3" style="background:rgba(0,224,224,0.15);">
+       <i data-lucide="instagram" style="width:28px;height:28px;color:#00E0E0;"></i>
+      </div><span class="font-accent font-700 text-sm" style="color:#fff;">Story &amp; Reel Covers</span>
+     </div>
+     <div class="flex flex-col items-center text-center p-4 rounded-xl col-span-2 md:col-span-1" style="background:rgba(0,224,224,0.06);border:1px solid rgba(0,224,224,0.15);">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="message-square" style="width:28px;height:28px;color:#FF6A00;"></i>
+      </div><span class="font-accent font-700 text-sm" style="color:#fff;">Caption Pack</span>
+     </div>
+    </div>
+   </div>
+  </section><!-- PACKAGES -->
+  <section id="packages" class="w-full section-reveal" style="background:#021B2A;">
+   <div class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-center text-4xl md:text-5xl tracking-wider" style="color:#fff;">PICK YOUR <span style="color:#FF6A00;">SPEED</span></h2>
+    <p class="text-center mt-2 font-body text-lg" style="color:rgba(255,255,255,0.5);">Three tiers. One goal: more bookings.</p>
+    <div class="grid md:grid-cols-3 gap-6 mt-12"><!-- Tier 1 -->
+     <div class="card-hover rounded-2xl p-6 relative" style="background:linear-gradient(180deg,#072636,#041F30);border:1px solid rgba(0,224,224,0.2);">
+      <div class="text-center"><span class="font-accent font-600 text-sm tracking-widest uppercase" style="color:#00E0E0;">Starter</span>
+       <h3 id="pkg1-name" class="font-heading text-3xl mt-1" style="color:#fff;">STARTER WAVE</h3>
+       <div class="font-heading text-5xl mt-4" style="color:#00E0E0;">
+        $29
+       </div><span class="font-body text-sm" style="color:rgba(255,255,255,0.5);">one-time</span>
+      </div>
+      <ul class="mt-6 space-y-3 font-body text-base" style="color:rgba(255,255,255,0.75);">
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Rental promo template</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Pricing sheet</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> 5 social captions</li>
+       <li class="flex items-center gap-2"><i data-lucide="x-circle" style="width:18px;height:18px;color:rgba(255,255,255,0.25);flex-shrink:0;"></i><span style="color:rgba(255,255,255,0.35);">Story/Reel covers</span></li>
+       <li class="flex items-center gap-2"><i data-lucide="x-circle" style="width:18px;height:18px;color:rgba(255,255,255,0.25);flex-shrink:0;"></i><span style="color:rgba(255,255,255,0.35);">Waiver checklist</span></li>
+      </ul><a href="#book" class="block mt-8 text-center py-3 rounded-lg font-accent font-700 tracking-wide border-2" style="border-color:#00E0E0;color:#00E0E0;">Get Started</a>
+     </div><!-- Tier 2 - Popular -->
+     <div class="card-hover rounded-2xl p-6 relative" style="background:linear-gradient(180deg,#0A3A50,#072636);border:2px solid #FF6A00;box-shadow:0 0 40px rgba(255,106,0,0.15);">
+      <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1 rounded-full font-accent font-700 text-xs tracking-widest uppercase animate-badge" style="background:#FF6A00;color:#021B2A;">
+       ⭐ Most Popular
+      </div>
+      <div class="text-center mt-2"><span class="font-accent font-600 text-sm tracking-widest uppercase" style="color:#FF6A00;">Pro</span>
+       <h3 id="pkg2-name" class="font-heading text-3xl mt-1" style="color:#fff;">PRO SPLASH</h3>
+       <div class="font-heading text-5xl mt-4" style="color:#FF6A00;">
+        $59
+       </div><span class="font-body text-sm" style="color:rgba(255,255,255,0.5);">one-time</span>
+      </div>
+      <ul class="mt-6 space-y-3 font-body text-base" style="color:rgba(255,255,255,0.75);">
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#FF6A00;flex-shrink:0;"></i> Everything in Starter</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#FF6A00;flex-shrink:0;"></i> 6 Story &amp; Reel covers</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#FF6A00;flex-shrink:0;"></i> Waiver checklist</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#FF6A00;flex-shrink:0;"></i> 15 captions</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#FF6A00;flex-shrink:0;"></i> Commercial license</li>
+      </ul><a href="#book" class="block mt-8 text-center py-3 rounded-lg font-accent font-700 tracking-wide animate-pulse-glow" style="background:#FF6A00;color:#021B2A;">Get Pro Splash</a>
+     </div><!-- Tier 3 -->
+     <div class="card-hover rounded-2xl p-6 relative" style="background:linear-gradient(180deg,#072636,#041F30);border:1px solid rgba(0,224,224,0.2);">
+      <div class="text-center"><span class="font-accent font-600 text-sm tracking-widest uppercase" style="color:#00E0E0;">Premium</span>
+       <h3 id="pkg3-name" class="font-heading text-3xl mt-1" style="color:#fff;">FULL THROTTLE</h3>
+       <div class="font-heading text-5xl mt-4" style="color:#00E0E0;">
+        $99
+       </div><span class="font-body text-sm" style="color:rgba(255,255,255,0.5);">one-time</span>
+      </div>
+      <ul class="mt-6 space-y-3 font-body text-base" style="color:rgba(255,255,255,0.75);">
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Everything in Pro</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Custom brand colors</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> 30 captions + hashtags</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Priority support</li>
+       <li class="flex items-center gap-2"><i data-lucide="check-circle" style="width:18px;height:18px;color:#00E0E0;flex-shrink:0;"></i> Lifetime updates</li>
+      </ul><a href="#book" class="block mt-8 text-center py-3 rounded-lg font-accent font-700 tracking-wide border-2" style="border-color:#00E0E0;color:#00E0E0;">Go Full Throttle</a>
+     </div>
+    </div>
+   </div>
+  </section><!-- SAFETY -->
+  <section id="safety" class="w-full section-reveal" style="background:#041F30;">
+   <div class="max-w-5xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-center text-4xl md:text-5xl tracking-wider" style="color:#00E0E0;">SAFETY <span style="color:#FF6A00;">FIRST</span></h2>
+    <p class="text-center mt-2 font-body text-lg" style="color:rgba(255,255,255,0.5);">Every kit includes a waiver checklist. Here's what's covered.</p>
+    <div class="grid md:grid-cols-2 gap-6 mt-10">
+     <div class="flex items-start gap-4 p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="life-buoy" style="width:24px;height:24px;color:#FF6A00;"></i>
+      </div>
+      <div>
+       <h3 class="font-accent font-700" style="color:#fff;">Life Jacket Protocol</h3>
+       <p class="font-body text-sm mt-1" style="color:rgba(255,255,255,0.55);">Mandatory PFD sizing guide and compliance checklist for all riders.</p>
+      </div>
+     </div>
+     <div class="flex items-start gap-4 p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(0,224,224,0.15);">
+       <i data-lucide="alert-triangle" style="width:24px;height:24px;color:#00E0E0;"></i>
+      </div>
+      <div>
+       <h3 class="font-accent font-700" style="color:#fff;">Speed Zone Rules</h3>
+       <p class="font-body text-sm mt-1" style="color:rgba(255,255,255,0.55);">Clear boundary markers, no-wake zones, and distance-from-shore requirements.</p>
+      </div>
+     </div>
+     <div class="flex items-start gap-4 p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="clipboard-check" style="width:24px;height:24px;color:#FF6A00;"></i>
+      </div>
+      <div>
+       <h3 class="font-accent font-700" style="color:#fff;">Liability Waiver</h3>
+       <p class="font-body text-sm mt-1" style="color:rgba(255,255,255,0.55);">Pre-built waiver template covering injury, equipment damage, and weather conditions.</p>
+      </div>
+     </div>
+     <div class="flex items-start gap-4 p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink:0" style="background:rgba(0,224,224,0.15);">
+       <i data-lucide="sun" style="width:24px;height:24px;color:#00E0E0;"></i>
+      </div>
+      <div>
+       <h3 class="font-accent font-700" style="color:#fff;">Weather Protocol</h3>
+       <p class="font-body text-sm mt-1" style="color:rgba(255,255,255,0.55);">Cancellation thresholds, wind speed limits, and storm-alert procedures.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- GALLERY -->
+  <section id="gallery" class="w-full section-reveal" style="background:#021B2A;">
+   <div class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-center text-4xl md:text-5xl tracking-wider" style="color:#fff;">THE <span style="color:#00E0E0;">GALLERY</span></h2>
+    <p class="text-center mt-2 font-body text-lg" style="color:rgba(255,255,255,0.5);">High-energy visuals that sell the experience.</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-10">
+     <div class="gallery-item"><img src="https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=600&amp;q=80" alt="Jet ski speed" class="w-full h-48 md:h-56 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#064E6E,#0A3A50)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&amp;q=80" alt="Ocean water sport" class="w-full h-48 md:h-56 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#064E6E,#0A3A50)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item"><img src="https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=600&amp;q=80" alt="Summer water sport" class="w-full h-48 md:h-56 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#064E6E,#0A3A50)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item md:col-span-2"><img src="https://images.unsplash.com/photo-1564415051543-cb73a0109077?w=900&amp;q=80" alt="Lake jet ski" class="w-full h-48 md:h-56 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#064E6E,#0A3A50)';this.alt='Image unavailable';">
+     </div>
+     <div class="gallery-item"><img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=600&amp;q=80" alt="Water spray action" class="w-full h-48 md:h-56 object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#064E6E,#0A3A50)';this.alt='Image unavailable';">
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full section-reveal" style="background:#041F30;">
+   <div class="max-w-5xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-center text-4xl md:text-5xl tracking-wider" style="color:#00E0E0;">WHAT RIDERS <span style="color:#FF6A00;">SAY</span></h2>
+    <div class="grid md:grid-cols-3 gap-6 mt-10">
+     <div class="p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="flex gap-1 mb-3"><span style="color:#FFD700;">★★★★★</span>
+      </div>
+      <p class="font-body" style="color:rgba(255,255,255,0.7);">"We tripled our weekend bookings after using the promo templates. The captions alone saved us hours."</p>
+      <p class="font-accent font-700 mt-4 text-sm" style="color:#FF6A00;">— Marco R., Miami Jet Rentals</p>
+     </div>
+     <div class="p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="flex gap-1 mb-3"><span style="color:#FFD700;">★★★★★</span>
+      </div>
+      <p class="font-body" style="color:rgba(255,255,255,0.7);">"The waiver checklist is legit. Professional, clean, and our insurance agent approved it on the spot."</p>
+      <p class="font-accent font-700 mt-4 text-sm" style="color:#FF6A00;">— Sarah K., Lake Travis PWC</p>
+     </div>
+     <div class="p-5 rounded-xl" style="background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.12);">
+      <div class="flex gap-1 mb-3"><span style="color:#FFD700;">★★★★★</span>
+      </div>
+      <p class="font-body" style="color:rgba(255,255,255,0.7);">"Story covers are fire. We went from 200 views to 3k in a week. This kit pays for itself day one."</p>
+      <p class="font-accent font-700 mt-4 text-sm" style="color:#FF6A00;">— DJ Waves, Cancún Jet Tours</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- SELLING ANGLES -->
+  <section class="w-full section-reveal" style="background:#021B2A;">
+   <div class="max-w-5xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-3 gap-6 text-center">
+     <div class="p-6">
+      <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="map-pin" style="width:32px;height:32px;color:#FF6A00;"></i>
+      </div>
+      <h3 class="font-heading text-2xl" style="color:#fff;">LOCAL SERVICE CONVERSION</h3>
+      <p class="font-body mt-2 text-sm" style="color:rgba(255,255,255,0.55);">Designed for rental shops and tour operators who need walk-in and online bookings, fast.</p>
+     </div>
+     <div class="p-6">
+      <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background:rgba(0,224,224,0.15);">
+       <i data-lucide="smartphone" style="width:32px;height:32px;color:#00E0E0;"></i>
+      </div>
+      <h3 class="font-heading text-2xl" style="color:#fff;">BUILT FOR MOBILE</h3>
+      <p class="font-body mt-2 text-sm" style="color:rgba(255,255,255,0.55);">Every template is mobile-first. Your customers book from the beach, the dock, or the car.</p>
+     </div>
+     <div class="p-6">
+      <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style="background:rgba(255,106,0,0.15);">
+       <i data-lucide="trending-up" style="width:32px;height:32px;color:#FF6A00;"></i>
+      </div>
+      <h3 class="font-heading text-2xl" style="color:#fff;">HIGH-ENERGY VISUALS SELL</h3>
+      <p class="font-body mt-2 text-sm" style="color:rgba(255,255,255,0.55);">Splash imagery and bold colors drive attention. Stop scrolling. Start booking.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOOK NOW CTA -->
+  <section id="book" class="w-full section-reveal" style="background:linear-gradient(180deg,#041F30,#021B2A);">
+   <div class="max-w-3xl mx-auto px-4 py-20 text-center">
+    <h2 id="bottom-cta" class="font-heading text-4xl md:text-6xl tracking-wider" style="color:#fff;">MAKE BOOKINGS<br><span class="shimmer-text" style="color:#FF6A00;">MOVE FAST.</span></h2>
+    <p class="font-body text-lg mt-4" style="color:rgba(255,255,255,0.6);">Grab your WakeRush kit and start converting today.</p>
+    <div class="flex flex-wrap justify-center gap-4 mt-8"><button onclick="document.getElementById('packages').scrollIntoView({behavior:'smooth'})" class="px-8 py-4 rounded-lg font-accent font-700 text-lg tracking-wide animate-pulse-glow" style="background:#FF6A00;color:#021B2A;border:none;cursor:pointer;"> <i data-lucide="zap" style="width:20px;height:20px;display:inline;vertical-align:middle;margin-right:6px;"></i>Get Your Kit Now </button>
+    </div><!-- Speed gauge mini -->
+    <div class="flex justify-center mt-10">
+     <div class="gauge-container" style="width:80px;height:40px;">
+      <div class="gauge-bg" style="width:80px;height:80px;border-width:6px;border-top-color:#00E0E0;border-right-color:#FF6A00;"></div>
+      <div class="gauge-needle" style="height:34px;background:linear-gradient(to top,#FF6A00,#FFD700);"></div>
+      <div class="absolute bottom-0 left-1/2 w-6 h-6 -ml-3 rounded-full" style="background:#FF6A00;border:2px solid #021B2A;"></div>
+     </div>
+    </div>
+   </div>
+  </section><!-- VOTE + COMMENT WIDGET -->
+  <section class="w-full section-reveal" style="background:#021B2A;">
+   <div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="rounded-2xl p-6 md:p-8" style="background:linear-gradient(135deg,rgba(0,224,224,0.08),rgba(255,106,0,0.08));border:1px solid rgba(0,224,224,0.2);">
+     <h3 class="font-heading text-2xl md:text-3xl text-center tracking-wider" style="color:#00E0E0;">VOTE + <span style="color:#FF6A00;">COMMENT</span></h3>
+     <p class="text-center font-body mt-1" style="color:rgba(255,255,255,0.5);">Love the kit? Let us know!</p><!-- Vote buttons -->
+     <div class="flex justify-center gap-6 mt-6"><button id="vote-up" onclick="handleVote('up')" class="flex flex-col items-center gap-1 px-6 py-3 rounded-xl transition-all" style="background:rgba(0,224,224,0.1);border:1px solid rgba(0,224,224,0.3);cursor:pointer;"> <i data-lucide="thumbs-up" style="width:28px;height:28px;color:#00E0E0;"></i> <span id="vote-up-count" class="font-accent font-700" style="color:#00E0E0;">0</span> </button> <button id="vote-down" onclick="handleVote('down')" class="flex flex-col items-center gap-1 px-6 py-3 rounded-xl transition-all" style="background:rgba(255,106,0,0.1);border:1px solid rgba(255,106,0,0.3);cursor:pointer;"> <i data-lucide="thumbs-down" style="width:28px;height:28px;color:#FF6A00;"></i> <span id="vote-down-count" class="font-accent font-700" style="color:#FF6A00;">0</span> </button>
+     </div><!-- Comment form -->
+     <form id="comment-form" class="mt-6" onsubmit="handleComment(event)"><label for="comment-input" class="font-accent font-600 text-sm" style="color:rgba(255,255,255,0.6);">Leave a comment</label>
+      <div class="flex gap-2 mt-2"><input id="comment-input" type="text" placeholder="This kit is 🔥..." class="flex-1 px-4 py-3 rounded-lg font-body" style="background:rgba(255,255,255,0.08);border:1px solid rgba(0,224,224,0.2);color:#fff;outline:none;" required> <button type="submit" class="px-5 py-3 rounded-lg font-accent font-700" style="background:#FF6A00;color:#021B2A;cursor:pointer;border:none;">Send</button>
+      </div>
+     </form>
+     <div id="comments-list" class="mt-4 space-y-2"></div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full" style="background:#011620;border-top:1px solid rgba(0,224,224,0.1);">
+   <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+     <div style="background:linear-gradient(135deg,#00E0E0,#FF6A00);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i data-lucide="zap" style="width:14px;height:14px;color:#021B2A;"></i>
+     </div><span class="font-heading text-xl tracking-wider" style="color:#00E0E0;">WAKE<span style="color:#FF6A00;">RUSH</span></span>
+    </div>
+    <p class="font-body text-sm" style="color:rgba(255,255,255,0.35);">© 2024 WakeRush Jet Ski Kit. Make waves. Get booked.</p>
+    <div class="flex gap-4"><a href="#" style="color:rgba(255,255,255,0.4);" class="hover:opacity-70"><i data-lucide="instagram" style="width:20px;height:20px;"></i></a> <a href="#" style="color:rgba(255,255,255,0.4);" class="hover:opacity-70"><i data-lucide="twitter" style="width:20px;height:20px;"></i></a> <a href="#" style="color:rgba(255,255,255,0.4);" class="hover:opacity-70"><i data-lucide="facebook" style="width:20px;height:20px;"></i></a>
+    </div>
+   </div>
+  </footer>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: 'FUEL THE FUN IN SECONDS.',
+  hero_subtitle: 'High-converting promo templates for jet ski rental offers. Built for mobile. Designed to sell.',
+  package1_name: 'STARTER WAVE',
+  package2_name: 'PRO SPLASH',
+  package3_name: 'FULL THROTTLE',
+  bottom_cta_text: 'MAKE BOOKINGS MOVE FAST.',
+  background_color: '#021B2A',
+  surface_color: '#041F30',
+  text_color: '#FFFFFF',
+  primary_action_color: '#FF6A00',
+  secondary_action_color: '#00E0E0',
+  font_family: 'Bebas Neue',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Text
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    const words = (c.hero_title || defaultConfig.hero_title).split(' ');
+    const mid = Math.ceil(words.length / 2);
+    heroTitle.innerHTML = words.slice(0, mid).join(' ') + '<br><span class="shimmer-text" style="color:' + c.secondary_action_color + ';">' + words.slice(mid).join(' ') + '</span>';
+  }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) heroSub.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  const p1 = document.getElementById('pkg1-name');
+  if (p1) p1.textContent = c.package1_name || defaultConfig.package1_name;
+  const p2 = document.getElementById('pkg2-name');
+  if (p2) p2.textContent = c.package2_name || defaultConfig.package2_name;
+  const p3 = document.getElementById('pkg3-name');
+  if (p3) p3.textContent = c.package3_name || defaultConfig.package3_name;
+  const btm = document.getElementById('bottom-cta');
+  if (btm) {
+    const w = (c.bottom_cta_text || defaultConfig.bottom_cta_text).split(' ');
+    const m = Math.ceil(w.length / 2);
+    btm.innerHTML = w.slice(0, m).join(' ') + '<br><span class="shimmer-text" style="color:' + c.primary_action_color + ';">' + w.slice(m).join(' ') + '</span>';
+  }
+
+  // Colors
+  document.body.style.background = c.background_color;
+
+  // Font
+  const font = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-heading, h1, h2, h3').forEach(el => {
+    el.style.fontFamily = font + ', Bebas Neue, sans-serif';
+  });
+
+  // Font size
+  const base = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('p, li, span, label, input').forEach(el => {
+    if (!el.closest('.font-heading') && !el.closest('h1') && !el.closest('h2') && !el.closest('h3')) {
+      el.style.fontSize = base + 'px';
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['package1_name', config.package1_name || defaultConfig.package1_name],
+    ['package2_name', config.package2_name || defaultConfig.package2_name],
+    ['package3_name', config.package3_name || defaultConfig.package3_name],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Mobile nav
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('mobile-nav');
+  nav.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-nav').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section-reveal').forEach(s => observer.observe(s));
+
+// Vote + comment
+let votes = { up: 0, down: 0 };
+function handleVote(type) {
+  votes[type]++;
+  document.getElementById('vote-up-count').textContent = votes.up;
+  document.getElementById('vote-down-count').textContent = votes.down;
+  const btn = document.getElementById('vote-' + type);
+  btn.style.transform = 'scale(1.15)';
+  setTimeout(() => btn.style.transform = 'scale(1)', 200);
+}
+function handleComment(e) {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'flex items-start gap-3 p-3 rounded-lg';
+  div.style.cssText = 'background:rgba(0,224,224,0.05);border:1px solid rgba(0,224,224,0.1);animation:slideUp 0.4s ease-out;';
+  div.innerHTML = '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(255,106,0,0.2);"><i data-lucide="user" style="width:16px;height:16px;color:#FF6A00;"></i></div><p class="font-body text-sm" style="color:rgba(255,255,255,0.75);">' + val.replace(/</g,'&lt;') + '</p>';
+  list.prepend(div);
+  input.value = '';
+  lucide.createIcons();
+}
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4f27d2b827c5',t:'MTc3NTU3ODI5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

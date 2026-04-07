@@ -1,1 +1,694 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/dd807853-63ac-4ba7-bd1d-6ab0412f375a -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameSphere Con</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        rajdhani: ['Rajdhani', 'sans-serif']
+      },
+      colors: {
+        void: '#050505',
+        neon: { cyan: '#00f0ff', purple: '#b44aff', pink: '#ff2d78' }
+      }
+    }
+  }
+}
+</script>
+  <style>
+  html, body { height: 100%; margin: 0; }
+
+  @keyframes gridScroll {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  @keyframes scanline {
+    0% { top: -10%; }
+    100% { top: 110%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hud-expand {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .grid-bg::before {
+    content: ''; position: absolute; inset: -60px;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridScroll 8s linear infinite;
+  }
+
+  .scanline::after {
+    content: ''; position: absolute; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3), transparent);
+    animation: scanline 4s linear infinite;
+    pointer-events: none;
+  }
+
+  .hud-border {
+    position: relative;
+    border: 1px solid rgba(0,240,255,0.15);
+  }
+  .hud-border::before, .hud-border::after {
+    content: ''; position: absolute; width: 16px; height: 16px;
+  }
+  .hud-border::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--accent-color, #00f0ff);
+    border-left: 2px solid var(--accent-color, #00f0ff);
+  }
+  .hud-border::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--accent-color, #00f0ff);
+    border-right: 2px solid var(--accent-color, #00f0ff);
+  }
+
+  .glow-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .glow-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 30px rgba(0,240,255,0.15), 0 0 60px rgba(0,240,255,0.05);
+  }
+
+  .pricing-card { transition: all 0.4s ease; position: relative; overflow: hidden; }
+  .pricing-card::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .pricing-card:hover { transform: translateY(-8px) scale(1.02); }
+  .pricing-card:hover::before { opacity: 1; }
+
+  .pricing-pass::before { background: radial-gradient(ellipse at top, rgba(0,240,255,0.08), transparent 70%); }
+  .pricing-pro::before { background: radial-gradient(ellipse at top, rgba(180,74,255,0.12), transparent 70%); }
+  .pricing-vip::before { background: radial-gradient(ellipse at top, rgba(255,45,120,0.12), transparent 70%); }
+
+  .pricing-pro { border-color: rgba(180,74,255,0.4) !important; }
+  .pricing-vip { border-color: rgba(255,45,120,0.4) !important; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #00f0ff, #00b8d4);
+    color: #050505; font-weight: 700; transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0,240,255,0.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(0,240,255,0.5);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    border: 1px solid rgba(0,240,255,0.5); color: #00f0ff;
+    transition: all 0.3s ease; background: transparent;
+  }
+  .btn-outline:hover {
+    background: rgba(0,240,255,0.1);
+    box-shadow: 0 0 20px rgba(0,240,255,0.2);
+  }
+
+  .fade-up { animation: fadeSlideUp 0.8s ease forwards; opacity: 0; }
+  .fade-up-d1 { animation-delay: 0.1s; }
+  .fade-up-d2 { animation-delay: 0.2s; }
+  .fade-up-d3 { animation-delay: 0.3s; }
+  .fade-up-d4 { animation-delay: 0.4s; }
+
+  .nav-link { position: relative; transition: color 0.3s ease; }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px; background: #00f0ff;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  .nav-link:hover, .nav-link.active { color: #00f0ff; }
+
+  .ticker-track { display: flex; animation: ticker 30s linear infinite; }
+
+  .zone-icon { animation: float 3s ease-in-out infinite; }
+  .zone-icon:nth-child(2) { animation-delay: 0.5s; }
+  .zone-icon:nth-child(3) { animation-delay: 1s; }
+  .zone-icon:nth-child(4) { animation-delay: 1.5s; }
+
+  .reaction-btn { transition: all 0.2s ease; }
+  .reaction-btn:hover { transform: scale(1.15); }
+  .reaction-btn.selected { transform: scale(1.1); }
+
+  .comment-input:focus { outline: none; box-shadow: 0 0 0 1px rgba(0,240,255,0.4); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); border-radius: 3px; }
+
+  .mobile-menu { display: none; }
+  .mobile-menu.open { display: flex; }
+
+  @media (max-width: 768px) {
+    .desktop-nav { display: none !important; }
+    .mobile-toggle { display: flex !important; }
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background:#050505; color:#e0e0e0; font-family:'Rajdhani',sans-serif; overflow-x:hidden;">
+  <div class="grid-bg"></div>
+  <div id="app-root" class="relative z-10 w-full h-full overflow-auto"><!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(5,5,5,0.85); backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,240,255,0.08);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="font-orbitron text-lg font-bold tracking-wider" style="color:#00f0ff;"> <span style="color:#b44aff;">GAME</span>SPHERE </a>
+     <div class="desktop-nav hidden md:flex items-center gap-6 text-sm font-medium tracking-wide uppercase"><a href="#home" class="nav-link active" style="color:rgba(224,224,224,0.7);">Home</a> <a href="#events" class="nav-link" style="color:rgba(224,224,224,0.7);">Events</a> <a href="#zones" class="nav-link" style="color:rgba(224,224,224,0.7);">Zones</a> <a href="#schedule" class="nav-link" style="color:rgba(224,224,224,0.7);">Schedule</a> <a href="#pricing" class="nav-link" style="color:rgba(224,224,224,0.7);">Pricing</a> <a href="#faq" class="nav-link" style="color:rgba(224,224,224,0.7);">FAQ</a> <a href="#tickets" class="btn-primary px-4 py-1.5 rounded text-xs font-orbitron no-underline" style="text-decoration:none;">GET TICKETS</a>
+     </div><button class="mobile-toggle hidden items-center justify-center w-10 h-10 md:hidden" onclick="document.getElementById('mobile-menu').classList.toggle('open')" aria-label="Menu"> <i data-lucide="menu" style="color:#00f0ff; width:22px; height:22px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu flex-col gap-2 px-4 pb-4 text-sm font-medium tracking-wide uppercase md:hidden" style="background:rgba(5,5,5,0.95);"><a href="#home" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">Home</a> <a href="#events" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">Events</a> <a href="#zones" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">Zones</a> <a href="#schedule" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">Schedule</a> <a href="#pricing" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">Pricing</a> <a href="#faq" class="nav-link py-2 block" style="color:rgba(224,224,224,0.7);">FAQ</a> <a href="#tickets" class="btn-primary px-4 py-2 rounded text-xs font-orbitron text-center no-underline block mt-2" style="text-decoration:none;">GET TICKETS</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative scanline" style="min-height:100%; display:flex; align-items:center; justify-content:center; padding: 120px 24px 80px;"><!-- Radial glows -->
+    <div style="position:absolute; top:20%; left:30%; width:400px; height:400px; background:radial-gradient(circle, rgba(0,240,255,0.08), transparent 70%); pointer-events:none;"></div>
+    <div style="position:absolute; bottom:10%; right:20%; width:350px; height:350px; background:radial-gradient(circle, rgba(180,74,255,0.06), transparent 70%); pointer-events:none;"></div>
+    <div class="text-center relative z-10 max-w-4xl mx-auto"><!-- HUD top bar -->
+     <div class="flex items-center justify-center gap-3 mb-6 fade-up">
+      <div style="width:40px; height:1px; background:linear-gradient(90deg, transparent, #00f0ff);"></div><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:rgba(0,240,255,0.6);">MARCH 14–16 • 2025 • LOS ANGELES</span>
+      <div style="width:40px; height:1px; background:linear-gradient(90deg, #00f0ff, transparent);"></div>
+     </div>
+     <h1 id="hero-title" class="font-orbitron font-black uppercase leading-none mb-4 fade-up fade-up-d1" style="font-size:clamp(2.5rem, 8vw, 6rem); background:linear-gradient(135deg, #ffffff 0%, #00f0ff 50%, #b44aff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Step inside the game.</h1>
+     <p id="hero-subtitle" class="font-rajdhani text-xl md:text-2xl mb-10 fade-up fade-up-d2" style="color:rgba(224,224,224,0.6); max-width:520px; margin-left:auto; margin-right:auto;">A convention built for players and creators.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-up fade-up-d3"><a href="#tickets" id="cta-primary-btn" class="btn-primary font-orbitron text-sm tracking-wider px-8 py-3 rounded-sm uppercase" style="text-decoration:none;">Get Tickets</a> <a href="#zones" id="cta-secondary-btn" class="btn-outline font-orbitron text-sm tracking-wider px-8 py-3 rounded-sm uppercase" style="text-decoration:none;">Explore Zones</a>
+     </div><!-- Stats HUD -->
+     <div class="grid grid-cols-3 gap-6 mt-16 fade-up fade-up-d4 max-w-md mx-auto">
+      <div>
+       <div class="font-orbitron text-2xl font-bold" style="color:#00f0ff;">
+        50K+
+       </div>
+       <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(224,224,224,0.4);">
+        Attendees
+       </div>
+      </div>
+      <div>
+       <div class="font-orbitron text-2xl font-bold" style="color:#b44aff;">
+        200+
+       </div>
+       <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(224,224,224,0.4);">
+        Exhibitors
+       </div>
+      </div>
+      <div>
+       <div class="font-orbitron text-2xl font-bold" style="color:#ff2d78;">
+        3
+       </div>
+       <div class="text-xs uppercase tracking-wider mt-1" style="color:rgba(224,224,224,0.4);">
+        Epic Days
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TICKER -->
+   <div style="border-top:1px solid rgba(0,240,255,0.1); border-bottom:1px solid rgba(0,240,255,0.1); background:rgba(0,240,255,0.02); overflow:hidden; padding:10px 0;">
+    <div class="ticker-track" style="width:max-content;"><span class="font-orbitron text-xs tracking-[0.2em] uppercase px-8" style="color:rgba(0,240,255,0.4);">⬡ ESPORTS ARENA ⬡ VR EXPERIENCE ⬡ INDIE SHOWCASE ⬡ COSPLAY CONTEST ⬡ PANEL DISCUSSIONS ⬡ GAME LAUNCHES ⬡ SPEEDRUN CHALLENGE ⬡ MERCH DROPS ⬡</span> <span class="font-orbitron text-xs tracking-[0.2em] uppercase px-8" style="color:rgba(0,240,255,0.4);">⬡ ESPORTS ARENA ⬡ VR EXPERIENCE ⬡ INDIE SHOWCASE ⬡ COSPLAY CONTEST ⬡ PANEL DISCUSSIONS ⬡ GAME LAUNCHES ⬡ SPEEDRUN CHALLENGE ⬡ MERCH DROPS ⬡</span>
+    </div>
+   </div><!-- EVENTS -->
+   <section id="events" class="py-20 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14"><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:#b44aff;">// WHAT'S HAPPENING</span>
+      <h2 class="font-orbitron text-3xl md:text-4xl font-bold mt-3 uppercase" style="color:#fff;">Competitions &amp; Showcases</h2>
+      <div style="width:60px; height:2px; background:linear-gradient(90deg, #00f0ff, #b44aff); margin:16px auto 0;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="hud-border glow-card rounded-sm p-6" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded flex items-center justify-center" style="background:rgba(0,240,255,0.1);"><i data-lucide="swords" style="color:#00f0ff; width:20px; height:20px;"></i>
+        </div>
+        <h3 class="font-orbitron text-sm font-bold uppercase" style="color:#fff;">Esports Championship</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(224,224,224,0.5);">Top-tier teams compete in FPS, MOBA, and fighting game brackets. $250K prize pool across all titles.</p>
+       <div class="mt-4 text-xs font-orbitron uppercase tracking-wider" style="color:#00f0ff;">
+        All 3 Days →
+       </div>
+      </div>
+      <div class="hud-border glow-card rounded-sm p-6" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded flex items-center justify-center" style="background:rgba(180,74,255,0.1);"><i data-lucide="gamepad-2" style="color:#b44aff; width:20px; height:20px;"></i>
+        </div>
+        <h3 class="font-orbitron text-sm font-bold uppercase" style="color:#fff;">Indie Dev Showcase</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(224,224,224,0.5);">Play unreleased titles from 80+ indie studios. Vote for your favorite and help crown the People's Choice winner.</p>
+       <div class="mt-4 text-xs font-orbitron uppercase tracking-wider" style="color:#b44aff;">
+        Day 1 &amp; 2 →
+       </div>
+      </div>
+      <div class="hud-border glow-card rounded-sm p-6" style="background:rgba(255,255,255,0.02);">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded flex items-center justify-center" style="background:rgba(255,45,120,0.1);"><i data-lucide="trophy" style="color:#ff2d78; width:20px; height:20px;"></i>
+        </div>
+        <h3 class="font-orbitron text-sm font-bold uppercase" style="color:#fff;">Cosplay Royale</h3>
+       </div>
+       <p class="text-sm leading-relaxed" style="color:rgba(224,224,224,0.5);">Professional and amateur cosplayers compete on the main stage. Judges include award-winning costume designers.</p>
+       <div class="mt-4 text-xs font-orbitron uppercase tracking-wider" style="color:#ff2d78;">
+        Day 3 Finale →
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ZONES -->
+   <section id="zones" class="py-20 px-4 sm:px-6" style="background:rgba(0,240,255,0.01);">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14"><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:#00f0ff;">// EXPLORE THE MAP</span>
+      <h2 class="font-orbitron text-3xl md:text-4xl font-bold mt-3 uppercase" style="color:#fff;">Convention Zones</h2>
+      <div style="width:60px; height:2px; background:linear-gradient(90deg, #b44aff, #ff2d78); margin:16px auto 0;"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="hud-border glow-card rounded-sm p-6 text-center" style="background:rgba(255,255,255,0.02); --accent-color:#00f0ff;">
+       <div class="zone-icon w-16 h-16 mx-auto mb-4 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,240,255,0.05));"><i data-lucide="monitor" style="color:#00f0ff; width:28px; height:28px;"></i>
+       </div>
+       <h3 class="font-orbitron text-sm font-bold uppercase mb-2" style="color:#00f0ff;">Gaming Hall</h3>
+       <p class="text-xs leading-relaxed" style="color:rgba(224,224,224,0.5);">500+ stations with the latest AAA titles. Play before anyone else.</p>
+      </div>
+      <div class="hud-border glow-card rounded-sm p-6 text-center" style="background:rgba(255,255,255,0.02); --accent-color:#b44aff;">
+       <div class="zone-icon w-16 h-16 mx-auto mb-4 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg, rgba(180,74,255,0.15), rgba(180,74,255,0.05));"><i data-lucide="glasses" style="color:#b44aff; width:28px; height:28px;"></i>
+       </div>
+       <h3 class="font-orbitron text-sm font-bold uppercase mb-2" style="color:#b44aff;">VR Nexus</h3>
+       <p class="text-xs leading-relaxed" style="color:rgba(224,224,224,0.5);">Full-body VR rigs, haptic suits, and mixed-reality demos from top studios.</p>
+      </div>
+      <div class="hud-border glow-card rounded-sm p-6 text-center" style="background:rgba(255,255,255,0.02); --accent-color:#ff2d78;">
+       <div class="zone-icon w-16 h-16 mx-auto mb-4 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg, rgba(255,45,120,0.15), rgba(255,45,120,0.05));"><i data-lucide="rocket" style="color:#ff2d78; width:28px; height:28px;"></i>
+       </div>
+       <h3 class="font-orbitron text-sm font-bold uppercase mb-2" style="color:#ff2d78;">Indie Arcade</h3>
+       <p class="text-xs leading-relaxed" style="color:rgba(224,224,224,0.5);">Discover hidden gems. Meet the devs. Play experimental and boundary-pushing games.</p>
+      </div>
+      <div class="hud-border glow-card rounded-sm p-6 text-center" style="background:rgba(255,255,255,0.02); --accent-color:#00f0ff;">
+       <div class="zone-icon w-16 h-16 mx-auto mb-4 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg, rgba(0,240,255,0.1), rgba(180,74,255,0.1));"><i data-lucide="zap" style="color:#00f0ff; width:28px; height:28px;"></i>
+       </div>
+       <h3 class="font-orbitron text-sm font-bold uppercase mb-2" style="color:#00f0ff;">Esports Arena</h3>
+       <p class="text-xs leading-relaxed" style="color:rgba(224,224,224,0.5);">3,000-seat stadium with broadcast-quality production and live commentary.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- SCHEDULE -->
+   <section id="schedule" class="py-20 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14"><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:#ff2d78;">// PLAN YOUR VISIT</span>
+      <h2 class="font-orbitron text-3xl md:text-4xl font-bold mt-3 uppercase" style="color:#fff;">Event Schedule</h2>
+      <div style="width:60px; height:2px; background:linear-gradient(90deg, #ff2d78, #00f0ff); margin:16px auto 0;"></div>
+     </div><!-- Day tabs -->
+     <div class="flex justify-center gap-2 mb-10"><button onclick="showDay(0)" id="day-btn-0" class="font-orbitron text-xs tracking-wider uppercase px-5 py-2 rounded-sm transition-all" style="background:rgba(0,240,255,0.15); color:#00f0ff; border:1px solid rgba(0,240,255,0.3);">Day 1 — Mar 14</button> <button onclick="showDay(1)" id="day-btn-1" class="font-orbitron text-xs tracking-wider uppercase px-5 py-2 rounded-sm transition-all" style="background:transparent; color:rgba(224,224,224,0.5); border:1px solid rgba(224,224,224,0.1);">Day 2 — Mar 15</button> <button onclick="showDay(2)" id="day-btn-2" class="font-orbitron text-xs tracking-wider uppercase px-5 py-2 rounded-sm transition-all" style="background:transparent; color:rgba(224,224,224,0.5); border:1px solid rgba(224,224,224,0.1);">Day 3 — Mar 16</button>
+     </div>
+     <div id="schedule-content"></div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-20 px-4 sm:px-6" style="background:rgba(180,74,255,0.01);">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14"><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:#00f0ff;">// CHOOSE YOUR LEVEL</span>
+      <h2 class="font-orbitron text-3xl md:text-4xl font-bold mt-3 uppercase" style="color:#fff;">Pricing</h2>
+      <div style="width:60px; height:2px; background:linear-gradient(90deg, #00f0ff, #b44aff); margin:16px auto 0;"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- PASS -->
+      <div class="pricing-card pricing-pass hud-border rounded-sm p-7" style="background:rgba(255,255,255,0.02); --accent-color:#00f0ff;">
+       <div class="text-xs font-orbitron uppercase tracking-[0.2em] mb-4" style="color:#00f0ff;">
+        Pass
+       </div>
+       <div class="flex items-baseline gap-1 mb-1"><span id="pass-price" class="font-orbitron text-4xl font-bold" style="color:#fff;">$49</span> <span class="text-xs" style="color:rgba(224,224,224,0.4);">/person</span>
+       </div>
+       <p class="text-xs mb-6" style="color:rgba(224,224,224,0.4);">Single-day general access</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#00f0ff; width:14px; height:14px;"></i>Gaming Hall access</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#00f0ff; width:14px; height:14px;"></i>Indie Arcade entry</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#00f0ff; width:14px; height:14px;"></i>Main stage viewing</li>
+       </ul><button class="btn-outline font-orbitron text-xs tracking-wider uppercase w-full py-2.5 rounded-sm">Select Pass</button>
+      </div><!-- PRO -->
+      <div class="pricing-card pricing-pro hud-border rounded-sm p-7 relative" style="background:rgba(255,255,255,0.03); --accent-color:#b44aff; border-color:rgba(180,74,255,0.3);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 font-orbitron text-[10px] tracking-[0.2em] uppercase px-3 py-1 rounded-sm" style="background:#b44aff; color:#050505;">
+        Most Popular
+       </div>
+       <div class="text-xs font-orbitron uppercase tracking-[0.2em] mb-4" style="color:#b44aff;">
+        Pro
+       </div>
+       <div class="flex items-baseline gap-1 mb-1"><span id="pro-price" class="font-orbitron text-4xl font-bold" style="color:#fff;">$129</span> <span class="text-xs" style="color:rgba(224,224,224,0.4);">/person</span>
+       </div>
+       <p class="text-xs mb-6" style="color:rgba(224,224,224,0.4);">Full 3-day access + perks</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#b44aff; width:14px; height:14px;"></i>All Pass benefits</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#b44aff; width:14px; height:14px;"></i>3-day unlimited access</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#b44aff; width:14px; height:14px;"></i>VR Nexus sessions</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#b44aff; width:14px; height:14px;"></i>Priority seating</li>
+       </ul><button class="font-orbitron text-xs tracking-wider uppercase w-full py-2.5 rounded-sm" style="background:linear-gradient(135deg, #b44aff, #8a2be2); color:#fff; border:none; box-shadow:0 0 20px rgba(180,74,255,0.3); transition:all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 40px rgba(180,74,255,0.5)'" onmouseout="this.style.boxShadow='0 0 20px rgba(180,74,255,0.3)'">Select Pro</button>
+      </div><!-- VIP -->
+      <div class="pricing-card pricing-vip hud-border rounded-sm p-7" style="background:rgba(255,255,255,0.02); --accent-color:#ff2d78; border-color:rgba(255,45,120,0.2);">
+       <div class="text-xs font-orbitron uppercase tracking-[0.2em] mb-4" style="color:#ff2d78;">
+        VIP
+       </div>
+       <div class="flex items-baseline gap-1 mb-1"><span id="vip-price" class="font-orbitron text-4xl font-bold" style="color:#fff;">$299</span> <span class="text-xs" style="color:rgba(224,224,224,0.4);">/person</span>
+       </div>
+       <p class="text-xs mb-6" style="color:rgba(224,224,224,0.4);">The ultimate experience</p>
+       <ul class="space-y-3 mb-8">
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#ff2d78; width:14px; height:14px;"></i>All Pro benefits</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#ff2d78; width:14px; height:14px;"></i>Backstage + lounge</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#ff2d78; width:14px; height:14px;"></i>Meet &amp; greet passes</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#ff2d78; width:14px; height:14px;"></i>Exclusive merch bundle</li>
+        <li class="flex items-center gap-2 text-sm" style="color:rgba(224,224,224,0.6);"><i data-lucide="check" style="color:#ff2d78; width:14px; height:14px;"></i>Early entry each day</li>
+       </ul><button class="font-orbitron text-xs tracking-wider uppercase w-full py-2.5 rounded-sm" style="background:linear-gradient(135deg, #ff2d78, #cc1155); color:#fff; border:none; box-shadow:0 0 20px rgba(255,45,120,0.3); transition:all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 40px rgba(255,45,120,0.5)'" onmouseout="this.style.boxShadow='0 0 20px rgba(255,45,120,0.3)'">Select VIP</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 sm:px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-14"><span class="font-orbitron text-xs tracking-[0.3em] uppercase" style="color:#b44aff;">// NEED INFO?</span>
+      <h2 class="font-orbitron text-3xl md:text-4xl font-bold mt-3 uppercase" style="color:#fff;">FAQ</h2>
+      <div style="width:60px; height:2px; background:linear-gradient(90deg, #b44aff, #00f0ff); margin:16px auto 0;"></div>
+     </div>
+     <div id="faq-container" class="space-y-3"></div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="tickets" class="py-20 px-4 sm:px-6" style="background:radial-gradient(ellipse at center, rgba(0,240,255,0.04), transparent 70%);">
+    <div class="max-w-3xl mx-auto text-center">
+     <h2 id="bottom-cta-text" class="font-orbitron text-3xl md:text-5xl font-bold uppercase mb-4" style="background:linear-gradient(135deg, #00f0ff 0%, #b44aff 50%, #ff2d78 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Enter the experience.</h2>
+     <p class="text-lg mb-8" style="color:rgba(224,224,224,0.5);">March 14–16, 2025 • Los Angeles Convention Center</p><a href="#pricing" class="btn-primary font-orbitron text-sm tracking-wider px-10 py-3 rounded-sm uppercase inline-block" style="text-decoration:none;">Get Your Tickets Now</a> <!-- Vote + Comment Widget -->
+     <div class="mt-16 hud-border rounded-sm p-6 text-left" style="background:rgba(255,255,255,0.02); --accent-color:#b44aff;">
+      <div class="flex items-center gap-2 mb-4">
+       <div class="w-2 h-2 rounded-full" style="background:#b44aff; animation:pulse-glow 2s ease-in-out infinite;"></div><span class="font-orbitron text-xs tracking-[0.2em] uppercase" style="color:#b44aff;">Community Pulse</span>
+      </div>
+      <p class="text-sm mb-4" style="color:rgba(224,224,224,0.6);">What would you pay for the ultimate gaming convention experience?</p><!-- Price vote options -->
+      <div id="vote-options" class="flex flex-wrap gap-2 mb-6"></div><!-- Reactions -->
+      <div class="flex flex-wrap gap-2 mb-6"><button class="reaction-btn px-3 py-1.5 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" onclick="react(this, '🔥')">🔥 <span>0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" onclick="react(this, '🎮')">🎮 <span>0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" onclick="react(this, '🚀')">🚀 <span>0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" onclick="react(this, '💜')">💜 <span>0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);" onclick="react(this, '👀')">👀 <span>0</span></button>
+      </div><!-- Comment box -->
+      <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Drop a comment..." class="comment-input flex-1 px-3 py-2 rounded-sm text-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#e0e0e0;"> <button onclick="addComment()" class="font-orbitron text-xs tracking-wider uppercase px-4 py-2 rounded-sm" style="background:rgba(180,74,255,0.2); color:#b44aff; border:1px solid rgba(180,74,255,0.3); transition:all 0.3s;" onmouseover="this.style.background='rgba(180,74,255,0.3)'" onmouseout="this.style.background='rgba(180,74,255,0.2)'">Send</button>
+      </div>
+      <div id="comments-list" class="mt-4 space-y-2"></div>
+      <div class="mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+       <p class="text-[10px] font-orbitron uppercase tracking-wider text-center" style="color:rgba(224,224,224,0.2);">— Embed Widget Here —</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-10 px-4 sm:px-6" style="border-top:1px solid rgba(0,240,255,0.08);">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="font-orbitron text-sm font-bold tracking-wider"><span style="color:#b44aff;">GAME</span><span style="color:#00f0ff;">SPHERE</span> <span style="color:rgba(224,224,224,0.3);">CON</span>
+     </div>
+     <p class="text-xs" style="color:rgba(224,224,224,0.3);">© 2025 GameSphere Con. All rights reserved. Where players become part of the world.</p>
+     <div class="flex gap-4"><a href="#" style="color:rgba(224,224,224,0.3); transition:color 0.3s;" onmouseover="this.style.color='#00f0ff'" onmouseout="this.style.color='rgba(224,224,224,0.3)'"><i data-lucide="twitter" style="width:16px; height:16px;"></i></a> <a href="#" style="color:rgba(224,224,224,0.3); transition:color 0.3s;" onmouseover="this.style.color='#b44aff'" onmouseout="this.style.color='rgba(224,224,224,0.3)'"><i data-lucide="instagram" style="width:16px; height:16px;"></i></a> <a href="#" style="color:rgba(224,224,224,0.3); transition:color 0.3s;" onmouseover="this.style.color='#ff2d78'" onmouseout="this.style.color='rgba(224,224,224,0.3)'"><i data-lucide="youtube" style="width:16px; height:16px;"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div><!-- end app-root -->
+  <script>
+// ===== SCHEDULE DATA =====
+const scheduleData = [
+  [
+    { time: '10:00', title: 'Doors Open', zone: 'All Zones', color: '#00f0ff' },
+    { time: '11:00', title: 'Opening Ceremony', zone: 'Main Stage', color: '#b44aff' },
+    { time: '13:00', title: 'Indie Dev Showcase Opens', zone: 'Indie Arcade', color: '#ff2d78' },
+    { time: '15:00', title: 'Esports Qualifiers Begin', zone: 'Esports Arena', color: '#00f0ff' },
+    { time: '18:00', title: 'VR Night Experience', zone: 'VR Nexus', color: '#b44aff' },
+  ],
+  [
+    { time: '10:00', title: 'Halls Open', zone: 'All Zones', color: '#00f0ff' },
+    { time: '11:30', title: 'Game Dev Panel', zone: 'Main Stage', color: '#b44aff' },
+    { time: '14:00', title: 'Esports Semifinals', zone: 'Esports Arena', color: '#ff2d78' },
+    { time: '16:00', title: 'Speedrun Challenge', zone: 'Gaming Hall', color: '#00f0ff' },
+    { time: '19:00', title: 'After-Hours LAN Party', zone: 'Gaming Hall', color: '#b44aff' },
+  ],
+  [
+    { time: '10:00', title: 'Final Day Opens', zone: 'All Zones', color: '#00f0ff' },
+    { time: '12:00', title: 'Cosplay Royale', zone: 'Main Stage', color: '#ff2d78' },
+    { time: '14:00', title: 'Esports Grand Finals', zone: 'Esports Arena', color: '#b44aff' },
+    { time: '16:30', title: 'Awards Ceremony', zone: 'Main Stage', color: '#00f0ff' },
+    { time: '18:00', title: 'Closing Party', zone: 'All Zones', color: '#ff2d78' },
+  ]
+];
+
+let currentDay = 0;
+function showDay(d) {
+  currentDay = d;
+  for (let i = 0; i < 3; i++) {
+    const btn = document.getElementById('day-btn-' + i);
+    if (i === d) {
+      btn.style.background = 'rgba(0,240,255,0.15)';
+      btn.style.color = '#00f0ff';
+      btn.style.borderColor = 'rgba(0,240,255,0.3)';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = 'rgba(224,224,224,0.5)';
+      btn.style.borderColor = 'rgba(224,224,224,0.1)';
+    }
+  }
+  const container = document.getElementById('schedule-content');
+  container.innerHTML = scheduleData[d].map((item, i) => `
+    <div class="flex gap-4 items-start mb-4" style="animation:fadeSlideUp 0.4s ease forwards; animation-delay:${i * 0.05}s; opacity:0;">
+      <div class="font-orbitron text-sm font-bold w-16 shrink-0 pt-1" style="color:${item.color};">${item.time}</div>
+      <div class="flex-1 hud-border rounded-sm px-4 py-3" style="background:rgba(255,255,255,0.02); --accent-color:${item.color};">
+        <div class="font-orbitron text-sm font-semibold" style="color:#fff;">${item.title}</div>
+        <div class="text-xs mt-1" style="color:rgba(224,224,224,0.4);">${item.zone}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== FAQ =====
+const faqs = [
+  { q: 'Where is GameSphere Con held?', a: 'Los Angeles Convention Center, Hall A–D. Full venue maps are included with your ticket.' },
+  { q: 'Is there an age restriction?', a: 'All ages welcome. Children under 12 must be accompanied by an adult. Some VR experiences require age 13+.' },
+  { q: 'Can I upgrade my ticket?', a: 'Yes! Upgrades are available at any time through your ticket dashboard or at the on-site registration desk.' },
+  { q: 'What about parking and hotels?', a: 'Partner hotel blocks and discounted parking passes are available through the ticketing portal.' },
+  { q: 'Are refunds available?', a: 'Full refunds up to 30 days before the event. 50% refunds up to 7 days. No refunds after that.' },
+];
+function buildFAQ() {
+  const c = document.getElementById('faq-container');
+  c.innerHTML = faqs.map((f, i) => `
+    <div class="hud-border rounded-sm overflow-hidden" style="background:rgba(255,255,255,0.02); --accent-color:${i % 2 === 0 ? '#00f0ff' : '#b44aff'};">
+      <button onclick="toggleFaq(${i})" class="w-full flex items-center justify-between px-5 py-4 text-left" style="background:none; border:none; cursor:pointer;">
+        <span class="font-rajdhani text-sm font-semibold" style="color:#fff;">${f.q}</span>
+        <i data-lucide="chevron-down" id="faq-icon-${i}" style="color:rgba(224,224,224,0.3); width:16px; height:16px; transition:transform 0.3s;"></i>
+      </button>
+      <div id="faq-answer-${i}" style="max-height:0; overflow:hidden; transition:max-height 0.3s ease;">
+        <p class="px-5 pb-4 text-sm leading-relaxed" style="color:rgba(224,224,224,0.5);">${f.a}</p>
+      </div>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+function toggleFaq(i) {
+  const el = document.getElementById('faq-answer-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  if (el.style.maxHeight === '0px' || !el.style.maxHeight) {
+    el.style.maxHeight = '200px';
+    icon.style.transform = 'rotate(180deg)';
+  } else {
+    el.style.maxHeight = '0px';
+    icon.style.transform = 'rotate(0deg)';
+  }
+}
+
+// ===== VOTE OPTIONS =====
+const prices = ['$29', '$49', '$79', '$99', '$129', '$149', '$199', '$249', '$299', '$399'];
+let voteCounts = {};
+let userVote = null;
+function buildVotes() {
+  const c = document.getElementById('vote-options');
+  c.innerHTML = prices.map(p => {
+    const count = voteCounts[p] || 0;
+    const sel = userVote === p;
+    return `<button onclick="vote('${p}')" class="font-orbitron text-xs px-3 py-1.5 rounded-sm transition-all" style="background:${sel ? 'rgba(0,240,255,0.2)' : 'rgba(255,255,255,0.05)'}; border:1px solid ${sel ? 'rgba(0,240,255,0.5)' : 'rgba(255,255,255,0.08)'}; color:${sel ? '#00f0ff' : 'rgba(224,224,224,0.5)'};">${p}${count ? ' (' + count + ')' : ''}</button>`;
+  }).join('');
+}
+function vote(p) {
+  if (userVote) voteCounts[userVote] = Math.max(0, (voteCounts[userVote] || 0) - 1);
+  userVote = p;
+  voteCounts[p] = (voteCounts[p] || 0) + 1;
+  buildVotes();
+}
+
+// ===== REACTIONS =====
+function react(btn, emoji) {
+  const span = btn.querySelector('span');
+  const cur = parseInt(span.textContent);
+  if (btn.classList.contains('selected')) {
+    span.textContent = cur - 1;
+    btn.classList.remove('selected');
+    btn.style.background = 'rgba(255,255,255,0.05)';
+    btn.style.borderColor = 'rgba(255,255,255,0.08)';
+  } else {
+    span.textContent = cur + 1;
+    btn.classList.add('selected');
+    btn.style.background = 'rgba(0,240,255,0.1)';
+    btn.style.borderColor = 'rgba(0,240,255,0.3)';
+  }
+}
+
+// ===== COMMENTS =====
+const comments = [];
+function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+  input.value = '';
+  renderComments();
+}
+function renderComments() {
+  const c = document.getElementById('comments-list');
+  c.innerHTML = comments.map(cm => `
+    <div class="flex gap-3 items-start px-3 py-2 rounded-sm" style="background:rgba(255,255,255,0.03);">
+      <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style="background:rgba(180,74,255,0.2);">
+        <i data-lucide="user" style="color:#b44aff; width:12px; height:12px;"></i>
+      </div>
+      <div>
+        <p class="text-sm" style="color:rgba(224,224,224,0.7);">${cm.text}</p>
+        <span class="text-[10px]" style="color:rgba(224,224,224,0.3);">${cm.time}</span>
+      </div>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+
+// Comment on enter
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('comment-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addComment(); }
+  });
+});
+
+// ===== NAV HIGHLIGHT =====
+const sections = ['home','events','zones','schedule','pricing','faq','tickets'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  const scrollPos = appRoot.scrollTop + 80;
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollPos) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      appRoot.scrollTo({ top: target.offsetTop - 56, behavior: 'smooth' });
+      document.getElementById('mobile-menu').classList.remove('open');
+    }
+  });
+});
+
+// ===== INIT =====
+showDay(0);
+buildFAQ();
+buildVotes();
+lucide.createIcons();
+
+// ===== ELEMENT SDK =====
+const defaultConfig = {
+  hero_title: 'Step inside the game.',
+  hero_subtitle: 'A convention built for players and creators.',
+  cta_primary: 'Get Tickets',
+  cta_secondary: 'Explore Zones',
+  pass_price: '$49',
+  pro_price: '$129',
+  vip_price: '$299',
+  bottom_cta_text: 'Enter the experience.',
+  background_color: '#050505',
+  accent_cyan: '#00f0ff',
+  text_color: '#e0e0e0',
+  accent_purple: '#b44aff',
+  accent_pink: '#ff2d78',
+  font_family: 'Orbitron',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const g = (k) => config[k] || defaultConfig[k];
+
+  document.getElementById('hero-title').textContent = g('hero_title');
+  document.getElementById('hero-subtitle').textContent = g('hero_subtitle');
+  document.getElementById('cta-primary-btn').textContent = g('cta_primary');
+  document.getElementById('cta-secondary-btn').textContent = g('cta_secondary');
+  document.getElementById('pass-price').textContent = g('pass_price');
+  document.getElementById('pro-price').textContent = g('pro_price');
+  document.getElementById('vip-price').textContent = g('vip_price');
+  document.getElementById('bottom-cta-text').textContent = g('bottom_cta_text');
+
+  // Colors
+  document.body.style.background = g('background_color');
+
+  // Font
+  const ff = g('font_family');
+  const baseStack = 'sans-serif';
+  document.querySelectorAll('.font-orbitron').forEach(el => {
+    el.style.fontFamily = `${ff}, ${baseStack}`;
+  });
+
+  // Font size
+  const bs = g('font_size');
+  document.body.style.fontSize = bs + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => {
+    const g = (k) => config[k] || defaultConfig[k];
+    const mut = (key) => ({
+      get: () => g(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        mut('background_color'),
+        mut('accent_cyan'),
+        mut('text_color'),
+        mut('accent_purple'),
+        mut('accent_pink')
+      ],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: mut('font_size')
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const g = (k) => config[k] || defaultConfig[k];
+    return new Map([
+      ['hero_title', g('hero_title')],
+      ['hero_subtitle', g('hero_subtitle')],
+      ['cta_primary', g('cta_primary')],
+      ['cta_secondary', g('cta_secondary')],
+      ['pass_price', g('pass_price')],
+      ['pro_price', g('pro_price')],
+      ['vip_price', g('vip_price')],
+      ['bottom_cta_text', g('bottom_cta_text')]
+    ]);
+  }
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a30bae5ee27c5',t:'MTc3NTU3NzA1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

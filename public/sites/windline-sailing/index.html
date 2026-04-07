@@ -1,1 +1,711 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/f4f5056b-105d-47a5-98a9-d950f2abd7f2 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WindLine Sailing</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0a1628;
+  --surface: #111d33;
+  --text: #c8d8e8;
+  --primary: #3b8bca;
+  --secondary: #1e5a8a;
+}
+
+@keyframes waveFloat {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-20px) translateY(-6px); }
+}
+@keyframes waveFloat2 {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(15px) translateY(-4px); }
+}
+@keyframes sailDrift {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes horizonGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+@keyframes gentleBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.wave-line { animation: waveFloat 6s ease-in-out infinite; }
+.wave-line-2 { animation: waveFloat2 7s ease-in-out infinite; }
+.sail-drift { animation: sailDrift 8s ease-in-out infinite; }
+.fade-up { animation: fadeUp 0.8s ease-out forwards; opacity: 0; }
+.fade-up-d1 { animation-delay: 0.1s; }
+.fade-up-d2 { animation-delay: 0.2s; }
+.fade-up-d3 { animation-delay: 0.3s; }
+.fade-up-d4 { animation-delay: 0.4s; }
+.fade-up-d5 { animation-delay: 0.5s; }
+.fade-up-d6 { animation-delay: 0.6s; }
+.horizon-glow { animation: horizonGlow 4s ease-in-out infinite; }
+.gentle-bob { animation: gentleBob 4s ease-in-out infinite; }
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(circle, rgba(59,139,202,0.4), transparent 70%);
+  z-index: -1;
+}
+.btn-glow:hover::after { opacity: 1; }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,139,202,0.3); }
+
+.card-lift {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(59,139,202,0.15);
+}
+
+.pricing-glow {
+  position: relative;
+  overflow: hidden;
+}
+.pricing-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(59,139,202,0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.pricing-glow:hover::before { opacity: 1; }
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.section-reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+.section-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.ocean-bg {
+  background: linear-gradient(180deg, #0a1628 0%, #0d1e35 30%, #0f2442 60%, #0a1628 100%);
+}
+
+.toast-container {
+  position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  padding: 12px 20px; border-radius: 8px; color: #c8d8e8;
+  background: #1a2d47; border: 1px solid rgba(59,139,202,0.3);
+  animation: fadeUp 0.3s ease-out; font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+}
+
+.comment-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59,139,202,0.2); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto" style="background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;">
+  <div id="app-wrapper" class="w-full" style="min-height:100%;"><!-- Sticky Nav -->
+   <nav id="main-nav" style="position:sticky;top:0;z-index:50;background:rgba(10,22,40,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(59,139,202,0.1);">
+    <div style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;"><a href="#home" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+      <svg width="32" height="32" viewbox="0 0 32 32" class="sail-drift"><path d="M16 4 L16 28 M16 4 Q26 14 16 28" fill="none" stroke="#3b8bca" stroke-width="2" stroke-linecap="round" /> <path d="M16 8 Q8 16 16 28" fill="rgba(59,139,202,0.15)" stroke="none" />
+      </svg><span id="nav-brand" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#c8d8e8;letter-spacing:1px;">WindLine</span> </a>
+     <div id="nav-links-desktop" style="display:flex;gap:28px;align-items:center;"><a href="#home" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">Home</a> <a href="#experience" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">Experience</a> <a href="#routes" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">Routes</a> <a href="#fleet" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">Fleet</a> <a href="#pricing" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">Pricing</a> <a href="#faq" class="nav-link" style="color:var(--text);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;">FAQ</a> <a href="#book" class="btn-glow" style="color:#fff;text-decoration:none;font-size:13px;font-weight:500;background:var(--primary);padding:8px 20px;border-radius:6px;">Book Now</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" style="position:relative;overflow:hidden;padding:120px 24px 100px;min-height:600px;display:flex;align-items:center;"><!-- Ocean gradient background -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#0a1628 0%,#0c1a2e 20%,#0f2442 50%,#0d1e35 80%,#0a1628 100%);"></div><!-- Horizon glow -->
+    <div class="horizon-glow" style="position:absolute;top:40%;left:50%;transform:translateX(-50%);width:120%;height:2px;background:linear-gradient(90deg,transparent,rgba(59,139,202,0.4),rgba(100,180,255,0.3),rgba(59,139,202,0.4),transparent);"></div>
+    <div style="position:absolute;top:38%;left:50%;transform:translateX(-50%);width:80%;height:60px;background:radial-gradient(ellipse,rgba(59,139,202,0.08),transparent 70%);"></div><!-- Wave SVGs -->
+    <svg class="wave-line" style="position:absolute;bottom:60px;left:0;width:100%;opacity:0.15;" viewbox="0 0 1440 60" preserveaspectratio="none">
+     <path d="M0 30 Q180 0 360 30 T720 30 T1080 30 T1440 30 V60 H0Z" fill="rgba(59,139,202,0.3)" />
+    </svg>
+    <svg class="wave-line-2" style="position:absolute;bottom:30px;left:0;width:100%;opacity:0.1;" viewbox="0 0 1440 50" preserveaspectratio="none">
+     <path d="M0 25 Q200 5 400 25 T800 25 T1200 25 T1440 25 V50 H0Z" fill="rgba(59,139,202,0.25)" />
+    </svg><!-- Sail SVG -->
+    <svg class="sail-drift" style="position:absolute;top:15%;right:10%;width:80px;height:140px;opacity:0.08;" viewbox="0 0 80 140"><path d="M40 10 L40 130 M40 10 Q70 50 40 130" fill="none" stroke="#3b8bca" stroke-width="1.5" /> <path d="M40 20 Q15 60 40 130" fill="rgba(59,139,202,0.2)" />
+    </svg>
+    <div style="position:relative;z-index:1;max-width:800px;margin:0 auto;text-align:center;">
+     <p class="fade-up" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--primary);margin-bottom:24px;">WindLine Sailing</p>
+     <h1 id="hero-title" class="fade-up fade-up-d1" style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,72px);font-weight:300;line-height:1.1;color:#e8f0f8;margin:0 0 20px;">The wind decides the journey.</h1>
+     <p id="hero-subtitle" class="fade-up fade-up-d2" style="font-size:clamp(15px,2vw,18px);font-weight:300;color:rgba(200,216,232,0.7);max-width:520px;margin:0 auto 40px;line-height:1.7;">Sailing experiences designed for freedom and perspective.</p>
+     <div class="fade-up fade-up-d3" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#book" class="btn-glow" style="background:var(--primary);color:#fff;padding:14px 36px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;letter-spacing:0.5px;">Book Now</a> <a href="#routes" class="btn-glow" style="background:transparent;color:var(--text);padding:14px 36px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:400;border:1px solid rgba(59,139,202,0.3);letter-spacing:0.5px;">View Routes</a>
+     </div>
+    </div>
+   </section><!-- Divider wave -->
+   <div style="position:relative;height:40px;overflow:hidden;">
+    <svg style="position:absolute;bottom:0;width:100%;" viewbox="0 0 1440 40" preserveaspectratio="none">
+     <path d="M0 20 Q360 0 720 20 T1440 20 V40 H0Z" fill="var(--surface)" />
+    </svg>
+   </div><!-- EXPERIENCE -->
+   <section id="experience" class="section-reveal" style="background:var(--surface);padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <p style="font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--primary);text-align:center;margin-bottom:12px;">The Open Water</p>
+     <h2 id="experience-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;text-align:center;color:#e8f0f8;margin:0 0 60px;">What Sailing Feels Like</h2>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;">
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;padding:36px 28px;text-align:center;">
+       <div class="gentle-bob" style="width:56px;height:56px;margin:0 auto 20px;border-radius:50%;background:rgba(59,139,202,0.1);display:flex;align-items:center;justify-content:center;"><i data-lucide="wind" style="width:24px;height:24px;color:var(--primary);"></i>
+       </div>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#e8f0f8;margin:0 0 12px;">Freedom</h3>
+       <p style="font-size:14px;line-height:1.7;color:rgba(200,216,232,0.6);margin:0;">No engine hum, no schedules. Just the rhythm of wind filling your sails and the horizon stretching endlessly ahead.</p>
+      </div>
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;padding:36px 28px;text-align:center;">
+       <div class="gentle-bob" style="width:56px;height:56px;margin:0 auto 20px;border-radius:50%;background:rgba(59,139,202,0.1);display:flex;align-items:center;justify-content:center;animation-delay:0.5s;"><i data-lucide="compass" style="width:24px;height:24px;color:var(--primary);"></i>
+       </div>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#e8f0f8;margin:0 0 12px;">Perspective</h3>
+       <p style="font-size:14px;line-height:1.7;color:rgba(200,216,232,0.6);margin:0;">Coastlines reveal themselves slowly. Every cove, every lighthouse becomes a memory anchored in stillness.</p>
+      </div>
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;padding:36px 28px;text-align:center;">
+       <div class="gentle-bob" style="width:56px;height:56px;margin:0 auto 20px;border-radius:50%;background:rgba(59,139,202,0.1);display:flex;align-items:center;justify-content:center;animation-delay:1s;"><i data-lucide="sunset" style="width:24px;height:24px;color:var(--primary);"></i>
+       </div>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#e8f0f8;margin:0 0 12px;">Presence</h3>
+       <p style="font-size:14px;line-height:1.7;color:rgba(200,216,232,0.6);margin:0;">Salt air, golden light, the creak of timber. Sailing demands you exist fully in the moment.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ROUTES -->
+   <section id="routes" class="section-reveal ocean-bg" style="padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <p style="font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--primary);text-align:center;margin-bottom:12px;">Destinations</p>
+     <h2 id="routes-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;text-align:center;color:#e8f0f8;margin:0 0 60px;">Scenic Routes</h2>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div class="card-lift" style="border-radius:12px;overflow:hidden;border:1px solid rgba(59,139,202,0.1);background:var(--surface);">
+       <div style="height:180px;background:linear-gradient(135deg,#0f2442,#1a3a5c);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <svg style="position:absolute;bottom:0;width:100%;opacity:0.2;" viewbox="0 0 400 40">
+         <path class="wave-line" d="M0 20 Q100 5 200 20 T400 20 V40 H0Z" fill="#3b8bca" />
+        </svg>
+        <div style="text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+         <svg width="48" height="48" viewbox="0 0 48 48" style="opacity:0.8;"><circle cx="24" cy="24" r="20" fill="none" stroke="#3b8bca" stroke-width="1.5" opacity="0.6" /> <path d="M16 20 L20 16 L24 18 L28 14 L32 20" fill="none" stroke="#3b8bca" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> <circle cx="18" cy="28" r="2" fill="#3b8bca" opacity="0.7" /> <circle cx="30" cy="26" r="2" fill="#3b8bca" opacity="0.7" /> <path d="M12 32 Q24 36 36 32" fill="none" stroke="#3b8bca" stroke-width="1.5" opacity="0.5" />
+         </svg>
+         <p style="font-size:11px;letter-spacing:2px;color:rgba(200,216,232,0.5);margin:0;">MEDITERRANEAN</p>
+        </div>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 8px;">Aegean Islands</h3>
+        <p style="font-size:13px;color:rgba(200,216,232,0.6);line-height:1.6;margin:0 0 16px;">Island-hop through crystal waters, whitewashed villages, and ancient harbors across the Greek archipelago.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--primary);">7–14 days</span> <span style="font-size:12px;color:rgba(200,216,232,0.4);">12 stops</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-lift" style="border-radius:12px;overflow:hidden;border:1px solid rgba(59,139,202,0.1);background:var(--surface);">
+       <div style="height:180px;background:linear-gradient(135deg,#0d1e35,#152e4a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <svg style="position:absolute;bottom:0;width:100%;opacity:0.2;" viewbox="0 0 400 40">
+         <path class="wave-line-2" d="M0 20 Q100 5 200 20 T400 20 V40 H0Z" fill="#3b8bca" />
+        </svg>
+        <div style="text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+         <svg width="48" height="48" viewbox="0 0 48 48" style="opacity:0.8;"><path d="M24 8 L24 38" stroke="#3b8bca" stroke-width="2" fill="none" /> <path d="M24 10 Q38 22 24 36" fill="rgba(59,139,202,0.2)" stroke="#3b8bca" stroke-width="1.5" /> <path d="M24 16 Q12 26 24 36" fill="rgba(59,139,202,0.1)" stroke="#3b8bca" stroke-width="1" /> <ellipse cx="24" cy="40" rx="12" ry="3" fill="rgba(59,139,202,0.15)" /> <path d="M18 40 Q24 36 30 40" stroke="#3b8bca" stroke-width="1.5" fill="none" opacity="0.6" />
+         </svg>
+         <p style="font-size:11px;letter-spacing:2px;color:rgba(200,216,232,0.5);margin:0;">CARIBBEAN</p>
+        </div>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 8px;">Windward Passage</h3>
+        <p style="font-size:13px;color:rgba(200,216,232,0.6);line-height:1.6;margin:0 0 16px;">Trade winds carry you through turquoise bays, coral reefs, and rum-soaked sunsets across the islands.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--primary);">5–10 days</span> <span style="font-size:12px;color:rgba(200,216,232,0.4);">8 stops</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-lift" style="border-radius:12px;overflow:hidden;border:1px solid rgba(59,139,202,0.1);background:var(--surface);">
+       <div style="height:180px;background:linear-gradient(135deg,#0a1628,#12293f);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <svg style="position:absolute;bottom:0;width:100%;opacity:0.2;" viewbox="0 0 400 40">
+         <path class="wave-line" d="M0 20 Q100 5 200 20 T400 20 V40 H0Z" fill="#3b8bca" />
+        </svg>
+        <div style="text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+         <svg width="48" height="48" viewbox="0 0 48 48" style="opacity:0.8;"><path d="M10 24 Q15 10 24 8 Q33 10 38 24 Q36 32 28 36 Q20 36 12 32 Z" fill="rgba(59,139,202,0.15)" stroke="#3b8bca" stroke-width="1.5" /> <path d="M14 26 Q16 20 20 18" fill="none" stroke="#3b8bca" stroke-width="1.5" opacity="0.6" stroke-linecap="round" /> <path d="M28 28 Q32 22 34 18" fill="none" stroke="#3b8bca" stroke-width="1.5" opacity="0.6" stroke-linecap="round" /> <circle cx="24" cy="26" r="2.5" fill="#3b8bca" opacity="0.7" /> <path d="M18 38 Q24 40 30 38" fill="none" stroke="#3b8bca" stroke-width="1" opacity="0.5" />
+         </svg>
+         <p style="font-size:11px;letter-spacing:2px;color:rgba(200,216,232,0.5);margin:0;">NORDIC</p>
+        </div>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 8px;">Norwegian Fjords</h3>
+        <p style="font-size:13px;color:rgba(200,216,232,0.6);line-height:1.6;margin:0 0 16px;">Navigate dramatic fjords under midnight sun, past cascading waterfalls and untouched wilderness shores.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:var(--primary);">10–21 days</span> <span style="font-size:12px;color:rgba(200,216,232,0.4);">15 stops</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FLEET -->
+   <section id="fleet" class="section-reveal" style="background:var(--surface);padding:80px 24px;">
+    <div style="max-width:1000px;margin:0 auto;">
+     <p style="font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--primary);text-align:center;margin-bottom:12px;">Vessels</p>
+     <h2 id="fleet-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;text-align:center;color:#e8f0f8;margin:0 0 60px;">Our Fleet</h2>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;">
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;overflow:hidden;">
+       <div style="height:160px;background:linear-gradient(135deg,#12293f,#1a3a5c);display:flex;align-items:center;justify-content:center;">
+        <svg width="100" height="80" viewbox="0 0 100 80" style="opacity:0.6;"><path d="M50 10 L50 55" stroke="#3b8bca" stroke-width="2" fill="none" /> <path d="M50 10 Q75 30 50 55" fill="rgba(59,139,202,0.15)" stroke="#3b8bca" stroke-width="1" /> <path d="M20 58 Q50 48 80 58 L85 65 Q50 60 15 65Z" fill="rgba(59,139,202,0.2)" stroke="#3b8bca" stroke-width="1" />
+        </svg>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 4px;">Zephyr 32</h3>
+        <p style="font-size:12px;color:var(--primary);margin:0 0 12px;">Day Cruiser</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;"><span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="users" style="width:14px;height:14px;"></i> 6 guests</span> <span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="ruler" style="width:14px;height:14px;"></i> 32 ft</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;overflow:hidden;">
+       <div style="height:160px;background:linear-gradient(135deg,#0f2442,#1e4060);display:flex;align-items:center;justify-content:center;">
+        <svg width="120" height="80" viewbox="0 0 120 80" style="opacity:0.6;"><path d="M60 8 L60 55" stroke="#3b8bca" stroke-width="2" fill="none" /> <path d="M60 8 Q90 28 60 55" fill="rgba(59,139,202,0.15)" stroke="#3b8bca" stroke-width="1" /> <path d="M60 15 Q35 35 60 55" fill="rgba(59,139,202,0.1)" stroke="#3b8bca" stroke-width="1" /> <path d="M15 58 Q60 46 105 58 L110 66 Q60 60 10 66Z" fill="rgba(59,139,202,0.2)" stroke="#3b8bca" stroke-width="1" />
+        </svg>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 4px;">Meridian 44</h3>
+        <p style="font-size:12px;color:var(--primary);margin:0 0 12px;">Ocean Cruiser</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;"><span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="users" style="width:14px;height:14px;"></i> 10 guests</span> <span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="ruler" style="width:14px;height:14px;"></i> 44 ft</span> <span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="bed-double" style="width:14px;height:14px;"></i> 3 cabins</span>
+        </div>
+       </div>
+      </div>
+      <div class="card-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.1);border-radius:12px;overflow:hidden;">
+       <div style="height:160px;background:linear-gradient(135deg,#0d1e35,#1a3352);display:flex;align-items:center;justify-content:center;">
+        <svg width="140" height="80" viewbox="0 0 140 80" style="opacity:0.6;"><path d="M55 6 L55 55" stroke="#3b8bca" stroke-width="2" fill="none" /> <path d="M85 12 L85 55" stroke="#3b8bca" stroke-width="1.5" fill="none" /> <path d="M55 6 Q80 24 55 50" fill="rgba(59,139,202,0.15)" stroke="#3b8bca" stroke-width="1" /> <path d="M85 12 Q105 28 85 50" fill="rgba(59,139,202,0.1)" stroke="#3b8bca" stroke-width="1" /> <path d="M10 58 Q70 44 130 58 L135 66 Q70 58 5 66Z" fill="rgba(59,139,202,0.2)" stroke="#3b8bca" stroke-width="1" />
+        </svg>
+       </div>
+       <div style="padding:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#e8f0f8;margin:0 0 4px;">Celestine 56</h3>
+        <p style="font-size:12px;color:var(--primary);margin:0 0 12px;">Luxury Yacht</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;"><span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="users" style="width:14px;height:14px;"></i> 14 guests</span> <span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="ruler" style="width:14px;height:14px;"></i> 56 ft</span> <span style="font-size:12px;color:rgba(200,216,232,0.5);display:flex;align-items:center;gap:4px;"><i data-lucide="bed-double" style="width:14px;height:14px;"></i> 5 cabins</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="section-reveal ocean-bg" style="padding:80px 24px;">
+    <div style="max-width:1060px;margin:0 auto;">
+     <p style="font-size:11px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--primary);text-align:center;margin-bottom:12px;">Charter Packages</p>
+     <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;text-align:center;color:#e8f0f8;margin:0 0 16px;">Pricing</h2>
+     <p style="font-size:14px;color:rgba(200,216,232,0.5);text-align:center;margin:0 0 60px;">Move with the wind, not against it.</p>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start;"><!-- Explorer -->
+      <div class="card-lift pricing-glow" style="background:var(--surface);border:1px solid rgba(59,139,202,0.1);border-radius:16px;padding:36px 28px;">
+       <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--primary);margin:0 0 8px;">Explorer</p>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8f0f8;margin:0 0 4px;">$120<span style="font-size:14px;color:rgba(200,216,232,0.4);font-family:'Outfit',sans-serif;">/person</span></h3>
+       <p style="font-size:13px;color:rgba(200,216,232,0.5);margin:0 0 28px;">Shared sailing experience</p>
+       <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Half-day group sail</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Professional skipper</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Refreshments included</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Up to 8 guests</span>
+        </div>
+       </div><a href="#book" class="btn-glow" style="display:block;text-align:center;background:transparent;border:1px solid rgba(59,139,202,0.3);color:var(--text);padding:12px;border-radius:8px;text-decoration:none;font-size:14px;">Select Explorer</a>
+      </div><!-- Private (featured) -->
+      <div class="card-lift pricing-glow" style="background:var(--surface);border:1px solid rgba(59,139,202,0.3);border-radius:16px;padding:36px 28px;position:relative;">
+       <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:11px;font-weight:500;letter-spacing:2px;padding:4px 16px;border-radius:20px;">
+        POPULAR
+       </div>
+       <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--primary);margin:0 0 8px;">Private</p>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8f0f8;margin:0 0 4px;">$480<span style="font-size:14px;color:rgba(200,216,232,0.4);font-family:'Outfit',sans-serif;">/day</span></h3>
+       <p style="font-size:13px;color:rgba(200,216,232,0.5);margin:0 0 28px;">Exclusive charter</p>
+       <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Full-day private sail</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Custom route planning</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Gourmet lunch on board</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Snorkeling gear included</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Up to 10 guests</span>
+        </div>
+       </div><a href="#book" class="btn-glow" style="display:block;text-align:center;background:var(--primary);color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;">Select Private</a>
+      </div><!-- Elite -->
+      <div class="card-lift pricing-glow" style="background:var(--surface);border:1px solid rgba(59,139,202,0.1);border-radius:16px;padding:36px 28px;">
+       <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--primary);margin:0 0 8px;">Elite</p>
+       <h3 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:#e8f0f8;margin:0 0 4px;">$1,200<span style="font-size:14px;color:rgba(200,216,232,0.4);font-family:'Outfit',sans-serif;">/day</span></h3>
+       <p style="font-size:13px;color:rgba(200,216,232,0.5);margin:0 0 28px;">Luxury sailing experience</p>
+       <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Multi-day luxury voyage</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Personal chef &amp; crew</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Premium yacht (56 ft)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Sunset cocktail service</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+         <i data-lucide="check" style="width:16px;height:16px;color:var(--primary);flex-shrink:0;"></i><span style="font-size:13px;color:rgba(200,216,232,0.7);">Photography package</span>
+        </div>
+       </div><a href="#book" class="btn-glow" style="display:block;text-align:center;background:transparent;border:1px solid rgba(59,139,202,0.3);color:var(--text);padding:12px;border-radius:8px;text-decoration:none;font-size:14px;">Select Elite</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="section-reveal" style="background:var(--surface);padding:80px 24px;">
+    <div style="max-width:700px;margin:0 auto;">
+     <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,42px);font-weight:300;text-align:center;color:#e8f0f8;margin:0 0 48px;">Frequently Asked</h2>
+     <div id="faq-container" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+   </section><!-- BOTTOM CTA + Vote/Comment -->
+   <section id="book" class="section-reveal ocean-bg" style="padding:80px 24px 40px;position:relative;"><!-- Wave decoration -->
+    <svg class="wave-line" style="position:absolute;top:0;left:0;width:100%;opacity:0.1;" viewbox="0 0 1440 40" preserveaspectratio="none">
+     <path d="M0 20 Q360 0 720 20 T1440 20 V0 H0Z" fill="#3b8bca" />
+    </svg>
+    <div style="max-width:600px;margin:0 auto;text-align:center;margin-bottom:80px;">
+     <h2 id="bottom-cta-text" style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,52px);font-weight:300;color:#e8f0f8;margin:0 0 20px;line-height:1.2;">Sail beyond the ordinary.</h2>
+     <p style="font-size:15px;color:rgba(200,216,232,0.6);margin:0 0 36px;line-height:1.7;">Your next chapter begins on open water. Reserve your experience today.</p><a href="#home" class="btn-glow" style="display:inline-block;background:var(--primary);color:#fff;padding:16px 48px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:500;letter-spacing:0.5px;">Book Your Voyage</a>
+    </div><!-- Vote + Comment Widget -->
+    <div style="max-width:640px;margin:0 auto;border:1px solid rgba(59,139,202,0.15);border-radius:16px;background:rgba(17,29,51,0.8);padding:32px;backdrop-filter:blur(8px);">
+     <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--primary);text-align:center;margin:0 0 4px;">Embed Widget Here</p>
+     <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:#e8f0f8;text-align:center;margin:0 0 24px;">Vote &amp; Share Your Thoughts</h3><!-- Reactions -->
+     <div style="margin-bottom:24px;">
+      <p style="font-size:12px;color:rgba(200,216,232,0.5);margin:0 0 12px;">React to this experience:</p>
+      <div id="reactions-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+     </div><!-- Price Vote -->
+     <div style="margin-bottom:28px;">
+      <p style="font-size:12px;color:rgba(200,216,232,0.5);margin:0 0 12px;">What would you pay for a day sail?</p>
+      <div id="price-votes-container" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+     </div><!-- Comments -->
+     <div>
+      <p style="font-size:12px;color:rgba(200,216,232,0.5);margin:0 0 12px;">Leave a comment:</p>
+      <form id="comment-form" style="display:flex;gap:8px;margin-bottom:16px;"><input id="comment-input" class="comment-input" type="text" placeholder="Share your sailing story..." style="flex:1;background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.2);border-radius:8px;padding:10px 14px;color:#c8d8e8;font-size:13px;font-family:'Outfit',sans-serif;transition:all 0.3s;"> <button type="submit" id="comment-submit-btn" class="btn-glow" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 20px;cursor:pointer;font-size:13px;font-family:'Outfit',sans-serif;white-space:nowrap;">Post</button>
+      </form>
+      <div id="comments-list" style="display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer style="background:var(--bg);padding:40px 24px;border-top:1px solid rgba(59,139,202,0.08);text-align:center;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(200,216,232,0.4);margin:0 0 8px;">WindLine Sailing</p>
+    <p style="font-size:12px;color:rgba(200,216,232,0.25);margin:0;">Move with the wind, not against it.</p>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <div id="toast-container" class="toast-container"></div>
+  <script>
+// ==================== CONFIG & DEFAULTS ====================
+const defaultConfig = {
+  background_color: '#0a1628',
+  surface_color: '#111d33',
+  text_color: '#c8d8e8',
+  primary_color: '#3b8bca',
+  secondary_color: '#1e5a8a',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  hero_title: 'The wind decides the journey.',
+  hero_subtitle: 'Sailing experiences designed for freedom and perspective.',
+  experience_title: 'What Sailing Feels Like',
+  routes_title: 'Scenic Routes',
+  fleet_title: 'Our Fleet',
+  bottom_cta_text: 'Sail beyond the ordinary.'
+};
+
+// ==================== DATA STATE ====================
+let allData = [];
+const REACTIONS = ['⛵','🌊','🏝️','☀️','🐬','🧭'];
+const PRICES = ['$50','$100','$150','$200','$300','$400','$500','$750','$1000','$1500'];
+
+// ==================== FAQ DATA ====================
+const faqs = [
+  { q: 'Do I need sailing experience?', a: 'Not at all. Our professional skippers handle everything. You can participate as much or as little as you like.' },
+  { q: 'What should I bring?', a: 'Sunscreen, sunglasses, a light jacket, and a sense of adventure. We provide everything else on board.' },
+  { q: 'Can I customize my route?', a: 'Absolutely. Private and Elite packages include full route customization with your skipper.' },
+  { q: 'What if the weather is poor?', a: 'Safety comes first. We offer flexible rescheduling at no cost if conditions aren\'t suitable.' },
+  { q: 'Are food and drinks included?', a: 'Explorer includes refreshments. Private includes gourmet lunch. Elite features a personal chef for all meals.' }
+];
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ==================== FAQ ACCORDION ====================
+function buildFAQ() {
+  const c = document.getElementById('faq-container');
+  faqs.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.style.cssText = 'border:1px solid rgba(59,139,202,0.1);border-radius:10px;overflow:hidden;';
+    item.innerHTML = `
+      <button onclick="this.parentElement.classList.toggle('open');this.querySelector('i').style.transform=this.parentElement.classList.contains('open')?'rotate(180deg)':''" style="width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(10,22,40,0.4);border:none;color:#e8f0f8;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;text-align:left;">
+        <span>${f.q}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;color:var(--primary);transition:transform 0.3s;flex-shrink:0;"></i>
+      </button>
+      <div style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
+        <p style="padding:16px 20px;font-size:13px;color:rgba(200,216,232,0.6);line-height:1.7;margin:0;">${f.a}</p>
+      </div>`;
+    c.appendChild(item);
+  });
+  // Handle open/close via CSS-like toggle
+  const style = document.createElement('style');
+  style.textContent = '.open > div:last-child { max-height: 200px !important; }';
+  document.head.appendChild(style);
+}
+
+// ==================== WIDGET RENDERING ====================
+function getReactionCounts() {
+  const counts = {};
+  REACTIONS.forEach(r => counts[r] = 0);
+  allData.filter(d => d.type === 'reaction').forEach(d => { if (counts[d.reaction] !== undefined) counts[d.reaction]++; });
+  return counts;
+}
+
+function getPriceCounts() {
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  allData.filter(d => d.type === 'price_vote').forEach(d => { if (counts[d.price_vote] !== undefined) counts[d.price_vote]++; });
+  return counts;
+}
+
+function renderReactions() {
+  const c = document.getElementById('reactions-container');
+  const counts = getReactionCounts();
+  if (!c.children.length) {
+    REACTIONS.forEach(r => {
+      const btn = document.createElement('button');
+      btn.dataset.reaction = r;
+      btn.style.cssText = 'background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.15);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;display:flex;align-items:center;gap:6px;transition:all 0.3s;color:#c8d8e8;';
+      btn.innerHTML = `<span>${r}</span><span class="count" style="font-size:12px;font-family:'Outfit',sans-serif;color:rgba(200,216,232,0.5);">0</span>`;
+      btn.onmouseenter = () => { btn.style.borderColor = 'rgba(59,139,202,0.4)'; btn.style.background = 'rgba(59,139,202,0.1)'; };
+      btn.onmouseleave = () => { btn.style.borderColor = 'rgba(59,139,202,0.15)'; btn.style.background = 'rgba(10,22,40,0.6)'; };
+      btn.onclick = () => addReaction(r, btn);
+      c.appendChild(btn);
+    });
+  }
+  // Update counts
+  [...c.children].forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.count').textContent = counts[r];
+  });
+}
+
+function renderPriceVotes() {
+  const c = document.getElementById('price-votes-container');
+  const counts = getPriceCounts();
+  if (!c.children.length) {
+    PRICES.forEach(p => {
+      const btn = document.createElement('button');
+      btn.dataset.price = p;
+      btn.style.cssText = 'background:rgba(10,22,40,0.6);border:1px solid rgba(59,139,202,0.15);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:"Outfit",sans-serif;color:rgba(200,216,232,0.7);transition:all 0.3s;display:flex;align-items:center;gap:4px;';
+      btn.innerHTML = `<span>${p}</span><span class="count" style="font-size:10px;color:rgba(200,216,232,0.4);">0</span>`;
+      btn.onmouseenter = () => { btn.style.borderColor = 'rgba(59,139,202,0.4)'; };
+      btn.onmouseleave = () => { btn.style.borderColor = 'rgba(59,139,202,0.15)'; };
+      btn.onclick = () => addPriceVote(p, btn);
+      c.appendChild(btn);
+    });
+  }
+  [...c.children].forEach(btn => {
+    const p = btn.dataset.price;
+    btn.querySelector('.count').textContent = counts[p];
+  });
+}
+
+function renderComments() {
+  const c = document.getElementById('comments-list');
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const existingIds = new Set([...c.children].map(el => el.dataset.id));
+  const dataIds = new Set(comments.map(cm => cm.__backendId));
+
+  // Remove deleted
+  [...c.children].forEach(el => { if (!dataIds.has(el.dataset.id)) el.remove(); });
+
+  // Add/update
+  comments.forEach(cm => {
+    let el = c.querySelector(`[data-id="${cm.__backendId}"]`);
+    if (!el) {
+      el = document.createElement('div');
+      el.dataset.id = cm.__backendId;
+      el.style.cssText = 'background:rgba(10,22,40,0.5);border:1px solid rgba(59,139,202,0.08);border-radius:8px;padding:12px 16px;';
+      el.innerHTML = `<p class="cm-text" style="font-size:13px;color:rgba(200,216,232,0.7);margin:0 0 4px;line-height:1.5;"></p><span class="cm-time" style="font-size:10px;color:rgba(200,216,232,0.3);"></span>`;
+      c.prepend(el);
+    }
+    el.querySelector('.cm-text').textContent = cm.comment_text;
+    const d = new Date(cm.created_at);
+    el.querySelector('.cm-time').textContent = isNaN(d.getTime()) ? '' : d.toLocaleString();
+  });
+}
+
+// ==================== DATA ACTIONS ====================
+async function addReaction(reaction, btn) {
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  const result = await window.dataSdk.create({ type: 'reaction', item_id: 'main', reaction, comment_text: '', price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+async function addPriceVote(price, btn) {
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  const result = await window.dataSdk.create({ type: 'price_vote', item_id: 'main', reaction: '', comment_text: '', price_vote: price, created_at: new Date().toISOString() });
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.length >= 999) { showToast('Maximum entries reached.'); return; }
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true; btn.textContent = '...';
+  const result = await window.dataSdk.create({ type: 'comment', item_id: 'main', reaction: '', comment_text: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (result.isOk) { input.value = ''; }
+  else showToast('Could not post comment.');
+});
+
+// ==================== DATA HANDLER ====================
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderPriceVotes();
+    renderComments();
+  }
+};
+
+// ==================== ELEMENT SDK ====================
+function applyConfig(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_color || defaultConfig.primary_color;
+  const secondary = config.secondary_color || defaultConfig.secondary_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const fontSize = config.font_size || defaultConfig.font_size;
+  const fontStack = `${font}, serif`;
+
+  document.documentElement.style.setProperty('--bg', bg);
+  document.documentElement.style.setProperty('--surface', surface);
+  document.documentElement.style.setProperty('--text', text);
+  document.documentElement.style.setProperty('--primary', primary);
+  document.documentElement.style.setProperty('--secondary', secondary);
+
+  document.body.style.background = bg;
+  document.body.style.color = text;
+
+  // Titles
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) { heroTitle.textContent = config.hero_title || defaultConfig.hero_title; heroTitle.style.fontFamily = fontStack; heroTitle.style.fontSize = `${fontSize * 3.5}px`; }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) { heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle; heroSub.style.fontSize = `${fontSize}px`; }
+  const expTitle = document.getElementById('experience-title');
+  if (expTitle) { expTitle.textContent = config.experience_title || defaultConfig.experience_title; expTitle.style.fontFamily = fontStack; expTitle.style.fontSize = `${fontSize * 2.5}px`; }
+  const rTitle = document.getElementById('routes-title');
+  if (rTitle) { rTitle.textContent = config.routes_title || defaultConfig.routes_title; rTitle.style.fontFamily = fontStack; rTitle.style.fontSize = `${fontSize * 2.5}px`; }
+  const fTitle = document.getElementById('fleet-title');
+  if (fTitle) { fTitle.textContent = config.fleet_title || defaultConfig.fleet_title; fTitle.style.fontFamily = fontStack; fTitle.style.fontSize = `${fontSize * 2.5}px`; }
+  const ctaText = document.getElementById('bottom-cta-text');
+  if (ctaText) { ctaText.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text; ctaText.style.fontFamily = fontStack; ctaText.style.fontSize = `${fontSize * 2.8}px`; }
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['experience_title', config.experience_title || defaultConfig.experience_title],
+    ['routes_title', config.routes_title || defaultConfig.routes_title],
+    ['fleet_title', config.fleet_title || defaultConfig.fleet_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ==================== INIT ====================
+async function init() {
+  buildFAQ();
+
+  // Section reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section-reveal').forEach(s => observer.observe(s));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+  });
+
+  // Init Data SDK
+  const result = await window.dataSdk.init(dataHandler);
+  if (!result.isOk) console.error('Data SDK init failed');
+
+  lucide.createIcons();
+}
+
+init();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a7666c5ef27c5',t:'MTc3NTU3OTkwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,1 +1,500 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/e9bbecc2-aa1a-47e9-bdf8-f27f80e21bd8 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunsetStamp Atlas</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['DM Sans', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+@keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.12); } }
+@keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(251,146,60,0.4); } 50% { box-shadow: 0 0 40px rgba(251,146,60,0.7); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes stampRotate { 0% { transform: rotate(-3deg) scale(0.9); opacity: 0; } 100% { transform: rotate(-3deg) scale(1); opacity: 1; } }
+@keyframes grain { 0%, 100% { transform: translate(0,0); } 10% { transform: translate(-2%,-2%); } 30% { transform: translate(1%,2%); } 50% { transform: translate(-1%,1%); } 70% { transform: translate(2%,-1%); } 90% { transform: translate(-2%,1%); } }
+@keyframes flare { 0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); } 50% { opacity: 0.3; } 100% { opacity: 0; transform: translate(-50%,-50%) scale(2); } }
+@keyframes slideInLeft { 0% { opacity: 0; transform: translateX(-40px); } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes starPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+.grain-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  animation: grain 4s steps(6) infinite;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+.stamp-badge {
+  border: 3px dashed rgba(251,146,60,0.6);
+  border-radius: 50%;
+  padding: 10px 14px;
+  transform: rotate(-3deg);
+  animation: stampRotate 0.6s ease-out forwards;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.postcard-frame {
+  border: 6px solid rgba(255,255,255,0.15);
+  border-radius: 2px;
+  box-shadow: 4px 4px 20px rgba(0,0,0,0.3), inset 0 0 30px rgba(0,0,0,0.1);
+  position: relative;
+}
+.postcard-frame::after {
+  content: '✦';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 16px;
+  color: #fb923c;
+  animation: starPulse 2s ease-in-out infinite;
+}
+
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #fb923c, #f472b6); transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+
+.location-tile { overflow: hidden; position: relative; cursor: pointer; }
+.location-tile img { transition: transform 0.6s ease; }
+.location-tile:hover img { transform: scale(1.1); }
+.location-tile::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); z-index: 1; }
+
+html { scroll-behavior: smooth; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="font-family: 'DM Sans', sans-serif; background: #1a0a00;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: linear-gradient(180deg, #1a0a00 0%, #2d1106 30%, #1a0a00 60%, #0d0500 100%);"><!-- Film Grain Global -->
+   <div class="fixed inset-0 grain-overlay pointer-events-none" style="z-index:50;"></div><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-40 transition-all duration-500" style="background: rgba(26,10,0,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(251,146,60,0.15);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2"> <span style="color:#fb923c; font-family:'Playfair Display',serif; font-weight:900; font-size:1.1rem; letter-spacing:1px;">SunsetStamp</span> <span style="color:rgba(255,255,255,0.5); font-size:0.7rem; letter-spacing:3px; text-transform:uppercase;" class="font-body">Atlas</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Home</a> <a href="#locations" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Locations</a> <a href="#wallpapers" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Wallpapers</a> <a href="#prints" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Prints</a> <a href="#reviews" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Reviews</a> <a href="#download" class="nav-link text-white/70 hover:text-white text-sm transition-colors">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-white/70" aria-label="Menu"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3"><a href="#home" class="text-white/70 hover:text-white text-sm">Home</a> <a href="#locations" class="text-white/70 hover:text-white text-sm">Locations</a> <a href="#wallpapers" class="text-white/70 hover:text-white text-sm">Wallpapers</a> <a href="#prints" class="text-white/70 hover:text-white text-sm">Prints</a> <a href="#reviews" class="text-white/70 hover:text-white text-sm">Reviews</a> <a href="#download" class="text-white/70 hover:text-white text-sm">Download</a>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" class="relative w-full overflow-hidden" style="min-height: 100%;"><!-- Hero BG Image -->
+    <div class="absolute inset-0" style="animation: slowZoom 20s ease-in-out infinite alternate;"><img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1600&amp;q=80" alt="Sunset over ocean" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#d97706,#db2777)'; this.alt='Sunset background';">
+    </div><!-- Gradient overlays -->
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(26,10,0,0.6) 0%, rgba(26,10,0,0.3) 40%, rgba(26,10,0,0.8) 100%);"></div>
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 20%, rgba(251,146,60,0.15) 0%, transparent 60%);"></div><!-- Flare effect -->
+    <div class="absolute" style="top:25%; left:60%; width:300px; height:300px; background: radial-gradient(circle, rgba(251,146,60,0.25), transparent 70%); animation: flare 6s ease-in-out infinite; pointer-events:none;"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8 pt-32 pb-24" style="min-height:100%;"><!-- Stamp badge -->
+     <div class="stamp-badge text-orange-400 mb-6" style="animation-delay: 0.2s;"><span id="tagline-text">Collect golden hour<br>
+       from every corner<br>
+       of Earth</span>
+     </div>
+     <h1 id="hero-title" class="font-display text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight mb-4" style="animation: fadeUp 1s ease-out forwards; text-shadow: 0 4px 30px rgba(0,0,0,0.5);">Your daily golden hour,<br><span style="background: linear-gradient(90deg, #fb923c, #f472b6, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">on demand.</span></h1>
+     <p id="hero-subtitle" class="text-white/60 text-lg sm:text-xl max-w-xl mb-8" style="animation: fadeUp 1s ease-out 0.3s forwards; opacity:0; font-family:'DM Sans',sans-serif;">Sunsets around the world, curated for screens and prints.</p>
+     <div class="flex flex-col sm:flex-row gap-4" style="animation: fadeUp 1s ease-out 0.5s forwards; opacity:0;"><a href="#download" id="cta-primary-btn" class="px-8 py-3.5 rounded-full text-white font-bold text-sm tracking-wide transition-all hover:scale-105" style="background: linear-gradient(135deg, #fb923c, #e11d48); animation: pulse-glow 3s ease-in-out infinite;"> Download the Collection </a> <a href="#locations" id="cta-secondary-btn" class="px-8 py-3.5 rounded-full font-bold text-sm tracking-wide transition-all hover:scale-105 hover:bg-white/15" style="border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.85);"> Browse Locations </a>
+     </div><!-- Stats -->
+     <div class="flex flex-wrap justify-center gap-8 mt-14" style="animation: fadeUp 1s ease-out 0.7s forwards; opacity:0;">
+      <div class="text-center">
+       <span class="text-3xl font-display font-black text-orange-400">200+</span>
+       <p class="text-white/40 text-xs mt-1 uppercase tracking-widest">Wallpapers</p>
+      </div>
+      <div class="text-center">
+       <span class="text-3xl font-display font-black text-pink-400">30</span>
+       <p class="text-white/40 text-xs mt-1 uppercase tracking-widest">Posters</p>
+      </div>
+      <div class="text-center">
+       <span class="text-3xl font-display font-black text-purple-400">20</span>
+       <p class="text-white/40 text-xs mt-1 uppercase tracking-widest">Postcards</p>
+      </div>
+      <div class="text-center">
+       <span class="text-3xl font-display font-black text-amber-300">∞</span>
+       <p class="text-white/40 text-xs mt-1 uppercase tracking-widest">Golden Hours</p>
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10" style="animation: float 3s ease-in-out infinite;"><i data-lucide="chevron-down" class="text-white/30" style="width:28px; height:28px;"></i>
+    </div>
+   </section><!-- LOCATIONS SECTION -->
+   <section id="locations" class="relative w-full px-4 sm:px-8 py-20">
+    <div class="max-w-6xl mx-auto">
+     <div class="animate-on-scroll text-center mb-14"><span class="text-orange-400/60 text-xs uppercase tracking-[6px] font-bold">Discover</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-black text-white mt-3">Sunset Locations</h2>
+      <p class="text-white/40 mt-3 max-w-md mx-auto text-sm">Five vibes. Thousands of moments. Choose your golden hour.</p>
+     </div>
+     <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4"><!-- Island Glow -->
+      <div class="animate-on-scroll location-tile rounded-xl overflow-hidden aspect-[3/4] postcard-frame"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&amp;q=75" alt="Tropical sunset beach" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(to top,#92400e,#f59e0b)'; this.alt='Island sunset';">
+       <div class="absolute bottom-0 left-0 right-0 p-3 z-10"><span class="text-[10px] uppercase tracking-[3px] text-orange-300/80">Vibe</span>
+        <h3 class="font-display text-lg font-bold text-white">Island Glow</h3>
+       </div>
+      </div><!-- City Fire -->
+      <div class="animate-on-scroll location-tile rounded-xl overflow-hidden aspect-[3/4] postcard-frame" style="transition-delay:0.1s;"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&amp;q=75" alt="City skyline sunset" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(to top,#7c2d12,#ea580c)'; this.alt='City sunset';">
+       <div class="absolute bottom-0 left-0 right-0 p-3 z-10"><span class="text-[10px] uppercase tracking-[3px] text-orange-300/80">Vibe</span>
+        <h3 class="font-display text-lg font-bold text-white">City Fire</h3>
+       </div>
+      </div><!-- Mountain Melt -->
+      <div class="animate-on-scroll location-tile rounded-xl overflow-hidden aspect-[3/4] postcard-frame" style="transition-delay:0.2s;"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&amp;q=75" alt="Mountain sunset" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(to top,#581c87,#f97316)'; this.alt='Mountain sunset';">
+       <div class="absolute bottom-0 left-0 right-0 p-3 z-10"><span class="text-[10px] uppercase tracking-[3px] text-orange-300/80">Vibe</span>
+        <h3 class="font-display text-lg font-bold text-white">Mountain Melt</h3>
+       </div>
+      </div><!-- Desert Gold -->
+      <div class="animate-on-scroll location-tile rounded-xl overflow-hidden aspect-[3/4] postcard-frame" style="transition-delay:0.3s;"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&amp;q=75" alt="Desert sunset" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(to top,#78350f,#fbbf24)'; this.alt='Desert sunset';">
+       <div class="absolute bottom-0 left-0 right-0 p-3 z-10"><span class="text-[10px] uppercase tracking-[3px] text-orange-300/80">Vibe</span>
+        <h3 class="font-display text-lg font-bold text-white">Desert Gold</h3>
+       </div>
+      </div><!-- Lake Mirror -->
+      <div class="animate-on-scroll location-tile rounded-xl overflow-hidden aspect-[3/4] postcard-frame col-span-2 lg:col-span-1" style="transition-delay:0.4s;"><img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&amp;q=75" alt="Lake sunset reflection" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(to top,#1e3a5f,#f97316)'; this.alt='Lake sunset';">
+       <div class="absolute bottom-0 left-0 right-0 p-3 z-10"><span class="text-[10px] uppercase tracking-[3px] text-orange-300/80">Vibe</span>
+        <h3 class="font-display text-lg font-bold text-white">Lake Mirror</h3>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS SECTION -->
+   <section id="wallpapers" class="relative w-full px-4 sm:px-8 py-20">
+    <div class="max-w-6xl mx-auto">
+     <div class="animate-on-scroll text-center mb-14"><span class="text-pink-400/60 text-xs uppercase tracking-[6px] font-bold">Collection</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-black text-white mt-3">200 Sunset Wallpapers</h2>
+      <p class="text-white/40 mt-3 max-w-lg mx-auto text-sm">Mobile + Desktop. Every device deserves golden hour.</p>
+     </div><!-- Wallpaper mockup grid -->
+     <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30">
+       <img src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#92400e,#ec4899)'">
+      </div>
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30" style="transition-delay:0.05s">
+       <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#78350f,#f472b6)'">
+      </div>
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30" style="transition-delay:0.1s">
+       <img src="https://images.unsplash.com/photo-1472120435266-95a3675c6c2a?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#581c87,#fb923c)'">
+      </div>
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30 hidden sm:block" style="transition-delay:0.15s">
+       <img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#7c2d12,#c084fc)'">
+      </div>
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30 hidden lg:block" style="transition-delay:0.2s">
+       <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#1e3a5f,#fb923c)'">
+      </div>
+      <div class="animate-on-scroll rounded-lg overflow-hidden aspect-[9/16] shadow-xl shadow-black/30 hidden lg:block" style="transition-delay:0.25s">
+       <img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=400&amp;q=70" alt="Sunset wallpaper" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.style.background='linear-gradient(to top,#4c1d95,#f59e0b)'">
+      </div>
+     </div><!-- Device badges -->
+     <div class="flex justify-center gap-4 mt-8">
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.2);"><i data-lucide="smartphone" style="width:16px;height:16px;" class="text-orange-400"></i> <span class="text-white/60 text-xs">Mobile</span>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background: rgba(244,114,182,0.1); border: 1px solid rgba(244,114,182,0.2);"><i data-lucide="monitor" style="width:16px;height:16px;" class="text-pink-400"></i> <span class="text-white/60 text-xs">Desktop</span>
+      </div>
+      <div class="flex items-center gap-2 px-4 py-2 rounded-full" style="background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2);"><i data-lucide="tablet" style="width:16px;height:16px;" class="text-purple-400"></i> <span class="text-white/60 text-xs">Tablet</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRINTS SECTION -->
+   <section id="prints" class="relative w-full px-4 sm:px-8 py-20">
+    <div class="max-w-6xl mx-auto">
+     <div class="animate-on-scroll text-center mb-14"><span class="text-purple-400/60 text-xs uppercase tracking-[6px] font-bold">Print Shop</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-black text-white mt-3">Framed Sunset Prints</h2>
+      <p class="text-white/40 mt-3 max-w-lg mx-auto text-sm">30 gallery-quality posters + 20 postcard templates. Print at home or gift.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Print 1 - framed mock -->
+      <div class="animate-on-scroll group">
+       <div class="relative rounded-lg overflow-hidden" style="background: #f5f0e8; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);">
+        <div style="border: 2px solid #d4c5a9; padding: 4px;"><img src="https://images.unsplash.com/photo-1503803548695-c2a7b4a5b875?w=600&amp;q=75" alt="Framed sunset print - ocean" loading="lazy" class="w-full aspect-[4/3] object-cover" onerror="this.style.background='linear-gradient(135deg,#f59e0b,#ec4899)'">
+        </div>
+        <p class="text-center mt-2 text-xs" style="color:#8b7355; font-family:'Playfair Display',serif; font-style:italic;">Pacific Ember — Limited Edition</p>
+       </div>
+       <div class="mt-3 flex items-center justify-between"><span class="text-white/50 text-xs uppercase tracking-widest">Poster</span> <span class="text-orange-400 font-bold text-sm">Included</span>
+       </div>
+      </div><!-- Print 2 -->
+      <div class="animate-on-scroll group" style="transition-delay:0.1s">
+       <div class="relative rounded-lg overflow-hidden" style="background: #2a2a2a; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);">
+        <div style="border: 1px solid #444; padding: 4px;"><img src="https://images.unsplash.com/photo-1489914169085-9b54fdd8f2a2?w=600&amp;q=75" alt="Framed sunset print - clouds" loading="lazy" class="w-full aspect-[4/3] object-cover" onerror="this.style.background='linear-gradient(135deg,#7c2d12,#c084fc)'">
+        </div>
+        <p class="text-center mt-2 text-xs" style="color:#888; font-family:'Playfair Display',serif; font-style:italic;">Cumulus Fire — Artist Series</p>
+       </div>
+       <div class="mt-3 flex items-center justify-between"><span class="text-white/50 text-xs uppercase tracking-widest">Poster</span> <span class="text-orange-400 font-bold text-sm">Included</span>
+       </div>
+      </div><!-- Print 3 - Postcard style -->
+      <div class="animate-on-scroll group" style="transition-delay:0.2s">
+       <div class="relative rounded-lg overflow-hidden" style="background: #faf6ef; padding: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);">
+        <div class="grid grid-cols-2 gap-2"><img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=300&amp;q=70" alt="Postcard sunset 1" loading="lazy" class="w-full aspect-[3/2] object-cover rounded-sm" onerror="this.style.background='#d97706'"> <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=300&amp;q=70" alt="Postcard sunset 2" loading="lazy" class="w-full aspect-[3/2] object-cover rounded-sm" onerror="this.style.background='#db2777'"> <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&amp;q=70" alt="Postcard sunset 3" loading="lazy" class="w-full aspect-[3/2] object-cover rounded-sm" onerror="this.style.background='#7c3aed'"> <img src="https://images.unsplash.com/photo-1444464666168-49d633b86797?w=300&amp;q=70" alt="Postcard sunset 4" loading="lazy" class="w-full aspect-[3/2] object-cover rounded-sm" onerror="this.style.background='#ea580c'">
+        </div>
+        <p class="text-center mt-2 text-xs" style="color:#8b7355; font-family:'Playfair Display',serif; font-style:italic;">Postcard Collection — 20 Templates</p>
+       </div>
+       <div class="mt-3 flex items-center justify-between"><span class="text-white/50 text-xs uppercase tracking-widest">Postcards</span> <span class="text-orange-400 font-bold text-sm">Included</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS SECTION -->
+   <section id="reviews" class="relative w-full px-4 sm:px-8 py-20">
+    <div class="max-w-4xl mx-auto">
+     <div class="animate-on-scroll text-center mb-14"><span class="text-amber-300/60 text-xs uppercase tracking-[6px] font-bold">Testimonials</span>
+      <h2 class="font-display text-3xl sm:text-5xl font-black text-white mt-3">Golden Reviews</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="animate-on-scroll rounded-xl p-6" style="background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(244,114,182,0.05)); border: 1px solid rgba(251,146,60,0.12);">
+       <div class="flex gap-1 mb-3"><span class="text-orange-400">★</span><span class="text-orange-400">★</span><span class="text-orange-400">★</span><span class="text-orange-400">★</span><span class="text-orange-400">★</span>
+       </div>
+       <p class="text-white/60 text-sm italic leading-relaxed">"I rotate a new sunset wallpaper every week. It's like traveling without leaving my desk."</p>
+       <p class="text-white/30 text-xs mt-3 uppercase tracking-widest">— Mia, Berlin</p>
+      </div>
+      <div class="animate-on-scroll rounded-xl p-6" style="background: linear-gradient(135deg, rgba(192,132,252,0.08), rgba(244,114,182,0.05)); border: 1px solid rgba(192,132,252,0.12); transition-delay:0.1s;">
+       <div class="flex gap-1 mb-3"><span class="text-purple-400">★</span><span class="text-purple-400">★</span><span class="text-purple-400">★</span><span class="text-purple-400">★</span><span class="text-purple-400">★</span>
+       </div>
+       <p class="text-white/60 text-sm italic leading-relaxed">"Gifted the postcard set to my mom. She framed three of them. Best digital product I've bought."</p>
+       <p class="text-white/30 text-xs mt-3 uppercase tracking-widest">— Jorge, São Paulo</p>
+      </div>
+      <div class="animate-on-scroll rounded-xl p-6" style="background: linear-gradient(135deg, rgba(244,114,182,0.08), rgba(251,146,60,0.05)); border: 1px solid rgba(244,114,182,0.12); transition-delay:0.15s;">
+       <div class="flex gap-1 mb-3"><span class="text-pink-400">★</span><span class="text-pink-400">★</span><span class="text-pink-400">★</span><span class="text-pink-400">★</span><span class="text-pink-400">★</span>
+       </div>
+       <p class="text-white/60 text-sm italic leading-relaxed">"The print quality is insane. My living room looks like a gallery now."</p>
+       <p class="text-white/30 text-xs mt-3 uppercase tracking-widest">— Aiko, Tokyo</p>
+      </div>
+      <div class="animate-on-scroll rounded-xl p-6" style="background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(251,146,60,0.05)); border: 1px solid rgba(251,191,36,0.12); transition-delay:0.2s;">
+       <div class="flex gap-1 mb-3"><span class="text-amber-300">★</span><span class="text-amber-300">★</span><span class="text-amber-300">★</span><span class="text-amber-300">★</span><span class="text-amber-300">★</span>
+       </div>
+       <p class="text-white/60 text-sm italic leading-relaxed">"200 wallpapers for this price? It's endless variety and every single one is stunning."</p>
+       <p class="text-white/30 text-xs mt-3 uppercase tracking-widest">— Priya, Mumbai</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="relative w-full px-4 sm:px-8 py-16">
+    <div class="max-w-4xl mx-auto">
+     <div class="animate-on-scroll rounded-2xl p-8 sm:p-12 text-center" style="background: linear-gradient(135deg, rgba(251,146,60,0.1), rgba(192,132,252,0.08)); border: 1px solid rgba(251,146,60,0.15);">
+      <h3 class="font-display text-2xl sm:text-3xl font-black text-white mb-6">Everything Included</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+       <div class="p-4 rounded-xl" style="background:rgba(0,0,0,0.2);">
+        <div class="text-2xl mb-2">
+         🌅
+        </div>
+        <p class="text-white font-bold text-sm">200 Wallpapers</p>
+        <p class="text-white/30 text-xs mt-1">Mobile + Desktop</p>
+       </div>
+       <div class="p-4 rounded-xl" style="background:rgba(0,0,0,0.2);">
+        <div class="text-2xl mb-2">
+         🖼️
+        </div>
+        <p class="text-white font-bold text-sm">30 Posters</p>
+        <p class="text-white/30 text-xs mt-1">Print-ready files</p>
+       </div>
+       <div class="p-4 rounded-xl" style="background:rgba(0,0,0,0.2);">
+        <div class="text-2xl mb-2">
+         ✉️
+        </div>
+        <p class="text-white font-bold text-sm">20 Postcards</p>
+        <p class="text-white/30 text-xs mt-1">Editable templates</p>
+       </div>
+       <div class="p-4 rounded-xl" style="background:rgba(0,0,0,0.2);">
+        <div class="text-2xl mb-2">
+         ✅
+        </div>
+        <p class="text-white font-bold text-sm">Checklist Cards</p>
+        <p class="text-white/30 text-xs mt-1">Sunset spot tracker</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD CTA -->
+   <section id="download" class="relative w-full px-4 sm:px-8 py-20">
+    <div class="max-w-3xl mx-auto">
+     <div class="animate-on-scroll relative rounded-2xl overflow-hidden" style="box-shadow: 0 30px 80px rgba(251,146,60,0.15);"><img src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=1200&amp;q=75" alt="Golden sunset" loading="lazy" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#d97706,#db2777)'">
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,10,0,0.85), rgba(88,28,12,0.75));"></div>
+      <div class="relative z-10 p-8 sm:p-14 text-center">
+       <div class="stamp-badge text-orange-300 inline-block mb-6" style="border-color: rgba(251,146,60,0.4);"><span>SunsetStamp<br>
+         Atlas</span>
+       </div>
+       <h2 id="bottom-cta" class="font-display text-3xl sm:text-5xl font-black text-white mb-4">Take golden hour with you.</h2>
+       <p class="text-white/50 text-sm mb-8 max-w-md mx-auto">Endless variety. Always trending. Giftable and calming. The travel aesthetic that sells.</p><a href="#" id="download-btn" class="inline-block px-10 py-4 rounded-full text-white font-bold text-sm tracking-wide transition-all hover:scale-105" style="background: linear-gradient(135deg, #fb923c, #e11d48); animation: pulse-glow 3s ease-in-out infinite;" onclick="event.preventDefault(); document.getElementById('download-success').classList.remove('hidden'); setTimeout(()=>document.getElementById('download-success').classList.add('hidden'), 3000);"> Download the Collection </a>
+       <div id="download-success" class="hidden mt-4 text-green-400 text-sm font-medium">
+        ✓ Download started! Check your downloads folder.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- VOTE + COMMENT WIDGET -->
+   <section class="relative w-full px-4 sm:px-8 py-16">
+    <div class="max-w-2xl mx-auto">
+     <div class="animate-on-scroll rounded-2xl p-6 sm:p-8" style="background: linear-gradient(135deg, rgba(251,146,60,0.06), rgba(192,132,252,0.06)); border: 1px solid rgba(255,255,255,0.08);">
+      <h3 class="font-display text-xl font-bold text-white text-center mb-2">Vote + Comment</h3>
+      <p class="text-white/30 text-xs text-center mb-6 uppercase tracking-widest">Share your favorite sunset vibe</p><!-- Vote buttons -->
+      <div class="flex flex-wrap justify-center gap-2 mb-6" id="vote-btns"><button onclick="vote(this,'Island Glow')" class="vote-btn px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105" style="background:rgba(251,146,60,0.15); border:1px solid rgba(251,146,60,0.3); color:#fb923c;">🏝️ Island Glow</button> <button onclick="vote(this,'City Fire')" class="vote-btn px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105" style="background:rgba(244,114,182,0.15); border:1px solid rgba(244,114,182,0.3); color:#f472b6;">🏙️ City Fire</button> <button onclick="vote(this,'Mountain Melt')" class="vote-btn px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105" style="background:rgba(192,132,252,0.15); border:1px solid rgba(192,132,252,0.3); color:#c084fc;">🏔️ Mountain Melt</button> <button onclick="vote(this,'Desert Gold')" class="vote-btn px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105" style="background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.3); color:#fbbf24;">🏜️ Desert Gold</button> <button onclick="vote(this,'Lake Mirror')" class="vote-btn px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105" style="background:rgba(96,165,250,0.15); border:1px solid rgba(96,165,250,0.3); color:#60a5fa;">🌊 Lake Mirror</button>
+      </div>
+      <div id="vote-result" class="text-center text-sm text-white/50 mb-6 hidden"></div><!-- Comment -->
+      <form id="comment-form" class="flex gap-2"><input type="text" id="comment-input" placeholder="Leave a comment..." class="flex-1 px-4 py-2.5 rounded-full text-sm text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-orange-400/40" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);"> <button type="submit" class="px-5 py-2.5 rounded-full text-xs font-bold text-white transition-all hover:scale-105" style="background:linear-gradient(135deg,#fb923c,#e11d48);"> <i data-lucide="send" style="width:14px;height:14px;"></i> </button>
+      </form>
+      <div id="comments-list" class="mt-4 space-y-2"></div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full px-4 sm:px-8 py-10 text-center" style="border-top: 1px solid rgba(251,146,60,0.1);"><span style="color:#fb923c; font-family:'Playfair Display',serif; font-weight:900; font-size:1.2rem;">SunsetStamp Atlas</span>
+    <p class="text-white/20 text-xs mt-2 max-w-sm mx-auto">Collect golden hour from every corner of Earth. Made with warmth.</p>
+    <div class="flex justify-center gap-4 mt-4"><span class="text-white/20 text-xs">© 2025</span> <span class="text-white/10">·</span> <span class="text-white/20 text-xs">Endless variety, always trending</span>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// === Element SDK ===
+const defaultConfig = {
+  hero_title: "Your daily golden hour, on demand.",
+  hero_subtitle: "Sunsets around the world, curated for screens and prints.",
+  tagline: "Collect golden hour from every corner of Earth",
+  cta_primary: "Download the Collection",
+  cta_secondary: "Browse Locations",
+  bottom_cta_text: "Take golden hour with you.",
+  background_color: "#1a0a00",
+  surface_color: "#2d1106",
+  text_color: "#ffffff",
+  primary_action_color: "#fb923c",
+  secondary_action_color: "#f472b6",
+  font_family: "Playfair Display",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = Object.assign({}, defaultConfig, config);
+
+  // Text content
+  const heroTitleEl = document.getElementById('hero-title');
+  if (heroTitleEl) {
+    heroTitleEl.innerHTML = c.hero_title.replace(/(on demand\.)/, '<br><span style="background:linear-gradient(90deg,'+c.primary_action_color+','+c.secondary_action_color+',#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">on demand.</span>');
+  }
+  const heroSubEl = document.getElementById('hero-subtitle');
+  if (heroSubEl) heroSubEl.textContent = c.hero_subtitle;
+  const taglineEl = document.getElementById('tagline-text');
+  if (taglineEl) taglineEl.innerHTML = c.tagline.replace(/,/g, '<br>');
+  const ctaPrimary = document.getElementById('cta-primary-btn');
+  if (ctaPrimary) ctaPrimary.textContent = c.cta_primary;
+  const ctaSecondary = document.getElementById('cta-secondary-btn');
+  if (ctaSecondary) ctaSecondary.textContent = c.cta_secondary;
+  const bottomCta = document.getElementById('bottom-cta');
+  if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+  const downloadBtn = document.getElementById('download-btn');
+  if (downloadBtn) downloadBtn.textContent = c.cta_primary;
+
+  // Colors
+  const wrapper = document.getElementById('app-wrapper');
+  if (wrapper) wrapper.style.background = `linear-gradient(180deg, ${c.background_color} 0%, ${c.surface_color} 30%, ${c.background_color} 60%, ${c.background_color} 100%)`;
+
+  // Fonts
+  const font = c.font_family || defaultConfig.font_family;
+  const baseStack = 'Georgia, serif';
+  document.querySelectorAll('.font-display, [class*="font-display"]').forEach(el => {
+    el.style.fontFamily = `${font}, ${baseStack}`;
+  });
+
+  // Font size
+  const base = c.font_size || defaultConfig.font_size;
+  if (heroTitleEl) heroTitleEl.style.fontSize = '';
+  document.querySelectorAll('p, span').forEach(el => {
+    if (!el.closest('nav') && !el.classList.contains('font-display')) {
+      // Leave scaled by Tailwind
+    }
+  });
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => {
+      const c = Object.assign({}, defaultConfig, config);
+      return {
+        recolorables: [
+          { get: () => c.background_color, set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => c.surface_color, set: (v) => { c.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => c.text_color, set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => c.primary_action_color, set: (v) => { c.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+          { get: () => c.secondary_action_color, set: (v) => { c.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family || defaultConfig.font_family,
+          set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size || defaultConfig.font_size,
+          set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = Object.assign({}, defaultConfig, config);
+      return new Map([
+        ["hero_title", c.hero_title],
+        ["hero_subtitle", c.hero_subtitle],
+        ["tagline", c.tagline],
+        ["cta_primary", c.cta_primary],
+        ["cta_secondary", c.cta_secondary],
+        ["bottom_cta_text", c.bottom_cta_text]
+      ]);
+    }
+  });
+}
+
+// === Scroll Animations ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+// === Mobile Menu ===
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// === Vote ===
+function vote(btn, name) {
+  document.querySelectorAll('.vote-btn').forEach(b => { b.style.opacity = '0.4'; b.style.transform = 'scale(1)'; });
+  btn.style.opacity = '1';
+  btn.style.transform = 'scale(1.1)';
+  const result = document.getElementById('vote-result');
+  result.textContent = `You voted for ${name}! 🌅`;
+  result.classList.remove('hidden');
+}
+
+// === Comment Form ===
+document.getElementById('comment-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'px-4 py-2 rounded-lg text-sm text-white/60';
+  div.style.cssText = 'background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); animation: fadeUp 0.4s ease-out;';
+  div.innerHTML = `<span class="text-orange-400/60 text-xs">Just now</span> — ${val.replace(/</g,'&lt;')}`;
+  list.prepend(div);
+  input.value = '';
+});
+
+// === Lucide ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a6926066d27c5',t:'MTc3NTU3OTM2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

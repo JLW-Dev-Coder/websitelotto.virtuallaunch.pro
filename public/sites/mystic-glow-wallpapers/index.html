@@ -1,1 +1,650 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/fd224523-2836-4524-8195-43a6fc97ef4e -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MythicGlow Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&amp;family=Quicksand:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Cormorant Garamond', 'serif'],
+        body: ['Quicksand', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Floating particle system */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp linear infinite;
+  opacity: 0;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-400px) scale(1); opacity: 0; }
+}
+
+/* Drifting clouds */
+@keyframes driftLeft {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-30px); }
+  100% { transform: translateX(0); }
+}
+@keyframes driftRight {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+  100% { transform: translateX(0); }
+}
+.drift-left { animation: driftLeft 12s ease-in-out infinite; }
+.drift-right { animation: driftRight 15s ease-in-out infinite; }
+
+/* Float animation for cards */
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float-card { animation: gentleFloat 4s ease-in-out infinite; }
+.float-card:nth-child(2) { animation-delay: 0.8s; }
+.float-card:nth-child(3) { animation-delay: 1.6s; }
+.float-card:nth-child(4) { animation-delay: 2.4s; }
+.float-card:nth-child(5) { animation-delay: 3.2s; }
+.float-card:nth-child(6) { animation-delay: 1.2s; }
+
+/* Glass card styling */
+.glass-card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 20px 60px rgba(180, 130, 255, 0.3), 0 0 40px rgba(255, 180, 230, 0.15);
+}
+
+/* Glow pulse */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(200, 160, 255, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(200, 160, 255, 0.5), 0 0 80px rgba(255, 180, 230, 0.2); }
+}
+.glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
+
+/* Shimmer CTA */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-btn {
+  background-size: 200% auto;
+  background-image: linear-gradient(90deg, #c084fc, #f9a8d4, #93c5fd, #c084fc);
+  animation: shimmer 3s linear infinite;
+}
+.shimmer-btn:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 30px rgba(192, 132, 252, 0.5);
+}
+
+/* Sparkle on hover */
+.sparkle-hover { position: relative; overflow: hidden; }
+.sparkle-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.sparkle-hover:hover::after { opacity: 1; }
+
+/* Staggered fade in */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Nav glass */
+.nav-glass {
+  background: rgba(30, 10, 60, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Review card */
+.review-glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a0a30; }
+::-webkit-scrollbar-thumb { background: rgba(192,132,252,0.4); border-radius: 3px; }
+
+/* Section bg overlays */
+.section-glow {
+  position: relative;
+}
+.section-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(192,132,252,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background: linear-gradient(135deg, #1a0a30 0%, #2d1050 25%, #1a1040 50%, #0f1a3a 75%, #1a0a30 100%);">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="scroll-behavior: smooth;"><!-- Particle Container -->
+   <div id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;"></div><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="font-display text-xl font-bold" style="color:#e0c4ff;">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:inline-block;vertical-align:middle;margin-right:6px;color:#f9a8d4;">
+       <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+      </svg> MythicGlow </a>
+     <div class="hidden md:flex gap-6 font-body text-sm" style="color:#c4b5e0;"><a href="#home" class="hover:text-white transition-colors">Home</a> <a href="#wallpapers" class="hover:text-white transition-colors">Wallpapers</a> <a href="#fantasy-kit" class="hover:text-white transition-colors">Fantasy Kit</a> <a href="#preview" class="hover:text-white transition-colors">Preview</a> <a href="#reviews" class="hover:text-white transition-colors">Reviews</a> <a href="#download" class="hover:text-white transition-colors">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:#c4b5e0;" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 font-body text-sm" style="color:#c4b5e0;">
+     <div class="flex flex-col gap-3"><a href="#home" class="hover:text-white transition-colors">Home</a> <a href="#wallpapers" class="hover:text-white transition-colors">Wallpapers</a> <a href="#fantasy-kit" class="hover:text-white transition-colors">Fantasy Kit</a> <a href="#preview" class="hover:text-white transition-colors">Preview</a> <a href="#reviews" class="hover:text-white transition-colors">Reviews</a> <a href="#download" class="hover:text-white transition-colors">Download</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full flex items-center justify-center text-center" style="min-height:100%;padding-top:80px;"><!-- Decorative floating clouds -->
+    <div class="drift-left absolute top-16 left-4 opacity-20" style="pointer-events:none;">
+     <svg width="120" height="60" viewbox="0 0 120 60" fill="none">
+      <ellipse cx="60" cy="40" rx="55" ry="20" fill="url(#cg1)" /><ellipse cx="40" cy="30" rx="30" ry="18" fill="url(#cg1)" /><ellipse cx="80" cy="32" rx="25" ry="15" fill="url(#cg1)" /><defs>
+       <lineargradient id="cg1" x1="0" y1="0" x2="120" y2="60">
+        <stop stop-color="#c084fc" stop-opacity="0.5" />
+        <stop offset="1" stop-color="#f9a8d4" stop-opacity="0.3" />
+       </lineargradient>
+      </defs>
+     </svg>
+    </div>
+    <div class="drift-right absolute top-32 right-8 opacity-15" style="pointer-events:none;">
+     <svg width="100" height="50" viewbox="0 0 100 50" fill="none">
+      <ellipse cx="50" cy="30" rx="45" ry="18" fill="url(#cg2)" /><ellipse cx="35" cy="22" rx="25" ry="14" fill="url(#cg2)" /><defs>
+       <lineargradient id="cg2" x1="0" y1="0" x2="100" y2="50">
+        <stop stop-color="#93c5fd" stop-opacity="0.5" />
+        <stop offset="1" stop-color="#c084fc" stop-opacity="0.3" />
+       </lineargradient>
+      </defs>
+     </svg>
+    </div>
+    <div class="relative z-10 px-6 max-w-3xl mx-auto">
+     <div class="fade-in-up" style="animation-delay:0.2s;"><!-- Wand icon -->
+      <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="mx-auto mb-4">
+       <line x1="2" y1="22" x2="16" y2="8" /><path d="M15.5 2.5L21.5 8.5L18 12L12 6L15.5 2.5Z" /><line x1="18" y1="2" x2="18" y2="2.01" stroke-width="2" stroke-linecap="round" /><line x1="22" y1="6" x2="22" y2="6.01" stroke-width="2" stroke-linecap="round" /><line x1="20" y1="3" x2="20" y2="3.01" stroke-width="2" stroke-linecap="round" />
+      </svg>
+     </div>
+     <h1 id="hero-title" class="font-display text-5xl md:text-7xl font-bold leading-tight fade-in-up" style="color:#f0e6ff;animation-delay:0.4s;">Where magic feels real.</h1>
+     <p id="hero-subtitle" class="font-body text-lg md:text-xl mt-6 fade-in-up" style="color:#c4b5e0;animation-delay:0.6s;max-width:540px;margin-left:auto;margin-right:auto;">Fantasy visuals and creative templates built to inspire imagination.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10 fade-in-up" style="animation-delay:0.8s;"><a href="#wallpapers" id="cta-primary-btn" class="shimmer-btn font-body font-semibold text-white px-8 py-3.5 rounded-full text-sm tracking-wide">Enter the Collection</a> <a href="#preview" id="cta-secondary-btn" class="glass-card sparkle-hover font-body font-medium px-8 py-3.5 rounded-full text-sm tracking-wide" style="color:#e0c4ff;">Preview the Magic</a>
+     </div>
+    </div><!-- Bottom gradient fade -->
+    <div class="absolute bottom-0 left-0 w-full" style="height:120px;background:linear-gradient(to top, #1a0a30, transparent);pointer-events:none;"></div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="section-glow relative w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16">
+      <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="mx-auto mb-3">
+       <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+      </svg>
+      <h2 id="wallpapers-heading" class="font-display text-4xl md:text-5xl font-bold" style="color:#f0e6ff;">Enchanted Wallpapers</h2>
+      <p class="font-body mt-4" style="color:#a090c0;max-width:480px;margin:16px auto 0;">150 handcrafted unicorn wallpapers for phones, tablets, and desktops. Each one a portal to another world.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=400&amp;h=530&amp;fit=crop" alt="Fantasy landscape with dreamy pastel sky" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#c084fc,#f9a8d4)';this.alt='Wallpaper preview';">
+      </div>
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=400&amp;h=530&amp;fit=crop" alt="Glowing sky with magical lighting" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#93c5fd,#c084fc)';this.alt='Wallpaper preview';">
+      </div>
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&amp;h=530&amp;fit=crop" alt="Pastel clouds surreal dreamscape" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#f9a8d4,#93c5fd)';this.alt='Wallpaper preview';">
+      </div>
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&amp;h=530&amp;fit=crop" alt="Dreamy forest with magical glow" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#a78bfa,#f9a8d4)';this.alt='Wallpaper preview';">
+      </div>
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?w=400&amp;h=530&amp;fit=crop" alt="Rainbow light cosmic fantasy" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#c084fc,#93c5fd)';this.alt='Wallpaper preview';">
+      </div>
+      <div class="float-card glass-card sparkle-hover rounded-2xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1536431311719-398b6704d4cc?w=400&amp;h=530&amp;fit=crop" alt="Surreal pastel sky background" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#f9a8d4,#a78bfa)';this.alt='Wallpaper preview';">
+      </div>
+     </div>
+    </div>
+   </section><!-- FANTASY KIT -->
+   <section id="fantasy-kit" class="section-glow relative w-full py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16"><!-- Moon icon -->
+      <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="1.2" class="mx-auto mb-3">
+       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+      <h2 id="kit-heading" class="font-display text-4xl md:text-5xl font-bold" style="color:#f0e6ff;">The Fantasy Creator Kit</h2>
+      <p class="font-body mt-4" style="color:#a090c0;max-width:500px;margin:16px auto 0;">Everything you need to build a magical brand, plan with wonder, and share affirmations that glow.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass-card glow-pulse sparkle-hover rounded-2xl p-8 text-center"><!-- Sparkle icon -->
+       <svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="mx-auto mb-4">
+        <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" /><path d="M19 15L19.5 17L21 17.5L19.5 18L19 20L18.5 18L17 17.5L18.5 17L19 15Z" opacity="0.6" />
+       </svg>
+       <h3 class="font-display text-xl font-bold" style="color:#f0e6ff;">30 Poster Designs</h3>
+       <p class="font-body text-sm mt-3" style="color:#a090c0;">Gallery-worthy fantasy art prints for rooms, feeds, and storefronts.</p>
+      </div>
+      <div class="glass-card glow-pulse sparkle-hover rounded-2xl p-8 text-center" style="animation-delay:1s;"><!-- Checklist icon -->
+       <svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="1.2" class="mx-auto mb-4">
+        <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M9 12l2 2 4-4" /><line x1="9" y1="17" x2="15" y2="17" opacity="0.5" />
+       </svg>
+       <h3 class="font-display text-xl font-bold" style="color:#f0e6ff;">Fantasy Planner</h3>
+       <p class="font-body text-sm mt-3" style="color:#a090c0;">Whimsical weekly and monthly planners that make organizing feel enchanting.</p>
+      </div>
+      <div class="glass-card glow-pulse sparkle-hover rounded-2xl p-8 text-center" style="animation-delay:2s;"><!-- Cloud icon -->
+       <svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="1.2" class="mx-auto mb-4">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+       </svg>
+       <h3 class="font-display text-xl font-bold" style="color:#f0e6ff;">Affirmation Cards</h3>
+       <p class="font-body text-sm mt-3" style="color:#a090c0;">Daily magic reminders. Beautiful cards to share, save, or gift.</p>
+      </div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6 mt-6">
+      <div class="glass-card sparkle-hover rounded-2xl p-8">
+       <div class="flex items-start gap-4">
+        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="flex-shrink-0 mt-1">
+         <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="8" x2="16" y2="8" /><line x1="8" y1="12" x2="14" y2="12" /><line x1="8" y1="16" x2="12" y2="16" />
+        </svg>
+        <div>
+         <h3 class="font-display text-xl font-bold" style="color:#f0e6ff;">Story Templates</h3>
+         <p class="font-body text-sm mt-2" style="color:#a090c0;">Ready-to-post Instagram and TikTok story layouts with fantasy vibes built in.</p>
+        </div>
+       </div>
+      </div>
+      <div class="glass-card sparkle-hover rounded-2xl p-8">
+       <div class="flex items-start gap-4">
+        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="1.2" class="flex-shrink-0 mt-1">
+         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <div>
+         <h3 class="font-display text-xl font-bold" style="color:#f0e6ff;">Caption Pack</h3>
+         <p class="font-body text-sm mt-2" style="color:#a090c0;">200+ dreamy captions, hashtag sets, and bio ideas for the fantasy aesthetic.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="section-glow relative w-full py-24 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+     <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="1.2" class="mx-auto mb-3">
+      <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+     </svg>
+     <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#f0e6ff;">Preview the Magic</h2>
+     <p class="font-body mt-4 mb-12" style="color:#a090c0;">Hover over each card to feel the glow.</p>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-card sparkle-hover rounded-xl p-5 text-center cursor-default">
+       <div class="text-3xl font-display font-bold" style="color:#f9a8d4;">
+        150
+       </div>
+       <div class="font-body text-xs mt-1" style="color:#a090c0;">
+        Wallpapers
+       </div>
+      </div>
+      <div class="glass-card sparkle-hover rounded-xl p-5 text-center cursor-default">
+       <div class="text-3xl font-display font-bold" style="color:#93c5fd;">
+        30
+       </div>
+       <div class="font-body text-xs mt-1" style="color:#a090c0;">
+        Posters
+       </div>
+      </div>
+      <div class="glass-card sparkle-hover rounded-xl p-5 text-center cursor-default">
+       <div class="text-3xl font-display font-bold" style="color:#c084fc;">
+        200+
+       </div>
+       <div class="font-body text-xs mt-1" style="color:#a090c0;">
+        Captions
+       </div>
+      </div>
+      <div class="glass-card sparkle-hover rounded-xl p-5 text-center cursor-default">
+       <div class="text-3xl font-display font-bold" style="color:#f9a8d4;">
+        50+
+       </div>
+       <div class="font-body text-xs mt-1" style="color:#a090c0;">
+        Templates
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="grid md:grid-cols-3 gap-5 mt-12">
+      <div class="glass-card rounded-2xl p-6">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="mx-auto mb-3">
+        <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+       </svg>
+       <h3 class="font-display text-lg font-bold" style="color:#f0e6ff;">Fantasy Escape Niche</h3>
+       <p class="font-body text-xs mt-2" style="color:#a090c0;">Tap into the $4B+ digital fantasy market with aesthetic-first content.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="1.2" class="mx-auto mb-3">
+        <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" />
+       </svg>
+       <h3 class="font-display text-lg font-bold" style="color:#f0e6ff;">Viral Aesthetic Content</h3>
+       <p class="font-body text-xs mt-2" style="color:#a090c0;">Designed to trend. Every asset is screenshot-worthy and share-ready.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="1.2" class="mx-auto mb-3">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+       </svg>
+       <h3 class="font-display text-lg font-bold" style="color:#f0e6ff;">Youth + Gifting Market</h3>
+       <p class="font-body text-xs mt-2" style="color:#a090c0;">Perfect for Gen Z creators, gifting, and aesthetic-obsessed audiences.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="section-glow relative w-full py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14">
+      <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#f9a8d4" stroke-width="1.2" class="mx-auto mb-3">
+       <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" />
+      </svg>
+      <h2 class="font-display text-4xl md:text-5xl font-bold" style="color:#f0e6ff;">What Dreamers Say</h2>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="review-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+       </div>
+       <p class="font-body text-sm italic" style="color:#c4b5e0;">"These wallpapers completely transformed my phone aesthetic. I get compliments every single day. Absolutely magical."</p>
+       <p class="font-body text-xs mt-3 font-semibold" style="color:#a090c0;">— Luna M., Content Creator</p>
+      </div>
+      <div class="review-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#93c5fd" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#93c5fd" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#93c5fd" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#93c5fd" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#93c5fd" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+       </div>
+       <p class="font-body text-sm italic" style="color:#c4b5e0;">"The planner and affirmation cards are so beautifully designed. I use them daily. This kit is an actual dream."</p>
+       <p class="font-body text-xs mt-3 font-semibold" style="color:#a090c0;">— Aria K., Etsy Shop Owner</p>
+      </div>
+      <div class="review-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#c084fc" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#c084fc" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#c084fc" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#c084fc" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#c084fc" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+       </div>
+       <p class="font-body text-sm italic" style="color:#c4b5e0;">"Bought this as a gift for my daughter. She literally screamed with joy. Best digital product I've ever purchased."</p>
+       <p class="font-body text-xs mt-3 font-semibold" style="color:#a090c0;">— Sophie T., Parent</p>
+      </div>
+      <div class="review-glass rounded-2xl p-6">
+       <div class="flex gap-1 mb-3">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#f9a8d4" stroke="none">
+         <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" />
+        </svg>
+       </div>
+       <p class="font-body text-sm italic" style="color:#c4b5e0;">"The caption pack alone saved me hours of work. Every piece feels cohesive and on-brand. Total game changer."</p>
+       <p class="font-body text-xs mt-3 font-semibold" style="color:#a090c0;">— Ivy R., Social Media Manager</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="section-glow relative w-full py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+     <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="1.2" class="mx-auto mb-4">
+      <path d="M12 2L14 8H20L15 12L17 18L12 14L7 18L9 12L4 8H10L12 2Z" /><circle cx="12" cy="10" r="8" stroke-opacity="0.2" />
+     </svg>
+     <h2 id="bottom-cta-heading" class="font-display text-4xl md:text-6xl font-bold" style="color:#f0e6ff;">Step into your world.</h2>
+     <p class="font-body mt-5" style="color:#a090c0;max-width:440px;margin:20px auto 0;">Download the full MythicGlow Studio collection and start creating magic today.</p>
+     <div class="mt-10"><button class="shimmer-btn font-body font-semibold text-white px-10 py-4 rounded-full text-base tracking-wide">Download the Collection</button>
+     </div>
+     <p class="font-body text-xs mt-4" style="color:#7a6a9a;">Instant digital delivery. All formats included.</p><!-- Vote + Comment Widget -->
+     <div class="glass-card rounded-2xl p-8 mt-16 max-w-lg mx-auto">
+      <h3 class="font-display text-xl font-bold mb-6" style="color:#f0e6ff;">Vote + Comment</h3>
+      <div class="flex justify-center gap-8 mb-6"><button id="vote-up" class="glass-card rounded-xl px-6 py-3 flex items-center gap-2 transition-all hover:scale-105" style="color:#f9a8d4;">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" /><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+        </svg><span id="vote-up-count" class="font-body font-semibold">0</span> </button> <button id="vote-down" class="glass-card rounded-xl px-6 py-3 flex items-center gap-2 transition-all hover:scale-105" style="color:#93c5fd;">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+         <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z" /><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3" />
+        </svg><span id="vote-down-count" class="font-body font-semibold">0</span> </button>
+      </div>
+      <div id="comments-container">
+       <div class="flex gap-2"><input id="comment-input" type="text" placeholder="Leave a magical note..." class="flex-1 rounded-xl px-4 py-2.5 font-body text-sm outline-none" style="background:rgba(255,255,255,0.08);color:#e0c4ff;border:1px solid rgba(255,255,255,0.12);"> <button id="comment-submit" class="shimmer-btn rounded-xl px-5 py-2.5 font-body text-sm font-semibold text-white">Send</button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-2 text-left max-h-48 overflow-auto"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 text-center" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <p class="font-body text-xs" style="color:#5a4a7a;">MythicGlow Studio — Where magic feels real.</p>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// --- Particles ---
+(function() {
+  const container = document.getElementById('particles');
+  const colors = ['#c084fc','#f9a8d4','#93c5fd','#a78bfa'];
+  function spawnParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    const x = Math.random() * 100;
+    const dur = Math.random() * 8 + 6;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${x}%;bottom:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${dur}s;`;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), dur * 1000);
+  }
+  setInterval(spawnParticle, 400);
+})();
+
+// --- Mobile menu ---
+document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// --- Vote + Comment ---
+let upVotes = 0, downVotes = 0;
+document.getElementById('vote-up').addEventListener('click', function() {
+  upVotes++;
+  document.getElementById('vote-up-count').textContent = upVotes;
+});
+document.getElementById('vote-down').addEventListener('click', function() {
+  downVotes++;
+  document.getElementById('vote-down-count').textContent = downVotes;
+});
+document.getElementById('comment-submit').addEventListener('click', addComment);
+document.getElementById('comment-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addComment();
+});
+function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const div = document.createElement('div');
+  div.className = 'review-glass rounded-lg p-3';
+  div.innerHTML = `<p class="font-body text-xs" style="color:#c4b5e0;">${text.replace(/</g,'&lt;')}</p><p class="font-body text-xs mt-1" style="color:#5a4a7a;">Just now</p>`;
+  document.getElementById('comments-list').prepend(div);
+  input.value = '';
+}
+
+// --- Intersection Observer for fade-in ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.glass-card, .review-glass').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// --- Element SDK ---
+const defaultConfig = {
+  hero_title: 'Where magic feels real.',
+  hero_subtitle: 'Fantasy visuals and creative templates built to inspire imagination.',
+  cta_primary: 'Enter the Collection',
+  cta_secondary: 'Preview the Magic',
+  wallpapers_title: 'Enchanted Wallpapers',
+  kit_title: 'The Fantasy Creator Kit',
+  bottom_cta_text: 'Step into your world.',
+  background_color: '#1a0a30',
+  surface_color: 'rgba(255,255,255,0.12)',
+  text_color: '#f0e6ff',
+  primary_action_color: '#c084fc',
+  secondary_action_color: '#f9a8d4',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const el = (id) => document.getElementById(id);
+  if (el('hero-title')) el('hero-title').textContent = c.hero_title;
+  if (el('hero-subtitle')) el('hero-subtitle').textContent = c.hero_subtitle;
+  if (el('cta-primary-btn')) el('cta-primary-btn').textContent = c.cta_primary;
+  if (el('cta-secondary-btn')) el('cta-secondary-btn').textContent = c.cta_secondary;
+  if (el('wallpapers-heading')) el('wallpapers-heading').textContent = c.wallpapers_title;
+  if (el('kit-heading')) el('kit-heading').textContent = c.kit_title;
+  if (el('bottom-cta-heading')) el('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+  // Colors
+  document.body.style.background = `linear-gradient(135deg, ${c.background_color} 0%, #2d1050 25%, #1a1040 50%, #0f1a3a 75%, ${c.background_color} 100%)`;
+  document.querySelectorAll('.font-display').forEach(e => e.style.color = c.text_color);
+  document.querySelectorAll('.shimmer-btn').forEach(btn => {
+    btn.style.backgroundImage = `linear-gradient(90deg, ${c.primary_action_color}, ${c.secondary_action_color}, #93c5fd, ${c.primary_action_color})`;
+  });
+
+  // Font
+  const font = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-display').forEach(e => e.style.fontFamily = `${font}, serif`);
+
+  // Font size
+  const base = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-body').forEach(e => {
+    // Keep relative sizing based on existing classes
+  });
+  if (el('hero-title')) el('hero-title').style.fontSize = `${base * 3.5}px`;
+  if (el('hero-subtitle')) el('hero-subtitle').style.fontSize = `${base * 1.2}px`;
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+      ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+      ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+      ['kit_title', config.kit_title || defaultConfig.kit_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+    ])
+  });
+}
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5743e1c427c5',t:'MTc3NTU3ODYzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

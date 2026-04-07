@@ -1,1 +1,744 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c2632302-33f1-4bcf-a1e6-6534afc1d277 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evergreen Growth Planner</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        moss: '#2D5016',
+        fern: '#4A7C2E',
+        sage: '#8BAA7C',
+        cream: '#FBF8F1',
+        bark: '#5C4033',
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+body { font-family: 'Outfit', sans-serif; }
+h1, h2, h3, .serif { font-family: 'DM Serif Display', serif; }
+
+.app-wrapper { height: 100%; overflow-y: auto; overflow-x: hidden; width: 100%; }
+
+/* Floating leaves - larger, more visible */
+@keyframes floatLeaf1 { 0% { transform: translate(0,0) rotate(0deg) scale(1); opacity:0; } 8%{ opacity:.8; } 92%{ opacity:.8; } 100% { transform: translate(-150px, 120vh) rotate(360deg) scale(1.2); opacity:0; } }
+@keyframes floatLeaf2 { 0% { transform: translate(0,0) rotate(0deg) scale(1); opacity:0; } 8%{ opacity:.6; } 92%{ opacity:.6; } 100% { transform: translate(100px, 120vh) rotate(-270deg) scale(1.1); opacity:0; } }
+@keyframes floatLeaf3 { 0% { transform: translate(0,0) rotate(0deg) scale(1); opacity:0; } 8%{ opacity:.7; } 92%{ opacity:.7; } 100% { transform: translate(-80px, 120vh) rotate(180deg) scale(1.15); opacity:0; } }
+
+.leaf { position: fixed; pointer-events: none; z-index: 1; font-size: 32px; }
+.leaf-1 { top: -40px; left: 15%; animation: floatLeaf1 14s linear infinite; }
+.leaf-2 { top: -40px; left: 55%; animation: floatLeaf2 18s linear infinite; animation-delay: 4s; }
+.leaf-3 { top: -40px; left: 80%; animation: floatLeaf3 16s linear infinite; animation-delay: 8s; }
+.leaf-4 { top: -40px; left: 35%; animation: floatLeaf1 20s linear infinite; animation-delay: 2s; }
+.leaf-5 { top: -40px; left: 70%; animation: floatLeaf2 15s linear infinite; animation-delay: 6s; }
+
+/* Fade in on scroll */
+.fade-up { opacity: 0; transform: translateY(50px); transition: opacity 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* Timeline growth animation */
+.timeline-line { height: 0; transition: height 2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.timeline-line.grown { height: 100%; }
+
+/* Before/after slider */
+.ba-container { position: relative; overflow: hidden; border-radius: 20px; cursor: ew-resize; box-shadow: 0 20px 60px rgba(45,80,22,0.25); }
+.ba-after { position: absolute; top:0; left:0; width:100%; height:100%; clip-path: inset(0 50% 0 0); }
+.ba-slider { position: absolute; top:0; bottom:0; width:4px; left:50%; background: white; z-index:5; cursor: ew-resize; }
+.ba-handle { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+
+/* Sticky nav */
+.nav-glass { backdrop-filter: blur(16px); background: rgba(251,248,241,0.92); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Service card hover - bigger impact */
+.svc-card { transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 2px solid transparent; }
+.svc-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 24px 48px rgba(45,80,22,0.2); border-color: #4A7C2E; }
+
+/* Season cards */
+.season-dot { width: 20px; height: 20px; border-radius: 50%; border: 4px solid; }
+.season-card { opacity: 0; transform: translateX(30px); transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.season-card.visible { opacity:1; transform: translateX(0); }
+
+/* Vote button active */
+.vote-btn.active { ring: 3px; }
+
+/* Reaction btn */
+.react-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.react-btn:hover { transform: scale(1.35); }
+.react-btn.reacted { transform: scale(1.25); }
+
+/* Comment fade */
+.comment-item { animation: commentIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes commentIn { from { opacity:0; transform:translateY(15px); } to { opacity:1; transform:translateY(0); } }
+
+.loading-spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Pulse glow */
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(74, 124, 46, 0.7); } 50% { box-shadow: 0 0 0 20px rgba(74, 124, 46, 0); } }
+.pulse-glow { animation: pulse-glow 2.5s infinite; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-wrapper" id="appWrapper">
+   <!-- Floating Leaves -->
+   <div class="leaf leaf-1">
+    <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+     <path d="M12 2C12 2 8 8 8 12C8 15.3 10 18 12 18C14 18 16 15.3 16 12C16 8 12 2 12 2Z" fill="#4A7C2E" opacity="0.7" /><ellipse cx="10" cy="8" rx="1.5" ry="2" fill="#2D5016" opacity="0.8" /><ellipse cx="14" cy="9" rx="1.5" ry="2" fill="#2D5016" opacity="0.8" />
+    </svg>
+   </div>
+   <div class="leaf leaf-2">
+    <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+     <path d="M12 3C12 3 10 7 10 11C10 14 11 16 12 16C13 16 14 14 14 11C14 7 12 3 12 3Z" fill="#8BAA7C" opacity="0.7" /><path d="M8 10C8 10 7 12 7 14C7 15 8 16 9 16C10 16 11 15 11 14C11 12 8 10 8 10Z" fill="#8BAA7C" opacity="0.6" /><path d="M16 10C16 10 17 12 17 14C17 15 16 16 15 16C14 16 13 15 13 14C13 12 16 10 16 10Z" fill="#8BAA7C" opacity="0.6" />
+    </svg>
+   </div>
+   <div class="leaf leaf-3">
+    <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+     <path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#D4A574" opacity="0.7" />
+    </svg>
+   </div>
+   <div class="leaf leaf-4">
+    <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+     <circle cx="12" cy="12" r="3" fill="#4A7C2E" /><circle cx="12" cy="6" r="2" fill="#8BAA7C" opacity="0.8" /><circle cx="18" cy="12" r="2" fill="#8BAA7C" opacity="0.8" /><circle cx="12" cy="18" r="2" fill="#8BAA7C" opacity="0.8" /><circle cx="6" cy="12" r="2" fill="#8BAA7C" opacity="0.8" />
+    </svg>
+   </div>
+   <div class="leaf leaf-5">
+    <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+     <path d="M12 2C12 2 8 8 8 12C8 15.3 10 18 12 18C14 18 16 15.3 16 12C16 8 12 2 12 2Z" fill="#4A7C2E" opacity="0.7" /><ellipse cx="10" cy="8" rx="1.5" ry="2" fill="#2D5016" opacity="0.8" /><ellipse cx="14" cy="9" rx="1.5" ry="2" fill="#2D5016" opacity="0.8" />
+    </svg>
+   </div><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-sage/20" role="navigation" aria-label="Main navigation">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
+     <a href="#home" class="flex items-center gap-2 text-moss font-bold text-lg" style="font-family:'DM Serif Display',serif;"> <span style="font-size:22px;">🌿</span> Evergreen </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium text-bark/80">
+      <a href="#home" class="hover:text-moss transition-colors">Home</a> <a href="#plans" class="hover:text-moss transition-colors">Plans</a> <a href="#services" class="hover:text-moss transition-colors">Services</a> <a href="#results" class="hover:text-moss transition-colors">Results</a> <a href="#faq" class="hover:text-moss transition-colors">FAQ</a> <a href="#book" class="bg-moss text-white px-4 py-2 rounded-full hover:bg-fern transition-colors">Book Now</a>
+     </div><button id="mobileMenuBtn" class="md:hidden text-moss" aria-label="Open menu"><i data-lucide="menu" style="width:24px;height:24px;"></i></button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-cream border-t border-sage/20 px-4 pb-4">
+     <div class="flex flex-col gap-3 pt-3 text-sm font-medium text-bark/80">
+      <a href="#home" class="hover:text-moss">Home</a> <a href="#plans" class="hover:text-moss">Plans</a> <a href="#services" class="hover:text-moss">Services</a> <a href="#results" class="hover:text-moss">Results</a> <a href="#faq" class="hover:text-moss">FAQ</a> <a href="#book" class="bg-moss text-white px-4 py-2 rounded-full text-center hover:bg-fern">Book Now</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <header id="home" class="relative overflow-hidden" style="background: linear-gradient(135deg, #FBF8F1 0%, #e8f0de 50%, #d4e4c8 100%); min-height: 85vh; display: flex; align-items: center;">
+    <div class="max-w-7xl mx-auto px-4 w-full relative z-10">
+     <div class="max-w-3xl">
+      <div class="fade-up">
+       <span class="inline-block bg-moss/15 text-moss text-sm font-bold px-4 py-2 rounded-full mb-6 tracking-widest uppercase" style="letter-spacing: 2px;">✨ Seasonal Planning</span>
+       <h1 id="heroTitle" class="text-6xl md:text-8xl lg:text-8xl text-moss leading-none mb-6 font-black" style="line-height: 1.1;">A beautiful yard starts with a plan.</h1>
+       <p id="heroSubtitle" class="text-2xl md:text-3xl text-bark/60 mb-10 font-light leading-relaxed">Seasonal gardening designed to grow with you.</p>
+       <div class="flex flex-wrap gap-4">
+        <a href="#book" id="heroCta1" class="bg-moss text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-fern transition-all shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-3"><i data-lucide="calendar" style="width:22px;height:22px;"></i> Book a Consultation</a> <a href="#plans" class="border-3 border-moss text-moss px-8 py-4 rounded-2xl font-bold text-lg hover:bg-moss hover:text-white transition-all inline-flex items-center gap-3"><i data-lucide="eye" style="width:22px;height:22px;"></i> View Plans</a>
+       </div>
+      </div>
+     </div><!-- Hero illustration -->
+     <div class="absolute right-0 top-1/2 hidden lg:flex transform -translate-y-1/2 overflow-hidden rounded-3xl" style="width:500px;height:500px;opacity:0.25;">
+      <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=600&amp;h=600&amp;fit=crop" alt="Lush garden" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #4A7C2E 0%, #8BAA7C 100%)'; this.alt='Beautiful garden';">
+     </div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full">
+     <svg viewbox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full"><path d="M0 120L80 100C160 80 320 40 480 35C640 30 800 50 960 55C1120 60 1280 40 1360 30L1440 20V120H0Z" fill="#FBF8F1" />
+     </svg>
+    </div>
+   </header><!-- PLANS (Seasonal Timeline) -->
+   <section id="plans" class="bg-cream py-32 relative">
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-24 fade-up">
+      <span class="inline-block bg-fern/15 text-fern text-sm font-bold px-4 py-2 rounded-full mb-4 tracking-widest uppercase">Growth Timeline</span>
+      <h2 class="text-5xl md:text-7xl text-moss mb-6 font-black">Seasonal Growth Plan</h2>
+      <p class="text-xl text-bark/60 max-w-2xl mx-auto">Each season builds on the last. Watch your garden transform through the year.</p>
+     </div>
+     <div class="relative max-w-4xl mx-auto">
+      <!-- Vertical line -->
+      <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-sage/30 md:transform md:-translate-x-1/2">
+       <div class="timeline-line w-full bg-gradient-to-b from-fern to-moss" id="timelineLine"></div>
+      </div><!-- Spring -->
+      <div class="season-card relative flex items-start gap-8 mb-16 md:ml-auto md:w-1/2 md:pl-12 pl-20" data-season>
+       <div class="absolute left-2 md:left-auto md:-left-6 top-2">
+        <div class="season-dot border-green-500 bg-green-100 shadow-lg"></div>
+       </div>
+       <div class="bg-white rounded-2xl p-8 shadow-md border border-sage/15 w-full hover:shadow-xl transition-shadow">
+        <div class="flex items-center gap-3 mb-3"><span class="text-4xl">🌸</span>
+         <h3 class="text-2xl text-moss font-bold">Spring — Foundation</h3>
+        </div>
+        <p class="text-lg text-bark/65">Soil preparation, early planting, lawn aeration, and garden bed design. Set the foundation for a year of growth.</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+         <span class="text-sm bg-green-50 text-green-800 px-3 py-1 rounded-full font-medium">Soil Prep</span> <span class="text-sm bg-green-50 text-green-800 px-3 py-1 rounded-full font-medium">Planting</span> <span class="text-sm bg-green-50 text-green-800 px-3 py-1 rounded-full font-medium">Aeration</span>
+        </div>
+       </div>
+      </div><!-- Summer -->
+      <div class="season-card relative flex items-start gap-8 mb-16 md:mr-auto md:w-1/2 md:pr-12 pl-20 md:pl-0" data-season>
+       <div class="absolute left-2 md:left-auto md:right-[-24px] top-2">
+        <div class="season-dot border-yellow-500 bg-yellow-100 shadow-lg"></div>
+       </div>
+       <div class="bg-white rounded-2xl p-8 shadow-md border border-sage/15 w-full md:text-right hover:shadow-xl transition-shadow">
+        <div class="flex items-center gap-3 mb-3 md:justify-end"><span class="text-4xl">☀️</span>
+         <h3 class="text-2xl text-moss font-bold">Summer — Peak Growth</h3>
+        </div>
+        <p class="text-lg text-bark/65">Irrigation management, flowering displays, pest control, and hardscape installation. Your garden hits its stride.</p>
+        <div class="mt-5 flex flex-wrap gap-2 md:justify-end">
+         <span class="text-sm bg-yellow-50 text-yellow-800 px-3 py-1 rounded-full font-medium">Irrigation</span> <span class="text-sm bg-yellow-50 text-yellow-800 px-3 py-1 rounded-full font-medium">Flowering</span> <span class="text-sm bg-yellow-50 text-yellow-800 px-3 py-1 rounded-full font-medium">Hardscape</span>
+        </div>
+       </div>
+      </div><!-- Fall -->
+      <div class="season-card relative flex items-start gap-8 mb-16 md:ml-auto md:w-1/2 md:pl-12 pl-20" data-season>
+       <div class="absolute left-2 md:left-auto md:-left-6 top-2">
+        <div class="season-dot border-orange-500 bg-orange-100 shadow-lg"></div>
+       </div>
+       <div class="bg-white rounded-2xl p-8 shadow-md border border-sage/15 w-full hover:shadow-xl transition-shadow">
+        <div class="flex items-center gap-3 mb-3"><span class="text-4xl">🍂</span>
+         <h3 class="text-2xl text-moss font-bold">Fall — Harvest &amp; Prep</h3>
+        </div>
+        <p class="text-lg text-bark/65">Bulb planting, leaf management, perennial cutback, and winterization prep. Protect what you've built.</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+         <span class="text-sm bg-orange-50 text-orange-800 px-3 py-1 rounded-full font-medium">Bulbs</span> <span class="text-sm bg-orange-50 text-orange-800 px-3 py-1 rounded-full font-medium">Cutback</span> <span class="text-sm bg-orange-50 text-orange-800 px-3 py-1 rounded-full font-medium">Winterize</span>
+        </div>
+       </div>
+      </div><!-- Winter -->
+      <div class="season-card relative flex items-start gap-8 md:mr-auto md:w-1/2 md:pr-12 pl-20 md:pl-0" data-season>
+       <div class="absolute left-2 md:left-auto md:right-[-24px] top-2">
+        <div class="season-dot border-blue-400 bg-blue-100 shadow-lg"></div>
+       </div>
+       <div class="bg-white rounded-2xl p-8 shadow-md border border-sage/15 w-full md:text-right hover:shadow-xl transition-shadow">
+        <div class="flex items-center gap-3 mb-3 md:justify-end"><span class="text-4xl">❄️</span>
+         <h3 class="text-2xl text-moss font-bold">Winter — Plan &amp; Dream</h3>
+        </div>
+        <p class="text-lg text-bark/65">Design consultations, next-year planning, indoor plant care, and structural improvements for the dormant season.</p>
+        <div class="mt-5 flex flex-wrap gap-2 md:justify-end">
+         <span class="text-sm bg-blue-50 text-blue-800 px-3 py-1 rounded-full font-medium">Design</span> <span class="text-sm bg-blue-50 text-blue-800 px-3 py-1 rounded-full font-medium">Planning</span> <span class="text-sm bg-blue-50 text-blue-800 px-3 py-1 rounded-full font-medium">Structure</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- SERVICES -->
+   <section id="services" class="py-32" style="background: linear-gradient(180deg, #FBF8F1 0%, #f0ede4 100%);">
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-20 fade-up">
+      <span class="inline-block bg-moss/15 text-moss text-sm font-bold px-4 py-2 rounded-full mb-4 tracking-widest uppercase">What We Offer</span>
+      <h2 id="servicesTitle" class="text-5xl md:text-7xl text-moss mb-6 font-black">Our Services</h2>
+      <p class="text-xl text-bark/60 max-w-2xl mx-auto">Comprehensive care packages designed for every outdoor space.</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Lawn Care -->
+      <div class="svc-card bg-white rounded-3xl p-8 border border-sage/10 cursor-default">
+       <div class="w-16 h-16 rounded-2xl bg-green-50 flex items-center justify-center mb-6">
+        <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;">
+         <circle cx="12" cy="14" r="5" fill="#4A7C2E" /><path d="M12 14V4" stroke="#4A7C2E" stroke-width="1.5" stroke-linecap="round" /><circle cx="9" cy="8" r="1" fill="#8BAA7C" /><circle cx="15" cy="6" r="1" fill="#8BAA7C" />
+        </svg>
+       </div>
+       <h3 class="text-2xl text-moss mb-3 font-bold">Lawn Care</h3>
+       <p class="text-lg text-bark/60 mb-6">Mowing, edging, fertilization, and weed control to keep your lawn pristine year-round.</p>
+       <div class="text-moss font-bold text-lg">
+        From $89/mo
+       </div>
+      </div><!-- Planting -->
+      <div class="svc-card bg-white rounded-3xl p-8 border border-sage/10 cursor-default">
+       <div class="w-16 h-16 rounded-2xl bg-pink-50 flex items-center justify-center mb-6">
+        <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;">
+         <path d="M12 3L14 9L15 14C15 16 13.5 18 12 18C10.5 18 9 16 9 14L10 9L12 3Z" fill="#E85C75" opacity="0.8" /><circle cx="12" cy="20" r="2" fill="#8BAA7C" />
+        </svg>
+       </div>
+       <h3 class="text-2xl text-moss mb-3 font-bold">Planting</h3>
+       <p class="text-lg text-bark/60 mb-6">Seasonal flower beds, shrub installation, and native plant landscapes that thrive.</p>
+       <div class="text-moss font-bold text-lg">
+        From $199/project
+       </div>
+      </div><!-- Irrigation -->
+      <div class="svc-card bg-white rounded-3xl p-8 border border-sage/10 cursor-default">
+       <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6">
+        <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;">
+         <path d="M12 2C12 2 10 6 10 10C10 13 11 15 12 15C13 15 14 13 14 10C14 6 12 2 12 2Z" fill="#3B82F6" opacity="0.7" /><path d="M8 8C8 8 6 10 6 12C6 13 7 14 8 14C9 14 10 13 10 12C10 10 8 8 8 8Z" fill="#3B82F6" opacity="0.6" /><path d="M16 8C16 8 18 10 18 12C18 13 17 14 16 14C15 14 14 13 14 12C14 10 16 8 16 8Z" fill="#3B82F6" opacity="0.6" />
+        </svg>
+       </div>
+       <h3 class="text-2xl text-moss mb-3 font-bold">Irrigation</h3>
+       <p class="text-lg text-bark/60 mb-6">Smart sprinkler systems, drip irrigation, and water-efficient solutions for every zone.</p>
+       <div class="text-moss font-bold text-lg">
+        From $349/install
+       </div>
+      </div><!-- Design -->
+      <div class="svc-card bg-white rounded-3xl p-8 border border-sage/10 cursor-default">
+       <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mb-6">
+        <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;">
+         <path d="M3 20L21 4M21 20L3 4M12 2V22M2 12H22" stroke="#D4A574" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+       </div>
+       <h3 class="text-2xl text-moss mb-3 font-bold">Design</h3>
+       <p class="text-lg text-bark/60 mb-6">Complete outdoor design packages including 3D renders, material selection, and phased plans.</p>
+       <div class="text-moss font-bold text-lg">
+        From $499/plan
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- RESULTS (Before/After) -->
+   <section id="results" class="bg-cream py-32">
+    <div class="max-w-7xl mx-auto px-4">
+     <div class="text-center mb-24 fade-up">
+      <span class="inline-block bg-fern/15 text-fern text-sm font-bold px-4 py-2 rounded-full mb-4 tracking-widest uppercase">See the Difference</span>
+      <h2 id="resultsTitle" class="text-5xl md:text-7xl text-moss mb-6 font-black">Garden Transformations</h2>
+      <p class="text-xl text-bark/60 max-w-2xl mx-auto">Drag the slider to reveal stunning before &amp; after results.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <!-- BA 1 -->
+      <div class="fade-up">
+       <div class="ba-container aspect-[4/3] rounded-2xl" id="ba1" style="background: linear-gradient(135deg, #D4B5A0 0%, #A89080 100%);">
+        <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #8B7355 0%, #C8A882 100%);">
+         <div class="text-center">
+          <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:96px;height:96px;margin:0 auto;">
+           <rect x="16" y="24" width="32" height="24" fill="#9B7653" opacity="0.9" /><polygon points="16,24 32,8 48,24" fill="#8B6F47" /><rect x="22" y="32" width="8" height="8" fill="#7A6245" /><rect x="34" y="32" width="8" height="8" fill="#7A6245" />
+          </svg><span class="text-sm font-bold uppercase tracking-widest text-white/70 mt-4 block">Before</span>
+         </div>
+        </div>
+        <div class="ba-after" style="background: linear-gradient(135deg, #4A7C2E 0%, #8BAA7C 100%);">
+         <div class="w-full h-full flex items-center justify-center">
+          <div class="text-center">
+           <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:96px;height:96px;margin:0 auto;">
+            <rect x="16" y="24" width="32" height="24" fill="#5C6B45" opacity="0.9" /><polygon points="16,24 32,8 48,24" fill="#4A5A3A" /><rect x="22" y="32" width="8" height="8" fill="#6B8C5C" /><rect x="34" y="32" width="8" height="8" fill="#6B8C5C" /><circle cx="20" cy="16" r="3" fill="#E85C75" opacity="0.8" /><circle cx="32" cy="12" r="2.5" fill="#E85C75" opacity="0.7" /><circle cx="44" cy="15" r="3" fill="#E85C75" opacity="0.8" />
+           </svg><span class="text-sm font-bold uppercase tracking-widest text-white/80 mt-4 block">After</span>
+          </div>
+         </div>
+        </div>
+        <div class="ba-slider">
+         <div class="ba-handle"><i data-lucide="move-horizontal" style="width:20px;height:20px;color:#2D5016;"></i>
+         </div>
+        </div>
+       </div>
+       <p class="text-center text-lg text-bark/50 mt-5 font-medium">Front Yard Revival — 6 weeks</p>
+      </div><!-- BA 2 -->
+      <div class="fade-up">
+       <div class="ba-container aspect-[4/3] rounded-2xl" id="ba2" style="background: linear-gradient(135deg, #A0915C 0%, #9B8A5C 100%);">
+        <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #8B7355 0%, #B09A7A 100%);">
+         <div class="text-center">
+          <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:96px;height:96px;margin:0 auto;">
+           <rect x="10" y="30" width="44" height="20" fill="#A0915C" opacity="0.8" /><path d="M14 30L20 12L26 28L32 8L38 26L44 14L50 30" fill="none" stroke="#B5A575" stroke-width="2" opacity="0.6" />
+          </svg><span class="text-sm font-bold uppercase tracking-widest text-white/70 mt-4 block">Before</span>
+         </div>
+        </div>
+        <div class="ba-after" style="background: linear-gradient(135deg, #2D6B22 0%, #6AAA55 100%);">
+         <div class="w-full h-full flex items-center justify-center">
+          <div class="text-center">
+           <svg viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:96px;height:96px;margin:0 auto;">
+            <rect x="10" y="35" width="44" height="18" fill="#4A7C2E" opacity="0.8" /><g>
+             <path d="M16 35L18 22L20 35" fill="#8BAA7C" />
+             <circle cx="18" cy="20" r="2" fill="#E85C75" />
+            </g><g>
+             <path d="M28 35L30 18L32 35" fill="#8BAA7C" />
+             <circle cx="30" cy="16" r="2.5" fill="#E85C75" />
+            </g><g>
+             <path d="M40 35L42 20L44 35" fill="#8BAA7C" />
+             <circle cx="42" cy="18" r="2" fill="#E85C75" />
+            </g><g>
+             <path d="M52 35L54 24L56 35" fill="#8BAA7C" />
+             <circle cx="54" cy="22" r="2" fill="#E85C75" />
+            </g>
+           </svg><span class="text-sm font-bold uppercase tracking-widest text-white/80 mt-4 block">After</span>
+          </div>
+         </div>
+        </div>
+        <div class="ba-slider">
+         <div class="ba-handle"><i data-lucide="move-horizontal" style="width:20px;height:20px;color:#2D5016;"></i>
+         </div>
+        </div>
+       </div>
+       <p class="text-center text-lg text-bark/50 mt-5 font-medium">Backyard Oasis — 3 months</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20" style="background:linear-gradient(180deg,#FBF8F1,#e8f0de);">
+    <div class="max-w-3xl mx-auto px-4">
+     <div class="text-center mb-12 fade-up">
+      <span class="inline-block bg-moss/10 text-moss text-xs font-semibold px-3 py-1 rounded-full mb-3 tracking-wide uppercase">Questions</span>
+      <h2 class="text-3xl md:text-5xl text-moss mb-3">FAQ</h2>
+     </div>
+     <div class="space-y-3 fade-up" id="faqList">
+      <div class="faq-item bg-white rounded-xl border border-sage/10 overflow-hidden">
+       <button class="w-full text-left px-5 py-4 flex items-center justify-between font-medium text-moss" onclick="toggleFaq(this)" aria-expanded="false"> <span>How soon can I see results?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s;"></i> </button>
+       <div class="px-5 pb-4 text-sm text-bark/60 hidden">
+        Most clients see visible transformation within 4–6 weeks of the first session. Seasonal plans show dramatic results by the second quarter.
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl border border-sage/10 overflow-hidden">
+       <button class="w-full text-left px-5 py-4 flex items-center justify-between font-medium text-moss" onclick="toggleFaq(this)" aria-expanded="false"> <span>Do you offer one-time services?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s;"></i> </button>
+       <div class="px-5 pb-4 text-sm text-bark/60 hidden">
+        Absolutely. While our seasonal plans deliver the best value, we offer individual services for planting, design, and cleanup projects.
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl border border-sage/10 overflow-hidden">
+       <button class="w-full text-left px-5 py-4 flex items-center justify-between font-medium text-moss" onclick="toggleFaq(this)" aria-expanded="false"> <span>What areas do you serve?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s;"></i> </button>
+       <div class="px-5 pb-4 text-sm text-bark/60 hidden">
+        We currently serve the greater metro area and surrounding suburbs within a 30-mile radius. Contact us for availability in your zone.
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl border border-sage/10 overflow-hidden">
+       <button class="w-full text-left px-5 py-4 flex items-center justify-between font-medium text-moss" onclick="toggleFaq(this)" aria-expanded="false"> <span>Is the consultation free?</span><i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform .3s;"></i> </button>
+       <div class="px-5 pb-4 text-sm text-bark/60 hidden">
+        Your first 30-minute consultation is complimentary. We'll assess your space, discuss your vision, and recommend a tailored plan.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + BOOK -->
+   <section id="book" class="py-32 relative overflow-hidden" style="background:linear-gradient(135deg,#2D5016 0%,#4A7C2E 100%);">
+    <div class="absolute inset-0 opacity-15" style="background-image:radial-gradient(circle at 20% 50%,white 2px,transparent 2px),radial-gradient(circle at 80% 20%,white 2px,transparent 2px);background-size:80px 80px;"></div>
+    <div class="max-w-4xl mx-auto px-4 text-center relative z-10 fade-up">
+     <h2 id="bottomCtaText" class="text-5xl md:text-7xl text-white mb-6 leading-tight font-black">Turn your outdoor space into a living showcase.</h2>
+     <p class="text-white/75 mb-10 text-2xl font-light">Schedule your free consultation and receive a custom seasonal plan.</p><a href="#vote-section" id="bookBtn" class="inline-flex items-center gap-3 bg-white text-moss px-10 py-5 rounded-2xl font-bold text-xl hover:bg-cream transition-all shadow-xl hover:shadow-2xl hover:scale-105"> <i data-lucide="calendar" style="width:24px;height:24px;"></i> Book a Consultation </a>
+    </div>
+   </section><!-- VOTE + COMMENT MODULE -->
+   <section id="vote-section" class="py-16 bg-cream">
+    <div class="max-w-2xl mx-auto px-4">
+     <div class="bg-white rounded-2xl border border-sage/10 shadow-sm overflow-hidden fade-up">
+      <!-- Header -->
+      <div class="px-6 pt-6 pb-4 border-b border-sage/10">
+       <div class="flex items-center gap-2 mb-1">
+        <span class="text-lg">💬</span>
+        <h3 class="text-xl text-moss">Community Feedback</h3>
+       </div>
+       <p class="text-sm text-bark/50">Vote on pricing, react, and share your thoughts.</p>
+      </div><!-- Reactions -->
+      <div class="px-6 py-4 border-b border-sage/10">
+       <p class="text-xs text-bark/40 uppercase tracking-wider font-semibold mb-3">Reactions</p>
+       <div class="flex flex-wrap gap-2" id="reactionsBar">
+        <button class="react-btn flex items-center gap-1 bg-cream rounded-full px-3 py-1.5 text-sm border border-sage/10 hover:border-moss/30" data-reaction="🌱" onclick="handleReaction('🌱')">
+         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;">
+          <circle cx="12" cy="14" r="4" fill="#4A7C2E" /><path d="M12 14V6" stroke="#4A7C2E" stroke-width="1.5" stroke-linecap="round" />
+         </svg><span class="react-count text-bark/60 text-xs">0</span></button> <button class="react-btn flex items-center gap-1 bg-cream rounded-full px-3 py-1.5 text-sm border border-sage/10 hover:border-moss/30" data-reaction="🔥" onclick="handleReaction('🔥')">
+         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;">
+          <path d="M12 2C12 2 10 6 10 9C10 11 11 13 12 13C13 13 14 11 14 9C14 6 12 2 12 2Z" fill="#FF6B35" /><path d="M11 10C11 11 11.5 12 12 12C12.5 12 13 11 13 10" fill="#FFD93D" />
+         </svg><span class="react-count text-bark/60 text-xs">0</span></button> <button class="react-btn flex items-center gap-1 bg-cream rounded-full px-3 py-1.5 text-sm border border-sage/10 hover:border-moss/30" data-reaction="💚" onclick="handleReaction('💚')">
+         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;">
+          <path d="M12 20.5L2 11.5C1 10.5 0 9 0 7C0 4 2 2 4 2C5 2 6.5 3 7.5 4C9 5.5 12 8 12 8C12 8 15 5.5 16.5 4C17.5 3 19 2 20 2C22 2 24 4 24 7C24 9 23 10.5 22 11.5L12 20.5Z" fill="#4A7C2E" />
+         </svg><span class="react-count text-bark/60 text-xs">0</span></button> <button class="react-btn flex items-center gap-1 bg-cream rounded-full px-3 py-1.5 text-sm border border-sage/10 hover:border-moss/30" data-reaction="👏" onclick="handleReaction('👏')">
+         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;">
+          <path d="M5 12L7 5L9 10L11 4L13 10L15 6L17 12" fill="#8BAA7C" stroke="#4A7C2E" stroke-width="1" stroke-linejoin="round" /><rect x="4" y="12" width="16" height="8" rx="1" fill="#8BAA7C" />
+         </svg><span class="react-count text-bark/60 text-xs">0</span></button> <button class="react-btn flex items-center gap-1 bg-cream rounded-full px-3 py-1.5 text-sm border border-sage/10 hover:border-moss/30" data-reaction="🌸" onclick="handleReaction('🌸')">
+         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;">
+          <circle cx="12" cy="12" r="2" fill="#E85C75" /><circle cx="12" cy="4" r="2" fill="#E85C75" /><circle cx="18" cy="12" r="2" fill="#E85C75" /><circle cx="12" cy="20" r="2" fill="#E85C75" /><circle cx="6" cy="12" r="2" fill="#E85C75" /><circle cx="16" cy="6" r="1.5" fill="#FFB6D9" opacity="0.6" /><circle cx="16" cy="18" r="1.5" fill="#FFB6D9" opacity="0.6" />
+         </svg><span class="react-count text-bark/60 text-xs">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div class="px-6 py-4 border-b border-sage/10">
+       <p class="text-xs text-bark/40 uppercase tracking-wider font-semibold mb-3">What would you pay for this planner?</p>
+       <div class="flex flex-wrap gap-2" id="priceVotes">
+        <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$0" onclick="handlePriceVote('$0')">$0 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$9" onclick="handlePriceVote('$9')">$9 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$19" onclick="handlePriceVote('$19')">$19 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$29" onclick="handlePriceVote('$29')">$29 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$39" onclick="handlePriceVote('$39')">$39 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$49" onclick="handlePriceVote('$49')">$49 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$69" onclick="handlePriceVote('$69')">$69 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$99" onclick="handlePriceVote('$99')">$99 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$149" onclick="handlePriceVote('$149')">$149 <span class="vote-count text-xs text-bark/40">0</span></button> <button class="vote-btn bg-cream border border-sage/10 rounded-full px-3 py-1.5 text-sm text-bark/70 hover:border-moss hover:text-moss transition-colors" data-price="$199" onclick="handlePriceVote('$199')">$199 <span class="vote-count text-xs text-bark/40">0</span></button>
+       </div>
+      </div><!-- Comments -->
+      <div class="px-6 py-4">
+       <p class="text-xs text-bark/40 uppercase tracking-wider font-semibold mb-3">Comments</p>
+       <div id="commentsList" class="space-y-3 mb-4 max-h-64 overflow-y-auto"></div>
+       <p id="noComments" class="text-sm text-bark/40 text-center py-4">No comments yet. Be the first!</p>
+       <form id="commentForm" onsubmit="handleComment(event)" class="flex gap-2">
+        <label for="commentAuthor" class="sr-only">Your name</label> <input id="commentAuthor" type="text" placeholder="Name" class="w-24 shrink-0 border border-sage/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-moss bg-cream" required> <label for="commentText" class="sr-only">Your comment</label> <input id="commentText" type="text" placeholder="Share your thoughts..." class="flex-1 border border-sage/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-moss bg-cream" required> <button type="submit" id="commentSubmitBtn" class="bg-moss text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-fern transition-colors shrink-0 flex items-center gap-1"> <i data-lucide="send" style="width:14px;height:14px;"></i> Send </button>
+       </form>
+      </div><!-- Embed note -->
+      <div class="px-6 py-3 bg-sage/5 border-t border-sage/10 text-center">
+       <p class="text-xs text-bark/30">📦 Embed Widget Here</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-moss text-white/60 py-8">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+     <p class="text-sm">© 2025 Evergreen Growth Planner. Plan the season. Sell the result.</p>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// ===== CONFIG & SDK =====
+const defaultConfig = {
+  hero_title: "A beautiful yard starts with a plan.",
+  hero_subtitle: "Seasonal gardening designed to grow with you.",
+  services_title: "Our Services",
+  results_title: "Garden Transformations",
+  bottom_cta_text: "Turn your outdoor space into a living showcase.",
+  book_button_text: "Book a Consultation",
+  background_color: "#FBF8F1",
+  surface_color: "#FFFFFF",
+  text_color: "#2D5016",
+  primary_action_color: "#2D5016",
+  secondary_action_color: "#4A7C2E",
+  font_family: "DM Serif Display",
+  font_size: 16
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// Apply config to DOM
+function applyConfig(config) {
+  const c = Object.assign({}, defaultConfig, config);
+
+  document.getElementById('heroTitle').textContent = c.hero_title;
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle;
+  document.getElementById('servicesTitle').textContent = c.services_title;
+  document.getElementById('resultsTitle').textContent = c.results_title;
+  document.getElementById('bottomCtaText').textContent = c.bottom_cta_text;
+  document.getElementById('bookBtn').innerHTML = '<i data-lucide="calendar" style="width:20px;height:20px;"></i> ' + c.book_button_text;
+  document.getElementById('heroCta1').innerHTML = '<i data-lucide="calendar" style="width:18px;height:18px;"></i> ' + c.book_button_text;
+
+  // Colors
+  document.body.style.color = c.text_color;
+
+  // Font
+  const ff = c.font_family + ", 'DM Serif Display', serif";
+  document.querySelectorAll('h1,h2,h3,.serif').forEach(el => el.style.fontFamily = ff);
+
+  // Font size
+  const bs = c.font_size || 16;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = (bs * 2.5) + 'px');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = (bs * 2) + 'px');
+  document.querySelectorAll('h3').forEach(el => el.style.fontSize = (bs * 1.15) + 'px');
+
+  lucide.createIcons();
+}
+
+// Element SDK init
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["services_title", config.services_title || defaultConfig.services_title],
+    ["results_title", config.results_title || defaultConfig.results_title],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ["book_button_text", config.book_button_text || defaultConfig.book_button_text],
+  ])
+});
+
+// ===== DATA SDK =====
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    updateReactionCounts(data);
+    updatePriceVoteCounts(data);
+    renderComments(data);
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error("Data SDK init failed");
+})();
+
+function updateReactionCounts(data) {
+  const reactions = data.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => { counts[r.reaction] = (counts[r.reaction] || 0) + 1; });
+  document.querySelectorAll('#reactionsBar .react-btn').forEach(btn => {
+    const emoji = btn.dataset.reaction;
+    const countEl = btn.querySelector('.react-count');
+    countEl.textContent = counts[emoji] || 0;
+  });
+}
+
+function updatePriceVoteCounts(data) {
+  const votes = data.filter(d => d.type === 'price_vote');
+  const counts = {};
+  votes.forEach(v => { counts[v.price_vote] = (counts[v.price_vote] || 0) + 1; });
+  document.querySelectorAll('#priceVotes .vote-btn').forEach(btn => {
+    const price = btn.dataset.price;
+    const countEl = btn.querySelector('.vote-count');
+    countEl.textContent = counts[price] || 0;
+  });
+}
+
+function renderComments(data) {
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const list = document.getElementById('commentsList');
+  const noComments = document.getElementById('noComments');
+
+  const existingIds = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  if (comments.length === 0) {
+    noComments.classList.remove('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  noComments.classList.add('hidden');
+
+  const newIds = new Set(comments.map(c => c.__backendId));
+  existingIds.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.className = 'comment-item flex gap-3 items-start';
+    div.dataset.id = c.__backendId;
+    const initials = (c.author || 'A').charAt(0).toUpperCase();
+    const timeAgo = getTimeAgo(new Date(c.timestamp));
+    div.innerHTML = `
+      <div class="w-8 h-8 rounded-full bg-moss/10 text-moss flex items-center justify-center text-xs font-bold shrink-0">${initials}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-baseline gap-2"><span class="text-sm font-medium text-moss">${escapeHtml(c.author)}</span><span class="text-xs text-bark/30">${timeAgo}</span></div>
+        <p class="text-sm text-bark/70 mt-0.5">${escapeHtml(c.comment)}</p>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function getTimeAgo(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+
+async function handleReaction(emoji) {
+  if (currentRecordCount >= 999) { showToast("Limit reached!"); return; }
+  const btn = document.querySelector(`.react-btn[data-reaction="${emoji}"]`);
+  btn.classList.add('reacted');
+  setTimeout(() => btn.classList.remove('reacted'), 300);
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', author: '', price_vote: '', timestamp: new Date().toISOString(), ref_id: 'main' });
+  if (!r.isOk) showToast("Could not save reaction.");
+}
+
+async function handlePriceVote(price) {
+  if (currentRecordCount >= 999) { showToast("Limit reached!"); return; }
+  const btn = document.querySelector(`.vote-btn[data-price="${price}"]`);
+  btn.style.borderColor = '#2D5016';
+  btn.style.color = '#2D5016';
+  const r = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', author: '', price_vote: price, timestamp: new Date().toISOString(), ref_id: 'main' });
+  if (!r.isOk) showToast("Could not save vote.");
+}
+
+async function handleComment(e) {
+  e.preventDefault();
+  if (currentRecordCount >= 999) { showToast("Limit reached!"); return; }
+  const author = document.getElementById('commentAuthor').value.trim();
+  const comment = document.getElementById('commentText').value.trim();
+  if (!author || !comment) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spin inline-block">⏳</span>';
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment, author, price_vote: '', timestamp: new Date().toISOString(), ref_id: 'main' });
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" style="width:14px;height:14px;"></i> Send';
+  lucide.createIcons();
+  if (r.isOk) { document.getElementById('commentText').value = ''; }
+  else showToast("Could not post comment.");
+}
+
+// Toast
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2D5016;color:white;padding:10px 20px;border-radius:999px;font-size:14px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// ===== INTERACTIONS =====
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden')));
+
+// FAQ toggle
+function toggleFaq(btn) {
+  const content = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  const isOpen = !content.classList.contains('hidden');
+  content.classList.toggle('hidden');
+  btn.setAttribute('aria-expanded', !isOpen);
+  icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
+// Before/After sliders
+function initBA(id) {
+  const container = document.getElementById(id);
+  if (!container) return;
+  const slider = container.querySelector('.ba-slider');
+  const afterEl = container.querySelector('.ba-after');
+  let isDragging = false;
+
+  function updateSlider(x) {
+    const rect = container.getBoundingClientRect();
+    let pct = ((x - rect.left) / rect.width) * 100;
+    pct = Math.max(5, Math.min(95, pct));
+    slider.style.left = pct + '%';
+    afterEl.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  }
+
+  container.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+  window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+  container.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend', () => { isDragging = false; });
+}
+
+// Scroll animations
+function initScrollObserver() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  document.querySelectorAll('.season-card').forEach(el => obs.observe(el));
+
+  // Timeline growth
+  const tl = document.getElementById('timelineLine');
+  const tlObs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) { tl.classList.add('grown'); tlObs.unobserve(tl); }
+  }, { threshold: 0.2 });
+  if (tl) tlObs.observe(tl.parentElement);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  initBA('ba1');
+  initBA('ba2');
+  initScrollObserver();
+  applyConfig(defaultConfig);
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3133e50527c5',t:'MTc3NTU3NzA3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

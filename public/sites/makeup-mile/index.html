@@ -1,1 +1,524 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/f045c369-0566-44b6-9aa5-4b13a1077328 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlowCart Cosmetics</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Playfair Display', 'serif'],
+        body: ['DM Sans', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.85) translateY(24px); }
+  60% { transform: scale(1.03) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 90, 120, 0.4); }
+  50% { box-shadow: 0 0 28px rgba(255, 90, 120, 0.8); }
+}
+@keyframes badge-bounce {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  50% { transform: rotate(-12deg) scale(1.1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.shimmer-overlay {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+.anim-pop { animation: popIn 0.7s ease-out forwards; }
+.anim-fade { animation: fadeSlideUp 0.8s ease-out forwards; }
+.pulse-cta { animation: pulse-glow 2s ease-in-out infinite; }
+.badge-anim { animation: badge-bounce 1.8s ease-in-out infinite; }
+.float-anim { animation: float 3s ease-in-out infinite; }
+.gradient-bg {
+  background: linear-gradient(135deg, #ff6b8a, #ff8a5c, #c471ed, #ff6b8a);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+
+.shade-chip { transition: transform 0.25s, box-shadow 0.25s; cursor: pointer; }
+.shade-chip:hover { transform: scale(1.18); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+
+.product-card {
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, #ff6b8a, #ff8a5c);
+  transition: width 0.3s;
+}
+.nav-link:hover::after { width: 100%; }
+
+.hidden-section { opacity: 0; transform: translateY(40px); transition: opacity 0.8s, transform 0.8s; }
+.hidden-section.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1a2e; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#ff6b8a, #c471ed); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto bg-[#0e0e1a] text-white font-body"><!-- Sticky Nav -->
+  <nav id="stickyNav" class="fixed top-0 left-0 w-full z-50 bg-[#0e0e1a]/90 backdrop-blur-md border-b border-white/5">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 sm:h-16"><a href="#home" class="font-display font-800 text-lg sm:text-xl tracking-tight"> <span class="bg-gradient-to-r from-[#ff6b8a] to-[#ff8a5c] bg-clip-text text-transparent">Glow</span><span class="text-white">Cart</span> </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="nav-link text-white/70 hover:text-white">Home</a> <a href="#bestsellers" class="nav-link text-white/70 hover:text-white">Best Sellers</a> <a href="#shades" class="nav-link text-white/70 hover:text-white">Shades</a> <a href="#reviews" class="nav-link text-white/70 hover:text-white">Reviews</a> <a href="#bundles" class="nav-link text-white/70 hover:text-white">Bundles</a> <a href="#shopnow" class="gradient-bg text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">Shop Now</a>
+    </div><button id="mobileMenuBtn" class="md:hidden text-white/70" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div>
+   <div id="mobileMenu" class="md:hidden hidden bg-[#0e0e1a]/95 border-t border-white/5 px-6 py-4 space-y-3"><a href="#home" class="block text-white/70 hover:text-white text-sm font-medium">Home</a> <a href="#bestsellers" class="block text-white/70 hover:text-white text-sm font-medium">Best Sellers</a> <a href="#shades" class="block text-white/70 hover:text-white text-sm font-medium">Shades</a> <a href="#reviews" class="block text-white/70 hover:text-white text-sm font-medium">Reviews</a> <a href="#bundles" class="block text-white/70 hover:text-white text-sm font-medium">Bundles</a> <a href="#shopnow" class="block gradient-bg text-center text-white px-5 py-2 rounded-full text-sm font-semibold">Shop Now</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-hidden">
+   <div class="absolute inset-0 opacity-20">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-[#ff6b8a] rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-[#c471ed] rounded-full blur-[120px]"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#ff8a5c] rounded-full blur-[150px]"></div>
+   </div>
+   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+    <div class="flex-1 text-center lg:text-left space-y-6">
+     <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide text-[#ff8a5c] uppercase"><span class="w-2 h-2 rounded-full bg-[#ff6b8a] animate-pulse"></span> <span id="taglineChip">Color that looks expensive.</span>
+     </div>
+     <h1 id="heroTitle" class="font-display font-900 text-4xl sm:text-5xl lg:text-7xl leading-[1.05] tracking-tight">Your makeup bag<br>
+      just <span class="bg-gradient-to-r from-[#ff6b8a] via-[#ff8a5c] to-[#c471ed] bg-clip-text text-transparent">leveled up.</span></h1>
+     <p id="heroSubtitle" class="text-white/60 text-base sm:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed">Clean looks. Bold color. Instant confidence.</p>
+     <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"><a href="#shopnow" class="gradient-bg pulse-cta text-white px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:opacity-90 transition-opacity text-center">Shop Now</a> <a href="#bestsellers" class="bg-white/5 border border-white/10 text-white px-8 py-3.5 rounded-full font-semibold text-sm tracking-wide hover:bg-white/10 transition-colors text-center">See Best Sellers</a>
+     </div>
+     <div class="flex items-center gap-4 justify-center lg:justify-start text-xs text-white/40 pt-2"><span class="flex items-center gap-1"><i data-lucide="truck" style="width:14px;height:14px;"></i> Free Shipping $50+</span> <span class="flex items-center gap-1"><i data-lucide="shield-check" style="width:14px;height:14px;"></i> Clean Beauty</span> <span class="flex items-center gap-1"><i data-lucide="leaf" style="width:14px;height:14px;"></i> Cruelty Free</span>
+     </div>
+    </div>
+    <div class="flex-1 relative max-w-md lg:max-w-lg">
+     <div class="relative rounded-3xl overflow-hidden float-anim"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&amp;h=700&amp;fit=crop" alt="Makeup products flatlay" loading="lazy" class="w-full aspect-[5/6] object-cover rounded-3xl" onerror="this.style.background='linear-gradient(135deg,#ff6b8a,#c471ed)';this.alt='Beauty products';">
+      <div class="shimmer-overlay absolute inset-0 rounded-3xl pointer-events-none"></div>
+     </div>
+     <div class="absolute -bottom-4 -left-4 bg-[#1a1a2e] border border-white/10 rounded-2xl p-3 shadow-2xl anim-pop" style="animation-delay:0.3s;">
+      <div class="flex items-center gap-2">
+       <div class="w-9 h-9 rounded-full gradient-bg flex items-center justify-center">
+        <i data-lucide="star" style="width:16px;height:16px;color:white;"></i>
+       </div>
+       <div>
+        <p class="text-xs font-semibold">4.9 Rating</p>
+        <p class="text-[10px] text-white/40">12k+ Reviews</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- BEST SELLERS -->
+  <section id="bestsellers" class="hidden-section w-full py-16 sm:py-24 relative">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12"><span class="text-[#ff8a5c] text-xs font-bold uppercase tracking-widest">Trending Now</span>
+     <h2 class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl mt-2">Best Sellers</h2>
+     <p class="text-white/50 mt-3 max-w-lg mx-auto text-sm">The shades everyone is wearing this season. Curated for every skin tone.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="productGrid">
+    </div>
+   </div>
+  </section><!-- SHADES -->
+  <section id="shades" class="hidden-section w-full py-16 sm:py-24 bg-[#12121f] relative">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12"><span class="text-[#c471ed] text-xs font-bold uppercase tracking-widest">Find Your Match</span>
+     <h2 class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl mt-2">Shade Library</h2>
+     <p class="text-white/50 mt-3 max-w-lg mx-auto text-sm">30 shades. From barely-there to bold and unapologetic.</p>
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center mb-6" id="shadeTabs"></div>
+    <div class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-3 max-w-3xl mx-auto" id="shadeGrid"></div>
+    <p id="selectedShade" class="text-center mt-6 text-sm text-white/50 h-6"></p>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="hidden-section w-full py-16 sm:py-24 relative">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12"><span class="text-[#ff6b8a] text-xs font-bold uppercase tracking-widest">Real People. Real Glow.</span>
+     <h2 class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl mt-2">What They're Saying</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="reviewGrid"></div>
+   </div>
+  </section><!-- BUNDLES -->
+  <section id="bundles" class="hidden-section w-full py-16 sm:py-24 bg-[#12121f] relative">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12"><span class="text-[#ff8a5c] text-xs font-bold uppercase tracking-widest">Save More. Glow More.</span>
+     <h2 class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl mt-2">Curated Bundles</h2>
+     <p class="text-white/50 mt-3 max-w-lg mx-auto text-sm">Pick your level. Every bundle ships free.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="bundleGrid"></div>
+   </div>
+  </section><!-- BOTTOM CTA -->
+  <section id="shopnow" class="hidden-section w-full py-16 sm:py-24 relative overflow-hidden">
+   <div class="absolute inset-0 opacity-15">
+    <div class="absolute top-0 left-1/4 w-80 h-80 bg-[#ff6b8a] rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-[#c471ed] rounded-full blur-[120px]"></div>
+   </div>
+   <div class="relative max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-6">
+    <h2 id="bottomCtaTitle" class="font-display font-900 text-3xl sm:text-5xl lg:text-6xl leading-tight">Add to cart <span class="bg-gradient-to-r from-[#ff6b8a] to-[#ff8a5c] bg-clip-text text-transparent">energy.</span></h2>
+    <p class="text-white/50 max-w-md mx-auto text-sm">Join 50,000+ who chose to glow different. Free shipping. Easy returns. Always clean.</p><a href="#home" class="inline-block gradient-bg pulse-cta text-white px-10 py-4 rounded-full font-semibold text-sm tracking-wide hover:opacity-90 transition-opacity">Shop the Collection</a>
+    <div class="flex justify-center gap-6 pt-4 text-white/30 text-xs"><span class="flex items-center gap-1"><i data-lucide="lock" style="width:12px;height:12px;"></i> Secure Checkout</span> <span class="flex items-center gap-1"><i data-lucide="refresh-cw" style="width:12px;height:12px;"></i> 30-Day Returns</span> <span class="flex items-center gap-1"><i data-lucide="heart" style="width:12px;height:12px;"></i> Clean Formula</span>
+    </div>
+   </div>
+  </section><!-- VOTE + COMMENT WIDGET -->
+  <section class="hidden-section w-full py-12 sm:py-16 bg-[#12121f]">
+   <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <div class="bg-[#1a1a2e] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
+     <div class="text-center">
+      <h3 class="font-display font-700 text-xl sm:text-2xl">Vote + Comment</h3>
+      <p class="text-white/40 text-xs mt-1">What should we drop next?</p>
+     </div>
+     <div class="grid grid-cols-3 gap-3" id="voteOptions"></div>
+     <div class="space-y-3" id="commentSection">
+      <div class="flex gap-2"><input type="text" id="commentInput" placeholder="Drop a comment..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#ff6b8a]/50"> <button id="commentBtn" class="gradient-bg px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity">Send</button>
+      </div>
+      <div id="commentList" class="space-y-2 max-h-48 overflow-auto"></div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full py-8 border-t border-white/5">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/30">
+    <p class="font-display font-700"><span class="bg-gradient-to-r from-[#ff6b8a] to-[#ff8a5c] bg-clip-text text-transparent">Glow</span>Cart Cosmetics © 2025</p>
+    <div class="flex gap-4"><a href="#home" class="hover:text-white/60 transition-colors">Privacy</a> <a href="#home" class="hover:text-white/60 transition-colors">Terms</a> <a href="#home" class="hover:text-white/60 transition-colors">Contact</a>
+    </div>
+   </div>
+  </footer>
+  <script>
+// DATA
+const products = [
+  { name: "Velvet Lip Crème", category: "Lips", price: "$24", badge: "Best Seller", img: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&h=500&fit=crop", color: "#e84393" },
+  { name: "Glow Highlighter", category: "Face", price: "$28", badge: "Trending", img: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=500&fit=crop", color: "#ff8a5c" },
+  { name: "Satin Blush Duo", category: "Cheeks", price: "$22", badge: null, img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=500&fit=crop", color: "#fd79a8" },
+  { name: "Skin Tint SPF30", category: "Base", price: "$32", badge: "New", img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=500&fit=crop", color: "#c471ed" }
+];
+
+const shadeCategories = {
+  "Nudes": [
+    {c:"#F5D5C8",n:"Bare"},{c:"#E8C4B8",n:"Whisper"},{c:"#D4A89A",n:"Honey"},{c:"#C8917E",n:"Toast"},{c:"#B87A6B",n:"Sienna"},
+    {c:"#F0C8B4",n:"Silk"},{c:"#DEB8A0",n:"Suede"},{c:"#C9A08C",n:"Fawn"},{c:"#B58B78",n:"Toffee"},{c:"#A07664",n:"Cocoa"}
+  ],
+  "Pinks": [
+    {c:"#FFB6C1",n:"Petal"},{c:"#FF91A4",n:"Crush"},{c:"#FF6B8A",n:"Flamingo"},{c:"#E84393",n:"Fuchsia"},{c:"#D63384",n:"Berry"},
+    {c:"#FFC0CB",n:"Blush"},{c:"#FF85A2",n:"Peony"},{c:"#F472B6",n:"Magenta"},{c:"#DB2777",n:"Vivid"},{c:"#BE185D",n:"Drama"}
+  ],
+  "Reds": [
+    {c:"#FF6B6B",n:"Cherry"},{c:"#EE4B4B",n:"Scarlet"},{c:"#DC2626",n:"Ruby"},{c:"#B91C1C",n:"Garnet"},{c:"#991B1B",n:"Noir"},
+    {c:"#F87171",n:"Flame"},{c:"#E53E3E",n:"Crimson"},{c:"#C53030",n:"Wine"},{c:"#9B2C2C",n:"Merlot"},{c:"#7B1818",n:"Oxblood"}
+  ]
+};
+
+const reviews = [
+  { name: "Mia K.", text: "The Velvet Lip stays on through everything. Obsessed.", rating: 5, avatar: "MK" },
+  { name: "Jasmine R.", text: "Finally a highlighter that doesn't look glittery. Just glow.", rating: 5, avatar: "JR" },
+  { name: "Taylor S.", text: "Bought the Full Face bundle—best makeup purchase I've made.", rating: 5, avatar: "TS" }
+];
+
+const bundles = [
+  { name: "Starter", desc: "Lip + Blush", price: "$38", original: "$46", tag: "Save 17%", items: ["Velvet Lip Crème", "Satin Blush Duo"] },
+  { name: "Pro", desc: "Lip + Blush + Glow", price: "$62", original: "$74", tag: "Most Popular", featured: true, items: ["Velvet Lip Crème", "Satin Blush Duo", "Glow Highlighter"] },
+  { name: "Full Face", desc: "All 4 Products", price: "$89", original: "$106", tag: "Best Value", items: ["Velvet Lip Crème", "Satin Blush Duo", "Glow Highlighter", "Skin Tint SPF30"] }
+];
+
+const voteOpts = [
+  { emoji: "💋", label: "Matte Lip Oil" },
+  { emoji: "✨", label: "Body Glow" },
+  { emoji: "👁️", label: "Eyeshadow Palette" }
+];
+
+// CONFIG
+const defaultConfig = {
+  hero_title: "Your makeup bag just leveled up.",
+  hero_subtitle: "Clean looks. Bold color. Instant confidence.",
+  tagline: "Color that looks expensive.",
+  bundle_cta_text: "Grab This Set",
+  bottom_cta_title: "Add to cart energy.",
+  background_color: "#0e0e1a",
+  surface_color: "#1a1a2e",
+  text_color: "#ffffff",
+  primary_action_color: "#ff6b8a",
+  secondary_action_color: "#c471ed",
+  font_family: "Playfair Display",
+  font_size: 16
+};
+
+// RENDER PRODUCTS
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  products.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'product-card bg-[#1a1a2e] rounded-2xl overflow-hidden border border-white/5 opacity-0';
+    card.style.animation = `popIn 0.6s ease-out ${i * 0.12}s forwards`;
+    card.innerHTML = `
+      <div class="relative overflow-hidden aspect-[4/5]">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='${p.color}';this.alt='${p.name}';">
+        <div class="shimmer-overlay absolute inset-0 pointer-events-none"></div>
+        ${p.badge ? `<span class="badge-anim absolute top-3 right-3 bg-gradient-to-r from-[#ff6b8a] to-[#ff8a5c] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">${p.badge}</span>` : ''}
+      </div>
+      <div class="p-4 space-y-1.5">
+        <span class="text-[10px] text-white/40 uppercase tracking-widest font-semibold">${p.category}</span>
+        <h3 class="font-display font-700 text-sm">${p.name}</h3>
+        <div class="flex items-center justify-between">
+          <span class="text-[#ff8a5c] font-bold text-sm">${p.price}</span>
+          <button class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-2 transition-colors" aria-label="Add to cart"><i data-lucide="shopping-bag" style="width:14px;height:14px;"></i></button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+// RENDER SHADES
+let activeShadeTab = 'Nudes';
+function renderShadeTabs() {
+  const tabs = document.getElementById('shadeTabs');
+  tabs.innerHTML = '';
+  Object.keys(shadeCategories).forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = `px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${cat === activeShadeTab ? 'gradient-bg text-white' : 'bg-white/5 text-white/50 hover:text-white hover:bg-white/10'}`;
+    btn.textContent = cat;
+    btn.onclick = () => { activeShadeTab = cat; renderShadeTabs(); renderShades(); };
+    tabs.appendChild(btn);
+  });
+}
+function renderShades() {
+  const grid = document.getElementById('shadeGrid');
+  grid.innerHTML = '';
+  shadeCategories[activeShadeTab].forEach((s, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'shade-chip flex flex-col items-center gap-1 opacity-0';
+    chip.style.animation = `popIn 0.4s ease-out ${i * 0.04}s forwards`;
+    chip.innerHTML = `<div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white/10 shadow-lg" style="background:${s.c}"></div><span class="text-[9px] text-white/40 font-medium">${s.n}</span>`;
+    chip.onclick = () => { document.getElementById('selectedShade').textContent = `${s.n} — ${s.c}`; };
+    grid.appendChild(chip);
+  });
+}
+
+// RENDER REVIEWS
+function renderReviews() {
+  const grid = document.getElementById('reviewGrid');
+  grid.innerHTML = '';
+  reviews.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'bg-[#1a1a2e] border border-white/5 rounded-2xl p-6 space-y-4 opacity-0';
+    card.style.animation = `popIn 0.6s ease-out ${i * 0.15}s forwards`;
+    const stars = Array(r.rating).fill('<i data-lucide="star" style="width:14px;height:14px;color:#ff8a5c;fill:#ff8a5c;"></i>').join('');
+    card.innerHTML = `
+      <div class="flex gap-1">${stars}</div>
+      <p class="text-white/70 text-sm leading-relaxed">"${r.text}"</p>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-[10px] font-bold">${r.avatar}</div>
+        <span class="text-xs font-semibold text-white/60">${r.name}</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+// RENDER BUNDLES
+function renderBundles(ctaText) {
+  const grid = document.getElementById('bundleGrid');
+  grid.innerHTML = '';
+  bundles.forEach((b, i) => {
+    const card = document.createElement('div');
+    card.className = `relative bg-[#1a1a2e] border rounded-2xl p-6 space-y-4 opacity-0 ${b.featured ? 'border-[#ff6b8a]/40 ring-1 ring-[#ff6b8a]/20' : 'border-white/5'}`;
+    card.style.animation = `popIn 0.6s ease-out ${i * 0.15}s forwards`;
+    card.innerHTML = `
+      <span class="inline-block text-[10px] font-bold uppercase tracking-widest ${b.featured ? 'text-[#ff6b8a]' : 'text-[#ff8a5c]'}">${b.tag}</span>
+      <h3 class="font-display font-800 text-2xl">${b.name}</h3>
+      <p class="text-white/40 text-sm">${b.desc}</p>
+      <div class="flex items-baseline gap-2">
+        <span class="text-2xl font-bold text-white">${b.price}</span>
+        <span class="text-sm text-white/30 line-through">${b.original}</span>
+      </div>
+      <ul class="space-y-1.5">${b.items.map(it => `<li class="flex items-center gap-2 text-xs text-white/50"><i data-lucide="check" style="width:12px;height:12px;color:#ff8a5c;"></i>${it}</li>`).join('')}</ul>
+      <button class="${b.featured ? 'gradient-bg pulse-cta' : 'bg-white/5 hover:bg-white/10 border border-white/10'} w-full py-3 rounded-xl font-semibold text-sm transition-all bundle-cta">${ctaText || defaultConfig.bundle_cta_text}</button>`;
+    grid.appendChild(card);
+  });
+  lucide.createIcons();
+}
+
+// RENDER VOTES
+let votes = { 0: 0, 1: 0, 2: 0 };
+function renderVotes() {
+  const grid = document.getElementById('voteOptions');
+  grid.innerHTML = '';
+  const total = Object.values(votes).reduce((a, b) => a + b, 0);
+  voteOpts.forEach((v, i) => {
+    const pct = total ? Math.round(votes[i] / total * 100) : 0;
+    const btn = document.createElement('button');
+    btn.className = 'relative bg-white/5 border border-white/10 rounded-xl p-4 text-center hover:border-[#ff6b8a]/40 transition-all overflow-hidden group';
+    btn.innerHTML = `
+      <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#ff6b8a]/20 to-transparent transition-all" style="height:${pct}%"></div>
+      <div class="relative">
+        <span class="text-2xl">${v.emoji}</span>
+        <p class="text-xs font-semibold mt-1 text-white/70">${v.label}</p>
+        <p class="text-[10px] text-white/30 mt-0.5">${pct}%</p>
+      </div>`;
+    btn.onclick = () => { votes[i]++; renderVotes(); };
+    grid.appendChild(btn);
+  });
+}
+
+// COMMENTS
+let comments = [];
+function renderComments() {
+  const list = document.getElementById('commentList');
+  list.innerHTML = '';
+  comments.slice(-10).forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'bg-white/5 rounded-lg px-3 py-2 text-xs text-white/60 anim-fade';
+    div.innerHTML = `<span class="text-white/80 font-semibold">Guest</span> · ${c}`;
+    list.appendChild(div);
+  });
+  list.scrollTop = list.scrollHeight;
+}
+
+document.getElementById('commentBtn').addEventListener('click', () => {
+  const input = document.getElementById('commentInput');
+  if (input.value.trim()) {
+    comments.push(input.value.trim());
+    input.value = '';
+    renderComments();
+  }
+});
+document.getElementById('commentInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('commentBtn').click();
+});
+
+// MOBILE MENU
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.hidden-section').forEach(s => observer.observe(s));
+
+// INIT
+renderProducts();
+renderShadeTabs();
+renderShades();
+renderReviews();
+renderBundles(defaultConfig.bundle_cta_text);
+renderVotes();
+renderComments();
+lucide.createIcons();
+
+// ELEMENT SDK
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const heroEl = document.getElementById('heroTitle');
+  const t = c.hero_title || defaultConfig.hero_title;
+  const words = t.split(' ');
+  const last2 = words.slice(-2).join(' ');
+  const rest = words.slice(0, -2).join(' ');
+  heroEl.innerHTML = `${rest}<br><span class="bg-gradient-to-r from-[#ff6b8a] via-[#ff8a5c] to-[#c471ed] bg-clip-text text-transparent">${last2}</span>`;
+
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+  document.getElementById('taglineChip').textContent = c.tagline || defaultConfig.tagline;
+
+  const bottomEl = document.getElementById('bottomCtaTitle');
+  const bWords = (c.bottom_cta_title || defaultConfig.bottom_cta_title).split(' ');
+  const bLast = bWords.pop();
+  bottomEl.innerHTML = `${bWords.join(' ')} <span class="bg-gradient-to-r from-[#ff6b8a] to-[#ff8a5c] bg-clip-text text-transparent">${bLast}</span>`;
+
+  document.querySelectorAll('.bundle-cta').forEach(btn => {
+    btn.textContent = c.bundle_cta_text || defaultConfig.bundle_cta_text;
+  });
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.product-card, #reviewGrid > div, #bundleGrid > div, .bg-\\[\\#1a1a2e\\]').forEach(el => {
+    if (el.closest('#voteOptions') || el.closest('#commentList')) return;
+    // surface color via inline
+  });
+
+  // Font
+  const ff = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = `${ff}, Playfair Display, serif`;
+  });
+
+  const bs = c.font_size || defaultConfig.font_size;
+  document.body.style.fontSize = `${bs}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["tagline", config.tagline || defaultConfig.tagline],
+    ["bundle_cta_text", config.bundle_cta_text || defaultConfig.bundle_cta_text],
+    ["bottom_cta_title", config.bottom_cta_title || defaultConfig.bottom_cta_title]
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a53f0e1fa27c5',t:'MTc3NTU3ODQ5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

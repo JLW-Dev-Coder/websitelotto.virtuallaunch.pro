@@ -1,1 +1,506 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/c426668b-0518-4ed7-bc7d-e844c0ce66e0 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpecterStudio Vault</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Raleway:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        obsidian: '#0a0a0f',
+        charcoal: '#141419',
+        slate_dark: '#1a1a24',
+        silver: '#c0c0c8',
+        cyan_pale: '#7fdbda',
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes fogDrift {
+  0% { transform: translateX(-10%) scaleX(1.2); opacity: 0.15; }
+  50% { transform: translateX(5%) scaleX(1.3); opacity: 0.25; }
+  100% { transform: translateX(-10%) scaleX(1.2); opacity: 0.15; }
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@keyframes spotlightSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(127, 219, 218, 0.15); }
+  50% { box-shadow: 0 0 35px rgba(127, 219, 218, 0.3); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flickerCandle {
+  0%, 100% { opacity: 0.7; }
+  25% { opacity: 0.9; }
+  50% { opacity: 0.6; }
+  75% { opacity: 0.85; }
+}
+
+.fog-layer {
+  animation: fogDrift 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.fog-layer-2 {
+  animation: fogDrift 28s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+.hero-img {
+  animation: slowZoom 30s ease-in-out infinite alternate;
+}
+
+.spotlight {
+  background: linear-gradient(90deg, transparent 0%, rgba(127,219,218,0.04) 45%, rgba(127,219,218,0.08) 50%, rgba(127,219,218,0.04) 55%, transparent 100%);
+  background-size: 200% 100%;
+  animation: spotlightSweep 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.cta-pulse { animation: pulseGlow 3s ease-in-out infinite; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.glass-card {
+  background: rgba(20, 20, 25, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(127, 219, 218, 0.1);
+}
+
+.glass-card:hover {
+  border-color: rgba(127, 219, 218, 0.25);
+  background: rgba(20, 20, 25, 0.75);
+}
+
+.candle-glow { animation: flickerCandle 4s ease-in-out infinite; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: #7fdbda;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-raleway { font-family: 'Raleway', sans-serif; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-obsidian text-silver font-raleway">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- SVG Icon Defs -->
+   <svg class="hidden"><defs>
+     <symbol id="icon-candle" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="10" width="6" height="12" rx="1" />
+      <path d="M12 10V7" />
+      <path d="M10 7c0-2 2-4 2-4s2 2 2 4c0 1.1-.9 2-2 2s-2-.9-2-2z" />
+     </symbol>
+     <symbol id="icon-key" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="15" r="5" />
+      <path d="M12 11l7-7" />
+      <path d="M15 4l4 4" />
+      <path d="M17 6l2 2" />
+     </symbol>
+     <symbol id="icon-moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+     </symbol>
+     <symbol id="icon-mist" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 8h12M5 12h14M3 16h10M7 20h8" />
+     </symbol>
+     <symbol id="icon-doorway" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <path d="M9 2v20" />
+      <circle cx="16" cy="13" r="1" />
+     </symbol>
+     <symbol id="icon-warning" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+     </symbol>
+    </defs>
+   </svg><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(10,10,15,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(127,219,218,0.06);">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-cinzel text-lg tracking-widest text-cyan_pale flex items-center gap-2">
+      <svg class="w-5 h-5">
+       <use href="#icon-moon" />
+      </svg> SpecterStudio </a> <button id="mobile-menu-btn" class="md:hidden text-silver"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+     <div id="nav-links" class="hidden md:flex items-center gap-8 text-sm tracking-wider uppercase font-raleway font-light"><a href="#home" class="nav-link text-silver hover:text-cyan_pale transition-colors">Home</a> <a href="#vault" class="nav-link text-silver hover:text-cyan_pale transition-colors">Vault</a> <a href="#posters" class="nav-link text-silver hover:text-cyan_pale transition-colors">Posters</a> <a href="#overlays" class="nav-link text-silver hover:text-cyan_pale transition-colors">Overlays</a> <a href="#reviews" class="nav-link text-silver hover:text-cyan_pale transition-colors">Reviews</a> <a href="#download" class="nav-link text-cyan_pale hover:text-white transition-colors">Download</a>
+     </div>
+    </div>
+    <div id="mobile-nav" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm tracking-wider uppercase font-raleway font-light"><a href="#home" class="nav-link text-silver hover:text-cyan_pale transition-colors py-1">Home</a> <a href="#vault" class="nav-link text-silver hover:text-cyan_pale transition-colors py-1">Vault</a> <a href="#posters" class="nav-link text-silver hover:text-cyan_pale transition-colors py-1">Posters</a> <a href="#overlays" class="nav-link text-silver hover:text-cyan_pale transition-colors py-1">Overlays</a> <a href="#reviews" class="nav-link text-silver hover:text-cyan_pale transition-colors py-1">Reviews</a> <a href="#download" class="nav-link text-cyan_pale hover:text-white transition-colors py-1">Download</a>
+    </div>
+   </nav><!-- Hero Section -->
+   <section id="home" class="relative w-full overflow-hidden" style="height: 100%;">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=1920&amp;q=80" alt="Foggy dark forest" loading="lazy" class="hero-img w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#0a0a0f,#1a1a24)'; this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-obsidian/70 via-obsidian/50 to-obsidian"></div>
+    </div><!-- Fog overlays -->
+    <div class="fog-layer absolute inset-0" style="background: linear-gradient(90deg, transparent 0%, rgba(127,219,218,0.03) 30%, rgba(192,192,200,0.06) 50%, rgba(127,219,218,0.03) 70%, transparent 100%);"></div>
+    <div class="fog-layer-2 absolute top-1/3 left-0 right-0" style="height: 40%; background: linear-gradient(180deg, transparent, rgba(192,192,200,0.04), transparent);"></div>
+    <div class="spotlight absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+     <div style="animation: fadeSlideUp 1.2s ease forwards;">
+      <svg class="w-8 h-8 text-cyan_pale mx-auto mb-6 candle-glow">
+       <use href="#icon-candle" />
+      </svg>
+      <h1 id="hero-title" class="font-cinzel text-4xl sm:text-5xl md:text-7xl font-bold tracking-wide text-white mb-6 leading-tight">Some places keep stories.</h1>
+      <p id="hero-subtitle" class="font-raleway font-light text-base sm:text-lg md:text-xl text-silver/80 max-w-2xl mx-auto mb-10 tracking-wide">A haunted aesthetic vault built from real photography.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="#download" id="cta-primary-btn" class="cta-pulse inline-block px-8 py-3.5 bg-cyan_pale/10 border border-cyan_pale/40 text-cyan_pale font-raleway font-medium tracking-widest uppercase text-sm rounded hover:bg-cyan_pale/20 transition-all duration-300">Download the Vault</a> <a href="#posters" id="cta-secondary-btn" class="inline-block px-8 py-3.5 border border-silver/20 text-silver font-raleway font-light tracking-widest uppercase text-sm rounded hover:border-silver/40 hover:text-white transition-all duration-300">Preview Posters</a>
+      </div>
+     </div>
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2"><i data-lucide="chevron-down" class="w-5 h-5 text-silver/30" style="animation: flickerCandle 3s ease-in-out infinite;"></i>
+     </div>
+    </div>
+   </section><!-- Stats Bar -->
+   <section class="relative w-full py-8 border-y border-silver/5" style="background: linear-gradient(90deg, rgba(10,10,15,0.95), rgba(26,26,36,0.95), rgba(10,10,15,0.95));">
+    <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+     <div class="reveal">
+      <span class="font-cinzel text-2xl text-cyan_pale">120</span>
+      <p class="text-xs tracking-widest uppercase text-silver/50 mt-1">Wallpapers</p>
+     </div>
+     <div class="reveal">
+      <span class="font-cinzel text-2xl text-cyan_pale">30</span>
+      <p class="text-xs tracking-widest uppercase text-silver/50 mt-1">Printable Posters</p>
+     </div>
+     <div class="reveal">
+      <span class="font-cinzel text-2xl text-cyan_pale">40</span>
+      <p class="text-xs tracking-widest uppercase text-silver/50 mt-1">Story Templates</p>
+     </div>
+     <div class="reveal">
+      <span class="font-cinzel text-2xl text-cyan_pale">20+</span>
+      <p class="text-xs tracking-widest uppercase text-silver/50 mt-1">Texture Overlays</p>
+     </div>
+    </div>
+   </section><!-- Vault Section -->
+   <section id="vault" class="relative w-full py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <svg class="w-6 h-6 text-cyan_pale mx-auto mb-4">
+       <use href="#icon-key" />
+      </svg>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-white tracking-wide mb-3">The Vault</h2>
+      <p class="font-raleway font-light text-silver/60 max-w-lg mx-auto">Four curated collections. Each one a world of its own.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal glass-card rounded-xl overflow-hidden group cursor-pointer transition-all duration-500">
+       <div class="relative h-52 overflow-hidden"><img src="https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&amp;q=75" alt="Foggy forest scene" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 to-transparent"></div>
+        <svg class="absolute bottom-4 left-4 w-5 h-5 text-cyan_pale/60">
+         <use href="#icon-mist" />
+        </svg>
+       </div>
+       <div class="p-5">
+        <h3 class="font-cinzel text-base text-white mb-1">Fog &amp; Forest</h3>
+        <p class="text-xs text-silver/50 font-light">30 wallpapers · 8 posters</p>
+       </div>
+      </div>
+      <div class="reveal glass-card rounded-xl overflow-hidden group cursor-pointer transition-all duration-500" style="transition-delay: 0.1s;">
+       <div class="relative h-52 overflow-hidden"><img src="https://images.unsplash.com/photo-1520209759809-a9bcb6cb3241?w=600&amp;q=75" alt="Abandoned room interior" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 to-transparent"></div>
+        <svg class="absolute bottom-4 left-4 w-5 h-5 text-cyan_pale/60">
+         <use href="#icon-doorway" />
+        </svg>
+       </div>
+       <div class="p-5">
+        <h3 class="font-cinzel text-base text-white mb-1">Abandoned Rooms</h3>
+        <p class="text-xs text-silver/50 font-light">30 wallpapers · 8 posters</p>
+       </div>
+      </div>
+      <div class="reveal glass-card rounded-xl overflow-hidden group cursor-pointer transition-all duration-500" style="transition-delay: 0.2s;">
+       <div class="relative h-52 overflow-hidden"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;q=75" alt="Candlelight in darkness" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 to-transparent"></div>
+        <svg class="absolute bottom-4 left-4 w-5 h-5 text-cyan_pale/60">
+         <use href="#icon-candle" />
+        </svg>
+       </div>
+       <div class="p-5">
+        <h3 class="font-cinzel text-base text-white mb-1">Candlelight</h3>
+        <p class="text-xs text-silver/50 font-light">30 wallpapers · 7 posters</p>
+       </div>
+      </div>
+      <div class="reveal glass-card rounded-xl overflow-hidden group cursor-pointer transition-all duration-500" style="transition-delay: 0.3s;">
+       <div class="relative h-52 overflow-hidden"><img src="https://images.unsplash.com/photo-1532978379173-523e16f371f2?w=600&amp;q=75" alt="Moonlit street at night" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 to-transparent"></div>
+        <svg class="absolute bottom-4 left-4 w-5 h-5 text-cyan_pale/60">
+         <use href="#icon-moon" />
+        </svg>
+       </div>
+       <div class="p-5">
+        <h3 class="font-cinzel text-base text-white mb-1">Moonlit Streets</h3>
+        <p class="text-xs text-silver/50 font-light">30 wallpapers · 7 posters</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Posters Section -->
+   <section id="posters" class="relative w-full py-20 md:py-28 px-6" style="background: linear-gradient(180deg, rgba(10,10,15,1), rgba(20,20,25,1), rgba(10,10,15,1));">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <svg class="w-6 h-6 text-cyan_pale mx-auto mb-4">
+       <use href="#icon-doorway" />
+      </svg>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-white tracking-wide mb-3">Printable Posters</h2>
+      <p class="font-raleway font-light text-silver/60 max-w-lg mx-auto">30 high-resolution prints. Frame them, hang them, let them haunt your walls.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Framed poster mocks -->
+      <div class="reveal flex justify-center">
+       <div class="relative p-3 bg-gradient-to-b from-gray-800/40 to-gray-900/60 rounded shadow-2xl" style="box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.5);">
+        <div class="border border-silver/10 rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1509248961085-879c25a3ca3f?w=500&amp;q=75" alt="Eerie woods poster" loading="lazy" class="w-full h-72 object-cover" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        </div>
+        <p class="text-center text-xs text-silver/30 mt-3 font-cinzel tracking-widest">WHISPER WOODS</p>
+       </div>
+      </div>
+      <div class="reveal flex justify-center" style="transition-delay: 0.15s;">
+       <div class="relative p-3 bg-gradient-to-b from-gray-800/40 to-gray-900/60 rounded shadow-2xl" style="box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.5);">
+        <div class="border border-silver/10 rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1504722960385-e0aab8e555c8?w=500&amp;q=75" alt="Old hallway poster" loading="lazy" class="w-full h-72 object-cover" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        </div>
+        <p class="text-center text-xs text-silver/30 mt-3 font-cinzel tracking-widest">SILENT PASSAGE</p>
+       </div>
+      </div>
+      <div class="reveal flex justify-center" style="transition-delay: 0.3s;">
+       <div class="relative p-3 bg-gradient-to-b from-gray-800/40 to-gray-900/60 rounded shadow-2xl" style="box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 20px 60px rgba(0,0,0,0.5);">
+        <div class="border border-silver/10 rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=500&amp;q=75" alt="Cemetery gate at night" loading="lazy" class="w-full h-72 object-cover" onerror="this.style.background='#1a1a24'; this.alt='Image unavailable';">
+        </div>
+        <p class="text-center text-xs text-silver/30 mt-3 font-cinzel tracking-widest">IRON GATE</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Overlays Section -->
+   <section id="overlays" class="relative w-full py-20 md:py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <svg class="w-6 h-6 text-cyan_pale mx-auto mb-4">
+       <use href="#icon-mist" />
+      </svg>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-white tracking-wide mb-3">Texture Overlays</h2>
+      <p class="font-raleway font-light text-silver/60 max-w-lg mx-auto">Layer fog, grain, scratches, and light leaks onto any project.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="reveal glass-card rounded-lg p-6 text-center group cursor-pointer transition-all duration-300 hover:scale-105">
+       <div class="w-full h-28 rounded mb-4 overflow-hidden" style="background: linear-gradient(135deg, rgba(127,219,218,0.05), rgba(192,192,200,0.1), rgba(127,219,218,0.03)); background-size: 400% 400%; animation: fogDrift 8s ease-in-out infinite;"></div>
+       <p class="text-xs text-silver/60 font-cinzel tracking-wider">Fog Drift</p>
+      </div>
+      <div class="reveal glass-card rounded-lg p-6 text-center group cursor-pointer transition-all duration-300 hover:scale-105" style="transition-delay:0.1s;">
+       <div class="w-full h-28 rounded mb-4" style="background: repeating-conic-gradient(rgba(192,192,200,0.03) 0% 25%, transparent 0% 50%) 0 0 / 4px 4px;"></div>
+       <p class="text-xs text-silver/60 font-cinzel tracking-wider">Film Grain</p>
+      </div>
+      <div class="reveal glass-card rounded-lg p-6 text-center group cursor-pointer transition-all duration-300 hover:scale-105" style="transition-delay:0.2s;">
+       <div class="w-full h-28 rounded mb-4" style="background: linear-gradient(180deg, transparent 40%, rgba(127,219,218,0.08) 60%, rgba(192,192,200,0.04) 80%, transparent); background-size: 100% 200%; animation: spotlightSweep 6s ease-in-out infinite;"></div>
+       <p class="text-xs text-silver/60 font-cinzel tracking-wider">Light Leak</p>
+      </div>
+      <div class="reveal glass-card rounded-lg p-6 text-center group cursor-pointer transition-all duration-300 hover:scale-105" style="transition-delay:0.3s;">
+       <div class="w-full h-28 rounded mb-4" style="background: radial-gradient(ellipse at 30% 50%, rgba(192,192,200,0.06), transparent 70%), radial-gradient(ellipse at 70% 50%, rgba(127,219,218,0.04), transparent 60%);"></div>
+       <p class="text-xs text-silver/60 font-cinzel tracking-wider">Dust Haze</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews Section -->
+   <section id="reviews" class="relative w-full py-20 md:py-28 px-6" style="background: linear-gradient(180deg, rgba(10,10,15,1), rgba(20,20,25,1), rgba(10,10,15,1));">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <svg class="w-6 h-6 text-cyan_pale mx-auto mb-4">
+       <use href="#icon-warning" />
+      </svg>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-white tracking-wide mb-3">What They Say</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="reveal glass-card rounded-xl p-6">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i>
+       </div>
+       <p class="text-sm text-silver/70 font-light leading-relaxed mb-4">"Perfect spooky vibe without being tacky. My phone wallpaper rotation has never been this good."</p>
+       <p class="text-xs text-cyan_pale/60 font-cinzel tracking-wider">- MARA K.</p>
+      </div>
+      <div class="reveal glass-card rounded-xl p-6" style="transition-delay:0.1s;">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i>
+       </div>
+       <p class="text-sm text-silver/70 font-light leading-relaxed mb-4">"Used the overlays on my horror short film stills. Clients thought I hired a whole post team."</p>
+       <p class="text-xs text-cyan_pale/60 font-cinzel tracking-wider">- JACK T.</p>
+      </div>
+      <div class="reveal glass-card rounded-xl p-6" style="transition-delay:0.2s;">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i> <i data-lucide="star" class="w-4 h-4 text-cyan_pale fill-cyan_pale/30"></i>
+       </div>
+       <p class="text-sm text-silver/70 font-light leading-relaxed mb-4">"Bought it for October, ended up using it year-round. The atmosphere is unreal."</p>
+       <p class="text-xs text-cyan_pale/60 font-cinzel tracking-wider">- ELENA V.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA / Download -->
+   <section id="download" class="relative w-full py-24 md:py-32 px-6 overflow-hidden"><!-- Fog background -->
+    <div class="fog-layer absolute inset-0" style="background: radial-gradient(ellipse at center, rgba(127,219,218,0.04), transparent 70%);"></div>
+    <div class="spotlight absolute inset-0"></div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center">
+     <div class="reveal">
+      <svg class="w-8 h-8 text-cyan_pale mx-auto mb-6 candle-glow">
+       <use href="#icon-candle" />
+      </svg>
+      <h2 id="bottom-cta-title" class="font-cinzel text-3xl md:text-5xl text-white tracking-wide mb-6">Turn atmosphere into art.</h2>
+      <p class="font-raleway font-light text-silver/60 mb-10 max-w-xl mx-auto">120 wallpapers. 30 posters. 40 story templates. Eerie texture overlays. One haunted collection.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6"><a href="#" class="cta-pulse inline-block px-10 py-4 bg-cyan_pale/10 border border-cyan_pale/40 text-cyan_pale font-cinzel tracking-widest uppercase text-sm rounded hover:bg-cyan_pale/20 transition-all duration-300" onclick="event.preventDefault();">Access the Vault</a>
+      </div>
+      <p class="text-xs text-silver/30 tracking-wider">Seasonal pricing · Creator-ready files · Drop-style collectibles</p>
+     </div>
+    </div><!-- Vote + Comment Widget Panel -->
+    <div class="relative z-10 max-w-xl mx-auto mt-16 reveal">
+     <div class="glass-card rounded-xl p-6">
+      <div class="flex items-center gap-2 mb-4">
+       <svg class="w-4 h-4 text-cyan_pale/60">
+        <use href="#icon-warning" />
+       </svg>
+       <p class="text-xs text-cyan_pale/60 font-cinzel tracking-widest uppercase">Vote + Comment</p>
+      </div>
+      <div class="border border-dashed border-silver/15 rounded-lg p-8 text-center">
+       <p class="text-sm text-silver/40 font-light">Embed Widget Here</p>
+       <p class="text-xs text-silver/25 mt-2">Connect your preferred voting or comment widget</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 px-6 border-t border-silver/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-cinzel text-sm text-silver/30 tracking-widest">SpecterStudio Vault</p>
+     <p class="text-xs text-silver/20 font-light">"Make your screen feel haunted in the best way."</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: 'Some places keep stories.',
+  hero_subtitle: 'A haunted aesthetic vault built from real photography.',
+  cta_primary: 'Download the Vault',
+  cta_secondary: 'Preview Posters',
+  bottom_cta_title: 'Turn atmosphere into art.',
+  background_color: '#0a0a0f',
+  surface_color: '#141419',
+  text_color: '#c0c0c8',
+  accent_color: '#7fdbda',
+  secondary_action_color: '#1a1a24',
+  font_family: 'Cinzel',
+  font_size: 16,
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+
+  // Text
+  el('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  el('cta-primary-btn').textContent = config.cta_primary || defaultConfig.cta_primary;
+  el('cta-secondary-btn').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+  el('bottom-cta-title').textContent = config.bottom_cta_title || defaultConfig.bottom_cta_title;
+
+  // Colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const accent = config.accent_color || defaultConfig.accent_color;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = text;
+
+  document.querySelectorAll('.glass-card').forEach(c => {
+    c.style.borderColor = accent + '1a';
+  });
+
+  document.querySelectorAll('.font-cinzel').forEach(el => {
+    const font = config.font_family || defaultConfig.font_family;
+    el.style.fontFamily = `${font}, Cinzel, serif`;
+  });
+
+  const baseSize = config.font_size || defaultConfig.font_size;
+  el('hero-title').style.fontSize = '';
+  document.querySelectorAll('.font-raleway').forEach(el => {
+    el.style.fontFamily = `Raleway, ${config.font_family || defaultConfig.font_family}, sans-serif`;
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+  ])
+});
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-nav').classList.toggle('hidden');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-nav a').forEach(link => {
+  link.addEventListener('click', () => document.getElementById('mobile-nav').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Lucide icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3191d4e027c5',t:'MTc3NTU3NzA4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

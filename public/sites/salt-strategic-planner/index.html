@@ -1,1 +1,957 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/95d54e5c-38ae-4ffa-afee-335db9c63453 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SALT Strategic Planner</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#020617',
+        navyLight: '#0f172a',
+        navyMid: '#1e293b',
+        electric: '#3b82f6',
+        electricLight: '#60a5fa',
+        electricDim: '#1d4ed8',
+        slate: '#94a3b8',
+        surface: '#0f172a'
+      },
+      fontFamily: {
+        sans: ['DM Sans', 'sans-serif'],
+        mono: ['Space Mono', 'monospace']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+.app-root { height: 100%; overflow: auto; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.3)); }
+  50% { filter: drop-shadow(0 0 14px rgba(59,130,246,0.6)); }
+}
+@keyframes borderRotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim-fade-up { animation: fadeUp 0.7s ease forwards; }
+.anim-fade-up-d1 { animation: fadeUp 0.7s ease 0.15s forwards; opacity: 0; }
+.anim-fade-up-d2 { animation: fadeUp 0.7s ease 0.3s forwards; opacity: 0; }
+.anim-fade-up-d3 { animation: fadeUp 0.7s ease 0.45s forwards; opacity: 0; }
+.anim-fade-up-d4 { animation: fadeUp 0.7s ease 0.6s forwards; opacity: 0; }
+.anim-slide-in { animation: slideIn 0.5s ease forwards; }
+.anim-count { animation: countUp 0.4s ease forwards; }
+
+.state-path { transition: all 0.3s ease; cursor: pointer; }
+.state-path:hover { filter: drop-shadow(0 0 8px rgba(59,130,246,0.7)); transform: scale(1.02); transform-origin: center; }
+.state-highlight { animation: pulseGlow 2s ease-in-out infinite; }
+
+.pricing-card {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border: 1px solid rgba(59,130,246,0.15);
+  transition: all 0.4s ease;
+}
+.pricing-card::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(59,130,246,0.3), transparent);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.pricing-card:hover::before { opacity: 1; }
+.pricing-card:hover {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 0 40px rgba(59,130,246,0.12), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-4px);
+}
+.pricing-featured {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 0 30px rgba(59,130,246,0.1);
+}
+.pricing-featured::before { opacity: 1; }
+
+.nav-link { position: relative; transition: color 0.3s; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: #3b82f6; transition: width 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.comparison-bar { transition: width 0.8s ease; }
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.toast-msg {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #1e293b; border: 1px solid rgba(59,130,246,0.3); color: #e2e8f0;
+  padding: 12px 24px; border-radius: 8px; z-index: 9999;
+  animation: fadeUp 0.3s ease forwards;
+  pointer-events: none;
+}
+
+.scroll-reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="bg-navy text-gray-200 font-sans">
+  <div class="app-root w-full grid-pattern" id="appRoot"><!-- Sticky Nav -->
+   <nav id="mainNav" class="fixed top-0 left-0 w-full z-50 bg-navy/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-2 group">
+      <div class="w-8 h-8 rounded-lg bg-electric/20 flex items-center justify-center"><i data-lucide="map-pin" class="w-4 h-4 text-electric"></i>
+      </div><span class="font-bold text-white tracking-tight" id="navBrand">SALT Strategic Planner</span> </a>
+     <div class="hidden md:flex items-center gap-6"><a href="#home" class="nav-link text-sm text-slate hover:text-white">Home</a> <a href="#states" class="nav-link text-sm text-slate hover:text-white">States</a> <a href="#comparison" class="nav-link text-sm text-slate hover:text-white">Comparison</a> <a href="#strategy" class="nav-link text-sm text-slate hover:text-white">Strategy</a> <a href="#pricing" class="nav-link text-sm text-slate hover:text-white">Pricing</a> <a href="#faq" class="nav-link text-sm text-slate hover:text-white">FAQ</a> <a href="#optimize" class="bg-electric hover:bg-electricDim text-white text-sm font-semibold px-5 py-2 rounded-lg transition-all">Optimize Now</a>
+     </div><button id="mobileMenuBtn" class="md:hidden text-slate hover:text-white"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/5 bg-navy/95 backdrop-blur-md">
+     <div class="px-4 py-4 flex flex-col gap-3"><a href="#home" class="text-slate hover:text-white text-sm py-1">Home</a> <a href="#states" class="text-slate hover:text-white text-sm py-1">States</a> <a href="#comparison" class="text-slate hover:text-white text-sm py-1">Comparison</a> <a href="#strategy" class="text-slate hover:text-white text-sm py-1">Strategy</a> <a href="#pricing" class="text-slate hover:text-white text-sm py-1">Pricing</a> <a href="#faq" class="text-slate hover:text-white text-sm py-1">FAQ</a> <a href="#optimize" class="bg-electric text-white text-sm font-semibold px-5 py-2 rounded-lg text-center mt-2">Optimize Now</a>
+     </div>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative min-h-[90%] flex items-center pt-20 pb-16 overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+     <div class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-electric/5 blur-3xl"></div>
+     <div class="absolute bottom-1/4 left-1/6 w-72 h-72 rounded-full bg-electric/3 blur-3xl"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <div class="flex-1 text-center lg:text-left">
+       <div class="anim-fade-up inline-flex items-center gap-2 bg-electric/10 border border-electric/20 rounded-full px-4 py-1.5 mb-6"><span class="w-2 h-2 rounded-full bg-electric animate-pulse"></span> <span class="text-xs font-mono text-electric tracking-wider uppercase">Where you operate changes everything</span>
+       </div>
+       <h1 id="heroTitle" class="anim-fade-up-d1 text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">Your state can determine your tax burden.</h1>
+       <p id="heroSubtitle" class="anim-fade-up-d2 mt-5 text-lg sm:text-xl text-slate max-w-xl mx-auto lg:mx-0">Optimize where and how you operate.</p>
+       <div class="anim-fade-up-d3 mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"><a href="#optimize" class="bg-electric hover:bg-electricDim text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-electric/20 hover:shadow-electric/30 text-center"> Optimize Now </a> <a href="#comparison" class="border border-white/10 hover:border-electric/40 text-white font-semibold px-8 py-3.5 rounded-xl transition-all hover:bg-white/5 text-center"> Compare States </a>
+       </div>
+       <div class="anim-fade-up-d4 mt-10 grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
+        <div>
+         <div class="text-2xl font-bold text-white font-mono">
+          50
+         </div>
+         <div class="text-xs text-slate mt-1">
+          States Analyzed
+         </div>
+        </div>
+        <div>
+         <div class="text-2xl font-bold text-white font-mono">
+          $2.1T
+         </div>
+         <div class="text-xs text-slate mt-1">
+          SALT Revenue
+         </div>
+        </div>
+        <div>
+         <div class="text-2xl font-bold text-white font-mono">
+          13.3%
+         </div>
+         <div class="text-xs text-slate mt-1">
+          Max State Rate
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-1 anim-fade-up-d2 w-full max-w-lg"><!-- Mini US Map SVG for Hero -->
+       <div class="relative bg-navyLight/50 border border-white/5 rounded-2xl p-6 backdrop-blur-sm">
+        <div class="flex items-center gap-2 mb-4"><span class="w-3 h-3 rounded-full bg-red-500/80"></span> <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span> <span class="w-3 h-3 rounded-full bg-green-500/80"></span> <span class="ml-auto text-xs font-mono text-slate/60">tax_burden_map.viz</span>
+        </div>
+        <svg viewbox="0 0 500 320" class="w-full"><!-- Simplified US regions --> <!-- West --> <path d="M30 60 L100 40 L120 120 L80 180 L30 160Z" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.3)" stroke-width="1" class="state-path state-highlight" /> <text x="65" y="110" fill="#60a5fa" font-size="8" font-family="Space Mono" text-anchor="middle">
+          CA
+         </text> <!-- Pacific NW --> <path d="M30 20 L100 10 L100 40 L30 60Z" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.2)" stroke-width="1" class="state-path" /> <text x="60" y="35" fill="#94a3b8" font-size="7" font-family="Space Mono" text-anchor="middle">
+          OR/WA
+         </text> <!-- Mountain --> <path d="M100 10 L180 15 L180 130 L120 120 L100 40Z" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="1" class="state-path" /> <text x="140" y="70" fill="#64748b" font-size="7" font-family="Space Mono" text-anchor="middle">
+          MTN
+         </text> <!-- Southwest --> <path d="M120 120 L180 130 L190 200 L100 210 L80 180Z" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.25)" stroke-width="1" class="state-path" /> <text x="140" y="170" fill="#94a3b8" font-size="7" font-family="Space Mono" text-anchor="middle">
+          TX/AZ
+         </text> <!-- Midwest --> <path d="M180 15 L310 20 L320 130 L180 130Z" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.12)" stroke-width="1" class="state-path" /> <text x="250" y="75" fill="#64748b" font-size="7" font-family="Space Mono" text-anchor="middle">
+          MIDWEST
+         </text> <!-- South --> <path d="M190 200 L180 130 L320 130 L340 180 L300 220 L240 240 L190 220Z" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.18)" stroke-width="1" class="state-path" /> <text x="260" y="180" fill="#64748b" font-size="7" font-family="Space Mono" text-anchor="middle">
+          SOUTH
+         </text> <!-- Northeast --> <path d="M310 20 L420 30 L430 90 L400 120 L320 130Z" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.3)" stroke-width="1" class="state-path state-highlight" /> <text x="370" y="75" fill="#60a5fa" font-size="7" font-family="Space Mono" text-anchor="middle">
+          NY/NJ
+         </text> <!-- Mid-Atlantic --> <path d="M320 130 L400 120 L420 170 L340 180Z" fill="rgba(59,130,246,0.09)" stroke="rgba(59,130,246,0.2)" stroke-width="1" class="state-path" /> <text x="370" y="150" fill="#94a3b8" font-size="7" font-family="Space Mono" text-anchor="middle">
+          MID-ATL
+         </text> <!-- Southeast --> <path d="M340 180 L420 170 L440 240 L380 260 L300 220Z" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.1)" stroke-width="1" class="state-path" /> <text x="380" y="220" fill="#475569" font-size="7" font-family="Space Mono" text-anchor="middle">
+          FL/SE
+         </text> <!-- Legend --> <rect x="20" y="265" width="12" height="12" rx="2" fill="rgba(59,130,246,0.25)" /> <text x="38" y="275" fill="#94a3b8" font-size="7" font-family="Space Mono">
+          High Tax Burden
+         </text> <rect x="140" y="265" width="12" height="12" rx="2" fill="rgba(59,130,246,0.08)" /> <text x="158" y="275" fill="#94a3b8" font-size="7" font-family="Space Mono">
+          Moderate
+         </text> <rect x="240" y="265" width="12" height="12" rx="2" fill="rgba(59,130,246,0.03)" /> <text x="258" y="275" fill="#94a3b8" font-size="7" font-family="Space Mono">
+          Low / No Income Tax
+         </text>
+        </svg>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- States Section -->
+   <section id="states" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 scroll-reveal"><span class="text-xs font-mono text-electric tracking-widest uppercase">Jurisdiction Analysis</span>
+      <h2 id="statesTitle" class="mt-3 text-3xl sm:text-4xl font-bold text-white">State Tax Landscape</h2>
+      <p class="mt-3 text-slate max-w-2xl mx-auto">Click any region to explore its tax profile. States vary dramatically in income, sales, and property tax burdens.</p>
+     </div><!-- Interactive State Cards -->
+     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 scroll-reveal" id="stateGrid">
+     </div>
+     <div id="stateDetail" class="mt-8 hidden scroll-reveal">
+      <div class="bg-navyLight border border-white/5 rounded-2xl p-6 sm:p-8">
+       <div class="flex items-start justify-between mb-6">
+        <div>
+         <h3 id="detailName" class="text-2xl font-bold text-white"></h3>
+         <p id="detailRegion" class="text-sm text-slate mt-1"></p>
+        </div><button onclick="document.getElementById('stateDetail').classList.add('hidden')" class="text-slate hover:text-white transition-colors"> <i data-lucide="x" class="w-5 h-5"></i> </button>
+       </div>
+       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="detailStats"></div>
+       <div class="mt-6 p-4 bg-navy/50 rounded-xl border border-white/5">
+        <p id="detailNote" class="text-sm text-slate"></p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Comparison Section -->
+   <section id="comparison" class="py-20 bg-navyLight/30 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 scroll-reveal"><span class="text-xs font-mono text-electric tracking-widest uppercase">Side-by-Side Analysis</span>
+      <h2 id="comparisonTitle" class="mt-3 text-3xl sm:text-4xl font-bold text-white">Tax Burden Comparison</h2>
+      <p class="mt-3 text-slate max-w-2xl mx-auto">Compare effective tax rates across key states to find the optimal jurisdiction for your situation.</p>
+     </div>
+     <div class="flex flex-wrap gap-3 justify-center mb-8 scroll-reveal"><button onclick="showComparison('income')" class="comp-tab active bg-electric/20 border border-electric/30 text-electric text-sm font-mono px-4 py-2 rounded-lg transition-all hover:bg-electric/30" data-tab="income">Income Tax</button> <button onclick="showComparison('sales')" class="comp-tab bg-white/5 border border-white/10 text-slate text-sm font-mono px-4 py-2 rounded-lg transition-all hover:bg-white/10" data-tab="sales">Sales Tax</button> <button onclick="showComparison('corporate')" class="comp-tab bg-white/5 border border-white/10 text-slate text-sm font-mono px-4 py-2 rounded-lg transition-all hover:bg-white/10" data-tab="corporate">Corporate Tax</button> <button onclick="showComparison('property')" class="comp-tab bg-white/5 border border-white/10 text-slate text-sm font-mono px-4 py-2 rounded-lg transition-all hover:bg-white/10" data-tab="property">Property Tax</button>
+     </div>
+     <div id="comparisonChart" class="bg-navyLight border border-white/5 rounded-2xl p-6 sm:p-8 scroll-reveal">
+     </div>
+    </div>
+   </section><!-- Strategy Section -->
+   <section id="strategy" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 scroll-reveal"><span class="text-xs font-mono text-electric tracking-widest uppercase">Optimization Pathways</span>
+      <h2 id="strategyTitle" class="mt-3 text-3xl sm:text-4xl font-bold text-white">Strategic Relocation &amp; Structuring</h2>
+      <p class="mt-3 text-slate max-w-2xl mx-auto">Proven frameworks to minimize your multi-state tax exposure while maintaining full compliance.</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="scroll-reveal bg-navyLight border border-white/5 rounded-2xl p-6 hover:border-electric/20 transition-all group">
+       <div class="w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-4 group-hover:bg-electric/20 transition-colors"><i data-lucide="building-2" class="w-6 h-6 text-electric"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">Entity Restructuring</h3>
+       <p class="text-sm text-slate leading-relaxed">Optimize your corporate structure across jurisdictions. Holding companies, subsidiaries, and pass-through elections tailored to your operations.</p>
+       <ul class="mt-4 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Nexus evaluation</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Pass-through analysis</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Holding co. formation</li>
+       </ul>
+      </div>
+      <div class="scroll-reveal bg-navyLight border border-white/5 rounded-2xl p-6 hover:border-electric/20 transition-all group" style="transition-delay:0.1s">
+       <div class="w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-4 group-hover:bg-electric/20 transition-colors"><i data-lucide="map" class="w-6 h-6 text-electric"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">Domicile Relocation</h3>
+       <p class="text-sm text-slate leading-relaxed">Strategic personal or business domicile changes to favorable jurisdictions with full compliance documentation and audit protection.</p>
+       <ul class="mt-4 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Residency audit defense</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Day-count tracking</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Intent documentation</li>
+       </ul>
+      </div>
+      <div class="scroll-reveal bg-navyLight border border-white/5 rounded-2xl p-6 hover:border-electric/20 transition-all group" style="transition-delay:0.2s">
+       <div class="w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-4 group-hover:bg-electric/20 transition-colors"><i data-lucide="shield-check" class="w-6 h-6 text-electric"></i>
+       </div>
+       <h3 class="text-lg font-bold text-white mb-2">Compliance Framework</h3>
+       <p class="text-sm text-slate leading-relaxed">Multi-state compliance systems that keep you ahead of changing regulations, filing requirements, and audit triggers.</p>
+       <ul class="mt-4 space-y-2">
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Filing calendar</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Apportionment modeling</li>
+        <li class="flex items-center gap-2 text-xs text-slate"><i data-lucide="check" class="w-3 h-3 text-electric"></i>Credit optimization</li>
+       </ul>
+      </div>
+     </div><!-- Relocation Scenario Calculator -->
+     <div class="mt-12 bg-navyLight border border-white/5 rounded-2xl p-6 sm:p-8 scroll-reveal">
+      <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="calculator" class="w-5 h-5 text-electric"></i> Quick Savings Estimator</h3>
+      <div class="grid sm:grid-cols-3 gap-4 mb-6">
+       <div><label class="block text-xs font-mono text-slate mb-2" for="calcIncome">Annual Income</label> <select id="calcIncome" class="w-full bg-navy border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-electric/50 focus:outline-none"> <option value="250000">$250,000</option> <option value="500000" selected>$500,000</option> <option value="1000000">$1,000,000</option> <option value="2500000">$2,500,000</option> <option value="5000000">$5,000,000</option> </select>
+       </div>
+       <div><label class="block text-xs font-mono text-slate mb-2" for="calcFrom">Current State</label> <select id="calcFrom" class="w-full bg-navy border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-electric/50 focus:outline-none"> <option value="CA">California (13.3%)</option> <option value="NY">New York (10.9%)</option> <option value="NJ">New Jersey (10.75%)</option> <option value="MN">Minnesota (9.85%)</option> <option value="OR">Oregon (9.9%)</option> </select>
+       </div>
+       <div><label class="block text-xs font-mono text-slate mb-2" for="calcTo">Target State</label> <select id="calcTo" class="w-full bg-navy border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm focus:border-electric/50 focus:outline-none"> <option value="FL">Florida (0%)</option> <option value="TX">Texas (0%)</option> <option value="NV">Nevada (0%)</option> <option value="WY">Wyoming (0%)</option> <option value="TN">Tennessee (0%)</option> <option value="SD">South Dakota (0%)</option> </select>
+       </div>
+      </div><button onclick="calculateSavings()" class="bg-electric hover:bg-electricDim text-white font-semibold px-6 py-2.5 rounded-lg transition-all text-sm">Calculate Savings</button>
+      <div id="calcResult" class="mt-6 hidden">
+       <div class="grid grid-cols-3 gap-4">
+        <div class="bg-navy/60 rounded-xl p-4 border border-white/5">
+         <div class="text-xs font-mono text-slate mb-1">
+          Current Tax
+         </div>
+         <div id="calcCurrent" class="text-xl font-bold text-red-400 font-mono"></div>
+        </div>
+        <div class="bg-navy/60 rounded-xl p-4 border border-white/5">
+         <div class="text-xs font-mono text-slate mb-1">
+          New Tax
+         </div>
+         <div id="calcNew" class="text-xl font-bold text-green-400 font-mono"></div>
+        </div>
+        <div class="bg-electric/10 rounded-xl p-4 border border-electric/20">
+         <div class="text-xs font-mono text-electric mb-1">
+          Annual Savings
+         </div>
+         <div id="calcSavings" class="text-xl font-bold text-electric font-mono"></div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing Section -->
+   <section id="pricing" class="py-20 bg-navyLight/30 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 scroll-reveal"><span class="text-xs font-mono text-electric tracking-widest uppercase">Investment Tiers</span>
+      <h2 id="pricingTitle" class="mt-3 text-3xl sm:text-4xl font-bold text-white">Advisory Tiers</h2>
+      <p class="mt-3 text-slate max-w-2xl mx-auto">Expert SALT advisory scaled to your operational footprint.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 lg:gap-8"><!-- Local -->
+      <div class="pricing-card rounded-2xl p-6 lg:p-8 scroll-reveal">
+       <div class="text-xs font-mono text-slate tracking-widest uppercase mb-4">
+        Local
+       </div>
+       <div class="flex items-baseline gap-1 mb-2"><span class="text-4xl font-bold text-white font-mono">$2,500</span> <span class="text-sm text-slate">/engagement</span>
+       </div>
+       <p class="text-sm text-slate mb-6">Single-state optimization for focused operations.</p>
+       <div class="border-t border-white/5 pt-6 space-y-3">
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Single state tax review
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Entity structure analysis
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Filing compliance audit
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Credit &amp; incentive scan
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>30-day email support
+        </div>
+       </div><button class="mt-8 w-full border border-white/10 hover:border-electric/40 text-white font-semibold py-3 rounded-xl transition-all hover:bg-white/5">Select Local</button>
+      </div><!-- Regional (Featured) -->
+      <div class="pricing-card pricing-featured rounded-2xl p-6 lg:p-8 scroll-reveal" style="transition-delay:0.1s">
+       <div class="flex items-center justify-between mb-4">
+        <div class="text-xs font-mono text-electric tracking-widest uppercase">
+         Regional
+        </div><span class="bg-electric/20 text-electric text-xs font-semibold px-3 py-1 rounded-full">Most Popular</span>
+       </div>
+       <div class="flex items-baseline gap-1 mb-2"><span class="text-4xl font-bold text-white font-mono">$7,500</span> <span class="text-sm text-slate">/engagement</span>
+       </div>
+       <p class="text-sm text-slate mb-6">Multi-state strategy for growing enterprises.</p>
+       <div class="border-t border-white/5 pt-6 space-y-3">
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Multi-state tax mapping
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Nexus determination
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Apportionment modeling
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Relocation scenario analysis
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Entity restructure blueprint
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>90-day advisory access
+        </div>
+       </div><button class="mt-8 w-full bg-electric hover:bg-electricDim text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-electric/20">Select Regional</button>
+      </div><!-- National -->
+      <div class="pricing-card rounded-2xl p-6 lg:p-8 scroll-reveal" style="transition-delay:0.2s">
+       <div class="text-xs font-mono text-slate tracking-widest uppercase mb-4">
+        National
+       </div>
+       <div class="flex items-baseline gap-1 mb-2"><span class="text-4xl font-bold text-white font-mono">$18,000</span> <span class="text-sm text-slate">/engagement</span>
+       </div>
+       <p class="text-sm text-slate mb-6">Full SALT advisory for nationwide operations.</p>
+       <div class="border-t border-white/5 pt-6 space-y-3">
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>All 50-state analysis
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Full compliance framework
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Audit defense package
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Quarterly strategy reviews
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Legislative change alerts
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>Dedicated SALT advisor
+        </div>
+        <div class="flex items-center gap-2 text-sm text-gray-300">
+         <i data-lucide="check-circle" class="w-4 h-4 text-electric flex-shrink-0"></i>12-month retainer
+        </div>
+       </div><button class="mt-8 w-full border border-white/10 hover:border-electric/40 text-white font-semibold py-3 rounded-xl transition-all hover:bg-white/5">Select National</button>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ Section -->
+   <section id="faq" class="py-20 relative">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 scroll-reveal"><span class="text-xs font-mono text-electric tracking-widest uppercase">Common Questions</span>
+      <h2 class="mt-3 text-3xl sm:text-4xl font-bold text-white">FAQ</h2>
+     </div>
+     <div class="space-y-3 scroll-reveal" id="faqList"></div>
+    </div>
+   </section><!-- Bottom CTA + Vote & Comment -->
+   <section id="optimize" class="py-20 bg-navyLight/30 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+     <div class="scroll-reveal">
+      <div class="inline-flex items-center gap-2 bg-electric/10 border border-electric/20 rounded-full px-4 py-1.5 mb-6"><i data-lucide="zap" class="w-3 h-3 text-electric"></i> <span class="text-xs font-mono text-electric tracking-wider uppercase">Start Optimizing</span>
+      </div>
+      <h2 id="bottomCtaText" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">Choose your jurisdiction wisely.</h2>
+      <p class="mt-4 text-lg text-slate max-w-2xl mx-auto">Every day in the wrong state costs you money. Take the first step toward SALT optimization today.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center"><a href="#pricing" class="bg-electric hover:bg-electricDim text-white font-semibold px-10 py-4 rounded-xl transition-all shadow-lg shadow-electric/20 hover:shadow-electric/30 text-lg"> Get Started </a> <a href="#comparison" class="border border-white/10 hover:border-electric/40 text-white font-semibold px-10 py-4 rounded-xl transition-all hover:bg-white/5 text-lg"> Explore States </a>
+      </div>
+     </div><!-- Vote + Comment Module -->
+     <div class="mt-16 scroll-reveal">
+      <div class="bg-navyLight border border-white/5 rounded-2xl p-6 sm:p-8 text-left">
+       <div class="text-center mb-6">
+        <h3 class="text-xl font-bold text-white">What would you pay for SALT advisory?</h3>
+        <p class="text-sm text-slate mt-1">Vote on your ideal price point and share your thoughts.</p>
+       </div><!-- Reactions -->
+       <div class="flex flex-wrap justify-center gap-3 mb-6" id="reactionBar"><button onclick="submitReaction('🔥')" class="reaction-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-full px-4 py-2 text-sm transition-all hover:bg-navy/80 flex items-center gap-2"><span>🔥</span><span class="reaction-count text-slate text-xs">0</span></button> <button onclick="submitReaction('💡')" class="reaction-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-full px-4 py-2 text-sm transition-all hover:bg-navy/80 flex items-center gap-2"><span>💡</span><span class="reaction-count text-slate text-xs">0</span></button> <button onclick="submitReaction('💰')" class="reaction-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-full px-4 py-2 text-sm transition-all hover:bg-navy/80 flex items-center gap-2"><span>💰</span><span class="reaction-count text-slate text-xs">0</span></button> <button onclick="submitReaction('🗺️')" class="reaction-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-full px-4 py-2 text-sm transition-all hover:bg-navy/80 flex items-center gap-2"><span>🗺️</span><span class="reaction-count text-slate text-xs">0</span></button> <button onclick="submitReaction('⚡')" class="reaction-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-full px-4 py-2 text-sm transition-all hover:bg-navy/80 flex items-center gap-2"><span>⚡</span><span class="reaction-count text-slate text-xs">0</span></button>
+       </div><!-- Price Vote -->
+       <div class="mb-6">
+        <p class="text-sm font-mono text-slate mb-3 text-center">Select your price point:</p>
+        <div class="grid grid-cols-5 sm:grid-cols-10 gap-2" id="priceVoteGrid">
+        </div>
+        <div id="priceVoteResult" class="mt-3 text-center text-sm text-slate hidden"></div>
+       </div><!-- Comments -->
+       <div class="border-t border-white/5 pt-6">
+        <h4 class="text-sm font-semibold text-white mb-4 flex items-center gap-2"><i data-lucide="message-circle" class="w-4 h-4 text-electric"></i> Community Feedback</h4>
+        <form id="commentForm" class="flex gap-3 mb-4"><input type="text" id="commentInput" placeholder="Share your thoughts on SALT planning..." class="flex-1 bg-navy border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate/50 focus:border-electric/50 focus:outline-none" maxlength="280"> <button type="submit" id="commentSubmitBtn" class="bg-electric hover:bg-electricDim text-white px-5 py-2.5 rounded-lg transition-all text-sm font-semibold flex items-center gap-2"> <i data-lucide="send" class="w-4 h-4"></i> Post </button>
+        </form>
+        <div id="commentsList" class="space-y-3 max-h-80 overflow-y-auto"></div>
+        <div id="noComments" class="text-center py-6 text-slate text-sm">
+         No comments yet. Be the first to share!
+        </div>
+       </div>
+       <div class="mt-6 pt-4 border-t border-white/5 text-center">
+        <p class="text-xs text-slate/50 font-mono">Embed Widget Here</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="border-t border-white/5 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded bg-electric/20 flex items-center justify-center"><i data-lucide="map-pin" class="w-3 h-3 text-electric"></i>
+      </div><span class="text-sm font-semibold text-white">SALT Strategic Planner</span>
+     </div>
+     <p class="text-xs text-slate">© 2025 SALT Strategic Planner. For informational purposes only.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+// State data
+const stateData = [
+  { abbr: 'CA', name: 'California', region: 'West', income: 13.3, sales: 7.25, corporate: 8.84, property: 0.71, note: 'Highest marginal income tax rate in the nation. Mental Health Services Tax adds 1% over $1M.' },
+  { abbr: 'NY', name: 'New York', region: 'Northeast', income: 10.9, sales: 4.0, corporate: 7.25, property: 1.4, note: 'NYC residents face additional city income tax up to 3.876%. Combined state+city can exceed 14%.' },
+  { abbr: 'NJ', name: 'New Jersey', region: 'Northeast', income: 10.75, sales: 6.625, corporate: 11.5, property: 2.21, note: 'Highest effective property tax rate in the US. Corporate surtax creates one of the highest business tax states.' },
+  { abbr: 'TX', name: 'Texas', region: 'South', income: 0, sales: 6.25, corporate: 0, property: 1.6, note: 'No personal income tax. Franchise (margin) tax applies to businesses. Higher property taxes offset income tax savings.' },
+  { abbr: 'FL', name: 'Florida', region: 'Southeast', income: 0, sales: 6.0, corporate: 5.5, property: 0.83, note: 'No personal income tax. Constitutional prohibition. Popular relocation destination for high-income individuals.' },
+  { abbr: 'NV', name: 'Nevada', region: 'West', income: 0, sales: 6.85, corporate: 0, property: 0.53, note: 'No personal or corporate income tax. Commerce Tax applies to businesses with gross revenue over $4M.' },
+  { abbr: 'WA', name: 'Washington', region: 'Northwest', income: 7.0, sales: 6.5, corporate: 0, property: 0.87, note: 'New 7% capital gains tax on gains over $250K. No traditional income tax but high sales tax with local additions.' },
+  { abbr: 'IL', name: 'Illinois', region: 'Midwest', income: 4.95, sales: 6.25, corporate: 9.5, property: 2.07, note: 'Flat income tax rate. High combined corporate rate. Second-highest property taxes nationally.' },
+  { abbr: 'MN', name: 'Minnesota', region: 'Midwest', income: 9.85, sales: 6.875, corporate: 9.8, property: 1.05, note: 'High across all categories. Net Investment Income Tax adds burden for high earners.' },
+  { abbr: 'WY', name: 'Wyoming', region: 'Mountain', income: 0, sales: 4.0, corporate: 0, property: 0.55, note: 'No income tax, no corporate tax. One of the most tax-friendly states for individuals and businesses.' },
+  { abbr: 'TN', name: 'Tennessee', region: 'South', income: 0, sales: 7.0, corporate: 6.5, property: 0.62, note: 'No personal income tax (Hall Tax fully phased out 2021). High combined sales tax with local additions up to 9.75%.' },
+  { abbr: 'SD', name: 'South Dakota', region: 'Mountain', income: 0, sales: 4.5, corporate: 0, property: 1.14, note: 'No income or corporate tax. Premier trust jurisdiction. Growing as a domicile for asset protection.' },
+];
+
+const priceOptions = ['$500', '$1,000', '$2,500', '$5,000', '$7,500', '$10,000', '$15,000', '$20,000', '$25,000', '$50,000'];
+
+const faqData = [
+  { q: 'What is SALT planning?', a: 'State and Local Tax (SALT) planning optimizes your tax position across jurisdictions by analyzing where you live, operate, and earn income to minimize overall tax burden while maintaining full compliance.' },
+  { q: 'Who benefits most from SALT optimization?', a: 'High-income individuals, multi-state businesses, remote workers, retirees considering relocation, and any entity with operations or income in multiple states.' },
+  { q: 'Is relocating just for tax savings legal?', a: 'Absolutely. Choosing a tax-favorable domicile is legal. However, you must genuinely establish residency and meet all state requirements. Our compliance framework ensures audit-proof documentation.' },
+  { q: 'How much can I actually save?', a: 'Savings vary widely. A $1M earner moving from California to Florida saves approximately $133,000 annually in state income tax alone. Our analysis includes all tax types for a complete picture.' },
+  { q: 'What about the SALT deduction cap?', a: 'The $10,000 SALT deduction cap (TCJA) makes state tax optimization even more critical, as high state taxes are no longer fully deductible on federal returns.' },
+];
+
+// Comparison data
+const compData = {
+  income: [
+    { state: 'California', value: 13.3, color: '#ef4444' },
+    { state: 'New York', value: 10.9, color: '#f97316' },
+    { state: 'New Jersey', value: 10.75, color: '#f97316' },
+    { state: 'Oregon', value: 9.9, color: '#eab308' },
+    { state: 'Minnesota', value: 9.85, color: '#eab308' },
+    { state: 'Illinois', value: 4.95, color: '#22c55e' },
+    { state: 'Washington*', value: 7.0, color: '#eab308' },
+    { state: 'Tennessee', value: 0, color: '#3b82f6' },
+    { state: 'Florida', value: 0, color: '#3b82f6' },
+    { state: 'Texas', value: 0, color: '#3b82f6' },
+  ],
+  sales: [
+    { state: 'Tennessee', value: 7.0, color: '#ef4444' },
+    { state: 'California', value: 7.25, color: '#ef4444' },
+    { state: 'Nevada', value: 6.85, color: '#f97316' },
+    { state: 'New Jersey', value: 6.625, color: '#f97316' },
+    { state: 'Minnesota', value: 6.875, color: '#f97316' },
+    { state: 'Washington', value: 6.5, color: '#eab308' },
+    { state: 'Texas', value: 6.25, color: '#eab308' },
+    { state: 'Illinois', value: 6.25, color: '#eab308' },
+    { state: 'Florida', value: 6.0, color: '#22c55e' },
+    { state: 'Wyoming', value: 4.0, color: '#3b82f6' },
+  ],
+  corporate: [
+    { state: 'New Jersey', value: 11.5, color: '#ef4444' },
+    { state: 'Minnesota', value: 9.8, color: '#f97316' },
+    { state: 'Illinois', value: 9.5, color: '#f97316' },
+    { state: 'California', value: 8.84, color: '#eab308' },
+    { state: 'New York', value: 7.25, color: '#eab308' },
+    { state: 'Tennessee', value: 6.5, color: '#22c55e' },
+    { state: 'Florida', value: 5.5, color: '#22c55e' },
+    { state: 'South Dakota', value: 0, color: '#3b82f6' },
+    { state: 'Wyoming', value: 0, color: '#3b82f6' },
+    { state: 'Texas*', value: 0, color: '#3b82f6' },
+  ],
+  property: [
+    { state: 'New Jersey', value: 2.21, color: '#ef4444' },
+    { state: 'Illinois', value: 2.07, color: '#ef4444' },
+    { state: 'Texas', value: 1.6, color: '#f97316' },
+    { state: 'New York', value: 1.4, color: '#f97316' },
+    { state: 'South Dakota', value: 1.14, color: '#eab308' },
+    { state: 'Minnesota', value: 1.05, color: '#eab308' },
+    { state: 'Washington', value: 0.87, color: '#22c55e' },
+    { state: 'Florida', value: 0.83, color: '#22c55e' },
+    { state: 'California', value: 0.71, color: '#3b82f6' },
+    { state: 'Nevada', value: 0.53, color: '#3b82f6' },
+  ]
+};
+
+const taxRates = { CA: 0.133, NY: 0.109, NJ: 0.1075, MN: 0.0985, OR: 0.099, FL: 0, TX: 0, NV: 0, WY: 0, TN: 0, SD: 0 };
+
+// App state
+let allData = [];
+let currentRecordCount = 0;
+
+// -- Build UI --
+function buildStateGrid() {
+  const grid = document.getElementById('stateGrid');
+  grid.innerHTML = '';
+  stateData.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'bg-navyLight border border-white/5 rounded-xl p-4 cursor-pointer hover:border-electric/30 transition-all group';
+    card.style.animationDelay = `${i * 0.05}s`;
+    card.innerHTML = `
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-lg font-bold text-white font-mono">${s.abbr}</span>
+        <span class="text-xs font-mono px-2 py-0.5 rounded ${s.income === 0 ? 'bg-green-500/10 text-green-400' : s.income > 9 ? 'bg-red-500/10 text-red-400' : 'bg-yellow-500/10 text-yellow-400'}">${s.income === 0 ? 'No Tax' : s.income + '%'}</span>
+      </div>
+      <div class="text-sm text-slate">${s.name}</div>
+      <div class="text-xs text-slate/60 mt-1">${s.region}</div>
+    `;
+    card.onclick = () => showStateDetail(s);
+    grid.appendChild(card);
+  });
+}
+
+function showStateDetail(s) {
+  const detail = document.getElementById('stateDetail');
+  detail.classList.remove('hidden');
+  document.getElementById('detailName').textContent = s.name;
+  document.getElementById('detailRegion').textContent = s.region + ' Region';
+  document.getElementById('detailNote').textContent = s.note;
+  const stats = document.getElementById('detailStats');
+  stats.innerHTML = [
+    { label: 'Income Tax', value: s.income === 0 ? 'None' : s.income + '%', color: s.income === 0 ? 'text-green-400' : 'text-red-400' },
+    { label: 'Sales Tax', value: s.sales + '%', color: 'text-yellow-400' },
+    { label: 'Corporate Tax', value: s.corporate === 0 ? 'None' : s.corporate + '%', color: s.corporate === 0 ? 'text-green-400' : 'text-orange-400' },
+    { label: 'Property Tax', value: s.property + '%', color: 'text-blue-400' },
+  ].map(st => `
+    <div class="bg-navy/60 rounded-xl p-4 border border-white/5 anim-count">
+      <div class="text-xs font-mono text-slate mb-1">${st.label}</div>
+      <div class="text-2xl font-bold ${st.color} font-mono">${st.value}</div>
+    </div>
+  `).join('');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  lucide.createIcons();
+}
+
+function showComparison(type) {
+  document.querySelectorAll('.comp-tab').forEach(t => {
+    t.classList.remove('bg-electric/20', 'border-electric/30', 'text-electric');
+    t.classList.add('bg-white/5', 'border-white/10', 'text-slate');
+  });
+  const active = document.querySelector(`.comp-tab[data-tab="${type}"]`);
+  if (active) {
+    active.classList.remove('bg-white/5', 'border-white/10', 'text-slate');
+    active.classList.add('bg-electric/20', 'border-electric/30', 'text-electric');
+  }
+  const data = compData[type];
+  const maxVal = Math.max(...data.map(d => d.value)) || 1;
+  const labels = { income: 'Top Marginal Rate %', sales: 'Base State Rate %', corporate: 'Top Corporate Rate %', property: 'Effective Rate %' };
+  const chart = document.getElementById('comparisonChart');
+  chart.innerHTML = `<div class="text-xs font-mono text-slate mb-4">${labels[type]}</div>` +
+    data.map((d, i) => `
+      <div class="flex items-center gap-4 mb-3" style="animation: slideIn 0.4s ease ${i * 0.06}s forwards; opacity:0;">
+        <div class="w-24 sm:w-32 text-right text-sm text-gray-300 font-mono truncate">${d.state}</div>
+        <div class="flex-1 bg-navy/60 rounded-full h-7 relative overflow-hidden">
+          <div class="comparison-bar h-full rounded-full flex items-center justify-end pr-3" style="width:${Math.max((d.value / maxVal) * 100, d.value > 0 ? 8 : 2)}%; background:${d.color}20; border: 1px solid ${d.color}40;">
+            <span class="text-xs font-mono font-bold" style="color:${d.color}">${d.value}%</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+}
+
+function calculateSavings() {
+  const income = parseInt(document.getElementById('calcIncome').value);
+  const fromRate = taxRates[document.getElementById('calcFrom').value] || 0;
+  const toRate = taxRates[document.getElementById('calcTo').value] || 0;
+  const currentTax = income * fromRate;
+  const newTax = income * toRate;
+  const savings = currentTax - newTax;
+  document.getElementById('calcCurrent').textContent = '$' + currentTax.toLocaleString();
+  document.getElementById('calcNew').textContent = '$' + newTax.toLocaleString();
+  document.getElementById('calcSavings').textContent = '$' + savings.toLocaleString();
+  document.getElementById('calcResult').classList.remove('hidden');
+}
+
+function buildFAQ() {
+  const list = document.getElementById('faqList');
+  list.innerHTML = '';
+  faqData.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.className = 'bg-navyLight border border-white/5 rounded-xl overflow-hidden';
+    item.innerHTML = `
+      <button class="w-full flex items-center justify-between p-4 sm:p-5 text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+        <span class="text-sm font-semibold text-white pr-4">${f.q}</span>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-slate flex-shrink-0 transition-transform"></i>
+      </button>
+      <div class="faq-answer hidden px-4 sm:px-5 pb-4 sm:pb-5">
+        <p class="text-sm text-slate leading-relaxed">${f.a}</p>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-answer').forEach(a => {
+    const i = a.previousElementSibling.querySelector('[data-lucide]');
+    if (i) i.style.transform = 'rotate(0deg)';
+  });
+  if (!isOpen) {
+    answer.classList.remove('hidden');
+    if (icon) icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+function buildPriceVotes() {
+  const grid = document.getElementById('priceVoteGrid');
+  grid.innerHTML = '';
+  priceOptions.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'price-vote-btn bg-navy/60 border border-white/10 hover:border-electric/30 rounded-lg px-2 py-2 text-xs font-mono text-slate transition-all hover:bg-navy/80 hover:text-white';
+    btn.textContent = p;
+    btn.onclick = () => submitPriceVote(p);
+    grid.appendChild(btn);
+  });
+}
+
+// -- Data SDK Integration --
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+function renderData() {
+  // Count reactions
+  const reactions = {};
+  const priceVotes = {};
+  const comments = [];
+  allData.forEach(d => {
+    if (d.type === 'reaction') reactions[d.reaction] = (reactions[d.reaction] || 0) + 1;
+    if (d.type === 'price_vote') priceVotes[d.price_vote] = (priceVotes[d.price_vote] || 0) + 1;
+    if (d.type === 'comment' && d.comment) comments.push(d);
+  });
+
+  // Update reaction counts
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const emoji = btn.querySelector('span:first-child').textContent;
+    const count = btn.querySelector('.reaction-count');
+    count.textContent = reactions[emoji] || 0;
+  });
+
+  // Update price vote result
+  const totalVotes = Object.values(priceVotes).reduce((a, b) => a + b, 0);
+  const resultEl = document.getElementById('priceVoteResult');
+  if (totalVotes > 0) {
+    const top = Object.entries(priceVotes).sort((a, b) => b[1] - a[1])[0];
+    resultEl.innerHTML = `<span class="text-electric font-mono">${totalVotes}</span> votes — most popular: <span class="text-white font-semibold">${top[0]}</span>`;
+    resultEl.classList.remove('hidden');
+  }
+
+  // Render comments
+  const list = document.getElementById('commentsList');
+  const noComments = document.getElementById('noComments');
+  const existingIds = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  if (comments.length === 0) {
+    noComments.classList.remove('hidden');
+    list.innerHTML = '';
+    return;
+  }
+  noComments.classList.add('hidden');
+
+  const newIds = new Set(comments.map(c => c.__backendId));
+  existingIds.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.className = 'bg-navy/40 border border-white/5 rounded-lg p-3 anim-slide-in';
+    const time = c.timestamp ? new Date(c.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    div.innerHTML = `<p class="text-sm text-gray-300">${escapeHtml(c.comment)}</p><span class="text-xs text-slate/50 mt-1 block">${time}</span>`;
+    list.prepend(div);
+  });
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+async function submitReaction(emoji) {
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  const result = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', price_vote: '', timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save reaction.');
+}
+
+async function submitPriceVote(price) {
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  document.querySelectorAll('.price-vote-btn').forEach(b => {
+    b.classList.remove('border-electric', 'text-electric', 'bg-electric/10');
+  });
+  const btns = document.querySelectorAll('.price-vote-btn');
+  btns.forEach(b => { if (b.textContent === price) b.classList.add('border-electric', 'text-electric', 'bg-electric/10'); });
+  const result = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', price_vote: price, timestamp: new Date().toISOString() });
+  if (!result.isOk) showToast('Could not save vote.');
+}
+
+// -- Mobile menu --
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// -- Scroll reveal --
+function initScrollReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.scroll-reveal').forEach(el => obs.observe(el));
+}
+
+// -- Active nav --
+function initActiveNav() {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-link');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => obs.observe(s));
+}
+
+// -- Init --
+const defaultConfig = {
+  hero_title: 'Your state can determine your tax burden.',
+  hero_subtitle: 'Optimize where and how you operate.',
+  states_title: 'State Tax Landscape',
+  comparison_title: 'Tax Burden Comparison',
+  strategy_title: 'Strategic Relocation & Structuring',
+  pricing_title: 'Advisory Tiers',
+  bottom_cta_text: 'Choose your jurisdiction wisely.',
+  background_color: '#020617',
+  surface_color: '#0f172a',
+  text_color: '#94a3b8',
+  primary_action_color: '#3b82f6',
+  secondary_action_color: '#1e293b',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = Object.assign({}, defaultConfig, config);
+
+  document.getElementById('heroTitle').textContent = c.hero_title;
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle;
+  document.getElementById('statesTitle').textContent = c.states_title;
+  document.getElementById('comparisonTitle').textContent = c.comparison_title;
+  document.getElementById('strategyTitle').textContent = c.strategy_title;
+  document.getElementById('pricingTitle').textContent = c.pricing_title;
+  document.getElementById('bottomCtaText').textContent = c.bottom_cta_text;
+
+  // Colors
+  const root = document.getElementById('appRoot');
+  root.style.backgroundColor = c.background_color;
+
+  document.querySelectorAll('.bg-navyLight, .pricing-card').forEach(el => {
+    el.style.backgroundColor = c.surface_color;
+  });
+
+  // Text color for slate elements
+  const baseFontStack = 'Arial, sans-serif';
+  const font = c.font_family || defaultConfig.font_family;
+
+  // Apply font
+  document.body.style.fontFamily = `${font}, ${baseFontStack}`;
+  document.querySelectorAll('h1, h2, h3').forEach(el => {
+    el.style.fontFamily = `${font}, ${baseFontStack}`;
+  });
+
+  // Font size scaling
+  const base = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('p, .text-sm').forEach(el => el.style.fontSize = '');
+  document.body.style.fontSize = base + 'px';
+
+  // Primary action color
+  document.querySelectorAll('.bg-electric').forEach(el => {
+    el.style.backgroundColor = c.primary_action_color;
+  });
+
+  // Secondary surfaces
+  document.querySelectorAll('#mainNav').forEach(el => {
+    el.style.backgroundColor = c.background_color + 'e6';
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['states_title', config.states_title || defaultConfig.states_title],
+    ['comparison_title', config.comparison_title || defaultConfig.comparison_title],
+    ['strategy_title', config.strategy_title || defaultConfig.strategy_title],
+    ['pricing_title', config.pricing_title || defaultConfig.pricing_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// Data SDK init
+(async () => {
+  const initResult = await window.dataSdk.init({
+    onDataChanged(data) {
+      allData = data;
+      currentRecordCount = data.length;
+      renderData();
+    }
+  });
+  if (!initResult.isOk) console.error('Data SDK init failed');
+})();
+
+// Comment form
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { showToast('Maximum entries reached.'); return; }
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="animate-pulse">Posting...</span>';
+  const result = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price_vote: '', timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="send" class="w-4 h-4"></i> Post';
+  lucide.createIcons();
+  if (result.isOk) { input.value = ''; } else { showToast('Could not post comment.'); }
+});
+
+// Build everything
+buildStateGrid();
+buildFAQ();
+buildPriceVotes();
+showComparison('income');
+initScrollReveal();
+initActiveNav();
+applyConfig(defaultConfig);
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a636fc1f427c5',t:'MTc3NTU3OTEyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

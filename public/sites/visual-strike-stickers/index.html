@@ -1,1 +1,647 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/1e790294-a4ef-49d1-ac0b-fa5ecacb0ecf -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScaleSwoon Vault</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html, body { height: 100%; margin: 0; }
+
+  :root {
+    --bg-color: #0a0a0a;
+    --surface-color: #151518;
+    --text-color: #e8e8e8;
+    --primary-action: #39ff14;
+    --secondary-action: #ff2d95;
+  }
+
+  * { box-sizing: border-box; }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px var(--primary-action), 0 0 40px rgba(57,255,20,0.3); }
+    50% { box-shadow: 0 0 30px var(--primary-action), 0 0 60px rgba(57,255,20,0.5); }
+  }
+
+  @keyframes flickerIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    60% { opacity: 0.7; }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideReveal {
+    from { opacity: 0; transform: translateY(50px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+  }
+
+  @keyframes glowBorder {
+    0%, 100% { border-color: var(--primary-action); box-shadow: 0 0 15px rgba(57,255,20,0.2); }
+    50% { border-color: var(--secondary-action); box-shadow: 0 0 15px rgba(255,45,149,0.2); }
+  }
+
+  @keyframes floatUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes textShimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .glass-card {
+    background: rgba(21,21,24,0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(57,255,20,0.15);
+  }
+
+  .hero-shimmer {
+    background: linear-gradient(90deg, var(--text-color) 0%, var(--primary-action) 40%, var(--secondary-action) 60%, var(--text-color) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 4s linear infinite;
+  }
+
+  .nav-link {
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-action);
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+  }
+
+  .collection-tile {
+    animation: floatUp 4s ease-in-out infinite;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .collection-tile:nth-child(2) { animation-delay: 0.5s; }
+  .collection-tile:nth-child(3) { animation-delay: 1s; }
+  .collection-tile:nth-child(4) { animation-delay: 1.5s; }
+  .collection-tile:hover {
+    transform: translateY(-12px) scale(1.03) !important;
+    box-shadow: 0 20px 50px rgba(57,255,20,0.15);
+  }
+
+  .cta-primary {
+    animation: pulseGlow 2.5s ease-in-out infinite;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .cta-primary:hover {
+    transform: scale(1.05);
+  }
+
+  .sticker-float { animation: floatUp 3s ease-in-out infinite; }
+  .sticker-float:nth-child(odd) { animation-delay: 0.7s; animation-duration: 3.5s; }
+
+  .scale-pattern {
+    background-image: radial-gradient(ellipse 8px 12px at 50% 50%, rgba(57,255,20,0.04) 0%, transparent 70%);
+    background-size: 16px 24px;
+  }
+
+  .neon-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-action), var(--secondary-action), transparent);
+  }
+
+  .review-card {
+    animation: glowBorder 4s ease-in-out infinite;
+  }
+
+  .scroll-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Snake SVG styles */
+  .snake-decoration { opacity: 0.06; }
+
+  /* Star rating */
+  .star-filled { color: var(--primary-action); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full" style="background: var(--bg-color); color: var(--text-color); font-family: 'Outfit', sans-serif;">
+  <div class="scroll-wrapper w-full scale-pattern" id="main-wrapper"><!-- Sticky Nav -->
+   <nav id="sticky-nav" style="position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(57,255,20,0.1);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;"><a href="#home" style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; text-decoration: none; color: var(--primary-action);"> SCALESWOON<span style="color: var(--secondary-action);">VAULT</span> </a>
+     <div style="display: flex; gap: 24px; align-items: center;" id="nav-links-desktop" class="hidden md:flex"><a href="#home" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Home</a> <a href="#wallpapers" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Wallpapers</a> <a href="#stickers" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Stickers</a> <a href="#preview" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Preview</a> <a href="#reviews" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Reviews</a> <a href="#download" class="nav-link" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="background: none; border: none; color: var(--text-color); cursor: pointer;"> <i data-lucide="menu" style="width: 24px; height: 24px;"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" style="display: none; padding: 0 24px 16px; flex-direction: column; gap: 12px;"><a href="#home" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Home</a> <a href="#wallpapers" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Wallpapers</a> <a href="#stickers" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Stickers</a> <a href="#preview" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Preview</a> <a href="#reviews" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">Reviews</a> <a href="#download" class="mobile-nav-link" style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-color); text-decoration: none; padding: 8px 0;">Download</a>
+    </div>
+   </nav><!-- HERO SECTION -->
+   <section id="home" style="position: relative; overflow: hidden; padding: 80px 24px 100px; min-height: 600px; display: flex; align-items: center; justify-content: center;"><!-- Background gradient overlay -->
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(57,255,20,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(255,45,149,0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(0,200,255,0.04) 0%, transparent 60%);"></div><!-- Animated snake SVG decoration -->
+    <svg class="snake-decoration" style="position: absolute; top: 10%; right: 5%; width: 300px; height: 300px;" viewbox="0 0 200 200"><path d="M30,100 Q60,30 100,80 T170,60 Q190,100 160,130 T100,170 Q50,160 30,100" stroke="var(--primary-action)" stroke-width="3" fill="none" stroke-linecap="round" />
+    </svg>
+    <svg class="snake-decoration" style="position: absolute; bottom: 5%; left: 3%; width: 250px; height: 250px; transform: rotate(180deg);" viewbox="0 0 200 200"><path d="M30,100 Q60,30 100,80 T170,60 Q190,100 160,130 T100,170 Q50,160 30,100" stroke="var(--secondary-action)" stroke-width="2" fill="none" stroke-linecap="round" />
+    </svg>
+    <div style="position: relative; z-index: 2; text-align: center; max-width: 800px;"><!-- Tagline -->
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--primary-action); margin-bottom: 24px; animation: flickerIn 1s ease forwards;">
+      Cold-blooded visuals. Hot design energy.
+     </div><!-- Main title -->
+     <h1 id="hero-title" class="hero-shimmer" style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 10vw, 120px); line-height: 0.9; letter-spacing: 4px; margin: 0 0 24px;">Design with bite.</h1><!-- Subtitle -->
+     <p id="hero-subtitle" style="font-family: 'Outfit', sans-serif; font-size: clamp(16px, 2.5vw, 20px); font-weight: 300; color: rgba(232,232,232,0.7); max-width: 560px; margin: 0 auto 40px; line-height: 1.6;">Snake wallpapers and sticker elements for creators and collectors.</p><!-- CTAs -->
+     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;"><a href="#download" class="cta-primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; background: var(--primary-action); color: #0a0a0a; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; text-decoration: none; border-radius: 4px;"> <i data-lucide="zap" style="width: 18px; height: 18px;"></i> GET THE VAULT </a> <a href="#preview" style="display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; border: 1px solid var(--secondary-action); color: var(--secondary-action); font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; text-decoration: none; border-radius: 4px; transition: background 0.3s, color 0.3s;"> <i data-lucide="eye" style="width: 18px; height: 18px;"></i> SEE PREVIEW </a>
+     </div><!-- Stats -->
+     <div style="display: flex; gap: 40px; justify-content: center; margin-top: 48px; flex-wrap: wrap;">
+      <div style="text-align: center;">
+       <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--primary-action);">
+        120
+       </div>
+       <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,232,232,0.5);">
+        Wallpapers
+       </div>
+      </div>
+      <div style="text-align: center;">
+       <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--secondary-action);">
+        300+
+       </div>
+       <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,232,232,0.5);">
+        PNG Stickers
+       </div>
+      </div>
+      <div style="text-align: center;">
+       <div style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #00d4ff;">
+        20
+       </div>
+       <div style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,232,232,0.5);">
+        Print Posters
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- COLLECTIONS / WALLPAPERS SECTION -->
+   <section id="wallpapers" style="padding: 80px 24px; max-width: 1200px; margin: 0 auto;">
+    <div class="animate-on-scroll" style="text-align: center; margin-bottom: 56px;">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--secondary-action); margin-bottom: 12px;">
+      Curated Drops
+     </div>
+     <h2 id="collections-heading" style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 64px); letter-spacing: 3px; margin: 0;">The Collections</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;"><!-- Tile 1: Scale Macros -->
+     <div class="collection-tile glass-card animate-on-scroll" style="border-radius: 12px; overflow: hidden; cursor: pointer;">
+      <div style="height: 220px; overflow: hidden; position: relative;">
+       <div style="width: 100%; height: 100%; animation: slowZoom 12s ease-in-out infinite alternate; background: linear-gradient(135deg, #1a3a1a 0%, #0d1f0d 50%, #2a4a1a 100%);"></div>
+       <div style="position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(10,10,10,0.9));"></div>
+       <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+        <div style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;">
+         Scale Macros
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: var(--primary-action); letter-spacing: 1px;">
+         30 WALLPAPERS · 75 STICKERS
+        </div>
+       </div>
+      </div>
+      <div style="padding: 16px;">
+       <p style="font-size: 13px; color: rgba(232,232,232,0.6); line-height: 1.5; margin: 0;">Extreme close-up textures of scales, shedding patterns, and iridescent skin details.</p>
+      </div>
+     </div><!-- Tile 2: Jungle Coils -->
+     <div class="collection-tile glass-card animate-on-scroll" style="border-radius: 12px; overflow: hidden; cursor: pointer; animation-delay: 0.5s;">
+      <div style="height: 220px; overflow: hidden; position: relative;">
+       <div style="width: 100%; height: 100%; animation: slowZoom 14s ease-in-out infinite alternate; background: linear-gradient(135deg, #0a2a1a 0%, #1a4a2a 50%, #0d3320 100%);"></div>
+       <div style="position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(10,10,10,0.9));"></div>
+       <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+        <div style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;">
+         Jungle Coils
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: var(--primary-action); letter-spacing: 1px;">
+         30 WALLPAPERS · 75 STICKERS
+        </div>
+       </div>
+      </div>
+      <div style="padding: 16px;">
+       <p style="font-size: 13px; color: rgba(232,232,232,0.6); line-height: 1.5; margin: 0;">Lush tropical environments with emerald tree boas, pythons wrapped in vines and ferns.</p>
+      </div>
+     </div><!-- Tile 3: Desert Vipers -->
+     <div class="collection-tile glass-card animate-on-scroll" style="border-radius: 12px; overflow: hidden; cursor: pointer; animation-delay: 1s;">
+      <div style="height: 220px; overflow: hidden; position: relative;">
+       <div style="width: 100%; height: 100%; animation: slowZoom 13s ease-in-out infinite alternate; background: linear-gradient(135deg, #3a2a0a 0%, #4a3510 50%, #2a1a05 100%);"></div>
+       <div style="position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(10,10,10,0.9));"></div>
+       <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+        <div style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;">
+         Desert Vipers
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: var(--secondary-action); letter-spacing: 1px;">
+         30 WALLPAPERS · 75 STICKERS
+        </div>
+       </div>
+      </div>
+      <div style="padding: 16px;">
+       <p style="font-size: 13px; color: rgba(232,232,232,0.6); line-height: 1.5; margin: 0;">Sun-scorched sand dunes, sidewinders, and rattlesnake aesthetics with warm earth tones.</p>
+      </div>
+     </div><!-- Tile 4: Minimal Noir -->
+     <div class="collection-tile glass-card animate-on-scroll" style="border-radius: 12px; overflow: hidden; cursor: pointer; animation-delay: 1.5s;">
+      <div style="height: 220px; overflow: hidden; position: relative;">
+       <div style="width: 100%; height: 100%; animation: slowZoom 11s ease-in-out infinite alternate; background: linear-gradient(135deg, #111 0%, #1a1a1a 50%, #0a0a0a 100%);"></div>
+       <div style="position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(10,10,10,0.9));"></div>
+       <div style="position: absolute; bottom: 16px; left: 16px; right: 16px;">
+        <div style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;">
+         Minimal Noir
+        </div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #00d4ff; letter-spacing: 1px;">
+         30 WALLPAPERS · 75 STICKERS
+        </div>
+       </div>
+      </div>
+      <div style="padding: 16px;">
+       <p style="font-size: 13px; color: rgba(232,232,232,0.6); line-height: 1.5; margin: 0;">Black mamba moods. High-contrast monochrome silhouettes, coils on negative space.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- STICKERS SECTION -->
+   <section id="stickers" style="padding: 80px 24px; max-width: 1200px; margin: 0 auto;">
+    <div class="animate-on-scroll" style="text-align: center; margin-bottom: 48px;">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: #00d4ff; margin-bottom: 12px;">
+      300+ Elements
+     </div>
+     <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 64px); letter-spacing: 3px; margin: 0;">Sticker Arsenal</h2>
+     <p style="font-family: 'Outfit', sans-serif; font-weight: 300; color: rgba(232,232,232,0.6); margin-top: 12px; font-size: 16px;">Scales, coils, fangs, eyes — all transparent PNGs ready for your designs.</p>
+    </div><!-- Sticker preview grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; max-width: 800px; margin: 0 auto;">
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <circle cx="24" cy="24" r="18" fill="none" stroke="var(--primary-action)" stroke-width="2" /><circle cx="24" cy="24" r="8" fill="var(--primary-action)" opacity="0.3" /><circle cx="24" cy="24" r="3" fill="var(--primary-action)" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       EYES
+      </div>
+     </div>
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <path d="M12,36 Q24,8 36,36" fill="none" stroke="var(--secondary-action)" stroke-width="2.5" stroke-linecap="round" /><path d="M18,30 L24,40 L30,30" fill="none" stroke="var(--secondary-action)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       FANGS
+      </div>
+     </div>
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <path d="M10,24 Q16,12 24,24 Q32,36 38,24" fill="none" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round" /><path d="M6,24 Q12,8 24,24 Q36,40 42,24" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.4" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       COILS
+      </div>
+     </div>
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <rect x="10" y="14" width="28" height="20" rx="4" fill="none" stroke="var(--primary-action)" stroke-width="2" /><line x1="10" y1="20" x2="38" y2="20" stroke="var(--primary-action)" stroke-width="1" opacity="0.5" /><line x1="10" y1="27" x2="38" y2="27" stroke="var(--primary-action)" stroke-width="1" opacity="0.5" /><line x1="24" y1="14" x2="24" y2="34" stroke="var(--primary-action)" stroke-width="1" opacity="0.3" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       SCALES
+      </div>
+     </div>
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <path d="M8,32 Q14,16 24,24 T40,16" fill="none" stroke="var(--secondary-action)" stroke-width="2.5" stroke-linecap="round" /><circle cx="40" cy="16" r="3" fill="var(--secondary-action)" opacity="0.6" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       TONGUE
+      </div>
+     </div>
+     <div class="sticker-float glass-card" style="aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+      <svg width="48" height="48" viewbox="0 0 48 48">
+       <path d="M14,34 L24,10 L34,34 Z" fill="none" stroke="#00d4ff" stroke-width="2" /><circle cx="24" cy="26" r="4" fill="#00d4ff" opacity="0.3" />
+      </svg>
+      <div style="font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; color: rgba(232,232,232,0.5); margin-top: 8px;">
+       HEAD
+      </div>
+     </div>
+    </div><!-- Use case badges -->
+    <div style="display: flex; gap: 12px; justify-content: center; margin-top: 40px; flex-wrap: wrap;"><span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px 16px; border: 1px solid rgba(57,255,20,0.2); border-radius: 100px; color: var(--primary-action);">CREATOR-READY</span> <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px 16px; border: 1px solid rgba(255,45,149,0.2); border-radius: 100px; color: var(--secondary-action);">INSTANT DOWNLOAD</span> <span style="font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 8px 16px; border: 1px solid rgba(0,212,255,0.2); border-radius: 100px; color: #00d4ff;">ALT AESTHETIC THAT SELLS</span>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- PREVIEW SECTION -->
+   <section id="preview" style="padding: 80px 24px; max-width: 1200px; margin: 0 auto;">
+    <div class="animate-on-scroll" style="text-align: center; margin-bottom: 48px;">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--primary-action); margin-bottom: 12px;">
+      Inside the Vault
+     </div>
+     <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 64px); letter-spacing: 3px; margin: 0;">What You Get</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+     <div class="glass-card animate-on-scroll" style="border-radius: 12px; padding: 32px 24px; text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, var(--primary-action), #00d4ff); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;"><i data-lucide="image" style="width: 28px; height: 28px; color: #0a0a0a;"></i>
+      </div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;">
+       120 Wallpapers
+      </div>
+      <p style="font-size: 13px; color: rgba(232,232,232,0.5); line-height: 1.5; margin: 0;">4K resolution, phone &amp; desktop. Dark, moody, and striking.</p>
+     </div>
+     <div class="glass-card animate-on-scroll" style="border-radius: 12px; padding: 32px 24px; text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, var(--secondary-action), #ff6b35); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;"><i data-lucide="sticker" style="width: 28px; height: 28px; color: #0a0a0a;"></i>
+      </div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;">
+       300+ Stickers
+      </div>
+      <p style="font-size: 13px; color: rgba(232,232,232,0.5); line-height: 1.5; margin: 0;">Transparent PNGs. Scales, fangs, coils, eyes, and more.</p>
+     </div>
+     <div class="glass-card animate-on-scroll" style="border-radius: 12px; padding: 32px 24px; text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, #00d4ff, var(--primary-action)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;"><i data-lucide="printer" style="width: 28px; height: 28px; color: #0a0a0a;"></i>
+      </div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;">
+       20 Print Posters
+      </div>
+      <p style="font-size: 13px; color: rgba(232,232,232,0.5); line-height: 1.5; margin: 0;">High-res poster art ready for print-on-demand or your wall.</p>
+     </div>
+     <div class="glass-card animate-on-scroll" style="border-radius: 12px; padding: 32px 24px; text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, #ff6b35, var(--secondary-action)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;"><i data-lucide="palette" style="width: 28px; height: 28px; color: #0a0a0a;"></i>
+      </div>
+      <div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;">
+       Color Palette Pack
+      </div>
+      <p style="font-size: 13px; color: rgba(232,232,232,0.5); line-height: 1.5; margin: 0;">Curated snake-inspired palettes for branding and design work.</p>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- REVIEWS SECTION -->
+   <section id="reviews" style="padding: 80px 24px; max-width: 1000px; margin: 0 auto;">
+    <div class="animate-on-scroll" style="text-align: center; margin-bottom: 48px;">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--secondary-action); margin-bottom: 12px;">
+      Community
+     </div>
+     <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 64px); letter-spacing: 3px; margin: 0;">What Creators Say</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+     <div class="review-card glass-card animate-on-scroll" style="border-radius: 12px; padding: 28px; border: 1px solid rgba(57,255,20,0.15);">
+      <div style="display: flex; gap: 4px; margin-bottom: 12px;"><i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--primary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--primary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--primary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--primary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--primary-action);"></i>
+      </div>
+      <p style="font-size: 14px; line-height: 1.6; color: rgba(232,232,232,0.7); margin: 0 0 16px; font-style: italic;">"Used the stickers for my entire Etsy rebrand. The scale textures are insane quality."</p>
+      <div style="font-family: 'Space Mono', monospace; font-size: 11px; color: var(--primary-action);">
+       — @serpentine.studio
+      </div>
+     </div>
+     <div class="review-card glass-card animate-on-scroll" style="border-radius: 12px; padding: 28px; border: 1px solid rgba(255,45,149,0.15);">
+      <div style="display: flex; gap: 4px; margin-bottom: 12px;"><i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--secondary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--secondary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--secondary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--secondary-action);"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: var(--secondary-action);"></i>
+      </div>
+      <p style="font-size: 14px; line-height: 1.6; color: rgba(232,232,232,0.7); margin: 0 0 16px; font-style: italic;">"Finally, an alt aesthetic pack that doesn't look AI-generated. This feels genuinely designed."</p>
+      <div style="font-family: 'Space Mono', monospace; font-size: 11px; color: var(--secondary-action);">
+       — @darkmode.designs
+      </div>
+     </div>
+     <div class="review-card glass-card animate-on-scroll" style="border-radius: 12px; padding: 28px; border: 1px solid rgba(0,212,255,0.15);">
+      <div style="display: flex; gap: 4px; margin-bottom: 12px;"><i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: #00d4ff;"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: #00d4ff;"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: #00d4ff;"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: #00d4ff;"></i> <i data-lucide="star" class="star-filled" style="width: 14px; height: 14px; fill: #00d4ff;"></i>
+      </div>
+      <p style="font-size: 14px; line-height: 1.6; color: rgba(232,232,232,0.7); margin: 0 0 16px; font-style: italic;">"The color palette pack alone was worth it. My Instagram grid has never looked this cohesive."</p>
+      <div style="font-family: 'Space Mono', monospace; font-size: 11px; color: #00d4ff;">
+       — @neon.naturalist
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- DOWNLOAD / CTA SECTION -->
+   <section id="download" style="padding: 80px 24px; max-width: 800px; margin: 0 auto; text-align: center;">
+    <div class="animate-on-scroll">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--primary-action); margin-bottom: 16px;">
+      Ready to Strike?
+     </div>
+     <h2 id="bottom-cta-text" style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(44px, 7vw, 80px); letter-spacing: 3px; margin: 0 0 20px; line-height: 1;">Make your visuals strike.</h2>
+     <p style="font-family: 'Outfit', sans-serif; font-weight: 300; color: rgba(232,232,232,0.6); font-size: 17px; max-width: 500px; margin: 0 auto 36px; line-height: 1.6;">120 wallpapers · 300+ stickers · 20 posters · Color palette pack. One vault. Instant download.</p><a href="#" class="cta-primary" style="display: inline-flex; align-items: center; gap: 10px; padding: 20px 48px; background: var(--primary-action); color: #0a0a0a; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 4px; text-decoration: none; border-radius: 4px;" onclick="event.preventDefault();"> <i data-lucide="download" style="width: 22px; height: 22px;"></i> GET THE VAULT </a>
+     <div style="margin-top: 20px; font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(232,232,232,0.35); letter-spacing: 1px;">
+      INSTANT DELIVERY · ALL FORMATS INCLUDED
+     </div>
+    </div>
+   </section>
+   <div class="neon-line" style="margin: 0 auto; width: 80%;"></div><!-- VOTE + COMMENT SECTION -->
+   <section style="padding: 60px 24px 80px; max-width: 700px; margin: 0 auto;">
+    <div class="glass-card animate-on-scroll" style="border-radius: 16px; padding: 40px 32px; text-align: center; border: 1px solid rgba(255,45,149,0.15);">
+     <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--secondary-action); margin-bottom: 12px;">
+      Community
+     </div>
+     <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin: 0 0 8px;">Vote + Comment</h3>
+     <p style="font-size: 13px; color: rgba(232,232,232,0.5); margin: 0 0 24px;">Tell us which collection you want next. Drop your vote below.</p><!-- Vote buttons -->
+     <div id="vote-area" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px;"><button onclick="castVote('tropical')" class="vote-btn" data-vote="tropical" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px; padding: 10px 20px; background: transparent; border: 1px solid rgba(57,255,20,0.3); color: var(--primary-action); border-radius: 100px; cursor: pointer; transition: all 0.3s;">🐍 Tropical Boas</button> <button onclick="castVote('albino')" class="vote-btn" data-vote="albino" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px; padding: 10px 20px; background: transparent; border: 1px solid rgba(255,45,149,0.3); color: var(--secondary-action); border-radius: 100px; cursor: pointer; transition: all 0.3s;">🤍 Albino Pack</button> <button onclick="castVote('venomous')" class="vote-btn" data-vote="venomous" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px; padding: 10px 20px; background: transparent; border: 1px solid rgba(0,212,255,0.3); color: #00d4ff; border-radius: 100px; cursor: pointer; transition: all 0.3s;">☠️ Venomous Close-Ups</button>
+     </div>
+     <div id="vote-result" style="font-family: 'Space Mono', monospace; font-size: 11px; color: rgba(232,232,232,0.4); min-height: 20px;"></div><!-- Comment area -->
+     <div style="margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
+      <form id="comment-form" style="display: flex; gap: 10px;"><input type="text" id="comment-input" placeholder="Drop a comment..." style="flex: 1; padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--text-color); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none;"> <button type="submit" style="padding: 12px 20px; background: var(--secondary-action); color: #0a0a0a; border: none; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px; cursor: pointer; transition: transform 0.2s;">SEND</button>
+      </form>
+      <div id="comments-list" style="margin-top: 16px; text-align: left;"></div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer style="padding: 32px 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+    <div style="font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--primary-action); margin-bottom: 8px;">
+     SCALESWOON<span style="color: var(--secondary-action);">VAULT</span>
+    </div>
+    <p style="font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(232,232,232,0.3); letter-spacing: 1px; margin: 0;">© 2024 ScaleSwoon Vault. All visuals original. Cold-blooded by design.</p>
+   </footer>
+  </div><!-- end scroll-wrapper -->
+  <script>
+  // --- Element SDK ---
+  const defaultConfig = {
+    background_color: '#0a0a0a',
+    surface_color: '#151518',
+    text_color: '#e8e8e8',
+    primary_action: '#39ff14',
+    secondary_action: '#ff2d95',
+    font_family: 'Bebas Neue',
+    font_size: 16,
+    hero_title: 'Design with bite.',
+    hero_subtitle: 'Snake wallpapers and sticker elements for creators and collectors.',
+    collections_heading: 'The Collections',
+    bottom_cta_text: 'Make your visuals strike.'
+  };
+
+  function applyConfig(config) {
+    // Colors
+    const root = document.documentElement;
+    root.style.setProperty('--bg-color', config.background_color || defaultConfig.background_color);
+    root.style.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
+    root.style.setProperty('--text-color', config.text_color || defaultConfig.text_color);
+    root.style.setProperty('--primary-action', config.primary_action || defaultConfig.primary_action);
+    root.style.setProperty('--secondary-action', config.secondary_action || defaultConfig.secondary_action);
+
+    document.body.style.background = config.background_color || defaultConfig.background_color;
+    document.body.style.color = config.text_color || defaultConfig.text_color;
+
+    // Font
+    const ff = config.font_family || defaultConfig.font_family;
+    const baseFontStack = 'Outfit, sans-serif';
+    const headingStack = `${ff}, ${baseFontStack}`;
+    document.querySelectorAll('h1, h2, h3, .cta-primary, [style*="Bebas"]').forEach(el => {
+      el.style.fontFamily = headingStack;
+    });
+
+    // Font size
+    const bs = config.font_size || defaultConfig.font_size;
+    document.querySelectorAll('p').forEach(el => { el.style.fontSize = `${bs}px`; });
+    document.querySelectorAll('h1').forEach(el => { el.style.fontSize = `clamp(${bs*3.5}px, 10vw, ${bs*7.5}px)`; });
+    document.querySelectorAll('h2').forEach(el => { el.style.fontSize = `clamp(${bs*2.5}px, 6vw, ${bs*4}px)`; });
+
+    // Text content
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+    const heroSub = document.getElementById('hero-subtitle');
+    if (heroSub) heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+    const collH = document.getElementById('collections-heading');
+    if (collH) collH.textContent = config.collections_heading || defaultConfig.collections_heading;
+    const bottomCta = document.getElementById('bottom-cta-text');
+    if (bottomCta) bottomCta.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+  }
+
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => { applyConfig(config); },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+          { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['collections_heading', config.collections_heading || defaultConfig.collections_heading],
+        ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+      ])
+    });
+  }
+
+  // --- Scroll Animations ---
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+  // --- Mobile Menu ---
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let menuOpen = false;
+  mobileBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.style.display = menuOpen ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => { mobileMenu.style.display = 'none'; menuOpen = false; });
+  });
+
+  // --- Active Nav Tracking ---
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const scrollWrapper = document.getElementById('main-wrapper');
+
+  scrollWrapper.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      if (scrollWrapper.scrollTop >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // --- Smooth scroll for anchor links ---
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        scrollWrapper.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // --- Vote System ---
+  const votes = { tropical: 0, albino: 0, venomous: 0 };
+  let hasVoted = false;
+
+  function castVote(choice) {
+    if (hasVoted) return;
+    hasVoted = true;
+    votes[choice]++;
+    const total = votes.tropical + votes.albino + votes.venomous;
+    document.getElementById('vote-result').innerHTML = `
+      <span style="color: var(--primary-action);">🐍 ${votes.tropical}</span> &nbsp;·&nbsp;
+      <span style="color: var(--secondary-action);">🤍 ${votes.albino}</span> &nbsp;·&nbsp;
+      <span style="color: #00d4ff;">☠️ ${votes.venomous}</span>
+      <span style="margin-left: 8px; color: rgba(232,232,232,0.3);">(${total} vote${total > 1 ? 's' : ''})</span>
+    `;
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+      if (btn.dataset.vote === choice) {
+        btn.style.background = btn.dataset.vote === 'tropical' ? 'var(--primary-action)' : btn.dataset.vote === 'albino' ? 'var(--secondary-action)' : '#00d4ff';
+        btn.style.color = '#0a0a0a';
+      } else {
+        btn.style.opacity = '0.4';
+      }
+      btn.style.pointerEvents = 'none';
+    });
+  }
+
+  // --- Comment System ---
+  const comments = [];
+  document.getElementById('comment-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('comment-input');
+    const text = input.value.trim();
+    if (!text) return;
+    comments.push({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+    input.value = '';
+    renderComments();
+  });
+
+  function renderComments() {
+    const list = document.getElementById('comments-list');
+    list.innerHTML = comments.map(c => `
+      <div style="padding: 10px 14px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--secondary-action);">
+        <span style="font-size: 13px; color: rgba(232,232,232,0.7);">${c.text}</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(232,232,232,0.3); margin-left: 8px;">${c.time}</span>
+      </div>
+    `).join('');
+  }
+
+  // --- Lucide Icons ---
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a70ba320d27c5',t:'MTc3NTU3OTY3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

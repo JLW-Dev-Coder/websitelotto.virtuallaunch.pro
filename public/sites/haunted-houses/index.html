@@ -1,1 +1,523 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/0de49197-5d39-4410-9176-c3aa02f6fb15 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HollowGate Haunt Co.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        charcoal: '#0d0d0f',
+        midnight: '#141418',
+        smoke: '#1c1c22',
+        silver: '#c8c5c0',
+        cream: '#e8e4de',
+        crimson: '#8b2030',
+        'crimson-glow': '#a82838',
+        'deep-red': '#5c1520'
+      },
+      fontFamily: {
+        cinzel: ['Cinzel', 'serif'],
+        libre: ['Libre Baskerville', 'serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+
+/* Fog overlay */
+@keyframes fogDrift {
+  0% { transform: translateX(-10%) translateY(0); opacity: 0.12; }
+  50% { transform: translateX(5%) translateY(-8px); opacity: 0.18; }
+  100% { transform: translateX(-10%) translateY(0); opacity: 0.12; }
+}
+@keyframes fogDrift2 {
+  0% { transform: translateX(8%) translateY(0); opacity: 0.08; }
+  50% { transform: translateX(-6%) translateY(6px); opacity: 0.14; }
+  100% { transform: translateX(8%) translateY(0); opacity: 0.08; }
+}
+.fog-layer {
+  position: fixed; top: 0; left: 0; width: 120%; height: 100%;
+  pointer-events: none; z-index: 2;
+  background: radial-gradient(ellipse at 30% 50%, rgba(200,197,192,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(200,197,192,0.04) 0%, transparent 50%);
+  animation: fogDrift 18s ease-in-out infinite;
+}
+.fog-layer-2 {
+  position: fixed; top: 0; left: -10%; width: 130%; height: 100%;
+  pointer-events: none; z-index: 2;
+  background: radial-gradient(ellipse at 60% 70%, rgba(139,32,48,0.03) 0%, transparent 50%),
+              radial-gradient(ellipse at 20% 20%, rgba(200,197,192,0.03) 0%, transparent 40%);
+  animation: fogDrift2 24s ease-in-out infinite;
+}
+
+/* Spotlight sweep on headings */
+@keyframes spotlightSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.spotlight-text {
+  background: linear-gradient(90deg, #c8c5c0 0%, #c8c5c0 35%, #e8e4de 50%, #c8c5c0 65%, #c8c5c0 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: spotlightSweep 6s ease-in-out infinite;
+}
+
+/* Reveal animation */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; }
+.reveal.visible { animation: revealUp 0.8s ease forwards; }
+
+/* CTA pulse */
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139,32,48,0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(139,32,48,0.2); }
+}
+.cta-pulse { animation: subtlePulse 3s ease-in-out infinite; }
+
+/* Hero slow zoom */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+.hero-zoom { animation: slowZoom 20s ease-in-out alternate infinite; }
+
+/* Glassmorphism */
+.glass-card {
+  background: rgba(28,28,34,0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200,197,192,0.08);
+}
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 1px;
+  background: #8b2030; transition: all 0.3s ease; transform: translateX(-50%);
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Gallery hover */
+.gallery-item { overflow: hidden; }
+.gallery-item img { transition: transform 0.6s ease, filter 0.6s ease; filter: brightness(0.7); }
+.gallery-item:hover img { transform: scale(1.06); filter: brightness(0.9); }
+
+/* Ticket card hover */
+.ticket-card { transition: transform 0.4s ease, border-color 0.4s ease; }
+.ticket-card:hover { transform: translateY(-6px); border-color: rgba(139,32,48,0.4); }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-charcoal text-silver font-libre">
+  <div id="app-wrapper" class="w-full h-full overflow-auto scrollbar-hide relative"><!-- Fog overlays -->
+   <div class="fog-layer"></div>
+   <div class="fog-layer-2"></div><!-- Sticky Nav -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(13,13,15,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(200,197,192,0.05);">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-cinzel text-cream tracking-[0.25em] text-sm font-semibold uppercase">HollowGate</a>
+     <div class="hidden md:flex gap-8"><a href="#home" class="nav-link text-xs tracking-[0.2em] uppercase text-silver hover:text-cream transition-colors">Home</a> <a href="#tickets" class="nav-link text-xs tracking-[0.2em] uppercase text-silver hover:text-cream transition-colors">Tickets</a> <a href="#experience" class="nav-link text-xs tracking-[0.2em] uppercase text-silver hover:text-cream transition-colors">Experience</a> <a href="#gallery" class="nav-link text-xs tracking-[0.2em] uppercase text-silver hover:text-cream transition-colors">Gallery</a> <a href="#reviews" class="nav-link text-xs tracking-[0.2em] uppercase text-silver hover:text-cream transition-colors">Reviews</a> <a href="#buy" class="nav-link text-xs tracking-[0.2em] uppercase text-crimson hover:text-crimson-glow transition-colors">Buy</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-cream" aria-label="Open menu"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="text-xs tracking-[0.2em] uppercase text-silver hover:text-cream">Home</a> <a href="#tickets" class="text-xs tracking-[0.2em] uppercase text-silver hover:text-cream">Tickets</a> <a href="#experience" class="text-xs tracking-[0.2em] uppercase text-silver hover:text-cream">Experience</a> <a href="#gallery" class="text-xs tracking-[0.2em] uppercase text-silver hover:text-cream">Gallery</a> <a href="#reviews" class="text-xs tracking-[0.2em] uppercase text-silver hover:text-cream">Reviews</a> <a href="#buy" class="text-xs tracking-[0.2em] uppercase text-crimson hover:text-crimson-glow">Buy</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full" style="min-height: 100%;">
+    <div class="absolute inset-0 overflow-hidden"><img src="https://images.unsplash.com/photo-1509557965875-b88c97052f0e?w=1600&amp;q=80" alt="Foggy haunted mansion" class="hero-zoom w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0d0d0f,#1c1c22)';this.alt='Image unavailable';">
+     <div class="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/50 to-charcoal"></div>
+     <div class="absolute inset-0 bg-gradient-to-r from-charcoal/60 via-transparent to-charcoal/60"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height: 100%; padding-top: 120px; padding-bottom: 80px;">
+     <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-6 reveal" style="animation-delay: 0.2s;">HollowGate Haunt Co. Presents</p>
+     <h1 id="hero-tagline" class="font-cinzel text-4xl sm:text-5xl md:text-7xl font-bold spotlight-text mb-6 leading-tight max-w-4xl reveal" style="animation-delay: 0.4s;">Make fear look beautiful.</h1>
+     <p id="hero-subhead" class="text-silver/70 text-base md:text-lg max-w-xl mb-10 reveal" style="animation-delay: 0.6s;">A haunted attraction site that sells tickets fast.</p>
+     <div class="flex flex-col sm:flex-row gap-4 reveal" style="animation-delay: 0.8s;"><a href="#buy" class="cta-pulse bg-crimson hover:bg-crimson-glow text-cream font-cinzel text-xs tracking-[0.2em] uppercase px-8 py-4 transition-colors">Buy Tickets</a> <a href="#experience" class="border border-silver/20 hover:border-silver/40 text-cream font-cinzel text-xs tracking-[0.2em] uppercase px-8 py-4 transition-colors">View Experience</a>
+     </div><!-- Scroll indicator -->
+     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40"><span class="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+      <svg width="16" height="24" viewbox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="1">
+       <rect x="1" y="1" width="14" height="22" rx="7" /><line x1="8" y1="6" x2="8" y2="10" class="animate-bounce" />
+      </svg>
+     </div>
+    </div>
+   </section><!-- TICKETS -->
+   <section id="tickets" class="relative z-10 w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-3">Tickets</p>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-cream font-semibold">Select Your Fate</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- General -->
+      <div class="ticket-card glass-card p-8 flex flex-col items-center text-center reveal">
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#c8c5c0" stroke-width="1.2" class="mb-6">
+        <rect x="4" y="10" width="32" height="20" rx="2" /><line x1="14" y1="10" x2="14" y2="30" stroke-dasharray="2 2" /><circle cx="26" cy="20" r="4" />
+       </svg>
+       <h3 class="font-cinzel text-cream text-lg tracking-wider mb-2">General Admission</h3>
+       <p id="general-price" class="font-cinzel text-3xl text-crimson font-bold mb-1">$29</p>
+       <p class="text-xs text-silver/50 mb-6">per person</p>
+       <ul class="text-xs text-silver/60 space-y-2 mb-8 text-left">
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Standard entry</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Full haunt walkthrough</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Queue entertainment</li>
+       </ul><a href="#buy" class="w-full text-center border border-silver/15 hover:border-crimson/40 text-cream font-cinzel text-[10px] tracking-[0.2em] uppercase py-3 transition-colors block">Get Tickets</a>
+      </div><!-- Fast Pass -->
+      <div class="ticket-card glass-card p-8 flex flex-col items-center text-center border-crimson/20 reveal" style="animation-delay: 0.15s;">
+       <div class="absolute -top-0 left-1/2 -translate-x-1/2 bg-crimson text-cream text-[9px] tracking-[0.2em] uppercase px-4 py-1 font-cinzel" style="position:relative;top:0;left:0;transform:none;margin-bottom:16px;">
+        Popular
+       </div>
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#c8c5c0" stroke-width="1.2" class="mb-6">
+        <circle cx="20" cy="20" r="15" /><polyline points="20 12 20 20 26 20" />
+       </svg>
+       <h3 class="font-cinzel text-cream text-lg tracking-wider mb-2">Fast Pass</h3>
+       <p id="fastpass-price" class="font-cinzel text-3xl text-crimson font-bold mb-1">$49</p>
+       <p class="text-xs text-silver/50 mb-6">per person</p>
+       <ul class="text-xs text-silver/60 space-y-2 mb-8 text-left">
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Skip-the-line entry</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Full haunt walkthrough</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Priority queue access</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Souvenir lanyard</li>
+       </ul><a href="#buy" class="w-full text-center bg-crimson hover:bg-crimson-glow text-cream font-cinzel text-[10px] tracking-[0.2em] uppercase py-3 transition-colors block">Get Tickets</a>
+      </div><!-- VIP -->
+      <div class="ticket-card glass-card p-8 flex flex-col items-center text-center reveal" style="animation-delay: 0.3s;">
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" stroke="#c8c5c0" stroke-width="1.2" class="mb-6">
+        <polygon points="20 4 24 15 36 15 26 22 30 34 20 26 10 34 14 22 4 15 16 15" />
+       </svg>
+       <h3 class="font-cinzel text-cream text-lg tracking-wider mb-2">VIP Experience</h3>
+       <p id="vip-price" class="font-cinzel text-3xl text-crimson font-bold mb-1">$79</p>
+       <p class="text-xs text-silver/50 mb-6">per person</p>
+       <ul class="text-xs text-silver/60 space-y-2 mb-8 text-left">
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Immediate entry</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Behind-the-scenes tour</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Professional scare photo</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Exclusive merch bundle</li>
+        <li class="flex items-center gap-2">
+         <svg width="12" height="12" viewbox="0 0 12 12" fill="none" stroke="#8b2030" stroke-width="1.5">
+          <polyline points="2 6 5 9 10 3" />
+         </svg>Complimentary drink</li>
+       </ul><a href="#buy" class="w-full text-center border border-silver/15 hover:border-crimson/40 text-cream font-cinzel text-[10px] tracking-[0.2em] uppercase py-3 transition-colors block">Get Tickets</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- EXPERIENCE -->
+   <section id="experience" class="relative z-10 w-full py-24 px-6 bg-midnight/50">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-3">The Experience</p>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-cream font-semibold">What Awaits Inside</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass-card p-6 text-center reveal">
+       <div class="w-16 h-16 mx-auto mb-5 flex items-center justify-center rounded-full border border-silver/10">
+        <svg width="28" height="28" viewbox="0 0 28 28" fill="none" stroke="#8b2030" stroke-width="1.2">
+         <circle cx="14" cy="8" r="5" /><path d="M4 26c0-5.5 4.5-10 10-10s10 4.5 10 10" />
+        </svg>
+       </div>
+       <h3 class="font-cinzel text-cream text-sm tracking-wider mb-2">Live Actors</h3>
+       <p class="text-xs text-silver/50 leading-relaxed">Professional scare performers trained in psychological horror and theatrical immersion.</p>
+      </div>
+      <div class="glass-card p-6 text-center reveal" style="animation-delay:0.1s;">
+       <div class="w-16 h-16 mx-auto mb-5 flex items-center justify-center rounded-full border border-silver/10">
+        <svg width="28" height="28" viewbox="0 0 28 28" fill="none" stroke="#8b2030" stroke-width="1.2">
+         <rect x="3" y="8" width="22" height="16" rx="1" /><polyline points="3 8 14 2 25 8" /><line x1="10" y1="14" x2="10" y2="24" /><line x1="18" y1="14" x2="18" y2="24" />
+        </svg>
+       </div>
+       <h3 class="font-cinzel text-cream text-sm tracking-wider mb-2">Immersive Sets</h3>
+       <p class="text-xs text-silver/50 leading-relaxed">Hand-crafted environments spanning 12,000 sq ft of detailed, atmospheric horror design.</p>
+      </div>
+      <div class="glass-card p-6 text-center reveal" style="animation-delay:0.2s;">
+       <div class="w-16 h-16 mx-auto mb-5 flex items-center justify-center rounded-full border border-silver/10">
+        <svg width="28" height="28" viewbox="0 0 28 28" fill="none" stroke="#8b2030" stroke-width="1.2">
+         <path d="M14 4c-2 4-6 6-6 10a6 6 0 0012 0c0-4-4-6-6-10z" /><line x1="14" y1="18" x2="14" y2="22" />
+        </svg>
+       </div>
+       <h3 class="font-cinzel text-cream text-sm tracking-wider mb-2">Spatial Sound</h3>
+       <p class="text-xs text-silver/50 leading-relaxed">Directional audio system with binaural effects that make terror feel inches away.</p>
+      </div>
+      <div class="glass-card p-6 text-center reveal" style="animation-delay:0.3s;">
+       <div class="w-16 h-16 mx-auto mb-5 flex items-center justify-center rounded-full border border-silver/10">
+        <svg width="28" height="28" viewbox="0 0 28 28" fill="none" stroke="#8b2030" stroke-width="1.2">
+         <rect x="5" y="4" width="18" height="20" rx="2" /><circle cx="14" cy="18" r="2" /><line x1="10" y1="9" x2="18" y2="9" />
+        </svg>
+       </div>
+       <h3 class="font-cinzel text-cream text-sm tracking-wider mb-2">Photo Spots</h3>
+       <p class="text-xs text-silver/50 leading-relaxed">Curated scare-capture stations with instant downloads and shareable content.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- GALLERY -->
+   <section id="gallery" class="relative z-10 w-full py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-3">Gallery</p>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-cream font-semibold">Glimpses of the Dark</h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 reveal">
+      <div class="gallery-item aspect-[4/5] rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&amp;q=75" alt="Creepy hallway" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1c1c22,#0d0d0f)';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-item aspect-[4/5] rounded overflow-hidden" style="animation-delay:0.1s;"><img src="https://images.unsplash.com/photo-1477346611705-65d1883cee1e?w=600&amp;q=75" alt="Misty forest" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1c1c22,#0d0d0f)';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-item aspect-[4/5] rounded overflow-hidden" style="animation-delay:0.2s;"><img src="https://images.unsplash.com/photo-1507290439931-a861b5a38b2c?w=600&amp;q=75" alt="Candlelight" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1c1c22,#0d0d0f)';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-item aspect-[4/3] md:col-span-2 rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1520013817300-1f4c1cb245ef?w=900&amp;q=75" alt="Abandoned house" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1c1c22,#0d0d0f)';this.alt='Image unavailable';">
+      </div>
+      <div class="gallery-item aspect-[4/3] rounded overflow-hidden"><img src="https://images.unsplash.com/photo-1510070112810-d4e9a46d9e7a?w=600&amp;q=75" alt="Spooky door" class="w-full h-full object-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1c1c22,#0d0d0f)';this.alt='Image unavailable';">
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="relative z-10 w-full py-24 px-6 bg-midnight/50">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-3">Reviews</p>
+      <h2 class="font-cinzel text-3xl md:text-4xl text-cream font-semibold">Voices from the Other Side</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass-card p-6 reveal">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+       </div>
+       <p class="text-sm text-silver/70 italic leading-relaxed mb-4">"I've done haunted houses across the country. HollowGate is genuinely the most cinematic, terrifying experience I've ever had."</p>
+       <p class="text-xs text-cream font-cinzel tracking-wider">Marcus T.</p>
+       <p class="text-[10px] text-silver/40">October 2024</p>
+      </div>
+      <div class="glass-card p-6 reveal" style="animation-delay:0.15s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+       </div>
+       <p class="text-sm text-silver/70 italic leading-relaxed mb-4">"The production quality is insane. The sound design alone made me scream before I even saw anything. Worth every dollar."</p>
+       <p class="text-xs text-cream font-cinzel tracking-wider">Sarah K.</p>
+       <p class="text-[10px] text-silver/40">October 2024</p>
+      </div>
+      <div class="glass-card p-6 reveal" style="animation-delay:0.3s;">
+       <div class="flex gap-1 mb-4">
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+        <svg width="14" height="14" viewbox="0 0 14 14" fill="#8b2030" stroke="none">
+         <polygon points="7 1 9 5 13 5.5 10 8.5 10.8 12.5 7 10.5 3.2 12.5 4 8.5 1 5.5 5 5" />
+        </svg>
+       </div>
+       <p class="text-sm text-silver/70 italic leading-relaxed mb-4">"We went as a group of six and every single person said it was the highlight of their Halloween. Booking VIP next year."</p>
+       <p class="text-xs text-cream font-cinzel tracking-wider">Jenna &amp; Group</p>
+       <p class="text-[10px] text-silver/40">November 2024</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / BUY -->
+   <section id="buy" class="relative z-10 w-full py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+     <div class="reveal">
+      <p class="text-xs tracking-[0.4em] uppercase text-crimson mb-3">Don't Miss Out</p>
+      <h2 id="bottom-cta" class="font-cinzel text-3xl md:text-5xl text-cream font-bold mb-4 spotlight-text">Choose your night.</h2>
+      <p class="text-silver/50 text-sm mb-10 max-w-md mx-auto">Nights sell out fast. Secure your spot before the gates close for the season.</p><a href="#tickets" class="cta-pulse inline-block bg-crimson hover:bg-crimson-glow text-cream font-cinzel text-xs tracking-[0.2em] uppercase px-10 py-4 transition-colors">Buy Tickets Now</a>
+     </div><!-- Vote + Comment Widget Panel -->
+     <div class="mt-20 glass-card p-8 text-center reveal">
+      <div class="flex items-center justify-center gap-2 mb-4">
+       <svg width="18" height="18" viewbox="0 0 18 18" fill="none" stroke="#8b2030" stroke-width="1.2">
+        <path d="M2 12l5 4V12h7a2 2 0 002-2V4a2 2 0 00-2-2H4a2 2 0 00-2 2v8z" />
+       </svg><span class="font-cinzel text-sm tracking-wider text-cream">Vote + Comment</span>
+      </div>
+      <p class="text-xs text-silver/40 mb-6 border border-dashed border-silver/15 py-8 px-4 rounded">(Embed Widget Here)</p>
+      <p class="text-[10px] text-silver/30">Embed your preferred voting or comment widget in this panel.</p>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="relative z-10 w-full py-12 px-6 border-t border-silver/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-cinzel text-xs tracking-[0.25em] text-silver/30 uppercase">HollowGate Haunt Co.</p>
+     <p class="text-[10px] text-silver/20">© 2025 HollowGate. All rights reserved. "Make fear look beautiful."</p>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// Scroll reveal observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Nav scroll effect
+const nav = document.getElementById('main-nav');
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  if (wrapper.scrollTop > 80) {
+    nav.style.background = 'rgba(13,13,15,0.92)';
+  } else {
+    nav.style.background = 'rgba(13,13,15,0.6)';
+  }
+});
+
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_tagline: 'Make fear look beautiful.',
+  hero_subhead: 'A haunted attraction site that sells tickets fast.',
+  general_price: '$29',
+  fastpass_price: '$49',
+  vip_price: '$79',
+  bottom_cta_text: 'Choose your night.',
+  background_color: '#0d0d0f',
+  surface_color: '#1c1c22',
+  text_color: '#c8c5c0',
+  accent_color: '#8b2030',
+  cream_color: '#e8e4de',
+  font_family: 'Cinzel',
+  font_size: 16
+};
+
+function applyConfig(c) {
+  const el = (id) => document.getElementById(id);
+  el('hero-tagline').textContent = c.hero_tagline || defaultConfig.hero_tagline;
+  el('hero-subhead').textContent = c.hero_subhead || defaultConfig.hero_subhead;
+  el('general-price').textContent = c.general_price || defaultConfig.general_price;
+  el('fastpass-price').textContent = c.fastpass_price || defaultConfig.fastpass_price;
+  el('vip-price').textContent = c.vip_price || defaultConfig.vip_price;
+  el('bottom-cta').textContent = c.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const bg = c.background_color || defaultConfig.background_color;
+  const surface = c.surface_color || defaultConfig.surface_color;
+  const text = c.text_color || defaultConfig.text_color;
+  const accent = c.accent_color || defaultConfig.accent_color;
+  const cream = c.cream_color || defaultConfig.cream_color;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = text;
+  document.querySelectorAll('.glass-card').forEach(card => {
+    card.style.background = surface + 'a6';
+    card.style.borderColor = text + '14';
+  });
+  document.querySelectorAll('.cta-pulse, a[href="#buy"].bg-crimson, a.bg-crimson').forEach(btn => {
+    btn.style.backgroundColor = accent;
+    btn.style.color = cream;
+  });
+
+  const font = c.font_family || defaultConfig.font_family;
+  const baseSize = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-cinzel').forEach(el => { el.style.fontFamily = font + ', serif'; });
+  el('hero-tagline').style.fontSize = (baseSize * 3.5) + 'px';
+  el('bottom-cta').style.fontSize = (baseSize * 2.5) + 'px';
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }},
+      { get: () => config.cream_color || defaultConfig.cream_color, set: (v) => { config.cream_color = v; window.elementSdk.setConfig({ cream_color: v }); }}
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }},
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }}
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['general_price', config.general_price || defaultConfig.general_price],
+    ['fastpass_price', config.fastpass_price || defaultConfig.fastpass_price],
+    ['vip_price', config.vip_price || defaultConfig.vip_price],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a34a1257927c5',t:'MTc3NTU3NzIxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

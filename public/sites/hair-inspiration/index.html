@@ -1,1 +1,929 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/b1553d5d-16ed-40b0-bdef-809d47822efc -->
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful Hair Muse - Hair Inspiration Gallery</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffffff;
+      color: #2c2c2c;
+    }
+
+    .app-wrapper {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      overflow-y: auto;
+      background-color: #ffffff;
+    }
+
+    .serif-headline {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* Sticky Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #2c2c2c;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #d4af37;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #fafafa 0%, #f5f5f0 100%);
+      padding: 6rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+      color: #1a1a1a;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary, .btn-secondary {
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #d4af37;
+      color: #1a1a1a;
+    }
+
+    .btn-primary:hover {
+      background: #c9a32a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #1a1a1a;
+      border: 2px solid #1a1a1a;
+    }
+
+    .btn-secondary:hover {
+      background: #1a1a1a;
+      color: #ffffff;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 3rem;
+      text-align: center;
+      color: #1a1a1a;
+    }
+
+    /* Gallery Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .gallery-card {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .gallery-image {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #d4af37 0%, #f0e6d2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+    }
+
+    .gallery-card-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-card-content h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    .gallery-card-content p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .btn-shop {
+      background: #d4af37;
+      color: #1a1a1a;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .btn-shop:hover {
+      background: #c9a32a;
+      transform: translateY(-2px);
+    }
+
+    /* Collections Grid */
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+
+    .collection-card {
+      background: linear-gradient(135deg, #f5f5f0 0%, #eeebe3 100%);
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid #e8e8e8;
+      transition: all 0.3s ease;
+    }
+
+    .collection-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .collection-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .collection-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    .collection-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Tips Section */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .tip-card {
+      background: #fafafa;
+      padding: 2rem;
+      border-radius: 8px;
+      border-left: 4px solid #d4af37;
+    }
+
+    .tip-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    .tip-card p {
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* Email Section */
+    .email-section {
+      background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+      color: #ffffff;
+      padding: 4rem 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin: 0 2rem;
+    }
+
+    .email-section h2 {
+      color: #d4af37;
+      margin-bottom: 1rem;
+    }
+
+    .email-section p {
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      opacity: 0.9;
+    }
+
+    .email-form {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .email-form input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .email-form input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .email-form button {
+      padding: 0.9rem 2rem;
+      background: #d4af37;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .email-form button:hover {
+      background: #c9a32a;
+      transform: translateY(-2px);
+    }
+
+    /* FAQ Section */
+    .faq-item {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 1.5rem;
+      background: #f5f5f0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #1a1a1a;
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: #eeebe3;
+    }
+
+    .faq-answer {
+      padding: 1.5rem;
+      color: #666;
+      line-height: 1.8;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Page View */
+    .page-view {
+      display: none;
+    }
+
+    .page-view.active {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .page-view-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: #f5f5f0;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #1a1a1a;
+      transition: background 0.3s ease;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .back-button:hover {
+      background: #eeebe3;
+    }
+
+    /* Bundle Grid */
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .bundle-card {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bundle-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .bundle-image {
+      width: 100%;
+      height: 250px;
+      background: linear-gradient(135deg, #d4af37 0%, #f0e6d2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .bundle-card-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bundle-card-content h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: #1a1a1a;
+      font-weight: 600;
+    }
+
+    .bundle-price {
+      font-size: 1.3rem;
+      color: #d4af37;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    .bundle-card-content p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .bundle-features {
+      background: #f5f5f0;
+      padding: 0.8rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .bundle-features li {
+      margin: 0.3rem 0;
+      margin-left: 1.2rem;
+    }
+
+    .btn-buy-bundle {
+      background: #d4af37;
+      color: #1a1a1a;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .btn-buy-bundle:hover {
+      background: #c9a32a;
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      background: #1a1a1a;
+      color: #999;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    footer a {
+      color: #d4af37;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Scroll Animation */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        gap: 1rem;
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 3rem 1.5rem;
+      }
+
+      .section {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .email-section {
+        margin: 0 1.5rem;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper">
+   <!-- Sticky Navigation -->
+   <nav>
+    <ul>
+     <li><a href="#" onclick="navigateToHome(event)">Home</a></li>
+     <li><a href="#looks">Looks</a></li>
+     <li><a href="#" onclick="navigateToBundles(event)">Shop Bundles</a></li>
+     <li><a href="#shop-wigs">Shop Wigs</a></li>
+     <li><a href="#tips">Tips</a></li>
+     <li><a href="#faq">FAQ</a></li>
+    </ul>
+   </nav><!-- Home View -->
+   <div id="home-view" class="page-view active"><!-- Hero Section -->
+    <section class="hero" id="home">
+     <h1 class="serif-headline" id="hero-headline">Find your next look in 60 seconds</h1>
+     <p id="hero-subheading">Curated collections of stunning hair looks</p>
+     <div class="hero-cta">
+      <a href="#looks" class="btn-primary"> <i data-lucide="image" style="width: 18px; height: 18px;"></i> Browse Looks </a> <a href="#" onclick="navigateToBundles(event)" class="btn-secondary"> <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i> Shop Bundles </a>
+     </div>
+    </section><!-- Gallery Section -->
+    <section class="section" id="looks">
+     <h2 class="serif-headline" id="gallery-title">Browse Our Looks</h2>
+     <div class="gallery-grid" id="gallery">
+      <!-- Gallery items will be rendered here -->
+     </div>
+    </section><!-- Collections Section -->
+    <section class="section" id="shop-wigs" style="background: #f9f8f6;">
+     <h2 class="serif-headline" id="collections-title">Our Collections</h2>
+     <div class="collections-grid" id="collections">
+      <!-- Collection items will be rendered here -->
+     </div>
+    </section><!-- Tips Section -->
+    <section class="section" id="tips">
+     <h2 class="serif-headline" id="tips-title">Hair Care Tips</h2>
+     <div class="tips-grid" id="tips">
+      <!-- Tips will be rendered here -->
+     </div>
+    </section><!-- Email Signup -->
+    <section class="section">
+     <div class="email-section">
+      <h2 class="serif-headline" id="email-title">Get Weekly Hair Drops</h2>
+      <p>Stay inspired with our curated weekly roundup of trending looks and exclusive offers.</p>
+      <form class="email-form" onsubmit="handleEmailSignup(event)">
+       <input type="email" placeholder="Enter your email" required> <button type="submit">Subscribe</button>
+      </form>
+     </div>
+    </section><!-- FAQ Section -->
+    <section class="section">
+     <h2 class="serif-headline" id="faq-title">Frequently Asked Questions</h2>
+     <div id="faq">
+      <!-- FAQ items will be rendered here -->
+     </div>
+    </section><!-- Footer -->
+    <footer>
+     <p>© 2024 Beautiful Hair Muse. All rights reserved. | Powered by trusted partner networks.</p>
+     <p style="margin-top: 0.5rem; font-size: 0.85rem;">Shipping and returns handled by individual partners. <a href="#faq">Learn more</a></p>
+    </footer>
+   </div><!-- Bundles View -->
+   <div id="bundles-view" class="page-view"><button class="back-button" onclick="navigateToHome(event)"><i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i> Back to Home</button>
+    <div class="page-view-content">
+     <section class="section">
+      <h2 class="serif-headline">Hair Bundles</h2>
+      <p style="text-align: center; color: #666; margin-bottom: 2rem;">Explore our premium bundle collections - raw hair, pre-styled, and custom options.</p>
+      <div class="bundle-grid" id="bundles">
+       <!-- Bundle items will be rendered here -->
+      </div>
+     </section>
+    </div>
+    <footer>
+     <p>© 2024 Beautiful Hair Muse. All rights reserved. | Powered by trusted partner networks.</p>
+    </footer>
+   </div>
+  </div>
+  <script>
+    // Default config
+    const defaultConfig = {
+      hero_headline: "Find your next look in 60 seconds",
+      hero_subheading: "Curated collections of stunning hair looks",
+      gallery_title: "Browse Our Looks",
+      collections_title: "Our Collections",
+      tips_title: "Hair Care Tips",
+      email_section_title: "Get Weekly Hair Drops",
+      faq_title: "Frequently Asked Questions"
+    };
+
+    let config = { ...defaultConfig };
+
+    // Bundle data
+    const bundles = [
+      { name: "Brazilian Straight Bundle", emoji: "✨", price: "$89.99", desc: "100% virgin Brazilian hair", features: ["12-26 inches", "Straight texture", "Natural black", "3 bundles included"] },
+      { name: "Curly Bundle Set", emoji: "💫", price: "$94.99", desc: "Bouncy curled texture", features: ["14-24 inches", "Curly 3B-4A", "Color options", "3 bundles + closure"] },
+      { name: "Water Wave Bundle", emoji: "🌊", price: "$79.99", desc: "Trendy wave pattern", features: ["10-24 inches", "Water wave", "Lightweight", "2-3 bundles"] },
+      { name: "Kinky Straight Bundle", emoji: "⚡", price: "$84.99", desc: "Natural kinky texture", features: ["12-28 inches", "Kinky straight", "Unprocessed", "3 bundles"] },
+      { name: "Honey Blonde Bundle", emoji: "✨", price: "$99.99", desc: "Pre-colored premium hair", features: ["Blonde #27", "Silky texture", "Highlight ready", "3 bundles"] },
+      { name: "Deep Wave Bundle", emoji: "🌸", price: "$89.99", desc: "Luxe wave pattern", features: ["12-24 inches", "Deep wave", "Thick density", "3 bundles + closure"] },
+      { name: "Ombré Bundle Set", emoji: "🎨", price: "$104.99", desc: "Gradient color blended", features: ["Ombré coloring", "Mixed lengths", "Versatile style", "3 bundles"] },
+      { name: "Raw Hair Bundle", emoji: "💎", price: "$119.99", desc: "Premium unprocessed hair", features: ["20-28 inches", "100% raw", "Unlimited styling", "Bulk package"] }
+    ];
+
+    // Gallery data
+    const galleryItems = [
+      { label: "Sleek Bob", emoji: "✨", desc: "Timeless elegance" },
+      { label: "Curly Glam", emoji: "💫", desc: "Bouncy and bold" },
+      { label: "Red Layers", emoji: "🔥", desc: "Statement color" },
+      { label: "Braided Crown", emoji: "👑", desc: "Intricate details" },
+      { label: "Silk Press", emoji: "💎", desc: "Smooth and sleek" },
+      { label: "Honey Blonde", emoji: "✨", desc: "Radiant warmth" },
+      { label: "Deep Waves", emoji: "🌊", desc: "Rich texture" },
+      { label: "Ombré Fantasy", emoji: "🎨", desc: "Color blend magic" },
+      { label: "Kinky Straight", emoji: "⚡", desc: "Natural power" },
+      { label: "Loose Curls", emoji: "🌸", desc: "Effortless romance" },
+      { label: "Box Braids", emoji: "🧵", desc: "Protective style" },
+      { label: "Frontal Slay", emoji: "👸", desc: "Dramatic volume" }
+    ];
+
+    // Collections data
+    const collections = [
+      { name: "Wigs", desc: "Full coverage looks", emoji: "💇‍♀️" },
+      { name: "Clip-ins", desc: "Easy application", emoji: "📌" },
+      { name: "Bundles", desc: "Raw hair bundles", emoji: "📦" },
+      { name: "Accessories", desc: "Styling essentials", emoji: "✨" }
+    ];
+
+    // Tips data
+    const tips = [
+      { title: "Choosing Density", content: "Select 150% for natural everyday wear, 180% for fuller looks, and 250%+ for dramatic volume." },
+      { title: "Cap Types Explained", content: "Lace front offers realistic hairline, 360 lace wraps around, and full lace provides maximum styling freedom." },
+      { title: "Hair Care Routine", content: "Use sulfate-free shampoo, deep condition weekly, and store hair flat to maintain longevity and shine." },
+      { title: "Styling Tips", content: "Avoid excessive heat, use leave-in conditioner, and gently detangle from roots to ends." },
+      { title: "Installing Your Hair", content: "Prep your natural hair, use quality adhesive or braids, and allow 24 hours to fully set." },
+      { title: "Storage Secrets", content: "Keep hair in cool, dry place, use silk bags, and store away from direct sunlight." }
+    ];
+
+    // FAQ data
+    const faqItems = [
+      { q: "How long does shipping take?", a: "Shipping times vary by partner. Most orders arrive within 5-10 business days. You'll receive tracking info from your partner shop." },
+      { q: "What's your return policy?", a: "Returns are handled by individual partner shops. Check their policy at checkout. Most offer 30-day returns on unused items." },
+      { q: "Are these 100% human hair?", a: "Product quality varies by partner. We feature trusted vendors who clearly label their products. Always check the product description." },
+      { q: "Can I customize my order?", a: "Yes! Contact partner shops directly for custom requests like length, color, or density adjustments." },
+      { q: "Do you offer wholesale?", a: "Partner shops handle wholesale inquiries. Reach out to them directly for bulk order pricing." },
+      { q: "How do I care for my hair?", a: "See our Hair Care Tips section above for detailed washing, conditioning, and styling guidance." }
+    ];
+
+    // Navigation functions
+    function navigateToHome(e) {
+      e.preventDefault();
+      document.getElementById('home-view').classList.add('active');
+      document.getElementById('bundles-view').classList.remove('active');
+      window.scrollTo(0, 0);
+    }
+
+    function navigateToBundles(e) {
+      e.preventDefault();
+      document.getElementById('home-view').classList.remove('active');
+      document.getElementById('bundles-view').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Render gallery
+    function renderGallery() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = galleryItems.map((item, idx) => `
+        <div class="gallery-card animate-in" style="animation-delay: ${idx * 50}ms;">
+          <div class="gallery-image">${item.emoji}</div>
+          <div class="gallery-card-content">
+            <h3>${item.label}</h3>
+            <p>${item.desc}</p>
+            <a href="https://example.com/shop/${item.label.toLowerCase().replace(/\s+/g, '-')}" target="_blank" rel="noopener noreferrer" class="btn-shop">
+              <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+              Shop This Vibe
+            </a>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Render bundles
+    function renderBundles() {
+      const bundlesContainer = document.getElementById('bundles');
+      bundlesContainer.innerHTML = bundles.map((bundle, idx) => `
+        <div class="bundle-card animate-in" style="animation-delay: ${idx * 50}ms;">
+          <div class="bundle-image">${bundle.emoji}</div>
+          <div class="bundle-card-content">
+            <h3>${bundle.name}</h3>
+            <div class="bundle-price">${bundle.price}</div>
+            <p>${bundle.desc}</p>
+            <ul class="bundle-features">
+              ${bundle.features.map(f => `<li>${f}</li>`).join('')}
+            </ul>
+            <a href="https://example.com/bundles/${bundle.name.toLowerCase().replace(/\s+/g, '-')}" target="_blank" rel="noopener noreferrer" class="btn-buy-bundle">
+              <i data-lucide="shopping-cart" style="width: 16px; height: 16px;"></i>
+              Buy Now
+            </a>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Render collections
+    function renderCollections() {
+      const collectionsContainer = document.getElementById('collections');
+      collectionsContainer.innerHTML = collections.map((col, idx) => `
+        <div class="collection-card animate-in" style="animation-delay: ${idx * 100}ms;">
+          <div class="collection-icon">${col.emoji}</div>
+          <h3>${col.name}</h3>
+          <p>${col.desc}</p>
+          <a href="https://example.com/shop/${col.name.toLowerCase()}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display: inline-block;">
+            Browse Now
+          </a>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Render tips
+    function renderTips() {
+      const tipsContainer = document.getElementById('tips');
+      tipsContainer.innerHTML = tips.map((tip, idx) => `
+        <div class="tip-card animate-in" style="animation-delay: ${idx * 100}ms;">
+          <h3>${tip.title}</h3>
+          <p>${tip.content}</p>
+        </div>
+      `).join('');
+    }
+
+    // Render FAQ
+    function renderFAQ() {
+      const faqContainer = document.getElementById('faq');
+      faqContainer.innerHTML = faqItems.map((item, idx) => `
+        <div class="faq-item animate-in" style="animation-delay: ${idx * 100}ms;">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <span>${item.q}</span>
+            <i data-lucide="chevron-down" class="faq-icon" style="width: 20px; height: 20px;"></i>
+          </div>
+          <div class="faq-answer">${item.a}</div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Toggle FAQ
+    function toggleFAQ(element) {
+      element.parentElement.classList.toggle('open');
+    }
+
+    // Handle email signup
+    function handleEmailSignup(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input[type="email"]');
+      const email = input.value;
+      
+      // Show success feedback
+      const btn = e.target.querySelector('button');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i> Subscribed!';
+      btn.style.background = '#2ecc71';
+      lucide.createIcons();
+      
+      input.value = '';
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '#d4af37';
+        lucide.createIcons();
+      }, 2000);
+    }
+
+    // Element SDK initialization
+    async function initializeSDK() {
+      if (!window.elementSdk) return;
+
+      const element = {
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = newConfig;
+          document.getElementById('hero-headline').textContent = config.hero_headline || defaultConfig.hero_headline;
+          document.getElementById('hero-subheading').textContent = config.hero_subheading || defaultConfig.hero_subheading;
+          document.getElementById('gallery-title').textContent = config.gallery_title || defaultConfig.gallery_title;
+          document.getElementById('collections-title').textContent = config.collections_title || defaultConfig.collections_title;
+          document.getElementById('tips-title').textContent = config.tips_title || defaultConfig.tips_title;
+          document.getElementById('email-title').textContent = config.email_section_title || defaultConfig.email_section_title;
+          document.getElementById('faq-title').textContent = config.faq_title || defaultConfig.faq_title;
+        },
+        mapToCapabilities: () => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['hero_headline', cfg.hero_headline || defaultConfig.hero_headline],
+          ['hero_subheading', cfg.hero_subheading || defaultConfig.hero_subheading],
+          ['gallery_title', cfg.gallery_title || defaultConfig.gallery_title],
+          ['collections_title', cfg.collections_title || defaultConfig.collections_title],
+          ['tips_title', cfg.tips_title || defaultConfig.tips_title],
+          ['email_section_title', cfg.email_section_title || defaultConfig.email_section_title],
+          ['faq_title', cfg.faq_title || defaultConfig.faq_title]
+        ])
+      };
+
+      window.elementSdk.init(element);
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGallery();
+      renderBundles();
+      renderCollections();
+      renderTips();
+      renderFAQ();
+      lucide.createIcons();
+      initializeSDK();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3345e35327c5',t:'MTc3NTU3NzE1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

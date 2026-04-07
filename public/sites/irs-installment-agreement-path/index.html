@@ -1,1 +1,749 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/0af7744d-b7ce-4c9c-85d6-7cb2dc45c382 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPath Agreements</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#0f1a2e',
+        navyLight: '#162040',
+        navyMid: '#1c2a4a',
+        slate: '#8b9dc3',
+        cream: '#e8e0d4',
+        gold: '#c9a84c',
+        goldLight: '#d4b965',
+        mint: '#4ecdc4',
+        coral: '#e07a5f'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; }
+.font-display { font-family: 'Fraunces', serif; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.3); }
+  50% { box-shadow: 0 0 20px 5px rgba(201, 168, 76, 0.15); }
+}
+@keyframes progressFill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.animate-fade-up { animation: fadeUp 0.7s ease-out forwards; }
+.animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+.animate-slide-right { animation: slideRight 0.6s ease-out forwards; }
+.animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+.stagger-1 { animation-delay: 0.1s; opacity: 0; }
+.stagger-2 { animation-delay: 0.2s; opacity: 0; }
+.stagger-3 { animation-delay: 0.3s; opacity: 0; }
+.stagger-4 { animation-delay: 0.4s; opacity: 0; }
+.stagger-5 { animation-delay: 0.5s; opacity: 0; }
+.stagger-6 { animation-delay: 0.6s; opacity: 0; }
+
+.timeline-line {
+  background: linear-gradient(to bottom, #c9a84c, #4ecdc4);
+}
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #c9a84c;
+  transition: width 0.3s;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+.plan-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.option-card {
+  transition: transform 0.3s, border-color 0.3s;
+}
+.option-card:hover {
+  transform: translateY(-2px);
+  border-color: #c9a84c;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(139,157,195,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,157,195,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Vote widget */
+.reaction-btn {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.reaction-btn:hover {
+  transform: scale(1.15);
+}
+.reaction-btn.selected {
+  ring: 2px solid #c9a84c;
+  background: rgba(201,168,76,0.15);
+}
+.price-chip {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.price-chip:hover {
+  background: rgba(201,168,76,0.2);
+  border-color: #c9a84c;
+}
+.price-chip.selected-price {
+  background: rgba(201,168,76,0.25);
+  border-color: #c9a84c;
+  color: #c9a84c;
+}
+
+.toast-msg {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 9999;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0;
+}
+.toast-msg.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-navy text-white">
+  <div id="app-root" class="w-full h-full overflow-auto"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-navy/90 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold to-mint flex items-center justify-center"><i data-lucide="route" class="w-4 h-4 text-navy"></i>
+      </div><span class="font-display font-bold text-lg" id="nav-brand">PayPath</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm"><a href="#home" class="nav-link text-slate hover:text-white">Home</a> <a href="#options" class="nav-link text-slate hover:text-white">Options</a> <a href="#plans" class="nav-link text-slate hover:text-white">Plans</a> <a href="#timeline" class="nav-link text-slate hover:text-white">Timeline</a> <a href="#faq" class="nav-link text-slate hover:text-white">FAQ</a> <a href="#start" class="px-4 py-1.5 rounded-full bg-gold text-navy font-semibold text-sm hover:bg-goldLight transition-colors">Start Plan</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-slate" aria-label="Toggle menu"> <i data-lucide="menu" class="w-5 h-5"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-navyLight border-t border-white/5 px-4 py-3 space-y-2"><a href="#home" class="block text-slate hover:text-white py-1.5 text-sm">Home</a> <a href="#options" class="block text-slate hover:text-white py-1.5 text-sm">Options</a> <a href="#plans" class="block text-slate hover:text-white py-1.5 text-sm">Plans</a> <a href="#timeline" class="block text-slate hover:text-white py-1.5 text-sm">Timeline</a> <a href="#faq" class="block text-slate hover:text-white py-1.5 text-sm">FAQ</a> <a href="#start" class="block text-gold font-semibold py-1.5 text-sm">Start Plan</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative grid-bg pt-28 pb-20 sm:pt-36 sm:pb-28 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="animate-fade-up"><span class="inline-flex items-center gap-1.5 text-gold text-xs font-semibold tracking-widest uppercase mb-6 px-3 py-1 rounded-full border border-gold/30 bg-gold/5"> <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> IRS Installment Agreement Services </span>
+     </div>
+     <h1 id="hero-title" class="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-5 animate-fade-up stagger-1" style="color:#e8e0d4">You don't have to pay it all at once.</h1>
+     <p id="hero-subtitle" class="text-slate text-lg sm:text-xl max-w-2xl mx-auto mb-8 animate-fade-up stagger-2">Structured IRS payment plans that work.</p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-up stagger-3"><a href="#start" class="px-7 py-3 rounded-full bg-gold text-navy font-semibold hover:bg-goldLight transition-colors animate-pulse-glow flex items-center gap-2"> <i data-lucide="play-circle" class="w-4 h-4"></i> Start Plan </a> <a href="#options" class="px-7 py-3 rounded-full border border-slate/30 text-slate hover:text-white hover:border-white/40 transition-colors flex items-center gap-2"> <i data-lucide="layers" class="w-4 h-4"></i> View Options </a>
+     </div><!-- Stats -->
+     <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mt-14 animate-fade-up stagger-4">
+      <div class="text-center">
+       <div class="text-2xl font-display font-bold text-gold">
+        72mo
+       </div>
+       <div class="text-xs text-slate mt-1">
+        Max Plan Length
+       </div>
+      </div>
+      <div class="text-center border-x border-white/10">
+       <div class="text-2xl font-display font-bold text-mint">
+        97%
+       </div>
+       <div class="text-xs text-slate mt-1">
+        Approval Rate
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-2xl font-display font-bold text-gold">
+        $0
+       </div>
+       <div class="text-xs text-slate mt-1">
+        Down Payment*
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Options -->
+   <section id="options" class="py-20 px-4 bg-navyLight">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-14"><span class="text-gold text-xs font-semibold tracking-widest uppercase">Agreement Types</span>
+      <h2 id="options-title" class="font-display text-3xl sm:text-4xl font-bold mt-3" style="color:#e8e0d4">Types of Installment Agreements</h2>
+      <p class="text-slate mt-3 max-w-xl mx-auto">Each agreement type is designed for a specific tax situation. We'll match you with the right one.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"><!-- Option Cards -->
+      <div class="option-card bg-navyMid border border-white/5 rounded-2xl p-6 hover:border-gold/40">
+       <div class="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center mb-4"><i data-lucide="zap" class="w-5 h-5 text-gold"></i>
+       </div>
+       <h3 class="font-display font-semibold text-lg mb-2" style="color:#e8e0d4">Guaranteed</h3>
+       <p class="text-slate text-sm leading-relaxed">Owe ≤$10,000. Auto-approved if you meet basic filing requirements. Simplest path forward.</p>
+       <div class="mt-4 text-xs text-mint font-medium flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Auto-approved
+       </div>
+      </div>
+      <div class="option-card bg-navyMid border border-white/5 rounded-2xl p-6 hover:border-gold/40">
+       <div class="w-10 h-10 rounded-xl bg-mint/10 flex items-center justify-center mb-4"><i data-lucide="file-text" class="w-5 h-5 text-mint"></i>
+       </div>
+       <h3 class="font-display font-semibold text-lg mb-2" style="color:#e8e0d4">Streamlined</h3>
+       <p class="text-slate text-sm leading-relaxed">Owe ≤$50,000. No financial statement required. Most common agreement for mid-tier balances.</p>
+       <div class="mt-4 text-xs text-gold font-medium flex items-center gap-1"><i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Most popular
+       </div>
+      </div>
+      <div class="option-card bg-navyMid border border-white/5 rounded-2xl p-6 hover:border-gold/40">
+       <div class="w-10 h-10 rounded-xl bg-coral/10 flex items-center justify-center mb-4"><i data-lucide="calculator" class="w-5 h-5 text-coral"></i>
+       </div>
+       <h3 class="font-display font-semibold text-lg mb-2" style="color:#e8e0d4">Non-Streamlined</h3>
+       <p class="text-slate text-sm leading-relaxed">Owe &gt;$50,000. Requires financial disclosure, but offers flexibility in structuring payments.</p>
+       <div class="mt-4 text-xs text-slate font-medium flex items-center gap-1"><i data-lucide="shield" class="w-3.5 h-3.5"></i> Full review
+       </div>
+      </div>
+      <div class="option-card bg-navyMid border border-white/5 rounded-2xl p-6 hover:border-gold/40">
+       <div class="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center mb-4"><i data-lucide="dollar-sign" class="w-5 h-5 text-gold"></i>
+       </div>
+       <h3 class="font-display font-semibold text-lg mb-2" style="color:#e8e0d4">Partial Pay</h3>
+       <p class="text-slate text-sm leading-relaxed">Pay less than the full amount owed. Based on your ability to pay — ideal for hardship cases.</p>
+       <div class="mt-4 text-xs text-coral font-medium flex items-center gap-1"><i data-lucide="heart" class="w-3.5 h-3.5"></i> Hardship relief
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Plans -->
+   <section id="plans" class="py-20 px-4 bg-navy grid-bg">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-14"><span class="text-gold text-xs font-semibold tracking-widest uppercase">Monthly Examples</span>
+      <h2 id="plans-title" class="font-display text-3xl sm:text-4xl font-bold mt-3" style="color:#e8e0d4">Payment Plan Examples</h2>
+      <p class="text-slate mt-3 max-w-xl mx-auto">See how large balances break down into manageable monthly payments.</p>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-5">
+      <div class="plan-card bg-navyMid border border-white/5 rounded-2xl overflow-hidden">
+       <div class="p-6">
+        <div class="text-xs text-slate uppercase tracking-wider mb-2">
+         Balance: $8,500
+        </div>
+        <div class="flex items-baseline gap-1 mb-1"><span class="text-3xl font-display font-bold text-gold">$142</span> <span class="text-slate text-sm">/mo</span>
+        </div>
+        <div class="text-xs text-slate mb-5">
+         60-month guaranteed plan
+        </div>
+        <div class="space-y-2.5 text-sm">
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Auto-approved
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> No financial disclosure
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Online setup available
+         </div>
+        </div>
+       </div>
+       <div class="border-t border-white/5 p-4"><a href="#start" class="block text-center text-sm text-gold font-medium hover:text-goldLight transition-colors">Get Started →</a>
+       </div>
+      </div>
+      <div class="plan-card bg-navyMid border border-gold/30 rounded-2xl overflow-hidden relative">
+       <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-gold to-mint"></div>
+       <div class="p-6">
+        <div class="flex items-center justify-between mb-2">
+         <div class="text-xs text-slate uppercase tracking-wider">
+          Balance: $32,000
+         </div><span class="text-[10px] font-semibold bg-gold/15 text-gold px-2 py-0.5 rounded-full">POPULAR</span>
+        </div>
+        <div class="flex items-baseline gap-1 mb-1"><span class="text-3xl font-display font-bold text-gold">$445</span> <span class="text-slate text-sm">/mo</span>
+        </div>
+        <div class="text-xs text-slate mb-5">
+         72-month streamlined plan
+        </div>
+        <div class="space-y-2.5 text-sm">
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> No financial statement
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Direct debit discount
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Penalty reduction eligible
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Lien withdrawal possible
+         </div>
+        </div>
+       </div>
+       <div class="border-t border-gold/20 p-4 bg-gold/5"><a href="#start" class="block text-center text-sm text-gold font-semibold hover:text-goldLight transition-colors">Get Started →</a>
+       </div>
+      </div>
+      <div class="plan-card bg-navyMid border border-white/5 rounded-2xl overflow-hidden">
+       <div class="p-6">
+        <div class="text-xs text-slate uppercase tracking-wider mb-2">
+         Balance: $78,000
+        </div>
+        <div class="flex items-baseline gap-1 mb-1"><span class="text-3xl font-display font-bold text-gold">$890</span> <span class="text-slate text-sm">/mo</span>
+        </div>
+        <div class="text-xs text-slate mb-5">
+         Custom non-streamlined plan
+        </div>
+        <div class="space-y-2.5 text-sm">
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Negotiated terms
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Hardship consideration
+         </div>
+         <div class="flex items-center gap-2 text-slate">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-mint"></i> Asset protection strategy
+         </div>
+        </div>
+       </div>
+       <div class="border-t border-white/5 p-4"><a href="#start" class="block text-center text-sm text-gold font-medium hover:text-goldLight transition-colors">Get Started →</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Timeline -->
+   <section id="timeline" class="py-20 px-4 bg-navyLight">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-14"><span class="text-gold text-xs font-semibold tracking-widest uppercase">Process</span>
+      <h2 id="timeline-title" class="font-display text-3xl sm:text-4xl font-bold mt-3" style="color:#e8e0d4">From Setup to Completion</h2>
+      <p class="text-slate mt-3 max-w-xl mx-auto">A clear, predictable path to resolving your tax balance.</p>
+     </div>
+     <div class="relative"><!-- Vertical Line -->
+      <div class="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 timeline-line rounded-full"></div><!-- Steps -->
+      <div class="space-y-8">
+       <div class="relative flex items-start gap-5 sm:gap-6 pl-2">
+        <div class="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gold flex items-center justify-center flex-shrink-0 shadow-lg shadow-gold/20"><span class="font-display font-bold text-navy text-sm">1</span>
+        </div>
+        <div class="pt-1.5">
+         <h3 class="font-display font-semibold text-lg" style="color:#e8e0d4">Free Consultation</h3>
+         <p class="text-slate text-sm mt-1 leading-relaxed">We review your balance, filing status, and income to determine the best agreement type. Takes about 15 minutes.</p><span class="inline-block mt-2 text-xs text-gold bg-gold/10 px-2 py-0.5 rounded-full">Day 1</span>
+        </div>
+       </div>
+       <div class="relative flex items-start gap-5 sm:gap-6 pl-2">
+        <div class="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-navyMid border-2 border-gold flex items-center justify-center flex-shrink-0"><span class="font-display font-bold text-gold text-sm">2</span>
+        </div>
+        <div class="pt-1.5">
+         <h3 class="font-display font-semibold text-lg" style="color:#e8e0d4">Document Preparation</h3>
+         <p class="text-slate text-sm mt-1 leading-relaxed">We prepare IRS Form 9465, financial statements if needed, and supporting documentation for your specific case.</p><span class="inline-block mt-2 text-xs text-gold bg-gold/10 px-2 py-0.5 rounded-full">Week 1–2</span>
+        </div>
+       </div>
+       <div class="relative flex items-start gap-5 sm:gap-6 pl-2">
+        <div class="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-navyMid border-2 border-mint flex items-center justify-center flex-shrink-0"><span class="font-display font-bold text-mint text-sm">3</span>
+        </div>
+        <div class="pt-1.5">
+         <h3 class="font-display font-semibold text-lg" style="color:#e8e0d4">IRS Submission</h3>
+         <p class="text-slate text-sm mt-1 leading-relaxed">Application submitted to the IRS. We handle all communications and respond to any IRS inquiries on your behalf.</p><span class="inline-block mt-2 text-xs text-mint bg-mint/10 px-2 py-0.5 rounded-full">Week 2–3</span>
+        </div>
+       </div>
+       <div class="relative flex items-start gap-5 sm:gap-6 pl-2">
+        <div class="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-navyMid border-2 border-mint flex items-center justify-center flex-shrink-0"><span class="font-display font-bold text-mint text-sm">4</span>
+        </div>
+        <div class="pt-1.5">
+         <h3 class="font-display font-semibold text-lg" style="color:#e8e0d4">Agreement Approval</h3>
+         <p class="text-slate text-sm mt-1 leading-relaxed">Once approved, you'll receive your payment schedule. Enforced collections stop and your payment plan officially begins.</p><span class="inline-block mt-2 text-xs text-mint bg-mint/10 px-2 py-0.5 rounded-full">Week 3–6</span>
+        </div>
+       </div>
+       <div class="relative flex items-start gap-5 sm:gap-6 pl-2">
+        <div class="relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-mint flex items-center justify-center flex-shrink-0 shadow-lg shadow-mint/20"><i data-lucide="check" class="w-5 h-5 text-navy"></i>
+        </div>
+        <div class="pt-1.5">
+         <h3 class="font-display font-semibold text-lg" style="color:#e8e0d4">Ongoing Compliance</h3>
+         <p class="text-slate text-sm mt-1 leading-relaxed">We monitor your plan, ensure payments are on track, and help with any IRS correspondence throughout the agreement.</p><span class="inline-block mt-2 text-xs text-cream/60 bg-cream/5 px-2 py-0.5 rounded-full">Ongoing</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 px-4 bg-navy grid-bg">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12"><span class="text-gold text-xs font-semibold tracking-widest uppercase">Questions</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mt-3" style="color:#e8e0d4">Frequently Asked</h2>
+     </div>
+     <div class="space-y-3" id="faq-container">
+      <div class="faq-item bg-navyMid border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-medium text-sm" style="color:#e8e0d4">Will the IRS stop collections once I have a payment plan?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-slate flex-shrink-0 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">Yes. Once an installment agreement is in place, the IRS will generally stop levies, wage garnishments, and other enforced collection actions as long as you remain compliant with the agreement terms.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navyMid border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-medium text-sm" style="color:#e8e0d4">Can I choose my monthly payment amount?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-slate flex-shrink-0 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">For guaranteed and streamlined agreements, the minimum payment is typically your balance divided by the remaining months on the collection statute. We'll negotiate the lowest acceptable amount for your situation.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navyMid border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-medium text-sm" style="color:#e8e0d4">What happens if I miss a payment?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-slate flex-shrink-0 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">Missing a payment can put your agreement in default. However, the IRS typically sends a notice before taking action, giving you time to catch up. We help you navigate any issues that arise during your plan.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-navyMid border border-white/5 rounded-xl overflow-hidden"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"> <span class="font-medium text-sm" style="color:#e8e0d4">Does interest continue during the payment plan?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-slate flex-shrink-0 transition-transform"></i> </button>
+       <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-slate text-sm leading-relaxed">Yes, interest and some penalties continue to accrue. However, the failure-to-pay penalty is reduced by half while an installment agreement is in effect, saving you money compared to not having an agreement.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Bottom CTA + Vote/Comment Widget -->
+   <section id="start" class="py-20 px-4 bg-navyLight relative overflow-hidden">
+    <div class="absolute inset-0 opacity-30 grid-bg"></div>
+    <div class="max-w-3xl mx-auto relative z-10">
+     <div class="text-center mb-14">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold to-mint flex items-center justify-center mx-auto mb-6 animate-pulse-glow"><i data-lucide="compass" class="w-7 h-7 text-navy"></i>
+      </div>
+      <h2 id="cta-title" class="font-display text-3xl sm:text-4xl font-bold mb-4" style="color:#e8e0d4">Create a plan that fits your reality.</h2>
+      <p class="text-slate max-w-lg mx-auto mb-8">Turn one large problem into manageable steps. Start your installment agreement today — no obligation, no judgment.</p><a href="#home" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gold text-navy font-semibold hover:bg-goldLight transition-colors animate-pulse-glow"> <i data-lucide="arrow-right-circle" class="w-5 h-5"></i> Start Your Plan Now </a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="mt-16 bg-navyMid border border-white/5 rounded-2xl p-6 sm:p-8">
+      <div class="text-center mb-6">
+       <h3 class="font-display font-semibold text-xl mb-1" style="color:#e8e0d4">Rate &amp; Comment</h3>
+       <p class="text-slate text-sm">How would you rate this service? Your feedback helps us improve.</p>
+      </div><!-- Reactions -->
+      <div class="flex items-center justify-center gap-3 mb-6" id="reactions-row"><button class="reaction-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl" data-reaction="thumbsup" aria-label="Thumbs up">👍</button> <button class="reaction-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl" data-reaction="heart" aria-label="Heart">❤️</button> <button class="reaction-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl" data-reaction="fire" aria-label="Fire">🔥</button> <button class="reaction-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl" data-reaction="clap" aria-label="Clap">👏</button> <button class="reaction-btn w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xl" data-reaction="star" aria-label="Star">⭐</button>
+      </div><!-- Reaction Counts -->
+      <div class="flex items-center justify-center gap-4 mb-6 text-xs text-slate" id="reaction-counts"></div><!-- Price Options -->
+      <div class="mb-6">
+       <p class="text-slate text-xs text-center mb-3">What would you pay for this service?</p>
+       <div class="flex flex-wrap items-center justify-center gap-2" id="price-options"><button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="49">$49</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="99">$99</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="149">$149</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="199">$199</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="249">$249</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="349">$349</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="499">$499</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="749">$749</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="999">$999</button> <button class="price-chip px-3 py-1.5 rounded-full border border-white/10 text-slate text-xs" data-price="1499">$1,499</button>
+       </div>
+      </div><!-- Comment Form -->
+      <form id="comment-form" class="mb-6">
+       <div class="flex gap-2"><label for="comment-input" class="sr-only">Your comment</label> <input type="text" id="comment-input" placeholder="Share your thoughts..." class="flex-1 bg-navy/60 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate/50 focus:outline-none focus:border-gold/40"> <button type="submit" id="comment-submit-btn" class="px-5 py-2.5 rounded-xl bg-gold text-navy font-semibold text-sm hover:bg-goldLight transition-colors flex items-center gap-1.5"> <i data-lucide="send" class="w-3.5 h-3.5"></i> Send </button>
+       </div>
+      </form><!-- Comments List -->
+      <div id="comments-list" class="space-y-3 max-h-64 overflow-y-auto"></div>
+      <div id="no-comments" class="text-center text-slate text-xs py-4">
+       No comments yet. Be the first!
+      </div><!-- Embed Note -->
+      <div class="mt-6 pt-4 border-t border-white/5 text-center"><span class="text-[10px] text-slate/40 tracking-wider uppercase">Embed Widget Here</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 px-4 bg-navy border-t border-white/5">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded-md bg-gradient-to-br from-gold to-mint flex items-center justify-center"><i data-lucide="route" class="w-3 h-3 text-navy"></i>
+      </div><span class="font-display font-semibold text-sm">PayPath Agreements</span>
+     </div>
+     <p class="text-slate text-xs">*Eligibility varies. This is informational only and does not constitute tax advice.</p>
+    </div>
+   </footer>
+  </div><!-- Toast -->
+  <div id="toast" class="toast-msg bg-navyMid border border-gold/30 text-gold"></div>
+  <script>
+// ===================== CONFIG & SDK =====================
+const defaultConfig = {
+  background_color: '#0f1a2e',
+  surface_color: '#1c2a4a',
+  text_color: '#e8e0d4',
+  primary_action_color: '#c9a84c',
+  secondary_action_color: '#4ecdc4',
+  font_family: 'Fraunces',
+  font_size: 16,
+  hero_title: "You don't have to pay it all at once.",
+  hero_subtitle: "Structured IRS payment plans that work.",
+  options_title: "Types of Installment Agreements",
+  plans_title: "Payment Plan Examples",
+  timeline_title: "From Setup to Completion",
+  cta_title: "Create a plan that fits your reality."
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  const root = document.getElementById('app-root');
+  if (!root) return;
+
+  // Colors
+  root.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.bg-navyMid, .option-card, .plan-card, .faq-item').forEach(el => {
+    el.style.backgroundColor = c.surface_color;
+  });
+  document.querySelectorAll('[style*="color:#e8e0d4"], .font-display').forEach(el => {
+    if (el.style.color === 'rgb(232, 224, 212)' || el.style.color === '#e8e0d4') {
+      el.style.color = c.text_color;
+    }
+  });
+
+  // Text content
+  const heroTitleEl = document.getElementById('hero-title');
+  if (heroTitleEl) { heroTitleEl.textContent = c.hero_title; heroTitleEl.style.color = c.text_color; }
+  const heroSubEl = document.getElementById('hero-subtitle');
+  if (heroSubEl) heroSubEl.textContent = c.hero_subtitle;
+  const optionsEl = document.getElementById('options-title');
+  if (optionsEl) { optionsEl.textContent = c.options_title; optionsEl.style.color = c.text_color; }
+  const plansEl = document.getElementById('plans-title');
+  if (plansEl) { plansEl.textContent = c.plans_title; plansEl.style.color = c.text_color; }
+  const timelineEl = document.getElementById('timeline-title');
+  if (timelineEl) { timelineEl.textContent = c.timeline_title; timelineEl.style.color = c.text_color; }
+  const ctaEl = document.getElementById('cta-title');
+  if (ctaEl) { ctaEl.textContent = c.cta_title; ctaEl.style.color = c.text_color; }
+
+  // Font
+  const fontStack = `${c.font_family}, Georgia, serif`;
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = fontStack;
+  });
+
+  // Font size
+  const base = c.font_size || 16;
+  if (heroTitleEl) heroTitleEl.style.fontSize = `${base * 3}px`;
+  if (heroSubEl) heroSubEl.style.fontSize = `${base * 1.2}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['options_title', config.options_title || defaultConfig.options_title],
+    ['plans_title', config.plans_title || defaultConfig.plans_title],
+    ['timeline_title', config.timeline_title || defaultConfig.timeline_title],
+    ['cta_title', config.cta_title || defaultConfig.cta_title]
+  ])
+});
+
+// ===================== DATA SDK =====================
+let allData = [];
+let userSessionId = 'user_' + Math.random().toString(36).substr(2, 9);
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactionCounts();
+    renderComments();
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+// ===================== WIDGET LOGIC =====================
+let selectedReaction = null;
+let selectedPrice = null;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Reactions
+document.getElementById('reactions-row').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.reaction-btn');
+  if (!btn) return;
+  const reaction = btn.dataset.reaction;
+
+  // Toggle
+  document.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('selected'));
+  if (selectedReaction === reaction) {
+    selectedReaction = null;
+  } else {
+    selectedReaction = reaction;
+    btn.classList.add('selected');
+  }
+
+  if (selectedReaction) {
+    if (allData.length >= 999) { showToast('Limit reached'); return; }
+    btn.style.opacity = '0.6';
+    const res = await window.dataSdk.create({ type: 'reaction', value: reaction, timestamp: new Date().toISOString(), user_id: userSessionId });
+    btn.style.opacity = '1';
+    if (res.isOk) showToast('Reaction saved!');
+    else showToast('Error saving reaction');
+  }
+});
+
+// Price
+document.getElementById('price-options').addEventListener('click', async (e) => {
+  const chip = e.target.closest('.price-chip');
+  if (!chip) return;
+  const price = chip.dataset.price;
+
+  document.querySelectorAll('.price-chip').forEach(c => c.classList.remove('selected-price'));
+  selectedPrice = price;
+  chip.classList.add('selected-price');
+
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  chip.style.opacity = '0.6';
+  const res = await window.dataSdk.create({ type: 'price_vote', value: price, timestamp: new Date().toISOString(), user_id: userSessionId });
+  chip.style.opacity = '1';
+  if (res.isOk) showToast('Vote recorded!');
+  else showToast('Error saving vote');
+});
+
+// Comments
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+
+  const btn = document.getElementById('comment-submit-btn');
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  const res = await window.dataSdk.create({ type: 'comment', value: text, timestamp: new Date().toISOString(), user_id: userSessionId });
+  btn.disabled = false;
+  btn.style.opacity = '1';
+
+  if (res.isOk) {
+    input.value = '';
+    showToast('Comment posted!');
+  } else {
+    showToast('Error posting comment');
+  }
+});
+
+function renderReactionCounts() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  reactions.forEach(r => { counts[r.value] = (counts[r.value] || 0) + 1; });
+  const container = document.getElementById('reaction-counts');
+  const emojiMap = { thumbsup: '👍', heart: '❤️', fire: '🔥', clap: '👏', star: '⭐' };
+  let html = '';
+  for (const [key, count] of Object.entries(counts)) {
+    html += `<span>${emojiMap[key] || key} ${count}</span>`;
+  }
+  container.innerHTML = html;
+}
+
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const list = document.getElementById('comments-list');
+  const noComments = document.getElementById('no-comments');
+
+  if (comments.length === 0) {
+    list.innerHTML = '';
+    noComments.style.display = 'block';
+    return;
+  }
+  noComments.style.display = 'none';
+
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  // Remove deleted
+  existingMap.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach((comment, i) => {
+    const id = comment.__backendId;
+    let el = list.querySelector(`[data-id="${id}"]`);
+    if (!el) {
+      el = document.createElement('div');
+      el.dataset.id = id;
+      el.className = 'bg-navy/40 border border-white/5 rounded-xl px-4 py-3';
+      list.appendChild(el);
+    }
+    const time = new Date(comment.timestamp);
+    const timeStr = time.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    el.innerHTML = `<p class="text-sm text-white/90">${escapeHtml(comment.value)}</p><span class="text-[10px] text-slate/50 mt-1 block">${timeStr}</span>`;
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ===================== FAQ TOGGLE =====================
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-answer');
+    const icon = btn.querySelector('[data-lucide]');
+    const isOpen = !answer.classList.contains('hidden');
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+    document.querySelectorAll('.faq-toggle [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+    document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (!isOpen) {
+      answer.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// ===================== MOBILE MENU =====================
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ===================== INTERSECTION OBSERVER =====================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-fade-up');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.option-card, .plan-card, .faq-item').forEach(el => {
+  el.style.opacity = '0';
+  observer.observe(el);
+});
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a4c24d51827c5',t:'MTc3NTU3ODE3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

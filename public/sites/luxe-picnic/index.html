@@ -1,1 +1,657 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/66983251-c780-42b1-bbbd-23a3e853f70b -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxePicnic Co.</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sand: '#D4C5B2',
+        linen: '#F5F0EB',
+        clay: '#B8A08C',
+        espresso: '#3D2E24',
+        blush: '#E8D5C4'
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond', 'serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+.app-root { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.anim-fade-up { opacity: 0; }
+.anim-fade-up.visible { animation: fadeUp 0.8s ease forwards; }
+.anim-fade-in { opacity: 0; }
+.anim-fade-in.visible { animation: fadeIn 1s ease forwards; }
+
+/* Glow hover */
+.glow-hover { transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.glow-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(180, 160, 140, 0.25), 0 0 40px rgba(212, 197, 178, 0.15);
+}
+
+/* Pricing card lift */
+.pricing-lift { transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.pricing-lift:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 80px rgba(180, 160, 140, 0.3), 0 0 50px rgba(232, 213, 196, 0.2);
+}
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 1px;
+  background: currentColor; transition: all 0.3s ease; transform: translateX(-50%);
+}
+.nav-link:hover::after { width: 100%; }
+
+/* Scrollbar */
+.app-root::-webkit-scrollbar { width: 6px; }
+.app-root::-webkit-scrollbar-track { background: #F5F0EB; }
+.app-root::-webkit-scrollbar-thumb { background: #D4C5B2; border-radius: 3px; }
+
+/* Reaction btn */
+.reaction-btn { transition: all 0.2s ease; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.selected { ring: 2px; transform: scale(1.1); }
+
+/* SVG patterns */
+.pattern-dots { background-image: radial-gradient(circle, #D4C5B2 1px, transparent 1px); background-size: 24px 24px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div class="app-root w-full bg-linen" id="appRoot">
+   <!-- Sticky Nav -->
+   <nav class="sticky top-0 z-50 bg-linen/90 backdrop-blur-md border-b border-sand/30" id="mainNav">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+     <a href="#home" class="font-display text-2xl font-semibold text-espresso tracking-wide" id="navBrand">LuxePicnic Co.</a>
+     <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">Home</a> <a href="#setups" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">Setups</a> <a href="#occasions" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">Occasions</a> <a href="#experience" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">Experience</a> <a href="#pricing" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">Pricing</a> <a href="#faq" class="nav-link font-body text-sm text-espresso/70 hover:text-espresso tracking-widest uppercase">FAQ</a> <a href="#book" class="font-body text-sm bg-espresso text-linen px-5 py-2 rounded-full hover:bg-espresso/90 transition-colors tracking-widest uppercase">Book Now</a>
+     </div><button class="md:hidden text-espresso" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3">
+     <a href="#home" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">Home</a> <a href="#setups" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">Setups</a> <a href="#occasions" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">Occasions</a> <a href="#experience" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">Experience</a> <a href="#pricing" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">Pricing</a> <a href="#faq" class="font-body text-sm text-espresso/70 py-1" onclick="this.parentElement.classList.add('hidden')">FAQ</a> <a href="#book" class="font-body text-sm bg-espresso text-linen px-5 py-2 rounded-full text-center" onclick="this.parentElement.classList.add('hidden')">Book Now</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative overflow-hidden" style="min-height: 90%;">
+    <!-- Background Image --> <img src="https://images.unsplash.com/photo-1504674900969-f2df05b3ccdd?w=1200&amp;h=800&amp;fit=crop" alt="Luxury picnic setup" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.display='none';">
+    <div class="absolute inset-0 bg-gradient-to-b from-linen/40 via-linen/60 to-blush/50"></div><!-- SVG decorative elements -->
+    <svg class="absolute top-10 left-10 opacity-20" width="120" height="120" viewbox="0 0 120 120" fill="none">
+     <circle cx="60" cy="60" r="58" stroke="#B8A08C" stroke-width="0.5" /> <circle cx="60" cy="60" r="40" stroke="#B8A08C" stroke-width="0.5" /> <circle cx="60" cy="60" r="20" stroke="#B8A08C" stroke-width="0.5" />
+    </svg>
+    <svg class="absolute bottom-20 right-10 opacity-15" width="180" height="60" viewbox="0 0 180 60" fill="none">
+     <path d="M0 30 Q45 0 90 30 Q135 60 180 30" stroke="#D4C5B2" stroke-width="0.8" fill="none" /> <path d="M0 35 Q45 5 90 35 Q135 65 180 35" stroke="#D4C5B2" stroke-width="0.5" fill="none" />
+    </svg>
+    <div class="relative max-w-5xl mx-auto px-6 flex flex-col items-center justify-center text-center" style="min-height: 90%;">
+     <p class="font-body text-xs tracking-[0.4em] uppercase text-clay mb-8 anim-fade-up" style="animation-delay: 0.2s">Moments designed to feel effortless</p>
+     <h1 class="font-display text-5xl sm:text-7xl md:text-8xl font-light text-espresso leading-tight mb-6 anim-fade-up" id="heroTitle" style="animation-delay: 0.4s">The setting makes<br>
+       the moment.</h1>
+     <p class="font-body text-lg text-espresso/60 font-light max-w-md mb-12 anim-fade-up" id="heroSubtitle" style="animation-delay: 0.6s">Luxury picnics designed with intention.</p>
+     <div class="flex flex-col sm:flex-row gap-4 anim-fade-up" style="animation-delay: 0.8s">
+      <a href="#book" class="font-body text-sm bg-espresso text-linen px-8 py-3.5 rounded-full hover:bg-espresso/90 transition-all tracking-widest uppercase hover:shadow-lg">Book Now</a> <a href="#setups" class="font-body text-sm border border-espresso/30 text-espresso px-8 py-3.5 rounded-full hover:bg-espresso/5 transition-all tracking-widest uppercase">View Setups</a>
+     </div><!-- Decorative leaf SVG -->
+     <svg class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20 anim-fade-in" style="animation-delay:1.2s" width="40" height="60" viewbox="0 0 40 60" fill="none">
+      <path d="M20 0 C20 0 0 20 0 40 C0 52 9 60 20 60 C31 60 40 52 40 40 C40 20 20 0 20 0Z" fill="#B8A08C" opacity="0.3" /> <line x1="20" y1="5" x2="20" y2="55" stroke="#B8A08C" stroke-width="0.5" />
+     </svg>
+    </div>
+   </section><!-- Setups -->
+   <section id="setups" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-4">Our Collection</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4">Picnic Styles</h2>
+      <div class="w-16 h-px bg-sand mx-auto"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Setup 1 -->
+      <div class="glow-hover rounded-2xl overflow-hidden bg-white/60 backdrop-blur-sm border border-sand/30 anim-fade-up"><img src="https://images.unsplash.com/photo-1469526868935-0a63138e14b1?w=500&amp;h=400&amp;fit=crop" alt="Garden Soirée picnic setup" class="h-56 w-full object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='#F5E6D3';">
+       <div class="p-6 relative">
+        <div class="absolute top-4 right-4 font-body text-xs bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full text-espresso/60 tracking-wider uppercase">
+         Intimate
+        </div>
+        <h3 class="font-display text-2xl text-espresso mb-2">The Garden Soirée</h3>
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">Lush florals, soft cushions, and earth-toned linens. Perfect for intimate gatherings under open sky.</p>
+       </div>
+      </div><!-- Setup 2 -->
+      <div class="glow-hover rounded-2xl overflow-hidden bg-white/60 backdrop-blur-sm border border-sand/30 anim-fade-up" style="animation-delay: 0.15s"><img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=500&amp;h=400&amp;fit=crop" alt="Sunset Terrace picnic" class="h-56 w-full object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='#E8D5C4';">
+       <div class="p-6 relative">
+        <div class="absolute top-4 right-4 font-body text-xs bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full text-espresso/60 tracking-wider uppercase">
+         Scenic
+        </div>
+        <h3 class="font-display text-2xl text-espresso mb-2">The Sunset Terrace</h3>
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">Warm-glow lanterns, rattan textures, and curated grazing. A golden hour masterpiece.</p>
+       </div>
+      </div><!-- Setup 3 -->
+      <div class="glow-hover rounded-2xl overflow-hidden bg-white/60 backdrop-blur-sm border border-sand/30 anim-fade-up" style="animation-delay: 0.3s"><img src="https://images.unsplash.com/photo-1551632786-26627ddcb491?w=500&amp;h=400&amp;fit=crop" alt="Estate Affair luxury picnic" class="h-56 w-full object-cover" loading="lazy" onerror="console.error('Image failed:', this.src); this.style.background='#D4C5B2';">
+       <div class="p-6 relative">
+        <div class="absolute top-4 right-4 font-body text-xs bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full text-espresso/60 tracking-wider uppercase">
+         Grand
+        </div>
+        <h3 class="font-display text-2xl text-espresso mb-2">The Estate Affair</h3>
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">Vintage silver, draped canopies, and fine china. The pinnacle of outdoor elegance.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Occasions -->
+   <section id="occasions" class="py-24 px-6 bg-gradient-to-b from-blush/30 to-linen relative">
+    <svg class="absolute top-0 left-0 w-full opacity-10" height="60" viewbox="0 0 1200 60" preserveaspectratio="none">
+     <path d="M0 60 Q300 0 600 30 Q900 60 1200 0 L1200 0 L0 0 Z" fill="#D4C5B2" />
+    </svg>
+    <div class="max-w-6xl mx-auto relative">
+     <div class="text-center mb-16 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-4">Perfect For</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4">Every Occasion</h2>
+      <div class="w-16 h-px bg-sand mx-auto"></div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up overflow-hidden">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="#B8A08C" opacity="0.8">
+         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Proposals</h3>
+       <p class="font-body text-xs text-espresso/40">Unforgettable yes</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.1s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <path d="M7 18c-1.26 0-2.4.2-3.4.57M12 18c0 .55-.45 1-1 1H9c-.55 0-1-.45-1-1v-1c0-.55.45-1 1-1h2c.55 0 1 .45 1 1v1zM17 18c1.26 0 2.4.2 3.4.57M12 2v4M7 6h10M6 10h12v8H6zM12 18v3M9 21h6" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Anniversaries</h3>
+       <p class="font-body text-xs text-espresso/40">Celebrate your story</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.2s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <circle cx="12" cy="8" r="3" /><path d="M7 14c0-1.657 2.239-3 5-3s5 1.343 5 3" /><circle cx="12" cy="12" r="10" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Birthdays</h3>
+       <p class="font-body text-xs text-espresso/40">Elevated celebrations</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.3s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z" /><path d="M12 6v6l4 2" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Baby Showers</h3>
+       <p class="font-body text-xs text-espresso/40">Tender &amp; beautiful</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.1s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <circle cx="12" cy="13" r="8" /><path d="M19 19l3 3M1 11a11 11 0 0110-11" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Brand Shoots</h3>
+       <p class="font-body text-xs text-espresso/40">Content-ready sets</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.2s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M16 3a4 4 0 0 1 0 8 4 4 0 0 1 0-8z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Corporate</h3>
+       <p class="font-body text-xs text-espresso/40">Impress your team</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.3s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="#B8A08C" opacity="0.8">
+         <path d="M12 2l1.41 4.41L18 7.41l-4.59.59L12 13l-1.41-4.41L6 7.41l4.59-.59L12 2z" /><path d="M5 19l.94-2.81 2.94.35-2.06 1.74-.82.72z" /><path d="M19 19l-.94-2.81-2.94.35 2.06 1.74.82.72z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Date Nights</h3>
+       <p class="font-body text-xs text-espresso/40">Romance, elevated</p>
+      </div>
+      <div class="glow-hover text-center p-8 rounded-2xl bg-white/50 backdrop-blur-sm border border-sand/20 anim-fade-up" style="animation-delay:0.4s">
+       <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blush/50 flex items-center justify-center flex-shrink-0">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#B8A08C" stroke-width="1.5" opacity="0.8">
+         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+        </svg>
+       </div>
+       <h3 class="font-display text-lg text-espresso mb-1">Graduations</h3>
+       <p class="font-body text-xs text-espresso/40">Honor milestones</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Experience -->
+   <section id="experience" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-4">The Details</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4">What's Included</h2>
+      <div class="w-16 h-px bg-sand mx-auto"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="layout" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Setup &amp; Layout Design</h3>
+        <p class="font-body text-sm text-espresso/50">Custom floor plan, furniture placement, and spatial design tailored to your venue.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up" style="animation-delay:0.1s">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="flower-2" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Décor &amp; Florals</h3>
+        <p class="font-body text-sm text-espresso/50">Seasonal arrangements, curated textiles, cushions, and ambient lighting.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up" style="animation-delay:0.15s">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="utensils" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Grazing &amp; Beverages</h3>
+        <p class="font-body text-sm text-espresso/50">Artisan charcuterie, seasonal fruits, and curated drink pairings.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up" style="animation-delay:0.2s">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="sparkles" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Full Styling &amp; Teardown</h3>
+        <p class="font-body text-sm text-espresso/50">We handle everything. Arrive, enjoy, and leave — effortlessly.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up" style="animation-delay:0.25s">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="camera" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Photo-Ready Moments</h3>
+        <p class="font-body text-sm text-espresso/50">Every angle designed for stunning, share-worthy memories.</p>
+       </div>
+      </div>
+      <div class="flex items-start gap-5 p-6 rounded-xl bg-white/40 border border-sand/20 anim-fade-up" style="animation-delay:0.3s">
+       <div class="w-10 h-10 rounded-full bg-blush/40 flex items-center justify-center flex-shrink-0"><i data-lucide="heart" style="width:18px;height:18px;color:#3D2E24;opacity:0.6;"></i>
+       </div>
+       <div>
+        <h3 class="font-display text-xl text-espresso mb-1">Personal Concierge</h3>
+        <p class="font-body text-sm text-espresso/50">Dedicated planner from first inquiry to final farewell.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-24 px-6 bg-gradient-to-b from-linen to-blush/20">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-4">Investment</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4">Pricing</h2>
+      <div class="w-16 h-px bg-sand mx-auto"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Classic -->
+      <div class="pricing-lift rounded-2xl bg-white/70 backdrop-blur-sm border border-sand/30 overflow-hidden anim-fade-up">
+       <div class="p-8 text-center border-b border-sand/20">
+        <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-3">Classic</p>
+        <h3 class="font-display text-3xl text-espresso mb-1">$350</h3>
+        <p class="font-body text-xs text-espresso/40">Simple Setup</p>
+       </div>
+       <div class="p-8">
+        <ul class="space-y-3">
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Blanket &amp; cushion setup</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Basic floral accents</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>2-hour setup duration</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Up to 4 guests</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Full teardown included</li>
+        </ul><a href="#book" class="block mt-8 text-center font-body text-sm border border-espresso/30 text-espresso px-6 py-3 rounded-full hover:bg-espresso/5 transition-all tracking-widest uppercase">Select</a>
+       </div>
+      </div><!-- Signature -->
+      <div class="pricing-lift rounded-2xl bg-white/90 backdrop-blur-sm border-2 border-sand overflow-hidden relative anim-fade-up" style="animation-delay:0.15s">
+       <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sand via-clay to-sand"></div>
+       <div class="absolute top-4 right-4 font-body text-xs bg-espresso text-linen px-3 py-1 rounded-full tracking-wider uppercase">
+        Popular
+       </div>
+       <div class="p-8 text-center border-b border-sand/20">
+        <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-3">Signature</p>
+        <h3 class="font-display text-3xl text-espresso mb-1">$650</h3>
+        <p class="font-body text-xs text-espresso/40">Styled Experience</p>
+       </div>
+       <div class="p-8">
+        <ul class="space-y-3">
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>Full styled tablescape</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>Premium florals &amp; candles</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>Grazing board for 6</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>3-hour setup duration</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>Up to 8 guests</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/70"><i data-lucide="check" style="width:14px;height:14px;color:#3D2E24;flex-shrink:0;"></i>Bluetooth speaker</li>
+        </ul><a href="#book" class="block mt-8 text-center font-body text-sm bg-espresso text-linen px-6 py-3 rounded-full hover:bg-espresso/90 transition-all tracking-widest uppercase">Select</a>
+       </div>
+      </div><!-- Luxury -->
+      <div class="pricing-lift rounded-2xl bg-white/70 backdrop-blur-sm border border-sand/30 overflow-hidden anim-fade-up" style="animation-delay:0.3s">
+       <div class="p-8 text-center border-b border-sand/20">
+        <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-3">Luxury</p>
+        <h3 class="font-display text-3xl text-espresso mb-1">$1,200</h3>
+        <p class="font-body text-xs text-espresso/40">Full Premium Event</p>
+       </div>
+       <div class="p-8">
+        <ul class="space-y-3">
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Bespoke theme design</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Luxury florals &amp; draping</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Full catering &amp; bar</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Up to 20 guests</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Live musician option</li>
+         <li class="flex items-center gap-3 font-body text-sm text-espresso/60"><i data-lucide="check" style="width:14px;height:14px;color:#B8A08C;flex-shrink:0;"></i>Personal concierge</li>
+        </ul><a href="#book" class="block mt-8 text-center font-body text-sm border border-espresso/30 text-espresso px-6 py-3 rounded-full hover:bg-espresso/5 transition-all tracking-widest uppercase">Select</a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-4">Questions</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4">FAQ</h2>
+      <div class="w-16 h-px bg-sand mx-auto"></div>
+     </div>
+     <div class="space-y-4" id="faqContainer">
+      <div class="faq-item rounded-xl border border-sand/30 bg-white/50 overflow-hidden anim-fade-up">
+       <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display text-lg text-espresso">How far in advance should I book?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#B8A08C;transition:transform 0.3s;flex-shrink:0;"></i> </button>
+       <div class="faq-answer hidden px-6 pb-6">
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">We recommend booking at least 2–3 weeks in advance for weekday events and 4–6 weeks for weekends. Peak seasons fill quickly!</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl border border-sand/30 bg-white/50 overflow-hidden anim-fade-up" style="animation-delay:0.1s">
+       <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display text-lg text-espresso">What happens if it rains?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#B8A08C;transition:transform 0.3s;flex-shrink:0;"></i> </button>
+       <div class="faq-answer hidden px-6 pb-6">
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">We monitor weather closely. If rain is expected, we offer a reschedule at no cost or can arrange a covered/indoor alternative setup.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl border border-sand/30 bg-white/50 overflow-hidden anim-fade-up" style="animation-delay:0.2s">
+       <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display text-lg text-espresso">Can I customize the menu?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#B8A08C;transition:transform 0.3s;flex-shrink:0;"></i> </button>
+       <div class="faq-answer hidden px-6 pb-6">
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">Absolutely. All dietary preferences and allergies are accommodated. We work with you to create the perfect spread.</p>
+       </div>
+      </div>
+      <div class="faq-item rounded-xl border border-sand/30 bg-white/50 overflow-hidden anim-fade-up" style="animation-delay:0.3s">
+       <button class="w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display text-lg text-espresso">Do you serve alcohol?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#B8A08C;transition:transform 0.3s;flex-shrink:0;"></i> </button>
+       <div class="faq-answer hidden px-6 pb-6">
+        <p class="font-body text-sm text-espresso/50 leading-relaxed">We provide non-alcoholic beverages by default. BYOB is welcome, or our Luxury tier includes a full curated bar service.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Vote + Comment Widget (Bottom CTA) -->
+   <section id="book" class="py-24 px-6 bg-gradient-to-b from-linen to-blush/30 relative">
+    <svg class="absolute top-0 left-0 w-full opacity-10" height="40" viewbox="0 0 1200 40" preserveaspectratio="none">
+     <path d="M0 40 Q300 0 600 20 Q900 40 1200 0 L1200 0 L0 0 Z" fill="#D4C5B2" />
+    </svg>
+    <div class="max-w-3xl mx-auto relative">
+     <div class="text-center mb-12 anim-fade-up">
+      <h2 class="font-display text-4xl sm:text-5xl font-light text-espresso mb-4" id="bottomCtaText">Create a moment worth remembering.</h2>
+      <p class="font-body text-sm text-espresso/50 mb-8">Share your thoughts, vote on pricing, and leave a note.</p>
+     </div><!-- Embed Widget -->
+     <div class="rounded-2xl bg-white/70 backdrop-blur-sm border border-sand/30 p-8 anim-fade-up">
+      <p class="font-body text-xs tracking-[0.3em] uppercase text-clay mb-6 text-center">Embed Widget Here</p><!-- Reactions -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8" id="reactionsBar">
+       <button class="reaction-btn px-4 py-2 rounded-full bg-blush/30 border border-sand/30 font-body text-sm text-espresso/70 flex items-center gap-2" onclick="castReaction('😍')">😍 <span id="react-😍">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full bg-blush/30 border border-sand/30 font-body text-sm text-espresso/70 flex items-center gap-2" onclick="castReaction('🌿')">🌿 <span id="react-🌿">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full bg-blush/30 border border-sand/30 font-body text-sm text-espresso/70 flex items-center gap-2" onclick="castReaction('✨')">✨ <span id="react-✨">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full bg-blush/30 border border-sand/30 font-body text-sm text-espresso/70 flex items-center gap-2" onclick="castReaction('🥂')">🥂 <span id="react-🥂">0</span></button> <button class="reaction-btn px-4 py-2 rounded-full bg-blush/30 border border-sand/30 font-body text-sm text-espresso/70 flex items-center gap-2" onclick="castReaction('💐')">💐 <span id="react-💐">0</span></button>
+      </div><!-- Price Vote -->
+      <div class="mb-8">
+       <p class="font-body text-sm text-espresso/60 text-center mb-4">What would you pay for a luxury picnic?</p>
+       <div class="flex flex-wrap justify-center gap-2" id="priceVoteBar">
+        <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$100')">$100 <span id="pv-$100" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$200')">$200 <span id="pv-$200" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$350')">$350 <span id="pv-$350" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$500')">$500 <span id="pv-$500" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$650')">$650 <span id="pv-$650" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$800')">$800 <span id="pv-$800" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$1000')">$1000 <span id="pv-$1000" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$1200')">$1200 <span id="pv-$1200" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$1500')">$1500 <span id="pv-$1500" class="text-clay">0</span></button> <button class="reaction-btn px-3 py-1.5 rounded-full bg-white border border-sand/40 font-body text-xs text-espresso/60" onclick="castPriceVote('$2000+')">$2000+ <span id="pv-$2000+" class="text-clay">0</span></button>
+       </div>
+      </div><!-- Comment Form -->
+      <form id="commentForm" class="mb-6" onsubmit="submitComment(event)">
+       <div class="flex gap-3">
+        <input type="text" id="commentAuthor" placeholder="Your name" class="font-body text-sm bg-white border border-sand/40 rounded-full px-4 py-2.5 text-espresso w-32 focus:outline-none focus:border-clay" required> <input type="text" id="commentText" placeholder="Leave a note..." class="font-body text-sm bg-white border border-sand/40 rounded-full px-4 py-2.5 text-espresso flex-1 focus:outline-none focus:border-clay" required> <button type="submit" id="commentSubmitBtn" class="font-body text-sm bg-espresso text-linen px-6 py-2.5 rounded-full hover:bg-espresso/90 transition-colors tracking-wider">Post</button>
+       </div>
+      </form><!-- Comments List -->
+      <div id="commentsList" class="space-y-3 max-h-64 overflow-y-auto"></div><!-- Loading toast -->
+      <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-espresso text-linen font-body text-sm px-6 py-3 rounded-full shadow-lg z-50"></div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 px-6 border-t border-sand/30">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-display text-lg text-espresso" id="footerBrand">LuxePicnic Co.</p>
+     <p class="font-body text-xs text-espresso/40">Moments designed to feel effortless. © 2025</p>
+     <div class="flex gap-4">
+      <a href="#" class="text-espresso/40 hover:text-espresso transition-colors"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" class="text-espresso/40 hover:text-espresso transition-colors"><i data-lucide="facebook" style="width:18px;height:18px;"></i></a> <a href="#" class="text-espresso/40 hover:text-espresso transition-colors"><i data-lucide="mail" style="width:18px;height:18px;"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div><!-- end app-root -->
+  <script>
+// ========== CONFIG & ELEMENT SDK ==========
+const defaultConfig = {
+  brand_name: 'LuxePicnic Co.',
+  hero_title: 'The setting makes the moment.',
+  hero_subtitle: 'Luxury picnics designed with intention.',
+  bottom_cta_text: 'Create a moment worth remembering.',
+  background_color: '#F5F0EB',
+  surface_color: '#FFFFFF',
+  text_color: '#3D2E24',
+  primary_action_color: '#3D2E24',
+  secondary_action_color: '#B8A08C',
+  font_family: 'Cormorant Garamond',
+  font_size: 16
+};
+
+function applyConfig(cfg) {
+  const c = { ...defaultConfig, ...cfg };
+  const root = document.getElementById('appRoot');
+
+  // Text
+  document.getElementById('navBrand').textContent = c.brand_name;
+  document.getElementById('footerBrand').textContent = c.brand_name;
+  document.getElementById('heroTitle').innerHTML = c.hero_title.replace(/\n/g, '<br>');
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle;
+  document.getElementById('bottomCtaText').textContent = c.bottom_cta_text;
+
+  // Colors
+  root.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.pricing-lift, .glow-hover, .faq-item').forEach(el => {
+    el.style.borderColor = c.secondary_action_color + '50';
+  });
+
+  // Font
+  const fontStack = `${c.font_family}, Cormorant Garamond, serif`;
+  document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => {
+    el.style.fontFamily = fontStack;
+  });
+
+  // Font size
+  const base = c.font_size;
+  document.querySelectorAll('.font-body').forEach(el => {
+    // Keep relative sizing
+  });
+  const h1 = document.querySelector('h1');
+  if (h1) h1.style.fontSize = `${base * 3.5}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (cfg) => applyConfig(cfg),
+  mapToCapabilities: (cfg) => ({
+    recolorables: [
+      { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }},
+      { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }},
+      { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }},
+      { get: () => cfg.primary_action_color || defaultConfig.primary_action_color, set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }},
+      { get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }}
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => cfg.font_family || defaultConfig.font_family,
+      set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => cfg.font_size || defaultConfig.font_size,
+      set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (cfg) => new Map([
+    ['brand_name', cfg.brand_name || defaultConfig.brand_name],
+    ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+    ['bottom_cta_text', cfg.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// ========== DATA SDK ==========
+let allRecords = [];
+
+const reactionEmojis = ['😍','🌿','✨','🥂','💐'];
+const priceOptions = ['$100','$200','$350','$500','$650','$800','$1000','$1200','$1500','$2000+'];
+
+function renderWidget(data) {
+  // Count reactions
+  const rCounts = {};
+  reactionEmojis.forEach(e => rCounts[e] = 0);
+  const pvCounts = {};
+  priceOptions.forEach(p => pvCounts[p] = 0);
+  const comments = [];
+
+  data.forEach(r => {
+    if (r.type === 'reaction' && r.reaction) rCounts[r.reaction] = (rCounts[r.reaction] || 0) + 1;
+    if (r.type === 'price_vote' && r.price_vote) pvCounts[r.price_vote] = (pvCounts[r.price_vote] || 0) + 1;
+    if (r.type === 'comment') comments.push(r);
+  });
+
+  // Update reaction counts
+  reactionEmojis.forEach(e => {
+    const el = document.getElementById('react-' + e);
+    if (el) el.textContent = rCounts[e];
+  });
+
+  // Update price vote counts
+  priceOptions.forEach(p => {
+    const el = document.getElementById('pv-' + p);
+    if (el) el.textContent = pvCounts[p];
+  });
+
+  // Render comments
+  const list = document.getElementById('commentsList');
+  const existingMap = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const sortedComments = comments.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  sortedComments.forEach(c => {
+    if (existingMap.has(c.__backendId)) {
+      existingMap.delete(c.__backendId);
+    } else {
+      const div = document.createElement('div');
+      div.dataset.id = c.__backendId;
+      div.className = 'flex items-start gap-3 p-4 rounded-xl bg-blush/20 border border-sand/20';
+      const initial = (c.author || '?')[0].toUpperCase();
+      div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-clay/30 flex items-center justify-center flex-shrink-0">
+          <span class="font-display text-sm text-espresso">${initial}</span>
+        </div>
+        <div>
+          <p class="font-body text-xs text-espresso/40 mb-1">${c.author || 'Anonymous'}</p>
+          <p class="font-body text-sm text-espresso/70">${c.comment || ''}</p>
+        </div>
+      `;
+      list.prepend(div);
+    }
+  });
+  existingMap.forEach(el => el.remove());
+}
+
+const dataHandler = {
+  onDataChanged(data) {
+    allRecords = data;
+    renderWidget(data);
+  }
+};
+
+(async () => {
+  const res = await window.dataSdk.init(dataHandler);
+  if (!res.isOk) console.error('Data SDK init failed');
+})();
+
+function showToast(msg, ms = 2000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  setTimeout(() => t.classList.add('hidden'), ms);
+}
+
+async function castReaction(emoji) {
+  if (allRecords.length >= 999) { showToast('Limit reached'); return; }
+  const res = await window.dataSdk.create({ type: 'reaction', reaction: emoji, comment: '', author: '', price_vote: '', created_at: new Date().toISOString() });
+  if (!res.isOk) showToast('Could not save reaction');
+}
+
+async function castPriceVote(price) {
+  if (allRecords.length >= 999) { showToast('Limit reached'); return; }
+  const res = await window.dataSdk.create({ type: 'price_vote', price_vote: price, reaction: '', comment: '', author: '', created_at: new Date().toISOString() });
+  if (!res.isOk) showToast('Could not save vote');
+}
+
+async function submitComment(e) {
+  e.preventDefault();
+  if (allRecords.length >= 999) { showToast('Limit reached'); return; }
+  const author = document.getElementById('commentAuthor').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  if (!author || !text) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true; btn.textContent = '...';
+  const res = await window.dataSdk.create({ type: 'comment', comment: text, author, reaction: '', price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (res.isOk) { document.getElementById('commentAuthor').value = ''; document.getElementById('commentText').value = ''; }
+  else showToast('Could not post comment');
+}
+
+// ========== FAQ Toggle ==========
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('[data-lucide]');
+  const isOpen = !answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+  document.querySelectorAll('.faq-item [data-lucide]').forEach(i => i.style.transform = 'rotate(0deg)');
+  if (!isOpen) { answer.classList.remove('hidden'); icon.style.transform = 'rotate(180deg)'; }
+}
+
+// ========== Scroll Animations ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim-fade-up, .anim-fade-in').forEach(el => observer.observe(el));
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a5363941427c5',t:'MTc3NTU3ODQ3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

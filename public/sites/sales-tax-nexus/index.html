@@ -1,1 +1,945 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/4a6156fb-6c8a-41ea-a7d6-07c9e3073bfa -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusPro Sales Tax</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        nexus: {
+          bg: '#0a0e1a',
+          surface: '#111827',
+          blue: '#00b4ff',
+          cyan: '#06d6a0',
+          text: '#e2e8f0'
+        }
+      }
+    }
+  }
+}
+</script>
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0e1a; }
+::-webkit-scrollbar-thumb { background: #00b4ff44; border-radius: 3px; }
+
+/* Animations */
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.08; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dotPing {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes scanLine {
+  0% { top: -2px; }
+  100% { top: 100%; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes barGrow {
+  from { width: 0; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px #00b4ff33; }
+  50% { box-shadow: 0 0 40px #00b4ff66; }
+}
+
+.anim-fade-up { animation: fadeUp 0.7s ease-out both; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+.anim-delay-4 { animation-delay: 0.4s; }
+.anim-delay-5 { animation-delay: 0.5s; }
+.anim-delay-6 { animation-delay: 0.6s; }
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0,180,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 4s ease-in-out infinite;
+}
+
+.glow-card {
+  background: linear-gradient(135deg, #111827 0%, #0f172a 100%);
+  border: 1px solid #00b4ff22;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glow-card:hover {
+  border-color: #00b4ff66;
+  box-shadow: 0 0 30px #00b4ff22, inset 0 1px 0 #00b4ff22;
+  transform: translateY(-4px);
+}
+
+.state-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  position: absolute;
+  transition: all 0.3s ease;
+}
+.state-dot::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 1px solid currentColor;
+  animation: dotPing 2s ease-out infinite;
+  opacity: 0.4;
+}
+.state-dot:hover { transform: scale(2); z-index: 10; }
+
+.scan-line::after {
+  content: ''; position: absolute; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, #00b4ff44, transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+.nav-link {
+  position: relative; padding: 0.25rem 0;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 2px; background: #00b4ff;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.step-connector {
+  position: relative;
+}
+.step-connector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -24px;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, #00b4ff44, transparent);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00b4ff 0%, #0077cc 100%);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, #06d6a0 0%, #00b4ff 100%);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px #00b4ff44; }
+
+.btn-outline {
+  border: 1px solid #00b4ff66;
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  background: #00b4ff11;
+  border-color: #00b4ff;
+  transform: translateY(-2px);
+}
+
+.vote-bar {
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reaction-btn {
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.reaction-btn:hover { transform: scale(1.15); border-color: #00b4ff44; }
+.reaction-btn.selected { border-color: #00b4ff; background: #00b4ff22; }
+
+/* Nexus trigger cards */
+.trigger-icon {
+  animation: float 3s ease-in-out infinite;
+}
+.trigger-icon:nth-child(2) { animation-delay: 0.5s; }
+.trigger-icon:nth-child(3) { animation-delay: 1s; }
+
+.faq-item { border-bottom: 1px solid #00b4ff11; }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.open .faq-answer { max-height: 500px; }
+.faq-item .faq-chevron { transition: transform 0.3s ease; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+.toast-msg {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 12px 24px; border-radius: 8px; z-index: 999;
+  background: #111827; border: 1px solid #00b4ff44; color: #e2e8f0;
+  animation: fadeUp 0.3s ease-out;
+  pointer-events: none;
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app-root" class="h-full w-full overflow-auto" style="background-color:#0a0e1a; color:#e2e8f0;"><!-- NAV -->
+   <nav id="main-nav" style="background:rgba(10,14,26,0.92); backdrop-filter:blur(12px); border-bottom:1px solid #00b4ff11;" class="fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"><a href="#home" class="flex items-center gap-2 font-bold text-lg tracking-tight" style="font-family:'Space Mono',monospace;"> <span style="color:#00b4ff;">⬡</span> <span id="nav-brand">NexusPro</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm"><a href="#home" class="nav-link" style="color:#e2e8f0;">Home</a> <a href="#nexus" class="nav-link" style="color:#e2e8f0;">Nexus</a> <a href="#states" class="nav-link" style="color:#e2e8f0;">States</a> <a href="#filings" class="nav-link" style="color:#e2e8f0;">Filings</a> <a href="#faq" class="nav-link" style="color:#e2e8f0;">FAQ</a> <a href="#cta" class="btn-primary px-4 py-2 rounded-lg text-white text-sm font-semibold relative z-10"> <span class="relative z-10">Get Compliant</span> </a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color:#e2e8f0;" aria-label="Toggle menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-3 text-sm"><a href="#home" class="block py-2" style="color:#e2e8f0;">Home</a> <a href="#nexus" class="block py-2" style="color:#e2e8f0;">Nexus</a> <a href="#states" class="block py-2" style="color:#e2e8f0;">States</a> <a href="#filings" class="block py-2" style="color:#e2e8f0;">Filings</a> <a href="#faq" class="block py-2" style="color:#e2e8f0;">FAQ</a> <a href="#cta" class="block py-2 font-semibold" style="color:#00b4ff;">Get Compliant</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative min-h-[90%] flex items-center pt-14">
+    <div class="grid-bg absolute inset-0"></div><!-- Decorative orbs -->
+    <div class="absolute top-1/4 left-1/4 w-72 h-72 rounded-full opacity-20 blur-3xl" style="background:#00b4ff;"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-56 h-56 rounded-full opacity-10 blur-3xl" style="background:#06d6a0;"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32 w-full">
+     <div class="max-w-3xl">
+      <div class="anim-fade-up inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6" style="background:#00b4ff15; border:1px solid #00b4ff33; color:#00b4ff;"><span class="w-2 h-2 rounded-full animate-pulse" style="background:#06d6a0;"></span> Multi-State Sales Tax Compliance
+      </div>
+      <h1 id="hero-title" class="anim-fade-up anim-delay-1 text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight mb-6" style="font-family:'Space Mono',monospace;">Selling across states?<br><span style="color:#00b4ff;">Stay compliant.</span></h1>
+      <p id="hero-subtitle" class="anim-fade-up anim-delay-2 text-lg md:text-xl max-w-xl mb-10" style="color:#94a3b8;">Sales tax handled across every jurisdiction.</p>
+      <div class="anim-fade-up anim-delay-3 flex flex-wrap gap-4"><a href="#nexus" class="btn-primary px-6 py-3 rounded-lg text-white font-semibold relative"> <span class="relative z-10 flex items-center gap-2"><i data-lucide="search" style="width:18px;height:18px;"></i> Check Nexus</span> </a> <a href="#cta" class="btn-outline px-6 py-3 rounded-lg font-semibold" style="color:#00b4ff;"> Get Compliant <span class="ml-1">→</span> </a>
+      </div><!-- Stat counters -->
+      <div class="anim-fade-up anim-delay-4 mt-16 grid grid-cols-3 gap-6 max-w-md">
+       <div>
+        <div class="text-2xl md:text-3xl font-bold" style="color:#00b4ff; font-family:'Space Mono',monospace;">
+         50
+        </div>
+        <div class="text-xs mt-1" style="color:#64748b;">
+         States Covered
+        </div>
+       </div>
+       <div>
+        <div class="text-2xl md:text-3xl font-bold" style="color:#06d6a0; font-family:'Space Mono',monospace;">
+         12K+
+        </div>
+        <div class="text-xs mt-1" style="color:#64748b;">
+         Jurisdictions
+        </div>
+       </div>
+       <div>
+        <div class="text-2xl md:text-3xl font-bold" style="color:#00b4ff; font-family:'Space Mono',monospace;">
+         99.8%
+        </div>
+        <div class="text-xs mt-1" style="color:#64748b;">
+         Accuracy Rate
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- NEXUS -->
+   <section id="nexus" class="relative py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4" style="background:#00b4ff15; border:1px solid #00b4ff33; color:#00b4ff;"><i data-lucide="zap" style="width:14px;height:14px;"></i> What Triggers Nexus
+      </div>
+      <h2 id="nexus-heading" class="text-3xl md:text-4xl font-bold" style="font-family:'Space Mono',monospace;">Understanding <span style="color:#00b4ff;">Nexus</span></h2>
+      <p class="mt-4 max-w-2xl mx-auto" style="color:#94a3b8;">Nexus is the connection between your business and a state that requires you to collect sales tax. Multiple triggers can create nexus obligations.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6"><!-- Physical Presence -->
+      <div class="glow-card rounded-xl p-6 relative overflow-hidden scan-line">
+       <div class="trigger-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#00b4ff15;"><i data-lucide="building-2" style="width:24px;height:24px;color:#00b4ff;"></i>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Physical Presence</h3>
+       <p class="text-sm leading-relaxed" style="color:#94a3b8;">Office, warehouse, employees, or inventory stored in-state. Even temporary presence at trade shows can trigger nexus in some states.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Office</span> <span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Warehouse</span> <span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Employees</span>
+       </div>
+      </div><!-- Economic Nexus -->
+      <div class="glow-card rounded-xl p-6 relative overflow-hidden scan-line">
+       <div class="trigger-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#06d6a015;"><i data-lucide="trending-up" style="width:24px;height:24px;color:#06d6a0;"></i>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Economic Nexus</h3>
+       <p class="text-sm leading-relaxed" style="color:#94a3b8;">Exceeding sales revenue or transaction thresholds. Most states set thresholds at $100K in sales or 200 transactions annually.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-2 py-1 rounded text-xs" style="background:#06d6a011; color:#06d6a0;">$100K Revenue</span> <span class="px-2 py-1 rounded text-xs" style="background:#06d6a011; color:#06d6a0;">200 Transactions</span>
+       </div>
+      </div><!-- Marketplace -->
+      <div class="glow-card rounded-xl p-6 relative overflow-hidden scan-line">
+       <div class="trigger-icon w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background:#00b4ff15;"><i data-lucide="shopping-cart" style="width:24px;height:24px;color:#00b4ff;"></i>
+       </div>
+       <h3 class="text-lg font-bold mb-2">Marketplace Nexus</h3>
+       <p class="text-sm leading-relaxed" style="color:#94a3b8;">Selling through marketplaces like Amazon or Shopify can create obligations. Facilitator laws shift collection duties to platforms in many states.</p>
+       <div class="mt-4 flex flex-wrap gap-2"><span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Amazon</span> <span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Shopify</span> <span class="px-2 py-1 rounded text-xs" style="background:#00b4ff11; color:#00b4ff;">Etsy</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- STATES MAP -->
+   <section id="states" class="relative py-20 md:py-28" style="background:linear-gradient(180deg, #0a0e1a 0%, #0d1525 50%, #0a0e1a 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4" style="background:#00b4ff15; border:1px solid #00b4ff33; color:#00b4ff;"><i data-lucide="map" style="width:14px;height:14px;"></i> Interactive Coverage
+      </div>
+      <h2 id="states-heading" class="text-3xl md:text-4xl font-bold" style="font-family:'Space Mono',monospace;"><span style="color:#00b4ff;">50-State</span> Coverage</h2>
+      <p class="mt-4 max-w-2xl mx-auto" style="color:#94a3b8;">Monitor nexus obligations and filing deadlines across all jurisdictions. Click any state to view compliance details.</p>
+     </div><!-- Map visualization -->
+     <div class="glow-card rounded-2xl p-6 md:p-10 relative overflow-hidden" style="animation:glowPulse 4s ease-in-out infinite;">
+      <div id="state-map" class="relative w-full" style="aspect-ratio:2/1; min-height:250px;"><!-- States rendered by JS -->
+      </div><!-- Map Legend -->
+      <div class="flex flex-wrap gap-4 mt-6 justify-center text-xs">
+       <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#06d6a0;"></span> Compliant
+       </div>
+       <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#f59e0b;"></span> Action Needed
+       </div>
+       <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#ef4444;"></span> Nexus Triggered
+       </div>
+       <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background:#64748b;"></span> No Nexus
+       </div>
+      </div>
+     </div><!-- State detail popup -->
+     <div id="state-detail" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,0.7);">
+      <div class="glow-card rounded-xl p-6 max-w-sm w-full relative"><button onclick="document.getElementById('state-detail').classList.add('hidden')" class="absolute top-3 right-3" style="color:#64748b;"> <i data-lucide="x" style="width:20px;height:20px;"></i> </button>
+       <h3 id="state-name" class="text-xl font-bold mb-2" style="font-family:'Space Mono',monospace;"></h3>
+       <div id="state-info" class="space-y-2 text-sm" style="color:#94a3b8;"></div>
+      </div>
+     </div><!-- State stats -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+      <div class="glow-card rounded-xl p-4 text-center">
+       <div class="text-2xl font-bold" style="color:#06d6a0; font-family:'Space Mono',monospace;">
+        45
+       </div>
+       <div class="text-xs mt-1" style="color:#64748b;">
+        States with Economic Nexus
+       </div>
+      </div>
+      <div class="glow-card rounded-xl p-4 text-center">
+       <div class="text-2xl font-bold" style="color:#f59e0b; font-family:'Space Mono',monospace;">
+        5
+       </div>
+       <div class="text-xs mt-1" style="color:#64748b;">
+        No Sales Tax States
+       </div>
+      </div>
+      <div class="glow-card rounded-xl p-4 text-center">
+       <div class="text-2xl font-bold" style="color:#00b4ff; font-family:'Space Mono',monospace;">
+        11K+
+       </div>
+       <div class="text-xs mt-1" style="color:#64748b;">
+        Tax Jurisdictions
+       </div>
+      </div>
+      <div class="glow-card rounded-xl p-4 text-center">
+       <div class="text-2xl font-bold" style="color:#ef4444; font-family:'Space Mono',monospace;">
+        Q1
+       </div>
+       <div class="text-xs mt-1" style="color:#64748b;">
+        Next Filing Period
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FILINGS -->
+   <section id="filings" class="relative py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4" style="background:#00b4ff15; border:1px solid #00b4ff33; color:#00b4ff;"><i data-lucide="file-text" style="width:14px;height:14px;"></i> Process
+      </div>
+      <h2 id="filings-heading" class="text-3xl md:text-4xl font-bold" style="font-family:'Space Mono',monospace;">Filing &amp; <span style="color:#00b4ff;">Reporting</span></h2>
+      <p class="mt-4 max-w-2xl mx-auto" style="color:#94a3b8;">Our streamlined 4-step process takes you from nexus determination to filed returns with zero hassle.</p>
+     </div>
+     <div class="grid md:grid-cols-4 gap-6">
+      <div class="glow-card rounded-xl p-6 relative">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-4" style="background:#00b4ff; color:#0a0e1a; font-family:'Space Mono',monospace;">
+        01
+       </div>
+       <h3 class="font-bold mb-2">Nexus Analysis</h3>
+       <p class="text-sm" style="color:#94a3b8;">We identify where your business has nexus across all 50 states based on physical and economic triggers.</p>
+      </div>
+      <div class="glow-card rounded-xl p-6 relative">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-4" style="background:#06d6a0; color:#0a0e1a; font-family:'Space Mono',monospace;">
+        02
+       </div>
+       <h3 class="font-bold mb-2">Registration</h3>
+       <p class="text-sm" style="color:#94a3b8;">We register your business with each required state's tax authority and obtain necessary permits.</p>
+      </div>
+      <div class="glow-card rounded-xl p-6 relative">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-4" style="background:#00b4ff; color:#0a0e1a; font-family:'Space Mono',monospace;">
+        03
+       </div>
+       <h3 class="font-bold mb-2">Tax Calculation</h3>
+       <p class="text-sm" style="color:#94a3b8;">Real-time tax rates applied at checkout covering state, county, city, and special district rates.</p>
+      </div>
+      <div class="glow-card rounded-xl p-6 relative">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mb-4" style="background:#06d6a0; color:#0a0e1a; font-family:'Space Mono',monospace;">
+        04
+       </div>
+       <h3 class="font-bold mb-2">Filing &amp; Remittance</h3>
+       <p class="text-sm" style="color:#94a3b8;">Automated return preparation and filing on your behalf. We handle remittance to each jurisdiction.</p>
+      </div>
+     </div><!-- Timeline -->
+     <div class="glow-card rounded-xl p-6 mt-10">
+      <h3 class="font-bold mb-4 text-sm" style="color:#00b4ff; font-family:'Space Mono',monospace;">TYPICAL TIMELINE</h3>
+      <div class="space-y-3">
+       <div class="flex items-center gap-4"><span class="text-xs font-mono w-16" style="color:#64748b;">Week 1</span>
+        <div class="flex-1 rounded-full h-3 overflow-hidden" style="background:#111827;">
+         <div class="h-full rounded-full" style="background:linear-gradient(90deg,#00b4ff,#06d6a0); width:100%; animation:barGrow 1.5s ease-out;"></div>
+        </div><span class="text-xs" style="color:#94a3b8;">Nexus Analysis</span>
+       </div>
+       <div class="flex items-center gap-4"><span class="text-xs font-mono w-16" style="color:#64748b;">Week 2-3</span>
+        <div class="flex-1 rounded-full h-3 overflow-hidden" style="background:#111827;">
+         <div class="h-full rounded-full" style="background:linear-gradient(90deg,#06d6a0,#00b4ff); width:75%; animation:barGrow 1.8s ease-out;"></div>
+        </div><span class="text-xs" style="color:#94a3b8;">Registration</span>
+       </div>
+       <div class="flex items-center gap-4"><span class="text-xs font-mono w-16" style="color:#64748b;">Week 3-4</span>
+        <div class="flex-1 rounded-full h-3 overflow-hidden" style="background:#111827;">
+         <div class="h-full rounded-full" style="background:linear-gradient(90deg,#00b4ff,#06d6a0); width:60%; animation:barGrow 2s ease-out;"></div>
+        </div><span class="text-xs" style="color:#94a3b8;">Integration &amp; Go-Live</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="relative py-20 md:py-28" style="background:linear-gradient(180deg, #0a0e1a 0%, #0d1525 50%, #0a0e1a 100%);">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold" style="font-family:'Space Mono',monospace;">Frequently Asked <span style="color:#00b4ff;">Questions</span></h2>
+     </div>
+     <div id="faq-list" class="space-y-0"><!-- FAQ items rendered by JS -->
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="cta" class="relative py-20 md:py-28">
+    <div class="absolute inset-0 opacity-30">
+     <div class="grid-bg absolute inset-0"></div>
+    </div>
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full opacity-15 blur-3xl" style="background:#00b4ff;"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6">
+     <div class="text-center mb-16">
+      <h2 id="bottom-cta-heading" class="text-3xl md:text-5xl font-bold mb-6" style="font-family:'Space Mono',monospace;">Simplify <span style="color:#00b4ff;">Multi-State</span> Compliance</h2>
+      <p class="text-lg max-w-xl mx-auto mb-8" style="color:#94a3b8;">Stop worrying about audits, missed filings, and incorrect tax rates. Let NexusPro handle it all.</p><a href="#cta" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-bold text-lg relative"> <span class="relative z-10 flex items-center gap-2"><i data-lucide="shield-check" style="width:22px;height:22px;"></i> Get Compliant Now</span> </a>
+     </div><!-- VOTE + COMMENT MODULE -->
+     <div class="glow-card rounded-2xl p-6 md:p-8 mt-8">
+      <div class="text-center mb-6">
+       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-3" style="background:#00b4ff15; border:1px solid #00b4ff33; color:#00b4ff;">
+        Embed Widget Here
+       </div>
+       <h3 class="text-xl font-bold" style="font-family:'Space Mono',monospace;">What would you pay for this?</h3>
+       <p class="text-sm mt-1" style="color:#64748b;">Vote on your ideal price point</p>
+      </div><!-- Reactions -->
+      <div class="flex justify-center gap-3 mb-6"><button class="reaction-btn rounded-lg px-3 py-2 text-center" style="background:#111827;" data-reaction="🔥" onclick="handleReaction('🔥')">
+        <div class="text-xl">
+         🔥
+        </div>
+        <div id="react-fire" class="text-xs mt-1" style="color:#64748b;">
+         0
+        </div></button> <button class="reaction-btn rounded-lg px-3 py-2 text-center" style="background:#111827;" data-reaction="💰" onclick="handleReaction('💰')">
+        <div class="text-xl">
+         💰
+        </div>
+        <div id="react-money" class="text-xs mt-1" style="color:#64748b;">
+         0
+        </div></button> <button class="reaction-btn rounded-lg px-3 py-2 text-center" style="background:#111827;" data-reaction="🚀" onclick="handleReaction('🚀')">
+        <div class="text-xl">
+         🚀
+        </div>
+        <div id="react-rocket" class="text-xs mt-1" style="color:#64748b;">
+         0
+        </div></button> <button class="reaction-btn rounded-lg px-3 py-2 text-center" style="background:#111827;" data-reaction="👍" onclick="handleReaction('👍')">
+        <div class="text-xl">
+         👍
+        </div>
+        <div id="react-thumbs" class="text-xs mt-1" style="color:#64748b;">
+         0
+        </div></button> <button class="reaction-btn rounded-lg px-3 py-2 text-center" style="background:#111827;" data-reaction="❤️" onclick="handleReaction('❤️')">
+        <div class="text-xl">
+         ❤️
+        </div>
+        <div id="react-heart" class="text-xs mt-1" style="color:#64748b;">
+         0
+        </div></button>
+      </div><!-- Price Vote -->
+      <div id="price-options" class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6"><!-- rendered by JS -->
+      </div><!-- Vote Results -->
+      <div id="vote-results" class="mb-8">
+       <div class="flex justify-between text-xs mb-2" style="color:#64748b;"><span>Price Distribution</span> <span id="total-votes">0 votes</span>
+       </div>
+       <div id="vote-bars" class="space-y-2"><!-- rendered by JS -->
+       </div>
+      </div><!-- Comment Form -->
+      <div class="border-t pt-6" style="border-color:#00b4ff11;">
+       <h4 class="font-bold mb-4 text-sm" style="font-family:'Space Mono',monospace; color:#00b4ff;">COMMENTS</h4>
+       <form id="comment-form" class="flex flex-col gap-3 mb-6"><input id="comment-name" type="text" placeholder="Your name" class="rounded-lg px-4 py-2 text-sm outline-none focus:ring-1" style="background:#111827; border:1px solid #00b4ff22; color:#e2e8f0; --tw-ring-color:#00b4ff;" aria-label="Your name"> <textarea id="comment-text" placeholder="Share your thoughts..." rows="3" class="rounded-lg px-4 py-2 text-sm outline-none focus:ring-1 resize-none" style="background:#111827; border:1px solid #00b4ff22; color:#e2e8f0; --tw-ring-color:#00b4ff;" aria-label="Comment"></textarea> <button type="submit" id="comment-submit" class="btn-primary self-end px-5 py-2 rounded-lg text-white text-sm font-semibold relative"> <span class="relative z-10">Post Comment</span> </button>
+       </form>
+       <div id="comments-list" class="space-y-4"><!-- rendered by JS -->
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-8 text-center text-xs" style="color:#64748b; border-top:1px solid #00b4ff11;">
+    <p>© 2025 NexusPro Sales Tax. All rights reserved.</p>
+   </footer>
+  </div>
+  <script>
+// ============ CONFIG & SDK INIT ============
+
+const PRICES = ['$29/mo','$49/mo','$79/mo','$99/mo','$149/mo','$199/mo','$299/mo','$499/mo','$799/mo','$999/mo'];
+const REACTIONS_MAP = { '🔥':'fire','💰':'money','🚀':'rocket','👍':'thumbs','❤️':'heart' };
+
+const defaultConfig = {
+  hero_title: 'Selling across states? Stay compliant.',
+  hero_subtitle: 'Sales tax handled across every jurisdiction.',
+  nexus_heading: 'Understanding Nexus',
+  states_heading: '50-State Coverage',
+  filings_heading: 'Filing & Reporting',
+  bottom_cta_text: 'Simplify Multi-State Compliance',
+  background_color: '#0a0e1a',
+  surface_color: '#111827',
+  text_color: '#e2e8f0',
+  accent_color: '#00b4ff',
+  secondary_accent: '#06d6a0',
+  font_family: 'DM Sans',
+  font_size: 16
+};
+
+let allData = [];
+let selectedReaction = null;
+let selectedPrice = null;
+
+// Element SDK
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    const root = document.getElementById('app-root');
+    root.style.backgroundColor = c.background_color;
+    root.style.color = c.text_color;
+
+    document.querySelectorAll('.glow-card').forEach(el => {
+      el.style.background = `linear-gradient(135deg, ${c.surface_color} 0%, ${c.surface_color}ee 100%)`;
+    });
+
+    const baseFont = `${c.font_family}, DM Sans, sans-serif`;
+    const monoFont = `Space Mono, monospace`;
+    root.style.fontFamily = baseFont;
+    const bs = c.font_size;
+
+    // Hero
+    const ht = document.getElementById('hero-title');
+    if (ht) {
+      const parts = c.hero_title.split('?');
+      ht.innerHTML = parts.length > 1
+        ? `${parts[0]}?<br><span style="color:${c.accent_color};">${parts[1].trim()}</span>`
+        : `<span style="color:${c.accent_color};">${c.hero_title}</span>`;
+      ht.style.fontFamily = monoFont;
+      ht.style.fontSize = `${bs * 3}px`;
+    }
+    const hs = document.getElementById('hero-subtitle');
+    if (hs) { hs.textContent = c.hero_subtitle; hs.style.fontSize = `${bs * 1.2}px`; }
+
+    const nh = document.getElementById('nexus-heading');
+    if (nh) {
+      const parts = c.nexus_heading.split(' ');
+      nh.innerHTML = parts.length > 1
+        ? `${parts.slice(0,-1).join(' ')} <span style="color:${c.accent_color};">${parts[parts.length-1]}</span>`
+        : c.nexus_heading;
+      nh.style.fontSize = `${bs * 2.2}px`;
+    }
+
+    const sh = document.getElementById('states-heading');
+    if (sh) {
+      const parts = c.states_heading.split(' ');
+      sh.innerHTML = `<span style="color:${c.accent_color};">${parts[0]}</span> ${parts.slice(1).join(' ')}`;
+      sh.style.fontSize = `${bs * 2.2}px`;
+    }
+
+    const fh = document.getElementById('filings-heading');
+    if (fh) {
+      const parts = c.filings_heading.split('&');
+      fh.innerHTML = parts.length > 1
+        ? `${parts[0]}& <span style="color:${c.accent_color};">${parts[1].trim()}</span>`
+        : c.filings_heading;
+      fh.style.fontSize = `${bs * 2.2}px`;
+    }
+
+    const bch = document.getElementById('bottom-cta-heading');
+    if (bch) {
+      const words = c.bottom_cta_text.split(' ');
+      if (words.length > 2) {
+        bch.innerHTML = `${words[0]} <span style="color:${c.accent_color};">${words[1]}</span> ${words.slice(2).join(' ')}`;
+      } else {
+        bch.innerHTML = `<span style="color:${c.accent_color};">${c.bottom_cta_text}</span>`;
+      }
+    }
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    const makeColor = (key) => ({
+      get: () => c[key] || defaultConfig[key],
+      set: (v) => { c[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [
+        makeColor('background_color'),
+        makeColor('surface_color'),
+        makeColor('text_color'),
+        makeColor('accent_color'),
+        makeColor('secondary_accent')
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['nexus_heading', c.nexus_heading],
+      ['states_heading', c.states_heading],
+      ['filings_heading', c.filings_heading],
+      ['bottom_cta_text', c.bottom_cta_text]
+    ]);
+  }
+});
+
+// ============ DATA SDK ============
+
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    renderReactions();
+    renderVotes();
+    renderComments();
+  }
+};
+
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// ============ STATE MAP ============
+
+const stateData = [
+  {name:'WA',x:12,y:10,status:'compliant',rate:'6.5%',threshold:'$100K'},
+  {name:'OR',x:10,y:22,status:'none',rate:'0%',threshold:'N/A'},
+  {name:'CA',x:8,y:42,status:'triggered',rate:'7.25%',threshold:'$500K'},
+  {name:'NV',x:15,y:34,status:'action',rate:'6.85%',threshold:'$100K'},
+  {name:'ID',x:20,y:18,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'MT',x:25,y:10,status:'none',rate:'0%',threshold:'N/A'},
+  {name:'WY',x:28,y:22,status:'compliant',rate:'4%',threshold:'$100K'},
+  {name:'UT',x:22,y:34,status:'compliant',rate:'6.1%',threshold:'$100K'},
+  {name:'AZ',x:18,y:48,status:'action',rate:'5.6%',threshold:'$100K'},
+  {name:'CO',x:30,y:34,status:'compliant',rate:'2.9%',threshold:'$100K'},
+  {name:'NM',x:25,y:50,status:'compliant',rate:'5.125%',threshold:'$100K'},
+  {name:'ND',x:38,y:10,status:'compliant',rate:'5%',threshold:'$100K'},
+  {name:'SD',x:40,y:18,status:'compliant',rate:'4.5%',threshold:'$100K'},
+  {name:'NE',x:40,y:28,status:'compliant',rate:'5.5%',threshold:'$100K'},
+  {name:'KS',x:42,y:38,status:'action',rate:'6.5%',threshold:'$100K'},
+  {name:'OK',x:44,y:46,status:'compliant',rate:'4.5%',threshold:'$100K'},
+  {name:'TX',x:40,y:58,status:'triggered',rate:'6.25%',threshold:'$500K'},
+  {name:'MN',x:48,y:12,status:'compliant',rate:'6.875%',threshold:'$100K'},
+  {name:'IA',x:50,y:24,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'MO',x:52,y:36,status:'compliant',rate:'4.225%',threshold:'$100K'},
+  {name:'AR',x:52,y:48,status:'action',rate:'6.5%',threshold:'$100K'},
+  {name:'LA',x:52,y:60,status:'compliant',rate:'4.45%',threshold:'$100K'},
+  {name:'WI',x:55,y:14,status:'compliant',rate:'5%',threshold:'$100K'},
+  {name:'IL',x:58,y:28,status:'triggered',rate:'6.25%',threshold:'$100K'},
+  {name:'MS',x:58,y:54,status:'compliant',rate:'7%',threshold:'$250K'},
+  {name:'MI',x:62,y:18,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'IN',x:62,y:30,status:'compliant',rate:'7%',threshold:'$100K'},
+  {name:'OH',x:68,y:28,status:'compliant',rate:'5.75%',threshold:'$100K'},
+  {name:'KY',x:66,y:38,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'TN',x:64,y:44,status:'action',rate:'7%',threshold:'$100K'},
+  {name:'AL',x:62,y:54,status:'compliant',rate:'4%',threshold:'$250K'},
+  {name:'GA',x:68,y:52,status:'compliant',rate:'4%',threshold:'$100K'},
+  {name:'FL',x:72,y:65,status:'triggered',rate:'6%',threshold:'$100K'},
+  {name:'SC',x:74,y:48,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'NC',x:76,y:42,status:'compliant',rate:'4.75%',threshold:'$100K'},
+  {name:'VA',x:78,y:36,status:'compliant',rate:'5.3%',threshold:'$100K'},
+  {name:'WV',x:74,y:32,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'PA',x:78,y:24,status:'triggered',rate:'6%',threshold:'$100K'},
+  {name:'NY',x:82,y:18,status:'triggered',rate:'4%',threshold:'$500K'},
+  {name:'NJ',x:84,y:28,status:'compliant',rate:'6.625%',threshold:'$100K'},
+  {name:'DE',x:84,y:34,status:'none',rate:'0%',threshold:'N/A'},
+  {name:'MD',x:82,y:32,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'CT',x:88,y:20,status:'compliant',rate:'6.35%',threshold:'$100K'},
+  {name:'RI',x:90,y:22,status:'compliant',rate:'7%',threshold:'$100K'},
+  {name:'MA',x:90,y:18,status:'compliant',rate:'6.25%',threshold:'$100K'},
+  {name:'VT',x:84,y:10,status:'compliant',rate:'6%',threshold:'$100K'},
+  {name:'NH',x:88,y:10,status:'none',rate:'0%',threshold:'N/A'},
+  {name:'ME',x:92,y:6,status:'compliant',rate:'5.5%',threshold:'$100K'},
+  {name:'AK',x:4,y:72,status:'none',rate:'0%',threshold:'N/A'},
+  {name:'HI',x:20,y:75,status:'compliant',rate:'4%',threshold:'$100K'}
+];
+
+const statusColors = { compliant:'#06d6a0', action:'#f59e0b', triggered:'#ef4444', none:'#64748b' };
+
+function renderMap() {
+  const map = document.getElementById('state-map');
+  map.innerHTML = '';
+  stateData.forEach((s, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'state-dot cursor-pointer';
+    dot.style.cssText = `left:${s.x}%;top:${s.y}%;color:${statusColors[s.status]};background:${statusColors[s.status]};animation-delay:${i*0.05}s;`;
+    dot.title = s.name;
+    dot.addEventListener('click', () => showStateDetail(s));
+    // label
+    const label = document.createElement('span');
+    label.className = 'absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-bold opacity-0 transition-opacity pointer-events-none';
+    label.style.color = statusColors[s.status];
+    label.textContent = s.name;
+    dot.appendChild(label);
+    dot.addEventListener('mouseenter', () => label.style.opacity = '1');
+    dot.addEventListener('mouseleave', () => label.style.opacity = '0');
+    map.appendChild(dot);
+  });
+}
+
+function showStateDetail(s) {
+  const statusLabel = { compliant:'✅ Compliant', action:'⚠️ Action Needed', triggered:'🔴 Nexus Triggered', none:'— No Sales Tax' };
+  document.getElementById('state-name').textContent = s.name;
+  document.getElementById('state-info').innerHTML = `
+    <div class="flex justify-between py-2" style="border-bottom:1px solid #00b4ff11;"><span>Status</span><span style="color:${statusColors[s.status]};">${statusLabel[s.status]}</span></div>
+    <div class="flex justify-between py-2" style="border-bottom:1px solid #00b4ff11;"><span>Base Rate</span><span>${s.rate}</span></div>
+    <div class="flex justify-between py-2"><span>Threshold</span><span>${s.threshold}</span></div>
+  `;
+  document.getElementById('state-detail').classList.remove('hidden');
+}
+
+// ============ FAQ ============
+
+const faqs = [
+  { q:'What is sales tax nexus?', a:'Nexus is the legal connection between your business and a state that obligates you to collect and remit sales tax. It can be created by physical presence, economic activity, or marketplace sales.' },
+  { q:'How do I know if I have nexus?', a:'If you have employees, inventory, or office space in a state, you likely have physical nexus. If your sales exceed state-specific thresholds (typically $100K or 200 transactions), you have economic nexus.' },
+  { q:'What happens if I don\'t comply?', a:'Non-compliance can result in back taxes, penalties, interest charges, and potential audits. Many states are actively auditing businesses that sell across state lines.' },
+  { q:'How many states require sales tax?', a:'45 states plus Washington D.C. impose a general sales tax. Alaska, Delaware, Montana, New Hampshire, and Oregon do not have statewide sales tax.' },
+  { q:'What is economic nexus?', a:'Post-Wayfair (2018), states can require remote sellers to collect tax once they exceed economic thresholds — usually $100K in sales or 200 transactions per year in that state.' }
+];
+
+function renderFAQ() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  faqs.forEach((f, i) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item py-4 cursor-pointer';
+    item.innerHTML = `
+      <div class="flex justify-between items-center gap-4" onclick="this.parentElement.classList.toggle('open')">
+        <span class="font-semibold text-sm">${f.q}</span>
+        <i data-lucide="chevron-down" class="faq-chevron flex-shrink-0" style="width:18px;height:18px;color:#64748b;"></i>
+      </div>
+      <div class="faq-answer"><p class="pt-3 text-sm" style="color:#94a3b8;">${f.a}</p></div>
+    `;
+    list.appendChild(item);
+  });
+  lucide.createIcons();
+}
+
+// ============ VOTE & COMMENTS ============
+
+function renderPriceOptions() {
+  const container = document.getElementById('price-options');
+  container.innerHTML = '';
+  PRICES.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = `rounded-lg px-3 py-2 text-sm font-semibold transition-all ${selectedPrice === p ? 'ring-2' : ''}`;
+    btn.style.cssText = selectedPrice === p
+      ? 'background:#00b4ff22; color:#00b4ff; --tw-ring-color:#00b4ff; border:1px solid #00b4ff;'
+      : 'background:#111827; color:#94a3b8; border:1px solid #00b4ff22;';
+    btn.textContent = p;
+    btn.onclick = () => handleVote(p);
+    container.appendChild(btn);
+  });
+}
+
+function renderReactions() {
+  const reactions = allData.filter(d => d.type === 'reaction');
+  const counts = {};
+  Object.keys(REACTIONS_MAP).forEach(k => counts[k] = 0);
+  reactions.forEach(r => { if (counts[r.reaction] !== undefined) counts[r.reaction]++; });
+  Object.entries(REACTIONS_MAP).forEach(([emoji, id]) => {
+    const el = document.getElementById(`react-${id}`);
+    if (el) el.textContent = counts[emoji];
+  });
+  // highlight selected
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.reaction === selectedReaction);
+  });
+}
+
+function renderVotes() {
+  const votes = allData.filter(d => d.type === 'vote');
+  const counts = {};
+  PRICES.forEach(p => counts[p] = 0);
+  votes.forEach(v => { if (counts[v.price_vote] !== undefined) counts[v.price_vote]++; });
+  const total = votes.length;
+  document.getElementById('total-votes').textContent = `${total} vote${total !== 1 ? 's' : ''}`;
+
+  const barsContainer = document.getElementById('vote-bars');
+  if (barsContainer.children.length === 0) {
+    PRICES.forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2';
+      row.dataset.price = p;
+      row.innerHTML = `
+        <span class="text-xs w-16 text-right flex-shrink-0" style="color:#64748b; font-family:'Space Mono',monospace;">${p}</span>
+        <div class="flex-1 rounded-full h-2 overflow-hidden" style="background:#111827;">
+          <div class="vote-bar h-full rounded-full" style="background:linear-gradient(90deg,#00b4ff,#06d6a0); width:0%;"></div>
+        </div>
+        <span class="vote-count text-xs w-6" style="color:#64748b;">0</span>
+      `;
+      barsContainer.appendChild(row);
+    });
+  }
+  PRICES.forEach(p => {
+    const row = barsContainer.querySelector(`[data-price="${p}"]`);
+    if (!row) return;
+    const pct = total > 0 ? (counts[p] / total * 100) : 0;
+    row.querySelector('.vote-bar').style.width = `${pct}%`;
+    row.querySelector('.vote-count').textContent = counts[p];
+  });
+}
+
+function renderComments() {
+  const comments = allData.filter(d => d.type === 'comment').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const list = document.getElementById('comments-list');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+
+  comments.forEach(c => {
+    if (existing.has(c.__backendId)) {
+      existing.delete(c.__backendId);
+      return;
+    }
+    const el = document.createElement('div');
+    el.className = 'glow-card rounded-lg p-4';
+    el.dataset.id = c.__backendId;
+    const d = new Date(c.created_at);
+    const timeStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    el.innerHTML = `
+      <div class="flex justify-between items-center mb-2">
+        <span class="font-semibold text-sm" style="color:#00b4ff;">${escapeHTML(c.comment_name || 'Anonymous')}</span>
+        <span class="text-xs" style="color:#64748b;">${timeStr}</span>
+      </div>
+      <p class="text-sm" style="color:#94a3b8;">${escapeHTML(c.comment_text)}</p>
+    `;
+    list.prepend(el);
+  });
+  existing.forEach(el => el.remove());
+}
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+async function handleReaction(emoji) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  selectedReaction = emoji;
+  renderReactions();
+  const r = await window.dataSdk.create({ type: 'reaction', reaction: emoji, price_vote: '', comment_text: '', comment_name: '', created_at: new Date().toISOString(), item_id: '' });
+  if (!r.isOk) showToast('Error saving reaction');
+}
+
+async function handleVote(price) {
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  selectedPrice = price;
+  renderPriceOptions();
+  const r = await window.dataSdk.create({ type: 'vote', price_vote: price, reaction: '', comment_text: '', comment_name: '', created_at: new Date().toISOString(), item_id: '' });
+  if (!r.isOk) showToast('Error saving vote');
+}
+
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (allData.length >= 999) { showToast('Limit reached'); return; }
+  const nameEl = document.getElementById('comment-name');
+  const textEl = document.getElementById('comment-text');
+  const text = textEl.value.trim();
+  if (!text) return;
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Posting...';
+  const r = await window.dataSdk.create({
+    type: 'comment', comment_name: nameEl.value.trim() || 'Anonymous', comment_text: text,
+    price_vote: '', reaction: '', created_at: new Date().toISOString(), item_id: ''
+  });
+  btn.disabled = false;
+  btn.querySelector('span').textContent = 'Post Comment';
+  if (r.isOk) { nameEl.value = ''; textEl.value = ''; }
+  else showToast('Error posting comment');
+});
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast-msg';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ============ MOBILE MENU ============
+
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// ============ NAV SCROLL HIGHLIGHT ============
+
+const sections = ['home','nexus','states','filings','faq','cta'];
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  const scrollY = appRoot.scrollTop + 80;
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const link = document.querySelector(`nav a[href="#${id}"]`);
+    if (!link) return;
+    if (sec.offsetTop <= scrollY && sec.offsetTop + sec.offsetHeight > scrollY) {
+      link.classList.add('active');
+      link.style.color = '#00b4ff';
+    } else {
+      link.classList.remove('active');
+      link.style.color = '#e2e8f0';
+    }
+  });
+});
+
+// ============ INIT ============
+
+renderMap();
+renderFAQ();
+renderPriceOptions();
+renderVotes();
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a632cc77727c5',t:'MTc3NTU3OTExNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

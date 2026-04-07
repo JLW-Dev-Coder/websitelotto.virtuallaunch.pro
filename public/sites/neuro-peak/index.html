@@ -1,1 +1,814 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/a692fb69-34a6-456a-8b15-90fcb6c5d6b1 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroPeak Lab</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Sora:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        sora: ['Sora', 'sans-serif']
+      },
+      colors: {
+        neon: '#22c55e',
+        dark: '#050505',
+        panel: '#0a0a0a',
+        glass: 'rgba(34,197,94,0.06)'
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+*, *::before, *::after { box-sizing: border-box; }
+
+@keyframes pulse-glow { 0%,100%{box-shadow:0 0 8px rgba(34,197,94,0.2)} 50%{box-shadow:0 0 24px rgba(34,197,94,0.5)} }
+@keyframes scan-line { 0%{transform:translateY(-100%)} 100%{transform:translateY(100%)} }
+@keyframes data-tick { 0%{opacity:0.3} 50%{opacity:1} 100%{opacity:0.3} }
+@keyframes fade-up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+@keyframes waveform { 0%{d:path('M0 25 Q15 5 30 25 T60 25 T90 25 T120 25')} 50%{d:path('M0 25 Q15 40 30 25 T60 25 T90 25 T120 25')} 100%{d:path('M0 25 Q15 5 30 25 T60 25 T90 25 T120 25')} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes counter { from{opacity:0} to{opacity:1} }
+
+.pulse-border { animation: pulse-glow 2.5s ease-in-out infinite; }
+.scan-effect { position: relative; overflow: hidden; }
+.scan-effect::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(34,197,94,0.6),transparent); animation:scan-line 3s linear infinite; pointer-events:none; }
+.data-blink { animation: data-tick 1.5s ease-in-out infinite; }
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.glass-panel { background: rgba(10,10,10,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(34,197,94,0.12); }
+.glow-hover { transition: all 0.35s ease; }
+.glow-hover:hover { box-shadow: 0 0 30px rgba(34,197,94,0.25); border-color: rgba(34,197,94,0.4); transform: translateY(-4px); }
+.grid-bg { background-image: linear-gradient(rgba(34,197,94,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(34,197,94,0.04) 1px, transparent 1px); background-size: 60px 60px; }
+.neon-text { text-shadow: 0 0 20px rgba(34,197,94,0.4); }
+.btn-primary { background: #22c55e; color: #050505; font-weight: 700; transition: all 0.3s; }
+.btn-primary:hover { box-shadow: 0 0 30px rgba(34,197,94,0.5); transform: translateY(-2px); }
+.btn-outline { border: 1px solid rgba(34,197,94,0.4); color: #22c55e; transition: all 0.3s; }
+.btn-outline:hover { background: rgba(34,197,94,0.1); box-shadow: 0 0 20px rgba(34,197,94,0.2); }
+.pricing-card.featured { border-color: rgba(34,197,94,0.5); }
+.pricing-card.featured .price-tag { color: #22c55e; }
+.nav-link { position: relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#22c55e; transition:width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+.metric-bar { background: linear-gradient(90deg, #22c55e, rgba(34,197,94,0.3)); height: 4px; border-radius: 2px; transition: width 1s ease; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: rgba(34,197,94,0.3); border-radius: 3px; }
+.float-anim { animation: float 4s ease-in-out infinite; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-dark text-white font-sora overflow-x-hidden">
+  <div id="app-root" class="h-full overflow-auto grid-bg" style="width:100%;">
+   <!-- NAV -->
+   <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-neon/10" style="backdrop-filter:blur(16px);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
+     <a href="#home" class="font-orbitron text-neon font-bold text-lg tracking-wider" id="nav-brand">NEUROPEAK</a> <button id="mobile-menu-btn" class="sm:hidden text-neon"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+     <div id="nav-links" class="hidden sm:flex items-center gap-6 text-xs uppercase tracking-widest text-gray-400">
+      <a href="#home" class="nav-link hover:text-neon transition">Home</a> <a href="#protocols" class="nav-link hover:text-neon transition">Protocols</a> <a href="#metrics" class="nav-link hover:text-neon transition">Metrics</a> <a href="#results" class="nav-link hover:text-neon transition">Results</a> <a href="#pricing" class="nav-link hover:text-neon transition">Pricing</a> <a href="#faq" class="nav-link hover:text-neon transition">FAQ</a> <a href="#start" class="btn-primary px-4 py-1.5 rounded text-xs font-orbitron" id="nav-cta">START</a>
+     </div>
+    </div>
+    <div id="mobile-nav" class="hidden sm:hidden px-4 pb-4 flex flex-col gap-3 text-xs uppercase tracking-widest text-gray-400">
+     <a href="#home" class="hover:text-neon py-1">Home</a> <a href="#protocols" class="hover:text-neon py-1">Protocols</a> <a href="#metrics" class="hover:text-neon py-1">Metrics</a> <a href="#results" class="hover:text-neon py-1">Results</a> <a href="#pricing" class="hover:text-neon py-1">Pricing</a> <a href="#faq" class="hover:text-neon py-1">FAQ</a> <a href="#start" class="btn-primary px-4 py-2 rounded text-center font-orbitron">START</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative flex items-center justify-center min-h-[100%] pt-14 overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+     <svg class="w-full h-full" preserveaspectratio="none">
+      <defs>
+       <pattern id="hero-grid" x="0" y="0" width="80" height="80" patternunits="userSpaceOnUse">
+        <path d="M80 0V80H0" fill="none" stroke="rgba(34,197,94,0.1)" stroke-width="0.5" />
+       </pattern>
+      </defs> <rect width="100%" height="100%" fill="url(#hero-grid)" />
+     </svg>
+    </div><!-- Floating biometric icons -->
+    <div class="absolute top-1/4 left-[10%] float-anim opacity-20">
+     <svg width="60" height="60" viewbox="0 0 60 60"><circle cx="30" cy="30" r="28" stroke="#22c55e" stroke-width="1" fill="none" /><path d="M15 30 Q22 15 30 30 T45 30" stroke="#22c55e" stroke-width="1.5" fill="none" />
+     </svg>
+    </div>
+    <div class="absolute bottom-1/3 right-[8%] float-anim opacity-15" style="animation-delay:-2s;">
+     <svg width="80" height="50" viewbox="0 0 120 50"><path d="M0 25 L20 25 L25 10 L35 40 L45 15 L55 35 L60 25 L80 25 L85 8 L95 42 L105 20 L110 25 L120 25" stroke="#22c55e" stroke-width="1.5" fill="none" />
+     </svg>
+    </div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+     <div class="inline-flex items-center gap-2 glass-panel rounded-full px-4 py-1.5 mb-8 text-xs text-neon uppercase tracking-widest">
+      <span class="w-2 h-2 rounded-full bg-neon data-blink"></span> <span>Systems Online</span>
+     </div>
+     <h1 id="hero-heading" class="font-orbitron text-4xl sm:text-5xl md:text-7xl font-black leading-tight neon-text mb-6">Your baseline is just<br>
+       a starting point.</h1>
+     <p id="hero-subhead" class="text-gray-400 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">Science-backed protocols to boost focus, recovery, and endurance. Track every metric. Measure every gain.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#start" id="hero-cta-primary" class="btn-primary px-8 py-3 rounded-lg font-orbitron text-sm tracking-wider">Start Optimization</a> <a href="#protocols" class="btn-outline px-8 py-3 rounded-lg font-orbitron text-sm tracking-wider">View Protocols</a>
+     </div><!-- Data readout -->
+     <div class="mt-14 flex justify-center gap-8 sm:gap-14 text-center">
+      <div>
+       <div class="font-orbitron text-2xl sm:text-3xl text-neon font-bold" data-count="97">
+        0
+       </div>
+       <div class="text-[10px] uppercase tracking-widest text-gray-500 mt-1">
+        Protocol Efficiency
+       </div>
+      </div>
+      <div>
+       <div class="font-orbitron text-2xl sm:text-3xl text-neon font-bold" data-count="2400">
+        0
+       </div>
+       <div class="text-[10px] uppercase tracking-widest text-gray-500 mt-1">
+        Optimized Users
+       </div>
+      </div>
+      <div>
+       <div class="font-orbitron text-2xl sm:text-3xl text-neon font-bold" data-count="14">
+        0
+       </div>
+       <div class="text-[10px] uppercase tracking-widest text-gray-500 mt-1">
+        Performance Vectors
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PROTOCOLS -->
+   <section id="protocols" class="py-20 sm:py-28 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <span class="text-neon text-xs font-orbitron uppercase tracking-[0.3em]">// Protocols</span>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-bold mt-4 mb-4">Engineered for Output</h2>
+      <p class="text-gray-500 max-w-xl mx-auto">Three targeted systems calibrated for measurable performance gains.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <!-- Recovery -->
+      <div class="glass-panel rounded-xl p-6 glow-hover scan-effect reveal">
+       <div class="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center mb-5">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" /><path d="M8 12h8M12 8v8" />
+        </svg>
+       </div>
+       <h3 class="font-orbitron text-lg font-bold mb-3">Recovery Protocol</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">Cellular regeneration sequences optimized through sleep architecture, HRV tracking, and adaptive recovery modulation.</p>
+       <div class="flex items-center gap-2 text-neon text-xs font-orbitron"><span class="data-blink">●</span>Active
+       </div>
+      </div><!-- Focus -->
+      <div class="glass-panel rounded-xl p-6 glow-hover scan-effect reveal" style="transition-delay:0.1s;">
+       <div class="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center mb-5">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="7" stroke-dasharray="4 2" /><circle cx="12" cy="12" r="10" stroke-dasharray="2 3" />
+        </svg>
+       </div>
+       <h3 class="font-orbitron text-lg font-bold mb-3">Focus Protocol</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">Cognitive enhancement through nootropic stacking, neurofeedback training, and deep work architecture systems.</p>
+       <div class="flex items-center gap-2 text-neon text-xs font-orbitron"><span class="data-blink">●</span>Active
+       </div>
+      </div><!-- Endurance -->
+      <div class="glass-panel rounded-xl p-6 glow-hover scan-effect reveal" style="transition-delay:0.2s;">
+       <div class="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center mb-5">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M4 14h4l3-8 4 16 3-8h4" />
+        </svg>
+       </div>
+       <h3 class="font-orbitron text-lg font-bold mb-3">Endurance Protocol</h3>
+       <p class="text-gray-400 text-sm leading-relaxed mb-4">VO2 max optimization, mitochondrial density programming, and zone-based output calibration for peak capacity.</p>
+       <div class="flex items-center gap-2 text-neon text-xs font-orbitron"><span class="data-blink">●</span>Active
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- METRICS -->
+   <section id="metrics" class="py-20 sm:py-28 px-4 relative">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <span class="text-neon text-xs font-orbitron uppercase tracking-[0.3em]">// Metrics</span>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-bold mt-4 mb-4">Track Everything</h2>
+      <p class="text-gray-500 max-w-xl mx-auto">Real-time biometric analysis across every performance vector.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="glass-panel rounded-xl p-6 glow-hover reveal">
+       <div class="flex items-center justify-between mb-6">
+        <h3 class="font-orbitron text-sm font-bold uppercase tracking-wider">Cognitive Load</h3><span class="text-neon font-orbitron text-xs data-blink">LIVE</span>
+       </div>
+       <div class="space-y-4">
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Focus Index</span><span class="text-neon">94%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:94%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Working Memory</span><span class="text-neon">87%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:87%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Processing Speed</span><span class="text-neon">91%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:91%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Neural Plasticity</span><span class="text-neon">78%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:78%"></div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="glass-panel rounded-xl p-6 glow-hover reveal" style="transition-delay:0.1s;">
+       <div class="flex items-center justify-between mb-6">
+        <h3 class="font-orbitron text-sm font-bold uppercase tracking-wider">Physical Output</h3><span class="text-neon font-orbitron text-xs data-blink">LIVE</span>
+       </div>
+       <div class="space-y-4">
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>VO2 Max</span><span class="text-neon">58 ml/kg</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:82%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Recovery Rate</span><span class="text-neon">96%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:96%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Power Output</span><span class="text-neon">89%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:89%"></div>
+         </div>
+        </div>
+        <div>
+         <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Endurance Index</span><span class="text-neon">85%</span>
+         </div>
+         <div class="w-full bg-white/5 rounded-full h-1">
+          <div class="metric-bar" style="width:85%"></div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Waveform visualization -->
+      <div class="glass-panel rounded-xl p-6 md:col-span-2 glow-hover reveal" style="transition-delay:0.2s;">
+       <div class="flex items-center justify-between mb-4">
+        <h3 class="font-orbitron text-sm font-bold uppercase tracking-wider">Biometric Waveform</h3>
+        <div class="flex items-center gap-3 text-xs text-gray-500">
+         <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-neon"></span>HRV</span> <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-neon/40"></span>Cortisol</span>
+        </div>
+       </div>
+       <svg id="waveform-svg" width="100%" height="80" viewbox="0 0 800 80" preserveaspectratio="none" class="opacity-80">
+        <path id="wave1" d="" stroke="#22c55e" stroke-width="2" fill="none" /> <path id="wave2" d="" stroke="rgba(34,197,94,0.3)" stroke-width="1.5" fill="none" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </section><!-- RESULTS -->
+   <section id="results" class="py-20 sm:py-28 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <span class="text-neon text-xs font-orbitron uppercase tracking-[0.3em]">// Results</span>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-bold mt-4 mb-4">Measurable Transformation</h2>
+      <p class="text-gray-500 max-w-xl mx-auto">Before/after outputs from real protocol participants.</p>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass-panel rounded-xl p-6 glow-hover reveal">
+       <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-full bg-neon/20 flex items-center justify-center font-orbitron text-neon text-xs font-bold">
+         AK
+        </div>
+        <div>
+         <div class="font-bold text-sm">
+          Alex K.
+         </div>
+         <div class="text-gray-500 text-xs">
+          Elite Member — 90 days
+         </div>
+        </div>
+       </div>
+       <div class="grid grid-cols-2 gap-3 text-center mb-4">
+        <div class="bg-white/5 rounded-lg p-3">
+         <div class="text-[10px] text-gray-500 uppercase mb-1">
+          Before
+         </div>
+         <div class="font-orbitron text-lg text-gray-400">
+          42
+         </div>
+         <div class="text-[10px] text-gray-500">
+          VO2 Max
+         </div>
+        </div>
+        <div class="bg-neon/10 rounded-lg p-3 border border-neon/20">
+         <div class="text-[10px] text-neon uppercase mb-1">
+          After
+         </div>
+         <div class="font-orbitron text-lg text-neon">
+          58
+         </div>
+         <div class="text-[10px] text-gray-500">
+          VO2 Max
+         </div>
+        </div>
+       </div>
+       <p class="text-gray-400 text-xs leading-relaxed">"The endurance protocol completely rewired my cardiovascular output."</p>
+      </div>
+      <div class="glass-panel rounded-xl p-6 glow-hover reveal" style="transition-delay:0.1s;">
+       <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-full bg-neon/20 flex items-center justify-center font-orbitron text-neon text-xs font-bold">
+         MR
+        </div>
+        <div>
+         <div class="font-bold text-sm">
+          Maya R.
+         </div>
+         <div class="text-gray-500 text-xs">
+          Advanced Member — 60 days
+         </div>
+        </div>
+       </div>
+       <div class="grid grid-cols-2 gap-3 text-center mb-4">
+        <div class="bg-white/5 rounded-lg p-3">
+         <div class="text-[10px] text-gray-500 uppercase mb-1">
+          Before
+         </div>
+         <div class="font-orbitron text-lg text-gray-400">
+          62%
+         </div>
+         <div class="text-[10px] text-gray-500">
+          Focus Score
+         </div>
+        </div>
+        <div class="bg-neon/10 rounded-lg p-3 border border-neon/20">
+         <div class="text-[10px] text-neon uppercase mb-1">
+          After
+         </div>
+         <div class="font-orbitron text-lg text-neon">
+          94%
+         </div>
+         <div class="text-[10px] text-gray-500">
+          Focus Score
+         </div>
+        </div>
+       </div>
+       <p class="text-gray-400 text-xs leading-relaxed">"Cognitive clarity I didn't know was possible. Focus protocol is elite."</p>
+      </div>
+      <div class="glass-panel rounded-xl p-6 glow-hover reveal sm:col-span-2 lg:col-span-1" style="transition-delay:0.2s;">
+       <div class="flex items-center gap-3 mb-5">
+        <div class="w-10 h-10 rounded-full bg-neon/20 flex items-center justify-center font-orbitron text-neon text-xs font-bold">
+         JT
+        </div>
+        <div>
+         <div class="font-bold text-sm">
+          James T.
+         </div>
+         <div class="text-gray-500 text-xs">
+          Elite Member — 120 days
+         </div>
+        </div>
+       </div>
+       <div class="grid grid-cols-2 gap-3 text-center mb-4">
+        <div class="bg-white/5 rounded-lg p-3">
+         <div class="text-[10px] text-gray-500 uppercase mb-1">
+          Before
+         </div>
+         <div class="font-orbitron text-lg text-gray-400">
+          5.2h
+         </div>
+         <div class="text-[10px] text-gray-500">
+          Deep Sleep
+         </div>
+        </div>
+        <div class="bg-neon/10 rounded-lg p-3 border border-neon/20">
+         <div class="text-[10px] text-neon uppercase mb-1">
+          After
+         </div>
+         <div class="font-orbitron text-lg text-neon">
+          7.8h
+         </div>
+         <div class="text-[10px] text-gray-500">
+          Deep Sleep
+         </div>
+        </div>
+       </div>
+       <p class="text-gray-400 text-xs leading-relaxed">"Recovery protocol changed my sleep architecture completely."</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING -->
+   <section id="pricing" class="py-20 sm:py-28 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <span class="text-neon text-xs font-orbitron uppercase tracking-[0.3em]">// Pricing</span>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-bold mt-4 mb-4">Select Your Tier</h2>
+      <p class="text-gray-500 max-w-xl mx-auto">Each tier unlocks progressively deeper optimization systems.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <!-- Core -->
+      <div class="pricing-card glass-panel rounded-xl p-6 glow-hover reveal flex flex-col">
+       <div class="mb-6">
+        <h3 class="font-orbitron text-sm uppercase tracking-wider text-gray-400 mb-2">Core</h3>
+        <div class="font-orbitron text-4xl font-bold mb-1">
+         $97<span class="text-sm text-gray-500 font-sora">/mo</span>
+        </div>
+        <p class="text-gray-500 text-xs">Baseline optimization</p>
+       </div>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>1 Protocol Access</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Basic Metrics Dashboard</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Protocol Templates</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Weekly Check-in</li>
+       </ul><a href="#start" class="btn-outline w-full text-center py-3 rounded-lg font-orbitron text-xs tracking-wider block">Select Core</a>
+      </div><!-- Advanced -->
+      <div class="pricing-card featured glass-panel rounded-xl p-6 pulse-border reveal flex flex-col relative" style="transition-delay:0.1s;border-color:rgba(34,197,94,0.5);">
+       <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-neon text-dark text-[10px] font-orbitron font-bold uppercase px-3 py-1 rounded-full tracking-wider">
+        Recommended
+       </div>
+       <div class="mb-6">
+        <h3 class="font-orbitron text-sm uppercase tracking-wider text-neon mb-2">Advanced</h3>
+        <div class="font-orbitron text-4xl font-bold price-tag mb-1">
+         $247<span class="text-sm text-gray-500 font-sora">/mo</span>
+        </div>
+        <p class="text-gray-500 text-xs">Full protocol system</p>
+       </div>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>All 3 Protocols</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Advanced Metrics + Dashboards</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Performance Tracking Visuals</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Bi-weekly Optimization Calls</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Intake System Access</li>
+       </ul><a href="#start" class="btn-primary w-full text-center py-3 rounded-lg font-orbitron text-xs tracking-wider block">Select Advanced</a>
+      </div><!-- Elite -->
+      <div class="pricing-card glass-panel rounded-xl p-6 glow-hover reveal flex flex-col" style="transition-delay:0.2s;">
+       <div class="mb-6">
+        <h3 class="font-orbitron text-sm uppercase tracking-wider text-gray-400 mb-2">Elite</h3>
+        <div class="font-orbitron text-4xl font-bold mb-1">
+         $497<span class="text-sm text-gray-500 font-sora">/mo</span>
+        </div>
+        <p class="text-gray-500 text-xs">Ongoing lab access</p>
+       </div>
+       <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-1">
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Everything in Advanced</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>1-on-1 Lab Sessions</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Custom Protocol Engineering</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Priority Slack Access</li>
+        <li class="flex items-start gap-2"><i data-lucide="check" style="width:16px;height:16px;color:#22c55e;flex-shrink:0;margin-top:2px;"></i>Quarterly Performance Reports</li>
+       </ul><a href="#start" class="btn-outline w-full text-center py-3 rounded-lg font-orbitron text-xs tracking-wider block">Select Elite</a>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ -->
+   <section id="faq" class="py-20 sm:py-28 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-16 reveal">
+      <span class="text-neon text-xs font-orbitron uppercase tracking-[0.3em]">// FAQ</span>
+      <h2 class="font-orbitron text-3xl sm:text-4xl font-bold mt-4 mb-4">Questions</h2>
+     </div>
+     <div class="space-y-3" id="faq-list">
+      <div class="glass-panel rounded-xl overflow-hidden reveal faq-item">
+       <button class="w-full flex items-center justify-between p-5 text-left faq-toggle" aria-expanded="false"> <span class="font-sora font-semibold text-sm pr-4">What does a typical protocol look like?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#22c55e;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-content hidden px-5 pb-5 text-gray-400 text-sm leading-relaxed">
+        Each protocol is a structured 4-12 week system with daily directives, tracking requirements, and weekly calibration checkpoints. You'll receive protocol templates, performance dashboards, and tracking visuals from day one.
+       </div>
+      </div>
+      <div class="glass-panel rounded-xl overflow-hidden reveal faq-item" style="transition-delay:0.05s;">
+       <button class="w-full flex items-center justify-between p-5 text-left faq-toggle" aria-expanded="false"> <span class="font-sora font-semibold text-sm pr-4">Do I need special equipment?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#22c55e;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-content hidden px-5 pb-5 text-gray-400 text-sm leading-relaxed">
+        Core and Advanced tiers require minimal equipment — a wearable device for HRV tracking is recommended. Elite members get access to in-lab sessions with clinical-grade biometric equipment.
+       </div>
+      </div>
+      <div class="glass-panel rounded-xl overflow-hidden reveal faq-item" style="transition-delay:0.1s;">
+       <button class="w-full flex items-center justify-between p-5 text-left faq-toggle" aria-expanded="false"> <span class="font-sora font-semibold text-sm pr-4">How quickly will I see results?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#22c55e;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-content hidden px-5 pb-5 text-gray-400 text-sm leading-relaxed">
+        Most members report noticeable cognitive and physical improvements within 14–21 days. Full protocol completion at 8–12 weeks typically yields the most dramatic, measurable transformations.
+       </div>
+      </div>
+      <div class="glass-panel rounded-xl overflow-hidden reveal faq-item" style="transition-delay:0.15s;">
+       <button class="w-full flex items-center justify-between p-5 text-left faq-toggle" aria-expanded="false"> <span class="font-sora font-semibold text-sm pr-4">Can I switch tiers?</span> <i data-lucide="chevron-down" style="width:18px;height:18px;color:#22c55e;flex-shrink:0;transition:transform 0.3s;"></i> </button>
+       <div class="faq-content hidden px-5 pb-5 text-gray-400 text-sm leading-relaxed">
+        Absolutely. Upgrade or downgrade at any billing cycle. Most members start at Core and move to Advanced within the first month once they experience the system.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+   <section id="start" class="py-20 sm:py-28 px-4 relative">
+    <div class="max-w-4xl mx-auto text-center">
+     <div class="reveal">
+      <div class="inline-flex items-center gap-2 glass-panel rounded-full px-4 py-1.5 mb-8 text-xs text-neon uppercase tracking-widest">
+       <span class="w-2 h-2 rounded-full bg-neon data-blink"></span> <span>Ready to Optimize</span>
+      </div>
+      <h2 id="bottom-cta-heading" class="font-orbitron text-3xl sm:text-5xl font-black neon-text mb-6">Operate at a higher level.</h2>
+      <p class="text-gray-400 max-w-xl mx-auto mb-10">Your performance has a ceiling. We remove it. Begin your optimization protocol today.</p><a href="#" id="bottom-cta-btn" class="btn-primary inline-block px-10 py-4 rounded-lg font-orbitron text-sm tracking-wider">Start Optimization</a>
+     </div><!-- Vote + Comment Widget -->
+     <div class="mt-20 glass-panel rounded-xl p-6 sm:p-8 text-left reveal" style="transition-delay:0.1s;">
+      <div class="text-center mb-6">
+       <h3 class="font-orbitron text-lg font-bold mb-2">Community Feedback</h3>
+       <p class="text-gray-500 text-xs">React, vote on pricing, and leave your thoughts.</p>
+      </div><!-- Reactions -->
+      <div class="mb-6">
+       <p class="text-xs text-gray-500 uppercase tracking-wider mb-3 font-orbitron">Reactions</p>
+       <div class="flex flex-wrap gap-2" id="reaction-buttons">
+        <button data-reaction="🔥" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>🔥</span><span class="reaction-count text-xs text-gray-400">0</span></button> <button data-reaction="🧠" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>🧠</span><span class="reaction-count text-xs text-gray-400">0</span></button> <button data-reaction="⚡" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>⚡</span><span class="reaction-count text-xs text-gray-400">0</span></button> <button data-reaction="💪" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>💪</span><span class="reaction-count text-xs text-gray-400">0</span></button> <button data-reaction="🚀" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>🚀</span><span class="reaction-count text-xs text-gray-400">0</span></button> <button data-reaction="💎" class="reaction-btn glass-panel px-3 py-1.5 rounded-full text-sm hover:border-neon/40 transition flex items-center gap-1.5"><span>💎</span><span class="reaction-count text-xs text-gray-400">0</span></button>
+       </div>
+      </div><!-- Price Vote -->
+      <div class="mb-6">
+       <p class="text-xs text-gray-500 uppercase tracking-wider mb-3 font-orbitron">What would you pay? (Advanced Tier)</p>
+       <div class="flex flex-wrap gap-2" id="price-buttons">
+        <button data-price="$97" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$97</span><span class="price-count text-gray-400">0</span></button> <button data-price="$147" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$147</span><span class="price-count text-gray-400">0</span></button> <button data-price="$197" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$197</span><span class="price-count text-gray-400">0</span></button> <button data-price="$247" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$247</span><span class="price-count text-gray-400">0</span></button> <button data-price="$297" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$297</span><span class="price-count text-gray-400">0</span></button> <button data-price="$347" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$347</span><span class="price-count text-gray-400">0</span></button> <button data-price="$397" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$397</span><span class="price-count text-gray-400">0</span></button> <button data-price="$447" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$447</span><span class="price-count text-gray-400">0</span></button> <button data-price="$497" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$497</span><span class="price-count text-gray-400">0</span></button> <button data-price="$597" class="price-btn glass-panel px-3 py-1.5 rounded-full text-xs hover:border-neon/40 transition flex items-center gap-1.5"><span>$597</span><span class="price-count text-gray-400">0</span></button>
+       </div>
+      </div><!-- Comments -->
+      <div>
+       <p class="text-xs text-gray-500 uppercase tracking-wider mb-3 font-orbitron">Comments</p>
+       <form id="comment-form" class="flex gap-2 mb-4">
+        <label for="comment-input" class="sr-only">Your comment</label> <input id="comment-input" type="text" placeholder="Share your thoughts..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon/40 transition"> <button type="submit" id="comment-submit" class="btn-primary px-5 py-2.5 rounded-lg text-xs font-orbitron">Send</button>
+       </form>
+       <div id="comments-list" class="space-y-2 max-h-60 overflow-y-auto"></div>
+       <div id="widget-note" class="text-center mt-4 text-[10px] text-gray-600 uppercase tracking-widest">
+        Embed Widget Here
+       </div>
+      </div>
+      <div id="limit-warning" class="hidden mt-3 text-center text-yellow-400 text-xs glass-panel rounded-lg p-2">
+       Maximum entries reached (999). Please wait or delete old entries.
+      </div>
+      <div id="data-error" class="hidden mt-3 text-center text-red-400 text-xs glass-panel rounded-lg p-2"></div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="border-t border-white/5 py-8 px-4 text-center">
+    <div class="font-orbitron text-neon text-sm tracking-wider mb-2" id="footer-brand">
+     NEUROPEAK LAB
+    </div>
+    <p class="text-gray-600 text-xs">© 2025 NeuroPeak Lab. All systems optimized.</p>
+   </footer>
+  </div>
+  <script>
+// ── State ──
+let allData = [];
+let currentRecordCount = 0;
+
+const defaultConfig = {
+  site_name: 'NEUROPEAK',
+  hero_heading: 'Your baseline is just<br>a starting point.',
+  hero_subhead: 'Performance systems designed to optimize how you function.',
+  primary_cta: 'Start Optimization',
+  bottom_cta_heading: 'Operate at a higher level.',
+  background_color: '#050505',
+  surface_color: '#0a0a0a',
+  text_color: '#ffffff',
+  accent_color: '#22c55e',
+  secondary_action_color: '#374151'
+};
+
+// ── Element SDK ──
+window.elementSdk.init({
+  defaultConfig,
+  async onConfigChange(config) {
+    const c = key => config[key] || defaultConfig[key];
+    document.getElementById('nav-brand').textContent = c('site_name');
+    document.getElementById('footer-brand').textContent = c('site_name') + ' LAB';
+    document.getElementById('hero-heading').innerHTML = c('hero_heading');
+    document.getElementById('hero-subhead').textContent = c('hero_subhead');
+    document.getElementById('hero-cta-primary').textContent = c('primary_cta');
+    document.getElementById('nav-cta').textContent = c('primary_cta').split(' ')[0].toUpperCase();
+    document.getElementById('bottom-cta-heading').textContent = c('bottom_cta_heading');
+    document.getElementById('bottom-cta-btn').textContent = c('primary_cta');
+
+    // Colors
+    const root = document.getElementById('app-root');
+    root.style.backgroundColor = c('background_color');
+    document.querySelectorAll('.glass-panel').forEach(el => {
+      el.style.backgroundColor = c('surface_color') + 'cc';
+      el.style.borderColor = c('accent_color') + '1f';
+    });
+    document.querySelectorAll('.text-neon, .neon-text, [class*="text-neon"]').forEach(el => {
+      el.style.color = c('accent_color');
+    });
+    document.querySelectorAll('.btn-primary').forEach(el => {
+      el.style.backgroundColor = c('accent_color');
+      el.style.color = c('background_color');
+    });
+    document.querySelectorAll('.btn-outline').forEach(el => {
+      el.style.borderColor = c('accent_color') + '66';
+      el.style.color = c('accent_color');
+    });
+    document.querySelectorAll('h1,h2,h3,.font-bold,.font-black').forEach(el => {
+      if (!el.classList.contains('text-neon') && !el.classList.contains('neon-text') && !el.closest('.price-tag')) {
+        el.style.color = c('text_color');
+      }
+    });
+
+    // Font
+    const ff = config.font_family ? `${config.font_family}, ` : '';
+    document.querySelectorAll('.font-sora, p, span, li, input, button').forEach(el => {
+      if (!el.classList.contains('font-orbitron')) el.style.fontFamily = ff + 'Sora, sans-serif';
+    });
+    document.querySelectorAll('.font-orbitron').forEach(el => {
+      el.style.fontFamily = ff + 'Orbitron, sans-serif';
+    });
+
+    // Font size
+    if (config.font_size) {
+      const bs = config.font_size;
+      document.querySelectorAll('p:not(.text-xs):not(.text-\\[10px\\])').forEach(el => el.style.fontSize = bs + 'px');
+      document.querySelectorAll('h1').forEach(el => el.style.fontSize = (bs * 2.8) + 'px');
+      document.querySelectorAll('h2').forEach(el => el.style.fontSize = (bs * 2) + 'px');
+      document.querySelectorAll('h3').forEach(el => el.style.fontSize = (bs * 1.2) + 'px');
+    }
+  },
+  mapToCapabilities(config) {
+    const c = key => config[key] || defaultConfig[key];
+    const mut = (key) => ({
+      get: () => c(key),
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    });
+    return {
+      recolorables: [mut('background_color'), mut('surface_color'), mut('text_color'), mut('accent_color'), mut('secondary_action_color')],
+      borderables: [],
+      fontEditable: mut('font_family'),
+      fontSizeable: { get: () => config.font_size || 16, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+    };
+  },
+  mapToEditPanelValues(config) {
+    const c = key => config[key] || defaultConfig[key];
+    return new Map([
+      ['site_name', c('site_name')],
+      ['hero_heading', c('hero_heading')],
+      ['hero_subhead', c('hero_subhead')],
+      ['primary_cta', c('primary_cta')],
+      ['bottom_cta_heading', c('bottom_cta_heading')]
+    ]);
+  }
+});
+
+// ── Data SDK ──
+const REACTIONS = ['🔥','🧠','⚡','💪','🚀','💎'];
+const PRICES = ['$97','$147','$197','$247','$297','$347','$397','$447','$497','$597'];
+
+function renderWidget() {
+  // Count reactions
+  const reactionCounts = {};
+  REACTIONS.forEach(r => reactionCounts[r] = 0);
+  const priceCounts = {};
+  PRICES.forEach(p => priceCounts[p] = 0);
+  const comments = [];
+
+  allData.forEach(d => {
+    if (d.type === 'reaction' && reactionCounts.hasOwnProperty(d.reaction)) reactionCounts[d.reaction]++;
+    if (d.type === 'price_vote' && priceCounts.hasOwnProperty(d.price_vote)) priceCounts[d.price_vote]++;
+    if (d.type === 'comment' && d.comment) comments.push({ text: d.comment, date: d.created_at, id: d.__backendId });
+  });
+
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const r = btn.dataset.reaction;
+    btn.querySelector('.reaction-count').textContent = reactionCounts[r] || 0;
+  });
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    const p = btn.dataset.price;
+    btn.querySelector('.price-count').textContent = priceCounts[p] || 0;
+  });
+
+  const list = document.getElementById('comments-list');
+  const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+  const ids = new Set();
+  comments.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(c => {
+    ids.add(c.id);
+    if (existing.has(c.id)) { existing.delete(c.id); return; }
+    const div = document.createElement('div');
+    div.dataset.id = c.id;
+    div.className = 'bg-white/5 rounded-lg px-4 py-2.5 text-sm text-gray-300 flex justify-between items-start gap-2';
+    const timeStr = c.date ? new Date(c.date).toLocaleDateString() : '';
+    div.innerHTML = `<span class="break-all">${escHtml(c.text)}</span><span class="text-[10px] text-gray-600 whitespace-nowrap">${timeStr}</span>`;
+    list.prepend(div);
+  });
+  existing.forEach(el => el.remove());
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function showError(msg) {
+  const el = document.getElementById('data-error');
+  el.textContent = msg; el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+(async () => {
+  const res = await window.dataSdk.init({
+    onDataChanged(data) {
+      allData = data;
+      currentRecordCount = data.length;
+      renderWidget();
+    }
+  });
+  if (!res.isOk) showError('Failed to connect to data store.');
+})();
+
+// Reaction clicks
+document.querySelectorAll('.reaction-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+    btn.disabled = true; btn.style.opacity = '0.5';
+    const r = await window.dataSdk.create({ type: 'reaction', reaction: btn.dataset.reaction, comment: '', price_vote: '', created_at: new Date().toISOString() });
+    btn.disabled = false; btn.style.opacity = '1';
+    if (!r.isOk) showError('Could not save reaction.');
+  });
+});
+
+// Price clicks
+document.querySelectorAll('.price-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+    btn.disabled = true; btn.style.opacity = '0.5';
+    const r = await window.dataSdk.create({ type: 'price_vote', reaction: '', comment: '', price_vote: btn.dataset.price, created_at: new Date().toISOString() });
+    btn.disabled = false; btn.style.opacity = '1';
+    if (!r.isOk) showError('Could not save vote.');
+  });
+});
+
+// Comment form
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  if (currentRecordCount >= 999) { document.getElementById('limit-warning').classList.remove('hidden'); return; }
+  const btn = document.getElementById('comment-submit');
+  btn.disabled = true; btn.textContent = '...';
+  const r = await window.dataSdk.create({ type: 'comment', reaction: '', comment: text, price_vote: '', created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Send';
+  if (r.isOk) { input.value = ''; } else { showError('Could not save comment.'); }
+});
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── FAQ toggle ──
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const content = btn.nextElementSibling;
+    const icon = btn.querySelector('i');
+    const open = !content.classList.contains('hidden');
+    content.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', !open);
+    if (icon) icon.style.transform = open ? '' : 'rotate(180deg)';
+  });
+});
+
+// ── Mobile nav ──
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-nav').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-nav a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-nav').classList.add('hidden'));
+});
+
+// ── Counter animation ──
+document.querySelectorAll('[data-count]').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  let current = 0;
+  const step = Math.max(1, Math.ceil(target / 60));
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= target) { current = target; clearInterval(interval); }
+    el.textContent = current.toLocaleString() + (target < 100 ? '%' : '+');
+  }, 30);
+});
+
+// ── Waveform animation ──
+function animateWaveform() {
+  const w1 = document.getElementById('wave1');
+  const w2 = document.getElementById('wave2');
+  let t = 0;
+  function draw() {
+    t += 0.03;
+    let d1 = 'M0 40';
+    let d2 = 'M0 40';
+    for (let x = 0; x <= 800; x += 4) {
+      const y1 = 40 + Math.sin(x * 0.015 + t) * 18 + Math.sin(x * 0.008 + t * 1.5) * 10;
+      const y2 = 40 + Math.cos(x * 0.012 + t * 0.7) * 14 + Math.sin(x * 0.02 + t * 0.5) * 8;
+      d1 += ` L${x} ${y1}`;
+      d2 += ` L${x} ${y2}`;
+    }
+    w1.setAttribute('d', d1);
+    w2.setAttribute('d', d2);
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+animateWaveform();
+
+// ── Init icons ──
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a57ae566327c5',t:'MTc3NTU3ODY0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

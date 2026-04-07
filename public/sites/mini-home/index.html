@@ -1,1 +1,668 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/6e97bcb6-3304-4128-a8b1-b804b2886651 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroDwelling Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    html { height: 100%; }
+    body { height: 100%; margin: 0; font-family: 'Outfit', sans-serif; }
+
+    .font-serif { font-family: 'DM Serif Display', serif; }
+    .font-body { font-family: 'Outfit', sans-serif; }
+
+    /* Scroll smooth */
+    html { scroll-behavior: smooth; }
+
+    /* Hero zoom */
+    @keyframes heroZoom {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    .hero-zoom { animation: heroZoom 20s ease-in-out forwards; }
+
+    /* Fade reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Checklist animation */
+    .check-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .check-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* CTA glow pulse */
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(120, 140, 90, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(120, 140, 90, 0.6); }
+    }
+    .glow-pulse { animation: glowPulse 2.5s ease-in-out infinite; }
+
+    /* Glass card */
+    .glass {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .glass-warm {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(200, 180, 160, 0.25);
+    }
+
+    /* Sticky nav */
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: #788C5A;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after { width: 100%; }
+
+    /* Star rating */
+    .star-filled { color: #C4A265; }
+
+    /* Image grid hover */
+    .img-card { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .img-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F5F0EB; }
+    ::-webkit-scrollbar-thumb { background: #C4B8A8; border-radius: 3px; }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+    .stagger-5 { transition-delay: 0.5s; }
+    .stagger-6 { transition-delay: 0.6s; }
+    .stagger-7 { transition-delay: 0.7s; }
+    .stagger-8 { transition-delay: 0.8s; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wood: { light: '#F5F0EB', mid: '#D4C4B0', dark: '#8B7355', warm: '#C4A265' },
+            sage: { light: '#E8EDE2', mid: '#A8B89A', dark: '#788C5A' },
+            cream: '#FDFBF7',
+            charcoal: '#2C2C2C',
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="background: #FDFBF7;"><!-- SVG Icon Defs -->
+   <svg style="display:none;"><defs>
+     <symbol id="ico-house" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+     </symbol>
+     <symbol id="ico-grid" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+     </symbol>
+     <symbol id="ico-ruler" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21.17 8.04l-5.21-5.21a2 2 0 0 0-2.83 0L2.83 13.13a2 2 0 0 0 0 2.83l5.21 5.21a2 2 0 0 0 2.83 0L21.17 10.87a2 2 0 0 0 0-2.83z" />
+      <line x1="7.5" y1="12.5" x2="9.5" y2="10.5" />
+      <line x1="10.5" y1="9.5" x2="12.5" y2="7.5" />
+     </symbol>
+     <symbol id="ico-checklist" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 11l3 3L22 4" />
+      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+     </symbol>
+     <symbol id="ico-leaf" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89-.82C8 15 11 13 17 8z" />
+      <path d="M20.59 3.41A2 2 0 0 0 19.17 3H15a8 8 0 0 0-8 8v4c4-1 7-4 9-7l3.41-3.41a2 2 0 0 0 0-1.18z" />
+     </symbol>
+     <symbol id="ico-window" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="18" rx="2" />
+      <line x1="12" y1="3" x2="12" y2="21" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+     </symbol>
+    </defs>
+   </svg><!-- Sticky Nav -->
+   <nav id="main-nav" style="position: sticky; top: 0; z-index: 50; transition: background 0.3s ease, box-shadow 0.3s ease;">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="flex items-center gap-2 no-underline">
+      <svg width="22" height="22" class="text-sage-dark">
+       <use href="#ico-house" />
+      </svg><span id="nav-brand" class="font-serif text-lg" style="color: #2C2C2C;">MicroDwelling</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Home</a> <a href="#wallpapers" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Wallpapers</a> <a href="#planner" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Layout Planner</a> <a href="#preview" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Preview</a> <a href="#reviews" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Reviews</a> <a href="#download" class="nav-link text-sm font-light tracking-wide no-underline" style="color: #2C2C2C;">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Open menu">
+      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#2C2C2C" stroke-width="1.5">
+       <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+      </svg></button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4" style="background: rgba(253,251,247,0.97);"><a href="#home" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Home</a> <a href="#wallpapers" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Wallpapers</a> <a href="#planner" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Layout Planner</a> <a href="#preview" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Preview</a> <a href="#reviews" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Reviews</a> <a href="#download" class="block py-2 text-sm font-light no-underline" style="color: #2C2C2C;">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full overflow-hidden" style="height: 90%;">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1600&amp;q=80" alt="Modern tiny home exterior" loading="lazy" class="w-full h-full object-cover hero-zoom" onerror="this.style.background='linear-gradient(135deg,#D4C4B0,#788C5A)';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(44,44,44,0.35) 0%, rgba(44,44,44,0.6) 100%);"></div>
+    </div>
+    <div class="relative h-full flex flex-col items-center justify-center text-center px-6">
+     <div class="reveal">
+      <p class="text-sm tracking-[0.35em] uppercase font-light mb-4" style="color: rgba(255,255,255,0.7);">MicroDwelling Studio</p>
+      <h1 id="hero-title" class="font-serif text-5xl md:text-7xl lg:text-8xl leading-tight mb-6" style="color: #FDFBF7;">Small space. Big design.</h1>
+      <p id="hero-subtitle" class="font-light text-base md:text-lg max-w-xl mx-auto mb-10" style="color: rgba(255,255,255,0.85);">Tiny home visuals and layout templates built from real photography.</p>
+      <div class="flex flex-col sm:flex-row items-center gap-4 justify-center"><a href="#download" class="glow-pulse px-8 py-3.5 rounded-full text-sm font-medium tracking-wide no-underline transition-all" style="background: #788C5A; color: #FDFBF7;">Download the Pack</a> <a href="#preview" class="glass px-8 py-3.5 rounded-full text-sm font-light tracking-wide no-underline transition-all hover:bg-white/20" style="color: #FDFBF7;">Preview Gallery</a>
+      </div>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"><span class="text-xs tracking-widest uppercase font-light" style="color: #FDFBF7;">Scroll</span>
+     <div style="width:1px; height:32px; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);"></div>
+    </div>
+   </section><!-- WHAT'S INCLUDED -->
+   <section class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #788C5A;">What's Inside</p>
+      <h2 class="font-serif text-3xl md:text-4xl" style="color: #2C2C2C;">Everything for Tiny Living Content</h2>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="reveal stagger-1 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-window" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">120</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Wallpapers</p>
+      </div>
+      <div class="reveal stagger-2 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-grid" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">26</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Posters</p>
+      </div>
+      <div class="reveal stagger-3 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-ruler" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">1</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Layout Planner</p>
+      </div>
+      <div class="reveal stagger-4 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-checklist" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">1</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Downsizing Checklist</p>
+      </div>
+      <div class="reveal stagger-5 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-house" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">Story</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Templates</p>
+      </div>
+      <div class="reveal stagger-6 glass-warm rounded-2xl p-6 text-center">
+       <svg width="28" height="28" class="mx-auto mb-3" style="color: #788C5A;">
+        <use href="#ico-leaf" />
+       </svg>
+       <p class="font-medium text-lg" style="color: #2C2C2C;">Caption</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Pack</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- WALLPAPERS -->
+   <section id="wallpapers" class="py-24 px-6" style="background: linear-gradient(180deg, #F5F0EB 0%, #FDFBF7 100%);">
+    <div class="max-w-6xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #788C5A;">Gallery</p>
+      <h2 id="wallpapers-heading" class="font-serif text-3xl md:text-4xl" style="color: #2C2C2C;">120 Tiny Home Wallpapers</h2>
+      <p class="font-light mt-3 max-w-lg mx-auto" style="color: #8B7355;">Curated photography of tiny interiors, cabins, and compact spaces. Sized for phone, desktop, and social.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="reveal stagger-1 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&amp;q=75" alt="Tiny house interior with warm wood" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-2 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&amp;q=75" alt="Mini cabin exterior" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-3 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&amp;q=75" alt="Small modern home interior" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-4 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=500&amp;q=75" alt="Compact kitchen design" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-5 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=500&amp;q=75" alt="Tiny home loft space" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-6 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&amp;q=75" alt="Prefab tiny house" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-7 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600573472556-e636c2acda9e?w=500&amp;q=75" alt="Micro apartment living" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+      <div class="reveal stagger-8 img-card rounded-xl overflow-hidden aspect-[3/4]"><img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=500&amp;q=75" alt="Small space living room" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#D4C4B0';this.alt='Image unavailable';">
+      </div>
+     </div>
+     <p class="text-center mt-8 text-sm font-light" style="color: #8B7355;">Showing 8 of 120 wallpapers included in the pack</p>
+    </div>
+   </section><!-- LAYOUT PLANNER -->
+   <section id="planner" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #788C5A;">Tools</p>
+      <h2 id="planner-heading" class="font-serif text-3xl md:text-4xl" style="color: #2C2C2C;">Layout Planner &amp; Downsizing Checklist</h2>
+     </div>
+     <div class="grid md:grid-cols-2 gap-10"><!-- Floor Plan Preview -->
+      <div class="reveal glass-warm rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" style="color: #788C5A;">
+         <use href="#ico-ruler" />
+        </svg>
+        <h3 class="font-serif text-xl" style="color: #2C2C2C;">Compact Floor Plan</h3>
+       </div><!-- SVG Floor Plan -->
+       <div class="rounded-xl p-6 mb-4" style="background: #FDFBF7; border: 1px solid #E8EDE2;">
+        <svg viewbox="0 0 300 220" fill="none" class="w-full"><!-- Outer walls --> <rect x="10" y="10" width="280" height="200" stroke="#8B7355" stroke-width="2" fill="none" /> <!-- Rooms --> <rect x="10" y="10" width="140" height="120" stroke="#A8B89A" stroke-width="1.5" fill="rgba(168,184,154,0.08)" /> <text x="80" y="75" text-anchor="middle" style="font-family:Outfit;font-size:11px;fill:#788C5A;">
+          Living + Loft
+         </text> <rect x="150" y="10" width="140" height="70" stroke="#C4A265" stroke-width="1.5" fill="rgba(196,162,101,0.06)" /> <text x="220" y="50" text-anchor="middle" style="font-family:Outfit;font-size:11px;fill:#C4A265;">
+          Kitchen
+         </text> <rect x="150" y="80" width="140" height="50" stroke="#D4C4B0" stroke-width="1.5" fill="rgba(212,196,176,0.08)" /> <text x="220" y="110" text-anchor="middle" style="font-family:Outfit;font-size:11px;fill:#8B7355;">
+          Bath
+         </text> <rect x="10" y="130" width="280" height="80" stroke="#A8B89A" stroke-width="1.5" fill="rgba(168,184,154,0.05)" /> <text x="150" y="175" text-anchor="middle" style="font-family:Outfit;font-size:11px;fill:#788C5A;">
+          Deck / Entry
+         </text> <!-- Door indicators --> <path d="M140 90 Q155 90 155 80" stroke="#8B7355" stroke-width="1" fill="none" stroke-dasharray="3,3" /> <path d="M80 130 Q80 140 90 140" stroke="#8B7355" stroke-width="1" fill="none" stroke-dasharray="3,3" /> <!-- Dimensions --> <text x="150" y="225" text-anchor="middle" style="font-family:Outfit;font-size:9px;fill:#A8B89A;">
+          24 ft x 8.5 ft — 204 sq ft
+         </text>
+        </svg>
+       </div>
+       <p class="text-sm font-light" style="color: #8B7355;">Editable floor plan template included. Drag and place furniture, walls, and fixtures.</p>
+      </div><!-- Downsizing Checklist -->
+      <div class="reveal glass-warm rounded-2xl p-8">
+       <div class="flex items-center gap-3 mb-6">
+        <svg width="22" height="22" style="color: #788C5A;">
+         <use href="#ico-checklist" />
+        </svg>
+        <h3 class="font-serif text-xl" style="color: #2C2C2C;">Downsizing Checklist</h3>
+       </div>
+       <div id="checklist-container" class="space-y-3">
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Sort belongings into keep / donate / sell</span>
+        </div>
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Measure furniture for compact spaces</span>
+        </div>
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Digitize important documents</span>
+        </div>
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Plan multi-functional storage solutions</span>
+        </div>
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Research zoning laws for tiny homes</span>
+        </div>
+        <div class="check-item flex items-center gap-3 p-3 rounded-lg" style="background: rgba(120,140,90,0.06);">
+         <div class="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 checklist-box" style="border-color: #788C5A; cursor: pointer;">
+          <svg class="hidden w-3 h-3" style="color:#788C5A;" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+           <polyline points="20 6 9 17 4 12" />
+          </svg>
+         </div><span class="text-sm font-light" style="color: #2C2C2C;">Set a realistic move-in timeline</span>
+        </div>
+       </div>
+       <p class="text-sm font-light mt-5" style="color: #8B7355;">Full printable checklist included in the pack.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW -->
+   <section id="preview" class="py-24 px-6" style="background: #2C2C2C;">
+    <div class="max-w-5xl mx-auto">
+     <div class="reveal text-center mb-16">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #A8B89A;">Sneak Peek</p>
+      <h2 id="preview-heading" class="font-serif text-3xl md:text-4xl" style="color: #FDFBF7;">Preview the Collection</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal stagger-1 rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+       <div class="aspect-[4/3]"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&amp;q=75" alt="Poster preview - cozy cabin" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#3a3a3a';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <p class="text-sm font-medium" style="color: #FDFBF7;">Poster Collection</p>
+        <p class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.5);">26 print-ready designs</p>
+       </div>
+      </div>
+      <div class="reveal stagger-2 rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+       <div class="aspect-[4/3]"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=500&amp;q=75" alt="Story template preview" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#3a3a3a';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <p class="text-sm font-medium" style="color: #FDFBF7;">Story Templates</p>
+        <p class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.5);">Instagram &amp; TikTok ready</p>
+       </div>
+      </div>
+      <div class="reveal stagger-3 rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);">
+       <div class="aspect-[4/3]"><img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&amp;q=75" alt="Caption pack preview" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='#3a3a3a';this.alt='Image unavailable';">
+       </div>
+       <div class="p-5">
+        <p class="text-sm font-medium" style="color: #FDFBF7;">Caption Pack</p>
+        <p class="text-xs font-light mt-1" style="color: rgba(255,255,255,0.5);">60+ ready-to-post captions</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- PRICING ANGLES -->
+   <section class="py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="reveal text-center mb-14">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #788C5A;">Why This Niche</p>
+      <h2 class="font-serif text-3xl md:text-4xl" style="color: #2C2C2C;">Built for Growth</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal stagger-1 glass-warm rounded-2xl p-7 text-center">
+       <svg width="28" height="28" class="mx-auto mb-4" style="color: #788C5A;">
+        <use href="#ico-house" />
+       </svg>
+       <p class="font-medium mb-2" style="color: #2C2C2C;">Tiny Home Trend</p>
+       <p class="text-sm font-light" style="color: #8B7355;">A rapidly growing movement with passionate, engaged audiences across every platform.</p>
+      </div>
+      <div class="reveal stagger-2 glass-warm rounded-2xl p-7 text-center">
+       <svg width="28" height="28" class="mx-auto mb-4" style="color: #C4A265;">
+        <use href="#ico-grid" />
+       </svg>
+       <p class="font-medium mb-2" style="color: #2C2C2C;">Real Estate Adjacent</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Taps into the massive real estate and home design market without the high competition.</p>
+      </div>
+      <div class="reveal stagger-3 glass-warm rounded-2xl p-7 text-center">
+       <svg width="28" height="28" class="mx-auto mb-4" style="color: #788C5A;">
+        <use href="#ico-leaf" />
+       </svg>
+       <p class="font-medium mb-2" style="color: #2C2C2C;">Minimal Living Evergreen</p>
+       <p class="text-sm font-light" style="color: #8B7355;">Sustainability and minimalism are long-term lifestyle shifts, not passing trends.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="py-24 px-6" style="background: linear-gradient(180deg, #F5F0EB 0%, #FDFBF7 100%);">
+    <div class="max-w-4xl mx-auto">
+     <div class="reveal text-center mb-14">
+      <p class="text-xs tracking-[0.3em] uppercase font-light mb-3" style="color: #788C5A;">Testimonials</p>
+      <h2 class="font-serif text-3xl md:text-4xl" style="color: #2C2C2C;">What Creators Say</h2>
+     </div>
+     <div class="grid md:grid-cols-2 gap-6">
+      <div class="reveal stagger-1 glass-warm rounded-2xl p-7">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="text-sm font-light leading-relaxed mb-4" style="color: #2C2C2C;">"This pack saved me weeks of content creation. The wallpapers are stunning and the layout planner is actually usable. Best investment for my tiny home account."</p>
+       <p class="text-xs font-medium" style="color: #788C5A;">-- Sarah M., @tinyliving.sarah</p>
+      </div>
+      <div class="reveal stagger-2 glass-warm rounded-2xl p-7">
+       <div class="flex gap-1 mb-4">
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+        <svg width="16" height="16" viewbox="0 0 24 24" fill="#C4A265" stroke="none">
+         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+       </div>
+       <p class="text-sm font-light leading-relaxed mb-4" style="color: #2C2C2C;">"The downsizing checklist alone is worth it. I printed it out and use it with every client. Professional quality without the professional price tag."</p>
+       <p class="text-xs font-medium" style="color: #788C5A;">-- James K., Tiny Home Consultant</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="py-28 px-6 relative overflow-hidden">
+    <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=1400&amp;q=75" alt="Beautiful tiny home at sunset" loading="lazy" class="w-full h-full object-cover" onerror="this.style.background='linear-gradient(135deg,#2C2C2C,#788C5A)';this.alt='Image unavailable';">
+     <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(44,44,44,0.7), rgba(44,44,44,0.85));"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto text-center">
+     <div class="reveal">
+      <svg width="36" height="36" class="mx-auto mb-6" style="color: #A8B89A;">
+       <use href="#ico-leaf" />
+      </svg>
+      <h2 id="bottom-cta-heading" class="font-serif text-4xl md:text-5xl mb-4" style="color: #FDFBF7;">Design small. Live big.</h2>
+      <p class="font-light text-base mb-10 max-w-md mx-auto" style="color: rgba(255,255,255,0.7);">Get the full MicroDwelling Studio pack — 120 wallpapers, 26 posters, layout planner, checklist, story templates, and caption pack.</p><a href="#" class="glow-pulse inline-block px-10 py-4 rounded-full font-medium tracking-wide no-underline transition-all" style="background: #788C5A; color: #FDFBF7; font-size: 15px;">Download the Full Pack</a>
+      <div class="mt-14 glass rounded-xl p-6 max-w-md mx-auto">
+       <p class="text-sm font-light mb-1" style="color: rgba(255,255,255,0.7);">Vote + Comment</p>
+       <p class="text-xs font-light" style="color: rgba(255,255,255,0.45);">(Embed Widget Here)</p>
+       <div class="mt-4 flex items-center justify-center gap-6"><button id="vote-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm transition-all" style="background: rgba(120,140,90,0.2); color: #A8B89A; border: 1px solid rgba(168,184,154,0.3);">
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 19V5M5 12l7-7 7 7" />
+         </svg><span id="vote-count">47</span> </button>
+        <div class="flex items-center gap-2" style="color: rgba(255,255,255,0.4);">
+         <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+         </svg><span class="text-sm">12 comments</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="py-10 px-6" style="background: #2C2C2C;">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <svg width="18" height="18" style="color: #788C5A;">
+       <use href="#ico-house" />
+      </svg><span class="font-serif text-sm" style="color: #FDFBF7;">MicroDwelling Studio</span>
+     </div>
+     <p class="text-xs font-light" style="color: rgba(255,255,255,0.35);">Small space. Big design. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+  // --- Element SDK ---
+  const defaultConfig = {
+    hero_title: 'Small space. Big design.',
+    hero_subtitle: 'Tiny home visuals and layout templates built from real photography.',
+    wallpapers_title: '120 Tiny Home Wallpapers',
+    planner_title: 'Layout Planner & Downsizing Checklist',
+    preview_title: 'Preview the Collection',
+    bottom_cta_title: 'Design small. Live big.',
+    background_color: '#FDFBF7',
+    surface_color: '#F5F0EB',
+    text_color: '#2C2C2C',
+    primary_action_color: '#788C5A',
+    secondary_action_color: '#C4A265',
+    font_family: 'DM Serif Display',
+    font_size: 16
+  };
+
+  function applyConfig(config) {
+    const c = { ...defaultConfig, ...config };
+    const font = c.font_family || defaultConfig.font_family;
+    const baseSize = c.font_size || defaultConfig.font_size;
+
+    // Text content
+    document.getElementById('hero-title').textContent = c.hero_title;
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('wallpapers-heading').textContent = c.wallpapers_title;
+    document.getElementById('planner-heading').textContent = c.planner_title;
+    document.getElementById('preview-heading').textContent = c.preview_title;
+    document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_title;
+
+    // Background
+    document.getElementById('app-wrapper').style.background = c.background_color;
+
+    // Fonts
+    document.querySelectorAll('.font-serif').forEach(el => {
+      el.style.fontFamily = `${font}, serif`;
+    });
+
+    // Font sizing
+    document.getElementById('hero-title').style.fontSize = `${baseSize * 3}px`;
+    document.getElementById('hero-subtitle').style.fontSize = `${baseSize * 1.1}px`;
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+
+    // Colors - primary action (buttons, icons, accents)
+    document.querySelectorAll('.glow-pulse').forEach(el => {
+      el.style.background = c.primary_action_color;
+    });
+    document.querySelectorAll('.checklist-box').forEach(el => {
+      el.style.borderColor = c.primary_action_color;
+    });
+
+    // Text color
+    document.getElementById('nav-brand').style.color = c.text_color;
+    document.querySelectorAll('.nav-link').forEach(el => el.style.color = c.text_color);
+  }
+
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+        { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['wallpapers_title', config.wallpapers_title || defaultConfig.wallpapers_title],
+      ['planner_title', config.planner_title || defaultConfig.planner_title],
+      ['preview_title', config.preview_title || defaultConfig.preview_title],
+      ['bottom_cta_title', config.bottom_cta_title || defaultConfig.bottom_cta_title],
+    ])
+  });
+
+  // --- Scroll Reveals ---
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .check-item').forEach(el => observer.observe(el));
+
+  // --- Sticky Nav Background ---
+  const nav = document.getElementById('main-nav');
+  document.getElementById('app-wrapper').addEventListener('scroll', function() {
+    if (this.scrollTop > 50) {
+      nav.style.background = 'rgba(253,251,247,0.95)';
+      nav.style.boxShadow = '0 1px 12px rgba(0,0,0,0.06)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  // --- Mobile Menu ---
+  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // --- Checklist Interaction ---
+  document.querySelectorAll('.checklist-box').forEach(box => {
+    box.addEventListener('click', () => {
+      const svg = box.querySelector('svg');
+      svg.classList.toggle('hidden');
+      const span = box.parentElement.querySelector('span');
+      if (!svg.classList.contains('hidden')) {
+        span.style.textDecoration = 'line-through';
+        span.style.opacity = '0.5';
+      } else {
+        span.style.textDecoration = 'none';
+        span.style.opacity = '1';
+      }
+    });
+  });
+
+  // --- Vote Button ---
+  let voted = false;
+  document.getElementById('vote-btn').addEventListener('click', () => {
+    const countEl = document.getElementById('vote-count');
+    let count = parseInt(countEl.textContent);
+    if (!voted) {
+      count++;
+      voted = true;
+      document.getElementById('vote-btn').style.background = 'rgba(120,140,90,0.5)';
+    } else {
+      count--;
+      voted = false;
+      document.getElementById('vote-btn').style.background = 'rgba(120,140,90,0.2)';
+    }
+    countEl.textContent = count;
+  });
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a555b864627c5',t:'MTc3NTU3ODU1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

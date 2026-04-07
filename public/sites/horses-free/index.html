@@ -1,1 +1,583 @@
 <!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/106b10f9-f56a-42bd-bb83-3d3fca10c1e2 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saddle &amp; Sky Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Source+Sans+3:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        cream: '#F5F0EB',
+        warmtan: '#D4C5B2',
+        navy: '#1B2A4A',
+        gold: '#C4954A',
+        charcoal: '#2C2C2C'
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        body: ['Source Sans 3', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Slow zoom on images */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+.slow-zoom { animation: slowZoom 20s ease-in-out infinite alternate; }
+
+/* CTA pulse */
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,149,74,0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(196,149,74,0); }
+}
+.cta-pulse { animation: ctaPulse 2.5s ease-in-out infinite; }
+
+/* Particle overlay */
+.particles-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.particle {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: rgba(255,248,230,0.4);
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100%) translateX(30px); opacity: 0; }
+}
+
+/* Nav */
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #C4954A; transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Card hover */
+.card-lift { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.card-lift:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(27,42,74,0.12); }
+
+/* Stagger children */
+.stagger-in > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.stagger-in.visible > *:nth-child(1) { transition-delay: 0.1s; }
+.stagger-in.visible > *:nth-child(2) { transition-delay: 0.2s; }
+.stagger-in.visible > *:nth-child(3) { transition-delay: 0.3s; }
+.stagger-in.visible > *:nth-child(4) { transition-delay: 0.4s; }
+.stagger-in.visible > *:nth-child(5) { transition-delay: 0.5s; }
+.stagger-in.visible > *:nth-child(6) { transition-delay: 0.6s; }
+.stagger-in.visible > * { opacity: 1; transform: translateY(0); }
+
+/* Divider line */
+.editorial-line { width: 60px; height: 1px; background: #C4954A; }
+
+/* Image aspect containers */
+.img-cover { position: relative; overflow: hidden; }
+.img-cover img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Sticky nav bg */
+.nav-scrolled { background: rgba(27,42,74,0.97); backdrop-filter: blur(8px); }
+
+/* Vote widget */
+.vote-btn { transition: all 0.2s ease; }
+.vote-btn:hover { transform: scale(1.05); }
+.vote-btn.active-up { color: #C4954A; }
+.vote-btn.active-down { color: #8B4513; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-cream font-body text-charcoal overflow-auto"><!-- STICKY NAV -->
+  <nav id="mainNav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-display text-xl text-white tracking-wide">Saddle &amp; Sky</a>
+    <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">Home</a> <a href="#wallpapers" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">Wallpapers</a> <a href="#posters" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">Posters</a> <a href="#trainers" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">For Trainers</a> <a href="#reviews" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">Reviews</a> <a href="#download" class="nav-link text-sm text-white/80 hover:text-white font-body tracking-widest uppercase">Download</a>
+    </div><button id="mobileMenuBtn" class="md:hidden text-white" aria-label="Open menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div><!-- Mobile menu -->
+   <div id="mobileMenu" class="hidden md:hidden bg-navy/95 backdrop-blur-md px-6 pb-6"><a href="#home" class="block py-3 text-white/80 text-sm tracking-widest uppercase border-b border-white/10">Home</a> <a href="#wallpapers" class="block py-3 text-white/80 text-sm tracking-widest uppercase border-b border-white/10">Wallpapers</a> <a href="#posters" class="block py-3 text-white/80 text-sm tracking-widest uppercase border-b border-white/10">Posters</a> <a href="#trainers" class="block py-3 text-white/80 text-sm tracking-widest uppercase border-b border-white/10">For Trainers</a> <a href="#reviews" class="block py-3 text-white/80 text-sm tracking-widest uppercase border-b border-white/10">Reviews</a> <a href="#download" class="block py-3 text-white/80 text-sm tracking-widest uppercase">Download</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full" style="min-height: 100%;">
+   <div class="absolute inset-0 img-cover"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1920&amp;q=80" alt="Horse running at golden hour" class="slow-zoom" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1B2A4A,#2C2C2C)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/40 to-navy/80"></div>
+   </div>
+   <div class="particles-container" id="heroParticles"></div>
+   <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height: 100%;">
+    <div class="editorial-line mx-auto mb-6 reveal"></div>
+    <p class="text-gold font-body tracking-[0.3em] uppercase text-xs mb-4 reveal">Saddle &amp; Sky Studio</p>
+    <h1 id="heroTitle" class="font-display text-4xl sm:text-5xl md:text-7xl text-white leading-tight max-w-4xl mb-6 reveal" style="transition-delay:0.15s;">Horse life, beautifully captured.</h1>
+    <p id="heroSubtitle" class="font-body text-white/70 text-base sm:text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-10 reveal" style="transition-delay:0.3s;">Wallpapers, posters, and promo templates built from real photography.</p>
+    <div class="flex flex-col sm:flex-row gap-4 reveal" style="transition-delay:0.45s;"><a href="#download" class="cta-pulse bg-gold text-white px-8 py-3.5 font-body font-semibold tracking-wider uppercase text-sm hover:bg-gold/90 transition-colors">Download Collection</a> <a href="#wallpapers" class="border border-white/30 text-white px-8 py-3.5 font-body font-semibold tracking-wider uppercase text-sm hover:bg-white/10 transition-colors">Preview Gallery</a>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 reveal" style="transition-delay:0.6s;"><i data-lucide="chevron-down" class="text-white/40" style="width:28px;height:28px;animation:floatUp 3s ease-in-out infinite;"></i>
+    </div>
+   </div>
+  </section><!-- STATS BAR -->
+  <section class="w-full bg-navy py-6">
+   <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center stagger-in">
+    <div>
+     <p class="font-display text-3xl text-gold">120</p>
+     <p class="text-white/50 text-xs tracking-widest uppercase mt-1">Wallpapers</p>
+    </div>
+    <div>
+     <p class="font-display text-3xl text-gold">24</p>
+     <p class="text-white/50 text-xs tracking-widest uppercase mt-1">Printable Posters</p>
+    </div>
+    <div>
+     <p class="font-display text-3xl text-gold">40</p>
+     <p class="text-white/50 text-xs tracking-widest uppercase mt-1">Story Templates</p>
+    </div>
+    <div>
+     <p class="font-display text-3xl text-gold">1</p>
+     <p class="text-white/50 text-xs tracking-widest uppercase mt-1">Caption Pack</p>
+    </div>
+   </div>
+  </section><!-- WALLPAPERS -->
+  <section id="wallpapers" class="w-full py-20 md:py-28 bg-cream">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+     <p class="text-gold tracking-[0.3em] uppercase text-xs mb-3 font-body">Gallery</p>
+     <h2 class="font-display text-3xl md:text-5xl text-navy">120 Horse Wallpapers</h2>
+     <div class="editorial-line mx-auto mt-6"></div>
+     <p class="text-charcoal/60 mt-6 max-w-xl mx-auto font-light">Cinematic shots captured across golden fields, misty stables, and open arenas. Every image tells a story.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 stagger-in">
+     <div class="img-cover rounded-sm aspect-[3/4] card-lift"><img src="https://images.unsplash.com/photo-1534773728080-aa26088f97d1?w=600&amp;q=80" alt="Horse close up portrait" loading="lazy" class="slow-zoom" onerror="this.style.background='#D4C5B2';this.alt='Image unavailable';">
+     </div>
+     <div class="img-cover rounded-sm aspect-[3/4] card-lift"><img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&amp;q=80" alt="Sunrise over field" loading="lazy" class="slow-zoom" onerror="this.style.background='#D4C5B2';this.alt='Image unavailable';">
+     </div>
+     <div class="img-cover rounded-sm aspect-[3/4] card-lift"><img src="https://images.unsplash.com/photo-1601628828688-632f38a5a7d0?w=600&amp;q=80" alt="Horse portrait in stable" loading="lazy" class="slow-zoom" onerror="this.style.background='#D4C5B2';this.alt='Image unavailable';">
+     </div>
+     <div class="img-cover rounded-sm aspect-[4/3] md:col-span-2 card-lift"><img src="https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?w=1200&amp;q=80" alt="Horse running free" loading="lazy" class="slow-zoom" onerror="this.style.background='#D4C5B2';this.alt='Image unavailable';">
+     </div>
+     <div class="img-cover rounded-sm aspect-[4/3] card-lift"><img src="https://images.unsplash.com/photo-1557282931-5e3bad478675?w=600&amp;q=80" alt="Equestrian arena" loading="lazy" class="slow-zoom" onerror="this.style.background='#D4C5B2';this.alt='Image unavailable';">
+     </div>
+    </div>
+    <p class="text-center text-charcoal/40 text-sm mt-8 font-light">Showing 6 of 120 wallpapers included in the collection</p>
+   </div>
+  </section><!-- POSTERS -->
+  <section id="posters" class="w-full py-20 md:py-28 bg-navy">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+     <p class="text-gold tracking-[0.3em] uppercase text-xs mb-3 font-body">Print-Ready</p>
+     <h2 class="font-display text-3xl md:text-5xl text-white">24 Printable Posters</h2>
+     <div class="editorial-line mx-auto mt-6"></div>
+     <p class="text-white/50 mt-6 max-w-xl mx-auto font-light">Frame-worthy typography and photography. Designed at 300 DPI for crisp, gallery-quality prints.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 stagger-in"><!-- Poster mockups as styled cards -->
+     <div class="bg-cream/5 border border-white/10 p-6 card-lift">
+      <div class="img-cover aspect-[3/4] mb-4"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;q=80" alt="Horse silhouette at dusk" loading="lazy" onerror="this.style.background='#2C2C2C';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-end p-6">
+        <p class="font-display text-white text-2xl italic">"Wild at Heart"</p>
+       </div>
+      </div>
+      <p class="text-white/40 text-xs tracking-widest uppercase">18x24 — Print Ready</p>
+     </div>
+     <div class="bg-cream/5 border border-white/10 p-6 card-lift">
+      <div class="img-cover aspect-[3/4] mb-4"><img src="https://images.unsplash.com/photo-1504208434551-4e9b22368400?w=600&amp;q=80" alt="Horse in morning light" loading="lazy" onerror="this.style.background='#2C2C2C';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-end p-6">
+        <p class="font-display text-white text-2xl italic">"Morning Grace"</p>
+       </div>
+      </div>
+      <p class="text-white/40 text-xs tracking-widest uppercase">18x24 — Print Ready</p>
+     </div>
+     <div class="bg-cream/5 border border-white/10 p-6 card-lift sm:col-span-2 lg:col-span-1">
+      <div class="img-cover aspect-[3/4] mb-4"><img src="https://images.unsplash.com/photo-1560114928-40F1D4F0B280?w=600&amp;q=80" alt="Saddles in stable" loading="lazy" onerror="this.style.background='#2C2C2C';this.alt='Image unavailable';">
+       <div class="absolute inset-0 flex items-end p-6">
+        <p class="font-display text-white text-2xl italic">"Leather &amp; Legacy"</p>
+       </div>
+      </div>
+      <p class="text-white/40 text-xs tracking-widest uppercase">18x24 — Print Ready</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOR TRAINERS -->
+  <section id="trainers" class="w-full py-20 md:py-28 bg-cream">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+     <div class="reveal">
+      <p class="text-gold tracking-[0.3em] uppercase text-xs mb-3 font-body">Stable Promo Kit</p>
+      <h2 id="trainersHeading" class="font-display text-3xl md:text-5xl text-navy leading-tight">Built for Trainers &amp; Creators</h2>
+      <div class="editorial-line mt-6 mb-8"></div>
+      <p class="text-charcoal/60 font-light leading-relaxed mb-8">Lesson flyers, social templates, and story graphics designed to fill your schedule. Customize colors, drop in your logo, and post.</p>
+      <div class="space-y-5">
+       <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.5">
+          <path d="M8 14s1.5 2 4 2 4-2 4-2" /><circle cx="9" cy="9" r="1" /><circle cx="15" cy="9" r="1" /><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-body font-semibold text-navy">Lesson Promo Flyers</p>
+         <p class="text-charcoal/50 text-sm font-light">Print or share digitally. Includes beginner, intermediate, and advanced templates.</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /><path d="M9 21V9" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-body font-semibold text-navy">40 Story Templates</p>
+         <p class="text-charcoal/50 text-sm font-light">Instagram and TikTok-ready. Warm filters, equestrian typography, editable fields.</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+         <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+         </svg>
+        </div>
+        <div>
+         <p class="font-body font-semibold text-navy">Caption Pack</p>
+         <p class="text-charcoal/50 text-sm font-light">Ready-to-post captions for every mood. Inspirational, promotional, and seasonal.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="reveal" style="transition-delay:0.2s;"><!-- Trainer promo template previews -->
+      <div class="grid grid-cols-2 gap-4">
+       <div class="bg-navy p-5 rounded-sm border border-navy/20">
+        <div class="border border-gold/20 p-4 text-center">
+         <svg class="mx-auto mb-3" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2">
+          <path d="M12 22c1-3 7-6 7-12a7 7 0 1 0-14 0c0 6 6 9 7 12z" /><circle cx="12" cy="10" r="2" />
+         </svg>
+         <p class="text-gold text-[10px] tracking-[0.2em] uppercase mb-1">Your Stable Name</p>
+         <p class="font-display text-white text-lg leading-snug">Beginner<br>
+          Riding Lessons</p>
+         <div class="editorial-line mx-auto my-3"></div>
+         <p class="text-white/50 text-[10px]">Saturdays 9 AM — All Ages</p>
+         <div class="mt-3 bg-gold/20 py-1.5 px-3 inline-block">
+          <p class="text-gold text-[10px] tracking-widest uppercase">Book Now</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-warmtan/30 p-5 rounded-sm border border-warmtan/30">
+        <div class="border border-navy/10 p-4 text-center">
+         <svg class="mx-auto mb-3" width="28" height="28" viewbox="0 0 24 24" fill="none" stroke="#1B2A4A" stroke-width="1.2">
+          <path d="M12 15l-2 5 2-1 2 1-2-5z" /><path d="M6.5 9.5 12 2l5.5 7.5" /><path d="M3 12h18" />
+         </svg>
+         <p class="text-navy text-[10px] tracking-[0.2em] uppercase mb-1">Summer Camp</p>
+         <p class="font-display text-navy text-lg leading-snug">Junior<br>
+          Horse Camp</p>
+         <div class="w-8 h-px bg-navy/30 mx-auto my-3"></div>
+         <p class="text-navy/50 text-[10px]">Ages 8-16 — June &amp; July</p>
+         <div class="mt-3 bg-navy py-1.5 px-3 inline-block">
+          <p class="text-cream text-[10px] tracking-widest uppercase">Register</p>
+         </div>
+        </div>
+       </div>
+       <div class="col-span-2 bg-white p-5 rounded-sm border border-warmtan/30">
+        <div class="flex items-center gap-4">
+         <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2">
+          <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+         </svg>
+         <div>
+          <p class="font-display text-navy text-sm">Weekly Schedule Template</p>
+          <p class="text-charcoal/40 text-xs font-light">Drag-and-drop your lesson times. Print or share online.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- PRICING ANGLES -->
+  <section class="w-full py-16 bg-warmtan/20">
+   <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 stagger-in">
+    <div class="text-center p-8">
+     <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+     </svg>
+     <p class="font-display text-navy text-lg mb-2">Evergreen Lifestyle Niche</p>
+     <p class="text-charcoal/50 text-sm font-light">Horse content never goes out of style. This collection sells year-round, season after season.</p>
+    </div>
+    <div class="text-center p-8">
+     <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
+     </svg>
+     <p class="font-display text-navy text-lg mb-2">Great for Trainers &amp; Creators</p>
+     <p class="text-charcoal/50 text-sm font-light">Ready-made promo materials that look premium. No designer needed, just customize and post.</p>
+    </div>
+    <div class="text-center p-8">
+     <svg class="mx-auto mb-4" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2">
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
+     </svg>
+     <p class="font-display text-navy text-lg mb-2">High Shareability</p>
+     <p class="text-charcoal/50 text-sm font-light">Equestrian communities love sharing beautiful horse content. Built-in virality for your brand.</p>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-20 md:py-28 bg-cream">
+   <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+     <p class="text-gold tracking-[0.3em] uppercase text-xs mb-3 font-body">Testimonials</p>
+     <h2 class="font-display text-3xl md:text-5xl text-navy">What Riders Are Saying</h2>
+     <div class="editorial-line mx-auto mt-6"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger-in">
+     <div class="bg-white p-8 border border-warmtan/20 card-lift">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="font-display text-navy italic mb-4">"Absolutely stunning. My students' parents think I hired a designer."</p>
+      <p class="text-charcoal/40 text-sm">— Sarah M., Riding Instructor</p>
+     </div>
+     <div class="bg-white p-8 border border-warmtan/20 card-lift">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="font-display text-navy italic mb-4">"The wallpapers alone are worth it. My phone has never looked better."</p>
+      <p class="text-charcoal/40 text-sm">— Jake T., Equestrian Blogger</p>
+     </div>
+     <div class="bg-white p-8 border border-warmtan/20 card-lift">
+      <div class="flex gap-1 mb-4">
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+       <svg width="14" height="14" viewbox="0 0 24 24" fill="#C4954A" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+       </svg>
+      </div>
+      <p class="font-display text-navy italic mb-4">"Finally, promo templates that actually look like the equestrian world."</p>
+      <p class="text-charcoal/40 text-sm">— Maria L., Stable Owner</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA / DOWNLOAD -->
+  <section id="download" class="relative w-full py-24 md:py-32">
+   <div class="absolute inset-0 img-cover"><img src="https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?w=1920&amp;q=80" alt="Rider silhouette at sunset" loading="lazy" class="slow-zoom" onerror="this.style.background='linear-gradient(135deg,#1B2A4A,#2C2C2C)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-navy/75"></div>
+   </div>
+   <div class="particles-container" id="ctaParticles"></div>
+   <div class="relative z-10 max-w-3xl mx-auto text-center px-6">
+    <div class="reveal">
+     <svg class="mx-auto mb-6" width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="#C4954A" stroke-width="1.2"><path d="M12 2C10 2 6 4 6 9c0 3 1 5 3 6.5C7 16 4 17 4 20h16c0-3-3-4-5-4.5C17 14 18 12 18 9c0-5-4-7-6-7z" /> <path d="M9 22c1-1.5 2-1 3-1s2-.5 3 1" />
+     </svg>
+     <p id="bottomCtaText" class="font-display text-3xl md:text-5xl text-white leading-tight mb-6">Bring the stable aesthetic anywhere.</p>
+     <div class="editorial-line mx-auto mb-8"></div>
+     <p class="text-white/50 font-light mb-10">120 wallpapers. 24 posters. 40 story templates. Stable promo flyers. One caption pack. One download.</p><a href="#" class="cta-pulse inline-block bg-gold text-white px-10 py-4 font-body font-semibold tracking-wider uppercase text-sm hover:bg-gold/90 transition-colors" onclick="event.preventDefault(); document.getElementById('downloadToast').classList.remove('hidden'); setTimeout(()=>document.getElementById('downloadToast').classList.add('hidden'),3000);">Download Full Collection</a>
+    </div><!-- Vote + Comment Widget -->
+    <div class="mt-16 reveal" style="transition-delay:0.2s;">
+     <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-8">
+      <p class="text-white/60 text-xs tracking-[0.2em] uppercase mb-6">Vote + Comment</p><!-- Vote buttons -->
+      <div class="flex items-center justify-center gap-6 mb-8"><button id="voteUpBtn" class="vote-btn flex items-center gap-2 text-white/60 hover:text-gold transition-colors" aria-label="Vote up"> <i data-lucide="thumbs-up" style="width:22px;height:22px;"></i> <span id="voteUpCount" class="font-body text-lg">0</span> </button>
+       <div class="w-px h-8 bg-white/20"></div><button id="voteDownBtn" class="vote-btn flex items-center gap-2 text-white/60 hover:text-warmtan transition-colors" aria-label="Vote down"> <i data-lucide="thumbs-down" style="width:22px;height:22px;"></i> <span id="voteDownCount" class="font-body text-lg">0</span> </button>
+      </div><!-- Comment form -->
+      <form id="commentForm" class="mb-6"><label for="commentInput" class="sr-only">Your comment</label>
+       <div class="flex gap-3"><input id="commentInput" type="text" placeholder="Leave a comment..." class="flex-1 bg-white/5 border border-white/15 text-white placeholder-white/30 px-4 py-3 text-sm font-body focus:outline-none focus:border-gold/50 transition-colors rounded-sm"> <button type="submit" class="bg-gold/20 border border-gold/30 text-gold px-5 py-3 text-sm tracking-wider uppercase hover:bg-gold/30 transition-colors rounded-sm">Post</button>
+       </div>
+      </form><!-- Comments list -->
+      <div id="commentsList" class="space-y-3 max-h-48 overflow-y-auto text-left"></div>
+      <p id="noComments" class="text-white/30 text-sm font-light">No comments yet. Be the first!</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full bg-navy py-10">
+   <div class="max-w-5xl mx-auto px-6 text-center">
+    <p class="font-display text-white text-lg mb-2">Saddle &amp; Sky Studio</p>
+    <p class="text-white/30 text-xs tracking-widest uppercase">Horse life, beautifully captured.</p>
+    <div class="editorial-line mx-auto mt-6 mb-6"></div>
+    <p class="text-white/20 text-xs">Design collection for personal and commercial use. Images for preview only.</p>
+   </div>
+  </footer><!-- Download Toast -->
+  <div id="downloadToast" class="hidden fixed bottom-6 right-6 bg-navy border border-gold/30 text-white px-6 py-4 rounded-sm shadow-2xl z-50 flex items-center gap-3"><i data-lucide="check-circle" style="width:20px;height:20px;color:#C4954A;"></i> <span class="text-sm font-body">Download link sent! Check your inbox.</span>
+  </div>
+  <script>
+// === DEFAULT CONFIG ===
+const defaultConfig = {
+  hero_title: 'Horse life, beautifully captured.',
+  hero_subtitle: 'Wallpapers, posters, and promo templates built from real photography.',
+  trainers_heading: 'Built for Trainers & Creators',
+  bottom_cta_text: 'Bring the stable aesthetic anywhere.',
+  background_color: '#F5F0EB',
+  surface_color: '#FFFFFF',
+  text_color: '#1B2A4A',
+  accent_color: '#C4954A',
+  secondary_color: '#D4C5B2',
+  font_family: 'Playfair Display',
+  font_size: 16
+};
+
+// === ELEMENT SDK ===
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  document.getElementById('heroTitle').textContent = c.hero_title;
+  document.getElementById('heroSubtitle').textContent = c.hero_subtitle;
+  document.getElementById('trainersHeading').textContent = c.trainers_heading;
+  document.getElementById('bottomCtaText').textContent = c.bottom_cta_text;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+  document.querySelectorAll('.bg-cream').forEach(el => el.style.backgroundColor = c.background_color);
+  document.querySelectorAll('.bg-white, .bg-white\\/10').forEach(el => { if(!el.closest('.backdrop-blur-sm')) el.style.backgroundColor = c.surface_color; });
+  document.querySelectorAll('.text-navy').forEach(el => el.style.color = c.text_color);
+  document.querySelectorAll('.text-gold, .text-gold\\/20').forEach(el => el.style.color = c.accent_color);
+  document.querySelectorAll('.editorial-line').forEach(el => el.style.backgroundColor = c.accent_color);
+  document.querySelectorAll('.cta-pulse').forEach(el => el.style.backgroundColor = c.accent_color);
+
+  // Fonts
+  const font = c.font_family || defaultConfig.font_family;
+  const base = c.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-display').forEach(el => el.style.fontFamily = `${font}, Georgia, serif`);
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = '');
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_color || defaultConfig.secondary_color, set: v => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['trainers_heading', config.trainers_heading || defaultConfig.trainers_heading],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+  ])
+});
+
+// === SCROLL REVEAL ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .stagger-in').forEach(el => observer.observe(el));
+
+// === NAV SCROLL ===
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('nav-scrolled', window.scrollY > 50);
+});
+
+// === MOBILE MENU ===
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// === PARTICLES ===
+function createParticles(containerId, count) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (60 + Math.random() * 40) + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = (2 + Math.random() * 2) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+createParticles('heroParticles', 15);
+createParticles('ctaParticles', 10);
+
+// === VOTE WIDGET ===
+let voteUp = 0, voteDown = 0, userVote = null;
+document.getElementById('voteUpBtn').addEventListener('click', function() {
+  if (userVote === 'up') { voteUp--; userVote = null; this.classList.remove('active-up'); }
+  else { if (userVote === 'down') { voteDown--; document.getElementById('voteDownBtn').classList.remove('active-down'); }
+    voteUp++; userVote = 'up'; this.classList.add('active-up'); }
+  document.getElementById('voteUpCount').textContent = voteUp;
+  document.getElementById('voteDownCount').textContent = voteDown;
+});
+document.getElementById('voteDownBtn').addEventListener('click', function() {
+  if (userVote === 'down') { voteDown--; userVote = null; this.classList.remove('active-down'); }
+  else { if (userVote === 'up') { voteUp--; document.getElementById('voteUpBtn').classList.remove('active-up'); }
+    voteDown++; userVote = 'down'; this.classList.add('active-down'); }
+  document.getElementById('voteUpCount').textContent = voteUp;
+  document.getElementById('voteDownCount').textContent = voteDown;
+});
+
+// === COMMENTS ===
+document.getElementById('commentForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  document.getElementById('noComments').classList.add('hidden');
+  const div = document.createElement('div');
+  div.className = 'bg-white/5 border border-white/10 p-3 rounded-sm';
+  const now = new Date();
+  div.innerHTML = `<p class="text-white/80 text-sm font-body">${text.replace(/</g,'&lt;')}</p><p class="text-white/30 text-xs mt-1">${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</p>`;
+  document.getElementById('commentsList').prepend(div);
+  input.value = '';
+});
+
+// === LUCIDE ICONS ===
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8a3881207a27c5',t:'MTc3NTU3NzM2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
