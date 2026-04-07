@@ -157,7 +157,8 @@ function main() {
       continue;
     }
     const html = fs.readFileSync(htmlPath, 'utf8');
-    if (html.includes(PLACEHOLDER) || html.trim().length < 100) {
+    const withoutComments = html.replace(/<!--[\s\S]*?-->/g, '').trim();
+    if (withoutComments.length < 100 || withoutComments.includes(PLACEHOLDER)) {
       skipped++;
       continue;
     }
