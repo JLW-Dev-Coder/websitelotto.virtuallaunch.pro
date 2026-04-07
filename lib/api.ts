@@ -81,10 +81,19 @@ export function placeBid(slug: string, amount: number): Promise<{ ok: boolean }>
   });
 }
 
-export function createCheckout(slug: string, type: 'buy_now'): Promise<{ url: string }> {
+export interface CheckoutResponse {
+  session_url?: string;
+  url?: string;
+}
+
+export function createCheckout(
+  slug: string,
+  tier: 'standard' | 'premium',
+  email?: string
+): Promise<CheckoutResponse> {
   return apiFetch('/v1/wlvlp/checkout', {
     method: 'POST',
-    body: JSON.stringify({ slug, type }),
+    body: JSON.stringify({ slug, tier, ...(email ? { email } : {}) }),
   });
 }
 

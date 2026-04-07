@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getTemplate, getTemplateBids, voteTemplate, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
+import { getTierForSlug, getPrice } from '@/lib/pricing';
 import styles from './page.module.css';
 
 interface Props {
@@ -55,11 +56,16 @@ export default function SiteClient({ slug }: Props) {
     } catch {}
   }
 
+  const tier = getTierForSlug(slug);
+  const price = getPrice(tier);
+
   async function handleBuyNow() {
     if (!session) { router.push('/sign-in?redirect=/sites/' + slug); return; }
     try {
-      const res = await createCheckout(slug, 'buy_now');
-      window.location.href = res.url;
+      const res = await createCheckout(slug, tier);
+      const url = res.session_url ?? res.url;
+      if (url) window.location.href = url;
+      else setError('Checkout failed: no session URL');
     } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Checkout failed'); }
   }
 
@@ -117,7 +123,7 @@ export default function SiteClient({ slug }: Props) {
 
           {template.status === 'available' && (
             <div className={styles.statusPanel}>
-              <button className={styles.buyBtn} onClick={handleBuyNow}>Buy Now — $99/mo</button>
+              <button className={styles.buyBtn} onClick={handleBuyNow}>Buy Now — ${price}</button>
               <div className={styles.bidSection}>
                 <p className={styles.bidLabel}>Or place a bid (min $29):</p>
                 <div className={styles.bidRow}>

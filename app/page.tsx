@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getTemplates, getSession, voteTemplate, Template } from '@/lib/api';
+import { getPriceForSlug } from '@/lib/pricing';
 import styles from './page.module.css';
 
 const CATEGORIES = ['All', 'Available', 'health', 'finance', 'legal', 'food/bev', 'creative', 'services', 'other'];
@@ -149,6 +150,7 @@ export default function HomePage() {
                     </div>
                     <div className={styles.cardTitle}>{t.title}</div>
                     <div className={styles.cardCategory}>{t.category}</div>
+                    <div className={styles.cardPrice}>${getPriceForSlug(t.slug)}</div>
                     {t.status === 'auction' && t.current_bid && (
                       <div className={styles.currentBid}>Bid: ${t.current_bid}</div>
                     )}
@@ -159,7 +161,7 @@ export default function HomePage() {
                       ) : (
                         <>
                           {t.status === 'available' && (
-                            <Link href={`/sites/${t.slug}`} className={styles.cardActionBtn}>Buy Now</Link>
+                            <Link href={`/sites/${t.slug}`} className={styles.cardActionBtn}>Buy Now — ${getPriceForSlug(t.slug)}</Link>
                           )}
                           <Link href={`/sites/${t.slug}`} className={styles.cardActionBtn}>
                             {t.status === 'auction' ? `Bid $${t.current_bid ?? ''}` : 'Place Bid'}
