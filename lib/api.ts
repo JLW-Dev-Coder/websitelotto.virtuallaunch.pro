@@ -169,6 +169,43 @@ export interface PurchasedSite {
   hosting_status: 'active' | 'expired' | 'pending';
   hosting_expires_at?: string;
   site_url: string;
+  custom_domain?: string;
+  domain_status?: 'pending' | 'verified' | 'failed';
+}
+
+export interface DomainConnectResponse {
+  domain: string;
+  status: 'pending' | 'verified' | 'failed';
+  instructions?: {
+    type: string;
+    name: string;
+    value: string;
+  }[];
+  message?: string;
+}
+
+export interface SiteDomainInfo {
+  domain?: string;
+  status?: 'pending' | 'verified' | 'failed';
+  instructions?: DomainConnectResponse['instructions'];
+}
+
+export function connectDomain(slug: string, domain: string): Promise<DomainConnectResponse> {
+  return apiFetch(`/v1/wlvlp/sites/${slug}/domain`, {
+    method: 'POST',
+    body: JSON.stringify({ domain }),
+  });
+}
+
+export function getSiteDomain(slug: string): Promise<SiteDomainInfo> {
+  return apiFetch(`/v1/wlvlp/sites/${slug}/domain`);
+}
+
+export function createHostingRenewalCheckout(slug: string): Promise<CheckoutResponse> {
+  return apiFetch('/v1/wlvlp/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ slug, tier: 'standard', plan: 'hosting_renewal' }),
+  });
 }
 
 export function getMySites(account_id: string): Promise<PurchasedSite[]> {

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AuthGuard from '@/components/AuthGuard';
+import { connectDomain, getSiteDomain, DomainConnectResponse } from '@/lib/api';
 import styles from './page.module.css';
 
 interface SchemaField {
@@ -153,8 +154,142 @@ function EditSiteContent({ slug }: { slug: string }) {
             </div>
           </form>
         )}
+
+        {!loading && !loadError && schema && <DomainSection slug={slug} />}
       </main>
     </div>
+  );
+}
+
+function DomainSection({ slug }: { slug: string }) {
+  const [domain, setDomain] = useState('');
+  const [currentDomain, setCurrentDomain] = useState<string | null>(null);
+  const [status, setStatus] = useState<'pending' | 'verified' | 'failed' | null>(null);
+  const [instructions, setInstructions] = useState<DomainConnectResponse['instructions'] | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    getSiteDomain(slug)
+      .then((info) => {
+        if (cancelled) return;
+        if (info.domain) {
+          setCurrentDomain(info.domain);
+          setStatus(info.status ?? 'pending');
+          if (info.instructions) setInstructions(info.instructions);
+        }
+      })
+      .catch(() => {
+        // No domain connected yet — silently ignore.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  async function handleConnect(e: React.FormEvent) {
+    e.preventDefault();
+    if (!domain.trim()) return;
+    setSubmitting(true);
+    setError('');
+    try {
+      const res = await connectDomain(slug, domain.trim());
+      setCurrentDomain(res.domain);
+      setStatus(res.status);
+      setInstructions(res.instructions ?? null);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to connect domain');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <section className={styles.domainSection}>
+      <h2 className={styles.domainTitle}>Custom Domain</h2>
+      <p className={styles.domainSubtitle}>
+        Connect your own domain to host this site at your own URL.
+      </p>
+
+      {currentDomain && (
+        <div className={styles.domainCurrent}>
+          <div className={styles.domainCurrentRow}>
+            <div>
+              <div className={styles.domainCurrentLabel}>Connected domain</div>
+              <div className={styles.domainCurrentName}>{currentDomain}</div>
+            </div>
+            <span
+              className={
+                status === 'verified'
+                  ? styles.domainStatusVerified
+                  : status === 'failed'
+                  ? styles.domainStatusFailed
+                  : styles.domainStatusPending
+              }
+            >
+              {status === 'verified' ? 'Verified' : status === 'failed' ? 'Failed' : 'Pending'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {instructions && instructions.length > 0 && (
+        <div className={styles.domainInstructions}>
+          <p className={styles.domainInstructionsTitle}>
+            Add these DNS records at your domain registrar:
+          </p>
+          <div className={styles.dnsTable}>
+            <div className={styles.dnsHeader}>
+              <span>Type</span>
+              <span>Name</span>
+              <span>Value</span>
+            </div>
+            {instructions.map((rec, i) => (
+              <div key={i} className={styles.dnsRow}>
+                <span>{rec.type}</span>
+                <span>{rec.name}</span>
+                <span className={styles.dnsValue}>{rec.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <form className={styles.domainForm} onSubmit={handleConnect}>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="custom-domain">
+            {currentDomain ? 'Change domain' : 'Domain name'}
+          </label>
+          <input
+            id="custom-domain"
+            type="text"
+            className={styles.input}
+            placeholder="example.com"
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
+          />
+          <p className={styles.hint}>Enter your domain without https:// or www.</p>
+        </div>
+
+        {error && (
+          <div className={styles.errorBox}>
+            <p className={styles.errorTitle}>Couldn&apos;t connect domain</p>
+            <p className={styles.errorMsg}>{error}</p>
+          </div>
+        )}
+
+        <div className={styles.actions}>
+          <button
+            type="submit"
+            className={styles.saveBtn}
+            disabled={submitting || !domain.trim()}
+          >
+            {submitting ? 'Connecting…' : 'Connect Domain'}
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AuthGuard from '@/components/AuthGuard';
-import { getMySites, PurchasedSite } from '@/lib/api';
+import { getMySites, createHostingRenewalCheckout, PurchasedSite } from '@/lib/api';
 import styles from './page.module.css';
 
 export default function MySitesPage() {
@@ -74,19 +74,50 @@ function MySitesContent({ accountId }: { accountId: string }) {
 }
 
 function SiteCard({ site }: { site: PurchasedSite }) {
+  const [renewing, setRenewing] = useState(false);
+  const [renewError, setRenewError] = useState('');
+
   const purchased = new Date(site.purchased_at).toLocaleDateString(undefined, {
     year: 'numeric', month: 'short', day: 'numeric',
   });
-  const expires = site.hosting_expires_at
-    ? new Date(site.hosting_expires_at).toLocaleDateString(undefined, {
+  const expiresDate = site.hosting_expires_at ? new Date(site.hosting_expires_at) : null;
+  const expires = expiresDate
+    ? expiresDate.toLocaleDateString(undefined, {
         year: 'numeric', month: 'short', day: 'numeric',
       })
     : null;
+
+  const now = Date.now();
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const daysUntilExpiry = expiresDate
+    ? Math.ceil((expiresDate.getTime() - now) / msPerDay)
+    : null;
+
+  const isExpired = site.hosting_status === 'expired';
+  const isExpiringSoon =
+    !isExpired && daysUntilExpiry !== null && daysUntilExpiry >= 0 && daysUntilExpiry <= 30;
 
   const statusClass =
     site.hosting_status === 'active' ? styles.statusActive
     : site.hosting_status === 'expired' ? styles.statusExpired
     : styles.statusPending;
+
+  async function handleRenew() {
+    setRenewing(true);
+    setRenewError('');
+    try {
+      const res = await createHostingRenewalCheckout(site.slug);
+      const url = res.session_url ?? res.url;
+      if (url) {
+        window.location.href = url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (err: unknown) {
+      setRenewError(err instanceof Error ? err.message : 'Failed to start renewal');
+      setRenewing(false);
+    }
+  }
 
   return (
     <div className={styles.card}>
@@ -99,6 +130,18 @@ function SiteCard({ site }: { site: PurchasedSite }) {
         </span>
       </div>
       {site.category && <div className={styles.cardCategory}>{site.category}</div>}
+
+      {isExpired && (
+        <div className={styles.alertExpired}>
+          Hosting expired — renew to keep your site live
+        </div>
+      )}
+      {isExpiringSoon && expires && (
+        <div className={styles.alertWarning}>
+          Hosting expires {expires}
+        </div>
+      )}
+
       <dl className={styles.meta}>
         <div className={styles.metaRow}>
           <dt>Purchased</dt>
@@ -106,11 +149,18 @@ function SiteCard({ site }: { site: PurchasedSite }) {
         </div>
         {expires && (
           <div className={styles.metaRow}>
-            <dt>{site.hosting_status === 'expired' ? 'Expired on' : 'Renews on'}</dt>
+            <dt>{isExpired ? 'Expired on' : 'Renews on'}</dt>
             <dd>{expires}</dd>
           </div>
         )}
       </dl>
+
+      {renewError && (
+        <div className={styles.errorBox}>
+          <p className={styles.errorMsg}>{renewError}</p>
+        </div>
+      )}
+
       <div className={styles.actions}>
         <a
           href={site.site_url}
@@ -124,6 +174,17 @@ function SiteCard({ site }: { site: PurchasedSite }) {
           Edit Site
         </Link>
       </div>
+
+      {(isExpired || isExpiringSoon) && (
+        <button
+          type="button"
+          className={styles.renewBtn}
+          onClick={handleRenew}
+          disabled={renewing}
+        >
+          {renewing ? 'Starting checkout…' : 'Renew Hosting — $14/mo'}
+        </button>
+      )}
     </div>
   );
 }
