@@ -6,10 +6,10 @@ import { createScratchTicket, revealScratchTicket, ScratchTicket } from '@/lib/a
 import styles from './page.module.css';
 
 const PRIZE_CONFIG: Record<string, { emoji: string; title: string; desc: string }> = {
-  free_month: { emoji: '🎉', title: 'You won a free month!', desc: 'Claim any available template at no cost for one month.' },
-  '50_off': { emoji: '🎊', title: '50% off your first month!', desc: 'Use your discount code at checkout.' },
-  '25_off': { emoji: '🎁', title: '25% off your first month!', desc: 'Use your discount code at checkout.' },
-  credit_9: { emoji: '💰', title: 'You won a $9 credit!', desc: 'Apply this credit at checkout.' },
+  free_month: { emoji: '🎉', title: 'You won a free template!', desc: 'Claim any available template at no cost — includes 12 months of hosting.' },
+  '50_off': { emoji: '🎊', title: '$50 off your template!', desc: 'Use your discount code at checkout.' },
+  '25_off': { emoji: '🎁', title: '$25 off your template!', desc: 'Use your discount code at checkout.' },
+  credit_9: { emoji: '💰', title: 'You won a $9 credit!', desc: 'Apply this credit toward any template purchase.' },
   free_ticket: { emoji: '🎟️', title: 'Try again!', desc: 'You won another scratch ticket.' },
   no_prize: { emoji: '😔', title: 'Better luck next time!', desc: 'Browse available templates and find your perfect site.' },
 };
@@ -62,7 +62,7 @@ function ScratchContent({ accountId: _accountId }: { accountId: string }) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Scratch to Win</h1>
-        <p className={styles.subtitle}>One free ticket per account. Win a free month, discounts, or credits.</p>
+        <p className={styles.subtitle}>One free ticket per account. Win a free template, discounts, or credits.</p>
 
         {!ticket && (
           <div className={styles.getTicket}>

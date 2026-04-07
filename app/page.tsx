@@ -194,7 +194,7 @@ export default function HomePage() {
               { icon: '💳', title: 'Stripe-ready', desc: 'Plug in your Stripe link or payment button in seconds.' },
               { icon: '🔒', title: 'Cloudflare security', desc: 'DDoS protection, SSL, and global CDN included.' },
               { icon: '✏️', title: 'Easy customization', desc: 'Edit your content, brand colors, and contact info from the dashboard.' },
-              { icon: '🎫', title: 'Scratch to Win', desc: 'Win a free month, discounts, or credits with our scratch ticket mechanic.' },
+              { icon: '🎫', title: 'Scratch to Win', desc: 'Win a free template, discounts, or credits with our scratch ticket mechanic.' },
             ].map(f => (
               <div key={f.title} className={styles.featureCard}>
                 <span className={styles.featureIcon}>{f.icon}</span>
