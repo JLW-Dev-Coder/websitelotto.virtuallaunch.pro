@@ -109,6 +109,20 @@ export function getBuyerDashboard(account_id: string): Promise<BuyerDashboard> {
   return apiFetch(`/v1/wlvlp/buyer/${account_id}`);
 }
 
+export interface PurchasedSite {
+  slug: string;
+  title: string;
+  category?: string;
+  purchased_at: string;
+  hosting_status: 'active' | 'expired' | 'pending';
+  hosting_expires_at?: string;
+  site_url: string;
+}
+
+export function getMySites(account_id: string): Promise<PurchasedSite[]> {
+  return apiFetch(`/v1/wlvlp/sites/by-account/${account_id}`);
+}
+
 export function updateConfig(slug: string, config: Record<string, string>): Promise<{ ok: boolean }> {
   return apiFetch(`/v1/wlvlp/config/${slug}`, {
     method: 'PATCH',

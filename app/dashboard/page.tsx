@@ -60,6 +60,7 @@ function DashboardContent({ accountId }: { accountId: string }) {
           <Link href="/" className={styles.navLogo}>Website Lotto</Link>
           <div className={styles.navLinks}>
             <span className={styles.siteSlug}>{dashboard.template.slug}.websitelotto.virtuallaunch.pro</span>
+            <Link href="/dashboard/sites" className={styles.affiliateLink}>My Sites</Link>
             <Link href="/affiliate" className={styles.affiliateLink}>Affiliate</Link>
           </div>
         </div>
@@ -76,6 +77,9 @@ function DashboardContent({ accountId }: { accountId: string }) {
               {t.label}
             </button>
           ))}
+          <Link href="/dashboard/sites" className={styles.tabBtn}>
+            My Sites
+          </Link>
         </aside>
 
         <main className={styles.content}>
