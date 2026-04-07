@@ -111,6 +111,13 @@ After every task, verify:
 4. CSS Modules only — no Tailwind, no inline styles added
 5. Templates in `public/sites/` not modified
 
+## Post-Task Rules (mandatory after every task)
+
+1. **Commit:** After completing any task, commit all changed files with a descriptive message. Never leave work uncommitted.
+2. **Push:** After committing, always run `git push origin main`. Do not ask for confirmation.
+3. **Deploy:** Push triggers Cloudflare Pages automatically for WLVLP. No manual deploy needed.
+4. **Report:** After commit+push, report the commit hash and any errors.
+
 ---
 
 ## Migration Status
