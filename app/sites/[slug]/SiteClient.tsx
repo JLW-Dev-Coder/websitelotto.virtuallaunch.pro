@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getTemplate, getTemplateBids, voteTemplate, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
 import { getTierForSlug, getPrice } from '@/lib/pricing';
+import { TEMPLATES, getCategoryLabel } from '@/lib/templates';
 import styles from './page.module.css';
 
 interface Props {
@@ -22,11 +23,25 @@ export default function SiteClient({ slug }: Props) {
 
   useEffect(() => {
     Promise.all([
-      getTemplate(slug),
-      getTemplateBids(slug),
+      getTemplate(slug).catch(() => null),
+      getTemplateBids(slug).catch(() => [] as Bid[]),
       getSession().catch(() => null),
     ]).then(([t, b, s]) => {
-      setTemplate(t);
+      if (t) {
+        setTemplate(t);
+      } else {
+        const entry = TEMPLATES.find(e => e.slug === slug);
+        if (entry) {
+          setTemplate({
+            slug: entry.slug,
+            title: entry.title,
+            category: getCategoryLabel(entry.category),
+            status: 'available',
+            vote_count: 0,
+            price_monthly: 0,
+          });
+        }
+      }
       setBids(b);
       setSession(s);
     }).finally(() => setLoading(false));
@@ -99,7 +114,7 @@ export default function SiteClient({ slug }: Props) {
       <main className={styles.hero}>
         <div className={styles.previewWrap}>
           <iframe
-            src={`https://${slug}.websitelotto.virtuallaunch.pro`}
+            src={`/sites/${slug}/index.html`}
             className={styles.previewFrame}
             title={template.title}
             sandbox="allow-scripts allow-same-origin"
