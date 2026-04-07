@@ -65,11 +65,11 @@ export default function HomePage() {
         <div className={styles.heroBg} />
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>Website Lotto</h1>
-          <p className={styles.heroTagline}>Don&apos;t gamble on your website design.</p>
-          <p className={styles.heroDesc}>Claim a ready-made, high-converting website today. Hosted on a reliable domain with Cloudflare-backed security. Plug in your Stripe link and start selling in minutes.</p>
+          <p className={styles.heroTagline}>Own your website. One payment. No subscriptions.</p>
+          <p className={styles.heroDesc}>Browse 210+ professional websites and buy the one that fits your business. One-time payment, 12 months hosting included, Cloudflare-backed security. Plug in your Stripe link and start selling in minutes.</p>
           <div className={styles.badges}>
-            <span className={styles.badge}>$99/mo</span>
-            <span className={styles.badge}>Easy to transfer</span>
+            <span className={styles.badge}>From $249 one-time</span>
+            <span className={styles.badge}>12 mo hosting included</span>
             <span className={styles.badge}>Cloudflare-backed</span>
           </div>
           <div className={styles.heroButtons}>
@@ -89,7 +89,7 @@ export default function HomePage() {
             <div className={styles.stepCard}>
               <span className={styles.stepNum}>1</span>
               <h3>Pick a site</h3>
-              <p>Browse 48 templates and choose one that fits your business.</p>
+              <p>Browse 210+ templates and choose one that fits your business.</p>
             </div>
             <div className={styles.stepCard}>
               <span className={styles.stepNum}>2</span>
@@ -211,39 +211,44 @@ export default function HomePage() {
           <h2 className={styles.sectionTitle}>Pricing</h2>
           <div className={styles.pricingRow}>
             <div className={styles.pricingBox}>
-              <div className={styles.pricingBadge}>Most Popular</div>
-              <div className={styles.pricingPrice}>$99<span>/mo</span></div>
-              <div className={styles.pricingLabel}>Buy Now</div>
+              <div className={styles.pricingPrice}>$249<span> one-time</span></div>
+              <div className={styles.pricingLabel}>Standard Site</div>
               <ul className={styles.pricingFeatures}>
-                <li>Instant site claim</li>
+                <li>Professional website template</li>
+                <li>Lifestyle, hobby, food, beauty, entertainment &amp; sports niches</li>
+                <li>12 months hosting included</li>
                 <li>Branded subdomain</li>
-                <li>Edit content &amp; brand</li>
                 <li>Cloudflare CDN + SSL</li>
-                <li>Cancel anytime</li>
+                <li>Mobile responsive</li>
               </ul>
-              <a href="#sites" className={styles.btnPrimary}>Claim a Site</a>
+              <a href="#sites" className={styles.btnSecondary}>Browse Standard Sites</a>
             </div>
             <div className={styles.pricingBox}>
-              <div className={styles.pricingPrice}>$29+</div>
-              <div className={styles.pricingLabel}>Bidding</div>
+              <div className={styles.pricingBadge}>Most Popular</div>
+              <div className={styles.pricingPrice}>$399<span> one-time</span></div>
+              <div className={styles.pricingLabel}>Premium Site</div>
               <ul className={styles.pricingFeatures}>
-                <li>7-day auctions</li>
-                <li>Minimum $29 bid</li>
-                <li>Winner gets full access</li>
-                <li>Same features as Buy Now</li>
+                <li>Niche-specific professional website</li>
+                <li>Tax, legal, services, real estate &amp; tech niches</li>
+                <li>12 months hosting included</li>
+                <li>Branded subdomain</li>
+                <li>Cloudflare CDN + SSL</li>
+                <li>Mobile responsive</li>
               </ul>
-              <a href="#sites" className={styles.btnSecondary}>Browse Auctions</a>
+              <a href="#sites" className={styles.btnPrimary}>Browse Premium Sites</a>
             </div>
             <div className={styles.pricingBox}>
-              <div className={styles.pricingPrice}>Free</div>
-              <div className={styles.pricingLabel}>Scratch to Win</div>
+              <div className={styles.pricingPrice}>$14<span>/mo</span></div>
+              <div className={styles.pricingLabel}>After Year 1</div>
               <ul className={styles.pricingFeatures}>
-                <li>One free scratch ticket</li>
-                <li>Win a free month</li>
-                <li>Or 50%/25% off</li>
-                <li>Or $9 credit</li>
+                <li>Standard hosting: $14/mo</li>
+                <li>Premium hosting: $49/mo</li>
+                <li>Premium includes content updates</li>
+                <li>Premium includes SEO</li>
+                <li>Premium includes priority support</li>
+                <li><strong>First 12 months included with purchase</strong></li>
               </ul>
-              <Link href="/scratch" className={styles.btnSecondary}>Get My Ticket</Link>
+              <a href="#sites" className={styles.btnSecondary}>See Templates</a>
             </div>
           </div>
         </div>
@@ -257,11 +262,11 @@ export default function HomePage() {
           <h2 className={styles.sectionTitle}>FAQ</h2>
           <div className={styles.faqList}>
             {[
-              { q: 'Can I cancel anytime?', a: 'Yes. Cancel your subscription and your site is returned to the available pool.' },
+              { q: 'Is this a subscription?', a: 'No. You pay one time ($249 standard or $399 premium) and own the site. Hosting for the first 12 months is included.' },
+              { q: 'What happens after 12 months?', a: 'Continue with standard hosting at $14/mo or upgrade to premium hosting at $49/mo (includes content updates, SEO, and priority support).' },
+              { q: 'What is the difference between standard and premium?', a: 'Premium sites cover higher-value niches (tax, legal, services, real estate, tech). Standard sites cover lifestyle, hobby, food, beauty, entertainment, and sports.' },
               { q: 'What happens when a template is sold?', a: 'It is marked Sold and removed from the available pool. The buyer has exclusive use.' },
               { q: 'Can I use my own domain?', a: 'Your site runs on a .virtuallaunch.pro subdomain. Custom domain support is coming soon.' },
-              { q: 'How do auctions work?', a: '7-day auctions with a $29 minimum bid. Highest bid at auction end wins.' },
-              { q: 'What is Scratch to Win?', a: 'Create a free account and get a scratch ticket. Prizes include free months, discounts, and credits.' },
             ].map((item, i) => (
               <FaqItem key={i} q={item.q} a={item.a} />
             ))}
@@ -273,8 +278,8 @@ export default function HomePage() {
       <section className={styles.section} id="cta">
         <div className={styles.sectionInner}>
           <div className={styles.ctaBlock}>
-            <h2 className={styles.ctaBlockTitle}>48 professional websites. Ready to launch.</h2>
-            <p className={styles.ctaBlockDesc}>Skip the agency. Get a designer-quality website for your practice or business — subscription, auction, or outright purchase.</p>
+            <h2 className={styles.ctaBlockTitle}>210+ professional websites. Ready to launch.</h2>
+            <p className={styles.ctaBlockDesc}>Skip the agency. Get a designer-quality website for your practice or business — one-time payment, 12 months hosting included.</p>
             <a href="#sites" className={styles.btnPrimary}>Browse templates</a>
           </div>
         </div>

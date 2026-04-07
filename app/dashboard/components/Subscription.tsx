@@ -18,9 +18,9 @@ export default function Subscription({ dashboard }: Props) {
 
   return (
     <div className={styles.panel}>
-      <h2 className={styles.panelTitle}>Subscription</h2>
+      <h2 className={styles.panelTitle}>Hosting</h2>
       <div className={styles.subInfo}>
-        <div className={styles.subPlan}>Website Lotto · $99/mo</div>
+        <div className={styles.subPlan}>Website Lotto · 12 months included</div>
         <div className={`${styles.subStatus} ${subscription_status === 'active' ? styles.statusActive : styles.statusInactive}`}>
           {subscription_status}
         </div>
@@ -31,7 +31,7 @@ export default function Subscription({ dashboard }: Props) {
         </a>
       )}
       <div className={styles.cancelWarn}>
-        <p>Cancelling your subscription will return your site to the available pool. You will lose access immediately.</p>
+        <p>Your one-time purchase includes 12 months of hosting. After that, hosting continues at $14/mo (standard) or $49/mo (premium with content updates, SEO, and priority support).</p>
       </div>
       <button className={styles.logoutBtn} onClick={handleLogout}>Sign Out</button>
     </div>

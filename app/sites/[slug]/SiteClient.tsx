@@ -188,16 +188,16 @@ export default function SiteClient({ slug }: Props) {
           <h2 className={styles.ctaTitle}>Get this website for your business</h2>
           <div className={styles.ctaOptions}>
             <div className={styles.ctaOption}>
-              <span className={styles.ctaOptionLabel}>Subscribe</span>
-              <span className={styles.ctaOptionPrice}>$99/mo</span>
-            </div>
-            <div className={styles.ctaOption}>
-              <span className={styles.ctaOptionLabel}>Bid</span>
-              <span className={styles.ctaOptionPrice}>from $29</span>
-            </div>
-            <div className={styles.ctaOption}>
               <span className={styles.ctaOptionLabel}>Buy now</span>
-              <span className={styles.ctaOptionPrice}>instant</span>
+              <span className={styles.ctaOptionPrice}>${price} one-time</span>
+            </div>
+            <div className={styles.ctaOption}>
+              <span className={styles.ctaOptionLabel}>Hosting</span>
+              <span className={styles.ctaOptionPrice}>12 mo included</span>
+            </div>
+            <div className={styles.ctaOption}>
+              <span className={styles.ctaOptionLabel}>After year 1</span>
+              <span className={styles.ctaOptionPrice}>from $14/mo</span>
             </div>
           </div>
           <Link href="/" className={styles.ctaLink}>Or browse all templates →</Link>
