@@ -1,7 +1,7 @@
 # MARKET — Website Lotto (WLVLP)
 **Product:** Website Lotto
 **Domain:** `websitelotto.virtuallaunch.pro`
-**Last updated:** 2026-04-04
+**Last updated:** 2026-04-07
 
 One-line: Canva-site marketplace — claim a ready-made website through voting, bidding, buy-now, or scratch-to-win.
 
@@ -9,13 +9,13 @@ One-line: Canva-site marketplace — claim a ready-made website through voting, 
 
 ## Product Definition
 
-Website Lotto is a marketplace for pre-built HTML website templates. Buyers browse a gallery of 48 ready-made templates and claim one through three acquisition mechanics:
+Website Lotto is a marketplace for pre-built HTML website templates. Buyers browse a gallery of **210+ ready-made templates** and claim one through three acquisition mechanics:
 
-1. **Buy Now** — instant claim at $99/mo subscription
+1. **Buy Now** — instant claim at $249 (Standard) or $399 (Premium) one-time
 2. **Bidding** — 7-day auctions, minimum $29 bid
-3. **Scratch to Win** — free ticket, lead-gen mechanic (prizes: free month, 50% off, 25% off, $9 credit, free ticket, no prize)
+3. **Scratch to Win** — free ticket, lead-gen mechanic (prizes: discount on template price, hosting credit, free ticket, no prize)
 
-**Revenue model:** $99/mo recurring subscription per claimed template. Auctions generate engagement; scratch tickets generate leads.
+**Revenue model:** One-time template purchase ($249 Standard / $399 Premium) plus recurring hosting ($14/mo Standard, $49/mo Premium). Auctions generate engagement; scratch tickets generate leads.
 
 ---
 
@@ -33,18 +33,21 @@ Website Lotto is a marketplace for pre-built HTML website templates. Buyers brow
 |-----------|---------------------|
 | "I need a website but can't design" | Pre-built, professional templates ready to claim |
 | "Website builders are overwhelming" | One template, one click — no builder required |
-| "Custom design is too expensive" | $99/mo flat — no designer, no agency |
+| "Custom design is too expensive" | $249 one-time — no designer, no agency |
 | "I want to try before I commit" | Scratch-to-win gives free/discounted entry |
 
 ---
 
 ## Pricing
 
-| Mechanic | Price | Notes |
-|----------|-------|-------|
-| Buy Now | $99/mo subscription | Instant claim |
-| Auction bid | Min $29 | 7-day auction; winner gets $99/mo subscription |
-| Scratch ticket | Free | Lead gen; prizes discount the $99/mo subscription |
+| Item | Price | Notes |
+|------|-------|-------|
+| Standard template | **$249** one-time | Instant claim — full template + schema |
+| Premium template | **$399** one-time | Featured/curated templates |
+| Hosting | **$14/mo** | Standard hosting on VLP infra |
+| Premium hosting | **$49/mo** | Custom domain + priority support |
+| Auction bid | Min $29 | 7-day auction; winner pays template price |
+| Scratch ticket | Free | Lead gen; prizes discount template + hosting |
 
 ---
 

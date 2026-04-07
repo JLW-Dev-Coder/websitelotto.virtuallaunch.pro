@@ -2,7 +2,7 @@
 **Repo:** `websitelotto.virtuallaunch.pro`
 **Product:** Website Lotto
 **Domain:** `websitelotto.virtuallaunch.pro`
-**Last updated:** 2026-04-04
+**Last updated:** 2026-04-07
 
 One-line: Canva-site marketplace — vote, bid, buy-now, or scratch-to-win HTML templates.
 
@@ -25,7 +25,29 @@ One-line: Canva-site marketplace — vote, bid, buy-now, or scratch-to-win HTML 
 - CSS Modules (no Tailwind, no inline styles)
 - Cloudflare Pages (static export via `wrangler.toml`)
 
-**Backend dependency:** VLP Worker at `api.virtuallaunch.pro` — owns all `/v1/wlvlp/*` and `/v1/auth/*` endpoints.
+**Backend dependency:** VLP Worker at `api.virtuallaunch.pro` (VLP family) — owns all `/v1/wlvlp/*` and `/v1/auth/*` endpoints.
+
+---
+
+## Pricing (current)
+
+| Tier | Price | Notes |
+|------|-------|-------|
+| Standard template | **$249** one-time | Instant claim |
+| Premium template | **$399** one-time | Featured/curated templates |
+| Hosting | **$14/mo** | Standard hosting on VLP infra |
+| Premium hosting | **$49/mo** | Custom domain + priority support |
+
+Auctions and scratch tickets discount the one-time template price; hosting is billed separately.
+
+---
+
+## Catalog
+
+- **210+ sites** in `public/sites/` — each has `preview.html` (Canva HTML) and `schema.json` (editable fields)
+- Schemas auto-generated via `node scripts/generate-schemas.js`
+- Catalog index: `wlvlp-catalog.json`
+- Site editor lives at `/dashboard/sites/{slug}/edit` — schema-driven form, saves via API
 
 ---
 
@@ -62,6 +84,7 @@ app/                  → Next.js App Router pages
   sign-in/            → Auth (magic link + Google OAuth)
   scratch/            → Scratch-to-win page
   dashboard/          → Buyer dashboard (multi-view SPA)
+  dashboard/sites/[slug]/edit/  → Site editor (schema-driven form)
   affiliate/          → Affiliate program dashboard
   onboarding/         → New-user onboarding flow
   success/            → Post-payment confirmation
@@ -69,7 +92,9 @@ app/                  → Next.js App Router pages
 components/           → Shared components (AuthGuard)
 lib/
   api.ts              → All API functions — source of truth for endpoints
-public/sites/         → 48 immutable HTML templates (Canva exports)
+public/sites/         → 210+ template directories (Canva exports)
+  {slug}/preview.html → Immutable Canva HTML export
+  {slug}/schema.json  → Editable field schema (generated)
 scripts/              → Build/utility scripts
 .claude/              → Claude Code config, canonicals, style guide
 ```

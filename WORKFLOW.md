@@ -1,6 +1,14 @@
 # WORKFLOW — Website Lotto (WLVLP)
 **Owner:** JLW
-**Last updated:** 2026-04-06
+**Last updated:** 2026-04-07
+
+---
+
+## Operational Phases (current state)
+
+- **Phase 1 — Catalog:** 210+ sites in `public/sites/{slug}/preview.html` with auto-generated `schema.json`. Catalog index at `wlvlp-catalog.json`. Marketplace gallery rendering from VLP Worker with catalog fallback.
+- **Phase 2 — Buyer experience:** Site editor at `/dashboard/sites/{slug}/edit` (schema-driven form, saves via API). Custom domain UI + hosting expiry warnings live in dashboard.
+- **Phase 3 — Acquisition mechanics:** Vote / Bid / Scratch all wired to VLP Worker endpoints. Prize copy reflects current pricing ($249 / $399 templates, $14 / $49 hosting).
 
 ---
 
@@ -13,9 +21,10 @@
 4. Review scratch ticket redemptions — unusual spikes may indicate abuse
 
 ### Template management
-- Templates are Canva AI Code HTML exports in `public/sites/{slug}/index.html`
-- Adding a new template: create in Canva AI Code → copy HTML → save to `public/sites/{slug}/index.html` → run `node scripts/generate-schemas.js` → add to `wlvlp-catalog.json` → commit and push
-- Do NOT edit existing template HTML directly
+- Templates are Canva AI Code HTML exports in `public/sites/{slug}/preview.html`
+- Each site also has `public/sites/{slug}/schema.json` (auto-generated editable field schema)
+- Adding a new template: create in Canva AI Code → copy HTML → save to `public/sites/{slug}/preview.html` → run `node scripts/generate-schemas.js` → add to `wlvlp-catalog.json` → commit and push
+- Do NOT edit existing template HTML directly — buyers edit via `/dashboard/sites/{slug}/edit` (schema-driven form, saves through API)
 
 ### Deployment
 - Push to `main` → Cloudflare Pages auto-deploys
@@ -24,21 +33,21 @@
 
 ---
 
-## One-Time Migration: Copying 162 Sites from Canva
+## One-Time Migration: Copying Sites from Canva
 
 ### Setup (already done by RC)
-- 210 site directories exist in `public/sites/`
-- Each new site has `index.html` with a comment containing the Canva thread URL
-- 48 sites already have real HTML (pre-existing)
+- 210+ site directories exist in `public/sites/`
+- Each new site has `preview.html` with a comment containing the Canva thread URL
+- Pre-existing sites already have real HTML
 
 ### Copy process
 1. Open VS Code to `public/sites/`
 2. Pick a site directory (work A→Z)
-3. Open `index.html` — the comment shows the Canva thread URL
+3. Open `preview.html` — the comment shows the Canva thread URL
 4. Ctrl+click the URL — opens the Canva AI Code chat
 5. In the chat, find the final HTML output
 6. Select All → Copy the full HTML source
-7. Paste into `index.html` (replaces the comment)
+7. Paste into `preview.html` (replaces the comment)
 8. Save → move to next site
 
 ### Batch commits
@@ -59,7 +68,7 @@ git push origin main
 
 ### Tracking progress
 - Sites with real HTML: check file size > 100 bytes
-- Sites still placeholder: `grep -rl "PASTE HTML FROM CANVA" public/sites/*/index.html | wc -l`
+- Sites still placeholder: `grep -rl "PASTE HTML FROM CANVA" public/sites/*/preview.html | wc -l`
 
 ---
 
@@ -67,8 +76,8 @@ git push origin main
 
 1. Create in Canva AI Code (or ask Chat Claude to generate)
 2. Copy the final HTML
-3. `mkdir public/sites/{slug} && paste into public/sites/{slug}/index.html`
-4. Run `node scripts/generate-schemas.js`
+3. `mkdir public/sites/{slug} && paste into public/sites/{slug}/preview.html`
+4. Run `node scripts/generate-schemas.js` (creates `schema.json`)
 5. Add entry to `wlvlp-catalog.json`
 6. Commit and push
 
@@ -93,14 +102,15 @@ Prompt: "Read .claude/SKILL.md. I pasted HTML into these sites: [list]. Generate
 npm run dev                          # Local dev
 npm run build                        # Production build
 node scripts/generate-schemas.js     # Auto-generate schemas from HTML
-grep -rl "PASTE HTML" public/sites/*/index.html | wc -l  # Count remaining
+grep -rl "PASTE HTML" public/sites/*/preview.html | wc -l  # Count remaining
 ```
 
 ---
 
 ## Troubleshooting
 
-- **Template not loading:** Check `public/sites/{slug}/index.html` exists and has real HTML
+- **Template not loading:** Check `public/sites/{slug}/preview.html` exists and has real HTML
+- **Editor form empty:** `public/sites/{slug}/schema.json` missing — re-run `node scripts/generate-schemas.js`
 - **Auth not working:** Check `vlp_session` cookie → verify `api.virtuallaunch.pro` responds
 - **Build failing:** Run `npm run build` locally → check errors
 - **Schema not generated:** File still has placeholder comment — paste HTML first
