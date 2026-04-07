@@ -1,0 +1,555 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/933f9940-a5e9-4d1b-898f-355ab84f8c7d -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwipeMuse Selector</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+}
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes slideInUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes cardSwipeRight { 0% { transform: translateX(0) rotate(0); opacity:1; } 100% { transform: translateX(300px) rotate(15deg); opacity:0; } }
+@keyframes cardSwipeLeft { 0% { transform: translateX(0) rotate(0); opacity:1; } 100% { transform: translateX(-300px) rotate(-15deg); opacity:0; } }
+@keyframes matchBurst { 0% { transform: scale(0); opacity:0; } 50% { transform: scale(1.3); opacity:1; } 100% { transform: scale(1); opacity:1; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes heartFloat {
+  0% { transform: translateY(0) scale(1); opacity:0.8; }
+  100% { transform: translateY(-80px) scale(0.3); opacity:0; }
+}
+
+.anim-gradient {
+  background: linear-gradient(135deg, #ff006e, #8338ec, #3a86ff, #ff006e);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+.anim-slide { animation: slideInUp 0.6s ease both; }
+.anim-pulse { animation: pulse 2s ease infinite; }
+.float-heart {
+  position: absolute; pointer-events: none;
+  animation: heartFloat 1.5s ease forwards;
+}
+.swipe-right { animation: cardSwipeRight 0.5s ease forwards; }
+.swipe-left { animation: cardSwipeLeft 0.5s ease forwards; }
+.match-burst { animation: matchBurst 0.6s ease both; }
+.shimmer-btn {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.vibe-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.vibe-card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+
+.nav-link { transition: color 0.2s, border-color 0.2s; }
+.nav-link:hover { border-bottom: 2px solid currentColor; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #8338ec; border-radius: 3px; }
+
+.reaction-btn { transition: transform 0.15s, background 0.2s; }
+.reaction-btn:hover { transform: scale(1.15); }
+.reaction-btn.active { ring: 2px; }
+
+.product-card { transition: transform 0.3s, box-shadow 0.3s; }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(131,56,236,0.3); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto" style="background:#0a0a0a; color:#f0f0f0; font-family:'Syne',sans-serif;"><!-- FLOATING PARTICLES -->
+  <div id="particles" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div><!-- NAV -->
+  <nav id="mainNav" style="position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(10,10,10,0.85);border-bottom:1px solid rgba(131,56,236,0.2);">
+   <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+     <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;" class="anim-gradient"><i data-lucide="sparkles" style="width:18px;height:18px;color:#fff;"></i>
+     </div><span style="font-weight:800;font-size:18px;letter-spacing:-0.5px;">SwipeMuse</span>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;font-family:'Space Mono',monospace;"><a href="#hero" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">Home</a> <a href="#vibes" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">Choose Your Vibe</a> <a href="#matches" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">Matches</a> <a href="#how" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">How It Works</a> <a href="#reviews" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">Reviews</a> <a href="#gettemplate" class="nav-link" style="color:#aaa;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px;">Get Template</a>
+    </div>
+   </div>
+  </nav><!-- HERO -->
+  <section id="hero" style="position:relative;min-height:90%;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:60px 24px;">
+   <div class="anim-gradient" style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;opacity:0.15;filter:blur(80px);"></div>
+   <div style="position:relative;z-index:1;text-align:center;max-width:800px;width:100%;">
+    <div style="display:inline-block;padding:6px 16px;border-radius:999px;font-size:12px;font-family:'Space Mono',monospace;color:#ff006e;border:1px solid rgba(255,0,110,0.3);margin-bottom:24px;background:rgba(255,0,110,0.08);">
+     ✨ Find your match in 30 seconds
+    </div>
+    <h1 id="heroTitle" style="font-size:clamp(36px,7vw,72px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin:0 0 20px;">Swipe your vibe.<br><span style="background:linear-gradient(90deg,#ff006e,#8338ec,#3a86ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Get your match.</span></h1>
+    <p id="heroSubtitle" style="font-size:18px;color:#888;max-width:500px;margin:0 auto 32px;font-family:'Space Mono',monospace;line-height:1.6;">Find your match in 30 seconds.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#vibes" id="ctaPrimary" style="position:relative;overflow:hidden;padding:14px 32px;border-radius:14px;font-weight:700;font-size:16px;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;" class="anim-gradient anim-pulse"> <span class="shimmer-btn" style="position:absolute;inset:0;border-radius:14px;"></span> <span style="position:relative;z-index:1;">Try the Selector</span> <i data-lucide="arrow-right" style="width:18px;height:18px;position:relative;z-index:1;"></i> </a> <a href="#gettemplate" id="ctaSecondary" style="padding:14px 32px;border-radius:14px;font-weight:700;font-size:16px;color:#f0f0f0;text-decoration:none;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"> Get the Template + License </a>
+    </div><!-- VOTE + COMMENT MODULE -->
+    <div id="voteModule" style="margin-top:48px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:28px;max-width:520px;margin-left:auto;margin-right:auto;text-align:left;">
+     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <h3 style="font-size:18px;font-weight:700;margin:0;">How cool is this? 🔥</h3><span style="font-size:11px;color:#666;font-family:'Space Mono',monospace;">Embed Widget Here</span>
+     </div><!-- Sign-in -->
+     <div id="signInArea" style="margin-bottom:16px;">
+      <div style="display:flex;gap:8px;"><input id="usernameInput" type="text" placeholder="Your name to vote..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#f0f0f0;font-size:14px;font-family:'Space Mono',monospace;outline:none;"> <button id="signInBtn" onclick="handleSignIn()" style="padding:10px 20px;border-radius:10px;border:none;font-weight:700;font-size:14px;color:#fff;cursor:pointer;" class="anim-gradient">Join</button>
+      </div>
+     </div>
+     <div id="signedInAs" style="display:none;margin-bottom:16px;font-size:13px;color:#888;font-family:'Space Mono',monospace;">
+      Signed in as <span id="displayName" style="color:#ff006e;font-weight:700;"></span>
+     </div><!-- 5 Reactions -->
+     <div id="reactionsRow" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;"><button class="reaction-btn" data-reaction="fire" onclick="handleReaction('fire')" style="padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#f0f0f0;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:4px;">🔥 <span class="rcount" data-r="fire">0</span></button> <button class="reaction-btn" data-reaction="heart" onclick="handleReaction('heart')" style="padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#f0f0f0;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:4px;">❤️ <span class="rcount" data-r="heart">0</span></button> <button class="reaction-btn" data-reaction="mind" onclick="handleReaction('mind')" style="padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#f0f0f0;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:4px;">🤯 <span class="rcount" data-r="mind">0</span></button> <button class="reaction-btn" data-reaction="cool" onclick="handleReaction('cool')" style="padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#f0f0f0;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:4px;">😎 <span class="rcount" data-r="cool">0</span></button> <button class="reaction-btn" data-reaction="rocket" onclick="handleReaction('rocket')" style="padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#f0f0f0;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:4px;">🚀 <span class="rcount" data-r="rocket">0</span></button>
+     </div><!-- Price vote -->
+     <div style="margin-bottom:16px;">
+      <p style="font-size:13px;color:#666;margin:0 0 8px;font-family:'Space Mono',monospace;">What would you pay?</p>
+      <div id="priceRow" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+     </div><!-- Comments -->
+     <div style="margin-bottom:12px;">
+      <div style="display:flex;gap:8px;"><input id="commentInput" type="text" placeholder="Drop a comment..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#f0f0f0;font-size:13px;font-family:'Space Mono',monospace;outline:none;"> <button onclick="handleComment()" style="padding:10px 16px;border-radius:10px;border:none;background:#8338ec;color:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#9b4dff'" onmouseout="this.style.background='#8338ec'"> <i data-lucide="send" style="width:14px;height:14px;"></i> </button>
+      </div>
+     </div>
+     <div id="commentsList" style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+     <div id="voteStatus" style="display:none;margin-top:8px;padding:8px 12px;border-radius:8px;font-size:12px;font-family:'Space Mono',monospace;"></div>
+    </div>
+   </div>
+  </section><!-- CHOOSE YOUR VIBE -->
+  <section id="vibes" style="padding:80px 24px;position:relative;">
+   <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:48px;"><span style="font-size:12px;font-family:'Space Mono',monospace;color:#8338ec;text-transform:uppercase;letter-spacing:3px;">Step 1</span>
+     <h2 id="vibesTitle" style="font-size:clamp(28px,5vw,48px);font-weight:800;margin:8px 0 0;letter-spacing:-1px;">Choose Your Vibe</h2>
+    </div>
+    <div id="vibeCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;"></div><!-- Match overlay -->
+    <div id="matchOverlay" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;flex-direction:column;">
+     <div class="match-burst" style="text-align:center;">
+      <div style="font-size:64px;margin-bottom:16px;">
+       💫
+      </div>
+      <h2 style="font-size:36px;font-weight:800;margin:0 0 8px;">It's a Match!</h2>
+      <p id="matchVibe" style="font-size:18px;color:#8338ec;font-family:'Space Mono',monospace;margin:0 0 24px;"></p><button onclick="closeMatch()" style="padding:12px 28px;border-radius:12px;border:none;font-weight:700;color:#fff;font-size:15px;cursor:pointer;" class="anim-gradient">See Your Matches ↓</button>
+     </div>
+    </div>
+   </div>
+  </section><!-- MATCHES -->
+  <section id="matches" style="padding:80px 24px;background:rgba(131,56,236,0.04);">
+   <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:48px;"><span style="font-size:12px;font-family:'Space Mono',monospace;color:#ff006e;text-transform:uppercase;letter-spacing:3px;">Step 2</span>
+     <h2 id="matchesTitle" style="font-size:clamp(28px,5vw,48px);font-weight:800;margin:8px 0 0;letter-spacing:-1px;">Your Matches</h2>
+    </div>
+    <div id="productGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;"></div>
+   </div>
+  </section><!-- HOW IT WORKS -->
+  <section id="how" style="padding:80px 24px;">
+   <div style="max-width:900px;margin:0 auto;text-align:center;"><span style="font-size:12px;font-family:'Space Mono',monospace;color:#3a86ff;text-transform:uppercase;letter-spacing:3px;">Simple</span>
+    <h2 style="font-size:clamp(28px,5vw,48px);font-weight:800;margin:8px 0 48px;letter-spacing:-1px;">How It Works</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;">
+     <div class="anim-slide" style="animation-delay:0.1s;">
+      <div style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;background:rgba(255,0,110,0.1);border:1px solid rgba(255,0,110,0.2);">
+       👆
+      </div>
+      <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Choose</h3>
+      <p style="color:#888;font-size:14px;font-family:'Space Mono',monospace;line-height:1.6;">Swipe through vibes that match your aesthetic. Like it or skip it.</p>
+     </div>
+     <div class="anim-slide" style="animation-delay:0.3s;">
+      <div style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;background:rgba(131,56,236,0.1);border:1px solid rgba(131,56,236,0.2);">
+       💫
+      </div>
+      <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Match</h3>
+      <p style="color:#888;font-size:14px;font-family:'Space Mono',monospace;line-height:1.6;">Get paired with products that fit your selected vibe perfectly.</p>
+     </div>
+     <div class="anim-slide" style="animation-delay:0.5s;">
+      <div style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;background:rgba(58,134,255,0.1);border:1px solid rgba(58,134,255,0.2);">
+       🛒
+      </div>
+      <h3 style="font-size:20px;font-weight:700;margin:0 0 8px;">Shop</h3>
+      <p style="color:#888;font-size:14px;font-family:'Space Mono',monospace;line-height:1.6;">Click through to grab your match. Every link earns affiliate commissions.</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" style="padding:80px 24px;background:rgba(255,0,110,0.03);">
+   <div style="max-width:900px;margin:0 auto;text-align:center;"><span style="font-size:12px;font-family:'Space Mono',monospace;color:#ff006e;text-transform:uppercase;letter-spacing:3px;">Proof</span>
+    <h2 style="font-size:clamp(28px,5vw,48px);font-weight:800;margin:8px 0 48px;letter-spacing:-1px;">What Creators Say</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;" id="reviewsGrid"></div>
+   </div>
+  </section><!-- BOTTOM CTA -->
+  <section id="gettemplate" style="padding:100px 24px;position:relative;overflow:hidden;">
+   <div class="anim-gradient" style="position:absolute;inset:0;opacity:0.08;filter:blur(60px);"></div>
+   <div style="position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center;">
+    <h2 id="bottomCtaText" style="font-size:clamp(28px,5vw,52px);font-weight:800;margin:0 0 16px;letter-spacing:-1px;">Turn browsing into clicking.</h2>
+    <p style="color:#888;font-size:16px;font-family:'Space Mono',monospace;margin:0 0 32px;line-height:1.6;">10 lookbook templates · 200 product cards · Quiz copy prompts · Affiliate disclosure templates · Link hub layout</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;"><a href="#" target="_blank" rel="noopener noreferrer" style="position:relative;overflow:hidden;padding:16px 36px;border-radius:14px;font-weight:700;font-size:17px;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px;" class="anim-gradient anim-pulse"> <span class="shimmer-btn" style="position:absolute;inset:0;border-radius:14px;"></span> <span style="position:relative;z-index:1;">Get the Template + License</span> <i data-lucide="download" style="width:18px;height:18px;position:relative;z-index:1;"></i> </a>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:#666;font-family:'Space Mono',monospace;"><span>✓ Higher click-through</span> <span>✓ Game-like shopping</span> <span>✓ Built to scale across niches</span>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer style="padding:32px 24px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);">
+   <p style="font-size:12px;color:#444;font-family:'Space Mono',monospace;margin:0;">SwipeMuse Selector · Affiliate links may earn commissions · Built with 💫</p>
+  </footer>
+  <script>
+// ===== DATA =====
+const vibes = [
+  { name:'Soft Glam', emoji:'🌸', gradient:'linear-gradient(135deg,#ffd6e0,#c9b1ff)', text:'#4a2060', desc:'Dewy skin, rosy tones, effortless beauty' },
+  { name:'Bold Color', emoji:'🎨', gradient:'linear-gradient(135deg,#ff006e,#ffbe0b)', text:'#fff', desc:'Statement looks, bright pops, fearless energy' },
+  { name:'Clean Girl', emoji:'🧴', gradient:'linear-gradient(135deg,#e0f7f0,#b8e6d0)', text:'#1a4a3a', desc:'Minimalist glow, glass skin, less is more' },
+  { name:'Alt Edge', emoji:'⛓️', gradient:'linear-gradient(135deg,#1a1a2e,#533483)', text:'#e0e0e0', desc:'Dark aesthetic, chains, smokey everything' },
+  { name:'Luxe Waves', emoji:'👑', gradient:'linear-gradient(135deg,#f7e7b4,#d4a946)', text:'#3a2a0a', desc:'Golden hour energy, bouncy curls, opulence' },
+  { name:'Minimal Chic', emoji:'◻️', gradient:'linear-gradient(135deg,#f5f5f5,#d4d4d4)', text:'#1a1a1a', desc:'Sharp lines, neutral palette, quiet luxury' }
+];
+
+const products = [
+  { name:'Rose Quartz Palette', vibe:'Soft Glam', price:'$24', img:'🎀' },
+  { name:'Dewy Setting Spray', vibe:'Soft Glam', price:'$18', img:'💧' },
+  { name:'Neon Liner Set', vibe:'Bold Color', price:'$16', img:'🖍️' },
+  { name:'Color Pop Lip Kit', vibe:'Bold Color', price:'$22', img:'💋' },
+  { name:'Glass Skin Serum', vibe:'Clean Girl', price:'$32', img:'✨' },
+  { name:'Brow Lamination Kit', vibe:'Clean Girl', price:'$28', img:'🧖' },
+  { name:'Dark Moon Palette', vibe:'Alt Edge', price:'$26', img:'🌑' },
+  { name:'Matte Black Liner', vibe:'Alt Edge', price:'$12', img:'🖤' },
+  { name:'Gold Shimmer Oil', vibe:'Luxe Waves', price:'$38', img:'👑' },
+  { name:'Curl Defining Cream', vibe:'Luxe Waves', price:'$20', img:'🌊' },
+  { name:'Nude Lip Pencil Set', vibe:'Minimal Chic', price:'$14', img:'✏️' },
+  { name:'Skin Tint SPF 30', vibe:'Minimal Chic', price:'$30', img:'🤍' }
+];
+
+const reviews = [
+  { name:'Mia R.', text:'My affiliate clicks went up 340% after switching to the swipe format. Game changer!', stars:5 },
+  { name:'Jordan K.', text:'Built 6 micro-sites in one weekend. The templates are insane.', stars:5 },
+  { name:'Aisha T.', text:'The game-like feel keeps people browsing way longer. Love it.', stars:5 }
+];
+
+const prices = ['$5','$9','$15','$19','$25','$29','$39','$49','$69','$99'];
+
+// ===== STATE =====
+let currentUser = null;
+let allData = [];
+let selectedVibes = new Set();
+
+// ===== RENDER STATIC CONTENT =====
+function renderVibeCards() {
+  const container = document.getElementById('vibeCards');
+  container.innerHTML = vibes.map((v, i) => `
+    <div class="vibe-card" id="vibe-${i}" style="background:${v.gradient};border-radius:20px;padding:32px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;animation:slideInUp 0.5s ease both;animation-delay:${i*0.1}s;" onclick="swipeVibe(${i})">
+      <div>
+        <span style="font-size:40px;display:block;margin-bottom:12px;">${v.emoji}</span>
+        <h3 style="font-size:22px;font-weight:800;color:${v.text};margin:0 0 8px;">${v.name}</h3>
+        <p style="font-size:13px;color:${v.text};opacity:0.8;font-family:'Space Mono',monospace;margin:0;">${v.desc}</p>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button onclick="event.stopPropagation();swipeVibeAction(${i},'like')" style="flex:1;padding:10px;border-radius:10px;border:none;background:rgba(255,255,255,0.3);color:${v.text};font-weight:700;font-size:14px;cursor:pointer;backdrop-filter:blur(4px);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'">♥ Love</button>
+        <button onclick="event.stopPropagation();swipeVibeAction(${i},'skip')" style="flex:1;padding:10px;border-radius:10px;border:none;background:rgba(0,0,0,0.15);color:${v.text};font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.25)'" onmouseout="this.style.background='rgba(0,0,0,0.15)'">✕ Skip</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderProducts() {
+  const container = document.getElementById('productGrid');
+  container.innerHTML = products.map((p, i) => `
+    <div class="product-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;animation:slideInUp 0.5s ease both;animation-delay:${i*0.05}s;">
+      <div style="height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;background:rgba(131,56,236,0.06);">${p.img}</div>
+      <div style="padding:16px;">
+        <span style="font-size:11px;font-family:'Space Mono',monospace;color:#8338ec;text-transform:uppercase;letter-spacing:1px;">${p.vibe}</span>
+        <h4 style="font-size:16px;font-weight:700;margin:4px 0 8px;">${p.name}</h4>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:18px;font-weight:800;color:#ff006e;">${p.price}</span>
+          <a href="#" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" class="anim-gradient">Shop <i data-lucide="external-link" style="width:12px;height:12px;"></i></a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderReviews() {
+  document.getElementById('reviewsGrid').innerHTML = reviews.map((r, i) => `
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;text-align:left;animation:slideInUp 0.5s ease both;animation-delay:${i*0.15}s;">
+      <div style="margin-bottom:12px;">${'⭐'.repeat(r.stars)}</div>
+      <p style="font-size:14px;color:#ccc;line-height:1.6;margin:0 0 16px;font-style:italic;">"${r.text}"</p>
+      <span style="font-size:13px;font-weight:700;color:#8338ec;">— ${r.name}</span>
+    </div>
+  `).join('');
+}
+
+function renderPriceButtons() {
+  document.getElementById('priceRow').innerHTML = prices.map(p => `
+    <button class="reaction-btn price-btn" data-price="${p}" onclick="handlePriceVote('${p}')" style="padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#aaa;font-size:12px;font-family:'Space Mono',monospace;cursor:pointer;">
+      ${p} <span class="pcount" data-p="${p}" style="color:#8338ec;font-weight:700;">0</span>
+    </button>
+  `).join('');
+}
+
+// ===== VIBE SWIPE ACTIONS =====
+function swipeVibe(i) { swipeVibeAction(i, 'like'); }
+
+function swipeVibeAction(i, action) {
+  const card = document.getElementById(`vibe-${i}`);
+  if (!card) return;
+  card.classList.add(action === 'like' ? 'swipe-right' : 'swipe-left');
+
+  if (action === 'like') {
+    selectedVibes.add(vibes[i].name);
+    // Spawn floating hearts
+    for (let h = 0; h < 5; h++) {
+      const heart = document.createElement('div');
+      heart.className = 'float-heart';
+      heart.textContent = '♥';
+      heart.style.cssText = `left:${Math.random()*80+10}%;top:${card.getBoundingClientRect().top}px;font-size:${Math.random()*16+16}px;color:#ff006e;z-index:999;animation-delay:${h*0.1}s;`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1600);
+    }
+  }
+
+  setTimeout(() => {
+    card.style.display = 'none';
+    // Check if all swiped
+    const remaining = document.querySelectorAll('[id^="vibe-"]:not([style*="display: none"])');
+    if (remaining.length === 0 && selectedVibes.size > 0) {
+      showMatch();
+    }
+  }, 500);
+}
+
+function showMatch() {
+  const overlay = document.getElementById('matchOverlay');
+  document.getElementById('matchVibe').textContent = `You matched with: ${[...selectedVibes].join(', ')}`;
+  overlay.style.display = 'flex';
+}
+
+function closeMatch() {
+  document.getElementById('matchOverlay').style.display = 'none';
+  document.getElementById('matches').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== VOTE MODULE =====
+function handleSignIn() {
+  const name = document.getElementById('usernameInput').value.trim();
+  if (!name) return;
+  currentUser = name;
+  document.getElementById('signInArea').style.display = 'none';
+  document.getElementById('signedInAs').style.display = 'block';
+  document.getElementById('displayName').textContent = name;
+}
+
+function showStatus(msg, isError) {
+  const s = document.getElementById('voteStatus');
+  s.style.display = 'block';
+  s.textContent = msg;
+  s.style.background = isError ? 'rgba(255,0,0,0.1)' : 'rgba(0,255,100,0.1)';
+  s.style.color = isError ? '#ff4444' : '#44ff88';
+  setTimeout(() => s.style.display = 'none', 2500);
+}
+
+async function handleReaction(type) {
+  if (!currentUser) { showStatus('Sign in first!', true); return; }
+  const btn = document.querySelector(`[data-reaction="${type}"]`);
+  btn.disabled = true;
+  const result = await window.dataSdk.create({ type: 'reaction', value: type, username: currentUser, timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  if (result.isOk) {
+    btn.style.background = 'rgba(131,56,236,0.2)';
+    btn.style.borderColor = '#8338ec';
+  } else { showStatus('Error saving reaction', true); }
+}
+
+async function handlePriceVote(price) {
+  if (!currentUser) { showStatus('Sign in first!', true); return; }
+  const btn = document.querySelector(`[data-price="${price}"]`);
+  btn.disabled = true;
+  const result = await window.dataSdk.create({ type: 'price', value: price, username: currentUser, timestamp: new Date().toISOString() });
+  btn.disabled = false;
+  if (result.isOk) {
+    btn.style.background = 'rgba(255,0,110,0.15)';
+    btn.style.borderColor = '#ff006e';
+  } else { showStatus('Error saving vote', true); }
+}
+
+async function handleComment() {
+  if (!currentUser) { showStatus('Sign in first!', true); return; }
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  if (allData.filter(d => d.type === 'comment').length >= 999) {
+    showStatus('Comment limit reached!', true); return;
+  }
+  input.disabled = true;
+  const result = await window.dataSdk.create({ type: 'comment', value: text, username: currentUser, timestamp: new Date().toISOString() });
+  input.disabled = false;
+  if (result.isOk) { input.value = ''; } else { showStatus('Error posting comment', true); }
+}
+
+// ===== DATA HANDLER =====
+function updateCounts(data) {
+  allData = data;
+  // Reactions
+  ['fire','heart','mind','cool','rocket'].forEach(r => {
+    const count = data.filter(d => d.type === 'reaction' && d.value === r).length;
+    const el = document.querySelector(`[data-r="${r}"]`);
+    if (el) el.textContent = count;
+  });
+  // Prices
+  prices.forEach(p => {
+    const count = data.filter(d => d.type === 'price' && d.value === p).length;
+    const el = document.querySelector(`[data-p="${p}"]`);
+    if (el) el.textContent = count;
+  });
+  // Comments
+  const comments = data.filter(d => d.type === 'comment').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const container = document.getElementById('commentsList');
+  const existingIds = new Map([...container.children].map(el => [el.dataset.id, el]));
+  const newIds = new Set(comments.map(c => c.__backendId));
+
+  existingIds.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+
+  comments.forEach(c => {
+    if (existingIds.has(c.__backendId)) return;
+    const div = document.createElement('div');
+    div.dataset.id = c.__backendId;
+    div.style.cssText = 'padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);';
+    div.innerHTML = `<span style="font-size:12px;font-weight:700;color:#ff006e;">${c.username || 'Anon'}</span><p style="font-size:13px;color:#ccc;margin:4px 0 0;line-height:1.4;">${c.value}</p>`;
+    container.appendChild(div);
+  });
+}
+
+// ===== PARTICLES =====
+function spawnParticles() {
+  const container = document.getElementById('particles');
+  setInterval(() => {
+    if (container.children.length > 15) return;
+    const p = document.createElement('div');
+    const symbols = ['♥','✦','✧','◆','⬥'];
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    p.style.cssText = `position:absolute;left:${Math.random()*100}%;bottom:-20px;font-size:${Math.random()*14+10}px;color:rgba(131,56,236,${Math.random()*0.3+0.1});animation:floatUp ${Math.random()*4+4}s linear forwards;`;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 8000);
+  }, 600);
+}
+
+// ===== ELEMENT SDK =====
+const defaultConfig = {
+  background_color: '#0a0a0a',
+  surface_color: '#1a1a2e',
+  text_color: '#f0f0f0',
+  primary_action_color: '#ff006e',
+  secondary_action_color: '#8338ec',
+  font_family: 'Syne',
+  font_size: 16,
+  hero_title: 'Swipe your vibe.\nGet your match.',
+  hero_subtitle: 'Find your match in 30 seconds.',
+  cta_primary: 'Try the Selector',
+  cta_secondary: 'Get the Template + License',
+  vibes_title: 'Choose Your Vibe',
+  matches_title: 'Your Matches',
+  bottom_cta_text: 'Turn browsing into clicking.'
+};
+
+async function onConfigChange(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const surface = config.surface_color || defaultConfig.surface_color;
+  const text = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const font = config.font_family || defaultConfig.font_family;
+  const size = config.font_size || defaultConfig.font_size;
+
+  document.body.style.background = bg;
+  document.body.style.color = text;
+  document.body.style.fontFamily = `${font}, Syne, sans-serif`;
+  document.body.style.fontSize = `${size}px`;
+
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) {
+    const parts = (config.hero_title || defaultConfig.hero_title).split('\n');
+    heroTitle.innerHTML = `${parts[0]}<br><span style="background:linear-gradient(90deg,${primary},${secondary},#3a86ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${parts[1] || ''}</span>`;
+    heroTitle.style.fontSize = `${size * 3.5}px`;
+  }
+
+  const heroSub = document.getElementById('heroSubtitle');
+  if (heroSub) { heroSub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle; heroSub.style.fontSize = `${size * 1.1}px`; }
+
+  const ctaP = document.getElementById('ctaPrimary');
+  if (ctaP) ctaP.querySelector('span:nth-child(2)').textContent = config.cta_primary || defaultConfig.cta_primary;
+
+  const ctaS = document.getElementById('ctaSecondary');
+  if (ctaS) { ctaS.textContent = config.cta_secondary || defaultConfig.cta_secondary; ctaS.style.borderColor = `${text}22`; }
+
+  const vt = document.getElementById('vibesTitle');
+  if (vt) { vt.textContent = config.vibes_title || defaultConfig.vibes_title; vt.style.fontSize = `${size * 2.5}px`; }
+
+  const mt = document.getElementById('matchesTitle');
+  if (mt) { mt.textContent = config.matches_title || defaultConfig.matches_title; mt.style.fontSize = `${size * 2.5}px`; }
+
+  const bct = document.getElementById('bottomCtaText');
+  if (bct) { bct.textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text; bct.style.fontSize = `${size * 2.8}px`; }
+
+  // Vote module surface
+  const vm = document.getElementById('voteModule');
+  if (vm) { vm.style.background = `${surface}88`; vm.style.borderColor = `${text}14`; }
+}
+
+function mapToCapabilities(config) {
+  function makeColor(key) {
+    return {
+      get: () => config[key] || defaultConfig[key],
+      set: (v) => { config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+    };
+  }
+  return {
+    recolorables: [
+      makeColor('background_color'),
+      makeColor('surface_color'),
+      makeColor('text_color'),
+      makeColor('primary_action_color'),
+      makeColor('secondary_action_color')
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  };
+}
+
+function mapToEditPanelValues(config) {
+  return new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['cta_primary', config.cta_primary || defaultConfig.cta_primary],
+    ['cta_secondary', config.cta_secondary || defaultConfig.cta_secondary],
+    ['vibes_title', config.vibes_title || defaultConfig.vibes_title],
+    ['matches_title', config.matches_title || defaultConfig.matches_title],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ]);
+}
+
+// ===== INIT =====
+renderVibeCards();
+renderProducts();
+renderReviews();
+renderPriceButtons();
+spawnParticles();
+
+window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+
+window.dataSdk.init({
+  onDataChanged(data) { updateCounts(data); }
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a9b0072427cf',t:'MTc3NDY2OTc0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

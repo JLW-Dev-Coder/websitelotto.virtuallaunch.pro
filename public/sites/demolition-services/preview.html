@@ -1,0 +1,630 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/dccd558b-65b1-4384-a7b3-5b2c937e5572 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CleanBreak Demolition</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        charcoal: '#1a1a1a',
+        darkgray: '#2a2a2a',
+        midgray: '#3a3a3a',
+        hazard: '#FFD600',
+        hazardDark: '#CCB000',
+        steel: '#B0B0B0',
+      },
+      fontFamily: {
+        heading: ['Barlow Condensed', 'sans-serif'],
+        mono: ['Space Mono', 'monospace'],
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+/* Caution stripe */
+.caution-stripe {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFD600,
+    #FFD600 20px,
+    #1a1a1a 20px,
+    #1a1a1a 40px
+  );
+  height: 6px;
+  width: 100%;
+}
+.caution-stripe-animated {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFD600,
+    #FFD600 20px,
+    #1a1a1a 20px,
+    #1a1a1a 40px
+  );
+  background-size: 56.57px 56.57px;
+  height: 6px;
+  width: 100%;
+  animation: stripeScroll 1.5s linear infinite;
+}
+@keyframes stripeScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 56.57px 0; }
+}
+
+/* Card slam animation */
+@keyframes cardSlam {
+  0% { opacity: 0; transform: translateY(-60px) scale(1.08); }
+  60% { opacity: 1; transform: translateY(6px) scale(0.98); }
+  80% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+.card-slam { animation: cardSlam 0.6s cubic-bezier(.22,.68,.36,1.2) both; }
+
+/* Fade up reveal */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.fade-up { opacity: 0; }
+.fade-up.visible { animation: fadeUp 0.7s ease-out both; }
+
+/* Staggered delays */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* Pulse CTA */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,214,0,0.5); }
+  50% { box-shadow: 0 0 20px 6px rgba(255,214,0,0.25); }
+}
+.pulse-cta { animation: pulseGlow 2s ease-in-out infinite; }
+
+/* Checklist check animation */
+@keyframes checkIn {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.check-animate { animation: checkIn 0.4s ease-out both; }
+
+/* Before/after slider */
+.ba-container { position: relative; overflow: hidden; cursor: ew-resize; }
+.ba-container .ba-after { position: absolute; top:0; left:0; width:100%; height:100%; }
+.ba-container .ba-after img { width:100%; height:100%; object-fit:cover; }
+.ba-container .ba-before { position: absolute; top:0; left:0; height:100%; overflow:hidden; }
+.ba-container .ba-before img { width:100%; height:100%; object-fit:cover; min-width: 100%; }
+.ba-divider { position:absolute; top:0; height:100%; width:3px; background:#FFD600; z-index:10; }
+.ba-handle { position:absolute; top:50%; transform:translate(-50%,-50%); width:40px; height:40px; background:#FFD600; border-radius:50%; z-index:11; display:flex; align-items:center; justify-content:center; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Nav active */
+.nav-link { position: relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:#FFD600; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+/* Star rating */
+.star-filled { color: #FFD600; }
+
+/* Industrial texture overlay */
+.texture-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-charcoal text-white font-heading overflow-auto">
+  <div id="app-wrapper" class="w-full h-full overflow-auto texture-overlay"><!-- Sticky Nav -->
+   <nav id="sticky-nav" class="fixed top-0 left-0 w-full z-50 bg-charcoal/95 backdrop-blur-sm border-b border-midgray/50 transition-all duration-300">
+    <div class="caution-stripe-animated"></div>
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-hazard rounded flex items-center justify-center"><i data-lucide="hard-hat" class="w-5 h-5 text-charcoal"></i>
+      </div><span class="text-xl font-black tracking-tight">CLEAN<span class="text-hazard">BREAK</span></span> </a> <!-- Desktop nav -->
+     <div class="hidden md:flex items-center gap-6 text-sm font-semibold tracking-wider uppercase"><a href="#home" class="nav-link text-steel hover:text-hazard transition-colors">Home</a> <a href="#services" class="nav-link text-steel hover:text-hazard transition-colors">Services</a> <a href="#safety" class="nav-link text-steel hover:text-hazard transition-colors">Safety</a> <a href="#before-after" class="nav-link text-steel hover:text-hazard transition-colors">Before/After</a> <a href="#reviews" class="nav-link text-steel hover:text-hazard transition-colors">Reviews</a> <a href="#quote" class="bg-hazard text-charcoal px-4 py-2 rounded font-bold hover:bg-hazardDark transition-colors">Get Quote</a>
+     </div><!-- Mobile hamburger --> <button id="mobile-toggle" class="md:hidden text-steel hover:text-hazard transition-colors"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div><!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-darkgray border-t border-midgray/50">
+     <div class="flex flex-col px-4 py-3 gap-3 text-sm font-semibold tracking-wider uppercase"><a href="#home" class="mobile-nav text-steel hover:text-hazard">Home</a> <a href="#services" class="mobile-nav text-steel hover:text-hazard">Services</a> <a href="#safety" class="mobile-nav text-steel hover:text-hazard">Safety</a> <a href="#before-after" class="mobile-nav text-steel hover:text-hazard">Before/After</a> <a href="#reviews" class="mobile-nav text-steel hover:text-hazard">Reviews</a> <a href="#quote" class="mobile-nav bg-hazard text-charcoal px-4 py-2 rounded font-bold text-center">Get Quote</a>
+     </div>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full pt-20 overflow-hidden" style="min-height: 90%;">
+    <div class="absolute inset-0 bg-gradient-to-br from-charcoal via-darkgray to-charcoal"></div><!-- Decorative industrial lines -->
+    <div class="absolute top-24 right-0 w-1/3 h-px bg-gradient-to-l from-hazard/30 to-transparent"></div>
+    <div class="absolute bottom-20 left-0 w-1/4 h-px bg-gradient-to-r from-hazard/20 to-transparent"></div>
+    <div class="absolute top-1/3 right-8 w-px h-32 bg-gradient-to-b from-hazard/20 to-transparent hidden lg:block"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12" style="min-height: 80%;">
+     <div class="flex-1 pt-12 lg:pt-0">
+      <div class="inline-flex items-center gap-2 bg-hazard/10 border border-hazard/30 rounded-full px-4 py-1.5 mb-6 card-slam"><span class="w-2 h-2 bg-hazard rounded-full animate-pulse"></span> <span class="text-hazard text-xs font-bold tracking-widest uppercase font-mono">Fast Demo · Clean Site · No Surprises</span>
+      </div>
+      <h1 id="hero-title" class="text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.9] tracking-tight uppercase card-slam delay-1">Clear the site.<br><span class="text-hazard">Start the future.</span></h1>
+      <p id="hero-subtitle" class="mt-6 text-lg sm:text-xl text-steel max-w-lg leading-relaxed card-slam delay-2">Professional demolition with safety-first planning.</p>
+      <div class="flex flex-wrap gap-4 mt-8 card-slam delay-3"><a href="#quote" class="pulse-cta inline-flex items-center gap-2 bg-hazard text-charcoal px-6 py-3.5 rounded font-bold text-lg uppercase tracking-wide hover:bg-hazardDark transition-colors"> <i data-lucide="clipboard-list" class="w-5 h-5"></i> Request a Quote </a> <a href="#before-after" class="inline-flex items-center gap-2 border-2 border-steel/40 text-steel px-6 py-3.5 rounded font-bold text-lg uppercase tracking-wide hover:border-hazard hover:text-hazard transition-colors"> <i data-lucide="image" class="w-5 h-5"></i> See Before/After </a>
+      </div><!-- Trust badges -->
+      <div class="flex flex-wrap items-center gap-6 mt-10 card-slam delay-4">
+       <div class="flex items-center gap-2 text-steel text-sm">
+        <div class="w-10 h-10 rounded-full bg-midgray flex items-center justify-center">
+         <i data-lucide="shield-check" class="w-5 h-5 text-hazard"></i>
+        </div>
+        <div>
+         <span class="font-bold text-white block">Licensed</span><span class="text-xs">&amp; Fully Insured</span>
+        </div>
+       </div>
+       <div class="flex items-center gap-2 text-steel text-sm">
+        <div class="w-10 h-10 rounded-full bg-midgray flex items-center justify-center">
+         <i data-lucide="award" class="w-5 h-5 text-hazard"></i>
+        </div>
+        <div>
+         <span class="font-bold text-white block">500+</span><span class="text-xs">Projects Completed</span>
+        </div>
+       </div>
+       <div class="flex items-center gap-2 text-steel text-sm">
+        <div class="w-10 h-10 rounded-full bg-midgray flex items-center justify-center">
+         <i data-lucide="star" class="w-5 h-5 text-hazard"></i>
+        </div>
+        <div>
+         <span class="font-bold text-white block">4.9★</span><span class="text-xs">Average Rating</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Hero image -->
+     <div class="flex-1 max-w-lg w-full card-slam delay-3">
+      <div class="relative rounded-lg overflow-hidden border-2 border-midgray/50"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&amp;h=500&amp;fit=crop" alt="Demolition excavator at work" loading="lazy" class="w-full h-auto" onerror="this.style.background='linear-gradient(135deg,#2a2a2a,#3a3a3a)';this.alt='Demolition site';this.style.height='300px';">
+       <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-charcoal/90 to-transparent p-4"><span class="text-hazard font-bold text-sm uppercase tracking-wider font-mono">▶ Active project — Downtown Core</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- SERVICES -->
+   <section id="services" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14 fade-up"><span class="text-hazard font-mono text-sm tracking-widest uppercase">What We Do</span>
+      <h2 id="services-title" class="text-4xl sm:text-5xl font-black uppercase tracking-tight mt-2">Our Services</h2>
+      <div class="w-16 h-1 bg-hazard mx-auto mt-4"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="fade-up delay-1 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="building" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Full Structure Demolition</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">Complete teardown of commercial and residential buildings with full debris removal and site grading.</p>
+      </div>
+      <div class="fade-up delay-2 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="scissors" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Selective / Interior Demo</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">Surgical interior strip-outs preserving structural elements for renovation and remodeling projects.</p>
+      </div>
+      <div class="fade-up delay-3 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="truck" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Debris Hauling &amp; Recycling</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">Responsible disposal with maximum material recycling. We leave your site broom-clean and ready.</p>
+      </div>
+      <div class="fade-up delay-4 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="hammer" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Concrete Breaking</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">Foundations, slabs, driveways, and retaining walls removed efficiently with minimal site disruption.</p>
+      </div>
+      <div class="fade-up delay-5 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="file-text" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Permit Coordination</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">We handle all demolition permits and regulatory compliance so you don't have to.</p>
+      </div>
+      <div class="fade-up delay-6 bg-darkgray border border-midgray/40 rounded-lg p-6 hover:border-hazard/50 transition-colors group">
+       <div class="w-14 h-14 bg-hazard/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-hazard/20 transition-colors"><i data-lucide="alert-triangle" class="w-7 h-7 text-hazard"></i>
+       </div>
+       <h3 class="text-xl font-bold uppercase">Hazmat Abatement</h3>
+       <p class="text-steel mt-2 text-sm leading-relaxed font-mono">Certified asbestos and lead paint removal prior to demolition. Full testing and documentation included.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- SAFETY -->
+   <section id="safety" class="w-full py-20 px-4 bg-darkgray/50">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14 fade-up"><span class="text-hazard font-mono text-sm tracking-widest uppercase">Zero Incidents. Zero Excuses.</span>
+      <h2 id="safety-title" class="text-4xl sm:text-5xl font-black uppercase tracking-tight mt-2">Safety-First Demolition</h2>
+      <div class="w-16 h-1 bg-hazard mx-auto mt-4"></div>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-10 items-start"><!-- Animated checklist -->
+      <div class="fade-up">
+       <h3 class="text-2xl font-bold uppercase mb-6 flex items-center gap-3"><i data-lucide="clipboard-check" class="w-6 h-6 text-hazard"></i> Safety Checklist</h3>
+       <div id="safety-checklist" class="space-y-3">
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="0">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">Site survey &amp; structural assessment completed</span>
+        </div>
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="1">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">Utility disconnect &amp; hazmat clearance verified</span>
+        </div>
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="2">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">Perimeter fencing &amp; public safety barriers in place</span>
+        </div>
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="3">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">All crew PPE inspected — hard hats, vests, eye protection</span>
+        </div>
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="4">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">Dust &amp; noise mitigation plan active</span>
+        </div>
+        <div class="safety-item flex items-center gap-3 bg-charcoal border border-midgray/40 rounded-lg p-4 opacity-0" data-index="5">
+         <div class="w-8 h-8 rounded-full bg-hazard/20 flex items-center justify-center shrink-0">
+          <i data-lucide="check" class="w-4 h-4 text-hazard check-icon" style="opacity:0"></i>
+         </div><span class="font-semibold text-sm">Emergency response &amp; evacuation plan briefed</span>
+        </div>
+       </div>
+      </div><!-- Certifications -->
+      <div class="fade-up delay-2">
+       <h3 class="text-2xl font-bold uppercase mb-6 flex items-center gap-3"><i data-lucide="shield" class="w-6 h-6 text-hazard"></i> Certifications &amp; Compliance</h3>
+       <div class="grid grid-cols-2 gap-4">
+        <div class="bg-charcoal border border-midgray/40 rounded-lg p-5 text-center hover:border-hazard/40 transition-colors">
+         <div class="w-16 h-16 mx-auto bg-hazard/10 rounded-full flex items-center justify-center mb-3"><i data-lucide="shield-check" class="w-8 h-8 text-hazard"></i>
+         </div><span class="font-bold text-sm uppercase block">OSHA Certified</span> <span class="text-steel text-xs font-mono">30-Hour Training</span>
+        </div>
+        <div class="bg-charcoal border border-midgray/40 rounded-lg p-5 text-center hover:border-hazard/40 transition-colors">
+         <div class="w-16 h-16 mx-auto bg-hazard/10 rounded-full flex items-center justify-center mb-3"><i data-lucide="badge" class="w-8 h-8 text-hazard"></i>
+         </div><span class="font-bold text-sm uppercase block">EPA Compliant</span> <span class="text-steel text-xs font-mono">Hazmat Licensed</span>
+        </div>
+        <div class="bg-charcoal border border-midgray/40 rounded-lg p-5 text-center hover:border-hazard/40 transition-colors">
+         <div class="w-16 h-16 mx-auto bg-hazard/10 rounded-full flex items-center justify-center mb-3"><i data-lucide="file-check" class="w-8 h-8 text-hazard"></i>
+         </div><span class="font-bold text-sm uppercase block">Fully Bonded</span> <span class="text-steel text-xs font-mono">$5M Coverage</span>
+        </div>
+        <div class="bg-charcoal border border-midgray/40 rounded-lg p-5 text-center hover:border-hazard/40 transition-colors">
+         <div class="w-16 h-16 mx-auto bg-hazard/10 rounded-full flex items-center justify-center mb-3"><i data-lucide="award" class="w-8 h-8 text-hazard"></i>
+         </div><span class="font-bold text-sm uppercase block">NDA Member</span> <span class="text-steel text-xs font-mono">National Demo Assoc.</span>
+        </div>
+       </div><!-- Safety image -->
+       <div class="mt-6 rounded-lg overflow-hidden border border-midgray/40"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&amp;h=250&amp;fit=crop&amp;crop=bottom" alt="Safety equipment on demolition site" loading="lazy" class="w-full h-auto" onerror="this.style.background='linear-gradient(135deg,#2a2a2a,#3a3a3a)';this.style.height='150px';this.alt='Safety gear';">
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- BEFORE / AFTER -->
+   <section id="before-after" class="w-full py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14 fade-up"><span class="text-hazard font-mono text-sm tracking-widest uppercase">The Proof</span>
+      <h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mt-2">Before / After</h2>
+      <div class="w-16 h-1 bg-hazard mx-auto mt-4"></div>
+      <p class="text-steel mt-4 max-w-xl mx-auto font-mono text-sm">Drag the slider to see our work. Every site delivered clean and ready.</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8"><!-- Slider 1 -->
+      <div class="fade-up delay-1">
+       <div class="ba-container rounded-lg border-2 border-midgray/50" style="height: 280px;" data-slider="1">
+        <div class="ba-after"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;h=400&amp;fit=crop" alt="Clean cleared demolition site" loading="lazy" onerror="this.parentElement.style.background='#2a6a2a';this.remove();">
+        </div>
+        <div class="ba-before" style="width:50%"><img src="https://images.unsplash.com/photo-1517089596392-fb9a9033e05b?w=600&amp;h=400&amp;fit=crop" alt="Building before demolition" loading="lazy" style="min-width:200%" onerror="this.parentElement.style.background='#6a2a2a';this.remove();">
+        </div>
+        <div class="ba-divider" style="left:50%"></div>
+        <div class="ba-handle" style="left:50%"><i data-lucide="move-horizontal" class="w-5 h-5 text-charcoal"></i>
+        </div>
+       </div>
+       <div class="flex justify-between mt-3 text-xs font-mono uppercase tracking-wider"><span class="text-red-400">◄ Before</span> <span class="text-green-400">After ►</span>
+       </div>
+       <p class="text-steel text-sm font-mono mt-1">Commercial warehouse — Downtown</p>
+      </div><!-- Slider 2 -->
+      <div class="fade-up delay-2">
+       <div class="ba-container rounded-lg border-2 border-midgray/50" style="height: 280px;" data-slider="2">
+        <div class="ba-after"><img src="https://images.unsplash.com/photo-1416339134316-0e91dc9ded92?w=600&amp;h=400&amp;fit=crop" alt="Cleared residential lot" loading="lazy" onerror="this.parentElement.style.background='#2a6a2a';this.remove();">
+        </div>
+        <div class="ba-before" style="width:50%"><img src="https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=600&amp;h=400&amp;fit=crop" alt="House before demolition" loading="lazy" style="min-width:200%" onerror="this.parentElement.style.background='#6a2a2a';this.remove();">
+        </div>
+        <div class="ba-divider" style="left:50%"></div>
+        <div class="ba-handle" style="left:50%"><i data-lucide="move-horizontal" class="w-5 h-5 text-charcoal"></i>
+        </div>
+       </div>
+       <div class="flex justify-between mt-3 text-xs font-mono uppercase tracking-wider"><span class="text-red-400">◄ Before</span> <span class="text-green-400">After ►</span>
+       </div>
+       <p class="text-steel text-sm font-mono mt-1">Residential teardown — Suburb East</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-20 px-4 bg-darkgray/50">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-14 fade-up"><span class="text-hazard font-mono text-sm tracking-widest uppercase">What Clients Say</span>
+      <h2 class="text-4xl sm:text-5xl font-black uppercase tracking-tight mt-2">Reviews</h2>
+      <div class="w-16 h-1 bg-hazard mx-auto mt-4"></div>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="fade-up delay-1 bg-charcoal border border-midgray/40 rounded-lg p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i>
+       </div>
+       <p class="text-steel text-sm font-mono leading-relaxed">"They took down our old warehouse in 3 days and left the site spotless. Permits, safety, everything handled. Highly recommend."</p>
+       <div class="flex items-center gap-3 mt-4 pt-4 border-t border-midgray/30">
+        <div class="w-10 h-10 rounded-full bg-hazard/20 flex items-center justify-center font-bold text-hazard">
+         MR
+        </div>
+        <div>
+         <span class="font-bold text-sm block">Mark R.</span><span class="text-steel text-xs font-mono">General Contractor</span>
+        </div>
+       </div>
+      </div>
+      <div class="fade-up delay-2 bg-charcoal border border-midgray/40 rounded-lg p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i>
+       </div>
+       <p class="text-steel text-sm font-mono leading-relaxed">"Interior demo for our restaurant reno — they kept the bones intact and finished ahead of schedule. Professional crew, zero drama."</p>
+       <div class="flex items-center gap-3 mt-4 pt-4 border-t border-midgray/30">
+        <div class="w-10 h-10 rounded-full bg-hazard/20 flex items-center justify-center font-bold text-hazard">
+         SL
+        </div>
+        <div>
+         <span class="font-bold text-sm block">Sarah L.</span><span class="text-steel text-xs font-mono">Restaurant Owner</span>
+        </div>
+       </div>
+      </div>
+      <div class="fade-up delay-3 bg-charcoal border border-midgray/40 rounded-lg p-6">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i> <i data-lucide="star" class="w-4 h-4 star-filled fill-current"></i>
+       </div>
+       <p class="text-steel text-sm font-mono leading-relaxed">"Best demo crew we've worked with. They handled asbestos abatement, permits, and the full teardown. Site was graded and ready for new foundation."</p>
+       <div class="flex items-center gap-3 mt-4 pt-4 border-t border-midgray/30">
+        <div class="w-10 h-10 rounded-full bg-hazard/20 flex items-center justify-center font-bold text-hazard">
+         JT
+        </div>
+        <div>
+         <span class="font-bold text-sm block">James T.</span><span class="text-steel text-xs font-mono">Property Developer</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- QUOTE FORM -->
+   <section id="quote" class="w-full py-20 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-10 fade-up"><span class="text-hazard font-mono text-sm tracking-widest uppercase">Let's Talk</span>
+      <h2 id="quote-heading" class="text-4xl sm:text-5xl font-black uppercase tracking-tight mt-2">Get a Quote in Minutes</h2>
+      <div class="w-16 h-1 bg-hazard mx-auto mt-4"></div>
+     </div>
+     <form id="quote-form" class="fade-up delay-1 bg-darkgray border border-midgray/40 rounded-lg p-6 sm:p-8 space-y-5">
+      <div class="grid sm:grid-cols-2 gap-5">
+       <div><label for="q-name" class="block text-sm font-bold uppercase tracking-wider mb-1.5">Name</label> <input type="text" id="q-name" placeholder="Your full name" class="w-full bg-charcoal border border-midgray/60 rounded px-4 py-3 text-white text-sm font-mono focus:border-hazard focus:outline-none transition-colors" required>
+       </div>
+       <div><label for="q-phone" class="block text-sm font-bold uppercase tracking-wider mb-1.5">Phone</label> <input type="tel" id="q-phone" placeholder="(555) 000-0000" class="w-full bg-charcoal border border-midgray/60 rounded px-4 py-3 text-white text-sm font-mono focus:border-hazard focus:outline-none transition-colors" required>
+       </div>
+      </div>
+      <div><label for="q-email" class="block text-sm font-bold uppercase tracking-wider mb-1.5">Email</label> <input type="email" id="q-email" placeholder="your@email.com" class="w-full bg-charcoal border border-midgray/60 rounded px-4 py-3 text-white text-sm font-mono focus:border-hazard focus:outline-none transition-colors" required>
+      </div>
+      <div><label for="q-service" class="block text-sm font-bold uppercase tracking-wider mb-1.5">Service Needed</label> <select id="q-service" class="w-full bg-charcoal border border-midgray/60 rounded px-4 py-3 text-white text-sm font-mono focus:border-hazard focus:outline-none transition-colors" required> <option value="">Select a service...</option> <option>Full Structure Demolition</option> <option>Selective / Interior Demo</option> <option>Concrete Breaking</option> <option>Debris Hauling &amp; Recycling</option> <option>Hazmat Abatement</option> <option>Permit Coordination</option> <option>Other</option> </select>
+      </div>
+      <div><label for="q-details" class="block text-sm font-bold uppercase tracking-wider mb-1.5">Project Details</label> <textarea id="q-details" rows="4" placeholder="Tell us about your project — location, size, timeline..." class="w-full bg-charcoal border border-midgray/60 rounded px-4 py-3 text-white text-sm font-mono focus:border-hazard focus:outline-none transition-colors resize-none"></textarea>
+      </div><button type="submit" class="pulse-cta w-full bg-hazard text-charcoal font-black text-lg uppercase tracking-wider py-4 rounded hover:bg-hazardDark transition-colors flex items-center justify-center gap-2"> <i data-lucide="send" class="w-5 h-5"></i> Submit Quote Request </button>
+      <p class="text-steel text-xs text-center font-mono">We respond within 2 hours during business days. No spam, ever.</p>
+     </form><!-- Success message -->
+     <div id="quote-success" class="hidden fade-up bg-darkgray border-2 border-hazard rounded-lg p-8 text-center">
+      <div class="w-16 h-16 mx-auto bg-hazard/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="check-circle" class="w-8 h-8 text-hazard"></i>
+      </div>
+      <h3 class="text-2xl font-black uppercase">Quote Request Sent!</h3>
+      <p class="text-steel font-mono text-sm mt-2">We'll get back to you within 2 hours. Check your email for confirmation.</p>
+     </div>
+    </div>
+   </section>
+   <div class="caution-stripe-animated"></div><!-- VOTE + COMMENT WIDGET -->
+   <section class="w-full py-16 px-4 bg-darkgray/50">
+    <div class="max-w-3xl mx-auto text-center fade-up">
+     <div class="bg-charcoal border border-midgray/40 rounded-lg p-8">
+      <h3 class="text-2xl font-black uppercase mb-2">Vote + Comment</h3>
+      <p class="text-steel font-mono text-sm mb-6">Share your feedback or vote on upcoming projects</p>
+      <div class="border-2 border-dashed border-midgray/60 rounded-lg p-10 flex flex-col items-center justify-center gap-3"><i data-lucide="message-square-plus" class="w-10 h-10 text-midgray"></i> <span class="text-midgray font-mono text-sm uppercase tracking-wider">Embed Widget Here</span> <span class="text-midgray/60 font-mono text-xs">Add your preferred voting/commenting widget code</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full py-10 px-4 border-t border-midgray/30">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-6 h-6 bg-hazard rounded flex items-center justify-center"><i data-lucide="hard-hat" class="w-4 h-4 text-charcoal"></i>
+      </div><span class="font-black text-sm tracking-tight">CLEAN<span class="text-hazard">BREAK</span></span>
+     </div>
+     <p class="text-steel text-xs font-mono">© 2024 CleanBreak Demolition. Licensed &amp; Insured. All rights reserved.</p>
+     <div class="flex gap-4"><a href="#" class="text-steel hover:text-hazard transition-colors"><i data-lucide="phone" class="w-4 h-4"></i></a> <a href="#" class="text-steel hover:text-hazard transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></a> <a href="#" class="text-steel hover:text-hazard transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a> <a href="#" class="text-steel hover:text-hazard transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div><!-- end app-wrapper -->
+  <script>
+// Default config
+const defaultConfig = {
+  hero_title: 'Clear the site.<br><span class="text-hazard">Start the future.</span>',
+  hero_subtitle: 'Professional demolition with safety-first planning.',
+  services_title: 'Our Services',
+  safety_title: 'Safety-First Demolition',
+  quote_heading: 'Get a Quote in Minutes',
+  background_color: '#1a1a1a',
+  surface_color: '#2a2a2a',
+  text_color: '#B0B0B0',
+  accent_color: '#FFD600',
+  accent_dark_color: '#CCB000',
+  font_family: 'Barlow Condensed',
+  font_size: 16,
+};
+
+// Element SDK init
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => {
+    const c = { ...defaultConfig, ...config };
+    document.getElementById('hero-title').innerHTML = c.hero_title;
+    document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+    document.getElementById('services-title').textContent = c.services_title;
+    document.getElementById('safety-title').textContent = c.safety_title;
+    document.getElementById('quote-heading').textContent = c.quote_heading;
+
+    // Colors
+    document.documentElement.style.setProperty('--bg', c.background_color);
+    document.documentElement.style.setProperty('--surface', c.surface_color);
+    document.body.style.backgroundColor = c.background_color;
+    document.querySelectorAll('.bg-darkgray').forEach(el => el.style.backgroundColor = c.surface_color);
+
+    // Accent color on hazard elements
+    document.querySelectorAll('.text-hazard').forEach(el => el.style.color = c.accent_color);
+    document.querySelectorAll('.bg-hazard').forEach(el => el.style.backgroundColor = c.accent_color);
+    document.querySelectorAll('.star-filled').forEach(el => el.style.color = c.accent_color);
+    document.querySelectorAll('.text-steel').forEach(el => el.style.color = c.text_color);
+
+    // Font
+    const font = c.font_family || defaultConfig.font_family;
+    const baseSize = c.font_size || defaultConfig.font_size;
+    document.body.style.fontFamily = `${font}, sans-serif`;
+    document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+    document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${baseSize * 2.5}px`);
+    document.querySelectorAll('h3').forEach(el => el.style.fontSize = `${baseSize * 1.4}px`);
+    document.querySelectorAll('p, span, label').forEach(el => {
+      if (!el.closest('h1, h2, h3')) el.style.fontSize = `${baseSize * 0.875}px`;
+    });
+  },
+  mapToCapabilities: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return {
+      recolorables: [
+        { get: () => c.background_color, set: (v) => { c.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => c.surface_color, set: (v) => { c.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => c.text_color, set: (v) => { c.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => c.accent_color, set: (v) => { c.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => c.accent_dark_color, set: (v) => { c.accent_dark_color = v; window.elementSdk.setConfig({ accent_dark_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => c.font_family || defaultConfig.font_family,
+        set: (v) => { c.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => c.font_size || defaultConfig.font_size,
+        set: (v) => { c.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    };
+  },
+  mapToEditPanelValues: (config) => {
+    const c = { ...defaultConfig, ...config };
+    return new Map([
+      ['hero_title', c.hero_title],
+      ['hero_subtitle', c.hero_subtitle],
+      ['services_title', c.services_title],
+      ['safety_title', c.safety_title],
+      ['quote_heading', c.quote_heading],
+    ]);
+  }
+});
+
+// Mobile menu toggle
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+});
+document.querySelectorAll('.mobile-nav').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll reveal observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Safety checklist animation
+const checklistObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const items = entry.target.querySelectorAll('.safety-item');
+      items.forEach((item, i) => {
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.classList.add('card-slam');
+          setTimeout(() => {
+            const icon = item.querySelector('.check-icon');
+            if (icon) { icon.style.opacity = '1'; icon.classList.add('check-animate'); }
+          }, 400);
+        }, i * 200);
+      });
+      checklistObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+checklistObserver.observe(document.getElementById('safety-checklist'));
+
+// Before/After sliders
+document.querySelectorAll('.ba-container').forEach(container => {
+  let isDragging = false;
+  const before = container.querySelector('.ba-before');
+  const divider = container.querySelector('.ba-divider');
+  const handle = container.querySelector('.ba-handle');
+
+  function updateSlider(x) {
+    const rect = container.getBoundingClientRect();
+    let pct = ((x - rect.left) / rect.width) * 100;
+    pct = Math.max(5, Math.min(95, pct));
+    before.style.width = pct + '%';
+    divider.style.left = pct + '%';
+    handle.style.left = pct + '%';
+  }
+  container.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
+  window.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+  container.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); }, { passive: true });
+  window.addEventListener('touchend', () => { isDragging = false; });
+});
+
+// Quote form
+document.getElementById('quote-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('quote-form').classList.add('hidden');
+  const success = document.getElementById('quote-success');
+  success.classList.remove('hidden');
+  success.classList.add('visible');
+  lucide.createIcons();
+});
+
+// Active nav highlight on scroll
+const sections = ['home','services','safety','before-after','reviews','quote'];
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e3403dba79c27cf',t:'MTc3NDY3MzQzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,633 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/bfcc57ba-dbf1-4bd1-adbe-3fdb5ae03f24 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HighRoller Night Kit</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: '#D4A843',
+            goldLight: '#F0D78C',
+            crimson: '#B5121B',
+            luxeDark: '#0A0A0F',
+            luxeCard: '#15151F',
+            luxeSurface: '#1C1C2A'
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['DM Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(212,168,67,0.3), 0 0 40px rgba(212,168,67,0.1); }
+      50% { box-shadow: 0 0 30px rgba(212,168,67,0.5), 0 0 60px rgba(212,168,67,0.2); }
+    }
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+    @keyframes float-card-2 {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-10px) rotate(-1deg); }
+    }
+    @keyframes pop-in {
+      0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+      60% { transform: scale(1.05) translateY(-5px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes slide-up {
+      0% { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes count-up {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes neon-flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.7; }
+      94% { opacity: 1; }
+      96% { opacity: 0.8; }
+      97% { opacity: 1; }
+    }
+    @keyframes carousel-slide {
+      0%, 28% { transform: translateX(0); }
+      33%, 61% { transform: translateX(-100%); }
+      66%, 94% { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes chip-spin {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+
+    .shimmer-text {
+      background: linear-gradient(90deg, #D4A843 0%, #F0D78C 25%, #D4A843 50%, #F0D78C 75%, #D4A843 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .pulse-cta {
+      animation: pulse-glow 2.5s ease-in-out infinite;
+    }
+    .float-card-1 { animation: float-card 5s ease-in-out infinite; }
+    .float-card-2 { animation: float-card-2 4.5s ease-in-out infinite 0.5s; }
+    .neon-text {
+      text-shadow: 0 0 10px rgba(212,168,67,0.6), 0 0 30px rgba(212,168,67,0.3), 0 0 60px rgba(212,168,67,0.1);
+      animation: neon-flicker 6s ease-in-out infinite;
+    }
+
+    .observe-animate { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .observe-animate.visible { opacity: 1; transform: translateY(0); }
+    .observe-pop { opacity: 0; transform: scale(0.8); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .observe-pop.visible { opacity: 1; transform: scale(1); }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+      background: #D4A843; transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    .invite-carousel-track { animation: carousel-slide 12s ease-in-out infinite; }
+
+    .glossy-chip {
+      background: linear-gradient(135deg, #B5121B 0%, #8B0E15 40%, #B5121B 60%, #D4A843 100%);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .hero-bg-pattern {
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(181,18,27,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(212,168,67,0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 100%, rgba(212,168,67,0.08) 0%, transparent 50%);
+    }
+
+    .card-glossy {
+      background: linear-gradient(145deg, rgba(28,28,42,0.9) 0%, rgba(21,21,31,0.95) 100%);
+      border: 1px solid rgba(212,168,67,0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .img-cover { object-fit: cover; width: 100%; height: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0A0A0F; }
+    ::-webkit-scrollbar-thumb { background: #D4A843; border-radius: 3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-luxeDark text-white font-body overflow-auto" id="app-body">
+  <div class="w-full min-h-full" id="app-wrapper"><!-- Sticky Nav -->
+   <nav class="fixed top-0 left-0 w-full z-50 bg-luxeDark/80 backdrop-blur-md border-b border-gold/10" id="main-nav">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-display text-xl font-bold shimmer-text tracking-wide">HighRoller</a>
+     <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors active">Home</a> <a href="#invites" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors">Invites</a> <a href="#posters" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors">Posters</a> <a href="#table-cards" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors">Table Cards</a> <a href="#preview" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors">Preview</a> <a href="#download" class="nav-link text-sm font-medium text-white/70 hover:text-gold transition-colors">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-gold"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3"><a href="#home" class="text-sm text-white/70 hover:text-gold py-1">Home</a> <a href="#invites" class="text-sm text-white/70 hover:text-gold py-1">Invites</a> <a href="#posters" class="text-sm text-white/70 hover:text-gold py-1">Posters</a> <a href="#table-cards" class="text-sm text-white/70 hover:text-gold py-1">Table Cards</a> <a href="#preview" class="text-sm text-white/70 hover:text-gold py-1">Preview</a> <a href="#download" class="text-sm text-white/70 hover:text-gold py-1">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full min-h-full hero-bg-pattern flex items-center pt-24 pb-16 overflow-hidden"><!-- Decorative elements -->
+    <div class="absolute top-20 left-8 w-40 h-40 rounded-full bg-crimson/5 blur-3xl"></div>
+    <div class="absolute bottom-10 right-12 w-56 h-56 rounded-full bg-gold/5 blur-3xl"></div><!-- Floating Cards -->
+    <div class="absolute top-32 right-8 lg:right-24 float-card-1 hidden lg:block">
+     <div class="w-36 h-52 rounded-xl card-glossy p-3 flex flex-col items-center justify-center shadow-2xl">
+      <div class="w-10 h-10 glossy-chip rounded-full flex items-center justify-center mb-3"><span class="text-white font-bold text-xs">VIP</span>
+      </div>
+      <div class="text-gold font-display text-sm font-bold text-center">
+       Casino Night
+      </div>
+      <div class="text-white/40 text-xs mt-1">
+       Invite Template
+      </div>
+      <div class="mt-3 w-full h-px bg-gold/20"></div>
+      <div class="text-gold/60 text-xs mt-2 font-medium">
+       RSVP
+      </div>
+     </div>
+    </div>
+    <div class="absolute top-56 right-4 lg:right-12 float-card-2 hidden lg:block">
+     <div class="w-28 h-40 rounded-xl card-glossy p-3 flex flex-col items-center justify-center shadow-xl">
+      <svg viewbox="0 0 40 40" class="w-8 h-8 mb-2"><rect x="5" y="5" width="30" height="30" rx="4" fill="none" stroke="#D4A843" stroke-width="1.5" /> <text x="20" y="26" text-anchor="middle" fill="#D4A843" font-size="16" font-family="Playfair Display">
+        A
+       </text>
+      </svg>
+      <div class="text-white/50 text-xs">
+       Poker Night
+      </div>
+     </div>
+    </div><!-- Vote Widget Card -->
+    <div class="absolute bottom-16 left-6 lg:left-20 float-card-2 hidden lg:block">
+     <div class="w-48 rounded-xl card-glossy p-4 shadow-2xl">
+      <div class="flex items-center gap-2 mb-3"><i data-lucide="message-circle" class="w-4 h-4 text-gold"></i> <span class="text-gold text-xs font-semibold tracking-wider uppercase">Vote + Comment</span>
+      </div>
+      <div class="text-white/40 text-xs mb-3">
+       Embed Widget Here
+      </div>
+      <div class="flex gap-2">
+       <div class="flex-1 h-7 rounded-md bg-gold/10 border border-gold/20 flex items-center justify-center"><i data-lucide="thumbs-up" class="w-3 h-3 text-gold/60"></i> <span class="text-gold/60 text-xs ml-1">124</span>
+       </div>
+       <div class="flex-1 h-7 rounded-md bg-white/5 border border-white/10 flex items-center justify-center"><i data-lucide="message-square" class="w-3 h-3 text-white/40"></i> <span class="text-white/40 text-xs ml-1">38</span>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 w-full relative z-10">
+     <div class="max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/20 mb-8">
+       <div class="w-2 h-2 rounded-full bg-gold animate-pulse"></div><span class="text-gold text-xs font-semibold tracking-wider uppercase">Digital Design Kit</span>
+      </div>
+      <h1 id="hero-title" class="font-display text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-6 neon-text text-gold">Your party is about to hit.</h1>
+      <p id="hero-subtitle" class="text-lg md:text-xl text-white/50 max-w-lg mb-10 leading-relaxed">Casino-night designs that look expensive.</p>
+      <div class="flex flex-wrap gap-4"><a href="#download" id="cta-primary-btn" class="pulse-cta inline-flex items-center gap-2 px-8 py-4 bg-gold text-luxeDark font-bold rounded-lg hover:bg-goldLight transition-colors text-sm tracking-wide"> <i data-lucide="download" class="w-4 h-4"></i> <span id="cta-primary-text">Get the Kit</span> </a> <a href="#invites" id="cta-secondary-btn" class="inline-flex items-center gap-2 px-8 py-4 border border-gold/30 text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors text-sm tracking-wide"> <i data-lucide="eye" class="w-4 h-4"></i> <span id="cta-secondary-text">See Invites</span> </a>
+      </div>
+      <p class="text-white/20 text-xs mt-6 italic">"Make your event look like a jackpot."</p>
+     </div>
+    </div>
+   </section><!-- Jackpot Counter Bar -->
+   <section class="w-full py-10 bg-luxeCard border-y border-gold/10">
+    <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+     <div class="observe-animate">
+      <div class="text-3xl md:text-4xl font-display font-black text-gold jackpot-counter" data-target="12">
+       0
+      </div>
+      <div class="text-white/40 text-xs mt-1 tracking-wider uppercase">
+       Templates
+      </div>
+     </div>
+     <div class="observe-animate" style="transition-delay:0.1s">
+      <div class="text-3xl md:text-4xl font-display font-black text-gold jackpot-counter" data-target="5">
+       0
+      </div>
+      <div class="text-white/40 text-xs mt-1 tracking-wider uppercase">
+       Poster Designs
+      </div>
+     </div>
+     <div class="observe-animate" style="transition-delay:0.2s">
+      <div class="text-3xl md:text-4xl font-display font-black text-gold jackpot-counter" data-target="8">
+       0
+      </div>
+      <div class="text-white/40 text-xs mt-1 tracking-wider uppercase">
+       RSVP Cards
+      </div>
+     </div>
+     <div class="observe-animate" style="transition-delay:0.3s">
+      <div class="text-3xl md:text-4xl font-display font-black text-gold jackpot-counter" data-target="30">
+       0
+      </div>
+      <div class="text-white/40 text-xs mt-1 tracking-wider uppercase">
+       Captions
+      </div>
+     </div>
+    </div>
+   </section><!-- INVITES SECTION -->
+   <section id="invites" class="w-full py-24 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-luxeDark via-luxeDark to-luxeCard pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-16 observe-animate">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 border border-crimson/20 mb-4"><i data-lucide="sparkles" class="w-3 h-3 text-crimson"></i> <span class="text-crimson text-xs font-semibold tracking-wider uppercase">Invitations</span>
+      </div>
+      <h2 id="invites-heading" class="font-display text-4xl md:text-5xl font-black shimmer-text">Invitations That Deal</h2>
+      <p class="text-white/40 mt-4 max-w-md mx-auto">Chip-style RSVP cards and invite templates your guests won't ignore.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Invite Card 1 -->
+      <div class="observe-pop card-glossy rounded-2xl overflow-hidden group hover:border-gold/30 transition-all duration-500">
+       <div class="h-56 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1596838132731-3301c3ef1986?w=600&amp;q=80" alt="Casino roulette table with chips" class="img-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#B5121B)';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-luxeDark/80 to-transparent"></div>
+        <div class="absolute bottom-4 left-4">
+         <div class="glossy-chip w-8 h-8 rounded-full flex items-center justify-center"><span class="text-white text-xs font-bold">1</span>
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-lg font-bold text-gold mb-1">Royal Flush Invite</h3>
+        <p class="text-white/40 text-sm">Gold foil style with RSVP chip card attached.</p>
+       </div>
+      </div><!-- Invite Card 2 -->
+      <div class="observe-pop card-glossy rounded-2xl overflow-hidden group hover:border-gold/30 transition-all duration-500" style="transition-delay:0.15s">
+       <div class="h-56 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=600&amp;q=80" alt="Poker chips stacked on green felt" class="img-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#D4A843)';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-luxeDark/80 to-transparent"></div>
+        <div class="absolute bottom-4 left-4">
+         <div class="glossy-chip w-8 h-8 rounded-full flex items-center justify-center"><span class="text-white text-xs font-bold">2</span>
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-lg font-bold text-gold mb-1">High Stakes Soiree</h3>
+        <p class="text-white/40 text-sm">Dark luxe poker night with neon accents.</p>
+       </div>
+      </div><!-- Invite Card 3 -->
+      <div class="observe-pop card-glossy rounded-2xl overflow-hidden group hover:border-gold/30 transition-all duration-500" style="transition-delay:0.3s">
+       <div class="h-56 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=600&amp;q=80" alt="Playing cards spread on casino table" class="img-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#B5121B)';this.alt='Image unavailable';">
+        <div class="absolute inset-0 bg-gradient-to-t from-luxeDark/80 to-transparent"></div>
+        <div class="absolute bottom-4 left-4">
+         <div class="glossy-chip w-8 h-8 rounded-full flex items-center justify-center"><span class="text-white text-xs font-bold">3</span>
+         </div>
+        </div>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-lg font-bold text-gold mb-1">Blackjack Gala</h3>
+        <p class="text-white/40 text-sm">Elegant charity event invite with table layout.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- POSTERS SECTION -->
+   <section id="posters" class="w-full py-24 bg-luxeCard relative">
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="observe-animate">
+       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/20 mb-4"><i data-lucide="image" class="w-3 h-3 text-gold"></i> <span class="text-gold text-xs font-semibold tracking-wider uppercase">Posters</span>
+       </div>
+       <h2 id="posters-heading" class="font-display text-4xl md:text-5xl font-black shimmer-text mb-6">Posters That Pop</h2>
+       <p class="text-white/40 leading-relaxed mb-8">Print-ready poker night and fundraiser posters with bold typography, neon overlays, and that unmistakable Vegas energy. Sized for social, print, and everything in between.</p>
+       <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-4 h-4 text-gold"></i>
+         </div><span class="text-white/60 text-sm">Perfect for fundraisers and parties</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-4 h-4 text-gold"></i>
+         </div><span class="text-white/60 text-sm">Recurring seasonal use</span>
+        </div>
+        <div class="flex items-center gap-3">
+         <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-4 h-4 text-gold"></i>
+         </div><span class="text-white/60 text-sm">High visual wow factor</span>
+        </div>
+       </div>
+      </div>
+      <div class="observe-pop relative">
+       <div class="rounded-2xl overflow-hidden border border-gold/10 shadow-2xl"><img src="https://images.unsplash.com/photo-1517232115160-ff93364542dd?w=700&amp;q=80" alt="Neon Vegas lights at night" class="img-cover h-80 md:h-96" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#0A0A0F,#B5121B,#D4A843)';this.alt='Image unavailable';">
+       </div>
+       <div class="absolute -bottom-4 -left-4 w-32 h-44 rounded-xl card-glossy p-3 flex flex-col items-center justify-center shadow-xl float-card-1">
+        <svg viewbox="0 0 48 48" class="w-10 h-10 mb-2"><circle cx="24" cy="24" r="20" fill="none" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="4 3" /> <circle cx="24" cy="24" r="14" fill="#B5121B" /> <text x="24" y="28" text-anchor="middle" fill="#F0D78C" font-size="10" font-weight="bold" font-family="Playfair Display">
+          $
+         </text>
+        </svg>
+        <div class="text-gold/80 text-xs text-center font-semibold">
+         Fundraiser<br>
+         Ready
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TABLE CARDS SECTION -->
+   <section id="table-cards" class="w-full py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="text-center mb-16 observe-animate">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 border border-crimson/20 mb-4"><i data-lucide="layout" class="w-3 h-3 text-crimson"></i> <span class="text-crimson text-xs font-semibold tracking-wider uppercase">Table Tent Cards</span>
+      </div>
+      <h2 id="table-cards-heading" class="font-display text-4xl md:text-5xl font-black shimmer-text">Table Tent Cards</h2>
+      <p class="text-white/40 mt-4 max-w-md mx-auto">Place them on every table. Game rules, drink menus, or just pure vibes.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="observe-pop card-glossy rounded-xl p-6 text-center hover:border-gold/30 transition-all group">
+       <div class="w-14 h-14 mx-auto mb-4 glossy-chip rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="dice-5" class="w-6 h-6 text-white"></i>
+       </div>
+       <h3 class="font-display text-sm font-bold text-gold mb-1">Game Rules</h3>
+       <p class="text-white/30 text-xs">Quick-reference cards for every table game.</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-6 text-center hover:border-gold/30 transition-all group" style="transition-delay:0.1s">
+       <div class="w-14 h-14 mx-auto mb-4 glossy-chip rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="wine" class="w-6 h-6 text-white"></i>
+       </div>
+       <h3 class="font-display text-sm font-bold text-gold mb-1">Drink Menu</h3>
+       <p class="text-white/30 text-xs">Cocktail list styled for your casino night.</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-6 text-center hover:border-gold/30 transition-all group" style="transition-delay:0.2s">
+       <div class="w-14 h-14 mx-auto mb-4 glossy-chip rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="trophy" class="w-6 h-6 text-white"></i>
+       </div>
+       <h3 class="font-display text-sm font-bold text-gold mb-1">Prize List</h3>
+       <p class="text-white/30 text-xs">Show off what winners take home.</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-6 text-center hover:border-gold/30 transition-all group" style="transition-delay:0.3s">
+       <div class="w-14 h-14 mx-auto mb-4 glossy-chip rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"><i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
+       </div>
+       <h3 class="font-display text-sm font-bold text-gold mb-1">Vibe Card</h3>
+       <p class="text-white/30 text-xs">Branded atmosphere piece for each table.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW / CAROUSEL SECTION -->
+   <section id="preview" class="w-full py-24 bg-luxeCard relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+    <div class="max-w-5xl mx-auto px-6">
+     <div class="text-center mb-12 observe-animate">
+      <h2 class="font-display text-4xl md:text-5xl font-black shimmer-text">Preview the Kit</h2>
+      <p class="text-white/40 mt-4">Swipe through the invite designs.</p>
+     </div>
+     <div class="relative rounded-2xl overflow-hidden border border-gold/10 bg-luxeDark">
+      <div class="flex invite-carousel-track" id="carousel-track"><!-- Slide 1 -->
+       <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-shrink-0 w-48 h-64 rounded-xl overflow-hidden border border-gold/20 shadow-xl"><img src="https://images.unsplash.com/photo-1596838132731-3301c3ef1986?w=400&amp;q=80" alt="Casino invite preview 1" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#B5121B)';this.alt='Image unavailable';">
+        </div>
+        <div>
+         <h3 class="font-display text-2xl font-bold text-gold mb-2">Royal Flush Invite</h3>
+         <p class="text-white/40 mb-4">Gold foil elegance with detachable RSVP chip. Print or send digitally.</p>
+         <div class="flex gap-2"><span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">5x7 Print</span> <span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">Digital</span>
+         </div>
+        </div>
+       </div><!-- Slide 2 -->
+       <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-shrink-0 w-48 h-64 rounded-xl overflow-hidden border border-gold/20 shadow-xl"><img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400&amp;q=80" alt="Casino invite preview 2" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#D4A843)';this.alt='Image unavailable';">
+        </div>
+        <div>
+         <h3 class="font-display text-2xl font-bold text-gold mb-2">High Stakes Soiree</h3>
+         <p class="text-white/40 mb-4">Dark luxe aesthetic with neon edge lighting. Made for poker night.</p>
+         <div class="flex gap-2"><span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">A5 Print</span> <span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">Instagram</span>
+         </div>
+        </div>
+       </div><!-- Slide 3 -->
+       <div class="min-w-full p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-shrink-0 w-48 h-64 rounded-xl overflow-hidden border border-gold/20 shadow-xl"><img src="https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=400&amp;q=80" alt="Casino invite preview 3" class="img-cover" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1C1C2A,#B5121B)';this.alt='Image unavailable';">
+        </div>
+        <div>
+         <h3 class="font-display text-2xl font-bold text-gold mb-2">Blackjack Gala</h3>
+         <p class="text-white/40 mb-4">Elegant charity event invite. Includes table seating layout template.</p>
+         <div class="flex gap-2"><span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">Letter Size</span> <span class="px-3 py-1 rounded-full bg-gold/10 text-gold text-xs">Editable</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Carousel Dots -->
+      <div class="flex justify-center gap-2 pb-6">
+       <div class="w-8 h-1 rounded-full bg-gold carousel-dot active"></div>
+       <div class="w-8 h-1 rounded-full bg-white/20 carousel-dot"></div>
+       <div class="w-8 h-1 rounded-full bg-white/20 carousel-dot"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CAPTION PACK -->
+   <section class="w-full py-20 relative">
+    <div class="max-w-4xl mx-auto px-6">
+     <div class="text-center mb-12 observe-animate">
+      <h2 class="font-display text-3xl md:text-4xl font-black text-gold neon-text">Caption Pack Included</h2>
+      <p class="text-white/40 mt-3">30 ready-to-post captions for your casino night promo.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="observe-pop card-glossy rounded-xl p-5 flex items-start gap-3"><i data-lucide="quote" class="w-5 h-5 text-gold flex-shrink-0 mt-0.5"></i>
+       <p class="text-white/50 text-sm italic">"The chips are stacked. The table is set. All that's missing is you."</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-5 flex items-start gap-3" style="transition-delay:0.1s"><i data-lucide="quote" class="w-5 h-5 text-gold flex-shrink-0 mt-0.5"></i>
+       <p class="text-white/50 text-sm italic">"Dress code: Lucky. See you at the table."</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-5 flex items-start gap-3" style="transition-delay:0.2s"><i data-lucide="quote" class="w-5 h-5 text-gold flex-shrink-0 mt-0.5"></i>
+       <p class="text-white/50 text-sm italic">"This isn't just a party. It's a full-blown casino night."</p>
+      </div>
+      <div class="observe-pop card-glossy rounded-xl p-5 flex items-start gap-3" style="transition-delay:0.3s"><i data-lucide="quote" class="w-5 h-5 text-gold flex-shrink-0 mt-0.5"></i>
+       <p class="text-white/50 text-sm italic">"Place your bets. RSVP closes at midnight."</p>
+      </div>
+     </div>
+     <p class="text-center text-white/20 text-xs mt-6">+ 26 more captions in the full kit</p>
+    </div>
+   </section><!-- DOWNLOAD / BOTTOM CTA -->
+   <section id="download" class="w-full py-24 relative overflow-hidden">
+    <div class="absolute inset-0 hero-bg-pattern"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent"></div>
+    <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
+     <div class="observe-animate">
+      <div class="glossy-chip w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-8" style="animation: chip-spin 4s linear infinite;"><span class="text-white font-display font-black text-lg">HR</span>
+      </div>
+      <h2 id="bottom-cta-heading" class="font-display text-4xl md:text-6xl font-black shimmer-text mb-4">Make guests RSVP fast.</h2>
+      <p class="text-white/40 max-w-lg mx-auto mb-10 leading-relaxed">Get all 12 templates, 5 posters, 8 RSVP cards, table tent designs, and 30 captions. One kit. Infinite events.</p><a href="#" class="pulse-cta inline-flex items-center gap-3 px-10 py-5 bg-gold text-luxeDark font-bold rounded-xl hover:bg-goldLight transition-colors text-base tracking-wide" onclick="event.preventDefault();"> <i data-lucide="download" class="w-5 h-5"></i> Get the HighRoller Night Kit </a>
+      <div class="flex items-center justify-center gap-6 mt-8">
+       <div class="flex items-center gap-2 text-white/30 text-xs"><i data-lucide="file-text" class="w-3 h-3"></i> <span>Instant Download</span>
+       </div>
+       <div class="flex items-center gap-2 text-white/30 text-xs"><i data-lucide="edit" class="w-3 h-3"></i> <span>Fully Editable</span>
+       </div>
+       <div class="flex items-center gap-2 text-white/30 text-xs"><i data-lucide="refresh-cw" class="w-3 h-3"></i> <span>Reuse Forever</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-8 border-t border-gold/10 bg-luxeDark">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4"><span class="font-display text-sm shimmer-text font-bold">HighRoller Night Kit</span> <span class="text-white/20 text-xs">Digital Design Kit for Casino Night Events</span>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // === CONFIG & SDK ===
+    const defaultConfig = {
+      hero_title: "Your party is about to hit.",
+      hero_subtitle: "Casino-night designs that look expensive.",
+      cta_primary: "Get the Kit",
+      cta_secondary: "See Invites",
+      invites_title: "Invitations That Deal",
+      posters_title: "Posters That Pop",
+      table_cards_title: "Table Tent Cards",
+      bottom_cta_text: "Make guests RSVP fast.",
+      background_color: "#0A0A0F",
+      surface_color: "#1C1C2A",
+      text_color: "#D4A843",
+      primary_action_color: "#D4A843",
+      secondary_action_color: "#B5121B",
+      font_family: "Playfair Display",
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+      const font = c.font_family || defaultConfig.font_family;
+      const baseSize = c.font_size || defaultConfig.font_size;
+
+      // Text content
+      document.getElementById('hero-title').textContent = c.hero_title;
+      document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+      document.getElementById('cta-primary-text').textContent = c.cta_primary;
+      document.getElementById('cta-secondary-text').textContent = c.cta_secondary;
+      document.getElementById('invites-heading').textContent = c.invites_title;
+      document.getElementById('posters-heading').textContent = c.posters_title;
+      document.getElementById('table-cards-heading').textContent = c.table_cards_title;
+      document.getElementById('bottom-cta-heading').textContent = c.bottom_cta_text;
+
+      // Colors
+      document.getElementById('app-body').style.backgroundColor = c.background_color;
+      document.querySelectorAll('.card-glossy').forEach(el => {
+        el.style.borderColor = c.text_color + '26';
+      });
+
+      // Font
+      const displayStack = `${font}, serif`;
+      document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => {
+        el.style.fontFamily = displayStack;
+      });
+
+      // Font size
+      document.getElementById('hero-title').style.fontSize = `${baseSize * 4}px`;
+      document.getElementById('hero-subtitle').style.fontSize = `${baseSize * 1.25}px`;
+    }
+
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+          { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ["hero_title", config.hero_title || defaultConfig.hero_title],
+        ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+        ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+        ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+        ["invites_title", config.invites_title || defaultConfig.invites_title],
+        ["posters_title", config.posters_title || defaultConfig.posters_title],
+        ["table_cards_title", config.table_cards_title || defaultConfig.table_cards_title],
+        ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+      ])
+    });
+
+    // === INTERSECTION OBSERVER ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.observe-animate, .observe-pop').forEach(el => observer.observe(el));
+
+    // === JACKPOT COUNTERS ===
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target);
+          let current = 0;
+          const step = Math.max(1, Math.floor(target / 30));
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            el.textContent = current;
+          }, 40);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.jackpot-counter').forEach(el => counterObserver.observe(el));
+
+    // === CAROUSEL DOTS SYNC ===
+    let currentSlide = 0;
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % 3;
+      document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('bg-gold', i === currentSlide);
+        dot.classList.toggle('bg-white/20', i !== currentSlide);
+      });
+    }, 4000);
+
+    // === MOBILE MENU ===
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // === ACTIVE NAV ===
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const appWrapper = document.getElementById('app-wrapper');
+
+    appWrapper.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 100;
+        if (appWrapper.scrollTop >= top) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    });
+
+    // === SMOOTH SCROLL ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+
+    // Init icons
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e339ee5b18b27cf',t:'MTc3NDY2OTMwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

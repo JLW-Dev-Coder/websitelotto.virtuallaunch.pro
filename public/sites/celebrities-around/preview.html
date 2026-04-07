@@ -1,0 +1,520 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/3a7cbde5-8534-4d98-a522-1654f9ea7712 -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlashFame Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Bebas Neue', 'sans-serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+
+@keyframes flashBurst {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  10% { opacity: 1; transform: scale(1.2); }
+  30% { opacity: 0.3; transform: scale(1); }
+}
+@keyframes lightStreak {
+  0% { transform: translateX(-100%) rotate(-30deg); opacity: 0; }
+  40% { opacity: 0.7; }
+  100% { transform: translateX(200%) rotate(-30deg); opacity: 0; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.7), 0 0 80px rgba(255, 215, 0, 0.3); }
+}
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+  70% { transform: scale(1.05) translateY(-5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+  20%, 24%, 55% { text-shadow: none; }
+}
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(255, 215, 0, 0.4); }
+  50% { border-color: rgba(255, 215, 0, 1); }
+}
+
+.flash-burst {
+  animation: flashBurst 3s ease-in-out infinite;
+}
+.flash-burst-2 { animation-delay: 1s; }
+.flash-burst-3 { animation-delay: 2s; }
+.light-streak {
+  animation: lightStreak 4s ease-in-out infinite;
+}
+.light-streak-2 { animation-delay: 1.5s; }
+.pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.marquee-track { animation: marqueeScroll 25s linear infinite; }
+.pop-in { animation: popIn 0.6s ease-out forwards; opacity: 0; }
+.fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+.shimmer-text {
+  background: linear-gradient(90deg, #ffd700, #fff, #ffd700, #fff, #ffd700);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+.float-card { animation: floatCard 4s ease-in-out infinite; }
+.neon-flicker { animation: neonFlicker 4s ease-in-out infinite; }
+.border-glow { animation: borderGlow 2s ease-in-out infinite; }
+
+.nav-glass {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255,215,0,0.06) 50%, transparent 60%);
+  animation: lightStreak 5s ease-in-out infinite;
+}
+
+.scroll-trigger { opacity: 0; transform: translateY(30px); transition: all 0.7s ease-out; }
+.scroll-trigger.visible { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-[#0a0a0a] text-white font-body overflow-auto">
+  <div class="w-full h-full" id="app-root"><!-- Sticky Nav -->
+   <nav class="nav-glass fixed top-0 left-0 w-full z-50 border-b border-yellow-500/20">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home" class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center"><i data-lucide="zap" class="w-5 h-5 text-black"></i>
+      </div><span class="font-display text-2xl tracking-wider text-yellow-400">FLASHFAME</span> </a>
+     <div class="hidden md:flex items-center gap-6 text-sm font-medium"><a href="#home" class="text-yellow-400 hover:text-yellow-300 transition">Home</a> <a href="#templates" class="text-gray-400 hover:text-yellow-400 transition">Templates</a> <a href="#headlines" class="text-gray-400 hover:text-yellow-400 transition">Headlines</a> <a href="#preview" class="text-gray-400 hover:text-yellow-400 transition">Preview</a> <a href="#reviews" class="text-gray-400 hover:text-yellow-400 transition">Reviews</a> <a href="#download" class="bg-yellow-500 text-black px-5 py-2 rounded-full font-semibold hover:bg-yellow-400 transition pulse-glow">Download</a>
+     </div><button id="mobile-menu-btn" class="md:hidden text-yellow-400"><i data-lucide="menu" class="w-6 h-6"></i></button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-3"><a href="#home" class="block text-yellow-400 py-2 border-b border-white/10">Home</a> <a href="#templates" class="block text-gray-400 py-2 border-b border-white/10">Templates</a> <a href="#headlines" class="block text-gray-400 py-2 border-b border-white/10">Headlines</a> <a href="#preview" class="block text-gray-400 py-2 border-b border-white/10">Preview</a> <a href="#reviews" class="block text-gray-400 py-2 border-b border-white/10">Reviews</a> <a href="#download" class="block text-yellow-500 font-semibold py-2">Download</a>
+    </div>
+   </nav><!-- HERO -->
+   <section id="home" class="relative w-full min-h-[100%] flex items-center justify-center overflow-hidden pt-20"><!-- Flash burst overlays -->
+    <div class="absolute top-[10%] left-[15%] w-40 h-40 bg-yellow-300/20 rounded-full blur-3xl flash-burst"></div>
+    <div class="absolute bottom-[20%] right-[10%] w-56 h-56 bg-fuchsia-500/15 rounded-full blur-3xl flash-burst flash-burst-2"></div>
+    <div class="absolute top-[40%] right-[30%] w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl flash-burst flash-burst-3"></div><!-- Light streaks -->
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent light-streak"></div>
+    <div class="absolute top-[60%] left-0 w-full h-1 bg-gradient-to-r from-transparent via-fuchsia-500/40 to-transparent light-streak light-streak-2"></div><!-- Hero BG image -->
+    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1400&amp;q=80" alt="Spotlight stage" loading="lazy" class="w-full h-full object-cover opacity-20" onerror="this.style.background='linear-gradient(135deg,#1a1a2e,#0a0a0a)';this.alt='Background';">
+     <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#0a0a0a]"></div>
+    </div>
+    <div class="relative z-10 max-w-6xl mx-auto px-4 py-20 flex flex-col lg:flex-row items-center gap-12">
+     <div class="flex-1 text-center lg:text-left">
+      <div class="inline-block px-4 py-1.5 bg-yellow-500/10 border border-yellow-500/30 rounded-full text-yellow-400 text-xs font-semibold tracking-widest uppercase mb-6 fade-in-up">
+       ⚡ The Creator Pack for Pop Culture Pages
+      </div>
+      <h1 id="hero-title" class="font-display text-6xl sm:text-7xl lg:text-8xl leading-[0.9] tracking-wide mb-6 shimmer-text fade-in-up" style="animation-delay:0.15s">Post like the cameras are watching.</h1>
+      <p id="hero-subtitle" class="text-lg sm:text-xl text-gray-300 max-w-lg mx-auto lg:mx-0 mb-8 fade-in-up" style="animation-delay:0.3s">Celebrity-style templates that get clicks.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up" style="animation-delay:0.45s"><a href="#download" id="cta-primary-btn" class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold px-8 py-4 rounded-full text-lg hover:scale-105 transition-transform pulse-glow text-center"> Get the Studio Pack </a> <a href="#templates" id="cta-secondary-btn" class="border-2 border-yellow-500/50 text-yellow-400 font-semibold px-8 py-4 rounded-full text-lg hover:bg-yellow-500/10 transition text-center border-glow"> See Templates </a>
+      </div><!-- Stats bar -->
+      <div class="flex gap-8 mt-10 justify-center lg:justify-start fade-in-up" style="animation-delay:0.6s">
+       <div>
+        <span class="font-display text-3xl text-yellow-400">80+</span>
+        <p class="text-xs text-gray-500 mt-1">Templates</p>
+       </div>
+       <div>
+        <span class="font-display text-3xl text-yellow-400">200+</span>
+        <p class="text-xs text-gray-500 mt-1">Headlines</p>
+       </div>
+       <div>
+        <span class="font-display text-3xl text-yellow-400">40+</span>
+        <p class="text-xs text-gray-500 mt-1">Story Frames</p>
+       </div>
+      </div>
+     </div><!-- Floating vote/comment card -->
+     <div class="flex-shrink-0 float-card fade-in-up" style="animation-delay:0.5s">
+      <div class="w-72 bg-gradient-to-br from-[#1a1a2e] to-[#0d0d1a] border border-yellow-500/30 rounded-2xl p-5 shadow-2xl shadow-yellow-500/10">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+         FF
+        </div>
+        <div>
+         <p class="text-sm font-semibold text-white">FlashFame Poll</p>
+         <p class="text-xs text-gray-500">Weekly Content Drop</p>
+        </div>
+       </div>
+       <p class="text-sm text-gray-300 mb-3">🔥 Which template style gets more engagement?</p>
+       <div class="space-y-2 mb-4"><button onclick="vote('a')" id="vote-a" class="w-full text-left px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-yellow-500/50 transition flex justify-between items-center"> <span>Magazine Cover Style</span><span class="text-yellow-400 font-bold text-xs" id="vote-a-pct"></span> </button> <button onclick="vote('b')" id="vote-b" class="w-full text-left px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-yellow-500/50 transition flex justify-between items-center"> <span>Breaking News Style</span><span class="text-yellow-400 font-bold text-xs" id="vote-b-pct"></span> </button>
+       </div>
+       <div class="border-t border-white/10 pt-3">
+        <div class="flex items-center gap-2"><input type="text" id="comment-input" placeholder="Drop a comment..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 outline-none focus:border-yellow-500/50"> <button onclick="addComment()" class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center hover:bg-yellow-400 transition"><i data-lucide="send" class="w-3.5 h-3.5 text-black"></i></button>
+        </div>
+        <div id="comments-list" class="mt-3 space-y-2 max-h-24 overflow-y-auto"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- TEMPLATES -->
+   <section id="templates" class="relative w-full py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 scroll-trigger"><span class="text-yellow-400 font-semibold text-sm tracking-widest uppercase">80+ Entertainment Templates</span>
+      <h2 class="font-display text-5xl sm:text-6xl mt-3 tracking-wide">Built for Pop Culture Pages</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">High-engagement formats designed for weekly drops. Every template is crafted to stop the scroll.</p>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="scroll-trigger card-shine bg-gradient-to-br from-[#141420] to-[#0d0d14] border border-yellow-500/15 rounded-2xl overflow-hidden hover:border-yellow-500/40 transition group" style="transition-delay:0.1s">
+       <div class="h-48 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1585951237318-9ea5e175b891?w=600&amp;q=80" alt="Red carpet event" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='linear-gradient(135deg,#2d1b4e,#1a1a2e)';this.alt='Template preview';">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d14] to-transparent"></div><span class="absolute top-3 right-3 bg-yellow-500 text-black text-[10px] font-bold px-2 py-1 rounded-full">TRENDING</span>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-xl tracking-wide text-yellow-400">Red Carpet Reveal</h3>
+        <p class="text-gray-500 text-sm mt-1">20 templates · Feed + Story</p>
+        <div class="flex gap-2 mt-3"><span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">Awards</span> <span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">Fashion</span>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-trigger card-shine bg-gradient-to-br from-[#141420] to-[#0d0d14] border border-yellow-500/15 rounded-2xl overflow-hidden hover:border-yellow-500/40 transition group" style="transition-delay:0.2s">
+       <div class="h-48 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1524712245354-2c4e5e7121c0?w=600&amp;q=80" alt="Spotlight stage" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='linear-gradient(135deg,#2d1b4e,#1a1a2e)';this.alt='Template preview';">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d14] to-transparent"></div><span class="absolute top-3 right-3 bg-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">NEW</span>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-xl tracking-wide text-yellow-400">Breaking Drama</h3>
+        <p class="text-gray-500 text-sm mt-1">25 templates · Carousel</p>
+        <div class="flex gap-2 mt-3"><span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">News</span> <span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">Drama</span>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-trigger card-shine bg-gradient-to-br from-[#141420] to-[#0d0d14] border border-yellow-500/15 rounded-2xl overflow-hidden hover:border-yellow-500/40 transition group" style="transition-delay:0.3s">
+       <div class="h-48 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1460881680858-30d872d5b530?w=600&amp;q=80" alt="Movie theater" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='linear-gradient(135deg,#2d1b4e,#1a1a2e)';this.alt='Template preview';">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d14] to-transparent"></div><span class="absolute top-3 right-3 bg-yellow-500 text-black text-[10px] font-bold px-2 py-1 rounded-full">HOT</span>
+       </div>
+       <div class="p-5">
+        <h3 class="font-display text-xl tracking-wide text-yellow-400">Paparazzi Flash</h3>
+        <p class="text-gray-500 text-sm mt-1">35 templates · All Formats</p>
+        <div class="flex gap-2 mt-3"><span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">Overlays</span> <span class="text-[10px] bg-white/5 border border-white/10 rounded-full px-2.5 py-1 text-gray-400">Flash</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Pricing angles -->
+     <div class="flex flex-wrap justify-center gap-4 mt-12 scroll-trigger">
+      <div class="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-5 py-2.5"><i data-lucide="flame" class="w-4 h-4 text-yellow-400"></i> <span class="text-sm text-yellow-300">Built for pop culture pages</span>
+      </div>
+      <div class="flex items-center gap-2 bg-fuchsia-500/10 border border-fuchsia-500/20 rounded-full px-5 py-2.5"><i data-lucide="calendar" class="w-4 h-4 text-fuchsia-400"></i> <span class="text-sm text-fuchsia-300">Perfect for weekly drops</span>
+      </div>
+      <div class="flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full px-5 py-2.5"><i data-lucide="trending-up" class="w-4 h-4 text-cyan-400"></i> <span class="text-sm text-cyan-300">High engagement formats</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- HEADLINES MARQUEE -->
+   <section id="headlines" class="w-full py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#12121f] to-[#0a0a0a]"></div>
+    <div class="relative z-10">
+     <div class="text-center mb-12 px-4 scroll-trigger"><span class="text-fuchsia-400 font-semibold text-sm tracking-widest uppercase">200+ Headline Hooks</span>
+      <h2 class="font-display text-5xl sm:text-6xl mt-3 tracking-wide">Scroll-Stopping Headlines</h2>
+      <p class="text-gray-400 mt-4 max-w-lg mx-auto">Copy-paste hooks designed for maximum engagement. No real names needed.</p>
+     </div><!-- Marquee row 1 -->
+     <div class="relative overflow-hidden mb-4">
+      <div class="marquee-track flex gap-4 whitespace-nowrap" style="width: max-content;"><span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"They showed up and BROKE the internet 🔥"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"Nobody saw THIS coming… 👀"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"The outfit that changed everything"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"Why everyone is talking about THIS moment"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"Rate this look from 1-10 🤔"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"HOT TAKE: This should've won 🏆"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"JUST IN: The internet can't handle this"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"3 things you MISSED at the event 💎"</span> <!-- Duplicate for seamless loop --> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"They showed up and BROKE the internet 🔥"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"Nobody saw THIS coming… 👀"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"The outfit that changed everything"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"Why everyone is talking about THIS moment"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"Rate this look from 1-10 🤔"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"HOT TAKE: This should've won 🏆"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"JUST IN: The internet can't handle this"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"3 things you MISSED at the event 💎"</span>
+      </div>
+     </div><!-- Marquee row 2 (reverse) -->
+     <div class="relative overflow-hidden">
+      <div class="marquee-track flex gap-4 whitespace-nowrap" style="width: max-content; animation-direction: reverse; animation-duration: 30s;"><span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"POV: You just witnessed history ✨"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"The glow-up that shook the timeline"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"EXCLUSIVE: Behind the scenes footage 🎬"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"This entrance SHUT IT DOWN 🚨"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"Swipe to see the transformation →"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"The drama that won't stop trending 💬"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"POV: You just witnessed history ✨"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"The glow-up that shook the timeline"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"EXCLUSIVE: Behind the scenes footage 🎬"</span> <span class="inline-block bg-gradient-to-r from-cyan-500/10 to-cyan-500/5 border border-cyan-500/20 rounded-xl px-6 py-3 text-sm font-medium text-cyan-300">"This entrance SHUT IT DOWN 🚨"</span> <span class="inline-block bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 border border-yellow-500/20 rounded-xl px-6 py-3 text-sm font-medium text-yellow-300">"Swipe to see the transformation →"</span> <span class="inline-block bg-gradient-to-r from-fuchsia-500/10 to-fuchsia-500/5 border border-fuchsia-500/20 rounded-xl px-6 py-3 text-sm font-medium text-fuchsia-300">"The drama that won't stop trending 💬"</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- PREVIEW / WHAT'S INSIDE -->
+   <section id="preview" class="w-full py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-16 scroll-trigger"><span class="text-cyan-400 font-semibold text-sm tracking-widest uppercase">What's Inside the Pack</span>
+      <h2 class="font-display text-5xl sm:text-6xl mt-3 tracking-wide">Everything You Need to Go Viral</h2>
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="scroll-trigger bg-gradient-to-b from-yellow-500/10 to-transparent border border-yellow-500/15 rounded-2xl p-6 text-center hover:border-yellow-500/40 transition" style="transition-delay:0.05s">
+       <div class="w-14 h-14 mx-auto mb-4 bg-yellow-500/10 rounded-xl flex items-center justify-center"><i data-lucide="layout-grid" class="w-7 h-7 text-yellow-400"></i>
+       </div>
+       <h3 class="font-display text-2xl text-yellow-400 tracking-wide">80 Templates</h3>
+       <p class="text-gray-500 text-sm mt-2">Feed, Story, Carousel &amp; Reel covers</p>
+      </div>
+      <div class="scroll-trigger bg-gradient-to-b from-fuchsia-500/10 to-transparent border border-fuchsia-500/15 rounded-2xl p-6 text-center hover:border-fuchsia-500/40 transition" style="transition-delay:0.1s">
+       <div class="w-14 h-14 mx-auto mb-4 bg-fuchsia-500/10 rounded-xl flex items-center justify-center"><i data-lucide="type" class="w-7 h-7 text-fuchsia-400"></i>
+       </div>
+       <h3 class="font-display text-2xl text-fuchsia-400 tracking-wide">200 Headlines</h3>
+       <p class="text-gray-500 text-sm mt-2">Copy-paste hooks that drive engagement</p>
+      </div>
+      <div class="scroll-trigger bg-gradient-to-b from-cyan-500/10 to-transparent border border-cyan-500/15 rounded-2xl p-6 text-center hover:border-cyan-500/40 transition" style="transition-delay:0.15s">
+       <div class="w-14 h-14 mx-auto mb-4 bg-cyan-500/10 rounded-xl flex items-center justify-center"><i data-lucide="smartphone" class="w-7 h-7 text-cyan-400"></i>
+       </div>
+       <h3 class="font-display text-2xl text-cyan-400 tracking-wide">40 Story Frames</h3>
+       <p class="text-gray-500 text-sm mt-2">Interactive &amp; tap-through formats</p>
+      </div>
+      <div class="scroll-trigger bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-2xl p-6 text-center hover:border-white/20 transition" style="transition-delay:0.2s">
+       <div class="w-14 h-14 mx-auto mb-4 bg-white/5 rounded-xl flex items-center justify-center"><i data-lucide="sparkles" class="w-7 h-7 text-white"></i>
+       </div>
+       <h3 class="font-display text-2xl text-white tracking-wide">Flash Overlays</h3>
+       <p class="text-gray-500 text-sm mt-2">Paparazzi flash &amp; lens flare effects</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- REVIEWS -->
+   <section id="reviews" class="w-full py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-fuchsia-500/5 to-transparent"></div>
+    <div class="max-w-5xl mx-auto relative z-10">
+     <div class="text-center mb-14 scroll-trigger"><span class="text-yellow-400 font-semibold text-sm tracking-widest uppercase">Creator Reviews</span>
+      <h2 class="font-display text-5xl sm:text-6xl mt-3 tracking-wide">What Creators Are Saying</h2>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="scroll-trigger bg-[#111118] border border-yellow-500/15 rounded-2xl p-6 hover:border-yellow-500/30 transition" style="transition-delay:0.05s">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"My engagement went up 340% in the first week. The templates look like a million-dollar production team made them."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-xs font-bold text-black">
+         JR
+        </div>
+        <div>
+         <p class="text-sm font-medium">@juicyrecaps</p>
+         <p class="text-xs text-gray-600">412K followers</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-trigger bg-[#111118] border border-fuchsia-500/15 rounded-2xl p-6 hover:border-fuchsia-500/30 transition" style="transition-delay:0.15s">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"I used to spend hours making posts. Now I batch a whole week of content in 30 minutes. The headlines alone are worth it."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-fuchsia-400 to-purple-600 flex items-center justify-center text-xs font-bold text-white">
+         TS
+        </div>
+        <div>
+         <p class="text-sm font-medium">@thescenepage</p>
+         <p class="text-xs text-gray-600">189K followers</p>
+        </div>
+       </div>
+      </div>
+      <div class="scroll-trigger bg-[#111118] border border-cyan-500/15 rounded-2xl p-6 hover:border-cyan-500/30 transition" style="transition-delay:0.25s">
+       <div class="flex gap-1 mb-3"><i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i> <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-yellow-400"></i>
+       </div>
+       <p class="text-gray-300 text-sm leading-relaxed mb-4">"The paparazzi flash overlays are *chef's kiss*. My stories literally look like TMZ quality. Followers DM me asking how I do it."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-xs font-bold text-white">
+         VD
+        </div>
+        <div>
+         <p class="text-sm font-medium">@viraldigest_</p>
+         <p class="text-xs text-gray-600">67K followers</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- BOTTOM CTA / DOWNLOAD -->
+   <section id="download" class="w-full py-24 px-4 relative overflow-hidden"><!-- Flash effects -->
+    <div class="absolute top-[20%] left-[20%] w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl flash-burst"></div>
+    <div class="absolute bottom-[10%] right-[15%] w-48 h-48 bg-fuchsia-500/10 rounded-full blur-3xl flash-burst flash-burst-2"></div>
+    <div class="max-w-3xl mx-auto relative z-10 text-center scroll-trigger">
+     <div class="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-4 py-1.5 mb-8"><i data-lucide="sparkles" class="w-4 h-4 text-yellow-400"></i> <span class="text-yellow-400 text-xs font-semibold tracking-widest uppercase">Limited Time Offer</span>
+     </div>
+     <h2 id="bottom-cta-heading" class="font-display text-5xl sm:text-7xl tracking-wide shimmer-text mb-6">Turn attention into income.</h2>
+     <p class="text-gray-400 text-lg max-w-xl mx-auto mb-10">Get the full FlashFame Studio Pack — 80 templates, 200 headline hooks, 40 story frames, and paparazzi flash overlays. Everything you need to dominate pop culture content.</p>
+     <div class="bg-gradient-to-br from-[#1a1a2e] to-[#0d0d14] border border-yellow-500/30 rounded-3xl p-8 sm:p-12 max-w-md mx-auto mb-10">
+      <p class="text-gray-500 text-sm line-through mb-1">$97</p>
+      <div class="flex items-baseline justify-center gap-2 mb-2"><span class="font-display text-6xl text-yellow-400">$37</span> <span class="text-gray-500 text-sm">one-time</span>
+      </div>
+      <p class="text-gray-500 text-xs mb-6">Instant download · Lifetime access</p><button onclick="handleDownload()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold py-4 rounded-full text-lg hover:scale-105 transition-transform pulse-glow flex items-center justify-center gap-2"> <i data-lucide="download" class="w-5 h-5"></i> Get the Studio Pack </button>
+      <div class="flex justify-center gap-6 mt-5 text-gray-600 text-xs"><span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Secure</span> <span class="flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refund Policy</span> <span class="flex items-center gap-1"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Instant</span>
+      </div>
+     </div>
+     <p class="text-gray-600 text-sm">Make your content look famous. ⚡</p>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="w-full border-t border-white/5 py-8 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+     <div class="flex items-center gap-2">
+      <div class="w-7 h-7 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center"><i data-lucide="zap" class="w-4 h-4 text-black"></i>
+      </div><span class="font-display text-lg tracking-wider text-yellow-400/60">FLASHFAME STUDIO</span>
+     </div>
+     <p class="text-gray-600 text-xs">© 2025 FlashFame Studio. All rights reserved. Not affiliated with any celebrity or network.</p>
+    </div>
+   </footer>
+  </div><!-- Download Toast -->
+  <div id="download-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-yellow-500 text-black font-semibold px-6 py-3 rounded-full shadow-2xl shadow-yellow-500/30 transform translate-y-20 opacity-0 transition-all duration-500 z-50 flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> <span>Download link sent! Check your inbox ✨</span>
+  </div>
+  <script>
+// Element SDK
+const defaultConfig = {
+  hero_title: "Post like the cameras are watching.",
+  hero_subtitle: "Celebrity-style templates that get clicks.",
+  cta_primary: "Get the Studio Pack",
+  cta_secondary: "See Templates",
+  bottom_cta_text: "Turn attention into income.",
+  background_color: "#0a0a0a",
+  surface_color: "#111118",
+  text_color: "#ffd700",
+  primary_action_color: "#ffd700",
+  secondary_action_color: "#d946ef",
+  font_family: "Outfit",
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const el = (id) => document.getElementById(id);
+  el('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+  el('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+  el('cta-primary-btn').textContent = config.cta_primary || defaultConfig.cta_primary;
+  el('cta-secondary-btn').textContent = config.cta_secondary || defaultConfig.cta_secondary;
+  el('bottom-cta-heading').textContent = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  const font = config.font_family || defaultConfig.font_family;
+  const baseFont = 'Outfit, sans-serif';
+  const displayFont = 'Bebas Neue, sans-serif';
+  document.body.style.fontFamily = `${font}, ${baseFont}`;
+
+  const baseSize = config.font_size || defaultConfig.font_size;
+  document.querySelectorAll('p, span, a, button, input').forEach(el => {
+    if (!el.classList.contains('font-display')) el.style.fontSize = '';
+  });
+
+  document.documentElement.style.setProperty('--bg', config.background_color || defaultConfig.background_color);
+  document.documentElement.style.setProperty('--surface', config.surface_color || defaultConfig.surface_color);
+  document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ["hero_title", config.hero_title || defaultConfig.hero_title],
+    ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+    ["cta_primary", config.cta_primary || defaultConfig.cta_primary],
+    ["cta_secondary", config.cta_secondary || defaultConfig.cta_secondary],
+    ["bottom_cta_text", config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Vote widget
+let votes = { a: 0, b: 0 };
+let hasVoted = false;
+function vote(choice) {
+  if (hasVoted) return;
+  hasVoted = true;
+  votes[choice]++;
+  const total = votes.a + votes.b || 1;
+  document.getElementById('vote-a-pct').textContent = Math.round((votes.a / total) * 100) + '%';
+  document.getElementById('vote-b-pct').textContent = Math.round((votes.b / total) * 100) + '%';
+  const chosen = document.getElementById('vote-' + choice);
+  chosen.style.borderColor = 'rgba(255,215,0,0.6)';
+  chosen.style.background = 'rgba(255,215,0,0.08)';
+}
+
+// Comment widget
+function addComment() {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const list = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'flex items-start gap-2';
+  div.innerHTML = `<div class="w-5 h-5 rounded-full bg-yellow-500/20 flex-shrink-0 flex items-center justify-center text-[8px] text-yellow-400 font-bold mt-0.5">U</div><p class="text-xs text-gray-400">${text.replace(/</g,'&lt;')}</p>`;
+  list.prepend(div);
+  input.value = '';
+}
+document.getElementById('comment-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addComment(); } });
+
+// Download handler
+function handleDownload() {
+  const toast = document.getElementById('download-toast');
+  toast.style.transform = 'translate(-50%, 0)';
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.transform = 'translate(-50%, 5rem)'; toast.style.opacity = '0'; }, 3500);
+}
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Scroll trigger animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scroll-trigger').forEach(el => observer.observe(el));
+
+// Active nav highlighting
+const sections = ['home','templates','headlines','preview','reviews','download'];
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const appRoot = document.getElementById('app-root');
+appRoot.addEventListener('scroll', () => {
+  let current = 'home';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && sec.offsetTop - 100 <= appRoot.scrollTop) current = id;
+  });
+  navLinks.forEach(link => {
+    const isActive = link.getAttribute('href') === '#' + current;
+    if (link.classList.contains('bg-yellow-500')) return;
+    link.classList.toggle('text-yellow-400', isActive);
+    link.classList.toggle('text-gray-400', !isActive);
+  });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a0e4a6ce27cf',t:'MTc3NDY2OTM4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

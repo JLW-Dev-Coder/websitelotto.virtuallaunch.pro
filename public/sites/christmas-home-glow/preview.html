@@ -1,0 +1,766 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/79a49121-5f8f-4245-8b67-98f7ec92f8fd -->
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlowCrew Holiday Lights</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    html { height: 100%; }
+    body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; }
+
+    /* Twinkling particles */
+    .twinkle-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+    .twinkle {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: twinkleAnim 2s ease-in-out infinite;
+      box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.6);
+    }
+    @keyframes twinkleAnim {
+      0%, 100% { opacity: 0.2; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Shimmer overlay */
+    .shimmer {
+      background: linear-gradient(110deg, transparent 33%, rgba(255,215,0,0.08) 50%, transparent 67%);
+      background-size: 300% 100%;
+      animation: shimmerMove 3s ease-in-out infinite;
+    }
+    @keyframes shimmerMove {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Pulsing CTA */
+    .pulse-glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 69, 58, 0.4), 0 0 40px rgba(255, 69, 58, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(255, 69, 58, 0.7), 0 0 60px rgba(255, 69, 58, 0.4); }
+    }
+
+    /* Badge pulse */
+    .badge-pulse {
+      animation: badgePulse 1.5s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Glassmorphism card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Section reveal */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Scroll smooth */
+    html { scroll-behavior: smooth; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a12; }
+    ::-webkit-scrollbar-thumb { background: #c4362a; border-radius: 4px; }
+
+    /* Before/after slider */
+    .ba-slider { position: relative; overflow: hidden; cursor: col-resize; }
+    .ba-slider .ba-after { position: absolute; top: 0; left: 0; height: 100%; overflow: hidden; }
+    .ba-slider .ba-handle {
+      position: absolute; top: 0; width: 4px; height: 100%;
+      background: #ffd700; z-index: 3; cursor: col-resize;
+      box-shadow: 0 0 12px rgba(255,215,0,0.6);
+    }
+    .ba-slider .ba-handle::after {
+      content: '◀ ▶'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffd700; color: #0a0a12; font-size: 10px;
+      padding: 6px 4px; border-radius: 50%; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      letter-spacing: -2px;
+    }
+
+    .playfair { font-family: 'Playfair Display', serif; }
+
+    /* Star rating */
+    .star-gold { color: #ffd700; }
+
+    /* Nav active */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+      background: #ffd700; transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Form glow */
+    .input-glow:focus {
+      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+      border-color: #ffd700;
+    }
+
+    /* Bokeh background circles */
+    .bokeh-circle {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.15), transparent 70%);
+      animation: floatBokeh 8s ease-in-out infinite;
+    }
+    @keyframes floatBokeh {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.1); }
+    }
+
+    /* Package ribbon */
+    .ribbon {
+      position: absolute; top: -5px; right: -5px;
+      background: #c4362a; color: white; font-size: 11px; font-weight: 700;
+      padding: 6px 20px; transform: rotate(12deg);
+      box-shadow: 0 2px 10px rgba(196,54,42,0.5);
+      z-index: 2;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            night: '#0a0a12',
+            nightLight: '#12121f',
+            gold: '#ffd700',
+            holly: '#1a7a3a',
+            cranberry: '#c4362a',
+            warmWhite: '#fff5e0',
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-night text-warmWhite overflow-auto" id="app-body">
+  <!-- Twinkle particles -->
+  <div class="twinkle-container" id="twinkle-container"></div><!-- Sticky Nav -->
+  <nav class="fixed top-0 left-0 w-full z-50 glass-card border-b border-white/10" id="main-nav">
+   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-2"> <span class="text-gold text-2xl">✨</span> <span class="playfair font-bold text-lg" id="nav-brand">GlowCrew</span> </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+     <a href="#home" class="nav-link text-warmWhite/80 hover:text-gold transition">Home</a> <a href="#packages" class="nav-link text-warmWhite/80 hover:text-gold transition">Packages</a> <a href="#gallery" class="nav-link text-warmWhite/80 hover:text-gold transition">Gallery</a> <a href="#reviews" class="nav-link text-warmWhite/80 hover:text-gold transition">Reviews</a> <a href="#faq" class="nav-link text-warmWhite/80 hover:text-gold transition">FAQ</a> <a href="#quote" class="bg-cranberry hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-bold transition pulse-glow" id="nav-cta">Get Quote</a>
+    </div><button class="md:hidden text-gold" id="mobile-toggle"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div><!-- Mobile menu -->
+   <div class="md:hidden hidden bg-night/95 backdrop-blur-xl border-t border-white/10 px-4 py-4 space-y-3" id="mobile-menu">
+    <a href="#home" class="block text-warmWhite/80 hover:text-gold py-1">Home</a> <a href="#packages" class="block text-warmWhite/80 hover:text-gold py-1">Packages</a> <a href="#gallery" class="block text-warmWhite/80 hover:text-gold py-1">Gallery</a> <a href="#reviews" class="block text-warmWhite/80 hover:text-gold py-1">Reviews</a> <a href="#faq" class="block text-warmWhite/80 hover:text-gold py-1">FAQ</a> <a href="#quote" class="block bg-cranberry text-white text-center px-4 py-2 rounded-full font-bold">Get Quote</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full min-h-[600px] flex items-center justify-center overflow-hidden pt-20" style="min-height: 90%;">
+   <!-- Bokeh bg -->
+   <div class="bokeh-circle" style="width:300px;height:300px;top:10%;left:5%;animation-delay:0s;"></div>
+   <div class="bokeh-circle" style="width:200px;height:200px;top:60%;right:10%;animation-delay:2s;"></div>
+   <div class="bokeh-circle" style="width:250px;height:250px;bottom:10%;left:40%;animation-delay:4s;"></div>
+   <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+    <!-- Spots filling badge -->
+    <div class="inline-flex items-center gap-2 glass-card rounded-full px-5 py-2 mb-8 badge-pulse">
+     <span class="w-2 h-2 bg-cranberry rounded-full animate-ping inline-block"></span> <span class="text-sm font-semibold text-gold">🔥 Spots filling fast — limited installs remaining</span>
+    </div>
+    <p class="text-gold/80 text-sm uppercase tracking-[0.3em] mb-4 font-semibold" id="hero-tagline">Your house, but make it magical.</p>
+    <h1 class="playfair text-5xl md:text-7xl font-black leading-tight mb-6" id="hero-title">Make your home the one<br><span class="text-gold">everyone talks about.</span></h1>
+    <p class="text-warmWhite/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto" id="hero-subtitle">Design, install, take-down. Booking takes 60 seconds.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+     <a href="#quote" class="bg-cranberry hover:bg-red-700 text-white px-8 py-4 rounded-full text-lg font-bold transition pulse-glow inline-flex items-center gap-2" id="hero-cta"> <i data-lucide="sparkles" style="width:20px;height:20px;"></i> <span id="hero-cta-text">Get a Free Quote</span> </a> <a href="#gallery" class="glass-card hover:bg-white/10 text-warmWhite px-8 py-4 rounded-full text-lg font-bold transition inline-flex items-center gap-2"> <i data-lucide="image" style="width:20px;height:20px;"></i> See Gallery </a>
+    </div><!-- Trust bar -->
+    <div class="mt-14 flex flex-wrap justify-center gap-6 text-warmWhite/50 text-sm">
+     <div class="flex items-center gap-2"><i data-lucide="shield-check" style="width:16px;height:16px;color:#ffd700;"></i> Fully Insured
+     </div>
+     <div class="flex items-center gap-2"><i data-lucide="star" style="width:16px;height:16px;color:#ffd700;"></i> 250+ Installs
+     </div>
+     <div class="flex items-center gap-2"><i data-lucide="clock" style="width:16px;height:16px;color:#ffd700;"></i> Same-Week Booking
+     </div>
+     <div class="flex items-center gap-2"><i data-lucide="thumbs-up" style="width:16px;height:16px;color:#ffd700;"></i> Cheaper Than DIY
+     </div>
+    </div>
+   </div><!-- Bottom fade -->
+   <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-night to-transparent"></div>
+  </section><!-- WHY GLOWCREW -->
+  <section class="w-full py-20 px-6 reveal-section">
+   <div class="max-w-6xl mx-auto text-center mb-14">
+    <h2 class="playfair text-3xl md:text-5xl font-bold mb-4">Why <span class="text-gold">GlowCrew</span>?</h2>
+    <p class="text-warmWhite/60 max-w-xl mx-auto">Premium look. Simple booking. No ladders, no tangled lights, no wasted weekends.</p>
+   </div>
+   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card rounded-2xl p-8 text-center shimmer">
+     <div class="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-5">
+      <i data-lucide="palette" style="width:28px;height:28px;color:#ffd700;"></i>
+     </div>
+     <h3 class="text-xl font-bold mb-2">Custom Design</h3>
+     <p class="text-warmWhite/60 text-sm">We design a look tailored to your home's architecture and style.</p>
+    </div>
+    <div class="glass-card rounded-2xl p-8 text-center shimmer" style="animation-delay: 0.5s;">
+     <div class="w-14 h-14 bg-holly/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
+      <i data-lucide="wrench" style="width:28px;height:28px;color:#1a7a3a;"></i>
+     </div>
+     <h3 class="text-xl font-bold mb-2">Pro Install &amp; Takedown</h3>
+     <p class="text-warmWhite/60 text-sm">We handle everything — setup, maintenance, and post-season removal.</p>
+    </div>
+    <div class="glass-card rounded-2xl p-8 text-center shimmer" style="animation-delay: 1s;">
+     <div class="w-14 h-14 bg-cranberry/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
+      <i data-lucide="zap" style="width:28px;height:28px;color:#c4362a;"></i>
+     </div>
+     <h3 class="text-xl font-bold mb-2">Book in 60 Seconds</h3>
+     <p class="text-warmWhite/60 text-sm">Pick your package, choose a date, and we'll handle the rest.</p>
+    </div>
+   </div>
+  </section><!-- PACKAGES -->
+  <section id="packages" class="w-full py-20 px-6 reveal-section" style="background: linear-gradient(180deg, #0a0a12 0%, #12121f 50%, #0a0a12 100%);">
+   <div class="max-w-6xl mx-auto text-center mb-14">
+    <h2 class="playfair text-3xl md:text-5xl font-bold mb-4">Choose Your <span class="text-gold">Glow</span></h2>
+    <p class="text-warmWhite/60 max-w-xl mx-auto">Every package includes design, install, maintenance check, and full takedown.</p>
+   </div>
+   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Classic -->
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden hover:border-gold/30 transition-all duration-300 group">
+     <div class="text-sm text-warmWhite/50 uppercase tracking-widest mb-2">
+      Classic
+     </div>
+     <div class="playfair text-4xl font-black text-warmWhite mb-1" id="pkg-classic-price">
+      $299
+     </div>
+     <div class="text-warmWhite/40 text-sm mb-6">
+      Starting price
+     </div>
+     <ul class="space-y-3 mb-8 text-sm">
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#1a7a3a;"></i> Roofline lights (up to 60ft)</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#1a7a3a;"></i> Warm white LED</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#1a7a3a;"></i> Timer setup</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#1a7a3a;"></i> Post-season takedown</li>
+     </ul><a href="#quote" class="block text-center glass-card hover:bg-white/10 text-warmWhite px-6 py-3 rounded-full font-bold transition text-sm">Select Classic</a>
+    </div><!-- Deluxe -->
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden border-gold/30 hover:border-gold/50 transition-all duration-300 group scale-[1.02]">
+     <div class="ribbon">
+      Most Popular
+     </div>
+     <div class="text-sm text-gold uppercase tracking-widest mb-2">
+      Deluxe
+     </div>
+     <div class="playfair text-4xl font-black text-gold mb-1" id="pkg-deluxe-price">
+      $599
+     </div>
+     <div class="text-warmWhite/40 text-sm mb-6">
+      Starting price
+     </div>
+     <ul class="space-y-3 mb-8 text-sm">
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#ffd700;"></i> Roofline + walkway (up to 120ft)</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#ffd700;"></i> Multicolor or warm white</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#ffd700;"></i> Wreath + garland accent</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#ffd700;"></i> Mid-season check</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#ffd700;"></i> Post-season takedown</li>
+     </ul><a href="#quote" class="block text-center bg-cranberry hover:bg-red-700 text-white px-6 py-3 rounded-full font-bold transition text-sm pulse-glow">Select Deluxe</a>
+    </div><!-- Full-Glow -->
+    <div class="glass-card rounded-3xl p-8 relative overflow-hidden hover:border-gold/30 transition-all duration-300 group">
+     <div class="text-sm text-warmWhite/50 uppercase tracking-widest mb-2">
+      Full-Glow
+     </div>
+     <div class="playfair text-4xl font-black text-warmWhite mb-1" id="pkg-fullglow-price">
+      $999
+     </div>
+     <div class="text-warmWhite/40 text-sm mb-6">
+      Starting price
+     </div>
+     <ul class="space-y-3 mb-8 text-sm">
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> Full home coverage (200ft+)</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> Trees, bushes, yard decor</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> Smart controller + app</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> Priority scheduling</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> 2 maintenance visits</li>
+      <li class="flex items-center gap-2 text-warmWhite/70"><i data-lucide="check" style="width:16px;height:16px;color:#c4362a;"></i> Post-season takedown</li>
+     </ul><a href="#quote" class="block text-center glass-card hover:bg-white/10 text-warmWhite px-6 py-3 rounded-full font-bold transition text-sm">Select Full-Glow</a>
+    </div>
+   </div>
+  </section><!-- GALLERY -->
+  <section id="gallery" class="w-full py-20 px-6 reveal-section">
+   <div class="max-w-6xl mx-auto text-center mb-14">
+    <h2 class="playfair text-3xl md:text-5xl font-bold mb-4">Before &amp; <span class="text-gold">After</span></h2>
+    <p class="text-warmWhite/60 max-w-xl mx-auto">Drag the slider to see the transformation.</p>
+   </div>
+   <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Slider 1 -->
+    <div class="ba-slider rounded-2xl overflow-hidden" style="height:280px;" data-slider><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&amp;h=280&amp;fit=crop" alt="Before" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#1a1a2e'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     <div class="ba-after" style="width:50%; position:absolute; top:0; left:0; height:100%; overflow:hidden;"><img src="https://images.unsplash.com/photo-1576919735249-fd1dcb82ec38?w=800&amp;h=280&amp;fit=crop" alt="After" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#0a1628'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     </div>
+     <div class="ba-handle" style="left:calc(50% - 2px);"></div>
+    </div><!-- Slider 2 -->
+    <div class="ba-slider rounded-2xl overflow-hidden" style="height:280px;" data-slider><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&amp;h=280&amp;fit=crop" alt="Before" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#1e1e2f'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     <div class="ba-after" style="width:50%; position:absolute; top:0; left:0; height:100%; overflow:hidden;"><img src="https://images.unsplash.com/photo-1574862917156-e76500b8f206?w=800&amp;h=280&amp;fit=crop" alt="After" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#0a1e0a'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     </div>
+     <div class="ba-handle" style="left:calc(50% - 2px);"></div>
+    </div><!-- Slider 3 -->
+    <div class="ba-slider rounded-2xl overflow-hidden" style="height:280px;" data-slider><img src="https://images.unsplash.com/photo-1570129477492-45ec003f2a30?w=800&amp;h=280&amp;fit=crop" alt="Before" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#1c1c2e'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     <div class="ba-after" style="width:50%; position:absolute; top:0; left:0; height:100%; overflow:hidden;"><img src="https://images.unsplash.com/photo-1577720643272-265cb50c891f?w=800&amp;h=280&amp;fit=crop" alt="After" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#0f0a1e'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     </div>
+     <div class="ba-handle" style="left:calc(50% - 2px);"></div>
+    </div><!-- Slider 4 -->
+    <div class="ba-slider rounded-2xl overflow-hidden" style="height:280px;" data-slider><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&amp;h=280&amp;fit=crop" alt="Before" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#1a1a28'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     <div class="ba-after" style="width:50%; position:absolute; top:0; left:0; height:100%; overflow:hidden;"><img src="https://images.unsplash.com/photo-1552821206-8250b6e1b6d1?w=800&amp;h=280&amp;fit=crop" alt="After" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='#0a0a20'; this.alt='Image unavailable';" style="width:100%; height:100%; object-fit:cover;">
+     </div>
+     <div class="ba-handle" style="left:calc(50% - 2px);"></div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-20 px-6 reveal-section" style="background: linear-gradient(180deg, #0a0a12 0%, #12121f 50%, #0a0a12 100%);">
+   <div class="max-w-6xl mx-auto text-center mb-14">
+    <h2 class="playfair text-3xl md:text-5xl font-bold mb-4">What Our <span class="text-gold">Neighbors</span> Say</h2>
+   </div>
+   <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card rounded-2xl p-6">
+     <div class="flex gap-1 mb-3 star-gold text-sm">
+      ★★★★★
+     </div>
+     <p class="text-warmWhite/70 text-sm mb-4 italic">"Our house looked absolutely incredible. Neighbors were coming by to take photos. Worth every penny!"</p>
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-cranberry/30 rounded-full flex items-center justify-center text-sm font-bold">
+       JM
+      </div>
+      <div>
+       <div class="text-sm font-semibold">
+        Jessica M.
+       </div>
+       <div class="text-warmWhite/40 text-xs">
+        Maple Ridge
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="glass-card rounded-2xl p-6">
+     <div class="flex gap-1 mb-3 star-gold text-sm">
+      ★★★★★
+     </div>
+     <p class="text-warmWhite/70 text-sm mb-4 italic">"Booked on Monday, installed by Wednesday. The crew was professional, fast, and the lights are gorgeous."</p>
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-holly/30 rounded-full flex items-center justify-center text-sm font-bold">
+       DT
+      </div>
+      <div>
+       <div class="text-sm font-semibold">
+        David T.
+       </div>
+       <div class="text-warmWhite/40 text-xs">
+        Oakwood Heights
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="glass-card rounded-2xl p-6">
+     <div class="flex gap-1 mb-3 star-gold text-sm">
+      ★★★★★
+     </div>
+     <p class="text-warmWhite/70 text-sm mb-4 italic">"I tried DIY last year — never again. GlowCrew did in 2 hours what took me a full weekend. And it actually looked good."</p>
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-sm font-bold">
+       SR
+      </div>
+      <div>
+       <div class="text-sm font-semibold">
+        Sarah R.
+       </div>
+       <div class="text-warmWhite/40 text-xs">
+        Pine Valley
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- FAQ -->
+  <section id="faq" class="w-full py-20 px-6 reveal-section">
+   <div class="max-w-3xl mx-auto text-center mb-14">
+    <h2 class="playfair text-3xl md:text-5xl font-bold mb-4">Common <span class="text-gold">Questions</span></h2>
+   </div>
+   <div class="max-w-3xl mx-auto space-y-4" id="faq-list">
+    <div class="glass-card rounded-xl overflow-hidden faq-item">
+     <button class="w-full px-6 py-5 flex items-center justify-between text-left font-semibold faq-toggle"> <span>When should I book?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:#ffd700;" class="faq-arrow transition-transform duration-300"></i> </button>
+     <div class="faq-answer hidden px-6 pb-5 text-warmWhite/60 text-sm">
+      The earlier, the better! Our schedule fills up fast starting in October. We recommend booking by mid-October to guarantee your preferred install date.
+     </div>
+    </div>
+    <div class="glass-card rounded-xl overflow-hidden faq-item">
+     <button class="w-full px-6 py-5 flex items-center justify-between text-left font-semibold faq-toggle"> <span>Do you provide the lights?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:#ffd700;" class="faq-arrow transition-transform duration-300"></i> </button>
+     <div class="faq-answer hidden px-6 pb-5 text-warmWhite/60 text-sm">
+      Yes! All packages include commercial-grade LED lights that we bring, install, and take down. You don't need to own or store anything.
+     </div>
+    </div>
+    <div class="glass-card rounded-xl overflow-hidden faq-item">
+     <button class="w-full px-6 py-5 flex items-center justify-between text-left font-semibold faq-toggle"> <span>What if a bulb goes out?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:#ffd700;" class="faq-arrow transition-transform duration-300"></i> </button>
+     <div class="faq-answer hidden px-6 pb-5 text-warmWhite/60 text-sm">
+      All packages include maintenance coverage. Call or text us and we'll come fix it within 48 hours — usually same day.
+     </div>
+    </div>
+    <div class="glass-card rounded-xl overflow-hidden faq-item">
+     <button class="w-full px-6 py-5 flex items-center justify-between text-left font-semibold faq-toggle"> <span>How long does installation take?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:#ffd700;" class="faq-arrow transition-transform duration-300"></i> </button>
+     <div class="faq-answer hidden px-6 pb-5 text-warmWhite/60 text-sm">
+      Most homes take 2-4 hours depending on the package. Full-Glow installs with yard decor may take a full day.
+     </div>
+    </div>
+    <div class="glass-card rounded-xl overflow-hidden faq-item">
+     <button class="w-full px-6 py-5 flex items-center justify-between text-left font-semibold faq-toggle"> <span>Is there a deposit?</span> <i data-lucide="chevron-down" style="width:20px;height:20px;color:#ffd700;" class="faq-arrow transition-transform duration-300"></i> </button>
+     <div class="faq-answer hidden px-6 pb-5 text-warmWhite/60 text-sm">
+      A 25% deposit locks in your date. The remaining balance is due after installation is complete and you're 100% happy.
+     </div>
+    </div>
+   </div>
+  </section><!-- QUOTE FORM -->
+  <section id="quote" class="w-full py-20 px-6 reveal-section" style="background: linear-gradient(180deg, #0a0a12 0%, #1a0a14 50%, #0a0a12 100%);">
+   <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-12">
+     <h2 class="playfair text-3xl md:text-5xl font-bold mb-4" id="bottom-cta-heading">Book your install date now.</h2>
+     <p class="text-warmWhite/60">Fill out the form and we'll send you a custom quote within 24 hours.</p>
+    </div>
+    <form class="glass-card rounded-3xl p-8 md:p-10 space-y-5" id="quote-form">
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+       <label for="fname" class="block text-sm font-semibold mb-2 text-warmWhite/70">First Name</label> <input type="text" id="fname" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition" placeholder="John">
+      </div>
+      <div>
+       <label for="lname" class="block text-sm font-semibold mb-2 text-warmWhite/70">Last Name</label> <input type="text" id="lname" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition" placeholder="Doe">
+      </div>
+     </div>
+     <div>
+      <label for="email" class="block text-sm font-semibold mb-2 text-warmWhite/70">Email</label> <input type="email" id="email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition" placeholder="john@example.com">
+     </div>
+     <div>
+      <label for="phone" class="block text-sm font-semibold mb-2 text-warmWhite/70">Phone</label> <input type="tel" id="phone" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition" placeholder="(555) 123-4567">
+     </div>
+     <div>
+      <label for="address" class="block text-sm font-semibold mb-2 text-warmWhite/70">Home Address</label> <input type="text" id="address" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition" placeholder="123 Main St, Anytown">
+     </div>
+     <div>
+      <label for="package-select" class="block text-sm font-semibold mb-2 text-warmWhite/70">Preferred Package</label> <select id="package-select" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite focus:outline-none input-glow transition appearance-none"> <option value="" class="bg-night">Select a package...</option> <option value="classic" class="bg-night">Classic — $299+</option> <option value="deluxe" class="bg-night">Deluxe — $599+ (Most Popular)</option> <option value="fullglow" class="bg-night">Full-Glow — $999+</option> </select>
+     </div>
+     <div>
+      <label for="notes" class="block text-sm font-semibold mb-2 text-warmWhite/70">Anything else we should know?</label> <textarea id="notes" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition resize-none" placeholder="Two-story home, wrap the big pine tree, etc."></textarea>
+     </div><button type="submit" class="w-full bg-cranberry hover:bg-red-700 text-white py-4 rounded-full text-lg font-bold transition pulse-glow flex items-center justify-center gap-2" id="submit-btn"> <i data-lucide="sparkles" style="width:20px;height:20px;"></i> <span id="submit-btn-text">Get a Free Quote</span> </button> <!-- Success message -->
+     <div id="form-success" class="hidden text-center py-4">
+      <div class="text-4xl mb-2">
+       🎄
+      </div>
+      <p class="text-gold font-bold text-lg">Quote request received!</p>
+      <p class="text-warmWhite/60 text-sm mt-1">We'll be in touch within 24 hours.</p>
+     </div>
+    </form>
+   </div>
+  </section><!-- VOTE + COMMENT WIDGET -->
+  <section class="w-full py-16 px-6 reveal-section">
+   <div class="max-w-3xl mx-auto glass-card rounded-3xl p-8 md:p-10 text-center">
+    <h3 class="playfair text-2xl md:text-3xl font-bold mb-3">Vote + Comment</h3>
+    <p class="text-warmWhite/50 text-sm mb-6">Which lighting style should we feature next season?</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8" id="vote-options">
+     <button class="vote-btn glass-card rounded-xl p-4 hover:border-gold/40 transition-all duration-300 group" data-vote="classic-white">
+      <div class="text-3xl mb-2">
+       🤍
+      </div>
+      <div class="text-sm font-semibold">
+       Classic White
+      </div>
+      <div class="text-gold text-xs mt-1 vote-count">
+       0 votes
+      </div></button> <button class="vote-btn glass-card rounded-xl p-4 hover:border-gold/40 transition-all duration-300 group" data-vote="multicolor">
+      <div class="text-3xl mb-2">
+       🌈
+      </div>
+      <div class="text-sm font-semibold">
+       Multicolor
+      </div>
+      <div class="text-gold text-xs mt-1 vote-count">
+       0 votes
+      </div></button> <button class="vote-btn glass-card rounded-xl p-4 hover:border-gold/40 transition-all duration-300 group" data-vote="candy-cane">
+      <div class="text-3xl mb-2">
+       🍬
+      </div>
+      <div class="text-sm font-semibold">
+       Candy Cane
+      </div>
+      <div class="text-gold text-xs mt-1 vote-count">
+       0 votes
+      </div></button>
+    </div><!-- Comment area -->
+    <div class="text-left">
+     <label for="comment-input" class="block text-sm font-semibold mb-2 text-warmWhite/70">Leave a comment</label>
+     <div class="flex gap-3">
+      <input type="text" id="comment-input" class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-warmWhite placeholder-warmWhite/30 focus:outline-none input-glow transition text-sm" placeholder="Love the lights! 🎅"> <button id="comment-submit" class="bg-gold/20 hover:bg-gold/30 text-gold px-5 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-1"> <i data-lucide="send" style="width:14px;height:14px;"></i> Post </button>
+     </div>
+     <div id="comments-list" class="mt-4 space-y-3"></div>
+    </div>
+   </div>
+  </section><!-- FOOTER -->
+  <footer class="w-full py-10 px-6 border-t border-white/5">
+   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-warmWhite/40 text-sm">
+    <div class="flex items-center gap-2">
+     <span class="text-gold">✨</span> <span class="playfair font-bold text-warmWhite/60">GlowCrew Holiday Lights</span>
+    </div>
+    <div>
+     © 2024 GlowCrew. All rights reserved.
+    </div>
+    <div class="flex gap-4">
+     <a href="#" class="hover:text-gold transition" onclick="event.preventDefault()"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" class="hover:text-gold transition" onclick="event.preventDefault()"><i data-lucide="facebook" style="width:18px;height:18px;"></i></a> <a href="#" class="hover:text-gold transition" onclick="event.preventDefault()"><i data-lucide="phone" style="width:18px;height:18px;"></i></a>
+    </div>
+   </div>
+  </footer>
+  <script>
+    // === CONFIG & SDK ===
+    const defaultConfig = {
+      background_color: '#0a0a12',
+      surface_color: '#ffffff0f',
+      text_color: '#fff5e0',
+      primary_action_color: '#c4362a',
+      secondary_action_color: '#ffd700',
+      font_family: 'Playfair Display',
+      font_size: 16,
+      hero_title: 'Make your home the one everyone talks about.',
+      hero_subtitle: 'Design, install, take-down. Booking takes 60 seconds.',
+      tagline: 'Your house, but make it magical.',
+      classic_price: '$299',
+      deluxe_price: '$599',
+      fullglow_price: '$999',
+      cta_button_text: 'Get a Free Quote',
+      bottom_cta_text: 'Book your install date now.'
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+      const font = c.font_family || defaultConfig.font_family;
+      const baseFontStack = 'DM Sans, sans-serif';
+
+      // Background
+      document.getElementById('app-body').style.backgroundColor = c.background_color;
+
+      // Text color
+      document.querySelectorAll('h1, h2, h3').forEach(el => {
+        el.style.color = c.text_color;
+      });
+
+      // Primary action (cranberry buttons)
+      document.querySelectorAll('.pulse-glow').forEach(el => {
+        el.style.backgroundColor = c.primary_action_color;
+      });
+
+      // Secondary action (gold accents)
+      document.querySelectorAll('.star-gold').forEach(el => {
+        el.style.color = c.secondary_action_color;
+      });
+
+      // Font
+      document.querySelectorAll('.playfair').forEach(el => {
+        el.style.fontFamily = `${font}, serif`;
+      });
+
+      // Font size
+      const base = c.font_size || defaultConfig.font_size;
+      document.querySelectorAll('p, li, label, span').forEach(el => {
+        if (!el.closest('h1, h2, h3, button')) {
+          el.style.fontSize = `${base}px`;
+        }
+      });
+
+      // Text content
+      const titleEl = document.getElementById('hero-title');
+      if (titleEl) titleEl.innerHTML = c.hero_title.replace(/(everyone talks about\.)/, '<br><span class="text-gold">$1</span>');
+
+      const subtitleEl = document.getElementById('hero-subtitle');
+      if (subtitleEl) subtitleEl.textContent = c.hero_subtitle;
+
+      const taglineEl = document.getElementById('hero-tagline');
+      if (taglineEl) taglineEl.textContent = c.tagline;
+
+      const classicEl = document.getElementById('pkg-classic-price');
+      if (classicEl) classicEl.textContent = c.classic_price;
+
+      const deluxeEl = document.getElementById('pkg-deluxe-price');
+      if (deluxeEl) deluxeEl.textContent = c.deluxe_price;
+
+      const fullglowEl = document.getElementById('pkg-fullglow-price');
+      if (fullglowEl) fullglowEl.textContent = c.fullglow_price;
+
+      const ctaText = document.getElementById('hero-cta-text');
+      if (ctaText) ctaText.textContent = c.cta_button_text;
+
+      const submitText = document.getElementById('submit-btn-text');
+      if (submitText) submitText.textContent = c.cta_button_text;
+
+      const bottomCta = document.getElementById('bottom-cta-heading');
+      if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+    }
+
+    // Init Element SDK
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+          { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['hero_title', config.hero_title || defaultConfig.hero_title],
+        ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+        ['tagline', config.tagline || defaultConfig.tagline],
+        ['classic_price', config.classic_price || defaultConfig.classic_price],
+        ['deluxe_price', config.deluxe_price || defaultConfig.deluxe_price],
+        ['fullglow_price', config.fullglow_price || defaultConfig.fullglow_price],
+        ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
+        ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+      ])
+    });
+
+    // === TWINKLE PARTICLES ===
+    const twinkleContainer = document.getElementById('twinkle-container');
+    for (let i = 0; i < 40; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'twinkle';
+      dot.style.left = Math.random() * 100 + '%';
+      dot.style.top = Math.random() * 100 + '%';
+      dot.style.animationDelay = (Math.random() * 4) + 's';
+      dot.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      const colors = ['#ffd700', '#ff6b6b', '#1a7a3a', '#fff5e0', '#c4362a'];
+      dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+      dot.style.boxShadow = `0 0 6px 2px ${dot.style.background}66`;
+      twinkleContainer.appendChild(dot);
+    }
+
+    // === MOBILE MENU ===
+    document.getElementById('mobile-toggle').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+    });
+
+    // === SCROLL REVEAL ===
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-section').forEach(s => observer.observe(s));
+
+    // === FAQ ACCORDION ===
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const answer = item.querySelector('.faq-answer');
+        const arrow = item.querySelector('.faq-arrow');
+        const isOpen = !answer.classList.contains('hidden');
+        // Close all
+        document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+        document.querySelectorAll('.faq-arrow').forEach(a => a.style.transform = 'rotate(0deg)');
+        if (!isOpen) {
+          answer.classList.remove('hidden');
+          arrow.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+
+    // === BEFORE/AFTER SLIDERS ===
+    document.querySelectorAll('[data-slider]').forEach(slider => {
+      const handle = slider.querySelector('.ba-handle');
+      const afterDiv = slider.querySelector('.ba-after');
+      let dragging = false;
+
+      function updateSlider(x) {
+        const rect = slider.getBoundingClientRect();
+        let pct = ((x - rect.left) / rect.width) * 100;
+        pct = Math.max(5, Math.min(95, pct));
+        afterDiv.style.width = pct + '%';
+        handle.style.left = `calc(${pct}% - 2px)`;
+      }
+
+      handle.addEventListener('mousedown', () => dragging = true);
+      handle.addEventListener('touchstart', () => dragging = true);
+      window.addEventListener('mouseup', () => dragging = false);
+      window.addEventListener('touchend', () => dragging = false);
+      window.addEventListener('mousemove', (e) => { if (dragging) updateSlider(e.clientX); });
+      window.addEventListener('touchmove', (e) => { if (dragging) updateSlider(e.touches[0].clientX); });
+      slider.addEventListener('click', (e) => updateSlider(e.clientX));
+    });
+
+    // === QUOTE FORM ===
+    document.getElementById('quote-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('submit-btn').style.display = 'none';
+      document.getElementById('form-success').classList.remove('hidden');
+    });
+
+    // === VOTE WIDGET ===
+    const votes = { 'classic-white': 0, 'multicolor': 0, 'candy-cane': 0 };
+    let userVoted = false;
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (userVoted) return;
+        userVoted = true;
+        const key = btn.dataset.vote;
+        votes[key]++;
+        btn.style.borderColor = '#ffd700';
+        btn.style.background = 'rgba(255,215,0,0.1)';
+        document.querySelectorAll('.vote-btn').forEach(b => {
+          const k = b.dataset.vote;
+          b.querySelector('.vote-count').textContent = votes[k] + ' vote' + (votes[k] !== 1 ? 's' : '');
+        });
+      });
+    });
+
+    // === COMMENTS ===
+    const comments = [];
+    document.getElementById('comment-submit').addEventListener('click', () => {
+      const input = document.getElementById('comment-input');
+      const text = input.value.trim();
+      if (!text) return;
+      comments.push({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+      input.value = '';
+      renderComments();
+    });
+    function renderComments() {
+      const list = document.getElementById('comments-list');
+      list.innerHTML = comments.map(c => `
+        <div class="glass-card rounded-xl px-4 py-3 flex items-start gap-3">
+          <div class="w-8 h-8 bg-gold/20 rounded-full flex items-center justify-center text-xs font-bold text-gold flex-shrink-0">🎅</div>
+          <div>
+            <p class="text-warmWhite/80 text-sm">${c.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+            <p class="text-warmWhite/30 text-xs mt-1">${c.time}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Init Lucide icons
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e33a244410927cf',t:'MTc3NDY2OTQ0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

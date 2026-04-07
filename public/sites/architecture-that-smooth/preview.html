@@ -1,0 +1,641 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/1c3f1f24-4347-476e-9e8e-39508cdaa3df -->
+ <!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LineForm Architects</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+html { height: 100%; }
+body { height: 100%; margin: 0; }
+
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #1a1a1a;
+  --text: #f0efe9;
+  --accent: #00c9a7;
+  --accent2: #2a2a2a;
+}
+
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+.font-body { font-family: 'DM Sans', Arial, sans-serif; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes lineGrow {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,201,167,0.4); }
+  50% { box-shadow: 0 0 20px 8px rgba(0,201,167,0.15); }
+}
+@keyframes strokeDash {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes panRight {
+  0% { transform: scale(1.08) translateX(-2%); }
+  100% { transform: scale(1.08) translateX(2%); }
+}
+
+.animate-fade-up {
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+}
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+.delay-5 { animation-delay: 0.75s; }
+
+.line-grow::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: var(--accent);
+  animation: lineGrow 1.2s ease forwards;
+}
+
+.pulse-cta { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.project-img {
+  animation: panRight 12s ease-in-out infinite alternate;
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.observed { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+.observed.visible { opacity: 1; transform: translateY(0); }
+
+.step-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+.step-line.drawn {
+  animation: strokeDash 1.5s ease forwards;
+}
+
+.project-tile { overflow: hidden; position: relative; }
+.project-tile .overlay {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.project-tile:hover .overlay { opacity: 1; }
+.project-tile:hover .project-img {
+  animation-play-state: paused;
+  transform: scale(1.12);
+  transition: transform 0.6s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 3px; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background:var(--bg); color:var(--text);">
+  <div id="app" class="w-full h-full overflow-auto" style="scroll-behavior:smooth;"><!-- Nav -->
+   <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(14,14,14,0.85); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-display text-xl font-bold tracking-tight" style="color:var(--text);"> <span style="color:var(--accent);">Line</span>Form </a>
+     <div class="hidden md:flex items-center gap-8 text-sm tracking-wide"><a href="#home" class="nav-link" style="color:var(--text);">Home</a> <a href="#work" class="nav-link" style="color:var(--text);">Work</a> <a href="#services" class="nav-link" style="color:var(--text);">Services</a> <a href="#process" class="nav-link" style="color:var(--text);">Process</a> <a href="#reviews" class="nav-link" style="color:var(--text);">Reviews</a> <a href="#consult" class="px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 hover:brightness-110" style="background:var(--accent); color:var(--bg);">Book Consult</a>
+     </div><button id="mobile-toggle" class="md:hidden" style="color:var(--text);" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm"><a href="#home" class="py-2" style="color:var(--text);">Home</a> <a href="#work" class="py-2" style="color:var(--text);">Work</a> <a href="#services" class="py-2" style="color:var(--text);">Services</a> <a href="#process" class="py-2" style="color:var(--text);">Process</a> <a href="#reviews" class="py-2" style="color:var(--text);">Reviews</a> <a href="#consult" class="py-2" style="color:var(--accent);">Book Consult</a>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative w-full flex items-center" style="min-height:100%; padding-top:80px;">
+    <div class="absolute inset-0 overflow-hidden">
+     <div class="absolute inset-0" style="background:linear-gradient(135deg, var(--bg) 0%, rgba(14,14,14,0.6) 50%, var(--bg) 100%);"></div><!-- Abstract architectural lines SVG -->
+     <svg class="absolute inset-0 w-full h-full opacity-10" viewbox="0 0 1200 800" preserveaspectratio="none"><line x1="100" y1="0" x2="100" y2="800" stroke="var(--accent)" stroke-width="0.5" class="step-line drawn" /> <line x1="300" y1="0" x2="300" y2="800" stroke="var(--accent)" stroke-width="0.3" class="step-line drawn" style="animation-delay:0.3s" /> <line x1="0" y1="400" x2="1200" y2="400" stroke="var(--accent)" stroke-width="0.3" class="step-line drawn" style="animation-delay:0.6s" /> <line x1="800" y1="0" x2="800" y2="800" stroke="var(--accent)" stroke-width="0.5" class="step-line drawn" style="animation-delay:0.9s" /> <line x1="0" y1="200" x2="1200" y2="200" stroke="var(--accent)" stroke-width="0.2" class="step-line drawn" style="animation-delay:1.2s" />
+     </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-20 w-full">
+     <p class="text-sm tracking-[0.3em] uppercase mb-6 animate-fade-up" style="color:var(--accent);" id="hero-tagline">Design that feels inevitable.</p>
+     <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] mb-8 animate-fade-up delay-1" id="hero-title">Architecture that<br>
+      earns attention.</h1>
+     <p class="text-lg md:text-xl max-w-xl mb-10 animate-fade-up delay-2" style="color:rgba(240,239,233,0.6);" id="hero-subtitle">A one-page portfolio that converts serious clients.</p>
+     <div class="flex flex-wrap gap-4 animate-fade-up delay-3"><a href="#consult" class="pulse-cta px-8 py-4 font-medium rounded-full text-sm tracking-wide transition-all duration-300 hover:brightness-110" style="background:var(--accent); color:var(--bg);">Book a Consultation</a> <a href="#work" class="px-8 py-4 font-medium rounded-full text-sm tracking-wide transition-all duration-300 hover:brightness-125" style="border:1px solid rgba(255,255,255,0.15); color:var(--text);">View Work</a>
+     </div>
+     <div class="mt-16 flex gap-12 animate-fade-up delay-4">
+      <div>
+       <span class="font-display text-3xl font-bold" style="color:var(--accent);">47</span>
+       <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Projects Completed</p>
+      </div>
+      <div>
+       <span class="font-display text-3xl font-bold" style="color:var(--accent);">12</span>
+       <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Design Awards</p>
+      </div>
+      <div>
+       <span class="font-display text-3xl font-bold" style="color:var(--accent);">98%</span>
+       <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Client Retention</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Work -->
+   <section id="work" class="w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="observed mb-16">
+      <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">Portfolio</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold" id="work-title">Selected Work</h2>
+      <div class="line-grow mt-4 max-w-[80px]"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #1a2332 0%, #0d1520 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Residential</p>
+         <h3 class="font-display text-xl font-semibold">Apex Residence</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Brooklyn, NY · 2024</p>
+        </div>
+       </div>
+      </div>
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #2a1f1a 0%, #1a1210 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Commercial</p>
+         <h3 class="font-display text-xl font-semibold">Volta Tower</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Austin, TX · 2023</p>
+        </div>
+       </div>
+      </div>
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #1a2a1f 0%, #0d1a12 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Cultural</p>
+         <h3 class="font-display text-xl font-semibold">Meridian Gallery</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Portland, OR · 2024</p>
+        </div>
+       </div>
+      </div>
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #252530 0%, #15151d 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Hospitality</p>
+         <h3 class="font-display text-xl font-semibold">Haven Retreat</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Sedona, AZ · 2023</p>
+        </div>
+       </div>
+      </div>
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #2a2520 0%, #1a1815 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Adaptive Reuse</p>
+         <h3 class="font-display text-xl font-semibold">Foundry Lofts</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Detroit, MI · 2024</p>
+        </div>
+       </div>
+      </div>
+      <div class="project-tile observed rounded-xl cursor-pointer" style="aspect-ratio:4/5;">
+       <div class="w-full h-full rounded-xl overflow-hidden relative" style="background:var(--surface);">
+        <div class="project-img absolute inset-0" style="background:linear-gradient(160deg, #1a1a2a 0%, #10101a 100%);"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);"></div>
+        <div class="overlay absolute inset-0 flex items-center justify-center" style="background:rgba(0,201,167,0.1); backdrop-filter:blur(4px);"><span class="px-5 py-2 rounded-full text-sm" style="border:1px solid var(--accent); color:var(--accent);">View Project</span>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 z-10">
+         <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--accent);">Civic</p>
+         <h3 class="font-display text-xl font-semibold">Prism Pavilion</h3>
+         <p class="text-xs mt-1" style="color:rgba(240,239,233,0.5);">Chicago, IL · 2023</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Services -->
+   <section id="services" class="w-full py-24 px-6" style="background:var(--surface);">
+    <div class="max-w-7xl mx-auto">
+     <div class="observed mb-16">
+      <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">What We Offer</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold">Services</h2>
+      <div class="line-grow mt-4 max-w-[80px]"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="home" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Residential Design</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Custom homes, renovations, and additions designed around how you actually live.</p>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="building" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Commercial</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Offices, retail, and mixed-use spaces that elevate brands and productivity.</p>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="layout" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Interior Architecture</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Spatial planning and material selection that transform interiors completely.</p>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="pen-tool" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Feasibility Studies</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Site analysis and zoning review before you commit a single dollar.</p>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="clipboard" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">Permit &amp; Compliance</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Full permit management and code compliance so you don't lose sleep.</p>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8 transition-all duration-300 hover:translate-y-[-4px]">
+       <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,201,167,0.1);"><i data-lucide="box" style="width:22px;height:22px;color:var(--accent);"></i>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-3">3D Visualization</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Photorealistic renders and walkthroughs before construction begins.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Digital Product -->
+   <section class="w-full py-20 px-6" style="background:linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);">
+    <div class="max-w-4xl mx-auto text-center observed">
+     <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">For Architects</p>
+     <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">The LineForm Toolkit</h2>
+     <p class="text-base mb-10" style="color:rgba(240,239,233,0.5);">Premium positioning. Better leads. Fewer revisions with clear intake.</p>
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+      <div class="glass-card rounded-xl p-5 flex gap-3 items-start"><i data-lucide="file-text" style="width:20px;height:20px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i>
+       <div>
+        <p class="text-sm font-medium">Case Study Templates</p>
+        <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Showcase projects like a pro</p>
+       </div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-3 items-start"><i data-lucide="clipboard" style="width:20px;height:20px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i>
+       <div>
+        <p class="text-sm font-medium">Client Intake Form</p>
+        <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Qualify leads from day one</p>
+       </div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-3 items-start"><i data-lucide="calculator" style="width:20px;height:20px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i>
+       <div>
+        <p class="text-sm font-medium">Proposal Template</p>
+        <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Win projects with clarity</p>
+       </div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-3 items-start"><i data-lucide="image" style="width:20px;height:20px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i>
+       <div>
+        <p class="text-sm font-medium">Portfolio PDF Layout</p>
+        <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Print-ready &amp; digital</p>
+       </div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-3 items-start"><i data-lucide="share-2" style="width:20px;height:20px;color:var(--accent);flex-shrink:0;margin-top:2px;"></i>
+       <div>
+        <p class="text-sm font-medium">Social Promo Kit</p>
+        <p class="text-xs mt-1" style="color:rgba(240,239,233,0.4);">Instagram &amp; LinkedIn ready</p>
+       </div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex items-center justify-center"><a href="#consult" class="text-sm font-medium flex items-center gap-2" style="color:var(--accent);"> Get the Toolkit <i data-lucide="arrow-right" style="width:16px;height:16px;"></i> </a>
+      </div>
+     </div>
+    </div>
+   </section><!-- Process -->
+   <section id="process" class="w-full py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+     <div class="observed mb-16">
+      <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">How It Works</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold" id="process-title">Our Process</h2>
+      <div class="line-grow mt-4 max-w-[80px]"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="observed relative">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-display" style="background:var(--accent); color:var(--bg);">
+         1
+        </div>
+        <div class="hidden md:block flex-1 h-px" style="background:linear-gradient(90deg, var(--accent) 0%, transparent 100%);"></div>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Discover</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">We listen deeply. Site visits, vision boards, budget alignment — we map the full picture.</p>
+      </div>
+      <div class="observed relative">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-display" style="background:var(--accent); color:var(--bg);">
+         2
+        </div>
+        <div class="hidden md:block flex-1 h-px" style="background:linear-gradient(90deg, var(--accent) 0%, transparent 100%);"></div>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Design</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Sketches evolve into 3D models. Every detail reviewed and refined with you.</p>
+      </div>
+      <div class="observed relative">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-display" style="background:var(--accent); color:var(--bg);">
+         3
+        </div>
+        <div class="hidden md:block flex-1 h-px" style="background:linear-gradient(90deg, var(--accent) 0%, transparent 100%);"></div>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Permit</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">We handle all regulatory filings, code reviews, and approval processes.</p>
+      </div>
+      <div class="observed relative">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold font-display" style="background:var(--accent); color:var(--bg);">
+         4
+        </div>
+       </div>
+       <h3 class="font-display text-xl font-semibold mb-2">Build</h3>
+       <p class="text-sm leading-relaxed" style="color:rgba(240,239,233,0.5);">Construction oversight ensuring the built reality matches the designed vision.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reviews -->
+   <section id="reviews" class="w-full py-24 px-6" style="background:var(--surface);">
+    <div class="max-w-7xl mx-auto">
+     <div class="observed mb-16">
+      <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">Testimonials</p>
+      <h2 class="font-display text-4xl md:text-5xl font-bold">What Clients Say</h2>
+      <div class="line-grow mt-4 max-w-[80px]"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="glass-card observed rounded-2xl p-8">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-6" style="color:rgba(240,239,233,0.7);">"They understood our vision before we could articulate it. The intake process alone saved us months of back-and-forth."</p>
+       <div>
+        <p class="text-sm font-semibold">Sarah Chen</p>
+        <p class="text-xs" style="color:rgba(240,239,233,0.4);">CEO, Volta Properties</p>
+       </div>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-6" style="color:rgba(240,239,233,0.7);">"Zero revisions on permitting. That never happens. LineForm's process is genuinely different from anyone else we've worked with."</p>
+       <div>
+        <p class="text-sm font-semibold">Marcus Rivera</p>
+        <p class="text-xs" style="color:rgba(240,239,233,0.4);">Developer, Meridian Group</p>
+       </div>
+      </div>
+      <div class="glass-card observed rounded-2xl p-8">
+       <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i> <i data-lucide="star" style="width:16px;height:16px;color:var(--accent);fill:var(--accent);"></i>
+       </div>
+       <p class="text-sm leading-relaxed mb-6" style="color:rgba(240,239,233,0.7);">"Our home feels inevitable — like it was always supposed to be this way. That's the highest compliment I can give."</p>
+       <div>
+        <p class="text-sm font-semibold">Elena Novak</p>
+        <p class="text-xs" style="color:rgba(240,239,233,0.4);">Homeowner, Apex Residence</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Consult CTA -->
+   <section id="consult" class="w-full py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center observed">
+     <p class="text-sm tracking-[0.3em] uppercase mb-3" style="color:var(--accent);">Let's Talk</p>
+     <h2 class="font-display text-4xl md:text-5xl font-bold mb-4" id="bottom-cta-heading">Start your project with clarity.</h2>
+     <p class="text-base mb-10" style="color:rgba(240,239,233,0.5);">Book a free 30-minute consultation. We'll discuss your vision, timeline, and budget — no strings attached.</p>
+     <form id="consult-form" class="glass-card rounded-2xl p-8 md:p-10 text-left max-w-lg mx-auto">
+      <div class="mb-5"><label for="name" class="block text-xs tracking-widest uppercase mb-2" style="color:rgba(240,239,233,0.5);">Name</label> <input type="text" id="name" class="w-full px-4 py-3 rounded-lg text-sm outline-none focus:ring-2 transition-all" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text); --tw-ring-color:var(--accent);" placeholder="Your full name">
+      </div>
+      <div class="mb-5"><label for="email" class="block text-xs tracking-widest uppercase mb-2" style="color:rgba(240,239,233,0.5);">Email</label> <input type="email" id="email" class="w-full px-4 py-3 rounded-lg text-sm outline-none focus:ring-2 transition-all" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text); --tw-ring-color:var(--accent);" placeholder="you@example.com">
+      </div>
+      <div class="mb-5"><label for="project-type" class="block text-xs tracking-widest uppercase mb-2" style="color:rgba(240,239,233,0.5);">Project Type</label> <select id="project-type" class="w-full px-4 py-3 rounded-lg text-sm outline-none focus:ring-2 transition-all" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text); --tw-ring-color:var(--accent);"> <option value="">Select a type</option> <option>Residential</option> <option>Commercial</option> <option>Interior</option> <option>Renovation</option> <option>Other</option> </select>
+      </div>
+      <div class="mb-6"><label for="message" class="block text-xs tracking-widest uppercase mb-2" style="color:rgba(240,239,233,0.5);">Tell Us About Your Project</label> <textarea id="message" rows="3" class="w-full px-4 py-3 rounded-lg text-sm outline-none focus:ring-2 transition-all resize-none" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text); --tw-ring-color:var(--accent);" placeholder="Brief description..."></textarea>
+      </div><button type="submit" class="w-full py-4 rounded-full font-medium text-sm tracking-wide transition-all duration-300 hover:brightness-110 pulse-cta" style="background:var(--accent); color:var(--bg);">Book a Consultation</button>
+      <div id="form-success" class="hidden mt-4 text-center text-sm py-3 rounded-lg" style="background:rgba(0,201,167,0.1); color:var(--accent);">
+       ✓ Thank you! We'll be in touch within 24 hours.
+      </div>
+     </form>
+    </div>
+   </section><!-- Vote & Comment Widget -->
+   <section class="w-full py-16 px-6" style="background:var(--surface);">
+    <div class="max-w-2xl mx-auto">
+     <div class="glass-card rounded-2xl p-8 text-center observed">
+      <h3 class="font-display text-2xl font-bold mb-2">Vote + Comment</h3>
+      <p class="text-sm mb-6" style="color:rgba(240,239,233,0.5);">What kind of project inspires you most?</p>
+      <div id="vote-options" class="grid grid-cols-2 gap-3 mb-6"><button class="vote-btn px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text);" data-vote="residential">🏠 Residential</button> <button class="vote-btn px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text);" data-vote="commercial">🏢 Commercial</button> <button class="vote-btn px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text);" data-vote="cultural">🎭 Cultural</button> <button class="vote-btn px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text);" data-vote="landscape">🌿 Landscape</button>
+      </div>
+      <div id="vote-result" class="hidden mb-6 text-sm" style="color:var(--accent);"></div>
+      <div class="text-left"><label for="comment-input" class="block text-xs tracking-widest uppercase mb-2" style="color:rgba(240,239,233,0.5);">Leave a comment</label>
+       <div class="flex gap-2"><input type="text" id="comment-input" class="flex-1 px-4 py-3 rounded-lg text-sm outline-none focus:ring-2 transition-all" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text); --tw-ring-color:var(--accent);" placeholder="Your thoughts..."> <button id="comment-btn" class="px-5 py-3 rounded-lg text-sm font-medium transition-all duration-300 hover:brightness-110" style="background:var(--accent); color:var(--bg);">Post</button>
+       </div>
+       <div id="comments-list" class="mt-4 space-y-3"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-12 px-6" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+     <p class="font-display text-lg font-bold"><span style="color:var(--accent);">Line</span>Form Architects</p>
+     <p class="text-xs" style="color:rgba(240,239,233,0.3);">© 2024 LineForm Architects. All rights reserved.</p>
+     <div class="flex gap-4"><a href="#" class="transition-colors hover:opacity-80" style="color:rgba(240,239,233,0.4);"><i data-lucide="instagram" style="width:18px;height:18px;"></i></a> <a href="#" class="transition-colors hover:opacity-80" style="color:rgba(240,239,233,0.4);"><i data-lucide="linkedin" style="width:18px;height:18px;"></i></a> <a href="#" class="transition-colors hover:opacity-80" style="color:rgba(240,239,233,0.4);"><i data-lucide="twitter" style="width:18px;height:18px;"></i></a>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+// Default config
+const defaultConfig = {
+  hero_title: 'Architecture that\nearns attention.',
+  hero_subtitle: 'A one-page portfolio that converts serious clients.',
+  tagline: 'Design that feels inevitable.',
+  work_title: 'Selected Work',
+  process_title: 'Our Process',
+  bottom_cta_text: 'Start your project with clarity.',
+  background_color: '#0e0e0e',
+  surface_color: '#1a1a1a',
+  text_color: '#f0efe9',
+  accent_color: '#00c9a7',
+  muted_color: '#2a2a2a',
+  font_family: 'Playfair Display',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Colors
+  document.documentElement.style.setProperty('--bg', c.background_color);
+  document.documentElement.style.setProperty('--surface', c.surface_color);
+  document.documentElement.style.setProperty('--text', c.text_color);
+  document.documentElement.style.setProperty('--accent', c.accent_color);
+  document.documentElement.style.setProperty('--accent2', c.muted_color);
+
+  // Text
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) heroTitle.innerHTML = c.hero_title.replace(/\n/g, '<br>');
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) heroSub.textContent = c.hero_subtitle;
+  const tagline = document.getElementById('hero-tagline');
+  if (tagline) tagline.textContent = c.tagline;
+  const workTitle = document.getElementById('work-title');
+  if (workTitle) workTitle.textContent = c.work_title;
+  const processTitle = document.getElementById('process-title');
+  if (processTitle) processTitle.textContent = c.process_title;
+  const bottomCta = document.getElementById('bottom-cta-heading');
+  if (bottomCta) bottomCta.textContent = c.bottom_cta_text;
+
+  // Font
+  const fontStack = `${c.font_family}, Georgia, serif`;
+  document.querySelectorAll('.font-display').forEach(el => {
+    el.style.fontFamily = fontStack;
+  });
+
+  // Font size
+  const base = c.font_size;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('p, span, a, button, input, select, textarea, label').forEach(el => {
+    // Only adjust body text base
+  });
+  document.body.style.fontSize = base + 'px';
+}
+
+// Element SDK init
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: async (config) => applyConfig(config),
+    mapToCapabilities: (config) => ({
+      recolorables: [
+        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+        { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+        { get: () => config.muted_color || defaultConfig.muted_color, set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } },
+      ],
+      borderables: [],
+      fontEditable: {
+        get: () => config.font_family || defaultConfig.font_family,
+        set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+      },
+      fontSizeable: {
+        get: () => config.font_size || defaultConfig.font_size,
+        set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+      }
+    }),
+    mapToEditPanelValues: (config) => new Map([
+      ['hero_title', config.hero_title || defaultConfig.hero_title],
+      ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+      ['tagline', config.tagline || defaultConfig.tagline],
+      ['work_title', config.work_title || defaultConfig.work_title],
+      ['process_title', config.process_title || defaultConfig.process_title],
+      ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text],
+    ])
+  });
+}
+
+// Intersection observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, root: document.getElementById('app') });
+
+document.querySelectorAll('.observed').forEach(el => observer.observe(el));
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Form
+document.getElementById('consult-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  document.getElementById('form-success').classList.remove('hidden');
+  e.target.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+  setTimeout(() => document.getElementById('form-success').classList.add('hidden'), 4000);
+});
+
+// Vote widget
+let voted = false;
+document.querySelectorAll('.vote-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (voted) return;
+    voted = true;
+    const choice = btn.dataset.vote;
+    document.querySelectorAll('.vote-btn').forEach(b => {
+      b.style.opacity = '0.4';
+      b.style.cursor = 'default';
+    });
+    btn.style.opacity = '1';
+    btn.style.background = 'rgba(0,201,167,0.15)';
+    btn.style.borderColor = 'var(--accent)';
+    document.getElementById('vote-result').classList.remove('hidden');
+    document.getElementById('vote-result').textContent = `Thanks for voting! ${choice.charAt(0).toUpperCase() + choice.slice(1)} is a great choice.`;
+  });
+});
+
+// Comment widget
+const comments = [];
+document.getElementById('comment-btn').addEventListener('click', () => {
+  const input = document.getElementById('comment-input');
+  const text = input.value.trim();
+  if (!text) return;
+  comments.unshift({ text, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+  input.value = '';
+  renderComments();
+});
+document.getElementById('comment-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('comment-btn').click();
+});
+
+function renderComments() {
+  const list = document.getElementById('comments-list');
+  list.innerHTML = comments.map(c => `
+    <div class="glass-card rounded-lg p-3 flex justify-between items-start gap-3">
+      <p class="text-sm" style="color:rgba(240,239,233,0.7);">${c.text.replace(/</g,'&lt;')}</p>
+      <span class="text-xs flex-shrink-0" style="color:rgba(240,239,233,0.3);">${c.time}</span>
+    </div>
+  `).join('');
+}
+
+// Init icons
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e338292a73627cf',t:'MTc3NDY2ODE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

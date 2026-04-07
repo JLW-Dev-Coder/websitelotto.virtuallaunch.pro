@@ -1,0 +1,680 @@
+<!-- PASTE HTML FROM CANVA: https://www.canva.com/ai/code/thread/3d23b82b-bf1a-4e43-99f1-cca2db307ba2 -->
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WickMuse Candle Co.</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        charcoal: '#1a1714',
+        warmcream: '#f5efe6',
+        amber: '#c8943e',
+        gold: '#d4a853',
+        dusk: '#2a2520',
+        muted: '#8a7e72'
+      },
+      fontFamily: {
+        display: ['Cormorant Garamond', 'serif'],
+        body: ['Outfit', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; }
+body { overflow-x: hidden; }
+
+/* Flame glow keyframes */
+@keyframes flameGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+@keyframes gentlePulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(200,148,62,0.3); }
+  50% { box-shadow: 0 0 35px rgba(200,148,62,0.6); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+.anim-flame { animation: flameGlow 3s ease-in-out infinite; }
+.anim-pulse { animation: gentlePulse 2.5s ease-in-out infinite; }
+.anim-slow-zoom { animation: slowZoom 12s ease-in-out alternate infinite; }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-60px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(60px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.glass-card {
+  background: rgba(42,37,32,0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212,168,83,0.15);
+}
+.glass-card-light {
+  background: rgba(245,239,230,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,168,83,0.12);
+}
+
+.nav-active { color: #d4a853; }
+
+/* Star SVG */
+.star-filled { fill: #d4a853; stroke: #d4a853; }
+.star-empty { fill: none; stroke: #8a7e72; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1714; }
+::-webkit-scrollbar-thumb { background: #c8943e; border-radius: 3px; }
+
+/* Custom toast */
+.toast-msg {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(42,37,32,0.95); backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,168,83,0.3); color: #f5efe6;
+  padding: 12px 28px; border-radius: 999px; font-family: 'Outfit', sans-serif;
+  font-size: 14px; z-index: 999; opacity: 0; transition: opacity 0.4s;
+  pointer-events: none;
+}
+.toast-msg.show { opacity: 1; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-charcoal text-warmcream font-body overflow-auto"><!-- Toast -->
+  <div id="toast" class="toast-msg"></div><!-- Sticky Nav -->
+  <nav id="stickyNav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:rgba(26,23,20,0.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(212,168,83,0.1);">
+   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4"><a href="#home" id="navBrand" class="font-display text-xl font-semibold text-gold tracking-wide">WickMuse Candle Co.</a>
+    <div class="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase font-light"><a href="#home" class="nav-link hover:text-gold transition-colors duration-300">Home</a> <a href="#scents" class="nav-link hover:text-gold transition-colors duration-300">Scents</a> <a href="#notes" class="nav-link hover:text-gold transition-colors duration-300">Notes</a> <a href="#bundles" class="nav-link hover:text-gold transition-colors duration-300">Bundles</a> <a href="#reviews" class="nav-link hover:text-gold transition-colors duration-300">Reviews</a> <a href="#buy" class="nav-link hover:text-gold transition-colors duration-300">Buy</a>
+    </div><button id="mobileMenuBtn" class="md:hidden text-warmcream" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+   </div>
+   <div id="mobileMenu" class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 text-sm tracking-widest uppercase font-light"><a href="#home" class="nav-link hover:text-gold transition-colors">Home</a> <a href="#scents" class="nav-link hover:text-gold transition-colors">Scents</a> <a href="#notes" class="nav-link hover:text-gold transition-colors">Notes</a> <a href="#bundles" class="nav-link hover:text-gold transition-colors">Bundles</a> <a href="#reviews" class="nav-link hover:text-gold transition-colors">Reviews</a> <a href="#buy" class="nav-link hover:text-gold transition-colors">Buy</a>
+   </div>
+  </nav><!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden" style="min-height:100%;">
+   <div class="absolute inset-0"><img src="https://images.unsplash.com/photo-1602607616907-5f28bfb3a4c0?w=1600&amp;q=80" alt="Luxury candle ambiance" loading="lazy" class="w-full h-full object-cover anim-slow-zoom" onerror="this.style.background='linear-gradient(135deg,#1a1714,#2a2520)';this.alt='Image unavailable';">
+    <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/50 to-charcoal"></div>
+   </div><!-- Flame glow overlay -->
+   <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full anim-flame" style="background:radial-gradient(circle,rgba(200,148,62,0.25) 0%,transparent 70%);pointer-events:none;"></div>
+   <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 py-40 md:py-52">
+    <div class="mb-6"><!-- Flame SVG -->
+     <svg width="48" height="48" viewbox="0 0 48 48" fill="none" class="mx-auto anim-flame">
+      <path d="M24 4C24 4 32 16 32 26C32 31.5 28.4 36 24 36C19.6 36 16 31.5 16 26C16 16 24 4 24 4Z" fill="url(#flameGrad)" opacity="0.9" /><path d="M24 18C24 18 28 24 28 28C28 30.2 26.2 32 24 32C21.8 32 20 30.2 20 28C20 24 24 18 24 18Z" fill="#f5efe6" opacity="0.6" /><defs>
+       <lineargradient id="flameGrad" x1="24" y1="4" x2="24" y2="36" gradientunits="userSpaceOnUse">
+        <stop stop-color="#d4a853" />
+        <stop offset="1" stop-color="#c8943e" stop-opacity="0.6" />
+       </lineargradient>
+      </defs>
+     </svg>
+    </div>
+    <h1 id="heroTagline" class="font-display text-5xl md:text-7xl lg:text-8xl font-light tracking-tight leading-tight mb-6" style="text-shadow: 0 0 60px rgba(200,148,62,0.3);">Light the mood<br>
+     on purpose.</h1>
+    <p id="heroSubhead" class="font-body font-light text-lg md:text-xl text-warmcream/70 max-w-xl mb-10">Clean-burning candles with signature scent stories.</p>
+    <div class="flex flex-col sm:flex-row gap-4"><a href="#scents" class="px-8 py-3.5 bg-amber text-charcoal font-medium text-sm uppercase tracking-widest rounded-full hover:bg-gold transition-colors duration-300 anim-pulse">Shop Scents</a> <a href="#notes" class="px-8 py-3.5 border border-gold/40 text-gold font-light text-sm uppercase tracking-widest rounded-full hover:bg-gold/10 transition-colors duration-300">Explore Notes</a>
+    </div>
+   </div>
+  </section><!-- SCENTS -->
+  <section id="scents" class="w-full py-24 px-6">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+     <p class="text-amber uppercase tracking-[0.3em] text-xs font-medium mb-3">The Collection</p>
+     <h2 class="font-display text-4xl md:text-5xl font-light">Our Signature Scents</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Scent 1 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.05s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&amp;q=80" alt="Amber Reverie candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Amber Reverie</h3>
+       <p class="text-warmcream/50 text-sm font-light">Warm. Honeyed. Hypnotic.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$38</p>
+      </div>
+     </div><!-- Scent 2 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.1s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1608181831718-2501d0995043?w=600&amp;q=80" alt="Velvet Smoke candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Velvet Smoke</h3>
+       <p class="text-warmcream/50 text-sm font-light">Deep. Woody. Mysterious.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$42</p>
+      </div>
+     </div><!-- Scent 3 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.15s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?w=600&amp;q=80" alt="Moon Petal candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Moon Petal</h3>
+       <p class="text-warmcream/50 text-sm font-light">Soft. Floral. Ethereal.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$36</p>
+      </div>
+     </div><!-- Scent 4 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.2s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1594785745672-73e9df8da664?w=600&amp;q=80" alt="Noir Fig candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Noir Fig</h3>
+       <p class="text-warmcream/50 text-sm font-light">Rich. Earthy. Indulgent.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$40</p>
+      </div>
+     </div><!-- Scent 5 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.25s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1601908804492-13acde2d0635?w=600&amp;q=80" alt="Golden Vanilla candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Golden Vanilla</h3>
+       <p class="text-warmcream/50 text-sm font-light">Sweet. Creamy. Timeless.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$34</p>
+      </div>
+     </div><!-- Scent 6 -->
+     <div class="reveal group relative rounded-2xl overflow-hidden cursor-pointer" style="transition-delay:0.3s;">
+      <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1616627577385-5c0c4dab50b6?w=600&amp;q=80" alt="Cedar Dusk candle" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+       <h3 class="font-display text-2xl mb-1">Cedar Dusk</h3>
+       <p class="text-warmcream/50 text-sm font-light">Crisp. Grounding. Serene.</p>
+       <p class="text-gold text-sm mt-2 font-medium">$38</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- SCENT NOTES -->
+  <section id="notes" class="w-full py-24 px-6 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(200,148,62,0.06) 0%,transparent 70%);"></div>
+   <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16 reveal">
+     <p class="text-amber uppercase tracking-[0.3em] text-xs font-medium mb-3">The Craft</p>
+     <h2 class="font-display text-4xl md:text-5xl font-light">Scent Notes</h2>
+     <p class="text-warmcream/50 font-light mt-4 max-w-lg mx-auto text-sm">Every WickMuse candle is composed in three layers, like a fragrance. Here's how we build each story.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Top Notes -->
+     <div class="glass-card rounded-2xl p-8 reveal-left" style="transition-delay:0.05s;">
+      <div class="mb-5"><!-- Leaf SVG -->
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" class="text-gold">
+        <path d="M8 32C8 32 10 12 28 8C28 8 30 28 12 32" stroke="currentColor" stroke-width="1.5" fill="none" /><path d="M8 32C14 24 20 18 28 8" stroke="currentColor" stroke-width="1" opacity="0.5" />
+       </svg>
+      </div>
+      <h3 class="font-display text-2xl mb-2 text-gold">Top Notes</h3>
+      <p class="text-warmcream/40 text-xs uppercase tracking-widest mb-4">First Impression</p>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed">The opening spark. Bright citrus, fresh herbs, and delicate florals greet you within seconds of lighting. They set the tone before gracefully fading.</p>
+      <div class="mt-5 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Bergamot</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Lemon Zest</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Sage</span>
+      </div>
+     </div><!-- Heart Notes -->
+     <div class="glass-card rounded-2xl p-8 reveal" style="transition-delay:0.15s;">
+      <div class="mb-5"><!-- Flame SVG -->
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" class="text-gold">
+        <path d="M20 4C20 4 28 14 28 22C28 26.4 24.4 30 20 30C15.6 30 12 26.4 12 22C12 14 20 4 20 4Z" stroke="currentColor" stroke-width="1.5" fill="none" /><path d="M20 16C20 16 24 20 24 23C24 25 22.2 26.5 20 26.5C17.8 26.5 16 25 16 23C16 20 20 16 20 16Z" fill="currentColor" opacity="0.3" />
+       </svg>
+      </div>
+      <h3 class="font-display text-2xl mb-2 text-gold">Heart Notes</h3>
+      <p class="text-warmcream/40 text-xs uppercase tracking-widest mb-4">The Soul</p>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed">The emotional core. Rich florals, warm spices, and aromatic woods that emerge as the candle settles into its rhythm. This is where the story lives.</p>
+      <div class="mt-5 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Rose Absolute</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Cardamom</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Jasmine</span>
+      </div>
+     </div><!-- Base Notes -->
+     <div class="glass-card rounded-2xl p-8 reveal-right" style="transition-delay:0.25s;">
+      <div class="mb-5"><!-- Wood SVG -->
+       <svg width="40" height="40" viewbox="0 0 40 40" fill="none" class="text-gold">
+        <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5" fill="none" /><ellipse cx="20" cy="20" rx="7" ry="7" stroke="currentColor" stroke-width="1" opacity="0.4" fill="none" /><ellipse cx="20" cy="20" rx="3" ry="3" stroke="currentColor" stroke-width="0.8" opacity="0.3" fill="none" /><line x1="20" y1="8" x2="20" y2="4" stroke="currentColor" stroke-width="1.5" /><line x1="16" y1="9" x2="14" y2="5" stroke="currentColor" stroke-width="1" opacity="0.5" />
+       </svg>
+      </div>
+      <h3 class="font-display text-2xl mb-2 text-gold">Base Notes</h3>
+      <p class="text-warmcream/40 text-xs uppercase tracking-widest mb-4">The Memory</p>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed">The lasting impression. Deep amber, smooth vanilla, and grounding woods that linger in the room long after the flame is out. This is what you remember.</p>
+      <div class="mt-5 flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Amber Resin</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Vanilla Bean</span> <span class="px-3 py-1 rounded-full text-xs border border-gold/20 text-gold/70">Sandalwood</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- BUNDLES -->
+  <section id="bundles" class="w-full py-24 px-6">
+   <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+     <p class="text-amber uppercase tracking-[0.3em] text-xs font-medium mb-3">Better Together</p>
+     <h2 class="font-display text-4xl md:text-5xl font-light">Curated Bundles</h2>
+     <p class="text-warmcream/50 font-light mt-4 max-w-md mx-auto text-sm">Giftable year-round. Bundling saves more, and smells even better together.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Starter Trio -->
+     <div class="glass-card rounded-2xl overflow-hidden reveal" style="transition-delay:0.05s;">
+      <div class="aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1599446220084-e0683e35a6db?w=600&amp;q=80" alt="Starter Trio bundle" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+      </div>
+      <div class="p-7">
+       <div class="flex items-center gap-2 mb-3"><!-- Flame icon small -->
+        <svg width="18" height="18" viewbox="0 0 48 48" fill="none">
+         <path d="M24 4C24 4 32 16 32 26C32 31.5 28.4 36 24 36C19.6 36 16 31.5 16 26C16 16 24 4 24 4Z" fill="#d4a853" opacity="0.7" />
+        </svg>
+        <h3 class="font-display text-xl">Starter Trio</h3>
+       </div>
+       <p class="text-warmcream/50 text-sm font-light mb-4">Three bestselling minis to find your signature. Perfect entry into the WickMuse world.</p>
+       <div class="flex items-baseline gap-3"><span class="text-gold font-display text-2xl">$68</span> <span class="text-warmcream/30 line-through text-sm">$90</span> <span class="text-amber text-xs uppercase tracking-wider">Save 24%</span>
+       </div>
+      </div>
+     </div><!-- Gift Set -->
+     <div class="glass-card rounded-2xl overflow-hidden reveal" style="transition-delay:0.15s;">
+      <div class="relative aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1543332164-6e82f355badc?w=600&amp;q=80" alt="Gift Set bundle" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+       <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs bg-amber text-charcoal font-medium uppercase tracking-wider">
+        Bestseller
+       </div>
+      </div>
+      <div class="p-7">
+       <div class="flex items-center gap-2 mb-3"><!-- Gift SVG -->
+        <svg width="18" height="18" viewbox="0 0 40 40" fill="none">
+         <rect x="6" y="16" width="28" height="18" rx="2" stroke="#d4a853" stroke-width="1.5" fill="none" /><rect x="4" y="10" width="32" height="6" rx="2" stroke="#d4a853" stroke-width="1.5" fill="none" /><line x1="20" y1="10" x2="20" y2="34" stroke="#d4a853" stroke-width="1.5" /><path d="M20 10C16 10 14 6 14 6C18 6 20 10 20 10Z" stroke="#d4a853" stroke-width="1" fill="none" /><path d="M20 10C24 10 26 6 26 6C22 6 20 10 20 10Z" stroke="#d4a853" stroke-width="1" fill="none" />
+        </svg>
+        <h3 class="font-display text-xl">Gift Set</h3>
+       </div>
+       <p class="text-warmcream/50 text-sm font-light mb-4">Two full-size candles, a scent card set, and a linen dust bag. Effortless gifting, every time.</p>
+       <div class="flex items-baseline gap-3"><span class="text-gold font-display text-2xl">$110</span> <span class="text-warmcream/30 line-through text-sm">$142</span> <span class="text-amber text-xs uppercase tracking-wider">Save 22%</span>
+       </div>
+      </div>
+     </div><!-- Seasonal Drop -->
+     <div class="glass-card rounded-2xl overflow-hidden reveal" style="transition-delay:0.25s;">
+      <div class="relative aspect-[4/3] overflow-hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&amp;q=80" alt="Seasonal Drop bundle" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" onerror="this.style.background='#2a2520';this.alt='Image unavailable';">
+       <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs bg-gold/20 text-gold font-medium uppercase tracking-wider border border-gold/30">
+        Limited
+       </div>
+      </div>
+      <div class="p-7">
+       <div class="flex items-center gap-2 mb-3"><!-- Moon SVG -->
+        <svg width="18" height="18" viewbox="0 0 40 40" fill="none">
+         <path d="M28 20C28 25.5 23.5 30 18 30C16 30 14.2 29.4 12.6 28.4C15.8 28.8 19.6 27 21.8 23.6C24 20.2 24.2 16 22.6 12.8C24.2 13.4 25.6 14.4 26.6 15.8C27.5 17 28 18.4 28 20Z" stroke="#d4a853" stroke-width="1.5" fill="none" />
+        </svg>
+        <h3 class="font-display text-xl">Seasonal Drop</h3>
+       </div>
+       <p class="text-warmcream/50 text-sm font-light mb-4">Four exclusive seasonal editions, released quarterly. Subscribe for priority access and savings.</p>
+       <div class="flex items-baseline gap-3"><span class="text-gold font-display text-2xl">$148</span> <span class="text-warmcream/30 line-through text-sm">$192</span> <span class="text-amber text-xs uppercase tracking-wider">Save 23%</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- REVIEWS -->
+  <section id="reviews" class="w-full py-24 px-6 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 50%,rgba(200,148,62,0.04) 0%,transparent 60%);"></div>
+   <div class="max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-16 reveal">
+     <p class="text-amber uppercase tracking-[0.3em] text-xs font-medium mb-3">What They Say</p>
+     <h2 class="font-display text-4xl md:text-5xl font-light">Reviews</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+     <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay:0.05s;">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+      </div>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed mb-5">"Amber Reverie is now my evening ritual. The scent lingers beautifully, and the packaging feels like opening a gift every time."</p>
+      <p class="text-gold text-sm font-medium">Lena M.</p>
+      <p class="text-warmcream/30 text-xs">Verified Buyer</p>
+     </div>
+     <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay:0.15s;">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+      </div>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed mb-5">"Bought the Gift Set for my sister's birthday. She literally cried. The scent notes card was such a thoughtful touch. 10/10 gifting."</p>
+      <p class="text-gold text-sm font-medium">Jordan K.</p>
+      <p class="text-warmcream/30 text-xs">Verified Buyer</p>
+     </div>
+     <div class="glass-card rounded-2xl p-7 reveal" style="transition-delay:0.25s;">
+      <div class="flex gap-1 mb-4">
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+       <svg width="16" height="16" viewbox="0 0 24 24">
+        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" class="star-filled" />
+       </svg>
+      </div>
+      <p class="text-warmcream/60 font-light text-sm leading-relaxed mb-5">"Cedar Dusk in the bedroom, Velvet Smoke in the living room. My entire apartment has a personality now. Clean burn, zero soot."</p>
+      <p class="text-gold text-sm font-medium">Priya S.</p>
+      <p class="text-warmcream/30 text-xs">Verified Buyer</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- BOTTOM CTA + VOTE/COMMENT -->
+  <section id="buy" class="w-full py-24 px-6 relative">
+   <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 30%,rgba(200,148,62,0.08) 0%,transparent 60%);"></div>
+   <div class="max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-16 reveal">
+     <div class="mb-6">
+      <svg width="56" height="56" viewbox="0 0 48 48" fill="none" class="mx-auto anim-flame">
+       <path d="M24 4C24 4 32 16 32 26C32 31.5 28.4 36 24 36C19.6 36 16 31.5 16 26C16 16 24 4 24 4Z" fill="url(#flameGrad2)" opacity="0.9" /><path d="M24 18C24 18 28 24 28 28C28 30.2 26.2 32 24 32C21.8 32 20 30.2 20 28C20 24 24 18 24 18Z" fill="#f5efe6" opacity="0.6" /><defs>
+        <lineargradient id="flameGrad2" x1="24" y1="4" x2="24" y2="36" gradientunits="userSpaceOnUse">
+         <stop stop-color="#d4a853" />
+         <stop offset="1" stop-color="#c8943e" stop-opacity="0.6" />
+        </lineargradient>
+       </defs>
+      </svg>
+     </div>
+     <h2 id="bottomCtaText" class="font-display text-4xl md:text-6xl font-light mb-6">Make your home feel<br>
+      intentional.</h2>
+     <p class="text-warmcream/50 font-light max-w-md mx-auto mb-10 text-sm">Every WickMuse candle is hand-poured with care. Discover your signature scent today.</p><a href="#scents" class="inline-block px-10 py-4 bg-amber text-charcoal font-medium text-sm uppercase tracking-widest rounded-full hover:bg-gold transition-colors duration-300 anim-pulse">Shop the Collection</a>
+    </div><!-- Vote + Comment Widget -->
+    <div class="glass-card rounded-2xl p-8 mt-16 reveal">
+     <div class="text-center mb-8">
+      <p class="text-amber uppercase tracking-[0.3em] text-xs font-medium mb-2">Community</p>
+      <h3 class="font-display text-2xl">Vote + Comment</h3>
+     </div><!-- Vote -->
+     <div class="flex items-center justify-center gap-8 mb-8"><button id="voteUpBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/20 hover:border-gold/50 transition-colors group">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-gold">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+       </svg><span id="voteUpCount" class="text-gold font-medium text-sm">0</span> </button> <span class="text-warmcream/30 text-xs uppercase tracking-widest">Cast your vote</span> <button id="voteDownBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold/20 hover:border-gold/50 transition-colors group">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted">
+        <path d="M12 5v14M5 12l7 7 7-7" />
+       </svg><span id="voteDownCount" class="text-gold font-medium text-sm">0</span> </button>
+     </div><!-- Comment Form -->
+     <form id="commentForm" class="mb-6">
+      <div class="flex flex-col sm:flex-row gap-3"><input type="text" id="commentAuthor" placeholder="Your name" class="flex-shrink-0 sm:w-40 px-4 py-3 rounded-xl bg-charcoal border border-gold/15 text-warmcream placeholder-warmcream/30 text-sm focus:outline-none focus:border-gold/40 transition-colors" required> <input type="text" id="commentText" placeholder="Leave a comment..." class="flex-1 px-4 py-3 rounded-xl bg-charcoal border border-gold/15 text-warmcream placeholder-warmcream/30 text-sm focus:outline-none focus:border-gold/40 transition-colors" required> <button type="submit" id="commentSubmitBtn" class="px-6 py-3 bg-amber text-charcoal rounded-xl font-medium text-sm uppercase tracking-wider hover:bg-gold transition-colors flex-shrink-0">Post</button>
+      </div>
+     </form><!-- Comments List -->
+     <div id="commentsList" class="space-y-3 max-h-64 overflow-y-auto"></div>
+     <p id="noComments" class="text-center text-warmcream/30 text-sm py-4">No comments yet. Be the first!</p>
+     <p id="limitWarning" class="hidden text-center text-amber text-sm py-2 mt-2">Maximum entries reached. Please wait for space.</p>
+    </div>
+   </div>
+  </section><!-- Footer -->
+  <footer class="w-full py-12 px-6 border-t border-gold/10">
+   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="font-display text-gold text-lg" id="footerBrand">WickMuse Candle Co.</p>
+    <p class="text-warmcream/30 text-xs font-light tracking-wider">Hand-poured with intention. Clean-burning always.</p>
+   </div>
+  </footer>
+  <script>
+// ---- CONFIG & SDK ----
+const defaultConfig = {
+  background_color: '#1a1714',
+  surface_color: 'rgba(42,37,32,0.55)',
+  text_color: '#f5efe6',
+  primary_action_color: '#c8943e',
+  secondary_action_color: '#d4a853',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+  brand_name: 'WickMuse Candle Co.',
+  hero_tagline: 'Light the mood<br>on purpose.',
+  hero_subhead: 'Clean-burning candles with signature scent stories.',
+  bottom_cta_text: 'Make your home feel<br>intentional.'
+};
+
+let allData = [];
+let currentRecordCount = 0;
+
+// Reference data for votes (Paradigm A)
+const VOTE_UP_ID = 'vote_up';
+const VOTE_DOWN_ID = 'vote_down';
+
+function getVoteCounts(data) {
+  let up = 0, down = 0;
+  data.forEach(d => {
+    if (d.type === 'vote' && d.scent_id === VOTE_UP_ID) up += (d.vote || 0);
+    if (d.type === 'vote' && d.scent_id === VOTE_DOWN_ID) down += (d.vote || 0);
+  });
+  return { up, down };
+}
+
+function getComments(data) {
+  return data.filter(d => d.type === 'comment').sort((a, b) => {
+    const da = a.created_at ? new Date(a.created_at).getTime() : 0;
+    const db = b.created_at ? new Date(b.created_at).getTime() : 0;
+    return db - da;
+  });
+}
+
+function renderComments(comments) {
+  const list = document.getElementById('commentsList');
+  const noMsg = document.getElementById('noComments');
+  const existing = new Map([...list.children].map(el => [el.dataset.cid, el]));
+
+  if (comments.length === 0) {
+    noMsg.style.display = '';
+    list.innerHTML = '';
+    return;
+  }
+  noMsg.style.display = 'none';
+
+  const ids = new Set();
+  comments.forEach(c => {
+    const cid = c.__backendId;
+    ids.add(cid);
+    if (existing.has(cid)) {
+      const el = existing.get(cid);
+      el.querySelector('.c-author').textContent = c.author || 'Anonymous';
+      el.querySelector('.c-text').textContent = c.text || '';
+    } else {
+      const div = document.createElement('div');
+      div.dataset.cid = cid;
+      div.className = 'flex gap-3 p-3 rounded-xl bg-charcoal/50 border border-gold/10';
+      div.innerHTML = `<div class="w-8 h-8 rounded-full bg-amber/20 flex items-center justify-center flex-shrink-0"><span class="text-gold text-xs font-medium">${(c.author || 'A')[0].toUpperCase()}</span></div><div><p class="c-author text-gold text-xs font-medium">${c.author || 'Anonymous'}</p><p class="c-text text-warmcream/60 text-sm font-light">${c.text || ''}</p></div>`;
+      list.appendChild(div);
+    }
+  });
+  [...list.children].forEach(el => { if (!ids.has(el.dataset.cid)) el.remove(); });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Data handler
+const dataHandler = {
+  onDataChanged(data) {
+    allData = data;
+    currentRecordCount = data.length;
+    const { up, down } = getVoteCounts(data);
+    document.getElementById('voteUpCount').textContent = up;
+    document.getElementById('voteDownCount').textContent = down;
+    renderComments(getComments(data));
+    document.getElementById('limitWarning').classList.toggle('hidden', currentRecordCount < 999);
+  }
+};
+
+// Element SDK
+async function onConfigChange(config) {
+  const bg = config.background_color || defaultConfig.background_color;
+  const txt = config.text_color || defaultConfig.text_color;
+  const primary = config.primary_action_color || defaultConfig.primary_action_color;
+  const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+  const fontFam = config.font_family || defaultConfig.font_family;
+  const fontSize = config.font_size || defaultConfig.font_size;
+
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = txt;
+
+  // Brand name
+  const bn = config.brand_name || defaultConfig.brand_name;
+  document.getElementById('navBrand').textContent = bn;
+  document.getElementById('footerBrand').textContent = bn;
+
+  document.getElementById('heroTagline').innerHTML = config.hero_tagline || defaultConfig.hero_tagline;
+  document.getElementById('heroSubhead').textContent = config.hero_subhead || defaultConfig.hero_subhead;
+  document.getElementById('bottomCtaText').innerHTML = config.bottom_cta_text || defaultConfig.bottom_cta_text;
+
+  // Font
+  const stack = `${fontFam}, serif`;
+  document.querySelectorAll('.font-display, h1, h2, h3').forEach(el => el.style.fontFamily = stack);
+  const base = fontSize;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = '');
+  document.querySelectorAll('p, span, a, input, button, label').forEach(el => {
+    if (!el.closest('nav') && !el.classList.contains('font-display')) {
+      el.style.fontSize = base + 'px';
+    }
+  });
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange,
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['brand_name', config.brand_name || defaultConfig.brand_name],
+    ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+    ['hero_subhead', config.hero_subhead || defaultConfig.hero_subhead],
+    ['bottom_cta_text', config.bottom_cta_text || defaultConfig.bottom_cta_text]
+  ])
+});
+
+// Init Data SDK
+(async () => {
+  const r = await window.dataSdk.init(dataHandler);
+  if (!r.isOk) console.error('Data SDK init failed');
+})();
+
+// ---- INTERACTIONS ----
+
+// Votes
+async function castVote(dir) {
+  if (currentRecordCount >= 999) { showToast('Limit reached.'); return; }
+  const btn = document.getElementById(dir === 'up' ? 'voteUpBtn' : 'voteDownBtn');
+  btn.disabled = true; btn.style.opacity = '0.5';
+  const existing = allData.find(d => d.type === 'vote' && d.scent_id === (dir === 'up' ? VOTE_UP_ID : VOTE_DOWN_ID));
+  let result;
+  if (existing) {
+    result = await window.dataSdk.update({ ...existing, vote: (existing.vote || 0) + 1 });
+  } else {
+    result = await window.dataSdk.create({ type: 'vote', scent_id: dir === 'up' ? VOTE_UP_ID : VOTE_DOWN_ID, text: '', author: '', vote: 1, created_at: new Date().toISOString() });
+  }
+  btn.disabled = false; btn.style.opacity = '1';
+  if (!result.isOk) showToast('Could not save vote.');
+}
+document.getElementById('voteUpBtn').addEventListener('click', () => castVote('up'));
+document.getElementById('voteDownBtn').addEventListener('click', () => castVote('down'));
+
+// Comment form
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (currentRecordCount >= 999) { showToast('Limit reached.'); return; }
+  const author = document.getElementById('commentAuthor').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  if (!author || !text) return;
+  const btn = document.getElementById('commentSubmitBtn');
+  btn.disabled = true; btn.textContent = '...';
+  const result = await window.dataSdk.create({ type: 'comment', scent_id: '', text, author, vote: 0, created_at: new Date().toISOString() });
+  btn.disabled = false; btn.textContent = 'Post';
+  if (result.isOk) {
+    document.getElementById('commentAuthor').value = '';
+    document.getElementById('commentText').value = '';
+  } else {
+    showToast('Could not post comment.');
+  }
+});
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('hidden');
+}));
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = ['home','scents','notes','bundles','reviews','buy'];
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('nav-active', link.getAttribute('href') === '#' + current);
+  });
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e339a55672f27cf',t:'MTc3NDY2OTExNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

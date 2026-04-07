@@ -2,7 +2,7 @@
 /**
  * generate-schemas.js
  *
- * Walks public/sites/<slug>/index.html and produces public/sites/<slug>/schema.json
+ * Walks public/sites/<slug>/preview.html and produces public/sites/<slug>/schema.json
  * containing the editable fields detected in the HTML (headings, phone numbers,
  * email addresses, button/link text, image sources).
  *
@@ -151,7 +151,7 @@ function main() {
   let missing = 0;
 
   for (const slug of slugs) {
-    const htmlPath = path.join(SITES_DIR, slug, 'index.html');
+    const htmlPath = path.join(SITES_DIR, slug, 'preview.html');
     if (!fs.existsSync(htmlPath)) {
       missing++;
       continue;
@@ -173,7 +173,7 @@ function main() {
 
   console.log(`Schemas generated: ${generated}`);
   console.log(`Placeholder/empty (skipped): ${skipped}`);
-  console.log(`Missing index.html: ${missing}`);
+  console.log(`Missing preview.html: ${missing}`);
   console.log(`Total site directories: ${slugs.length}`);
 }
 

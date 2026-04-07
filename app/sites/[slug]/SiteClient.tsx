@@ -114,7 +114,7 @@ export default function SiteClient({ slug }: Props) {
       <main className={styles.hero}>
         <div className={styles.previewWrap}>
           <iframe
-            src={`/sites/${slug}/index.html`}
+            src={`/sites/${slug}/preview.html`}
             className={styles.previewFrame}
             title={template.title}
             sandbox="allow-scripts allow-same-origin"
