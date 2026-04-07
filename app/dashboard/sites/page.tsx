@@ -120,9 +120,9 @@ function SiteCard({ site }: { site: PurchasedSite }) {
         >
           View Site ↗
         </a>
-        <button className={styles.manageBtn} disabled title="Editor coming soon">
-          Manage
-        </button>
+        <Link href={`/dashboard/sites/${site.slug}/edit`} className={styles.editBtn}>
+          Edit Site
+        </Link>
       </div>
     </div>
   );
