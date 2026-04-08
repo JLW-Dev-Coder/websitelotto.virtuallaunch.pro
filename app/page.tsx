@@ -15,6 +15,7 @@ export default function HomePage() {
   const [sort, setSort] = useState<'votes' | 'newest' | 'price'>('votes');
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<{ account_id: string } | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     getTemplatesWithFallback()
@@ -23,6 +24,22 @@ export default function HomePage() {
       .finally(() => setLoading(false));
     getSession().then(setSession).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileOpen]);
+
+  const closeMobile = () => setMobileOpen(false);
 
   const filtered = templates
     .filter(t => {
@@ -60,8 +77,59 @@ export default function HomePage() {
             <Link href="/scratch">Free Ticket</Link>
             {session ? <Link href="/dashboard">Dashboard</Link> : <Link href="/sign-in">Sign In</Link>}
           </div>
+          <button
+            type="button"
+            className={styles.hamburger}
+            aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav-panel"
+            onClick={() => setMobileOpen(true)}
+          >
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
         </div>
       </nav>
+
+      <div
+        className={`${styles.mobileOverlay} ${mobileOpen ? styles.mobileOverlayOpen : ''}`}
+        onClick={closeMobile}
+        aria-hidden={!mobileOpen}
+      />
+      <aside
+        id="mobile-nav-panel"
+        className={`${styles.mobilePanel} ${mobileOpen ? styles.mobilePanelOpen : ''}`}
+        aria-hidden={!mobileOpen}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+      >
+        <button
+          type="button"
+          className={styles.mobilePanelClose}
+          aria-label="Close menu"
+          onClick={closeMobile}
+        >
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <nav className={styles.mobileNav}>
+          <a href="#how" onClick={closeMobile}>How it works</a>
+          <a href="#sites" onClick={closeMobile}>Templates</a>
+          <a href="#pricing" onClick={closeMobile}>Pricing</a>
+          <a href="#faq" onClick={closeMobile}>FAQ</a>
+          <Link href="/scratch" onClick={closeMobile}>Free Ticket</Link>
+          {session
+            ? <Link href="/dashboard" onClick={closeMobile}>Dashboard</Link>
+            : <Link href="/sign-in" onClick={closeMobile}>Sign In</Link>}
+          <Link href="/support" onClick={closeMobile}>Support</Link>
+        </nav>
+      </aside>
 
       {/* HERO */}
       <section className={styles.hero} id="hero">
