@@ -2,15 +2,16 @@
 // WLVLP SCALE batch generator
 // Usage: node scale/generate-batch.mjs scale/prospects/new-prospects.csv
 //
-// Reads a prospect CSV, applies SCALE selection logic, and writes:
+// Reads a prospect CSV, applies SCALE selection logic, crawls each prospect's
+// website to build a Conversion Leak Report, and writes:
 //   1. scale/output/wlvlp-batch-{YYYY-MM-DD}.json   (R2 upload payload)
 //   2. scale/output/gmail-email1-{YYYY-MM-DD}.csv   (Gmail-ready CSV)
 // Then writes wlvlp_email_1_prepared_at back to the source CSV.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-// ---------- CSV parsing (RFC-4180, handles quoted fields + embedded commas/newlines) ----------
+// ---------- CSV parsing (RFC-4180) ----------
 
 function parseCSV(text) {
   const rows = [];
@@ -18,7 +19,6 @@ function parseCSV(text) {
   let field = '';
   let inQuotes = false;
   let i = 0;
-  // Strip BOM
   if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
 
   while (i < text.length) {
@@ -41,7 +41,6 @@ function parseCSV(text) {
     field += c;
     i++;
   }
-  // Final field
   if (field.length > 0 || row.length > 0) {
     row.push(field);
     rows.push(row);
@@ -117,6 +116,270 @@ const CREDENTIAL_LABEL_PLURAL = {
   Unknown: 'tax professional',
 };
 
+const TRAFFIC_BY_CRED = { CPA: 500, EA: 300, ATTY: 400, Unknown: 300 };
+const VALUE_BY_CRED   = { CPA: 2500, EA: 1500, ATTY: 3500, Unknown: 1500 };
+
+// ---------- website crawl ----------
+
+async function crawlSite(domainClean) {
+  const fallback = {
+    has_above_fold_cta: false,
+    has_phone_visible: false,
+    has_intake_form: false,
+    form_field_count: 0,
+    has_reviews_or_testimonials: false,
+    has_credentials_visible: false,
+    headline_text: 'Not available',
+    meta_description: '',
+    page_title: '',
+    fetch_ok: false,
+    status: 0,
+    elapsed_ms: 0,
+  };
+  if (!domainClean) return fallback;
+
+  const url = `https://${domainClean}`;
+  const start = Date.now();
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), 10000);
+  let res, html;
+  try {
+    res = await fetch(url, {
+      signal: ac.signal,
+      redirect: 'follow',
+      headers: {
+        'user-agent': 'Mozilla/5.0 (compatible; WLVLP-ConversionAudit/1.0; +https://websitelotto.virtuallaunch.pro)',
+        'accept': 'text/html,application/xhtml+xml',
+      },
+    });
+    html = await res.text();
+  } catch (e) {
+    clearTimeout(timer);
+    const elapsed = Date.now() - start;
+    console.log(`Crawling ${domainClean}... ERR ${e.name || 'fetch'} (${elapsed}ms)`);
+    return { ...fallback, elapsed_ms: elapsed };
+  }
+  clearTimeout(timer);
+  const elapsed = Date.now() - start;
+  console.log(`Crawling ${domainClean}... ${res.status} (${elapsed}ms)`);
+
+  if (!res.ok || !html) {
+    return { ...fallback, fetch_ok: false, status: res.status, elapsed_ms: elapsed };
+  }
+
+  // Extract <body>...</body>; if missing, use the whole doc.
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  const body = bodyMatch ? bodyMatch[1] : html;
+
+  const first2k = body.slice(0, 2000);
+  const first3k = body.slice(0, 3000);
+
+  // Above-fold CTA: any <a>, <button>, or form button text in first 2000 chars containing action words
+  const ACTION = /(book|call|schedule|consult|contact|get started|free)/i;
+  const ctaCandidates = first2k.match(/<(a|button)[^>]*>([\s\S]*?)<\/\1>/gi) || [];
+  let has_above_fold_cta = false;
+  for (const c of ctaCandidates) {
+    const text = c.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (ACTION.test(text)) { has_above_fold_cta = true; break; }
+  }
+
+  // Phone visible
+  const PHONE = /(\(\d{3}\)\s*\d{3}[-.\s]?\d{4}|\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b|\b\d{10}\b)/;
+  const has_phone_visible = PHONE.test(first3k.replace(/<[^>]+>/g, ' '));
+
+  // Forms
+  const formMatches = body.match(/<form[\s\S]*?<\/form>/gi) || [];
+  const has_intake_form = formMatches.length > 0;
+  let form_field_count = 0;
+  for (const f of formMatches) {
+    const inputs = (f.match(/<input\b[^>]*>/gi) || []).filter(t => !/type=["']?(hidden|submit|button|image|reset)["']?/i.test(t));
+    const textareas = f.match(/<textarea\b/gi) || [];
+    const selects = f.match(/<select\b/gi) || [];
+    form_field_count += inputs.length + textareas.length + selects.length;
+  }
+
+  // Reviews / testimonials
+  const REVIEW_RE = /(review|testimonial|client says|stars|rating)/i;
+  const has_reviews_or_testimonials = REVIEW_RE.test(body);
+
+  // Credentials visible
+  const CRED_RE = /(\bCPA\b|\bEA\b|Enrolled Agent|\bJD\b|Attorney|licensed|certified|member of)/i;
+  const has_credentials_visible = CRED_RE.test(body);
+
+  // Headline: first <h1>, fallback first <h2>
+  function firstTagText(tag) {
+    const m = body.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+    if (!m) return '';
+    return m[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  const headline_text = firstTagText('h1') || firstTagText('h2') || 'Not available';
+
+  // Meta description
+  const metaMatch = html.match(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']*)["'][^>]*name=["']description["']/i);
+  const meta_description = metaMatch ? metaMatch[1].trim() : '';
+
+  // Page title
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const page_title = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : '';
+
+  return {
+    has_above_fold_cta,
+    has_phone_visible,
+    has_intake_form,
+    form_field_count,
+    has_reviews_or_testimonials,
+    has_credentials_visible,
+    headline_text,
+    meta_description,
+    page_title,
+    fetch_ok: true,
+    status: res.status,
+    elapsed_ms: elapsed,
+  };
+}
+
+// ---------- conversion leak report ----------
+
+function isGenericHeadline(h) {
+  if (!h || h === 'Not available') return true;
+  const s = h.toLowerCase();
+  const hasTax = /\btax\b/.test(s);
+  const hasGeneric = /(services?|help|solutions?)/.test(s);
+  // No specifics: no city, no number, no outcome keyword
+  const hasSpecific = /(\$|\d|irs|penalt|audit|refund|resolv|reduc|save|recover|file|return)/i.test(s);
+  return hasTax && hasGeneric && !hasSpecific;
+}
+
+function calculateScore(c) {
+  let score = 100;
+  if (!c.has_above_fold_cta) score -= 25;
+  if (!c.has_intake_form) score -= 15;
+  if (c.form_field_count > 6) score -= 10;
+  if (!c.has_reviews_or_testimonials) score -= 15;
+  if (!c.has_credentials_visible) score -= 10;
+  if (isGenericHeadline(c.headline_text)) score -= 15;
+  if (!c.has_phone_visible) score -= 10;
+  return Math.max(10, score);
+}
+
+function identifyLeaks(c) {
+  const leaks = [];
+  if (!c.has_above_fold_cta) {
+    leaks.push({
+      title: 'No above-the-fold call to action',
+      description: 'Visitors land and scroll without a clear next step. High-intent traffic should see a booking or consult CTA immediately.',
+    });
+  }
+  if (!c.has_intake_form || c.form_field_count > 6) {
+    leaks.push({
+      title: 'Intake path creates friction',
+      description: 'Long or vague forms cause drop-off. A shorter, clearer path captures more qualified leads without looking cheap.',
+    });
+  }
+  if (isGenericHeadline(c.headline_text)) {
+    leaks.push({
+      title: 'Weak first-impression positioning',
+      description: 'If the headline does not state who you help and what outcome you create, visitors hesitate. That hesitation becomes lost calls.',
+    });
+  }
+  if (!c.has_reviews_or_testimonials || !c.has_credentials_visible) {
+    leaks.push({
+      title: 'Trust signals underperforming',
+      description: 'Credentials, reviews, and results are not doing enough work. Strong visual trust markers turn uncertain visitors into booked consultations.',
+    });
+  }
+  return leaks;
+}
+
+function estimateConversionRate(score) {
+  if (score >= 70) return 2.8;
+  if (score >= 40) return 1.8;
+  return 1.2;
+}
+
+function upgradedHeadlineFor(credential) {
+  switch (credential) {
+    case 'EA':   return 'Resolve IRS issues faster — without the back-and-forth.';
+    case 'CPA':  return 'Tax strategy that saves you money — not just files your return.';
+    case 'ATTY': return 'Tax disputes resolved. Penalties reduced. Your case, handled.';
+    default:     return 'Stop losing clients to a website that does not convert.';
+  }
+}
+
+function upgradedDescriptionFor(prospect) {
+  const { credential, City } = prospect;
+  const where = City ? ` in ${City}` : '';
+  switch (credential) {
+    case 'EA':   return `Enrolled agent representation${where}. Free 15-minute consult — see if we can help before you commit.`;
+    case 'CPA':  return `Tax planning and accounting${where} for owner-operators who want their numbers working harder.`;
+    case 'ATTY': return `Tax controversy and IRS defense${where}. Confidential consultation, clear next steps.`;
+    default:     return `Book a free consultation${where} and find out exactly what is costing you clients.`;
+  }
+}
+
+function buildLeakReport(prospect, crawl) {
+  const score = calculateScore(crawl);
+  const leaks = identifyLeaks(crawl);
+  const credential = prospect.credential;
+  const visitors_month = TRAFFIC_BY_CRED[credential] || 300;
+  const avg_client_value = VALUE_BY_CRED[credential] || 1500;
+  const current_rate = estimateConversionRate(score);
+
+  const current_problems = [];
+  if (isGenericHeadline(crawl.headline_text)) current_problems.push('Generic headline');
+  if (!crawl.has_above_fold_cta) current_problems.push('Weak CTA');
+  if (!crawl.has_intake_form || crawl.form_field_count > 6) current_problems.push('Friction-heavy intake');
+  if (!crawl.has_reviews_or_testimonials) current_problems.push('No social proof');
+  if (current_problems.length === 0) current_problems.push('Generic headline', 'Weak CTA');
+
+  return {
+    score,
+    leaks,
+    metrics: {
+      visitors_month,
+      current_rate,
+      optimized_rate: 3.6,
+      avg_client_value,
+      close_rate: 40,
+    },
+    before_after: {
+      current_headline: crawl.headline_text || 'Generic tax services headline',
+      current_problems,
+      upgraded_headline: upgradedHeadlineFor(credential),
+      upgraded_description: upgradedDescriptionFor(prospect),
+      upgraded_chips: ['Book a consultation', 'See services'],
+    },
+    crawl_meta: {
+      fetched: crawl.fetch_ok,
+      status: crawl.status,
+      elapsed_ms: crawl.elapsed_ms,
+      page_title: crawl.page_title,
+      meta_description: crawl.meta_description,
+    },
+  };
+}
+
+// Lead/revenue math derived from leak report
+function deriveLeadEconomics(report) {
+  const { visitors_month, current_rate, optimized_rate, avg_client_value, close_rate } = report.metrics;
+  const currentLeads = visitors_month * (current_rate / 100);
+  const optimizedLeads = visitors_month * (optimized_rate / 100);
+  const lostLeads = Math.max(0, optimizedLeads - currentLeads);
+  const lostLeadsMonth = Math.round(lostLeads);
+  const lostClientsYear = lostLeads * 12 * (close_rate / 100);
+  const revenueLostYear = Math.round(lostClientsYear * avg_client_value);
+  return { lost_leads_month: lostLeadsMonth, revenue_lost_year: revenueLostYear };
+}
+
+function formatMoney(n) {
+  if (n >= 1000) {
+    const k = n / 1000;
+    return `$${k.toFixed(k < 10 ? 1 : 0).replace(/\.0$/, '')}k`;
+  }
+  return `$${n}`;
+}
+
 // ---------- main ----------
 
 const csvPath = process.argv[2];
@@ -142,7 +405,6 @@ if (rows.length < 2) {
 let headers = rows[0].map(h => h.trim());
 const dataRows = rows.slice(1).filter(r => r.length > 0 && r.some(c => c !== ''));
 
-// Ensure tracking columns exist
 const TRACKING_COLS = [
   'wlvlp_email_1_prepared_at',
   'wlvlp_email_2_prepared_at',
@@ -170,14 +432,13 @@ function setCell(row, key, value) {
   row[i] = value;
 }
 
-// Selection logic
+// Selection
 const eligibleRaw = dataRows
   .map((row, originalIndex) => ({ row, originalIndex }))
   .filter(({ row }) => !isEmptyCell(get(row, 'email_found')))
   .filter(({ row }) => String(get(row, 'email_status')).trim().toLowerCase() !== 'invalid')
   .filter(({ row }) => isEmptyCell(get(row, 'wlvlp_email_1_prepared_at')));
 
-// Dedup by email_found (keep first occurrence)
 const seenEmails = new Set();
 const deduped = [];
 let dupCount = 0;
@@ -188,7 +449,6 @@ for (const item of eligibleRaw) {
   deduped.push(item);
 }
 
-// Sort by domain_clean ascending, nulls last
 deduped.sort((a, b) => {
   const da = String(get(a.row, 'domain_clean') || '').trim().toLowerCase();
   const db = String(get(b.row, 'domain_clean') || '').trim().toLowerCase();
@@ -200,7 +460,6 @@ deduped.sort((a, b) => {
 
 const selected = deduped.slice(0, 50);
 
-// Generate batch
 const usedSlugs = new Map();
 function uniqueSlug(base) {
   if (!base) base = 'prospect';
@@ -219,7 +478,12 @@ const gmailRows = [['email', 'first_name', 'subject', 'body']];
 const nowIso = new Date().toISOString();
 const today = nowIso.slice(0, 10);
 
-for (const { row } of selected) {
+let crawlOk = 0;
+let crawlFail = 0;
+const scoreList = [];
+
+for (let s = 0; s < selected.length; s++) {
+  const { row } = selected[s];
   const firstRaw = get(row, 'First_NAME') || get(row, 'FIRST_NAME') || get(row, 'first_name');
   const lastRaw = get(row, 'LAST_NAME') || get(row, 'last_name');
   const First = titleCase(firstRaw).split(' ')[0] || 'Friend';
@@ -238,36 +502,49 @@ for (const { row } of selected) {
   const baseSlug = slugify(`${First} ${Last} ${City} ${State}`);
   const slug = uniqueSlug(baseSlug);
 
-  const tmpl = TEMPLATE_BY_CRED[credential];
-  const credLabel = tmpl.label;
-  const credLabelPlural = CREDENTIAL_LABEL_PLURAL[credential];
-  const practiceLabel = PRACTICE_LABEL[credential];
-
-  let subject1, headline;
-  if (firmBucket === 'solo_brand') {
-    subject1 = `${First} — ${credLabelPlural}s running ${DBA} are spending zero on their web presence`;
-    headline = `${First}, here is what a modern site looks like for ${DBA}`;
-  } else {
-    subject1 = `${First} — ${credLabelPlural}s in ${City} are upgrading their web presence`;
-    headline = `${First}, your ${City} practice deserves a site this sharp`;
+  // Crawl with rate limiting
+  const crawl = await crawlSite(domainClean);
+  if (crawl.fetch_ok) crawlOk++; else crawlFail++;
+  if (s < selected.length - 1) {
+    await new Promise(r => setTimeout(r, 2000));
   }
 
-  const subheadline = `A ready-made professional website for ${credLabelPlural} practices`;
+  const prospectCtx = { credential, City };
+  const report = buildLeakReport(prospectCtx, crawl);
+  scoreList.push(report.score);
+  const econ = deriveLeadEconomics(report);
+  const lostLeadsMonth = econ.lost_leads_month;
+  const revenueLostYear = econ.revenue_lost_year;
+  const revenueLostStr = formatMoney(revenueLostYear);
+  const leakCount = report.leaks.length;
+
+  const tmpl = TEMPLATE_BY_CRED[credential];
+  const credLabelPlural = CREDENTIAL_LABEL_PLURAL[credential];
+
+  // Subjects (updated to reference score)
+  let subject1;
+  if (firmBucket === 'solo_brand') {
+    subject1 = `${First} — ${DBA} site scored ${report.score}/100 on conversion`;
+  } else {
+    subject1 = `${First} — your ${City || 'local'} practice site scored ${report.score}/100 on conversion`;
+  }
+
+  const headline = `${First}, your website may be losing ${lostLeadsMonth}+ leads every month`;
+  const subheadline = `Based on your current site structure, CTA placement, and intake flow, this report estimates how many potential clients leave before they book, call, or submit a form.`;
+
+  const firmOrCityRef = firmBucket === 'solo_brand' ? DBA : `your ${City || 'local'} practice`;
 
   const body1 =
 `${First},
 
-Your clients check your website before they ever pick up the phone. Most ${credLabelPlural} sites still look like they were built ten years ago — and prospects notice.
+Your clients check your website before they ever pick up the phone. Based on a quick look at ${domainClean || 'your site'}, your site may be leaving ${lostLeadsMonth}+ leads on the table every month — that is roughly ${revenueLostStr}/year in unrealized revenue.
 
-We have 210+ ready-made professional templates built for ${practiceLabel} practices. Pick one, claim it for $249, and your new site is live in minutes. No designer, no agency, no waiting.
+I put together a free Conversion Leak Report for ${firmOrCityRef} that breaks down exactly where the drop-off is happening and what a fix looks like.
 
-Here is a template I matched to your practice type — take a look, no account needed:
+Take a look — no account needed:
 https://websitelotto.virtuallaunch.pro/asset/${slug}
 
-Or try your luck with a free scratch ticket — you might win a discount or free hosting:
-https://websitelotto.virtuallaunch.pro/scratch
-
-If you want to see more options, I can walk you through the catalog — 15 minutes on Google Meet.
+If any of this resonates, I can walk you through the numbers — 15 minutes on Google Meet.
 https://cal.com/vlp/wlvlp-discovery
 
 --
@@ -276,18 +553,18 @@ Website Lotto
 websitelotto.virtuallaunch.pro
 `;
 
-  const firmOrCityRef = firmBucket === 'solo_brand' ? DBA : `your ${City} practice`;
-  const subject2 = `Quick question about your firm's website, ${First}`;
+  const subject2 = `${First} — ${leakCount} conversion leaks on ${domainClean || 'your site'}, ${revenueLostStr}/yr at stake`;
   const body2 =
 `${First},
 
-I sent you a note a few days ago about upgrading your firm's web presence. Wanted to follow up with a direct link to the template preview I put together for ${firmOrCityRef}:
+I sent you a note a few days ago with a Conversion Leak Report for ${firmOrCityRef}. Your site scored ${report.score}/100 — the report breaks down ${leakCount} specific issues costing an estimated ${revenueLostStr}/year.
+
+Here is the direct link:
 https://websitelotto.virtuallaunch.pro/asset/${slug}
 
-If committing to $249 feels like a leap, try a free scratch ticket first — some win hosting credits or template discounts:
-https://websitelotto.virtuallaunch.pro/scratch
+The report includes a before/after of your homepage copy and an interactive calculator so you can adjust the numbers yourself.
 
-Happy to walk you through the full catalog if you want more options.
+Happy to walk through it live if you want.
 https://cal.com/vlp/wlvlp-discovery
 
 --
@@ -305,6 +582,8 @@ websitelotto.virtuallaunch.pro
     practice_type: credential,
     city: City,
     state: State,
+    firm: DBA,
+    conversion_leak_report: report,
     cta_claim_url: `https://websitelotto.virtuallaunch.pro/sites/${templateSlug}`,
     cta_scratch_url: 'https://websitelotto.virtuallaunch.pro/scratch',
     cta_booking_url: 'https://cal.com/vlp/wlvlp-discovery',
@@ -326,25 +605,25 @@ websitelotto.virtuallaunch.pro
   });
 
   gmailRows.push([email, First, subject1, body1]);
-
-  // Mark prepared
   setCell(row, 'wlvlp_email_1_prepared_at', nowIso);
 }
 
-// Write outputs
 const jsonPath = resolve(outDir, `wlvlp-batch-${today}.json`);
 const csvOutPath = resolve(outDir, `gmail-email1-${today}.csv`);
 writeFileSync(jsonPath, JSON.stringify(batch, null, 2) + '\n', 'utf8');
 writeFileSync(csvOutPath, rowsToCSV(gmailRows), 'utf8');
 
-// Write source CSV back with updated tracking column
 const updatedRows = [headers, ...dataRows];
 writeFileSync(absCsvPath, rowsToCSV(updatedRows), 'utf8');
 
-// Summary
-console.log(`Batch complete — ${batch.length} prospects`);
+const min = scoreList.length ? Math.min(...scoreList) : 0;
+const max = scoreList.length ? Math.max(...scoreList) : 0;
+const avg = scoreList.length ? (scoreList.reduce((a, b) => a + b, 0) / scoreList.length).toFixed(1) : 0;
+
+console.log(`\nBatch complete — ${batch.length} prospects`);
 console.log(`Deduped: ${dupCount} duplicate emails removed`);
-console.log(`Remaining eligible: ${deduped.length}`);
+console.log(`Crawls: ${crawlOk} ok / ${crawlFail} fail`);
+console.log(`Score: min=${min} max=${max} avg=${avg}`);
 console.log(`Output:`);
 console.log(`  scale/output/wlvlp-batch-${today}.json`);
 console.log(`  scale/output/gmail-email1-${today}.csv`);
