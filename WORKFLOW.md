@@ -115,13 +115,23 @@ grep -rl "PASTE HTML" public/sites/*/preview.html | wc -l  # Count remaining
 
 ## SCALE Campaign Operations
 
-### Daily batch
-1. Upload FOIA CSV to Claude
-2. Claude generates next 50 WLVLP prospects (email copy + asset page data)
-3. Push email1 queue to R2: `vlp-scale/wlvlp-send-queue/email1-pending.json`
-4. Push asset pages to R2: `vlp-scale/wlvlp-asset-pages/{slug}.json`
-5. VLP Worker cron sends Email 1
-6. 3 days later: generate Email 2 batch, push to R2
+The SCALE pipeline is **fully automated** by the VLP Worker. There is no
+daily manual batch step in Claude Code anymore.
+
+### Operator workflow
+1. Open `https://websitelotto.virtuallaunch.pro/admin/upload`
+2. Sign in (uses the standard `vlp_session` cookie)
+3. Choose the FOIA CSV — the page parses it client-side and shows a row count
+4. Click **Upload to Worker** → the page POSTs to `/v1/wlvlp/admin/upload-prospects`
+5. The Worker stores prospects in R2 and the cron takes over
+
+### Automated pipeline (VLP Worker cron)
+1. Pull pending prospects from `vlp-scale/wlvlp-prospects/`
+2. Apply SCALE.md selection logic (`wlvlp_email_1_prepared_at` empty, valid email, etc.)
+3. Generate slug, match template by credential, render asset page JSON
+4. Write asset pages to `vlp-scale/wlvlp-asset-pages/{slug}.json`
+5. Compose Email 1, queue to Gmail, send, mark `wlvlp_email_1_sent_at`
+6. Schedule Email 2 three days later, send, mark `wlvlp_email_2_sent_at`
 
 ### Asset page route
 - URL: `websitelotto.virtuallaunch.pro/asset/[slug]`
@@ -133,7 +143,8 @@ grep -rl "PASTE HTML" public/sites/*/preview.html | wc -l  # Count remaining
 - Scratch ticket redemptions
 - Template claims (Stripe)
 
-See `SCALE.md` for full campaign spec and `.claude/SKILL.md` for batch generator skill.
+See `SCALE.md` for the full campaign spec (Automation section). The
+`.claude/SKILL.md` batch generator is deprecated.
 
 ---
 

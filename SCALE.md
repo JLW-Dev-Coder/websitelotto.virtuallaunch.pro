@@ -127,6 +127,43 @@ websitelotto.virtuallaunch.pro
    Columns exactly: `email, first_name, subject, body`
 3. **Updated source CSV:** write `wlvlp_email_1_prepared_at` timestamp
 
+## Automation
+
+As of 2026-04-07 the entire SCALE pipeline is run by the VLP Worker on a
+cron schedule. There is no manual batch generation step in Claude Code.
+
+### Operator entry point
+- URL: `https://websitelotto.virtuallaunch.pro/admin/upload`
+- Auth: standard `vlp_session` cookie (admin accounts only)
+- Action: parses the FOIA CSV client-side and POSTs the rows as JSON to
+  `POST /v1/wlvlp/admin/upload-prospects`
+- The Worker stores incoming rows in R2 under `vlp-scale/wlvlp-prospects/`
+
+### Cron pipeline (VLP Worker)
+1. **Select** — apply the selection logic above against prospects whose
+   `wlvlp_email_1_prepared_at` is empty
+2. **Slug** — derive `{first}-{last}-{city}-{state}` with title stripping and
+   `-2`/`-3` collision suffixes
+3. **Template match** — pick a template from `wlvlp-catalog.json` based on
+   credential
+4. **Asset page** — render the `asset_page` object and write to
+   `vlp-scale/wlvlp-asset-pages/{slug}.json`
+5. **Email 1** — compose the plain-text body using the structure above and
+   queue it to Gmail; on send, set `wlvlp_email_1_sent_at`
+6. **Email 2** — three days later, compose the follow-up, queue, send, and
+   set `wlvlp_email_2_sent_at`
+7. **Tracking** — opens, clicks, asset page views, scratch redemptions, and
+   Stripe claims are all logged by the Worker
+
+### What the operator does NOT do anymore
+- No manual JSON batches in `scale/wlvlp-batches/`
+- No manual Gmail CSV exports in `scale/wlvlp-gmail/`
+- No manual writes to `wlvlp_*` tracking columns
+- No manual R2 uploads
+
+The output file paths in the next section are kept for historical reference
+only — the Worker no longer writes them.
+
 ## Tone Rules
 - Direct, no fluff
 - No emoji anywhere

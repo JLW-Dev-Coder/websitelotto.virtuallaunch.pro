@@ -63,12 +63,23 @@ When user says "I pasted HTML into [files]":
 
 ---
 
-# WLVLP SCALE Batch Generator
+# WLVLP SCALE Batch Generator — DEPRECATED
 
-Trigger phrases: "process leads for WLVLP", "generate WLVLP emails",
-"build WLVLP asset pages", "run WLVLP batch", "WLVLP outreach".
+> **DEPRECATED 2026-04-07.** Manual batch generation in Claude Code is no
+> longer the way WLVLP outreach is run. The full pipeline (selection, slug
+> generation, asset page rendering, email composition, sending, follow-ups)
+> now runs as an automated VLP Worker cron.
+>
+> **Replacement workflow:**
+> 1. Open `/admin/upload` in the WLVLP frontend
+> 2. Upload the FOIA CSV
+> 3. The Worker cron handles everything from there
+>
+> See `WORKFLOW.md` (SCALE Campaign Operations) and `SCALE.md` (Automation
+> section) for the current pipeline. The notes below are kept only as a
+> historical reference for the personalization rules the Worker now applies.
 
-## Inputs
+## Inputs (historical)
 - Source CSV: `IRS_FOIA_SORTED_-_results-20260401-195853.csv` (uploaded by user)
 - Reference: `SCALE.md` for selection logic, copy templates, output paths
 - Catalog: `wlvlp-catalog.json` for template slug matching by category
