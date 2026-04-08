@@ -305,6 +305,66 @@ export interface AssetPageData {
   conversion_leak_report?: ConversionLeakReport;
 }
 
+export interface SiteRequestPayload {
+  slug: string;
+  firm_name: string;
+  credential: string;
+  city: string;
+  state: string;
+  services: string[];
+  target_clients: string;
+  color_scheme: string;
+  logo_url: string;
+  phone: string;
+  email: string;
+  website_url: string;
+  additional_notes: string;
+}
+
+export interface SiteRequestResponse {
+  ok: boolean;
+  request_id?: string;
+  error?: string;
+}
+
+export async function submitSiteRequest(data: SiteRequestPayload): Promise<SiteRequestResponse> {
+  try {
+    const res = await fetch(`${API_BASE}/v1/wlvlp/site-requests`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: json?.error ?? `HTTP ${res.status}` };
+    return { ok: true, ...json };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Request failed' };
+  }
+}
+
+export interface SiteRequestStatus {
+  ok: boolean;
+  status: string;
+  generated_at?: string;
+}
+
+export async function getSiteRequestStatus(slug: string): Promise<SiteRequestStatus> {
+  try {
+    const res = await fetch(`${API_BASE}/v1/wlvlp/site-requests/${slug}`, {
+      credentials: 'include',
+    });
+    if (!res.ok) return { ok: false, status: 'unknown' };
+    return res.json();
+  } catch {
+    return { ok: false, status: 'unknown' };
+  }
+}
+
+export function getCustomSiteUrl(slug: string): string {
+  return `${API_BASE}/v1/wlvlp/custom-sites/${slug}`;
+}
+
 export async function getAssetPage(slug: string): Promise<AssetPageData | null> {
   try {
     const res = await fetch(`${API_BASE}/v1/wlvlp/asset-pages/${slug}`, {

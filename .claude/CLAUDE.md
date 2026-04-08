@@ -147,6 +147,22 @@ All calls go to `api.virtuallaunch.pro` with `credentials: 'include'`.
 - Config: `PATCH /v1/wlvlp/config/:slug`
 - Upload: `POST /v1/wlvlp/upload-logo`
 - Affiliate: `GET /v1/affiliates/:account_id`, `GET /v1/affiliates/:account_id/events`, `POST /v1/affiliates/connect/onboard`, `POST /v1/affiliates/payout/request`
+- Asset pages: `GET /v1/wlvlp/asset-pages/:slug`
+- Site requests: `POST /v1/wlvlp/site-requests`, `GET /v1/wlvlp/site-requests/:slug`
+- Custom sites: `GET /v1/wlvlp/custom-sites/:slug` (generated homepage preview)
+
+---
+
+## Conversion Leak Report Questionnaire
+
+The asset page (`/asset/{slug}`) renders an inline questionnaire under the Conversion Leak Report layout. Prospects answer questions about their firm and submit a free site generation request:
+
+1. Form fields: firm_name (required, pre-filled from `data.firm`), services (checkboxes — at least one required, includes "Other" with text input), target_clients, color_scheme (5 visual swatches incl. "match my branding" custom hex), logo_url, phone, email, additional_notes.
+2. City and state are pre-filled from the asset page data and submitted with the request.
+3. Submit calls `POST /v1/wlvlp/site-requests` with the full payload including the asset slug.
+4. On success the form is replaced by a confirmation panel: "Your homepage is being built." The panel then polls `GET /v1/wlvlp/site-requests/:slug` every 30 s.
+5. When `status === 'generated'`, the panel switches to "Your homepage is ready." with an iframe + new-tab link to `GET /v1/wlvlp/custom-sites/:slug`.
+6. The legacy "See the upgraded version of your website" CTA was removed; the questionnaire replaces it. The booking call CTA and "Browse templates" CTA remain.
 
 ---
 

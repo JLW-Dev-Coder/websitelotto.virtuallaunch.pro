@@ -2,7 +2,14 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { getAssetPage, type AssetPageData, type ConversionLeakReport } from '@/lib/api';
+import {
+  getAssetPage,
+  submitSiteRequest,
+  getSiteRequestStatus,
+  getCustomSiteUrl,
+  type AssetPageData,
+  type ConversionLeakReport,
+} from '@/lib/api';
 import styles from './page.module.css';
 
 interface Props {
@@ -77,7 +84,7 @@ export default function AssetClient({ initialSlug }: Props) {
   }
 
   if (data.conversion_leak_report) {
-    return <LeakReport data={data} report={data.conversion_leak_report} />;
+    return <LeakReport data={data} report={data.conversion_leak_report} slug={slug} />;
   }
 
   // Fallback: original template-preview layout
@@ -197,9 +204,10 @@ function scoreColor(score: number): string {
 interface LeakReportProps {
   data: AssetPageData;
   report: ConversionLeakReport;
+  slug: string;
 }
 
-function LeakReport({ data, report }: LeakReportProps) {
+function LeakReport({ data, report, slug }: LeakReportProps) {
   const firm = data.firm ?? data.practice_type ?? 'your firm';
   const [visitors, setVisitors] = useState(report.metrics.visitors_month);
   const [currentRate, setCurrentRate] = useState(report.metrics.current_rate);
@@ -394,11 +402,11 @@ function LeakReport({ data, report }: LeakReportProps) {
           </div>
         </section>
 
+        {/* Questionnaire */}
+        <Questionnaire slug={slug} data={data} />
+
         {/* CTAs */}
         <section className={styles.ctaSection}>
-          <a href={data.cta_claim_url} className={styles.primaryCta}>
-            See the upgraded version of your website
-          </a>
           <a href={data.cta_booking_url} className={styles.bookingCta}>
             Talk through my numbers — 15 min call
           </a>
@@ -415,5 +423,351 @@ function LeakReport({ data, report }: LeakReportProps) {
         </p>
       </footer>
     </div>
+  );
+}
+
+const SERVICE_OPTIONS = [
+  'Tax Preparation',
+  'Tax Resolution',
+  'IRS Representation',
+  'Bookkeeping',
+  'Estate Planning',
+  'Business Advisory',
+  'Payroll Services',
+];
+
+interface ColorSwatch {
+  id: string;
+  label: string;
+  primary: string;
+  secondary: string;
+}
+
+const COLOR_SWATCHES: ColorSwatch[] = [
+  { id: 'professional-blue', label: 'Professional Blue', primary: '#1d4ed8', secondary: '#f8fafc' },
+  { id: 'modern-teal', label: 'Modern Teal', primary: '#0d9488', secondary: '#f0fdfa' },
+  { id: 'classic-navy', label: 'Classic Navy', primary: '#1e3a5f', secondary: '#f8fafc' },
+  { id: 'warm-charcoal', label: 'Warm Charcoal', primary: '#374151', secondary: '#f9fafb' },
+];
+
+interface QuestionnaireProps {
+  slug: string;
+  data: AssetPageData;
+}
+
+function Questionnaire({ slug, data }: QuestionnaireProps) {
+  const [firmName, setFirmName] = useState(data.firm ?? '');
+  const [services, setServices] = useState<Set<string>>(new Set());
+  const [otherChecked, setOtherChecked] = useState(false);
+  const [otherService, setOtherService] = useState('');
+  const [targetClients, setTargetClients] = useState('');
+  const [colorScheme, setColorScheme] = useState<string>('professional-blue');
+  const [customColor, setCustomColor] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [notes, setNotes] = useState('');
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [generatedReady, setGeneratedReady] = useState(false);
+
+  const toggleService = (svc: string) => {
+    setServices((prev) => {
+      const next = new Set(prev);
+      if (next.has(svc)) next.delete(svc);
+      else next.add(svc);
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (!submitted || generatedReady) return;
+    let cancelled = false;
+    const interval = setInterval(async () => {
+      const result = await getSiteRequestStatus(slug);
+      if (cancelled) return;
+      if (result.ok && result.status === 'generated') {
+        setGeneratedReady(true);
+        clearInterval(interval);
+      }
+    }, 30000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [submitted, generatedReady, slug]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!firmName.trim()) {
+      setError('Please enter your firm name.');
+      return;
+    }
+    const allServices = Array.from(services);
+    if (otherChecked && otherService.trim()) {
+      allServices.push(otherService.trim());
+    }
+    if (allServices.length === 0) {
+      setError('Please select at least one service.');
+      return;
+    }
+
+    setSubmitting(true);
+    const colorValue =
+      colorScheme === 'custom'
+        ? `Custom: ${customColor}`
+        : COLOR_SWATCHES.find((c) => c.id === colorScheme)?.label ?? colorScheme;
+
+    const payload = {
+      slug,
+      firm_name: firmName.trim(),
+      credential: '',
+      city: data.city ?? '',
+      state: data.state ?? '',
+      services: allServices,
+      target_clients: targetClients.trim(),
+      color_scheme: colorValue,
+      logo_url: logoUrl.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      website_url: '',
+      additional_notes: notes.trim(),
+    };
+
+    const result = await submitSiteRequest(payload);
+    setSubmitting(false);
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setError(result.error ?? 'Something went wrong. Please try again.');
+    }
+  };
+
+  if (submitted) {
+    return (
+      <section className={styles.questionnaireSection}>
+        <div className={styles.confirmPanel}>
+          {generatedReady ? (
+            <>
+              <h2 className={styles.confirmHeadline}>Your homepage is ready.</h2>
+              <p className={styles.confirmMessage}>
+                We&apos;ve generated a custom homepage for {firmName}. Preview it below or open in a new tab.
+              </p>
+              <a
+                href={getCustomSiteUrl(slug)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.primaryCta}
+              >
+                Preview your new homepage
+              </a>
+              <div className={styles.previewFrameWrap}>
+                <iframe
+                  src={getCustomSiteUrl(slug)}
+                  className={styles.previewIframe}
+                  title="Your custom homepage"
+                  loading="lazy"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className={styles.confirmHeadline}>Your homepage is being built.</h2>
+              <p className={styles.confirmMessage}>
+                We are generating a custom homepage for {firmName}.
+                {email
+                  ? ` You will receive an email at ${email} when it is ready`
+                  : " We'll let you know when it is ready"}
+                {' '}— typically within 24 hours.
+              </p>
+              <a href="https://websitelotto.virtuallaunch.pro" className={styles.ghostCta}>
+                In the meantime, browse 210+ templates
+              </a>
+            </>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className={styles.questionnaireSection}>
+      <div className={styles.questionnaireHeader}>
+        <h2 className={styles.sectionHeading}>Fix these leaks. Your upgraded homepage ships in 24 hours.</h2>
+        <p className={styles.questionnaireSub}>
+          Answer a few questions and we will generate a custom homepage for your practice — free, no commitment.
+        </p>
+      </div>
+
+      <form className={styles.questionnaireForm} onSubmit={handleSubmit}>
+        <label className={styles.qField}>
+          <span className={styles.qLabel}>Firm name</span>
+          <input
+            type="text"
+            className={styles.qInput}
+            value={firmName}
+            onChange={(e) => setFirmName(e.target.value)}
+            placeholder="e.g., Acme Tax & Accounting"
+          />
+        </label>
+
+        <div className={styles.qField}>
+          <span className={styles.qLabel}>What services do you offer?</span>
+          <div className={styles.checkboxGrid}>
+            {SERVICE_OPTIONS.map((svc) => {
+              const checked = services.has(svc);
+              return (
+                <label
+                  key={svc}
+                  className={`${styles.checkboxItem} ${checked ? styles.checkboxItemActive : ''}`}
+                >
+                  <input
+                    type="checkbox"
+                    className={styles.checkboxInput}
+                    checked={checked}
+                    onChange={() => toggleService(svc)}
+                  />
+                  <span className={styles.checkboxBox} aria-hidden="true" />
+                  <span>{svc}</span>
+                </label>
+              );
+            })}
+            <label
+              className={`${styles.checkboxItem} ${otherChecked ? styles.checkboxItemActive : ''}`}
+            >
+              <input
+                type="checkbox"
+                className={styles.checkboxInput}
+                checked={otherChecked}
+                onChange={() => setOtherChecked((v) => !v)}
+              />
+              <span className={styles.checkboxBox} aria-hidden="true" />
+              <span>Other</span>
+            </label>
+          </div>
+          {otherChecked && (
+            <input
+              type="text"
+              className={styles.qInput}
+              value={otherService}
+              onChange={(e) => setOtherService(e.target.value)}
+              placeholder="Tell us what other services you offer"
+              style={{ marginTop: 10 }}
+            />
+          )}
+        </div>
+
+        <label className={styles.qField}>
+          <span className={styles.qLabel}>Who are your ideal clients?</span>
+          <input
+            type="text"
+            className={styles.qInput}
+            value={targetClients}
+            onChange={(e) => setTargetClients(e.target.value)}
+            placeholder="e.g., small business owners in Texas, high-net-worth individuals"
+          />
+        </label>
+
+        <div className={styles.qField}>
+          <span className={styles.qLabel}>Preferred color scheme</span>
+          <div className={styles.swatchRow}>
+            {COLOR_SWATCHES.map((sw) => {
+              const active = colorScheme === sw.id;
+              return (
+                <button
+                  type="button"
+                  key={sw.id}
+                  className={`${styles.swatch} ${active ? styles.swatchActive : ''}`}
+                  onClick={() => setColorScheme(sw.id)}
+                  aria-label={sw.label}
+                >
+                  <span
+                    className={styles.swatchCircle}
+                    style={{
+                      background: `linear-gradient(135deg, ${sw.primary} 0%, ${sw.primary} 50%, ${sw.secondary} 50%, ${sw.secondary} 100%)`,
+                    }}
+                  />
+                  <span className={styles.swatchLabel}>{sw.label}</span>
+                </button>
+              );
+            })}
+            <button
+              type="button"
+              className={`${styles.swatch} ${colorScheme === 'custom' ? styles.swatchActive : ''}`}
+              onClick={() => setColorScheme('custom')}
+              aria-label="Match my current branding"
+            >
+              <span className={`${styles.swatchCircle} ${styles.swatchCustom}`}>?</span>
+              <span className={styles.swatchLabel}>Match my branding</span>
+            </button>
+          </div>
+          {colorScheme === 'custom' && (
+            <input
+              type="text"
+              className={styles.qInput}
+              value={customColor}
+              onChange={(e) => setCustomColor(e.target.value)}
+              placeholder="e.g., #1d4ed8 or describe your brand colors"
+              style={{ marginTop: 10 }}
+            />
+          )}
+        </div>
+
+        <label className={styles.qField}>
+          <span className={styles.qLabel}>Your logo</span>
+          <input
+            type="url"
+            className={styles.qInput}
+            value={logoUrl}
+            onChange={(e) => setLogoUrl(e.target.value)}
+            placeholder="https://yoursite.com/logo.png (optional)"
+          />
+        </label>
+
+        <div className={styles.qFieldGrid}>
+          <label className={styles.qField}>
+            <span className={styles.qLabel}>Phone number</span>
+            <input
+              type="tel"
+              className={styles.qInput}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="(555) 123-4567"
+            />
+          </label>
+          <label className={styles.qField}>
+            <span className={styles.qLabel}>Email</span>
+            <input
+              type="email"
+              className={styles.qInput}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@yourfirm.com"
+            />
+          </label>
+        </div>
+
+        <label className={styles.qField}>
+          <span className={styles.qLabel}>Anything else we should know?</span>
+          <textarea
+            className={styles.qTextarea}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Optional — anything that should shape your homepage"
+            rows={4}
+          />
+        </label>
+
+        {error && <div className={styles.formError}>{error}</div>}
+
+        <button type="submit" className={styles.submitCta} disabled={submitting}>
+          {submitting ? 'Submitting…' : 'Generate My Upgraded Homepage'}
+        </button>
+      </form>
+    </section>
   );
 }
