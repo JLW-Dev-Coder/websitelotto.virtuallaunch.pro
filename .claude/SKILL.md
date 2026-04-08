@@ -60,3 +60,67 @@ When user says "I pasted HTML into [files]":
 - wlvlp-catalog.json is the master inventory
 - Directory convention: `public/sites/{slug}/index.html` — never flat files
 - Do not delete existing 48 site directories
+
+---
+
+# WLVLP SCALE Batch Generator
+
+Trigger phrases: "process leads for WLVLP", "generate WLVLP emails",
+"build WLVLP asset pages", "run WLVLP batch", "WLVLP outreach".
+
+## Inputs
+- Source CSV: `IRS_FOIA_SORTED_-_results-20260401-195853.csv` (uploaded by user)
+- Reference: `SCALE.md` for selection logic, copy templates, output paths
+- Catalog: `wlvlp-catalog.json` for template slug matching by category
+
+## Selection
+1. Filter rows where `email_found` is non-empty, not "undefined", not NaN
+2. Filter where `email_status` != "invalid"
+3. Filter where `wlvlp_email_1_prepared_at` is empty
+4. Sort ascending by `domain_clean` (nulls last)
+5. Take first 50
+
+## Per-prospect processing
+
+For each row:
+
+1. **Slug:** `{first}-{last}-{city}-{state}` lowercase, hyphens, strip titles
+   (Mr., Mrs., Dr., CPA, EA, JD, Esq.). Dedup with `-2`, `-3` on collision.
+
+2. **Credential label:** map `credential` → "Enrolled Agent" | "CPA" | "Tax Attorney" | "Tax Professional"
+
+3. **Template match:** pick from `wlvlp-catalog.json` by credential:
+   - EA / unknown → tax / clean modern category
+   - CPA → accounting / corporate category
+   - JD/Attorney → legal / professional services category
+
+4. **firm_bucket personalization:**
+   - `solo_brand` → solo subject + headline (see SCALE.md)
+   - `local_firm` → firm subject + headline
+
+5. **Asset page object:** build per `asset_page` schema in SCALE.md
+
+6. **Email 1 body:** fill the template in SCALE.md with `{First}`, asset page URL,
+   scratch URL, booking URL. No emoji. No exclamation marks. Plain text.
+
+## Outputs
+
+1. **JSON batch:** `scale/wlvlp-batches/wlvlp-batch-{YYYY-MM-DD}.json`
+   Array of `{ email, first_name, slug, subject, body, asset_page }`
+
+2. **Gmail CSV:** `scale/wlvlp-gmail/email1/{YYYY-MM-DD}-batch.csv`
+   Columns exactly: `email, first_name, subject, body`
+
+3. **Asset pages:** one JSON per slug, ready to push to R2 at
+   `vlp-scale/wlvlp-asset-pages/{slug}.json`
+
+4. **Updated source CSV:** write `wlvlp_email_1_prepared_at` = current ISO timestamp
+   for every selected row
+
+## Hard rules
+- Never invent prospects — only use rows from the source CSV
+- Never reuse a slug from a prior batch
+- Never modify TTMP tracking columns — only `wlvlp_*` columns
+- Plain text only. No emoji. No exclamation marks. No "guaranteed", no "lottery"
+- Use the term "scratch ticket", never "raffle" or "lottery"
+- Templates in `public/sites/` are immutable — do not edit them as part of the batch

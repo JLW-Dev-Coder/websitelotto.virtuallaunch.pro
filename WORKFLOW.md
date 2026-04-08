@@ -113,6 +113,30 @@ grep -rl "PASTE HTML" public/sites/*/preview.html | wc -l  # Count remaining
 
 ---
 
+## SCALE Campaign Operations
+
+### Daily batch
+1. Upload FOIA CSV to Claude
+2. Claude generates next 50 WLVLP prospects (email copy + asset page data)
+3. Push email1 queue to R2: `vlp-scale/wlvlp-send-queue/email1-pending.json`
+4. Push asset pages to R2: `vlp-scale/wlvlp-asset-pages/{slug}.json`
+5. VLP Worker cron sends Email 1
+6. 3 days later: generate Email 2 batch, push to R2
+
+### Asset page route
+- URL: `websitelotto.virtuallaunch.pro/asset/[slug]`
+- Served by: VLP Worker reading from R2
+
+### Tracking
+- Email sends, opens, clicks (VLP Worker)
+- Asset page views per slug (VLP Worker)
+- Scratch ticket redemptions
+- Template claims (Stripe)
+
+See `SCALE.md` for full campaign spec and `.claude/SKILL.md` for batch generator skill.
+
+---
+
 ## Troubleshooting
 
 - **Template not loading:** Check `public/sites/{slug}/preview.html` exists and has real HTML
