@@ -311,7 +311,13 @@ export async function getAssetPage(slug: string): Promise<AssetPageData | null> 
       method: 'GET',
     });
     if (!res.ok) return null;
-    return res.json();
+    const json = await res.json();
+    // R2 records wrap the page payload under `asset_page`. Unwrap it so callers
+    // can read fields (headline, conversion_leak_report, ...) directly.
+    if (json && typeof json === 'object' && json.asset_page) {
+      return json.asset_page as AssetPageData;
+    }
+    return json as AssetPageData;
   } catch {
     return null;
   }
