@@ -271,17 +271,38 @@ export function requestPayout(amount: number): Promise<{ payout_id: string; amou
   });
 }
 
+export interface ConversionLeakReport {
+  score: number;
+  leaks: { title: string; description: string }[];
+  metrics: {
+    visitors_month: number;
+    current_rate: number;
+    optimized_rate: number;
+    avg_client_value: number;
+    close_rate: number;
+  };
+  before_after: {
+    current_headline: string;
+    current_problems: string[];
+    upgraded_headline: string;
+    upgraded_description: string;
+    upgraded_chips: string[];
+  };
+}
+
 export interface AssetPageData {
   headline: string;
   subheadline: string;
   template_preview_slug: string;
   template_preview_url: string;
   practice_type: string;
+  firm?: string;
   city: string;
   state: string;
   cta_claim_url: string;
   cta_scratch_url: string;
   cta_booking_url: string;
+  conversion_leak_report?: ConversionLeakReport;
 }
 
 export async function getAssetPage(slug: string): Promise<AssetPageData | null> {

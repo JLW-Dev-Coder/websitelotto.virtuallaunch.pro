@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { getAssetPage, type AssetPageData } from '@/lib/api';
+import { getAssetPage, type AssetPageData, type ConversionLeakReport } from '@/lib/api';
 import styles from './page.module.css';
 
 interface Props {
@@ -16,8 +16,6 @@ export default function AssetClient({ initialSlug }: Props) {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    // The build emits a single shell page; the real prospect slug lives in
-    // the URL after a Cloudflare Pages rewrite. Pull it from window.location.
     let realSlug = initialSlug;
     if (typeof window !== 'undefined') {
       const parts = window.location.pathname.split('/').filter(Boolean);
@@ -78,6 +76,11 @@ export default function AssetClient({ initialSlug }: Props) {
     );
   }
 
+  if (data.conversion_leak_report) {
+    return <LeakReport data={data} report={data.conversion_leak_report} />;
+  }
+
+  // Fallback: original template-preview layout
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -168,6 +171,246 @@ export default function AssetClient({ initialSlug }: Props) {
       <footer className={styles.footer}>
         <p>
           © Website Lotto ·{' '}
+          <Link href="/" className={styles.footerLink}>websitelotto.virtuallaunch.pro</Link>
+        </p>
+      </footer>
+    </div>
+  );
+}
+
+function formatMoney(n: number): string {
+  if (!isFinite(n)) return '$0';
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function formatInt(n: number): string {
+  if (!isFinite(n)) return '0';
+  return Math.round(n).toLocaleString('en-US');
+}
+
+function scoreColor(score: number): string {
+  if (score >= 70) return '#00F0D0';
+  if (score >= 40) return '#FFE534';
+  return '#FF2D8A';
+}
+
+interface LeakReportProps {
+  data: AssetPageData;
+  report: ConversionLeakReport;
+}
+
+function LeakReport({ data, report }: LeakReportProps) {
+  const firm = data.firm ?? data.practice_type ?? 'your firm';
+  const [visitors, setVisitors] = useState(report.metrics.visitors_month);
+  const [currentRate, setCurrentRate] = useState(report.metrics.current_rate);
+  const [avgValue, setAvgValue] = useState(report.metrics.avg_client_value);
+  const [closeRate, setCloseRate] = useState(report.metrics.close_rate);
+
+  const optimizedRate = report.metrics.optimized_rate ?? 3.6;
+
+  const calc = useMemo(() => {
+    const leadsCaptured = (visitors * currentRate) / 100;
+    const leadsOptimized = (visitors * optimizedRate) / 100;
+    const leadsLost = Math.max(0, leadsOptimized - leadsCaptured);
+    const revenueLostMonth = leadsLost * (closeRate / 100) * avgValue;
+    const revenueLostYear = revenueLostMonth * 12;
+    const recoveryEstimate = leadsOptimized * (closeRate / 100) * avgValue * 12;
+    return { leadsCaptured, leadsLost, revenueLostMonth, revenueLostYear, recoveryEstimate };
+  }, [visitors, currentRate, optimizedRate, avgValue, closeRate]);
+
+  const color = scoreColor(report.score);
+  const circumference = 2 * Math.PI * 54;
+  const progress = (report.score / 100) * circumference;
+
+  return (
+    <div className={styles.reportPage}>
+      <header className={styles.reportHeader}>
+        <div className={styles.reportHeaderInner}>
+          <div className={styles.brand}>Conversion Leak Report</div>
+          <span className={styles.badge}>Tax professionals</span>
+        </div>
+      </header>
+
+      <main className={styles.reportMain}>
+        {/* Hero */}
+        <section className={styles.reportHero}>
+          <div className={styles.eyebrow}>
+            Prepared for {firm} — {data.city}, {data.state}
+          </div>
+          <h1 className={styles.reportTitle}>{data.headline}</h1>
+          <p className={styles.reportSub}>{data.subheadline}</p>
+        </section>
+
+        {/* Score ring + recovery estimate */}
+        <section className={styles.scoreSection}>
+          <div className={styles.scoreRingWrap}>
+            <svg className={styles.scoreRing} viewBox="0 0 120 120" width="160" height="160">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
+              <circle
+                cx="60"
+                cy="60"
+                r="54"
+                fill="none"
+                stroke={color}
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeDasharray={`${progress} ${circumference}`}
+                transform="rotate(-90 60 60)"
+              />
+              <text
+                x="60"
+                y="66"
+                textAnchor="middle"
+                fontFamily="Sora, sans-serif"
+                fontSize="32"
+                fontWeight="800"
+                fill={color}
+              >
+                {report.score}
+              </text>
+            </svg>
+            <div className={styles.scoreLabel}>Conversion score</div>
+          </div>
+          <div className={styles.recoveryBox}>
+            <div className={styles.recoveryLabel}>Estimated revenue recovery / year</div>
+            <div className={styles.recoveryValue}>{formatMoney(calc.recoveryEstimate)}</div>
+            <div className={styles.recoveryNote}>
+              If your site converted at the {optimizedRate}% industry benchmark.
+            </div>
+          </div>
+        </section>
+
+        {/* Metrics grid */}
+        <section className={styles.metricsGrid}>
+          <div className={styles.metricCard}>
+            <div className={styles.metricLabel}>Leads captured / month</div>
+            <div className={styles.metricValue}>{formatInt(calc.leadsCaptured)}</div>
+          </div>
+          <div className={`${styles.metricCard} ${styles.metricDanger}`}>
+            <div className={styles.metricLabel}>Leads lost / month</div>
+            <div className={styles.metricValue}>{formatInt(calc.leadsLost)}</div>
+          </div>
+          <div className={`${styles.metricCard} ${styles.metricDanger}`}>
+            <div className={styles.metricLabel}>Revenue lost / month</div>
+            <div className={styles.metricValue}>{formatMoney(calc.revenueLostMonth)}</div>
+          </div>
+          <div className={`${styles.metricCard} ${styles.metricDanger}`}>
+            <div className={styles.metricLabel}>Revenue lost / year</div>
+            <div className={styles.metricValue}>{formatMoney(calc.revenueLostYear)}</div>
+          </div>
+        </section>
+
+        {/* Leaks */}
+        <section className={styles.leaksSection}>
+          <h2 className={styles.sectionHeading}>Where the leaks are</h2>
+          <div className={styles.leaksGrid}>
+            {report.leaks.map((leak, i) => (
+              <div key={i} className={styles.leakCard}>
+                <div className={styles.leakIcon} aria-hidden="true">!</div>
+                <div className={styles.leakBody}>
+                  <h3 className={styles.leakTitle}>{leak.title}</h3>
+                  <p className={styles.leakDesc}>{leak.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Before vs After */}
+        <section className={styles.beforeAfterSection}>
+          <h2 className={styles.sectionHeading}>Before vs After</h2>
+          <div className={styles.beforeAfterGrid}>
+            <div className={`${styles.baCard} ${styles.baBefore}`}>
+              <div className={styles.baTag}>Current</div>
+              <h3 className={styles.baHeadline}>{report.before_after.current_headline}</h3>
+              <div className={styles.chipRow}>
+                {report.before_after.current_problems.map((p, i) => (
+                  <span key={i} className={`${styles.chip} ${styles.chipGhost}`}>{p}</span>
+                ))}
+              </div>
+            </div>
+            <div className={`${styles.baCard} ${styles.baAfter}`}>
+              <div className={styles.baTag}>Upgraded</div>
+              <h3 className={styles.baHeadline}>{report.before_after.upgraded_headline}</h3>
+              <p className={styles.baDesc}>{report.before_after.upgraded_description}</p>
+              <div className={styles.chipRow}>
+                {report.before_after.upgraded_chips.map((c, i) => (
+                  <span key={i} className={`${styles.chip} ${styles.chipSolid}`}>{c}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Interactive calculator */}
+        <section className={styles.calcSection}>
+          <h2 className={styles.sectionHeading}>Run your own numbers</h2>
+          <p className={styles.calcHint}>
+            Adjust any field — the leak estimate updates live. Optimized benchmark: {optimizedRate}%.
+          </p>
+          <div className={styles.calcGrid}>
+            <label className={styles.calcField}>
+              <span className={styles.calcLabel}>Visitors / month</span>
+              <input
+                type="number"
+                min={0}
+                className={styles.calcInput}
+                value={visitors}
+                onChange={(e) => setVisitors(Number(e.target.value) || 0)}
+              />
+            </label>
+            <label className={styles.calcField}>
+              <span className={styles.calcLabel}>Current conversion rate (%)</span>
+              <input
+                type="number"
+                min={0}
+                step={0.1}
+                className={styles.calcInput}
+                value={currentRate}
+                onChange={(e) => setCurrentRate(Number(e.target.value) || 0)}
+              />
+            </label>
+            <label className={styles.calcField}>
+              <span className={styles.calcLabel}>Avg client value ($)</span>
+              <input
+                type="number"
+                min={0}
+                className={styles.calcInput}
+                value={avgValue}
+                onChange={(e) => setAvgValue(Number(e.target.value) || 0)}
+              />
+            </label>
+            <label className={styles.calcField}>
+              <span className={styles.calcLabel}>Close rate (%)</span>
+              <input
+                type="number"
+                min={0}
+                step={0.1}
+                className={styles.calcInput}
+                value={closeRate}
+                onChange={(e) => setCloseRate(Number(e.target.value) || 0)}
+              />
+            </label>
+          </div>
+        </section>
+
+        {/* CTAs */}
+        <section className={styles.ctaSection}>
+          <a href={data.cta_claim_url} className={styles.primaryCta}>
+            See the upgraded version of your website
+          </a>
+          <a href={data.cta_booking_url} className={styles.bookingCta}>
+            Talk through my numbers — 15 min call
+          </a>
+          <a href="https://websitelotto.virtuallaunch.pro" className={styles.ghostCta}>
+            Browse tax professional templates
+          </a>
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+        <p>
+          Prepared for {firm} ·{' '}
           <Link href="/" className={styles.footerLink}>websitelotto.virtuallaunch.pro</Link>
         </p>
       </footer>

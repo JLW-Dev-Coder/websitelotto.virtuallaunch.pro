@@ -335,6 +335,486 @@
   margin-top: 12px;
 }
 
+/* =========================================================
+   Conversion Leak Report styles
+   ========================================================= */
+
+.reportPage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #07070A 0%, #0D0D15 40%, #12121A 100%);
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+}
+
+.reportHeader {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7, 7, 10, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.reportHeaderInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--neon-blue);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+  letter-spacing: -0.3px;
+}
+
+.badge {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.12);
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+}
+
+.reportMain {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.reportHero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: center;
+  align-items: center;
+}
+
+.eyebrow {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--neon-blue);
+}
+
+.reportTitle {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  max-width: 820px;
+  color: var(--text);
+}
+
+.reportSub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--text-muted);
+  max-width: 680px;
+  line-height: 1.55;
+}
+
+/* Score + recovery */
+.scoreSection {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 32px;
+  align-items: center;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.scoreRingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.scoreRing {
+  display: block;
+}
+
+.scoreLabel {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.recoveryBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recoveryLabel {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.recoveryValue {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--neon-blue);
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(0, 212, 255, 0.35);
+}
+
+.recoveryNote {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Metrics */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.metricCard {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metricDanger {
+  background: rgba(255, 45, 138, 0.12);
+  border-color: rgba(255, 45, 138, 0.35);
+}
+
+.metricLabel {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.metricValue {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.metricDanger .metricValue {
+  color: var(--neon-magenta);
+}
+
+/* Leaks */
+.leaksSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionHeading {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.leaksGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.leakCard {
+  display: flex;
+  gap: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.leakIcon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 45, 138, 0.12);
+  border: 1px solid rgba(255, 45, 138, 0.4);
+  color: var(--neon-magenta);
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leakBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leakTitle {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.leakDesc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+/* Before vs After */
+.beforeAfterSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.beforeAfterGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.baCard {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.baBefore {
+  background: rgba(255, 45, 138, 0.08);
+  border-color: rgba(255, 45, 138, 0.3);
+}
+
+.baAfter {
+  background: rgba(0, 212, 255, 0.08);
+  border-color: var(--neon-blue);
+}
+
+.baTag {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.baBefore .baTag {
+  color: var(--neon-magenta);
+}
+
+.baAfter .baTag {
+  color: var(--neon-blue);
+}
+
+.baHeadline {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.baDesc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.chipGhost {
+  background: transparent;
+  border: 1px solid rgba(255, 45, 138, 0.4);
+  color: var(--neon-magenta);
+}
+
+.chipSolid {
+  background: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  color: var(--void);
+}
+
+/* Calculator */
+.calcSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.calcHint {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.calcGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.calcField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calcLabel {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.calcInput {
+  background: var(--charcoal);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.calcInput:focus {
+  outline: none;
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18);
+}
+
+/* CTAs */
+.ctaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.ghostCta {
+  display: inline-block;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid var(--glass-border);
+  transition: all 0.15s;
+}
+
+.ghostCta:hover {
+  color: var(--neon-blue);
+  border-color: var(--neon-blue);
+}
+
+@media (max-width: 820px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .leaksGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .scoreSection {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 24px;
+  }
+  .recoveryBox {
+    align-items: center;
+  }
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+  .beforeAfterGrid {
+    grid-template-columns: 1fr;
+  }
+  .calcGrid {
+    grid-template-columns: 1fr;
+  }
+  .calcSection {
+    padding: 24px;
+  }
+  .reportMain {
+    padding: 32px 16px 64px;
+    gap: 48px;
+  }
+}
+
 @media (max-width: 720px) {
   .main {
     padding: 32px 16px 64px;
