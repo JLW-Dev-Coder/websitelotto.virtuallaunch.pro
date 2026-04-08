@@ -270,3 +270,28 @@ export function requestPayout(amount: number): Promise<{ payout_id: string; amou
     body: JSON.stringify({ amount }),
   });
 }
+
+export interface AssetPageData {
+  headline: string;
+  subheadline: string;
+  template_preview_slug: string;
+  template_preview_url: string;
+  practice_type: string;
+  city: string;
+  state: string;
+  cta_claim_url: string;
+  cta_scratch_url: string;
+  cta_booking_url: string;
+}
+
+export async function getAssetPage(slug: string): Promise<AssetPageData | null> {
+  try {
+    const res = await fetch(`${API_BASE}/v1/wlvlp/asset-pages/${slug}`, {
+      method: 'GET',
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}

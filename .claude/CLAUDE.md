@@ -120,6 +120,7 @@ app/                  → Next.js App Router pages
   onboarding/         → New-user onboarding flow
   success/            → Post-payment confirmation
   support/            → Support page
+  asset/[slug]/       → Public, unauthenticated landing page for SCALE campaign prospects (data from R2 via /v1/wlvlp/asset-pages/:slug; served via _redirects rewrite)
 components/           → Shared components (AuthGuard)
 lib/
   api.ts              → All API functions — source of truth for endpoints
