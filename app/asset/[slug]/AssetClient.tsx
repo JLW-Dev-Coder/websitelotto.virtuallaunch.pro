@@ -87,7 +87,14 @@ export default function AssetClient({ initialSlug }: Props) {
     return <LeakReport data={data} report={data.conversion_leak_report} slug={slug} />;
   }
 
-  // Fallback: original template-preview layout
+  // Fallback: template-preview layout (with graceful degradation when
+  // template_preview_url is missing in legacy R2 records).
+  const claimUrl = data.cta_claim_url || 'https://websitelotto.virtuallaunch.pro';
+  const scratchUrl = data.cta_scratch_url || 'https://websitelotto.virtuallaunch.pro/scratch';
+  const bookingUrl = data.cta_booking_url || 'https://websitelotto.virtuallaunch.pro/support';
+  const practiceType = data.practice_type || 'tax';
+  const firmLabel = data.firm || 'your firm';
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -101,28 +108,37 @@ export default function AssetClient({ initialSlug }: Props) {
           <h1 className={styles.headline}>{data.headline}</h1>
           <p className={styles.subheadline}>{data.subheadline}</p>
           <div className={styles.heroCtas}>
-            <a href={data.cta_claim_url} className={styles.primaryCta}>
+            <a href={claimUrl} className={styles.primaryCta}>
               Claim This Template — $249
             </a>
-            <a href={data.cta_scratch_url} className={styles.scratchCta}>
+            <a href={scratchUrl} className={styles.scratchCta}>
               Try a Free Scratch Ticket
             </a>
           </div>
         </section>
 
-        <section className={styles.previewSection}>
-          <div className={styles.previewFrame}>
-            <iframe
-              src={data.template_preview_url}
-              className={styles.iframe}
-              title="Template preview"
-              loading="lazy"
-            />
-          </div>
-          <p className={styles.previewCaption}>
-            This is one of 210+ ready-made templates. Yours to claim and customize.
-          </p>
-        </section>
+        {data.template_preview_url ? (
+          <section className={styles.previewSection}>
+            <div className={styles.previewFrame}>
+              <iframe
+                src={data.template_preview_url}
+                className={styles.iframe}
+                title="Template preview"
+                loading="lazy"
+              />
+            </div>
+            <p className={styles.previewCaption}>
+              This is one of 210+ ready-made templates. Yours to claim and customize.
+            </p>
+          </section>
+        ) : (
+          <section className={styles.previewSection}>
+            <p className={styles.previewCaption}>
+              A modern, conversion-optimized website template designed for {practiceType} practices
+              like {firmLabel}. Ready to claim and customize.
+            </p>
+          </section>
+        )}
 
         <section className={styles.valueProps}>
           <div className={styles.valueCard}>
@@ -140,7 +156,7 @@ export default function AssetClient({ initialSlug }: Props) {
           <div className={styles.valueCard}>
             <h3 className={styles.valueTitle}>Built for tax pros</h3>
             <p className={styles.valueDesc}>
-              Templates designed for {data.practice_type} practices like yours.
+              Templates designed for {practiceType} practices like yours.
             </p>
           </div>
         </section>
@@ -159,7 +175,7 @@ export default function AssetClient({ initialSlug }: Props) {
           <p className={styles.scratchDesc}>
             Try a free scratch ticket — you might win a discount or free hosting.
           </p>
-          <a href={data.cta_scratch_url} className={styles.scratchCta}>
+          <a href={scratchUrl} className={styles.scratchCta}>
             Get a Free Scratch Ticket
           </a>
         </section>
@@ -169,7 +185,7 @@ export default function AssetClient({ initialSlug }: Props) {
           <p className={styles.bookingDesc}>
             Book a 15-minute walkthrough and I&apos;ll show you the full catalog.
           </p>
-          <a href={data.cta_booking_url} className={styles.bookingCta}>
+          <a href={bookingUrl} className={styles.bookingCta}>
             Book a Call
           </a>
         </section>
