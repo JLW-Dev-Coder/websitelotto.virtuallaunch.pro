@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getTemplate, getTemplateBids, voteTemplate, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
+import { getTemplate, getTemplateBids, voteTemplate, AlreadyVotedError, placeBid, createCheckout, getSession, Template, Bid } from '@/lib/api';
 import { getTierForSlug, getPrice } from '@/lib/pricing';
 import { TEMPLATES, getCategoryLabel } from '@/lib/templates';
 import styles from './page.module.css';
@@ -63,12 +63,24 @@ export default function SiteClient({ slug }: Props) {
     return () => clearInterval(id);
   }, [template]);
 
+  const [voted, setVoted] = useState(false);
+  const [voting, setVoting] = useState(false);
+
   async function handleVote() {
     if (!session) { router.push('/sign-in?redirect=/sites/' + slug); return; }
+    if (voted || voting) return;
+    setVoting(true);
     try {
       const res = await voteTemplate(slug);
       setTemplate(t => t ? { ...t, vote_count: res.vote_count } : t);
-    } catch {}
+      setVoted(true);
+    } catch (e) {
+      if (e instanceof AlreadyVotedError) {
+        setVoted(true);
+      }
+    } finally {
+      setVoting(false);
+    }
   }
 
   const tier = getTierForSlug(slug);
@@ -131,7 +143,7 @@ export default function SiteClient({ slug }: Props) {
 
           <div className={styles.voteRow}>
             <span>▲ {template.vote_count} votes</span>
-            <button className={styles.voteBtn} onClick={handleVote}>Vote</button>
+            <button className={styles.voteBtn} onClick={handleVote} disabled={voted || voting}>{voted ? 'Voted ✓' : voting ? '...' : 'Vote'}</button>
           </div>
 
           {error && <div className={styles.errorMsg}>{error}</div>}

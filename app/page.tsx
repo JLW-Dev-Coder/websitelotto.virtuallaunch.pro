@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getTemplatesWithFallback, getSession, voteTemplate, Template } from '@/lib/api';
+import { getTemplatesWithFallback, getSession, voteTemplate, AlreadyVotedError, Template } from '@/lib/api';
 import { getPriceForSlug } from '@/lib/pricing';
 import styles from './page.module.css';
 
@@ -53,15 +53,27 @@ export default function HomePage() {
       return 0;
     });
 
+  const [votedSlugs, setVotedSlugs] = useState<Set<string>>(new Set());
+  const [votingSlug, setVotingSlug] = useState<string | null>(null);
+
   async function handleVote(slug: string) {
     if (!session) {
       router.push('/sign-in?redirect=/');
       return;
     }
+    if (votedSlugs.has(slug) || votingSlug === slug) return;
+    setVotingSlug(slug);
     try {
       const res = await voteTemplate(slug);
       setTemplates(prev => prev.map(t => t.slug === slug ? { ...t, vote_count: res.vote_count } : t));
-    } catch {}
+      setVotedSlugs(prev => new Set(prev).add(slug));
+    } catch (e) {
+      if (e instanceof AlreadyVotedError) {
+        setVotedSlugs(prev => new Set(prev).add(slug));
+      }
+    } finally {
+      setVotingSlug(null);
+    }
   }
 
   return (
@@ -237,7 +249,7 @@ export default function HomePage() {
                           <Link href={`/sites/${t.slug}`} className={styles.cardActionBtn}>
                             {t.status === 'auction' ? `Bid $${t.current_bid ?? ''}` : 'Place Bid'}
                           </Link>
-                          <button className={styles.voteBtn} onClick={() => handleVote(t.slug)}>Vote</button>
+                          <button className={styles.voteBtn} onClick={() => handleVote(t.slug)} disabled={votedSlugs.has(t.slug) || votingSlug === t.slug}>{votedSlugs.has(t.slug) ? 'Voted ✓' : votingSlug === t.slug ? '...' : 'Vote'}</button>
                         </>
                       )}
                     </div>

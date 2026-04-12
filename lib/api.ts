@@ -127,9 +127,22 @@ export async function getTemplateBids(slug: string): Promise<Bid[]> {
   return res.bids ?? [];
 }
 
+export class AlreadyVotedError extends Error {
+  constructor() { super('already_voted'); }
+}
+
 export async function voteTemplate(slug: string): Promise<{ vote_count: number }> {
-  const res = await apiFetch<{ ok: boolean; vote_count: number }>(`/v1/wlvlp/templates/${slug}/vote`, { method: 'POST' });
-  return { vote_count: res.vote_count };
+  const res = await fetch(`${API_BASE}/v1/wlvlp/templates/${slug}/vote`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  const body = await res.json();
+  if (!res.ok) {
+    if (res.status === 409 || body.error === 'already_voted') throw new AlreadyVotedError();
+    throw new Error(`API /v1/wlvlp/templates/${slug}/vote → ${res.status}`);
+  }
+  return { vote_count: body.vote_count };
 }
 
 export async function placeBid(slug: string, amount: number): Promise<{ ok: boolean; bid_id?: string; auction_ends_at?: string; current_high_bid?: number }> {
