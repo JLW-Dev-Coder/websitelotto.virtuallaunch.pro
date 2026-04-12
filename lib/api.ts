@@ -59,9 +59,10 @@ export function getSession(): Promise<Session> {
   return apiFetch('/v1/auth/session');
 }
 
-export function getTemplates(params?: Record<string, string>): Promise<Template[]> {
+export async function getTemplates(params?: Record<string, string>): Promise<Template[]> {
   const qs = params ? '?' + new URLSearchParams(params).toString() : '';
-  return apiFetch(`/v1/wlvlp/templates${qs}`);
+  const res = await apiFetch<{ ok: boolean; templates: Template[] }>(`/v1/wlvlp/templates${qs}`);
+  return res.templates ?? [];
 }
 
 interface CatalogSite {
@@ -114,19 +115,24 @@ export async function getTemplatesWithFallback(): Promise<Template[]> {
   }
 }
 
-export function getTemplate(slug: string): Promise<Template> {
-  return apiFetch(`/v1/wlvlp/templates/${slug}`);
+export async function getTemplate(slug: string): Promise<Template> {
+  const res = await apiFetch<{ ok: boolean; template: Template; highest_bid?: number; bid_history?: Bid[] }>(`/v1/wlvlp/templates/${slug}`);
+  const t = res.template;
+  if (res.highest_bid != null) (t as Record<string, unknown>).current_bid = res.highest_bid;
+  return t;
 }
 
-export function getTemplateBids(slug: string): Promise<Bid[]> {
-  return apiFetch(`/v1/wlvlp/templates/${slug}/bids`);
+export async function getTemplateBids(slug: string): Promise<Bid[]> {
+  const res = await apiFetch<{ ok: boolean; bids: Bid[] }>(`/v1/wlvlp/templates/${slug}/bids`);
+  return res.bids ?? [];
 }
 
-export function voteTemplate(slug: string): Promise<{ vote_count: number }> {
-  return apiFetch(`/v1/wlvlp/templates/${slug}/vote`, { method: 'POST' });
+export async function voteTemplate(slug: string): Promise<{ vote_count: number }> {
+  const res = await apiFetch<{ ok: boolean; vote_count: number }>(`/v1/wlvlp/templates/${slug}/vote`, { method: 'POST' });
+  return { vote_count: res.vote_count };
 }
 
-export function placeBid(slug: string, amount: number): Promise<{ ok: boolean }> {
+export async function placeBid(slug: string, amount: number): Promise<{ ok: boolean; bid_id?: string; auction_ends_at?: string; current_high_bid?: number }> {
   return apiFetch(`/v1/wlvlp/templates/${slug}/bid`, {
     method: 'POST',
     body: JSON.stringify({ amount }),
@@ -138,23 +144,45 @@ export interface CheckoutResponse {
   url?: string;
 }
 
-export function createCheckout(
+export async function createCheckout(
   slug: string,
   tier: 'standard' | 'premium',
   email?: string
 ): Promise<CheckoutResponse> {
-  return apiFetch('/v1/wlvlp/checkout', {
+  const res = await apiFetch<{ ok: boolean; session_url?: string; url?: string }>('/v1/wlvlp/checkout', {
     method: 'POST',
     body: JSON.stringify({ slug, tier, ...(email ? { email } : {}) }),
   });
+  return { session_url: res.session_url, url: res.url };
 }
 
-export function createScratchTicket(): Promise<ScratchTicket> {
-  return apiFetch('/v1/wlvlp/scratch', { method: 'POST' });
+export class DailyLimitError extends Error {
+  next_available_at: string;
+  constructor(next: string) {
+    super('daily_limit');
+    this.next_available_at = next;
+  }
 }
 
-export function revealScratchTicket(ticket_id: string): Promise<ScratchTicket> {
-  return apiFetch(`/v1/wlvlp/scratch/${ticket_id}/reveal`, { method: 'POST' });
+export async function createScratchTicket(): Promise<ScratchTicket> {
+  const res = await fetch(`${API_BASE}/v1/wlvlp/scratch`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  const body = await res.json();
+  if (!res.ok) {
+    if (body.error === 'daily_limit' && body.next_available_at) {
+      throw new DailyLimitError(body.next_available_at);
+    }
+    throw new Error(`API /v1/wlvlp/scratch → ${res.status}`);
+  }
+  return { ticket_id: body.ticket_id, status: 'unscratched' };
+}
+
+export async function revealScratchTicket(ticket_id: string): Promise<ScratchTicket> {
+  const res = await apiFetch<{ ok: boolean; prize_type: string; prize_value?: string; promo_code?: string }>(`/v1/wlvlp/scratch/${ticket_id}/reveal`, { method: 'POST' });
+  return { ticket_id, status: 'revealed', prize: res.prize_type, prize_code: res.promo_code };
 }
 
 export function getBuyerDashboard(account_id: string): Promise<BuyerDashboard> {

@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import AuthGuard from '@/components/AuthGuard';
-import { createScratchTicket, revealScratchTicket, ScratchTicket } from '@/lib/api';
+import { createScratchTicket, revealScratchTicket, ScratchTicket, DailyLimitError } from '@/lib/api';
 import styles from './page.module.css';
 
 const PRIZE_CONFIG: Record<string, { emoji: string; title: string; desc: string }> = {
   free_month: { emoji: '🎉', title: 'You won a free template!', desc: 'Claim any available template at no cost — includes 12 months of hosting.' },
-  '50_off': { emoji: '🎊', title: '$50 off your template!', desc: 'Use your discount code at checkout.' },
-  '25_off': { emoji: '🎁', title: '$25 off your template!', desc: 'Use your discount code at checkout.' },
+  discount_50: { emoji: '🎊', title: '$50 off your template!', desc: 'Use your discount code at checkout.' },
+  discount_25: { emoji: '🎁', title: '$25 off your template!', desc: 'Use your discount code at checkout.' },
   credit_9: { emoji: '💰', title: 'You won a $9 credit!', desc: 'Apply this credit toward any template purchase.' },
   free_ticket: { emoji: '🎟️', title: 'Try again!', desc: 'You won another scratch ticket.' },
   no_prize: { emoji: '😔', title: 'Better luck next time!', desc: 'Browse available templates and find your perfect site.' },
@@ -27,12 +27,18 @@ function ScratchContent({ accountId: _accountId }: { accountId: string }) {
   const [scratched, setScratched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [prize, setPrize] = useState<typeof PRIZE_CONFIG[string] | null>(null);
+  const [nextAvailable, setNextAvailable] = useState<string | null>(null);
 
   async function handleGetTicket() {
     setLoading(true);
+    setNextAvailable(null);
     try {
       const t = await createScratchTicket();
       setTicket(t);
+    } catch (e: unknown) {
+      if (e instanceof DailyLimitError) {
+        setNextAvailable(e.next_available_at);
+      }
     } finally {
       setLoading(false);
     }
@@ -62,14 +68,24 @@ function ScratchContent({ accountId: _accountId }: { accountId: string }) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Scratch to Win</h1>
-        <p className={styles.subtitle}>One free ticket per account. Win a free template, discounts, or credits.</p>
+        <p className={styles.subtitle}>One free ticket every day. Win a free template, discounts, or credits.</p>
 
-        {!ticket && (
+        {!ticket && !nextAvailable && (
           <div className={styles.getTicket}>
             <div className={styles.ticketPlaceholder}>🎫</div>
             <button className={styles.getBtn} onClick={handleGetTicket} disabled={loading}>
               {loading ? 'Getting your ticket…' : 'Get Your Free Ticket'}
             </button>
+          </div>
+        )}
+
+        {!ticket && nextAvailable && (
+          <div className={styles.getTicket}>
+            <div className={styles.ticketPlaceholder}>⏳</div>
+            <p className={styles.scratchHint}>
+              Come back {new Date(nextAvailable).toLocaleString()} for your next ticket!
+            </p>
+            <Link href="/" className={styles.browseBtn}>Browse Templates</Link>
           </div>
         )}
 
