@@ -118,7 +118,8 @@ export async function getTemplatesWithFallback(): Promise<Template[]> {
 export async function getTemplate(slug: string): Promise<Template> {
   const res = await apiFetch<{ ok: boolean; template: Template; highest_bid?: number; bid_history?: Bid[] }>(`/v1/wlvlp/templates/${slug}`);
   const t = res.template;
-  if (res.highest_bid != null) (t as Record<string, unknown>).current_bid = res.highest_bid;
+  if (!t.status) t.status = 'available';
+  if (res.highest_bid != null) (t as unknown as Record<string, unknown>).current_bid = res.highest_bid;
   return t;
 }
 

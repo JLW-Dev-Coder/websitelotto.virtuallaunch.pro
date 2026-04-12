@@ -134,7 +134,7 @@ export default function SiteClient({ slug }: Props) {
         </div>
 
         <div className={styles.actionPanel}>
-          <div className={`${styles.cardStatus} ${styles['status' + template.status.charAt(0).toUpperCase() + template.status.slice(1)]}`}>
+          <div className={`${styles.cardStatus} ${styles['status' + (template.status || 'available').charAt(0).toUpperCase() + (template.status || 'available').slice(1)]}`}>
             {template.status === 'available' ? 'Available' : template.status === 'auction' ? 'Auction' : 'Sold'}
           </div>
           <h1 className={styles.templateTitle}>{template.title}</h1>

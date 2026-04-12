@@ -228,7 +228,7 @@ export default function HomePage() {
                       : <span className={styles.cardEmoji}>🌐</span>}
                   </Link>
                   <div className={styles.cardBody}>
-                    <div className={`${styles.cardStatus} ${styles['status' + (t.status.charAt(0).toUpperCase() + t.status.slice(1))]}`}>
+                    <div className={`${styles.cardStatus} ${styles['status' + ((t.status || 'available').charAt(0).toUpperCase() + (t.status || 'available').slice(1))]}`}>
                       {t.status === 'available' ? 'Available' : t.status === 'auction' ? 'Auction' : 'Sold'}
                     </div>
                     <div className={styles.cardTitle}>{t.title}</div>
